@@ -19,7 +19,7 @@ public:
 	~TransactionsListPanel();
 
 	void SetAccount(Account *account);
-	Transaction *GetTransaction();
+	shared_ptr<Transaction> GetTransaction();
 	void Update();
 	void EditTransaction();
 	void DeleteTransaction();
@@ -36,6 +36,7 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	Account *account;
+	vector<shared_ptr<Transaction>> transactions;
 
 	void OnListItemClick(wxListEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);

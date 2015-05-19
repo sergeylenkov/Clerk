@@ -58,7 +58,7 @@ void TransactionsListPanel::SetAccount(Account *account) {
 	this->account = account;
 }
 
-Transaction *TransactionsListPanel::GetTransaction() {
+shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -68,7 +68,7 @@ Transaction *TransactionsListPanel::GetTransaction() {
 			break;
 		}
 
-		return DataHelper::GetInstance().GetTransaction((int)transactionsList->GetItemData(itemIndex));
+		return transactions[itemIndex];
 	}
 
 	return NULL;
@@ -76,6 +76,7 @@ Transaction *TransactionsListPanel::GetTransaction() {
 
 void TransactionsListPanel::Update() {
 	transactionsList->ClearAll();
+	transactions.clear();
 
 	if (account == NULL) {
 		return;
@@ -117,7 +118,9 @@ void TransactionsListPanel::Update() {
 	int i = 0;
 	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
 	
-	for each (auto transaction in DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+	transactions = DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+
+	for each (auto transaction in transactions)
 	{
 		wxListItem listItem;
 
@@ -161,7 +164,7 @@ void TransactionsListPanel::EditTransaction() {
 }
 
 void TransactionsListPanel::DeleteTransaction() {
-	Transaction *transaction = GetTransaction();
+	auto transaction = GetTransaction();
 
 	if (transaction) {
 		DataHelper::GetInstance().DeleteTransaction(transaction->id);
@@ -170,7 +173,7 @@ void TransactionsListPanel::DeleteTransaction() {
 }
 
 void TransactionsListPanel::DublicateTransaction() {
-	Transaction *transaction = GetTransaction();
+	auto transaction = GetTransaction();
 
 	if (transaction) {
 		Transaction *copy = new Transaction();

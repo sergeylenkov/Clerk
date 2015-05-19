@@ -466,7 +466,7 @@ void MainFrame::AddTransaction() {
 }
 
 void MainFrame::EditTransaction() {
-	Transaction *transaction = transactionList->GetTransaction();
+	auto transaction = transactionList->GetTransaction();
 
 	if (transaction) {
 		transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 300);
@@ -474,7 +474,7 @@ void MainFrame::EditTransaction() {
 		transactionFrame->Show(true);
 		transactionFrame->CenterOnParent();
 
-		transactionFrame->SetTransaction(transaction);
+		transactionFrame->SetTransaction(transaction.get());
 		transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 	}
 }

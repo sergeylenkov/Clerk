@@ -1,8 +1,10 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
+#include <algorithm>
+#include <map>
 #include "DataHelper.h"
-#include "BarChart.h"
-#include "PieChart.h"
+
+using namespace std;
 
 class HomePanel : public wxPanel 
 {
@@ -18,6 +20,6 @@ private:
 	wxStaticText *receiptsLabel;
 	wxStaticText *accountsLabel;
 	wxListCtrl *accountsList;
-	BarChart *barChart;
-	PieChart *pieChart;
+	wxStaticText *expensesListLabel;
+	wxListCtrl *expensesList;
 };

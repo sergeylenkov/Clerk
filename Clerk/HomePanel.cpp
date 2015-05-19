@@ -2,6 +2,7 @@
 
 HomePanel::HomePanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	wxPanel *panel = new wxPanel(this, wxID_ANY);
+	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
 	titleLabel = new wxStaticText(panel, wxID_ANY, "", wxPoint(10, 10), wxSize(200, 20));
 
@@ -19,13 +20,12 @@ HomePanel::HomePanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 
 	accountsList = new wxListCtrl(panel, wxID_ANY, wxPoint(235, 40), wxSize(400, 400), wxLC_REPORT | wxLC_NO_HEADER);
 
-	barChart = new BarChart(this, wxID_ANY);
-	pieChart = new PieChart(this, wxID_ANY);
+	expensesListLabel = new wxStaticText(panel, wxID_ANY, "", wxPoint(10, 300), wxSize(100, 20));
+	expensesListLabel->SetFont(font);
 
-	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+	expensesList = new wxListCtrl(panel, wxID_ANY, wxPoint(5, 330), wxSize(300, 400), wxLC_REPORT | wxLC_NO_HEADER);
 
-	sizer->Add(pieChart, 1, wxEXPAND);
-	sizer->Add(barChart, 1, wxEXPAND);
+	sizer->Add(panel);
 
 	this->SetSizer(sizer);
 	this->Layout();
@@ -37,8 +37,9 @@ HomePanel::~HomePanel() {
 	delete titleLabel;
 	delete expensesLabel;
 	delete receiptsLabel;
-	delete barChart;
-	delete pieChart;
+	delete accountsList;
+	delete expensesListLabel;
+	delete expensesList;
 }
 
 void HomePanel::Update() {
@@ -94,6 +95,45 @@ void HomePanel::Update() {
 		i++;
 	}
 
-	barChart->SetValues(DataHelper::GetInstance().GetExpensesByMonth());
-	pieChart->SetValues(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
+	expensesListLabel->SetLabel(wxDateTime::Now().Format("Expenses for %B"));
+	expensesList->ClearAll();
+
+	wxListItem col3;
+
+	col.SetId(0);
+	col.SetText(_("Name"));
+	col.SetWidth(200);
+
+	expensesList->InsertColumn(0, col);
+
+	wxListItem col4;
+
+	col2.SetId(1);
+	col2.SetText(_("Amount"));
+	col2.SetWidth(100);
+	col2.SetAlign(wxLIST_FORMAT_RIGHT);
+
+	expensesList->InsertColumn(1, col2);
+
+	map<wxString, float> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
+	std::vector<std::pair<wxString, float>> items;
+
+	for (auto it = values.begin(); it != values.end(); it++) {
+		items.push_back(std::pair<wxString, float>(it->first, it->second));
+	}
+
+	sort(items.begin(), items.end(), [](std::pair<wxString, float> const &a, std::pair<wxString, float> const &b) {
+		return a.second > b.second;
+	});
+
+	for (unsigned int i = 0; i < items.size(); i++) {
+		wxListItem listItem;
+
+		listItem.SetId(i);
+
+		expensesList->InsertItem(listItem);
+
+		expensesList->SetItem(i, 0, items[i].first);
+		expensesList->SetItem(i, 1, wxString::Format("%.2f", items[i].second));
+	}
 }

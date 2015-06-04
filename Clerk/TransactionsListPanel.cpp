@@ -11,8 +11,9 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 
 	wxArrayString *values = new wxArrayString();
 
-	values->Add(wxT("This Week"));
 	values->Add(wxT("Previous Week"));
+	values->Add(wxT("This Week"));
+	values->Add(wxT("Previous Month"));
 	values->Add(wxT("This Month"));
 	values->Add(wxT("This Year"));
 	values->Add(wxT("Custom"));
@@ -27,7 +28,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	wxStaticText *st2 = new wxStaticText(this, wxID_ANY, wxT("To:"));
 	toDatePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
-	periodList->Select(2);
+	periodList->Select(3);
 
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
@@ -131,14 +132,20 @@ void TransactionsListPanel::Update() {
 
 		if (account->id == transaction->from_account_id) {
 			transactionsList->SetItem(i, 0, *transaction->to_account_name);
-			transactionsList->SetItemTextColour(i, wxColor(255, 0, 0, 1));
+			//transactionsList->SetItemTextColour(i, wxColor(255, 0, 0, 1));
 		}
 
 		if (account->id == transaction->to_account_id) {
 			transactionsList->SetItem(i, 0, *transaction->from_account_name);
-			transactionsList->SetItemTextColour(i, wxColor(0, 0, 0, 1));
+			//transactionsList->SetItemTextColour(i, wxColor(0, 0, 0, 1));
 		}
 
+		if (i % 2 == 0) {
+			transactionsList->SetItemBackgroundColour(i, wxColor(255, 255, 255, 1));
+		} else {
+			transactionsList->SetItemBackgroundColour(i, wxColor(225, 235, 250, 1));
+		}
+		
 		transactionsList->SetItemImage(i, 1);
 		transactionsList->SetItem(i, 1, *transaction->tags);
 		transactionsList->SetItem(i, 2, transaction->paid_at->Format("%B %d"));
@@ -270,28 +277,33 @@ void TransactionsListPanel::CalculatePeriod() {
 	switch (index)
 	{
 	case 0:
-		fromDate.SetToWeekDay(wxDateTime::WeekDay::Mon);
-		toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
-		break;
-
-	case 1:
 		fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun).SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 		toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
 		break;
 
+	case 1:
+		fromDate.SetToWeekDay(wxDateTime::WeekDay::Mon);
+		toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+		break;
+
 	case 2:
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetDay(1);
+		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetToLastMonthDay();
+		break;
+
+	case 3:
 		fromDate.SetDay(1);
 		toDate.SetToLastMonthDay();
 		break;
 
-	case 3:
+	case 4:
 		fromDate.SetMonth(wxDateTime::Month::Jan);
 		fromDate.SetDay(1);
 		toDate.SetMonth(wxDateTime::Month::Dec);
 		toDate.SetDay(31);
 		break;
 
-	case 4:
+	case 5:
 		fromDatePicker->Enable();
 		toDatePicker->Enable();
 		break;

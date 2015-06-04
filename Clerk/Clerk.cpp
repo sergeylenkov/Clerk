@@ -1,11 +1,13 @@
 #include "Clerk.h"
 #include "DataHelper.h"
+#include "Model.h"
 
 IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
 	DataHelper::GetInstance().Open("Resources/Database.sqlite");
+	Model::SetConnection(DataHelper::GetInstance().Connection());
 
 	wxInitAllImageHandlers();
 

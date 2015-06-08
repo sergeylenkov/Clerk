@@ -25,23 +25,14 @@ vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 {
 	auto result = vector<shared_ptr<Account>>();
 
-	char *sql = "SELECT a.id, a.name, a.note, a.icon_id, a.type_id, a.order_id, a.currency_id FROM accounts a WHERE a.type_id = ? AND a.active = 1 ORDER BY a.order_id";
+	char *sql = "SELECT a.id FROM accounts a WHERE a.type_id = ? AND a.active = 1 ORDER BY a.order_id";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, (int)type);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto account = std::make_shared<Account>();
-			
-			account->id = sqlite3_column_int(statement, 0);
-			account->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			account->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
-			account->iconId = sqlite3_column_int(statement, 3);
-			account->type = static_cast<AccountTypes>(sqlite3_column_int(statement, 4));
-			account->orderId = sqlite3_column_int(statement, 5);
-			account->currency = GetCurrency(sqlite3_column_int(statement, 6));
-
+			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
 			result.push_back(account);
 		}
 	}
@@ -55,8 +46,8 @@ vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *accoun
 {
 	auto result = vector<std::shared_ptr<Transaction>>();
 
-	char *sql = "SELECT t.id, t.from_account_amount, t.to_account_amount, t.paid_at, fa.name, ta.name, fa.id, ta.id, t.note \
-				   FROM transactions t, accounts fa, accounts ta WHERE (t.from_account_id = ? OR t.to_account_id = ?) AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 AND fa.id = t.from_account_id AND ta.id = t.to_account_id ORDER BY t.paid_at DESC, t.created_at DESC";
+	char *sql = "SELECT t.id FROM transactions t, accounts fa, accounts ta \
+				  WHERE (t.from_account_id = ? OR t.to_account_id = ?) AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 AND fa.id = t.from_account_id AND ta.id = t.to_account_id ORDER BY t.paid_at DESC, t.created_at DESC";
 	sqlite3_stmt *statement;
 	
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -66,9 +57,9 @@ vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *accoun
 		sqlite3_bind_text(statement, 4, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto transaction = std::make_shared<Transaction>();
+			auto transaction = std::make_shared<Transaction>(sqlite3_column_int(statement, 0));
 
-			transaction->id = sqlite3_column_int(statement, 0);
+			/*transaction->id = sqlite3_column_int(statement, 0);
 			transaction->from_amount = sqlite3_column_double(statement, 1);
 			transaction->to_amount = sqlite3_column_double(statement, 2);
 
@@ -99,7 +90,7 @@ vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *accoun
 				tags.RemoveLast(2);
 
 				transaction->tags = make_shared<wxString>(tags);
-			}
+			}*/
 
 			result.push_back(transaction);
 		}
@@ -114,17 +105,12 @@ vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 {
 	auto result = vector<std::shared_ptr<Currency>>();
 
-	char *sql = "SELECT id, name, short_name FROM currencies ORDER BY name";
+	char *sql = "SELECT id FROM currencies ORDER BY name";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto currency = std::make_shared<Currency>();
-
-			currency->id = sqlite3_column_int(statement, 0);
-			currency->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			currency->shortName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
-
+			auto currency = make_shared<Currency>(sqlite3_column_int(statement, 0));
 			result.push_back(currency);
 		}
 	}
@@ -198,7 +184,7 @@ float DataHelper::GetToAmountSum(Account *account, wxDateTime *from, wxDateTime 
 	return total;
 }
 
-Transaction *DataHelper::GetTransaction(int id)
+/*Transaction *DataHelper::GetTransaction(int id)
 {
 	Transaction *transaction = new Transaction();
 
@@ -249,9 +235,9 @@ Transaction *DataHelper::GetTransaction(int id)
 	sqlite3_finalize(statement);
 
 	return transaction;
-}
+}*/
 
-void DataHelper::AddTransaction(Transaction *transaction)
+/*void DataHelper::AddTransaction(Transaction *transaction)
 {
 	char *sql = "INSERT INTO transactions (from_account_id, to_account_id, from_account_amount, to_account_amount, deleted, paid_at, note, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 	sqlite3_stmt *statement;
@@ -276,9 +262,9 @@ void DataHelper::AddTransaction(Transaction *transaction)
 	if (transaction->id != -1) {
 		UpdateTags(transaction);
 	}
-}
+}*/
 
-void DataHelper::UpdateTransaction(Transaction *transaction)
+/*void DataHelper::UpdateTransaction(Transaction *transaction)
 {
 	char *sql = "UPDATE transactions SET from_account_id = ?, to_account_id = ?, from_account_amount = ?, to_account_amount = ?, paid_at = ?, note = ? WHERE id = ?";
 	sqlite3_stmt *statement;
@@ -298,9 +284,9 @@ void DataHelper::UpdateTransaction(Transaction *transaction)
 	sqlite3_finalize(statement);
 
 	UpdateTags(transaction);
-}
+}*/
 
-void DataHelper::DeleteTransaction(int id)
+/*void DataHelper::DeleteTransaction(int id)
 {
 	char *sql = "DELETE FROM transactions WHERE id = ?";
 	sqlite3_stmt *statement;
@@ -320,9 +306,9 @@ void DataHelper::DeleteTransaction(int id)
 	}
 
 	sqlite3_finalize(statement);
-}
+}*/
 
-void DataHelper::UpdateTags(Transaction *transaction)
+/*void DataHelper::UpdateTags(Transaction *transaction)
 {
 	char *sql = "DELETE FROM transactions_tags WHERE transaction_id = ?";
 	sqlite3_stmt *statement;
@@ -376,86 +362,7 @@ void DataHelper::UpdateTags(Transaction *transaction)
 
 		sqlite3_finalize(statement);
 	}
-}
-
-std::shared_ptr<Currency> DataHelper::GetCurrency(int id)
-{
-	std::shared_ptr<Currency> currency = make_shared<Currency>();
-
-	char *sql = "SELECT id, name, short_name FROM currencies WHERE id = ?";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, id);
-
-		while (sqlite3_step(statement) == SQLITE_ROW) {
-			currency->id = sqlite3_column_int(statement, 0);
-			currency->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			currency->shortName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
-		}
-	}
-
-	sqlite3_finalize(statement);
-
-	return currency;
-}
-
-void DataHelper::AddAccount(Account *account)
-{
-	char *sql = "INSERT INTO accounts (name, note, type_id, icon_id, order_id, currency_id, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_text(statement, 1, account->name->ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(statement, 2, account->note->ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int(statement, 3, static_cast<int>(account->type));
-		sqlite3_bind_int(statement, 4, account->iconId);
-		sqlite3_bind_int(statement, 5, account->orderId);
-		sqlite3_bind_int(statement, 6, account->currency->id);
-		sqlite3_bind_int(statement, 7, true);
-		sqlite3_bind_text(statement, 8, wxDateTime::Now().FormatISOCombined(' ').ToUTF8(), -1, SQLITE_TRANSIENT);
-
-		if (sqlite3_step(statement) == SQLITE_DONE) {
-			account->id = sqlite3_last_insert_rowid(_db);
-		}
-	}
-
-	sqlite3_finalize(statement);
-}
-
-void DataHelper::UpdateAccount(Account *account)
-{
-	char *sql = "UPDATE accounts SET name = ?, note = ?, type_id = ?, icon_id = ?, order_id = ?, currency_id = ? WHERE id = ?";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_text(statement, 1, account->name->ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(statement, 2, account->note->ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_int(statement, 3, static_cast<int>(account->type));
-		sqlite3_bind_int(statement, 4, account->iconId);
-		sqlite3_bind_int(statement, 5, account->orderId);
-		sqlite3_bind_int(statement, 6, account->currency->id);
-		sqlite3_bind_int(statement, 7, account->id);
-
-		sqlite3_step(statement);
-	}
-
-	sqlite3_finalize(statement);
-}
-
-void DataHelper::DeleteAccount(int id)
-{
-	char *sql = "UPDATE accounts SET active = ? WHERE id = ?";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, false);
-		sqlite3_bind_int(statement, 2, id);
-		sqlite3_step(statement);
-	}
-
-	sqlite3_finalize(statement);
-}
+}*/
 
 float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	float total = 0;

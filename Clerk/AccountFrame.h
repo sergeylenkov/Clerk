@@ -9,7 +9,7 @@ public:
 	AccountFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 	~AccountFrame();
 
-	void SetAccount(std::shared_ptr<Account>);
+	void SetAccount(std::shared_ptr<Account> account);
 
 	std::function<void()> OnClose;
 

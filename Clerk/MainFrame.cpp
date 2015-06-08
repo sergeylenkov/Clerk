@@ -457,8 +457,11 @@ void MainFrame::AddTransaction() {
 
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			transactionFrame->SetAccount(account.get());
+			shared_ptr<Account> account = static_pointer_cast<Account>(item->object);
+			auto transaction = make_shared<Transaction>();
+
+			transactionFrame->SetTransaction(transaction);
+			transactionFrame->SetAccount(account);
 		}
 	}
 
@@ -474,7 +477,7 @@ void MainFrame::EditTransaction() {
 		transactionFrame->Show(true);
 		transactionFrame->CenterOnParent();
 
-		transactionFrame->SetTransaction(transaction.get());
+		transactionFrame->SetTransaction(transaction);
 		transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 	}
 }
@@ -521,7 +524,7 @@ void MainFrame::AddAccount() {
 	account->type = AccountTypes::Deposit;
 	account->iconId = 0;
 	account->orderId = 1000;
-	account->currency = DataHelper::GetInstance().GetCurrency(152);
+	account->currency = make_shared<Currency>(152);
 	
 	accountFrame->SetAccount(account);
 
@@ -554,7 +557,8 @@ void MainFrame::DeleteAccount() {
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			DataHelper::GetInstance().DeleteAccount(account->id);
+			//DataHelper::GetInstance().DeleteAccount(account->id);
+			account->Delete();
 
 			UpdateAccountsTree();
 		}

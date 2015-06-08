@@ -3,64 +3,15 @@
 
 #include <wx/wx.h>
 #include <wx/datetime.h>
-#include <wx/tokenzr.h>
 #include <sqlite3.h>
 #include <vector>
 #include <memory>
 #include <map>
+#include "Account.h"
+#include "Currency.h"
+#include "Transaction.h"
 
 using namespace std;
-
-enum class AccountTypes {
-	Receipt = 0,
-	Deposit = 1,
-	Expens = 2,
-	Debt = 3
-};
-
-class Currency 
-{
-public:
-	int id;
-	shared_ptr<wxString> name;
-	shared_ptr<wxString> shortName;
-
-	Currency::~Currency() {
-	}
-};
-
-class Account
-{
-public:
-	int id;
-	shared_ptr<wxString> name;
-	shared_ptr<wxString> note;
-	AccountTypes type;
-	int iconId;
-	int orderId;
-	shared_ptr<Currency> currency;
-
-	Account::~Account() {
-	}
-};
-
-class Transaction
-{
-public:
-	int id;
-	int from_account_id;
-	int to_account_id;
-	shared_ptr<wxString> to_account_name;
-	shared_ptr<wxString> from_account_name;
-	float from_amount;
-	float to_amount;
-	shared_ptr<wxDateTime> paid_at;
-	shared_ptr<wxString> note;
-	shared_ptr<wxString> tags;
-
-	Transaction::~Transaction() {
-	}
-};
 
 class DataHelper
 {
@@ -79,15 +30,11 @@ public:
 	vector<shared_ptr<Currency>> GetCurrencies();
 	float GetBalance(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
-	Transaction *GetTransaction(int id);
-	void AddTransaction(Transaction *transaction);
-	void UpdateTransaction(Transaction *transaction);
-	void DeleteTransaction(int id);
-	void UpdateTags(Transaction *transaction);
-	shared_ptr<Currency> GetCurrency(int id);
-	void AddAccount(Account *account);
-	void UpdateAccount(Account *account);
-	void DeleteAccount(int id);
+	//Transaction *GetTransaction(int id);
+	//void AddTransaction(Transaction *transaction);
+	//void UpdateTransaction(Transaction *transaction);
+	//void DeleteTransaction(int id);
+	//void UpdateTags(Transaction *transaction);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
 	map<wxString, float> GetExpensesByMonth();

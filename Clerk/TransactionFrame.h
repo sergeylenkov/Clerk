@@ -4,16 +4,18 @@
 #include <functional>
 #include "DataHelper.h"
 
+using namespace std;
+
 class TransactionFrame : public wxFrame
 {
 public:
 	TransactionFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 	~TransactionFrame();
 	
-	void SetAccount(Account *account);
-	void SetTransaction(Transaction *transaction);
+	void SetAccount(shared_ptr<Account> account);
+	void SetTransaction(shared_ptr<Transaction> transaction);
 	
-	std::function<void()> OnClose;
+	function<void()> OnClose;
 
 private:
 	wxStaticText *fromLabel;
@@ -34,10 +36,10 @@ private:
 	wxTextCtrl *toAmountField;
 	float fromValue = 0.0;
 	float toValue = 0.0;
-	vector<std::shared_ptr<Account>> accounts;
-	vector<std::shared_ptr<Account>> fromAccounts;
-	vector<std::shared_ptr<Account>> toAccounts;
-	int transactionId;
+	vector<shared_ptr<Account>> accounts;
+	vector<shared_ptr<Account>> fromAccounts;
+	vector<shared_ptr<Account>> toAccounts;
+	shared_ptr<Transaction> transaction;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

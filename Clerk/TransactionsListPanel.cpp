@@ -174,7 +174,7 @@ void TransactionsListPanel::DeleteTransaction() {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
-		DataHelper::GetInstance().DeleteTransaction(transaction->id);
+		transaction->Delete();
 		Update();
 	}
 }
@@ -185,7 +185,6 @@ void TransactionsListPanel::DublicateTransaction() {
 	if (transaction) {
 		Transaction *copy = new Transaction();
 
-		copy->id = -1;
 		copy->from_account_id = transaction->from_account_id;
 		copy->to_account_id = transaction->to_account_id;
 		copy->from_amount = transaction->from_amount;
@@ -194,7 +193,7 @@ void TransactionsListPanel::DublicateTransaction() {
 		copy->tags = transaction->tags;
 		copy->paid_at = make_shared<wxDateTime>(wxDateTime::Now());
 
-		DataHelper::GetInstance().AddTransaction(copy);
+		copy->Save();
 
 		delete copy;
 

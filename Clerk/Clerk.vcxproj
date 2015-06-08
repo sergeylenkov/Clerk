@@ -69,11 +69,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Account.cpp" />
     <ClCompile Include="AccountFrame.cpp" />
     <ClCompile Include="BarChart.cpp" />
+    <ClCompile Include="Currency.cpp" />
     <ClCompile Include="HomePanel.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PieChart.cpp" />
+    <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="TreeMenuItemData.cpp" />
     <ClCompile Include="Clerk.cpp" />
     <ClCompile Include="DataHelper.cpp" />
@@ -82,12 +85,15 @@
     <ClCompile Include="TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Account.h" />
     <ClInclude Include="AccountFrame.h" />
     <ClInclude Include="BarChart.h" />
+    <ClInclude Include="Currency.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="HomePanel.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PieChart.h" />
+    <ClInclude Include="Transaction.h" />
     <ClInclude Include="TreeMenuItemData.h" />
     <ClInclude Include="Clerk.h" />
     <ClInclude Include="DataHelper.h" />

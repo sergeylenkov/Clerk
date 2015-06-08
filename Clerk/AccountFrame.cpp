@@ -98,11 +98,7 @@ void AccountFrame::OnOK(wxCommandEvent &event) {
 	account->type = static_cast<AccountTypes>(typeList->GetSelection());
 	account->currency = currencies[currencyList->GetSelection()];
 
-	if (account->id != -1) {
-		DataHelper::GetInstance().UpdateAccount(account.get());
-	} else {
-		DataHelper::GetInstance().AddAccount(account.get());
-	}
+	account->Save();
 
 	Close();
 

@@ -130,13 +130,13 @@ void TransactionsListPanel::Update() {
 
 		transactionsList->InsertItem(listItem);
 
-		if (account->id == transaction->from_account_id) {
-			transactionsList->SetItem(i, 0, *transaction->to_account_name);
+		if (account->id == transaction->fromAccountId) {
+			transactionsList->SetItem(i, 0, *transaction->toAccountName);
 			//transactionsList->SetItemTextColour(i, wxColor(255, 0, 0, 1));
 		}
 
-		if (account->id == transaction->to_account_id) {
-			transactionsList->SetItem(i, 0, *transaction->from_account_name);
+		if (account->id == transaction->toAccountId) {
+			transactionsList->SetItem(i, 0, *transaction->fromAccountName);
 			//transactionsList->SetItemTextColour(i, wxColor(0, 0, 0, 1));
 		}
 
@@ -148,16 +148,16 @@ void TransactionsListPanel::Update() {
 		
 		transactionsList->SetItemImage(i, 1);
 		transactionsList->SetItem(i, 1, *transaction->tags);
-		transactionsList->SetItem(i, 2, transaction->paid_at->Format("%B %d"));
+		transactionsList->SetItem(i, 2, transaction->paidAt->Format("%B %d"));
 
-		if (account->id == transaction->from_account_id) {
-			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->from_amount));
+		if (account->id == transaction->fromAccountId) {
+			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
 		}
-		else if (account->id == transaction->to_account_id) {
-			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->to_amount));
+		else if (account->id == transaction->toAccountId) {
+			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
 		}
 		else {
-			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->from_amount));
+			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
 		}
 
 		i++;
@@ -185,13 +185,13 @@ void TransactionsListPanel::DublicateTransaction() {
 	if (transaction) {
 		Transaction *copy = new Transaction();
 
-		copy->from_account_id = transaction->from_account_id;
-		copy->to_account_id = transaction->to_account_id;
-		copy->from_amount = transaction->from_amount;
-		copy->to_amount = transaction->to_amount;
+		copy->fromAccountId = transaction->fromAccountId;
+		copy->toAccountId = transaction->toAccountId;
+		copy->fromAmount = transaction->fromAmount;
+		copy->toAmount = transaction->toAmount;
 		copy->note = transaction->note;
 		copy->tags = transaction->tags;
-		copy->paid_at = make_shared<wxDateTime>(wxDateTime::Now());
+		copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
 		copy->Save();
 
@@ -310,8 +310,6 @@ void TransactionsListPanel::CalculatePeriod() {
 	default:
 		break;
 	}
-
-	
 
 	fromDatePicker->SetValue(fromDate);
 	toDatePicker->SetValue(toDate);

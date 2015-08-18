@@ -99,7 +99,7 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 		for (unsigned int i = 0; i < accounts.size(); i++) {
 			if (account->id == accounts[i]->id) {
 				SelectFromAccount(i);
-				transaction->from_account_id = account->id;
+				transaction->fromAccountId = account->id;
 				break;
 			}
 		}
@@ -109,7 +109,7 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 		for (unsigned int i = 0; i < accounts.size(); i++) {
 			if (account->id == accounts[i]->id) {
 				SelectFromAccount(i);
-				transaction->from_account_id = account->id;
+				transaction->fromAccountId = account->id;
 				break;
 			}
 		}
@@ -119,7 +119,7 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 		for (unsigned int i = 0; i < accounts.size(); i++) {
 			if (account->id == accounts[i]->id) {
 				SelectToAccount(i);
-				transaction->to_account_id = account->id;
+				transaction->toAccountId = account->id;
 				break;
 			}
 		}
@@ -129,7 +129,7 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 		for (unsigned int i = 0; i < accounts.size(); i++) {
 			if (account->id == accounts[i]->id) {
 				SelectToAccount(i);
-				transaction->to_account_id = account->id;
+				transaction->toAccountId = account->id;
 				break;
 			}
 		}
@@ -139,21 +139,21 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
 	this->transaction = transaction;
 
-	fromAmountField->SetValue(wxString::Format("%.2f", transaction->from_amount));
-	toAmountField->SetValue(wxString::Format("%.2f", transaction->to_amount));
+	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
+	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
 	tagsField->SetValue(*transaction->tags);
 	noteField->SetValue(*transaction->note);
-	datePicker->SetValue(*transaction->paid_at);
+	datePicker->SetValue(*transaction->paidAt);
 
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->from_account_id == fromAccounts[i]->id) {
+		if (transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
 			break;
 		}
 	}
 
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (transaction->to_account_id == toAccounts[i]->id) {
+		if (transaction->toAccountId == toAccounts[i]->id) {
 			SelectToAccount(i);
 			break;
 		}
@@ -169,16 +169,13 @@ void TransactionFrame::OnOK(wxCommandEvent &event) {
 	toAmountField->GetValue().ToDouble(&val);
 	toValue = val;
 
-	//Transaction *transaction = new Transaction();
-
-	//transaction->id = transactionId;
-	transaction->from_account_id = fromAccounts[fromList->GetSelection()]->id;
-	transaction->to_account_id = toAccounts[toList->GetSelection()]->id;
-	transaction->from_amount = fromValue;
-	transaction->to_amount = toValue;
+	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
+	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
+	transaction->fromAmount = fromValue;
+	transaction->toAmount = toValue;
 	transaction->note = make_shared<wxString>(noteField->GetValue());
 	transaction->tags = make_shared<wxString>(tagsField->GetValue());
-	transaction->paid_at = make_shared<wxDateTime>(datePicker->GetValue());
+	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());
 
 	transaction->Save();
 

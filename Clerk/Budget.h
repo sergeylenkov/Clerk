@@ -1,5 +1,5 @@
-#ifndef Account_h
-#define Account_h
+#ifndef Budget_h
+#define Budget_h
 
 #include <wx/wx.h>
 #include <memory>
@@ -8,28 +8,32 @@
 
 using namespace std;
 
-enum class AccountTypes {
+enum class BudgetTypes {
 	Receipt = 0,
 	Deposit = 1,
-	Expens = 2,
-	Debt = 3,
-	Credit = 4,
+	Expens = 2
 };
 
-class Account : public Model
+enum class BudgetPeriods {
+	Week = 0,
+	Month = 1,
+	Year = 2,
+	Custom = 3
+};
+
+class Budget : public Model
 {
 public:
 	int id;
 	shared_ptr<wxString> name;
 	shared_ptr<wxString> note;
-	AccountTypes type;
-	int iconId;
+	BudgetTypes type;
+	BudgetPeriods period;
 	int orderId;
 	shared_ptr<Currency> currency;
-	float creditLimit;
 
-	Account();
-	Account(int id);
+	Budget();
+	Budget(int id);
 	void Load();
 	void Save();
 	void Delete();

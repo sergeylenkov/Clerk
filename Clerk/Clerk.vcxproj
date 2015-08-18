@@ -72,6 +72,7 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="AccountFrame.cpp" />
     <ClCompile Include="BarChart.cpp" />
+    <ClCompile Include="Budget.cpp" />
     <ClCompile Include="Currency.cpp" />
     <ClCompile Include="HomePanel.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -88,6 +89,7 @@
     <ClInclude Include="Account.h" />
     <ClInclude Include="AccountFrame.h" />
     <ClInclude Include="BarChart.h" />
+    <ClInclude Include="Budget.h" />
     <ClInclude Include="Currency.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="HomePanel.h" />

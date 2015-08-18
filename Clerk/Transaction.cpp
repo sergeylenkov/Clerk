@@ -3,13 +3,13 @@
 Transaction::Transaction()
 {
 	this->id = -1;
-	this->from_account_id = -1;
-	this->to_account_id = -1;
-	this->from_amount = 0;
-	this->to_amount = 0;
+	this->fromAccountId = -1;
+	this->toAccountId = -1;
+	this->fromAmount = 0;
+	this->toAmount = 0;
 	this->note = make_shared<wxString>();
 	this->tags = make_shared<wxString>();
-	this->paid_at = make_shared<wxDateTime>(wxDateTime::Now());
+	this->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 }
 
 Transaction::Transaction(int id) : Transaction()
@@ -29,19 +29,19 @@ void Transaction::Load()
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
-			this->from_amount = sqlite3_column_double(statement, 1);
-			this->to_amount = sqlite3_column_double(statement, 2);
+			this->fromAmount = sqlite3_column_double(statement, 1);
+			this->toAmount = sqlite3_column_double(statement, 2);
 
 			auto date = make_shared<wxDateTime>();
 			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 3)));
 
-			this->paid_at = date;
+			this->paidAt = date;
 
-			this->from_account_name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 4)));
-			this->to_account_name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
+			this->fromAccountName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 4)));
+			this->toAccountName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
 
-			this->from_account_id = sqlite3_column_int(statement, 6);
-			this->to_account_id = sqlite3_column_int(statement, 7);
+			this->fromAccountId = sqlite3_column_int(statement, 6);
+			this->toAccountId = sqlite3_column_int(statement, 7);
 			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 8)));
 
 			wxString tags;
@@ -75,11 +75,11 @@ void Transaction::Save()
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 			sqlite3_bind_int(statement, 7, this->id);
-			sqlite3_bind_int(statement, 1, this->from_account_id);
-			sqlite3_bind_int(statement, 2, this->to_account_id);
-			sqlite3_bind_double(statement, 3, this->from_amount);
-			sqlite3_bind_double(statement, 4, this->to_amount);
-			sqlite3_bind_text(statement, 5, this->paid_at->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_int(statement, 1, this->fromAccountId);
+			sqlite3_bind_int(statement, 2, this->toAccountId);
+			sqlite3_bind_double(statement, 3, this->fromAmount);
+			sqlite3_bind_double(statement, 4, this->toAmount);
+			sqlite3_bind_text(statement, 5, this->paidAt->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 6, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_step(statement);
@@ -93,12 +93,12 @@ void Transaction::Save()
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, this->from_account_id);
-			sqlite3_bind_int(statement, 2, this->to_account_id);
-			sqlite3_bind_double(statement, 3, this->from_amount);
-			sqlite3_bind_double(statement, 4, this->to_amount);
+			sqlite3_bind_int(statement, 1, this->fromAccountId);
+			sqlite3_bind_int(statement, 2, this->toAccountId);
+			sqlite3_bind_double(statement, 3, this->fromAmount);
+			sqlite3_bind_double(statement, 4, this->toAmount);
 			sqlite3_bind_int(statement, 5, false);
-			sqlite3_bind_text(statement, 6, this->paid_at->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 6, this->paidAt->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 7, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 8, wxDateTime::Now().FormatISOCombined(' ').ToUTF8(), -1, SQLITE_TRANSIENT);
 

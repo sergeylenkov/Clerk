@@ -12,10 +12,6 @@
 #include "HomePanel.h"
 #include "AccountFrame.h"
 
-enum {
-
-};
-
 class MainFrame : public wxFrame
 {
 public:

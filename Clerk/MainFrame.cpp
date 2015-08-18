@@ -368,7 +368,11 @@ void MainFrame::UpdateTransactionList(Account *account)
 		amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
 	}
 
-	SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(account->name->c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str())));
+	if (account->creditLimit > 0.0) {
+		SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(account->name->c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
+	} else {
+		SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(account->name->c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str())));
+	}
 }
 
 void MainFrame::UpdateStatus() {
@@ -557,7 +561,6 @@ void MainFrame::DeleteAccount() {
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			//DataHelper::GetInstance().DeleteAccount(account->id);
 			account->Delete();
 
 			UpdateAccountsTree();

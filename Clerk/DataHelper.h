@@ -30,11 +30,6 @@ public:
 	vector<shared_ptr<Currency>> GetCurrencies();
 	float GetBalance(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
-	//Transaction *GetTransaction(int id);
-	//void AddTransaction(Transaction *transaction);
-	//void UpdateTransaction(Transaction *transaction);
-	//void DeleteTransaction(int id);
-	//void UpdateTags(Transaction *transaction);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
 	map<wxString, float> GetExpensesByMonth();

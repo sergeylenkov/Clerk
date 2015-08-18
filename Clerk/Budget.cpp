@@ -1,26 +1,25 @@
-#include "Account.h"
+#include "Budget.h"
 
-Account::Account()
+Budget::Budget()
 {
 	this->id = -1;
 	this->name = make_shared<wxString>();
 	this->note = make_shared<wxString>();
-	this->type = AccountTypes::Deposit;
-	this->iconId = 0;
+	this->period = BudgetPeriods::Month;
+	this->type = BudgetTypes::Deposit;
 	this->orderId = 0;
 	this->currency = make_shared<Currency>(152);
-	this->creditLimit = 0;
 }
 
-Account::Account(int id) : Account()
+Budget::Budget(int id) : Budget()
 {
 	this->id = id;
 	Load();
 }
 
-void Account::Load()
+void Budget::Load()
 {
-	char *sql = "SELECT a.id, a.name, a.note, a.icon_id, a.type_id, a.order_id, a.currency_id, a.credit_limit FROM accounts a WHERE a.id = ?";
+	char *sql = "SELECT b.id, b.name, b.note, b.period, b.type, b.order, b.currency_id FROM budgets b WHERE b.id = ?";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -30,28 +29,27 @@ void Account::Load()
 			this->id = sqlite3_column_int(statement, 0);
 			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
 			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
-			this->iconId = sqlite3_column_int(statement, 3);
-			this->type = static_cast<AccountTypes>(sqlite3_column_int(statement, 4));
+			this->period = static_cast<BudgetPeriods>(sqlite3_column_int(statement, 3));
+			this->type = static_cast<BudgetTypes>(sqlite3_column_int(statement, 4));
 			this->orderId = sqlite3_column_int(statement, 5);
 			this->currency = make_shared<Currency>(sqlite3_column_int(statement, 6));
-			this->creditLimit = sqlite3_column_double(statement, 7);
 		}
 	}
-	
+
 	sqlite3_finalize(statement);
 }
 
-void Account::Save()
+void Budget::Save()
 {
 	if (this->id != -1) {
-		char *sql = "UPDATE accounts SET name = ?, note = ?, type_id = ?, icon_id = ?, order_id = ?, currency_id = ? WHERE id = ?";
+		char *sql = "UPDATE budgets SET name = ?, note = ?, period = ?, type = ?, order = ?, currency_id = ? WHERE id = ?";
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 			sqlite3_bind_text(statement, 1, this->name->ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 3, static_cast<int>(this->type));
-			sqlite3_bind_int(statement, 4, this->iconId);
+			sqlite3_bind_int(statement, 3, static_cast<int>(this->period));
+			sqlite3_bind_int(statement, 4, static_cast<int>(this->type));
 			sqlite3_bind_int(statement, 5, this->orderId);
 			sqlite3_bind_int(statement, 6, this->currency->id);
 			sqlite3_bind_int(statement, 7, this->id);
@@ -60,15 +58,16 @@ void Account::Save()
 		}
 
 		sqlite3_finalize(statement);
-	} else {
-		char *sql = "INSERT INTO accounts (name, note, type_id, icon_id, order_id, currency_id, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+	}
+	else {
+		char *sql = "INSERT INTO budgets (name, note, period, type, order, currency_id, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 			sqlite3_bind_text(statement, 1, this->name->ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 2, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 3, static_cast<int>(this->type));
-			sqlite3_bind_int(statement, 4, this->iconId);
+			sqlite3_bind_int(statement, 3, static_cast<int>(this->period));
+			sqlite3_bind_int(statement, 4, static_cast<int>(this->type));
 			sqlite3_bind_int(statement, 5, this->orderId);
 			sqlite3_bind_int(statement, 6, this->currency->id);
 			sqlite3_bind_int(statement, 7, true);
@@ -83,7 +82,7 @@ void Account::Save()
 	}
 }
 
-void Account::Delete()
+void Budget::Delete()
 {
 	char *sql = "UPDATE accounts SET active = ? WHERE id = ?";
 	sqlite3_stmt *statement;

@@ -11,20 +11,19 @@ using namespace std;
 class Transaction : public Model
 {
 public:
-	Transaction();
-	Transaction(int id);
-
 	int id;
-	int from_account_id;
-	int to_account_id;
-	shared_ptr<wxString> to_account_name;
-	shared_ptr<wxString> from_account_name;
-	float from_amount;
-	float to_amount;
-	shared_ptr<wxDateTime> paid_at;
+	int fromAccountId;
+	int toAccountId;
+	shared_ptr<wxString> toAccountName;
+	shared_ptr<wxString> fromAccountName;
+	float fromAmount;
+	float toAmount;
+	shared_ptr<wxDateTime> paidAt;
 	shared_ptr<wxString> note;
 	shared_ptr<wxString> tags;
 
+	Transaction();
+	Transaction(int id);
 	void Load();
 	void Save();
 	void Delete();

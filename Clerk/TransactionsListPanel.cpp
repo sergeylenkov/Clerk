@@ -281,7 +281,7 @@ void TransactionsListPanel::CalculatePeriod() {
 		break;
 
 	case 1:
-		fromDate.SetToWeekDay(wxDateTime::WeekDay::Mon);
+		fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 		toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
 		break;
 

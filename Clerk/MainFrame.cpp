@@ -6,6 +6,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxFileConfig *config = new wxFileConfig("", "", "C:\\Temp\\config.txt", "", wxCONFIG_USE_LOCAL_FILE);
 
 	this->SetSize(wxSize(config->ReadLong("WindowWidth", 1000), config->ReadLong("WindowHeight", 800)));
+	selectedAccountId = config->ReadLong("SelectedAccount", -1);
 
 	delete config;
 
@@ -225,14 +226,20 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	SetMenuBar(menuBar);
 
-	wxSplitterWindow *splittermain = new wxSplitterWindow(this, wxID_ANY);
+	wxSplitterWindow *splittermain = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splittermain->SetSashGravity(0.5);
 	splittermain->SetMinimumPaneSize(300);
 
-	treeMenu = new wxTreeCtrl(splittermain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS);
+	wxPanel *panel4 = new wxPanel(splittermain, wxID_ANY);
+	wxBoxSizer *boxSizer4 = new wxBoxSizer(wxVERTICAL);
+
+	treeMenu = new wxTreeCtrl(panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS);
 
 	treeMenu->AssignImageList(imageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
+
+	boxSizer4->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
+	panel4->SetSizer(boxSizer4);
 
 	CreateStatusBar();
 	SetStatusText("");
@@ -260,7 +267,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	panel->SetSizer(vbox);
 
-	splittermain->SplitVertically(treeMenu, panel, 1);
+	splittermain->SplitVertically(panel4, panel, 1);
 
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);
@@ -278,7 +285,7 @@ MainFrame::~MainFrame()
 {
 	wxFileConfig *config = new wxFileConfig("", "", "C:\\Temp\\config.txt", "", wxCONFIG_USE_LOCAL_FILE);
 	
-	config->Write("SelectedAccount", 43);
+	config->Write("SelectedAccount", selectedAccountId);
 	config->Write("WindowWidth", this->GetSize().GetWidth());
 	config->Write("WindowHeight", this->GetSize().GetHeight());
 
@@ -318,6 +325,10 @@ void MainFrame::UpdateAccountsTree()
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 		accounts.push_back(account);
+
+		if (account->id == selectedAccountId) {
+			selectedItem = itemId;
+		}
 	}
 
 	child = treeMenu->AppendItem(accountsItem, "Receipts", 18, 18);
@@ -330,8 +341,12 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 		accounts.push_back(account);
+
+		if (account->id == selectedAccountId) {
+			selectedItem = itemId;
+		}
 	}
 
 	child = treeMenu->AppendItem(accountsItem, "Expenes", 19, 19);
@@ -344,8 +359,12 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 		accounts.push_back(account);
+
+		if (account->id == selectedAccountId) {
+			selectedItem = itemId;
+		}
 	}
 
 	treeMenu->ExpandAll();
@@ -420,7 +439,7 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 	wxTreeItemId itemId = event.GetItem();
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
-	if (item != NULL) {
+	if (item != NULL) {		
 		vbox->Detach(panel2);
 		vbox->Detach(panel3);
 
@@ -432,6 +451,8 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
 			UpdateTransactionList(account.get());
+
+			selectedAccountId = account->id;
 		} else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);
 

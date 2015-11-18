@@ -29,6 +29,7 @@ private:
 	wxPanel *panel2;
 	wxPanel *panel3;
 	wxBoxSizer *vbox;
+	int selectedAccountId;
 
 	void UpdateAccountsTree();
 	void UpdateTransactionList(Account *account);

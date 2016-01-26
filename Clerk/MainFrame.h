@@ -3,6 +3,7 @@
 #include <wx/splitter.h>
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
+#include <wx/dataview.h>
 #include <memory>
 #include "DataHelper.h"
 #include "Defines.h"

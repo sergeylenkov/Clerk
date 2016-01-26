@@ -1,7 +1,9 @@
 #include "TransactionsListPanel.h"
+#include <algorithm>
+#include <string> 
 
 TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
 
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
@@ -33,12 +35,17 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
-	topsizer->Add(st3, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(periodList, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(st1, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(fromDatePicker, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(st2, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(toDatePicker, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 0);
+	searchField = new wxTextCtrl(this, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20));
+
+	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
+
+	topsizer->Add(st3, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(periodList, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(st1, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(fromDatePicker, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(st2, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(toDatePicker, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
+	topsizer->Add(searchField, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
 
 	sizer->Add(topsizer, 0, wxTOP | wxBOTTOM, 10);
 	sizer->Add(transactionsList, 1, wxEXPAND);
@@ -47,12 +54,14 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	this->Layout();
 
 	CalculatePeriod();
+	balance = 0.0;
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
 	delete periodList;
 	delete fromDatePicker;
 	delete toDatePicker;
+	delete searchField;
 }
 
 void TransactionsListPanel::SetAccount(Account *account) {
@@ -118,11 +127,19 @@ void TransactionsListPanel::Update() {
 
 	int i = 0;
 	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
-	
-	transactions = DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+	balance = 0;
 
-	for each (auto transaction in transactions)
+	for each (auto transaction in DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
 	{
+		if (searchField->GetValue().Length() > 0) {
+			wxString search = searchField->GetValue().Lower();
+			wxString tags = transaction->tags->Lower();
+			
+			if (tags.Find(search) == wxNOT_FOUND) {
+				continue;
+			}
+		}
+
 		wxListItem listItem;
 
 		listItem.SetId(i);
@@ -161,6 +178,9 @@ void TransactionsListPanel::Update() {
 		}
 
 		i++;
+
+		balance = balance + transaction->toAmount;
+		transactions.push_back(transaction);
 	}
 }
 
@@ -256,6 +276,12 @@ void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
 	}
 }
 
+void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
+	if (OnPeriodChanged) {
+		OnPeriodChanged();
+	}
+}
+
 wxDateTime TransactionsListPanel::GetFromDate() {
 	return fromDatePicker->GetValue();
 }
@@ -313,4 +339,8 @@ void TransactionsListPanel::CalculatePeriod() {
 
 	fromDatePicker->SetValue(fromDate);
 	toDatePicker->SetValue(toDate);
+}
+
+float TransactionsListPanel::GetBalance() {
+	return balance;
 }

@@ -230,10 +230,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	splittermain->SetSashGravity(0.5);
 	splittermain->SetMinimumPaneSize(300);
 
-	wxPanel *panel4 = new wxPanel(splittermain, wxID_ANY);
+	wxPanel *panel4 = new wxPanel(splittermain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+	panel4->SetBackgroundColour(*wxWHITE);
 	wxBoxSizer *boxSizer4 = new wxBoxSizer(wxVERTICAL);
 
-	treeMenu = new wxTreeCtrl(panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS);
+	treeMenu = new wxTreeCtrl(panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
 
 	treeMenu->AssignImageList(imageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
@@ -252,6 +253,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	transactionList = new TransactionsListPanel(panel2, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
+	//transactionList->OnSearchChanged = std::bind(&MainFrame::UpdateStatus, this);
 
 	homePanel = new HomePanel(panel3, wxID_ANY);
 
@@ -384,6 +386,8 @@ void MainFrame::UpdateTransactionList(Account *account)
 	if (account->type == AccountTypes::Deposit) {
 		amount = DataHelper::GetInstance().GetBalance(account);
 	} else if (account->type == AccountTypes::Expens) {
+		amount = transactionList->GetBalance();
+	} else {
 		amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
 	}
 

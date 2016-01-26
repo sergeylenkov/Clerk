@@ -153,7 +153,7 @@ void Transaction::UpdateTags()
 
 	while (tokenizer.HasMoreTokens())
 	{
-		wxString token = tokenizer.GetNextToken().Trim();
+		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
 		int tag_id = -1;
 
 		sql = "SELECT id FROM tags WHERE name = ?";

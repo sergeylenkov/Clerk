@@ -14,197 +14,16 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	imageList = new wxImageList(16, 16, true);
 
-	if (image.LoadFile(wxT("Resources\\1.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
+	for (int i = 1; i <= 32; i++) {
+		wxString path = wxString::Format("Resources\\%d.png", i);
+		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
+		{
+			wxBitmap *bitmap = new wxBitmap(image);
+			imageList->Add(*bitmap);
 
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\2.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\3.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\4.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\5.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\6.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\7.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\8.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\14.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\15.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\16.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\17.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\18.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\19.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\20.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\21.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\22.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\23.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\24.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\25.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\26.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\27.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\28.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
-
-	if (image.LoadFile(wxT("Resources\\29.png"), wxBITMAP_TYPE_PNG))
-	{
-		wxBitmap *bitmap = new wxBitmap(image);
-		imageList->Add(*bitmap);
-
-		delete bitmap;
-	}
+			delete bitmap;
+		}
+	}	
 
 	wxMenu *menuFile = new wxMenu();
 
@@ -231,10 +50,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	splittermain->SetMinimumPaneSize(300);
 
 	wxPanel *panel4 = new wxPanel(splittermain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-	panel4->SetBackgroundColour(*wxWHITE);
+	panel4->SetBackgroundColour(wxColour(245, 245, 245, 1));
+
 	wxBoxSizer *boxSizer4 = new wxBoxSizer(wxVERTICAL);
 
 	treeMenu = new wxTreeCtrl(panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
+	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));
+	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));
 
 	treeMenu->AssignImageList(imageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
@@ -304,22 +126,24 @@ void MainFrame::UpdateAccountsTree()
 	wxTreeItemId rootItem = treeMenu->GetRootItem();
 
 	accounts.clear();
+	reports.clear();
 
 	treeMenu->DeleteChildren(rootItem);
 
 	TreeMenuItemData *itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuHome;
 
-	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 14, 14, itemData);
-	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 20, 20);
-	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 16, 16);
+	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 19, 19, itemData);
+	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 30, 30);
+	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 29, 29);
+	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 29, 29);
 
-	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 17, 17);
+	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 26, 26);
 	wxTreeItemId selectedItem = homeItem;
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
-		int icon = 21;
+		int icon = 26;
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -333,11 +157,11 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Receipts", 18, 18);
+	child = treeMenu->AppendItem(accountsItem, "Receipts", 27, 27);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
-		int icon = 22;
+		int icon = 27;
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -351,11 +175,11 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Expenes", 19, 19);
+	child = treeMenu->AppendItem(accountsItem, "Expenes", 28, 28);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
-		int icon = 23;
+		int icon = 28;
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -369,7 +193,19 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	treeMenu->ExpandAll();
+	auto report = make_shared<Report>(-1);
+	report->name = make_shared<wxString>("Expenses");
+
+	reports.push_back(report);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuReport;	
+
+	itemData->object = report;
+
+	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 29, 29, itemData);
+
+	treeMenu->Expand(accountsItem);
 
 	if (selectedItem) {
 		treeMenu->SelectItem(selectedItem);

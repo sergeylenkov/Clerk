@@ -77,6 +77,7 @@
     <ClCompile Include="HomePanel.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PieChart.cpp" />
+    <ClCompile Include="Report.cpp" />
     <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="TreeMenuItemData.cpp" />
     <ClCompile Include="Clerk.cpp" />
@@ -95,6 +96,7 @@
     <ClInclude Include="HomePanel.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PieChart.h" />
+    <ClInclude Include="Report.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="TreeMenuItemData.h" />
     <ClInclude Include="Clerk.h" />

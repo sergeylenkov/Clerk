@@ -10,6 +10,7 @@
 #include "Account.h"
 #include "Currency.h"
 #include "Transaction.h"
+#include "Report.h"
 
 using namespace std;
 

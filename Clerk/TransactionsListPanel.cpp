@@ -6,10 +6,19 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
 
-	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *topsizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *st3 = new wxStaticText(this, wxID_ANY, wxT("Period:"));
+	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
+
+	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
+	
+
+	//wxPanel *filterPanel = new wxPanel(this, wxID_ANY);
+	//wxPanel *searchPanel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(320, 20));
+
+	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
 	wxArrayString *values = new wxArrayString();
 
@@ -20,37 +29,47 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	values->Add(wxT("This Year"));
 	values->Add(wxT("Custom"));
 
-	periodList = new wxComboBox(this, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
+	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
 	periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
 
-	wxStaticText *st1 = new wxStaticText(this, wxID_ANY, wxT("From:"));
-	fromDatePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
-	wxStaticText *st2 = new wxStaticText(this, wxID_ANY, wxT("To:"));
-	toDatePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
+	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
+	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
+	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
+	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
 	periodList->Select(3);
 
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
-	searchField = new wxTextCtrl(this, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20));
+	periodSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
+	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxEXPAND, 5);
 
-	topsizer->Add(st3, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(periodList, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(st1, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(fromDatePicker, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(st2, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(toDatePicker, 0, wxLEFT | wxALIGN_CENTER_VERTICAL, 10);
-	topsizer->Add(searchField, 0, wxRIGHT | wxALIGN_CENTER_VERTICAL, 10);
+	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	sizer->Add(topsizer, 0, wxTOP | wxBOTTOM, 10);
-	sizer->Add(transactionsList, 1, wxEXPAND);
+	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
+	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20));
+	
+	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL, 5);
 
-	this->SetSizer(sizer);
+	filterSizer->Add(searchSizer, 0, wxALIGN_RIGHT | wxALL | wxEXPAND, 5);
+
+	filterPanel->SetSizer(filterSizer);
+	filterPanel->Layout();
+
+	mainSizer->Add(filterPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
+	mainSizer->Add(transactionsList, 1, wxALL | wxEXPAND, 0);
+
+	this->SetSizer(mainSizer);
 	this->Layout();
 
 	CalculatePeriod();

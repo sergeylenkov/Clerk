@@ -27,6 +27,7 @@ private:
 	HomePanel *homePanel;
 	AccountFrame *accountFrame;
 	vector<std::shared_ptr<Account>> accounts;
+	vector<std::shared_ptr<Report>> reports;
 	wxPanel *panel2;
 	wxPanel *panel3;
 	wxBoxSizer *vbox;

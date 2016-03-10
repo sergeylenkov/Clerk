@@ -16,7 +16,8 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 	typeList->AppendString("Deposit");
 	typeList->AppendString("Expens");
 	typeList->AppendString("Debt");
-	
+	typeList->AppendString("Credit");
+
 	typeList->SetSelection(0);
 
 	currencyLabel = new wxStaticText(panel, wxID_ANY, "Currency:", wxPoint(10, 90), wxSize(60, 20));
@@ -93,12 +94,30 @@ void AccountFrame::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
+	bool isNew = false;
+
+	if (account->id == -1) {
+		isNew = true;
+	}
+
 	account->name = make_shared<wxString>(nameField->GetValue());
 	account->note = make_shared<wxString>(noteField->GetValue());
 	account->type = static_cast<AccountTypes>(typeList->GetSelection());
 	account->currency = currencies[currencyList->GetSelection()];
 
 	account->Save();
+
+	if ((account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) && isNew) {
+		Transaction *transaction = new Transaction();
+
+		transaction->fromAccountId = account->id;
+		transaction->toAccountId = -1;
+		transaction->fromAmount = amountValue;
+		transaction->toAmount = amountValue;
+		transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+
+		transaction->Save();
+	}
 
 	Close();
 

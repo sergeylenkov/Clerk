@@ -29,6 +29,11 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 		accounts.push_back(account);
 	}
 
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
+	{
+		accounts.push_back(account);
+	}
+
 	fromList = new wxComboBox(panel, wxID_ANY, "", wxPoint(100, 10), wxSize(200, 20), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	toList = new wxComboBox(panel, wxID_ANY, "", wxPoint(100, 40), wxSize(200, 20), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	
@@ -134,6 +139,16 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 			}
 		}
 	}
+
+	if (account->type == AccountTypes::Credit) {
+		for (unsigned int i = 0; i < accounts.size(); i++) {
+			if (account->id == accounts[i]->id) {
+				SelectToAccount(i);
+				transaction->toAccountId = account->id;
+				break;
+			}
+		}
+	}
 }
 
 void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
@@ -230,7 +245,7 @@ void TransactionFrame::SelectFromAccount(int id) {
 			toAccounts.push_back(toAccount);
 		}
 
-		if (account->type == AccountTypes::Deposit && (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens)) {
+		if (account->type == AccountTypes::Deposit && (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Credit)) {
 			toList->AppendString(*toAccount->name);
 			toAccounts.push_back(toAccount);
 		}

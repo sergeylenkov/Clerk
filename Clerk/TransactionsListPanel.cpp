@@ -11,12 +11,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
-
 	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
-	
-
-	//wxPanel *filterPanel = new wxPanel(this, wxID_ANY);
-	//wxPanel *searchPanel = new wxPanel(this, wxID_ANY, wxPoint(0, 0), wxSize(320, 20));
 
 	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
@@ -57,7 +52,8 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 
 	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
 	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20));
-	
+	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
+
 	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL, 5);
 

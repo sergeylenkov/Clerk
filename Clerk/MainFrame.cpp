@@ -193,6 +193,42 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
+	child = treeMenu->AppendItem(accountsItem, "Debt", 28, 28);
+
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
+	{
+		int icon = 28;
+
+		TreeMenuItemData *itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->object = account;
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		accounts.push_back(account);
+
+		if (account->id == selectedAccountId) {
+			selectedItem = itemId;
+		}
+	}
+
+	child = treeMenu->AppendItem(accountsItem, "Credits", 28, 28);
+
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
+	{
+		int icon = 28;
+
+		TreeMenuItemData *itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->object = account;
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		accounts.push_back(account);
+
+		if (account->id == selectedAccountId) {
+			selectedItem = itemId;
+		}
+	}
+
 	auto report = make_shared<Report>(-1);
 	report->name = make_shared<wxString>("Expenses");
 
@@ -219,7 +255,7 @@ void MainFrame::UpdateTransactionList(Account *account)
 
 	float amount = 0;
 
-	if (account->type == AccountTypes::Deposit) {
+	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Credit) {
 		amount = DataHelper::GetInstance().GetBalance(account);
 	} else if (account->type == AccountTypes::Expens) {
 		amount = transactionList->GetBalance();

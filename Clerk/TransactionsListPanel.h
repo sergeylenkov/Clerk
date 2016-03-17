@@ -4,6 +4,7 @@
 #include <wx/dateevt.h>
 #include <functional>
 #include "DataHelper.h"
+#include "TreeMenuItemData.h"
 
 enum {
 	ID_AddTransaction = 10,
@@ -19,6 +20,7 @@ public:
 	~TransactionsListPanel();
 
 	void SetAccount(Account *account);
+	void SetType(TreeMenuItemTypes type);
 	shared_ptr<Transaction> GetTransaction();
 	void Update();
 	void EditTransaction();
@@ -38,6 +40,7 @@ private:
 	wxDatePickerCtrl *toDatePicker;
 	wxTextCtrl *searchField;
 	Account *account;
+	TreeMenuItemTypes type;
 	vector<shared_ptr<Transaction>> transactions;
 	float balance;
 

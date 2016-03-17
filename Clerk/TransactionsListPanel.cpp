@@ -83,6 +83,10 @@ void TransactionsListPanel::SetAccount(Account *account) {
 	this->account = account;
 }
 
+void TransactionsListPanel::SetType(TreeMenuItemTypes type) {
+	this->type = type;
+}
+
 shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 	long itemIndex = -1;
 
@@ -143,18 +147,51 @@ void TransactionsListPanel::Update() {
 	int i = 0;
 	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
 	balance = 0;
+	
+	if (this->type == TreeMenuItemTypes::MenuAccount) {
+		for each (auto transaction in DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		{
+			if (searchField->GetValue().Length() > 0) {
+				wxString search = searchField->GetValue().Lower();
+				wxString tags = transaction->tags->Lower();
+				wxString name;
 
-	for each (auto transaction in DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
-	{
-		if (searchField->GetValue().Length() > 0) {
-			wxString search = searchField->GetValue().Lower();
-			wxString tags = transaction->tags->Lower();
-			
-			if (tags.Find(search) == wxNOT_FOUND) {
-				continue;
+				if (account->id == transaction->fromAccountId) {
+					name = *transaction->toAccountName;
+				}
+
+				if (account->id == transaction->toAccountId) {
+					name = *transaction->fromAccountName;
+				}
+
+				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
+					continue;
+				}
 			}
-		}
 
+			balance = balance + transaction->toAmount;
+			transactions.push_back(transaction);
+		}
+	} else if (this->type == TreeMenuItemTypes::MenuExpenses) {
+		for each (auto transaction in DataHelper::GetInstance().GetExpensesTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		{
+			if (searchField->GetValue().Length() > 0) {
+				wxString search = searchField->GetValue().Lower();
+				wxString tags = transaction->tags->Lower();
+				wxString name = *transaction->toAccountName;
+
+				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
+					continue;
+				}
+			}
+
+			balance = balance + transaction->toAmount;
+			transactions.push_back(transaction);
+		}
+	}
+
+	for each (auto transaction in transactions)
+	{
 		wxListItem listItem;
 
 		listItem.SetId(i);
@@ -162,14 +199,17 @@ void TransactionsListPanel::Update() {
 
 		transactionsList->InsertItem(listItem);
 
-		if (account->id == transaction->fromAccountId) {
-			transactionsList->SetItem(i, 0, *transaction->toAccountName);
-			//transactionsList->SetItemTextColour(i, wxColor(255, 0, 0, 1));
-		}
+		if (this->type == TreeMenuItemTypes::MenuAccount) {
+			if (account->id == transaction->fromAccountId) {
+				transactionsList->SetItem(i, 0, *transaction->toAccountName);
+			}
 
-		if (account->id == transaction->toAccountId) {
-			transactionsList->SetItem(i, 0, *transaction->fromAccountName);
-			//transactionsList->SetItemTextColour(i, wxColor(0, 0, 0, 1));
+			if (account->id == transaction->toAccountId) {
+				transactionsList->SetItem(i, 0, *transaction->fromAccountName);
+			}
+		}
+		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
+			transactionsList->SetItem(i, 0, *transaction->toAccountName);
 		}
 
 		if (i % 2 == 0) {
@@ -182,20 +222,22 @@ void TransactionsListPanel::Update() {
 		transactionsList->SetItem(i, 1, *transaction->tags);
 		transactionsList->SetItem(i, 2, transaction->paidAt->Format("%B %d"));
 
-		if (account->id == transaction->fromAccountId) {
-			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
+		if (this->type == TreeMenuItemTypes::MenuAccount) {
+			if (account->id == transaction->fromAccountId) {
+				transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
+			}
+			else if (account->id == transaction->toAccountId) {
+				transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
+			}
+			else {
+				transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
+			}
 		}
-		else if (account->id == transaction->toAccountId) {
+		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
 			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
-		}
-		else {
-			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
 		}
 
 		i++;
-
-		balance = balance + transaction->toAmount;
-		transactions.push_back(transaction);
 	}
 }
 

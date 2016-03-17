@@ -34,7 +34,7 @@ private:
 	int selectedAccountId;
 
 	void UpdateAccountsTree();
-	void UpdateTransactionList(Account *account);
+	void UpdateTransactionList(TreeMenuItemTypes type, Account *account);
 	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);

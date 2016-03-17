@@ -175,7 +175,10 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Expenes", 28, 28);
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuExpenses;
+
+	child = treeMenu->AppendItem(accountsItem, "Expenes", 28, 28, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
@@ -248,26 +251,39 @@ void MainFrame::UpdateAccountsTree()
 	}
 }
 
-void MainFrame::UpdateTransactionList(Account *account) 
+void MainFrame::UpdateTransactionList(TreeMenuItemTypes type, Account *account) 
 {
-	transactionList->SetAccount(account);
-	transactionList->Update();
+	if (type == TreeMenuItemTypes::MenuAccount) {
+		transactionList->SetType(type);
+		transactionList->SetAccount(account);
+		transactionList->Update();
 
-	float amount = 0;
+		float amount = 0;
 
-	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Credit) {
-		amount = DataHelper::GetInstance().GetBalance(account);
-	} else if (account->type == AccountTypes::Expens) {
-		amount = transactionList->GetBalance();
-	} else {
-		amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
+		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Credit) {
+			amount = DataHelper::GetInstance().GetBalance(account);
+		}
+		else if (account->type == AccountTypes::Expens) {
+			amount = transactionList->GetBalance();
+		}
+		else {
+			amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
+		}
+
+		if (account->creditLimit > 0.0) {
+			SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(account->name->c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
+		}
+		else {
+			SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(account->name->c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str())));
+		}
 	}
+	else if (type == TreeMenuItemTypes::MenuExpenses) {
+		transactionList->SetType(type);
+		transactionList->Update();
 
-	if (account->creditLimit > 0.0) {
-		SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(account->name->c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
-	} else {
-		SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(account->name->c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str())));
-	}
+		float amount = transactionList->GetBalance();
+		SetStatusText(wxString::Format("Expenses: %.2f", amount));
+	}	
 }
 
 void MainFrame::UpdateStatus() {
@@ -278,7 +294,10 @@ void MainFrame::UpdateStatus() {
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			UpdateTransactionList(account.get());
+			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
+		}
+		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
 	}
 }
@@ -326,10 +345,19 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 			panel3->Hide();
 
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			UpdateTransactionList(account.get());
+			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
 
 			selectedAccountId = account->id;
-		} else {
+		}
+		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
+			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+
+			panel2->Show();
+			panel3->Hide();
+
+			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
+		}
+		else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);
 
 			panel2->Hide();
@@ -392,7 +420,9 @@ void MainFrame::OnTransactionClose() {
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			UpdateTransactionList(account.get());
+			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
+		} else if (item->type == TreeMenuItemTypes::MenuExpenses) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
 	}
 

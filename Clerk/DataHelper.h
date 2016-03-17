@@ -28,6 +28,7 @@ public:
 	sqlite3* Connection();
 	vector<shared_ptr<Account>> GetAccounts(AccountTypes type);
 	vector<shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
+	vector<shared_ptr<Transaction>> GetExpensesTransactions(wxDateTime *from, wxDateTime *to);
 	vector<shared_ptr<Currency>> GetCurrencies();
 	float GetBalance(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);

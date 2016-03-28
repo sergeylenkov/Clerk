@@ -138,7 +138,10 @@ void MainFrame::UpdateAccountsTree()
 	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 29, 29);
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 29, 29);
 
-	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 26, 26);
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuDeposits;
+
+	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 26, 26, itemData);
 	wxTreeItemId selectedItem = homeItem;
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
@@ -294,6 +297,13 @@ void MainFrame::UpdateTransactionList(TreeMenuItemTypes type, Account *account)
 		float amount = transactionList->GetBalance();
 		SetStatusText(wxString::Format("Receipts: %.2f", amount));
 	}
+	else if (type == TreeMenuItemTypes::MenuDeposits) {
+		transactionList->SetType(type);
+		transactionList->Update();
+
+		float amount = transactionList->GetBalance();
+		SetStatusText(wxString::Format("Deposits: %.2f", amount));
+	}
 }
 
 void MainFrame::UpdateStatus() {
@@ -311,6 +321,9 @@ void MainFrame::UpdateStatus() {
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
+		}
+		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
 		}
 	}
 }
@@ -378,6 +391,14 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
+		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
+			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+
+			panel2->Show();
+			panel3->Hide();
+
+			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
+		}
 		else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);
 
@@ -443,7 +464,11 @@ void MainFrame::OnTransactionClose() {
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
 			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
 		} else if (item->type == TreeMenuItemTypes::MenuExpenses) {
-			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
+			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);		
+		} else if (item->type == TreeMenuItemTypes::MenuReceipts) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
+		} else if (item->type == TreeMenuItemTypes::MenuDeposits) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
 		}
 	}
 

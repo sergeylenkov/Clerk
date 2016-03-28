@@ -10,7 +10,8 @@ enum TreeMenuItemTypes {
 	MenuHome = 2,
 	MenuBudget = 3,
 	MenuExpenses = 4,
-	MenuReceipts = 5
+	MenuReceipts = 5,
+	MenuDeposits = 6
 };
 
 class TreeMenuItemData : public wxTreeItemData {

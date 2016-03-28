@@ -206,6 +206,23 @@ void TransactionsListPanel::Update() {
 			transactions.push_back(transaction);
 		}
 	}
+	else if (this->type == TreeMenuItemTypes::MenuDeposits) {
+		for each (auto transaction in DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Deposit, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		{
+			if (searchField->GetValue().Length() > 0) {
+				wxString search = searchField->GetValue().Lower();
+				wxString tags = transaction->tags->Lower();
+				wxString name = *transaction->fromAccountName;
+
+				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
+					continue;
+				}
+			}
+
+			balance = balance + transaction->toAmount;
+			transactions.push_back(transaction);
+		}
+	}
 
 	for each (auto transaction in transactions)
 	{
@@ -229,6 +246,9 @@ void TransactionsListPanel::Update() {
 			transactionsList->SetItem(i, 0, *transaction->toAccountName);
 		}
 		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+			transactionsList->SetItem(i, 0, *transaction->fromAccountName);
+		}
+		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
 			transactionsList->SetItem(i, 0, *transaction->fromAccountName);
 		}
 
@@ -257,6 +277,9 @@ void TransactionsListPanel::Update() {
 			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
 		}
 		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
+		}
+		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
 			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
 		}
 

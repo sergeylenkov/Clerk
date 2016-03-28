@@ -173,12 +173,29 @@ void TransactionsListPanel::Update() {
 			transactions.push_back(transaction);
 		}
 	} else if (this->type == TreeMenuItemTypes::MenuExpenses) {
-		for each (auto transaction in DataHelper::GetInstance().GetExpensesTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		for each (auto transaction in DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Expens, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
 		{
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();
 				wxString tags = transaction->tags->Lower();
 				wxString name = *transaction->toAccountName;
+
+				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
+					continue;
+				}
+			}
+
+			balance = balance + transaction->toAmount;
+			transactions.push_back(transaction);
+		}
+	}
+	else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+		for each (auto transaction in DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Receipt, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		{
+			if (searchField->GetValue().Length() > 0) {
+				wxString search = searchField->GetValue().Lower();
+				wxString tags = transaction->tags->Lower();
+				wxString name = *transaction->fromAccountName;
 
 				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
 					continue;
@@ -211,6 +228,9 @@ void TransactionsListPanel::Update() {
 		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
 			transactionsList->SetItem(i, 0, *transaction->toAccountName);
 		}
+		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+			transactionsList->SetItem(i, 0, *transaction->fromAccountName);
+		}
 
 		if (i % 2 == 0) {
 			transactionsList->SetItemBackgroundColour(i, wxColor(255, 255, 255, 1));
@@ -235,6 +255,9 @@ void TransactionsListPanel::Update() {
 		}
 		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
 			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
+		}
+		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+			transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->fromAmount));
 		}
 
 		i++;

@@ -157,7 +157,10 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Receipts", 27, 27);
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuReceipts;
+
+	child = treeMenu->AppendItem(accountsItem, "Receipts", 27, 27, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
@@ -283,7 +286,14 @@ void MainFrame::UpdateTransactionList(TreeMenuItemTypes type, Account *account)
 
 		float amount = transactionList->GetBalance();
 		SetStatusText(wxString::Format("Expenses: %.2f", amount));
-	}	
+	}
+	else if (type == TreeMenuItemTypes::MenuReceipts) {
+		transactionList->SetType(type);
+		transactionList->Update();
+
+		float amount = transactionList->GetBalance();
+		SetStatusText(wxString::Format("Receipts: %.2f", amount));
+	}
 }
 
 void MainFrame::UpdateStatus() {
@@ -298,6 +308,9 @@ void MainFrame::UpdateStatus() {
 		}
 		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
+		}
+		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
+			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
 	}
 }
@@ -356,6 +369,14 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 			panel3->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
+		}
+		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
+			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+
+			panel2->Show();
+			panel3->Hide();
+
+			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
 		else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);

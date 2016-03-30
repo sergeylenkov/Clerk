@@ -22,6 +22,7 @@ public:
 private:
 	wxTreeCtrl *treeMenu;
 	wxImageList *imageList;
+	wxImageList *accountsImageList;
 	TransactionFrame *transactionFrame;
 	TransactionsListPanel *transactionList;
 	HomePanel *homePanel;

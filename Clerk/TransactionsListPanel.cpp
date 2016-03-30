@@ -109,42 +109,8 @@ void TransactionsListPanel::Update() {
 
 	if (account == NULL) {
 		return;
-	}
-
-	wxListItem col0;
-
-	col0.SetId(0);
-	col0.SetText(_("Account"));
-	col0.SetWidth(200);
-
-	transactionsList->InsertColumn(0, col0);
-
-	wxListItem col1;
-
-	col1.SetId(1);
-	col1.SetText(_("Tags"));
-	col1.SetWidth(200);
-
-	transactionsList->InsertColumn(1, col1);
-
-	wxListItem col2;
-
-	col2.SetId(2);
-	col2.SetText(_("Date"));
-	col2.SetWidth(100);
-
-	transactionsList->InsertColumn(2, col2);
-
-	wxListItem col3;
-
-	col3.SetId(3);
-	col3.SetText(_("Amount"));
-	col3.SetWidth(100);
-	col3.SetAlign(wxLIST_FORMAT_RIGHT);
-
-	transactionsList->InsertColumn(3, col3);
-
-	int i = 0;
+	}	
+		
 	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
 	balance = 0;
 	
@@ -223,6 +189,41 @@ void TransactionsListPanel::Update() {
 			transactions.push_back(transaction);
 		}
 	}
+
+	wxListItem col0;
+
+	col0.SetId(0);
+	col0.SetText(_("Account"));
+	col0.SetWidth(200);
+
+	transactionsList->InsertColumn(0, col0);
+
+	wxListItem col1;
+
+	col1.SetId(1);
+	col1.SetText(_("Tags"));
+	col1.SetWidth(200);
+
+	transactionsList->InsertColumn(1, col1);
+
+	wxListItem col2;
+
+	col2.SetId(2);
+	col2.SetText(_("Date"));
+	col2.SetWidth(100);
+
+	transactionsList->InsertColumn(2, col2);
+
+	wxListItem col3;
+
+	col3.SetId(3);
+	col3.SetText(_("Amount"));
+	col3.SetWidth(100);
+	col3.SetAlign(wxLIST_FORMAT_RIGHT);
+
+	transactionsList->InsertColumn(3, col3);
+
+	int i = 0;
 
 	for each (auto transaction in transactions)
 	{

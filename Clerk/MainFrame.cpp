@@ -12,7 +12,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxImage image;
 
-	imageList = new wxImageList(16, 16, true);
+	/*imageList = new wxImageList(16, 16, true);
 
 	for (int i = 1; i <= 32; i++) {
 		wxString path = wxString::Format("Resources\\%d.png", i);
@@ -23,7 +23,20 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 			delete bitmap;
 		}
-	}	
+	}*/	
+
+	accountsImageList = new wxImageList(16, 16, true);
+
+	for (int i = 0; i <= 50; i++) {
+		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
+		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
+		{
+			wxBitmap *bitmap = new wxBitmap(image);
+			accountsImageList->Add(*bitmap);
+
+			delete bitmap;
+		}
+	}
 
 	wxMenu *menuFile = new wxMenu();
 
@@ -58,7 +71,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));
 	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));
 
-	treeMenu->AssignImageList(imageList);
+	treeMenu->AssignImageList(accountsImageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
 
 	boxSizer4->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
@@ -133,20 +146,24 @@ void MainFrame::UpdateAccountsTree()
 	TreeMenuItemData *itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuHome;
 
-	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 19, 19, itemData);
-	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 30, 30);
+	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 15, 15, itemData);
+	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 32, 32);
 	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 29, 29);
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 29, 29);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
 
-	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 26, 26, itemData);
+	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 32, 32, itemData);
 	wxTreeItemId selectedItem = homeItem;
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
 		int icon = 26;
+
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -163,11 +180,15 @@ void MainFrame::UpdateAccountsTree()
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuReceipts;
 
-	child = treeMenu->AppendItem(accountsItem, "Receipts", 27, 27, itemData);
+	child = treeMenu->AppendItem(accountsItem, "Receipts", 32, 32, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
 		int icon = 27;
+
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -184,12 +205,16 @@ void MainFrame::UpdateAccountsTree()
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuExpenses;
 
-	child = treeMenu->AppendItem(accountsItem, "Expenes", 28, 28, itemData);
+	child = treeMenu->AppendItem(accountsItem, "Expenes", 32, 32, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
 		int icon = 28;
 
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
+
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
@@ -202,12 +227,16 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Debt", 28, 28);
+	child = treeMenu->AppendItem(accountsItem, "Debt", 32, 32);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
 	{
 		int icon = 28;
 
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
+
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
@@ -220,11 +249,15 @@ void MainFrame::UpdateAccountsTree()
 		}
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Credits", 28, 28);
+	child = treeMenu->AppendItem(accountsItem, "Credits", 32, 32);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
 	{
 		int icon = 28;
+
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
@@ -488,7 +521,7 @@ void MainFrame::OnDeleteAccount(wxCommandEvent &event) {
 }
 
 void MainFrame::AddAccount() {
-	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 300, 330);
+	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
 
 	accountFrame->Show(true);
 	accountFrame->CenterOnParent();
@@ -514,7 +547,7 @@ void MainFrame::EditAccount() {
 
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 300, 330);
+			accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
 
 			accountFrame->Show(true);
 			accountFrame->CenterOnParent();

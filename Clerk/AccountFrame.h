@@ -1,5 +1,6 @@
 #include <wx/wx.h>
 #include <wx/valnum.h>
+#include <wx/bmpcbox.h>
 #include <functional>
 #include "DataHelper.h"
 
@@ -20,6 +21,8 @@ private:
 	wxComboBox *typeList;
 	wxStaticText *currencyLabel;
 	wxComboBox *currencyList;
+	wxStaticText *iconLabel;
+	wxBitmapComboBox *iconList;
 	wxStaticText *amountLabel;
 	wxTextCtrl *amountField;
 	wxStaticText *noteLabel;

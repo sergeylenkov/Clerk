@@ -3,14 +3,72 @@
 AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
-	wxPanel *panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-	panel->SetBackgroundColour(wxColor(*wxWHITE));
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	nameLabel = new wxStaticText(panel, wxID_ANY, "Name:", wxPoint(10, 10), wxSize(60, 20));
-	nameField = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(100, 10), wxSize(180, 20));
+	wxFlexGridSizer *fieldsSizer = new wxFlexGridSizer(6, 2, 10, 0);
+	fieldsSizer->AddGrowableCol(1);
+	fieldsSizer->AddGrowableRow(5);
+	fieldsSizer->SetFlexibleDirection(wxBOTH);
+	fieldsSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
 
-	typeLabel = new wxStaticText(panel, wxID_ANY, "Type:", wxPoint(10, 50), wxSize(60, 20));
-	typeList = new wxComboBox(panel, wxID_ANY, "", wxPoint(100, 50), wxSize(180, 20), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	nameLabel = new wxStaticText(this, wxID_ANY, "Name:", wxDefaultPosition, wxDefaultSize, 0);
+	nameLabel->Wrap(-1);
+	fieldsSizer->Add(nameLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+	nameField = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
+	fieldsSizer->Add(nameField, 0, wxALL | wxEXPAND | wxLEFT | wxRIGHT | wxALIGN_CENTER_VERTICAL, 5);
+
+	typeLabel = new wxStaticText(this, wxID_ANY, "Type:", wxDefaultPosition, wxDefaultSize, 0);
+	typeLabel->Wrap(-1);
+	fieldsSizer->Add(typeLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+	typeList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	fieldsSizer->Add(typeList, 0, wxALL | wxEXPAND, 5);
+
+	currencyLabel = new wxStaticText(this, wxID_ANY, "Currency:", wxDefaultPosition, wxDefaultSize, 0);
+	currencyLabel->Wrap(-1);
+	fieldsSizer->Add(currencyLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+	currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	fieldsSizer->Add(currencyList, 0, wxALL | wxEXPAND, 5);
+
+	iconLabel = new wxStaticText(this, wxID_ANY, "Icon:", wxDefaultPosition, wxDefaultSize, 0);
+	fieldsSizer->Add(iconLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+	iconList = new wxBitmapComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	fieldsSizer->Add(iconList, 0, wxALL, 5);
+
+	amountLabel = new wxStaticText(this, wxID_ANY, "Amount:", wxDefaultPosition, wxDefaultSize, 0);
+	fieldsSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+
+	wxFloatingPointValidator<float> validator(2, &amountValue, wxNUM_VAL_DEFAULT);
+	validator.SetRange(0.0f, 999999999.0f);
+
+	amountField = new wxTextCtrl(this, wxID_ANY, "0.00", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT, validator);
+	fieldsSizer->Add(amountField, 0, wxALL, 5);
+
+	noteLabel = new wxStaticText(this, wxID_ANY, "Note:", wxDefaultPosition, wxDefaultSize, 0);
+	fieldsSizer->Add(noteLabel, 0, wxALIGN_TOP | wxALL, 5);
+
+	noteField = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
+	fieldsSizer->Add(noteField, 0, wxALL | wxEXPAND, 5);
+
+	mainSizer->Add(fieldsSizer, 1, wxALL | wxEXPAND, 5);
+
+	wxBoxSizer *buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(okButton, 0, wxALIGN_CENTER | wxRIGHT, 10);
+
+	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(cancelButton, 0, wxALL, 5);
+
+	mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER | wxALIGN_RIGHT, 5);
+
+	this->SetSizer(mainSizer);
+	this->Layout();
+
+	this->Centre(wxBOTH);
 
 	typeList->AppendString("Receipt");
 	typeList->AppendString("Deposit");
@@ -20,9 +78,6 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	typeList->SetSelection(0);
 
-	currencyLabel = new wxStaticText(panel, wxID_ANY, "Currency:", wxPoint(10, 90), wxSize(60, 20));
-	currencyList = new wxComboBox(panel, wxID_ANY, "", wxPoint(100, 90), wxSize(180, 20), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-
 	for each (auto currency in DataHelper::GetInstance().GetCurrencies())
 	{
 		currencies.push_back(currency);
@@ -31,17 +86,21 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	currencyList->SetSelection(191);
 
-	wxFloatingPointValidator<float> validator(2, &amountValue, wxNUM_VAL_DEFAULT);
-	validator.SetRange(0.0f, 999999999.0f);
+	wxImage image;
 
-	amountLabel = new wxStaticText(panel, wxID_ANY, "Amount:", wxPoint(10, 130), wxSize(60, 20));
-	amountField = new wxTextCtrl(panel, wxID_ANY, "0.00", wxPoint(100, 130), wxSize(80, 20), wxTE_RIGHT, validator);
+	for (int i = 0; i <= 50; i++) {
+		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
 
-	noteLabel = new wxStaticText(panel, wxID_ANY, "Note:", wxPoint(10, 170), wxSize(60, 20));
-	noteField = new wxTextCtrl(panel, wxID_ANY, "", wxPoint(100, 170), wxSize(180, 60), wxTE_MULTILINE);
+		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
+		{
+			wxBitmap *bitmap = new wxBitmap(image);
+			iconList->Append("", *bitmap);
 
-	okButton = new wxButton(panel, wxID_ANY, "OK", wxPoint(width - 200, height - 70), wxSize(80, 28));
-	cancelButton = new wxButton(panel, wxID_ANY, "Cancel", wxPoint(width - 100, height - 70), wxSize(80, 28));
+			delete bitmap;
+		}
+	}
+
+	iconList->SetSelection(0);
 
 	okButton->Bind(wxEVT_BUTTON, &AccountFrame::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &AccountFrame::OnCancel, this);
@@ -54,6 +113,8 @@ AccountFrame::~AccountFrame() {
 	delete typeList;
 	delete currencyLabel;
 	delete currencyList;
+	delete iconLabel;
+	delete iconList;
 	delete amountLabel;
 	delete amountField;
 	delete noteLabel;
@@ -68,6 +129,12 @@ void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
 	nameField->SetValue(*account->name);
 	noteField->SetValue(*account->note);
 	typeList->SetSelection(static_cast<int>(account->type));
+
+	if (account->iconId < iconList->GetCount()) {
+		iconList->SetSelection(static_cast<int>(account->iconId));
+	} else {
+		iconList->SetSelection(0);
+	}
 
 	if (account->id != -1) {
 		amountField->Disable();
@@ -103,6 +170,7 @@ void AccountFrame::OnOK(wxCommandEvent &event) {
 	account->name = make_shared<wxString>(nameField->GetValue());
 	account->note = make_shared<wxString>(noteField->GetValue());
 	account->type = static_cast<AccountTypes>(typeList->GetSelection());
+	account->iconId = iconList->GetSelection();
 	account->currency = currencies[currencyList->GetSelection()];
 
 	account->Save();

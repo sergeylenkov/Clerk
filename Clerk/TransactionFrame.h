@@ -1,5 +1,6 @@
 #include <wx/wx.h>
 #include <wx/datectrl.h>
+#include <wx/bmpcbox.h>
 #include <wx/valnum.h>
 #include <functional>
 #include "DataHelper.h"
@@ -20,8 +21,8 @@ public:
 private:
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
-	wxComboBox *fromList;
-	wxComboBox *toList;
+	wxBitmapComboBox *fromList;
+	wxBitmapComboBox *toList;
 	wxButton *okButton;
 	wxButton *cancelButton;
 	wxStaticText *tagsLabel;
@@ -40,6 +41,7 @@ private:
 	vector<shared_ptr<Account>> fromAccounts;
 	vector<shared_ptr<Account>> toAccounts;
 	shared_ptr<Transaction> transaction;
+	wxImageList *accountsImageList;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

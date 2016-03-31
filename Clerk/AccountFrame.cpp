@@ -50,7 +50,7 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 	noteLabel = new wxStaticText(this, wxID_ANY, "Note:", wxDefaultPosition, wxDefaultSize, 0);
 	fieldsSizer->Add(noteLabel, 0, wxALIGN_TOP | wxALL, 5);
 
-	noteField = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
+	noteField = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	fieldsSizer->Add(noteField, 0, wxALL | wxEXPAND, 5);
 
 	mainSizer->Add(fieldsSizer, 1, wxALL | wxEXPAND, 5);
@@ -63,7 +63,7 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	buttonsSizer->Add(cancelButton, 0, wxALL, 5);
 
-	mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER | wxALIGN_RIGHT, 5);
+	mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxALL, 5);
 
 	this->SetSizer(mainSizer);
 	this->Layout();

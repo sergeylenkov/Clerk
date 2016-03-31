@@ -450,7 +450,7 @@ void MainFrame::OnAddTransaction(wxCommandEvent &event) {
 }
 
 void MainFrame::AddTransaction() {
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 300);
+	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 400, 350);
 	
 	transactionFrame->Show(true);
 	transactionFrame->CenterOnParent();

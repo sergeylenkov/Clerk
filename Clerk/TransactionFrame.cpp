@@ -266,50 +266,59 @@ TransactionFrame::~TransactionFrame() {
 }
 
 void TransactionFrame::SetAccount(shared_ptr<Account> account) {
-	return;
 	if (account->type == AccountTypes::Receipt) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (account->id == accounts[i]->id) {
+		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+			if (account->id == fromAccounts[i]->id) {
 				SelectFromAccount(i);
 				transaction->fromAccountId = account->id;
 				break;
 			}
 		}
-	}
-
-	if (account->type == AccountTypes::Deposit) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (account->id == accounts[i]->id) {
+	} else if (account->type == AccountTypes::Deposit) {
+		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+			if (account->id == fromAccounts[i]->id) {
 				SelectFromAccount(i);
 				transaction->fromAccountId = account->id;
 				break;
 			}
 		}
-	}
+	} else if (account->type == AccountTypes::Expens) {
+		int id = DataHelper::GetInstance().GetPairAccountId(account.get());
 
-	if (account->type == AccountTypes::Expens) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (account->id == accounts[i]->id) {
+		if (id == -1) {
+			for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+				if (fromAccounts[i]->type == AccountTypes::Deposit) {
+					SelectFromAccount(i);
+					break;
+				}
+			}
+		} else {
+			for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+				if (fromAccounts[i]->id == id) {
+					SelectFromAccount(i);
+					break;
+				}
+			}
+		}		
+
+		for (unsigned int i = 0; i < toAccounts.size(); i++) {
+			if (account->id == toAccounts[i]->id) {
 				SelectToAccount(i);
 				transaction->toAccountId = account->id;
 				break;
 			}
 		}
-	}
-
-	if (account->type == AccountTypes::Debt) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (account->id == accounts[i]->id) {
+	} else if (account->type == AccountTypes::Debt) {
+		for (unsigned int i = 0; i < toAccounts.size(); i++) {
+			if (account->id == toAccounts[i]->id) {
 				SelectToAccount(i);
 				transaction->toAccountId = account->id;
 				break;
 			}
 		}
-	}
-
-	if (account->type == AccountTypes::Credit) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (account->id == accounts[i]->id) {
+	} else if (account->type == AccountTypes::Credit) {
+		for (unsigned int i = 0; i < toAccounts.size(); i++) {
+			if (account->id == toAccounts[i]->id) {
 				SelectToAccount(i);
 				transaction->toAccountId = account->id;
 				break;
@@ -393,10 +402,17 @@ void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 }
 
 void TransactionFrame::SelectFromAccount(int id) {
+	int index = fromList->GetSelection();
 	auto account = fromAccounts[id];
 	
 	fromList->Select(id);
 	fromAmountLabel->SetLabel(*account->currency->shortName);
+
+	if (index != -1) {
+		if (account->type == fromAccounts[index]->type) {
+			return;
+		}
+	}
 
 	toList->Clear();
 	toAccounts.clear();

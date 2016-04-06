@@ -249,3 +249,29 @@ map<wxString, float> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTi
 
 	return values;
 }
+
+int DataHelper::GetPairAccountId(Account *account) {
+	int id = -1;
+	char *sql = "";
+
+	if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Receipt) {
+		sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+	}
+	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+		sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+	}
+
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			id = sqlite3_column_int(statement, 0);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return id;
+}

@@ -38,6 +38,17 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		}
 	}
 
+	for (int i = 0; i <= 19; i++) {
+		wxString path = wxString::Format("Resources\\%d.png", i);
+		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
+		{
+			wxBitmap *bitmap = new wxBitmap(image);
+			accountsImageList->Add(*bitmap);
+
+			delete bitmap;
+		}
+	}
+
 	wxMenu *menuFile = new wxMenu();
 
 	menuFile->Append(wxID_ABOUT, "&About...");
@@ -147,9 +158,9 @@ void MainFrame::UpdateAccountsTree()
 	itemData->type = TreeMenuItemTypes::MenuHome;
 
 	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 15, 15, itemData);
-	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 32, 32);
-	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 29, 29);
-	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 29, 29);
+	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 33, 33);
+	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 51, 51);
+	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 57, 57);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
@@ -281,7 +292,7 @@ void MainFrame::UpdateAccountsTree()
 
 	itemData->object = report;
 
-	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 29, 29, itemData);
+	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 51, 51, itemData);
 
 	treeMenu->Expand(accountsItem);
 

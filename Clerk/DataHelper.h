@@ -36,6 +36,7 @@ public:
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
 	map<wxString, float> GetExpensesByMonth();
 	map<wxString, float> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
+	int GetPairAccountId(Account *account);
 
 private:
 	DataHelper();                 

@@ -274,6 +274,24 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 				break;
 			}
 		}
+
+		int id = DataHelper::GetInstance().GetPairAccountId(account.get());
+
+		if (id == -1) {
+			for (unsigned int i = 0; i < toAccounts.size(); i++) {
+				if (toAccounts[i]->type == AccountTypes::Deposit) {
+					SelectToAccount(i);
+					break;
+				}
+			}
+		} else {
+			for (unsigned int i = 0; i < toAccounts.size(); i++) {
+				if (toAccounts[i]->id == id) {
+					SelectToAccount(i);
+					break;
+				}
+			}
+		}
 	} else if (account->type == AccountTypes::Deposit) {
 		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
 			if (account->id == fromAccounts[i]->id) {

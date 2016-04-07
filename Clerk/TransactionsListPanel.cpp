@@ -5,6 +5,7 @@
 TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
+	transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -70,6 +71,8 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 
 	CalculatePeriod();
 	balance = 0.0;
+	sortBy = 2;
+	sortDesc = false;
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
@@ -190,6 +193,27 @@ void TransactionsListPanel::Update() {
 		}
 	}
 
+	std::sort(transactions.begin(), transactions.end(), [this](const std::shared_ptr<Transaction>& v1, const std::shared_ptr<Transaction>& v2) {
+		if (this->sortBy == 0) {
+			return v1->fromAccountName->Cmp(*v2->fromAccountName) == 0;
+		}
+		else if (this->sortBy == 1) {
+			wxString s = v1->tags->Lower();
+			wxString s1 = v2->tags->Lower();
+			return s.Find(s1) == wxNOT_FOUND;
+		}
+		else if (this->sortBy == 2) {
+			return v1->paidAt->GetMillisecond() < v2->paidAt->GetMillisecond();
+		}
+		else {
+			return v1->fromAmount < v2->fromAmount;
+		}
+	});
+
+	if (sortDesc) {
+		std::reverse(transactions.begin(), transactions.end());
+	}
+
 	wxListItem col0;
 
 	col0.SetId(0);
@@ -211,6 +235,8 @@ void TransactionsListPanel::Update() {
 	col2.SetId(2);
 	col2.SetText(_("Date"));
 	col2.SetWidth(100);
+	col2.SetStateMask(wxLIST_MASK_STATE);
+	col2.SetState(wxLIST_STATE_SELECTED);
 
 	transactionsList->InsertColumn(2, col2);
 
@@ -341,6 +367,15 @@ void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	transactionsList->PopupMenu(menu, event.GetPoint());
 
 	delete menu;
+}
+
+void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
+	if (sortBy == event.GetColumn()) {
+		sortDesc = !sortDesc;
+	}
+
+	sortBy = event.GetColumn();
+	Update();
 }
 
 void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {

@@ -43,8 +43,11 @@ private:
 	TreeMenuItemTypes type;
 	vector<shared_ptr<Transaction>> transactions;
 	float balance;
+	int sortBy;
+	bool sortDesc;
 
 	void OnListItemClick(wxListEvent &event);
+	void OnListColumnClick(wxListEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);

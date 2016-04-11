@@ -1,13 +1,10 @@
 #include "ReportPanel.h"
 
-ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	//wxPanel *panel = new wxPanel(this, wxID_ANY);
-	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
-	
-	chart = new BarChart(parent, wxID_ANY);
-	chart->SetSize(wxSize(400, 200));
+ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {		
+	chart = new BarChart(this, wxID_ANY);
 
-	sizer->Add(chart);
+	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+	sizer->Add(chart, 1, wxEXPAND);
 
 	this->SetSizer(sizer);
 	this->Layout();
@@ -20,8 +17,5 @@ ReportPanel::~ReportPanel() {
 }
 
 void ReportPanel::Update() {
-	map<wxString, float> values = DataHelper::GetInstance().GetExpensesByMonth();
-
-	chart->SetValues(values);
-	chart->Draw();
+	chart->SetValues(DataHelper::GetInstance().GetExpensesByMonth());
 }

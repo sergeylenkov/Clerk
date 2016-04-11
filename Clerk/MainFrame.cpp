@@ -12,19 +12,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxImage image;
 
-	/*imageList = new wxImageList(16, 16, true);
-
-	for (int i = 1; i <= 32; i++) {
-		wxString path = wxString::Format("Resources\\%d.png", i);
-		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
-		{
-			wxBitmap *bitmap = new wxBitmap(image);
-			imageList->Add(*bitmap);
-
-			delete bitmap;
-		}
-	}*/	
-
 	accountsImageList = new wxImageList(16, 16, true);
 
 	for (int i = 0; i <= 50; i++) {
@@ -95,6 +82,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	panel2 = new wxPanel(panel, wxID_ANY);
 	panel3 = new wxPanel(panel, wxID_ANY);
+	panel5 = new wxPanel(panel, wxID_ANY);
 
 	transactionList = new TransactionsListPanel(panel2, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
@@ -105,11 +93,17 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxBoxSizer *boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
-	panel2->SetSizer(boxSizer);
+	panel2->SetSizer(boxSizer);	
 
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
 	panel3->SetSizer(boxSizer);
+
+	reportPanel = new ReportPanel(panel5, wxID_ANY);
+
+	boxSizer = new wxBoxSizer(wxVERTICAL);
+	boxSizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
+	panel5->SetSizer(boxSizer);
 
 	vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -407,12 +401,14 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 	if (item != NULL) {		
 		vbox->Detach(panel2);
 		vbox->Detach(panel3);
+		vbox->Detach(panel5);
 
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
 
 			panel2->Show();
 			panel3->Hide();
+			panel5->Hide();
 
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
 			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
@@ -424,6 +420,7 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 
 			panel2->Show();
 			panel3->Hide();
+			panel5->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
@@ -432,6 +429,7 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 
 			panel2->Show();
 			panel3->Hide();
+			panel5->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
@@ -440,8 +438,18 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 
 			panel2->Show();
 			panel3->Hide();
+			panel5->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
+		}
+		else if (item->type == TreeMenuItemTypes::MenuReport) {
+			vbox->Add(panel5, 1, wxEXPAND | wxALL, 0);
+
+			panel2->Hide();
+			panel3->Hide();
+			panel5->Show();
+
+			reportPanel->Update();
 		}
 		else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);

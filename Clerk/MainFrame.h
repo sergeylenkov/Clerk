@@ -10,8 +10,9 @@
 #include "TreeMenuItemData.h"
 #include "TransactionFrame.h"
 #include "TransactionsListPanel.h"
-#include "HomePanel.h"
 #include "AccountFrame.h"
+#include "HomePanel.h"
+#include "ReportPanel.h"
 
 class MainFrame : public wxFrame
 {
@@ -24,13 +25,15 @@ private:
 	wxImageList *imageList;
 	wxImageList *accountsImageList;
 	TransactionFrame *transactionFrame;
-	TransactionsListPanel *transactionList;
-	HomePanel *homePanel;
+	TransactionsListPanel *transactionList;	
 	AccountFrame *accountFrame;
+	HomePanel *homePanel;
+	ReportPanel *reportPanel;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
 	wxPanel *panel2;
 	wxPanel *panel3;
+	wxPanel *panel5;
 	wxBoxSizer *vbox;
 	int selectedAccountId;
 

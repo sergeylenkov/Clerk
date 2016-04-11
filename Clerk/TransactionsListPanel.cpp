@@ -200,7 +200,7 @@ void TransactionsListPanel::Update() {
 		else if (this->sortBy == 1) {
 			wxString s = v1->tags->Lower();
 			wxString s1 = v2->tags->Lower();
-			return s.Find(s1) == wxNOT_FOUND;
+			return s.CmpNoCase(s1) == 0;
 		}
 		else if (this->sortBy == 2) {
 			return v1->paidAt->GetMillisecond() < v2->paidAt->GetMillisecond();

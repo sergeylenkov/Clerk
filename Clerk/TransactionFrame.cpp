@@ -372,10 +372,18 @@ void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) 
 void TransactionFrame::OnOK(wxCommandEvent &event) {
 	double val;
 
-	fromAmountField->GetValue().ToDouble(&val);
+	wxString value = fromAmountField->GetValue();
+	value.Replace(" ", "");
+	value.Replace(",", ".");
+	value.ToDouble(&val);
+	  
 	fromValue = val;
 	
-	toAmountField->GetValue().ToDouble(&val);
+	value = toAmountField->GetValue();
+	value.Replace(" ", "");
+	value.Replace(",", ".");
+	value.ToDouble(&val);
+
 	toValue = val;
 
 	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;

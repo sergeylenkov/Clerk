@@ -51,6 +51,7 @@ private:
 	void OnMenuSelect(wxCommandEvent &event);
 	void AddTransaction();
 	void EditTransaction();
+	void SplitTransaction();
 	void DeleteTransaction();
 	void OnTransactionClose();
 	void AddAccount();

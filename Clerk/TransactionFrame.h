@@ -2,6 +2,7 @@
 #include <wx/datectrl.h>
 #include <wx/bmpcbox.h>
 #include <wx/valnum.h>
+#include <wx/defs.h>
 #include <functional>
 #include "DataHelper.h"
 
@@ -15,7 +16,8 @@ public:
 	
 	void SetAccount(shared_ptr<Account> account);
 	void SetTransaction(shared_ptr<Transaction> transaction);
-	
+	void SetSplitTransaction(shared_ptr<Transaction> transaction);
+
 	function<void()> OnClose;
 
 private:
@@ -41,6 +43,7 @@ private:
 	vector<shared_ptr<Account>> fromAccounts;
 	vector<shared_ptr<Account>> toAccounts;
 	shared_ptr<Transaction> transaction;
+	shared_ptr<Transaction> splitTransaction;
 	wxImageList *accountsImageList;
 
 	void OnOK(wxCommandEvent &event);
@@ -50,4 +53,5 @@ private:
 	void OnFromAmountKillFocus(wxFocusEvent &event);
 	void SelectFromAccount(int id);
 	void SelectToAccount(int id);
+	void OnTextChanged(wxKeyEvent &event);
 };

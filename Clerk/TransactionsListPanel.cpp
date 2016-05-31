@@ -351,11 +351,18 @@ void TransactionsListPanel::DublicateTransaction() {
 	}
 }
 
+void TransactionsListPanel::SplitTransaction() {
+	if (OnSplitTransaction) {
+		OnSplitTransaction();
+	}
+}
+
 void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
 	menu->Append(ID_EditTransaction, wxT("Edit..."));
 	menu->Append(ID_DublicateTransaction, wxT("Dublicate"));
+	menu->Append(ID_SplitTransaction, wxT("Split..."));
 	menu->AppendSeparator();
 	menu->Append(ID_DeleteTransaction, wxT("Delete..."));
 
@@ -394,6 +401,10 @@ void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
 
 		case ID_DublicateTransaction:
 			DublicateTransaction();
+			break;
+
+		case ID_SplitTransaction:
+			SplitTransaction();
 			break;
 
 		default:

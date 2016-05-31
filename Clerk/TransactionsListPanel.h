@@ -10,7 +10,8 @@ enum {
 	ID_AddTransaction = 10,
 	ID_EditTransaction = 11,
 	ID_DeleteTransaction = 12,
-	ID_DublicateTransaction = 13
+	ID_DublicateTransaction = 13,
+	ID_SplitTransaction = 14,
 };
 
 class TransactionsListPanel : public wxPanel
@@ -26,11 +27,13 @@ public:
 	void EditTransaction();
 	void DeleteTransaction();
 	void DublicateTransaction();
+	void SplitTransaction();
 	wxDateTime GetFromDate();
 	wxDateTime GetToDate();
 	float GetBalance();
 
 	std::function<void()> OnEditTransaction;
+	std::function<void()> OnSplitTransaction;
 	std::function<void()> OnPeriodChanged;	
 
 private:

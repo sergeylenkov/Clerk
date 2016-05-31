@@ -86,6 +86,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	transactionList = new TransactionsListPanel(panel2, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
+	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
 	//transactionList->OnSearchChanged = std::bind(&MainFrame::UpdateStatus, this);
 
@@ -501,6 +502,20 @@ void MainFrame::EditTransaction() {
 		transactionFrame->CenterOnParent();
 
 		transactionFrame->SetTransaction(transaction);
+		transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+	}
+}
+
+void MainFrame::SplitTransaction() {
+	auto transaction = transactionList->GetTransaction();
+
+	if (transaction) {
+		transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 400, 350);
+
+		transactionFrame->Show(true);
+		transactionFrame->CenterOnParent();
+
+		transactionFrame->SetSplitTransaction(transaction);
 		transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 	}
 }

@@ -2,8 +2,8 @@
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-	wxLogDebug("%s", wxStandardPaths::Get().GetUserConfigDir().c_str());
-	wxFileConfig *config = new wxFileConfig("", "", "C:\\Temp\\config.txt", "", wxCONFIG_USE_LOCAL_FILE);
+	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Config.txt");
+	wxFileConfig *config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
 
 	this->SetSize(wxSize(config->ReadLong("WindowWidth", 1000), config->ReadLong("WindowHeight", 800)));
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
@@ -126,7 +126,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 MainFrame::~MainFrame() 
 {
-	wxFileConfig *config = new wxFileConfig("", "", "C:\\Temp\\config.txt", "", wxCONFIG_USE_LOCAL_FILE);
+	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Config.txt");
+	wxFileConfig *config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
 	
 	config->Write("SelectedAccount", selectedAccountId);
 	config->Write("WindowWidth", this->GetSize().GetWidth());

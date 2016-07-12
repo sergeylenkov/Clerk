@@ -7,7 +7,7 @@ IMPLEMENT_APP(ClerkApp)
 bool ClerkApp::OnInit()
 {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Database.sqlite");
-	//wxString path = wxStandardPaths::Get().GetUserDataDir() + "/Database.sqlite";
+
 	DataHelper::GetInstance().Open(path.GetFullPath().char_str());
 	Model::SetConnection(DataHelper::GetInstance().Connection());
 

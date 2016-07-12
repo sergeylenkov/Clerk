@@ -2,13 +2,10 @@
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {
-	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Config.txt");
-	wxFileConfig *config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
+	Settings::GetInstance().Open("Config.txt");
 
-	this->SetSize(wxSize(config->ReadLong("WindowWidth", 1000), config->ReadLong("WindowHeight", 800)));
-	selectedAccountId = config->ReadLong("SelectedAccount", -1);
-
-	delete config;
+	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
+	selectedAccountId = Settings::GetInstance().GetSelectedAccountId();
 
 	wxImage image;
 
@@ -126,16 +123,11 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 MainFrame::~MainFrame() 
 {
-	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Config.txt");
-	wxFileConfig *config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
-	
-	config->Write("SelectedAccount", selectedAccountId);
-	config->Write("WindowWidth", this->GetSize().GetWidth());
-	config->Write("WindowHeight", this->GetSize().GetHeight());
+	Settings::GetInstance().SetSelectedAccountId(selectedAccountId);
+	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
+	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
-	config->Flush();
-
-	delete config;
+	Settings::GetInstance().Save();
 
 	delete treeMenu;
 	delete transactionList;

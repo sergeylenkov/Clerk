@@ -7,6 +7,7 @@
 #include <memory>
 #include "DataHelper.h"
 #include "Defines.h"
+#include "Settings.h"
 #include "TreeMenuItemData.h"
 #include "TransactionFrame.h"
 #include "TransactionsListPanel.h"

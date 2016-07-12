@@ -79,6 +79,7 @@
     <ClCompile Include="PieChart.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="ReportPanel.cpp" />
+    <ClCompile Include="Settings.cpp" />
     <ClCompile Include="Transaction.cpp" />
     <ClCompile Include="TreeMenuItemData.cpp" />
     <ClCompile Include="Clerk.cpp" />
@@ -99,6 +100,7 @@
     <ClInclude Include="PieChart.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="ReportPanel.h" />
+    <ClInclude Include="Settings.h" />
     <ClInclude Include="Transaction.h" />
     <ClInclude Include="TreeMenuItemData.h" />
     <ClInclude Include="Clerk.h" />

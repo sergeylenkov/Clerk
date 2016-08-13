@@ -34,9 +34,10 @@ public:
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
-	map<wxString, float> GetExpensesByMonth();
+	map<wxString, float> GetExpensesByMonth(wxDateTime *from, wxDateTime *to);
 	map<wxString, float> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
+	vector<shared_ptr<wxString>> GetTagsBySearch(wxString search);
 
 private:
 	DataHelper();                 

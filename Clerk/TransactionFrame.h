@@ -5,6 +5,7 @@
 #include <wx/defs.h>
 #include <functional>
 #include "DataHelper.h"
+#include "TagsPopup.h"
 
 using namespace std;
 
@@ -45,6 +46,7 @@ private:
 	shared_ptr<Transaction> transaction;
 	shared_ptr<Transaction> splitTransaction;
 	wxImageList *accountsImageList;
+	TagsPopup *tagsPopup;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

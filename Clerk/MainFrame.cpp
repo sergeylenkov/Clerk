@@ -40,10 +40,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuFile->Append(wxID_EXIT, "E&xit");
 
 	wxMenu *menuAccounts = new wxMenu();
-	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
+	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add &Account..."));
 
 	wxMenu *menuTransactions = new wxMenu();
-	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add Transaction..."));
+	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add &Transaction..."));
 
 	wxMenuBar *menuBar = new wxMenuBar;
 

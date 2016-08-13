@@ -7,18 +7,21 @@ void Settings::Open(char *configName) {
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
 	windowWidth = config->ReadLong("WindowWidth", 1000);
 	windowHeight = config->ReadLong("WindowHeight", 800);
+	fromPeriodDate = wxDateTime::Now(); //config->ReadObject("FromPeriodDate", wxDateTime::Now());
+	toPeriodDate = wxDateTime::Now(); // config->ReadObject("ToPeriodDate", wxDateTime::Now());
 }
 
 void Settings::Save() {
 	config->Write("SelectedAccount", selectedAccountId);
 	config->Write("WindowWidth", windowWidth);
 	config->Write("WindowHeight", windowHeight);
+	config->Write("FromPeriodDate", fromPeriodDate.FormatISODate());
+	config->Write("ToPeriodDate", toPeriodDate.FormatISODate());
 
 	config->Flush();
 }
 
-Settings::~Settings()
-{
+Settings::~Settings() {
 	config->Flush();
 	delete config;
 }

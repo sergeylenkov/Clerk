@@ -213,13 +213,16 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
-map<wxString, float> DataHelper::GetExpensesByMonth() {
+map<wxString, float> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
 	map<wxString, float> values;
 
-	char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
+	char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			values[wxString::FromUTF8((char *)sqlite3_column_text(statement, 0))] = sqlite3_column_double(statement, 1);
 		}
@@ -274,4 +277,24 @@ int DataHelper::GetPairAccountId(Account *account) {
 	sqlite3_finalize(statement);
 
 	return id;
+}
+
+vector<shared_ptr<wxString>> DataHelper::GetTagsBySearch(wxString search) {
+	auto result = vector<shared_ptr<wxString>>();
+
+	char *sql = "SELECT DISTINCT TRIM(t.name) FROM tags t WHERE t.name LIKE '%' || ? || '%' ORDER BY t.name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, search.ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto tag = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
+			result.push_back(tag);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
 }

@@ -29,6 +29,8 @@ private:
 	int selectedAccountId;
 	int windowWidth;
 	int windowHeight;
+	wxDateTime fromPeriodDate;
+	wxDateTime toPeriodDate;
 };
 
 #endif

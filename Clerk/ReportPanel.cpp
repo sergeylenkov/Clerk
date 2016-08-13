@@ -17,5 +17,11 @@ ReportPanel::~ReportPanel() {
 }
 
 void ReportPanel::Update() {
-	chart->SetValues(DataHelper::GetInstance().GetExpensesByMonth());
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetMonth(wxDateTime::Month::Jan);
+	fromDate.SetDay(1);
+
+	chart->SetValues(DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate));
 }

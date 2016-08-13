@@ -98,14 +98,16 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 
 	this->Centre(wxBOTH);
 
+	tagsPopup = new TagsPopup(this);	
+
 	okButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnCancel, this);
 
 	fromList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnFromAccountSelect, this);
 	toList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnToAccountSelect, this);
 	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnFromAmountKillFocus, this);
-	fromAmountField->Bind(wxEVT_KEY_DOWN, &TransactionFrame::OnTextChanged, this);
-
+	//fromAmountField->Bind(wxEVT_KEY_DOWN, &TransactionFrame::OnTextChanged, this);
+	tagsField->Bind(wxEVT_KEY_UP, &TransactionFrame::OnTextChanged, this);
 	fromValue = 0;
 	toValue = 0;
 
@@ -447,6 +449,54 @@ void TransactionFrame::SelectToAccount(int id) {
 }
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
-	wxLogDebug("key press %s", fromAmountField->GetValue().c_str());
+	//wxLogDebug("key press %s", tagsField->GetValue().c_str());
+	wxLogDebug("key press %d", event.GetKeyCode());
+	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
+	vector<wxString> search;
+
+	while (tokenizer.HasMoreTokens()) {
+		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
+		search.push_back(token);
+	}	
+
+	if (event.GetKeyCode() == 27) {
+		tagsPopup->Hide();
+	} else if (event.GetKeyCode() == 315) {
+		tagsPopup->SelectPrev();
+	} if (event.GetKeyCode() == 317) {
+		tagsPopup->SelectNext();
+	}
+	else if (event.GetKeyCode() == 13) {
+		wxString tag = tagsPopup->GetSelectedTag();
+		tagsPopup->Hide();
+
+		wxString result = "";
+
+		for (int i = 0; i < search.size() - 1; i++) {
+			result.Append(search[i]);
+			result.Append(", ");
+		}
+
+		result.Append(tag);
+		wxLogDebug("tag %s", result.c_str());
+		tagsField->SetValue(result);
+		tagsField->SetInsertionPointEnd();
+	} else if (event.GetKeyCode() != 8) {
+		if (!search.empty()) {
+			auto tags = DataHelper::GetInstance().GetTagsBySearch(search.back());
+
+			if (!tags.empty()) {
+				tagsPopup->Update(tags);
+
+				wxPoint pos = this->ClientToScreen(wxPoint(0, 0));
+				tagsPopup->Position(pos, wxSize(200, 200));
+				tagsPopup->Show();
+			}
+			else {
+				tagsPopup->Hide();
+			}
+		}
+	}
+
 	event.Skip();
 }

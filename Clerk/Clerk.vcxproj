@@ -74,7 +74,9 @@
     <ClCompile Include="BarChart.cpp" />
     <ClCompile Include="Budget.cpp" />
     <ClCompile Include="Currency.cpp" />
+    <ClCompile Include="GraphPopup.cpp" />
     <ClCompile Include="HomePanel.cpp" />
+    <ClCompile Include="LineChart.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="PieChart.cpp" />
     <ClCompile Include="Report.cpp" />
@@ -96,7 +98,9 @@
     <ClInclude Include="Budget.h" />
     <ClInclude Include="Currency.h" />
     <ClInclude Include="Defines.h" />
+    <ClInclude Include="GraphPopup.h" />
     <ClInclude Include="HomePanel.h" />
+    <ClInclude Include="LineChart.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="PieChart.h" />
     <ClInclude Include="Report.h" />

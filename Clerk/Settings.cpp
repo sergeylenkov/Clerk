@@ -7,8 +7,11 @@ void Settings::Open(char *configName) {
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
 	windowWidth = config->ReadLong("WindowWidth", 1000);
 	windowHeight = config->ReadLong("WindowHeight", 800);
-	fromPeriodDate = wxDateTime::Now(); //config->ReadObject("FromPeriodDate", wxDateTime::Now());
-	toPeriodDate = wxDateTime::Now(); // config->ReadObject("ToPeriodDate", wxDateTime::Now());
+	fromPeriodDate = wxDateTime::Now();
+	toPeriodDate = wxDateTime::Now();
+
+	fromPeriodDate.ParseISODate(config->ReadObject("FromPeriodDate", wxDateTime::Now().FormatISODate()));
+	toPeriodDate.ParseISODate(config->ReadObject("ToPeriodDate", wxDateTime::Now().FormatISODate()));
 }
 
 void Settings::Save() {
@@ -38,6 +41,14 @@ int Settings::GetWindowHeight() {
 	return windowHeight;
 }
 
+wxDateTime Settings::GetFromPeriodDate() {
+	return fromPeriodDate;
+}
+
+wxDateTime Settings::GetToPeriodDate() {
+	return toPeriodDate;
+}
+
 void Settings::SetSelectedAccountId(int id) {
 	selectedAccountId = id;
 }
@@ -48,4 +59,12 @@ void Settings::SetWindowWidth(int width) {
 
 void Settings::SetWindowHeight(int height) {
 	windowHeight = height;
+}
+
+void Settings::SetFromPeriodDate(wxDateTime date) {
+	fromPeriodDate = date;
+}
+
+void Settings::SetToPeriodDate(wxDateTime date) {
+	toPeriodDate = date;
 }

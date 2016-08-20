@@ -213,8 +213,8 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
-map<wxString, float> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
-	map<wxString, float> values;
+std::vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
+	std::vector<DateValue> values;
 
 	char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
 	sqlite3_stmt *statement;
@@ -224,7 +224,11 @@ map<wxString, float> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			values[wxString::FromUTF8((char *)sqlite3_column_text(statement, 0))] = sqlite3_column_double(statement, 1);
+			wxDateTime date = wxDateTime();
+			date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
+
+			DateValue value = { date, sqlite3_column_double(statement, 1) };
+			values.push_back(value);
 		}
 	}
 
@@ -257,7 +261,7 @@ int DataHelper::GetPairAccountId(Account *account) {
 	int id = -1;
 	char *sql = "";
 
-	if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Receipt) {
+	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt) {
 		sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 	}
 	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {

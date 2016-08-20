@@ -5,6 +5,7 @@
 #include <functional>
 #include "DataHelper.h"
 #include "TreeMenuItemData.h"
+#include "Settings.h"
 
 enum {
 	ID_AddTransaction = 10,

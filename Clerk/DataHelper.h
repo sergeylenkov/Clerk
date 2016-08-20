@@ -14,6 +14,12 @@
 
 using namespace std;
 
+struct DateValue
+{
+	wxDateTime date;
+	float value;
+};
+
 class DataHelper
 {
 public:
@@ -34,7 +40,7 @@ public:
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
-	map<wxString, float> GetExpensesByMonth(wxDateTime *from, wxDateTime *to);
+	std::vector<DateValue> GetExpensesByMonth(wxDateTime *from, wxDateTime *to);
 	map<wxString, float> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
 	vector<shared_ptr<wxString>> GetTagsBySearch(wxString search);

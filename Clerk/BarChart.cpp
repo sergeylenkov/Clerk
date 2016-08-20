@@ -33,8 +33,15 @@ void BarChart::Draw() {
 			return p1.second < p2.second; 
 		});
 
-	int stepX = width / _values.size();
-	float stepY = height / ptr->second;
+	int offsetX = 100;
+	int offsetY = 20;
+
+	int stepX = (width - offsetX) / _values.size();
+	float stepY = (height - offsetY) / ptr->second;	
+
+	dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+
+	dc.DrawLabel("100", wxRect(0, 0, 100, 20), 0);
 
 	dc.SetBrush(wxColor(10, 110, 170));
 	dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
@@ -42,7 +49,7 @@ void BarChart::Draw() {
 	int i = 0;
 
 	for (auto it = _values.begin(); it != _values.end(); it++) {
-		int x = round(i * stepX);
+		int x = round(i * stepX) + offsetX;
 		int y = round(it->second * stepY);
 
 		dc.DrawRectangle(x, height - y, stepX - 1, height);

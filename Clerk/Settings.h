@@ -20,9 +20,13 @@ public:
 	int GetSelectedAccountId();
 	int GetWindowWidth();
 	int GetWindowHeight();
+	wxDateTime Settings::GetFromPeriodDate();
+	wxDateTime Settings::GetToPeriodDate();
 	void SetSelectedAccountId(int id);
 	void SetWindowWidth(int width);
 	void SetWindowHeight(int height);
+	void SetFromPeriodDate(wxDateTime date);
+	void SetToPeriodDate(wxDateTime date);
 
 private:
 	wxFileConfig *config;

@@ -53,7 +53,7 @@ void PieChart::Draw() {
 	int color = 0;
 	int y = 0;
 
-	for (int i = 0; i < items.size(); i++) {
+	for (unsigned int i = 0; i < items.size(); i++) {
 		int angle = round(items[i].second * step);
 
 		dc.SetBrush(wxColor(10, 100 + color, 150 + color));

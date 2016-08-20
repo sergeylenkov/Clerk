@@ -152,7 +152,6 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 
 	for each (auto account in accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
-			//fromList->AppendString(*account->name);
 			int icon = 0;
 
 			if (account->iconId < accountsImageList->GetImageCount()) {
@@ -184,6 +183,8 @@ TransactionFrame::~TransactionFrame() {
 	delete dateLabel;
 	delete datePicker;
 	delete accountsImageList;
+	delete tagsPopup;
+	
 }
 
 void TransactionFrame::SetAccount(shared_ptr<Account> account) {
@@ -463,16 +464,15 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		tagsPopup->Hide();
 	} else if (event.GetKeyCode() == 315) {
 		tagsPopup->SelectPrev();
-	} if (event.GetKeyCode() == 317) {
+	} else if (event.GetKeyCode() == 317) {
 		tagsPopup->SelectNext();
-	}
-	else if (event.GetKeyCode() == 13) {
+	} else if (event.GetKeyCode() == 13) {
 		wxString tag = tagsPopup->GetSelectedTag();
 		tagsPopup->Hide();
 
 		wxString result = "";
 
-		for (int i = 0; i < search.size() - 1; i++) {
+		for (unsigned int i = 0; i < search.size() - 1; i++) {
 			result.Append(search[i]);
 			result.Append(", ");
 		}

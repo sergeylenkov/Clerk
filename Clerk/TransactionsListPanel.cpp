@@ -28,17 +28,10 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
-	periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
-
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
-
-	periodList->Select(3);
-
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
 	periodSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
@@ -69,7 +62,13 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	this->SetSizer(mainSizer);
 	this->Layout();
 
+	periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
+	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
+	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
+
+	periodList->Select(3);
 	CalculatePeriod();
+
 	balance = 0.0;
 	sortBy = 2;
 	sortDesc = false;
@@ -421,6 +420,9 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
+	Settings::GetInstance().SetFromPeriodDate(GetFromDate());
+	Settings::GetInstance().SetToPeriodDate(GetToDate());
+
 	if (OnPeriodChanged) {
 		OnPeriodChanged();
 	}
@@ -479,6 +481,9 @@ void TransactionsListPanel::CalculatePeriod() {
 		break;
 
 	case 5:
+		fromDate = Settings::GetInstance().GetFromPeriodDate();
+		toDate = Settings::GetInstance().GetToPeriodDate();
+
 		fromDatePicker->Enable();
 		toDatePicker->Enable();
 		break;

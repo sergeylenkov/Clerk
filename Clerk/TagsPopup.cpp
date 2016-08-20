@@ -5,16 +5,6 @@ TagsPopup::TagsPopup(wxWindow *parent) :wxPopupWindow(parent) {
 	panel->SetBackgroundColour(*wxLIGHT_GREY);
 	
 	list = new wxListBox(panel, wxID_ANY, wxPoint(0, 0), wxSize(200, 100));
-	list->AppendString(wxString("Test 1"));
-	list->AppendString(wxString("Test 2"));
-	list->AppendString(wxString("Test 3"));
-
-	/*wxStaticText *text = new wxStaticText(m_panel, wxID_ANY,
-		wxT("wxPopupTransientWindow is a\n")
-		wxT("wxPopupWindow which disappears\n")
-		wxT("automatically when the user\n")
-		wxT("clicks the mouse outside it or if it\n")
-		wxT("any other way."));*/
 
 	wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 	topSizer->Add(list, 0, wxALL, 5);
@@ -28,6 +18,7 @@ TagsPopup::TagsPopup(wxWindow *parent) :wxPopupWindow(parent) {
 }
 
 TagsPopup::~TagsPopup() {
+	//
 }
 
 void TagsPopup::Update(vector<shared_ptr<wxString>> tags) {
@@ -47,7 +38,7 @@ void TagsPopup::SelectNext() {
 		return;
 	}
 
-	int index = list->GetSelection();
+	unsigned int index = list->GetSelection();
 
 	index++;
 

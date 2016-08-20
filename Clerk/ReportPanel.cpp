@@ -80,7 +80,11 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 }
 
 ReportPanel::~ReportPanel() {
-		
+	delete chart;
+	delete accountsImageList;
+	delete accountList;
+	delete fromDatePicker;
+	delete toDatePicker;
 }
 
 void ReportPanel::Update() {

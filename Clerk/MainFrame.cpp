@@ -85,7 +85,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
 	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
-	//transactionList->OnSearchChanged = std::bind(&MainFrame::UpdateStatus, this);
 
 	homePanel = new HomePanel(panel3, wxID_ANY);
 
@@ -128,9 +127,11 @@ MainFrame::~MainFrame()
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
-
+	
 	delete treeMenu;
 	delete transactionList;
+	delete homePanel;
+	delete reportPanel;
 }
 
 void MainFrame::UpdateAccountsTree() 

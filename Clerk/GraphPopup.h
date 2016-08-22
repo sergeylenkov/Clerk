@@ -6,6 +6,8 @@
 #include <wx/listctrl.h>
 #include <vector>
 #include <memory>
+#include <algorithm>
+#include "DataHelper.h"
 
 using namespace std;
 
@@ -15,11 +17,11 @@ public:
 	GraphPopup(wxWindow *parent);
 	~GraphPopup();
 
-	void Update();
+	void Update(vector<StringValue> values);
 
 private:
 	wxScrolledWindow *panel;
-	wxListBox *list;
+	wxListCtrl *list;
 };
 
 #endif

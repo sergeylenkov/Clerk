@@ -1,6 +1,6 @@
 #include "ReportPanel.h"
 
-ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {		
+ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -26,7 +26,7 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxEXPAND, 5);	
+	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxEXPAND, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
@@ -74,9 +74,15 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 
 	accountList->Select(0);
 
+	chartPopup = new GraphPopup(this);
+
 	accountList->Bind(wxEVT_COMBOBOX, &ReportPanel::OnAccountSelect, this);
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportPanel::OnDateChanged, this);
+
+	chart->OnShowPopup = std::bind(&ReportPanel::ShowPopup, this);
+	chart->OnHidePopup = std::bind(&ReportPanel::HidePopup, this);
+	chart->OnUpdatePopup = std::bind(&ReportPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
 ReportPanel::~ReportPanel() {
@@ -85,6 +91,7 @@ ReportPanel::~ReportPanel() {
 	delete accountList;
 	delete fromDatePicker;
 	delete toDatePicker;
+	delete chartPopup;
 }
 
 void ReportPanel::Update() {
@@ -94,7 +101,9 @@ void ReportPanel::Update() {
 	fromDate.SetMonth(wxDateTime::Month::Jan);
 	fromDate.SetDay(1);
 
-	chart->SetValues(DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate));
+	values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
+
+	chart->SetValues(values);
 }
 
 void ReportPanel::OnAccountSelect(wxCommandEvent &event) {
@@ -103,4 +112,29 @@ void ReportPanel::OnAccountSelect(wxCommandEvent &event) {
 
 void ReportPanel::OnDateChanged(wxDateEvent &event) {
 	Update();
+}
+
+void ReportPanel::ShowPopup() {
+	chartPopup->Show();
+}
+
+void ReportPanel::HidePopup() {
+	chartPopup->Hide();
+}
+
+void ReportPanel::UpdatePopup(int x, int y, int index) {
+	wxDateTime date = values[index].date;
+
+	wxDateTime fromDate = date;
+	wxDateTime toDate = wxDateTime(date);
+	toDate.SetToLastMonthDay();
+
+	Account *account = accounts[accountList->GetSelection()].get();
+
+	vector<StringValue> popupValues = DataHelper::GetInstance().GetExpensesForAccount(account, &fromDate, &toDate);
+
+	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
+	chartPopup->SetPosition(pos);
+
+	chartPopup->Update(popupValues);
 }

@@ -115,25 +115,20 @@ void HomePanel::Update() {
 
 	expensesList->InsertColumn(1, col2);
 
-	map<wxString, float> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
-	std::vector<std::pair<wxString, float>> items;
+	vector<StringValue> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);	
 
-	for (auto it = values.begin(); it != values.end(); it++) {
-		items.push_back(std::pair<wxString, float>(it->first, it->second));
-	}
-
-	sort(items.begin(), items.end(), [](std::pair<wxString, float> const &a, std::pair<wxString, float> const &b) {
-		return a.second > b.second;
+	sort(values.begin(), values.end(), [](StringValue a,StringValue b) {
+		return a.value > b.value;
 	});
 
-	for (unsigned int i = 0; i < items.size(); i++) {
+	for (unsigned int i = 0; i < values.size(); i++) {
 		wxListItem listItem;
 
 		listItem.SetId(i);
 
 		expensesList->InsertItem(listItem);
 
-		expensesList->SetItem(i, 0, items[i].first);
-		expensesList->SetItem(i, 1, wxString::Format("%.2f", items[i].second));
+		expensesList->SetItem(i, 0, values[i].string);
+		expensesList->SetItem(i, 1, wxString::Format("%.2f", values[i].value));
 	}
 }

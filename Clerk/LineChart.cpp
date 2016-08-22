@@ -1,6 +1,8 @@
 #include "LineChart.h"
 
 LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+	currentPopupIndex = -1;
+
 	this->Connect(wxEVT_PAINT, wxPaintEventHandler(LineChart::OnPaint));
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);
 	this->Bind(wxEVT_ENTER_WINDOW, &LineChart::OnMouseEnter, this);
@@ -12,6 +14,7 @@ LineChart::~LineChart() {
 }
 
 void LineChart::SetValues(std::vector<DateValue> values) {
+	currentPopupIndex = -1;
 	_values = values;
 	Draw();
 }
@@ -54,11 +57,11 @@ void LineChart::Draw() {
 		maxX = ceil(maxValue / 100000) * 100000;
 	}
 
-	int offsetX = 100;
-	int offsetY = 20;
+	offsetX = 100;
+	offsetY = 20;
 
-	float stepX = (width - offsetX) / _values.size();
-	float stepY = (height - offsetY) / (float)maxX;
+	stepX = (width - offsetX) / _values.size();
+	stepY = (height - offsetY) / (float)maxX;
 	wxLogDebug("max - %f %d", maxValue, maxX);
 	dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
 
@@ -91,13 +94,52 @@ void LineChart::OnPaint(wxPaintEvent& event) {
 }
 
 void LineChart::OnMouseMove(wxMouseEvent& event) {
-	wxLogDebug("move %d %d", event.GetX(), event.GetY());
+	int width = 0;
+	int height = 0;
+
+	this->DoGetSize(&width, &height);
+
+	int mouseX = event.GetX();
+	int index = 0;
+	wxLogDebug("mouseX %d", mouseX);
+	for (unsigned int i = 0; i < _values.size(); i++) {
+		int x = round(i * stepX) + offsetX;
+
+		if (mouseX > x - (stepX / 2) && mouseX < x + (stepX / 2)) {
+			wxLogDebug("x %d %d", x, i);
+			index = i;
+			break;
+		}
+	}
+
+	if (index < 0) {
+		index = 0;
+	}
+	else if (index >= _values.size()) {
+		index = _values.size() - 1;
+	}
+
+	if (index != currentPopupIndex) {
+		currentPopupIndex = index;
+		int x = round(index * stepX) + offsetX;
+		int y = height - round(_values[index].value * stepY);
+
+		if (OnUpdatePopup) {
+			OnUpdatePopup(x, y, index);
+		}
+	}	
 }
 
 void LineChart::OnMouseEnter(wxMouseEvent& event) {
-	wxLogDebug("enter");
+	//wxLogDebug("enter");
+	if (OnShowPopup) {
+		OnShowPopup();
+	}
 }
 
 void LineChart::OnMouseExit(wxMouseEvent& event) {
-	wxLogDebug("leave");
+	//wxLogDebug("leave");
+	if (OnHidePopup) {
+		//OnHidePopup();
+	}
 }

@@ -213,10 +213,10 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
-std::vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
-	std::vector<DateValue> values;
+vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
+	vector<DateValue> values;
 
-	char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
+	char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -224,9 +224,10 @@ std::vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTi
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			wxDateTime date = wxDateTime();
+			wxDateTime date = wxDateTime::Now();
 			date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
-
+			date.SetDay(1);
+			wxLogDebug("%s", date.FormatISODate().c_str());
 			DateValue value = { date, sqlite3_column_double(statement, 1) };
 			values.push_back(value);
 		}
@@ -237,8 +238,8 @@ std::vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTi
 	return values;
 }
 
-map<wxString, float> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTime *to) {
-	map<wxString, float> values;
+vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTime *to) {
+	vector<StringValue> values;
 
 	char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
 	sqlite3_stmt *statement;
@@ -248,11 +249,51 @@ map<wxString, float> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTi
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			values[wxString::FromUTF8((char *)sqlite3_column_text(statement, 0))] = sqlite3_column_double(statement, 1);
+			StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+			values.push_back(value);
 		}
 	}
 
 	sqlite3_finalize(statement);
+
+	return values;
+}
+
+vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to) {
+	vector<StringValue> values;
+
+	if (account->id == -1) {
+		char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
+		sqlite3_stmt *statement;
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+			while (sqlite3_step(statement) == SQLITE_ROW) {
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				values.push_back(value);
+			}
+		}
+
+		sqlite3_finalize(statement);
+	}
+	else {
+		char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
+		sqlite3_stmt *statement;
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+			while (sqlite3_step(statement) == SQLITE_ROW) {
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				values.push_back(value);
+			}
+		}
+
+		sqlite3_finalize(statement);
+	}	
 
 	return values;
 }

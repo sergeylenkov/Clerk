@@ -7,6 +7,7 @@
 #include <map>
 #include "DataHelper.h"
 #include "LineChart.h"
+#include "GraphPopup.h"
 
 using namespace std;
 
@@ -25,7 +26,12 @@ private:
 	wxDatePickerCtrl *toDatePicker;
 	vector<shared_ptr<Account>> accounts;
 	wxImageList *accountsImageList;
+	GraphPopup *chartPopup;
+	vector<DateValue> values = {};
 
 	void OnAccountSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);
+	void ShowPopup();
+	void HidePopup();
+	void UpdatePopup(int x, int y, int index);
 };

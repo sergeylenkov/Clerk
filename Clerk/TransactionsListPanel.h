@@ -3,7 +3,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <functional>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 #include "TreeMenuItemData.h"
 #include "Settings.h"
 

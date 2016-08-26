@@ -11,6 +11,7 @@
 #include "Currency.h"
 #include "Transaction.h"
 #include "Report.h"
+#include "Budget.h"
 
 using namespace std;
 
@@ -46,7 +47,7 @@ public:
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
-	vector<DateValue> GetExpensesByMonth(wxDateTime *from, wxDateTime *to);
+	vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);

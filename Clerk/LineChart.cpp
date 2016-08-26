@@ -62,7 +62,7 @@ void LineChart::Draw() {
 
 	stepX = (width - offsetX) / _values.size();
 	stepY = (height - offsetY) / (float)maxX;
-	wxLogDebug("max - %f %d", maxValue, maxX);
+
 	dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
 
 	dc.DrawLabel(wxString::Format("%d", maxX), wxRect(0, 0, 100, 20), 0);
@@ -81,7 +81,7 @@ void LineChart::Draw() {
 		y = round(_values[i].value * stepY);
 		x2 = round((i + 1) * stepX) + offsetX;
 		y2 = round(_values[i + 1].value * stepY);
-		wxLogDebug("value %f %f", _values[i].value, _values[i].value * stepY);
+
 		dc.DrawLine(x, height - y, x2, height - y2);
 		dc.DrawCircle(x, height - y, 5);
 	}
@@ -94,6 +94,18 @@ void LineChart::OnPaint(wxPaintEvent& event) {
 }
 
 void LineChart::OnMouseMove(wxMouseEvent& event) {
+	if (event.GetX() < offsetX) {
+		if (OnHidePopup) {
+			OnHidePopup();
+		}
+
+		return;
+	}
+
+	if (OnShowPopup) {
+		OnShowPopup();
+	}
+
 	int width = 0;
 	int height = 0;
 
@@ -101,12 +113,11 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 
 	int mouseX = event.GetX();
 	int index = 0;
-	wxLogDebug("mouseX %d", mouseX);
+	
 	for (unsigned int i = 0; i < _values.size(); i++) {
 		int x = round(i * stepX) + offsetX;
 
 		if (mouseX > x - (stepX / 2) && mouseX < x + (stepX / 2)) {
-			wxLogDebug("x %d %d", x, i);
 			index = i;
 			break;
 		}
@@ -131,14 +142,12 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 }
 
 void LineChart::OnMouseEnter(wxMouseEvent& event) {
-	//wxLogDebug("enter");
 	if (OnShowPopup) {
-		OnShowPopup();
+		//OnShowPopup();
 	}
 }
 
 void LineChart::OnMouseExit(wxMouseEvent& event) {
-	//wxLogDebug("leave");
 	if (OnHidePopup) {
 		//OnHidePopup();
 	}

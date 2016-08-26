@@ -4,7 +4,7 @@
 #include <wx/valnum.h>
 #include <wx/defs.h>
 #include <functional>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 #include "TagsPopup.h"
 
 using namespace std;

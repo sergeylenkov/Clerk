@@ -101,7 +101,9 @@ void ReportPanel::Update() {
 	fromDate.SetMonth(wxDateTime::Month::Jan);
 	fromDate.SetDay(1);
 
-	values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
+	Account *account = accounts[accountList->GetSelection()].get();
+
+	values = DataHelper::GetInstance().GetExpensesByMonth(account, &fromDate, &toDate);
 
 	chart->SetValues(values);
 }

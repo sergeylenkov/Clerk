@@ -2,7 +2,7 @@
 #define TreeMenuItemData_h
 
 #include "wx/treectrl.h"
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 
 enum TreeMenuItemTypes {
 	MenuAccount = 0,

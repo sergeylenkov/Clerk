@@ -1,6 +1,6 @@
 #include "Clerk.h"
-#include "DataHelper.h"
-#include "Model.h"
+#include "Data/DataHelper.h"
+#include "Data/Model.h"
 
 IMPLEMENT_APP(ClerkApp)
 

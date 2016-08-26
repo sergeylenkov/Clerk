@@ -2,7 +2,7 @@
 #include <wx/listctrl.h>
 #include <algorithm>
 #include <map>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 
 using namespace std;
 

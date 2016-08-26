@@ -5,7 +5,7 @@
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 #include "LineChart.h"
 #include "GraphPopup.h"
 

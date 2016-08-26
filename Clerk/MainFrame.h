@@ -5,7 +5,7 @@
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
 #include <memory>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 #include "Defines.h"
 #include "Settings.h"
 #include "TreeMenuItemData.h"

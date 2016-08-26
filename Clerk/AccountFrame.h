@@ -2,7 +2,7 @@
 #include <wx/valnum.h>
 #include <wx/bmpcbox.h>
 #include <functional>
-#include "DataHelper.h"
+#include "Data/DataHelper.h"
 
 class AccountFrame : public wxFrame
 {

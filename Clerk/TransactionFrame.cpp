@@ -451,7 +451,7 @@ void TransactionFrame::SelectToAccount(int id) {
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 	//wxLogDebug("key press %s", tagsField->GetValue().c_str());
-	wxLogDebug("key press %d", event.GetKeyCode());
+	//wxLogDebug("key press %d", event.GetKeyCode());
 	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
 	vector<wxString> search;
 
@@ -478,7 +478,7 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		}
 
 		result.Append(tag);
-		wxLogDebug("tag %s", result.c_str());
+
 		tagsField->SetValue(result);
 		tagsField->SetInsertionPointEnd();
 	} else if (event.GetKeyCode() != 8) {

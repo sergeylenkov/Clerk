@@ -37,21 +37,27 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	menuFile->Append(wxID_ABOUT, "&About...");
 	menuFile->AppendSeparator();
-	menuFile->Append(wxID_EXIT, "E&xit");
+	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
 
 	wxMenu *menuAccounts = new wxMenu();
-	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add &Account..."));
+	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account...Ctrl+N"));
 
 	wxMenu *menuTransactions = new wxMenu();
-	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add &Transaction..."));
+	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add Transaction...\tCtrl+T"));
 
-	wxMenuBar *menuBar = new wxMenuBar;
+	wxMenuBar *menuBar = new wxMenuBar();
 
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(menuAccounts, "&Accounts");
 	menuBar->Append(menuTransactions, "&Transactions");
 
 	SetMenuBar(menuBar);
+
+	wxToolBar *toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_TEXT | wxTB_HORZ_TEXT | wxBORDER_NONE);
+	toolbar->AddTool(ID_ADD_TRANSACTION, wxT("Add Transaction"), accountsImageList->GetBitmap(62), wxT("Add Transaction"));	
+	toolbar->Realize();
+
+	SetToolBar(toolbar);
 
 	wxSplitterWindow *splittermain = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splittermain->SetSashGravity(0.5);
@@ -113,6 +119,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	menuAccounts->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+
+	toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
 	treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &MainFrame::OnTreeItemSelect, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &MainFrame::OnTreeSpecItemMenu, this);

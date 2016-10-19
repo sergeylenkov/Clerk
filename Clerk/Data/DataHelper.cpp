@@ -272,7 +272,7 @@ vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTim
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+			StringValue value = { string((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
 			values.push_back(value);
 		}
 	}
@@ -294,7 +294,7 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { string((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
 				values.push_back(value);
 			}
 		}
@@ -311,7 +311,7 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { string((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
 				values.push_back(value);
 			}
 		}

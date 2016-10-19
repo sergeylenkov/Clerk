@@ -43,7 +43,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account...Ctrl+N"));
 
 	wxMenu *menuTransactions = new wxMenu();
-	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add Transaction...\tCtrl+T"));
+	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add...\tCtrl+T"));
+	menuTransactions->Append(ID_DublicateTransaction, wxT("Duplicate...\tCtrl+D"));
 
 	wxMenuBar *menuBar = new wxMenuBar();
 
@@ -119,6 +120,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	menuAccounts->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
 
 	toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
@@ -177,7 +179,9 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -202,7 +206,9 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -227,7 +233,9 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -249,7 +257,9 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -271,7 +281,9 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -471,6 +483,10 @@ void MainFrame::OnAddTransaction(wxCommandEvent &event) {
 	AddTransaction();
 }
 
+void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
+	transactionList->DublicateTransaction();
+}
+
 void MainFrame::AddTransaction() {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 400, 350);
 	
@@ -565,8 +581,8 @@ void MainFrame::AddAccount() {
 	std::shared_ptr<Account> account = make_shared<Account>();
 
 	account->id = -1;
-	account->name = make_shared<wxString>("");
-	account->note = make_shared<wxString>("");
+	account->name = make_shared<string>("");
+	account->note = make_shared<string>("");
 	account->type = AccountTypes::Deposit;
 	account->iconId = 0;
 	account->orderId = 1000;

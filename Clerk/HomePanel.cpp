@@ -89,7 +89,9 @@ void HomePanel::Update() {
 
 		accountsList->InsertItem(listItem);
 
-		accountsList->SetItem(i, 0, *account->name);
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+
+		accountsList->SetItem(i, 0, name);
 		accountsList->SetItem(i, 1, wxString::Format("%.2f", amount));
 
 		i++;
@@ -117,7 +119,7 @@ void HomePanel::Update() {
 
 	vector<StringValue> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);	
 
-	sort(values.begin(), values.end(), [](StringValue a,StringValue b) {
+	sort(values.begin(), values.end(), [](StringValue a, StringValue b) {
 		return a.value > b.value;
 	});
 
@@ -128,7 +130,9 @@ void HomePanel::Update() {
 
 		expensesList->InsertItem(listItem);
 
-		expensesList->SetItem(i, 0, values[i].string);
+		wxString name = wxString::FromUTF8(values[i].string.c_str());
+
+		expensesList->SetItem(i, 0, name);
 		expensesList->SetItem(i, 1, wxString::Format("%.2f", values[i].value));
 	}
 }

@@ -37,7 +37,7 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 	this->SetSizer(mainSizer);
 
 	auto account = make_shared<Account>();
-	account->name = make_shared<wxString>("All");
+	account->name = make_shared<string>("All");
 	account->id = -1;
 	account->iconId = 0;
 
@@ -69,7 +69,9 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 			icon = account->iconId;
 		}
 
-		accountList->Append(*account->name, accountsImageList->GetBitmap(icon));
+		wxString name = wxString(*account->name.get());
+
+		accountList->Append(name, accountsImageList->GetBitmap(icon));
 	}
 
 	accountList->Select(0);

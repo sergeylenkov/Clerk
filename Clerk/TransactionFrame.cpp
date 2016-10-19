@@ -158,7 +158,8 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 				icon = account->iconId;
 			}
 
-			fromList->Append(*account->name, accountsImageList->GetBitmap(icon));
+			wxString name = wxString::FromUTF8(account->name.get()->c_str());
+			fromList->Append(name, accountsImageList->GetBitmap(icon));
 
 			fromAccounts.push_back(account);
 		}
@@ -419,7 +420,8 @@ void TransactionFrame::SelectFromAccount(int id) {
 					icon = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
+				wxString name = wxString::FromUTF8(toAccount->name.get()->c_str());
+				toList->Append(name, accountsImageList->GetBitmap(icon));
 
 				toAccounts.push_back(toAccount);
 			}			
@@ -431,7 +433,8 @@ void TransactionFrame::SelectFromAccount(int id) {
 					icon = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
+				wxString name = wxString::FromUTF8(toAccount->name.get()->c_str());
+				toList->Append(name, accountsImageList->GetBitmap(icon));
 
 				toAccounts.push_back(toAccount);
 			}			
@@ -450,8 +453,6 @@ void TransactionFrame::SelectToAccount(int id) {
 }
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
-	//wxLogDebug("key press %s", tagsField->GetValue().c_str());
-	//wxLogDebug("key press %d", event.GetKeyCode());
 	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
 	vector<wxString> search;
 

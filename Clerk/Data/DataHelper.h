@@ -23,7 +23,7 @@ struct DateValue
 
 struct StringValue
 {
-	wxString string;
+	string string;
 	float value;
 };
 

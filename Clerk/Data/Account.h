@@ -20,8 +20,8 @@ class Account : public Model
 {
 public:
 	int id;
-	shared_ptr<wxString> name;
-	shared_ptr<wxString> note;
+	shared_ptr<string> name;
+	shared_ptr<string> note;
 	AccountTypes type;
 	int iconId;
 	int orderId;

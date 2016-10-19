@@ -3,8 +3,8 @@
 Account::Account()
 {
 	this->id = -1;
-	this->name = make_shared<wxString>();
-	this->note = make_shared<wxString>();
+	this->name = make_shared<string>();
+	this->note = make_shared<string>();
 	this->type = AccountTypes::Deposit;
 	this->iconId = 0;
 	this->orderId = 0;
@@ -28,8 +28,8 @@ void Account::Load()
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
-			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
+			this->name = make_shared<string>(string((char *)sqlite3_column_text(statement, 1)));
+			this->note = make_shared<string>(string((char *)sqlite3_column_text(statement, 2)));
 			this->iconId = sqlite3_column_int(statement, 3);
 			this->type = static_cast<AccountTypes>(sqlite3_column_int(statement, 4));
 			this->orderId = sqlite3_column_int(statement, 5);
@@ -48,8 +48,8 @@ void Account::Save()
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, this->name->ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 1, this->name->c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 2, this->note->c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, static_cast<int>(this->type));
 			sqlite3_bind_int(statement, 4, this->iconId);
 			sqlite3_bind_int(statement, 5, this->orderId);
@@ -65,8 +65,8 @@ void Account::Save()
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, this->name->ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 1, this->name->c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 2, this->note->c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, static_cast<int>(this->type));
 			sqlite3_bind_int(statement, 4, this->iconId);
 			sqlite3_bind_int(statement, 5, this->orderId);

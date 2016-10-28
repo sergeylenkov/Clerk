@@ -44,7 +44,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxMenu *menuTransactions = new wxMenu();
 	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add...\tCtrl+T"));
-	menuTransactions->Append(ID_DublicateTransaction, wxT("Duplicate...\tCtrl+D"));
+	menuTransactions->Append(ID_DUPLICATE_TRANSACTION, wxT("Duplicate...\tCtrl+D"));
+	menuTransactions->Append(ID_SPLIT_TRANSACTION, wxT("Split...\tCtrl+S"));
 
 	wxMenuBar *menuBar = new wxMenuBar();
 
@@ -119,8 +120,10 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);
 
 	menuAccounts->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
+
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
+	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);
 
 	toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
@@ -179,7 +182,7 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+		wxString name = wxString::FromUTF8(account->name->c_str());
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
@@ -206,7 +209,7 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+		wxString name = wxString::FromUTF8(account->name->c_str());
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
@@ -233,7 +236,7 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+		wxString name = wxString::FromUTF8(account->name->c_str());
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
@@ -257,7 +260,7 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+		wxString name = wxString::FromUTF8(account->name->c_str());
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
@@ -281,7 +284,7 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
+		wxString name = wxString::FromUTF8(account->name->c_str());
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
@@ -329,11 +332,13 @@ void MainFrame::UpdateTransactionList(TreeMenuItemTypes type, Account *account)
 			amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
 		}
 
+		wxString name = wxString::FromUTF8(account->name->c_str());
+
 		if (account->creditLimit > 0.0) {
-			SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(account->name->c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
+			SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(name), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
 		}
 		else {
-			SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(account->name->c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str())));
+			SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(name), amount, static_cast<const char*>(account->currency->shortName->c_str())));
 		}
 	}
 	else if (type == TreeMenuItemTypes::MenuExpenses) {
@@ -485,6 +490,10 @@ void MainFrame::OnAddTransaction(wxCommandEvent &event) {
 
 void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 	transactionList->DublicateTransaction();
+}
+
+void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
+	SplitTransaction();
 }
 
 void MainFrame::AddTransaction() {

@@ -265,6 +265,9 @@ void TransactionFrame::SetAccount(shared_ptr<Account> account) {
 			}
 		}
 	}
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
@@ -297,7 +300,7 @@ void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transact
 	copy->fromAccountId = transaction->fromAccountId;
 	copy->toAccountId = transaction->toAccountId;
 	copy->fromAmount = transaction->fromAmount;
-	copy->toAmount = transaction->toAmount;
+	copy->toAmount = 0.0;
 	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
 	this->transaction = copy;
@@ -322,6 +325,9 @@ void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transact
 			break;
 		}
 	}
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionFrame::OnOK(wxCommandEvent &event) {
@@ -383,8 +389,10 @@ void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 	double val;
 
 	toAmountField->GetValue().ToDouble(&val);
+	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
+	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
 
-	if (val == 0) {
+	if (val == 0 && fromCurrencyId == toCurrencyId) {
 		toAmountField->SetValue(fromAmountField->GetValue());
 	}
 }

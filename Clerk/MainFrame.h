@@ -45,6 +45,7 @@ private:
 	void OnAbout(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
 	void OnDuplicateTransaction(wxCommandEvent &event);
+	void OnSplitTransaction(wxCommandEvent &event);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnEditAccount(wxCommandEvent &event);
 	void OnDeleteAccount(wxCommandEvent &event);

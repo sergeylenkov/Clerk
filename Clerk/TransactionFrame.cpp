@@ -306,21 +306,21 @@ void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transact
 	this->transaction = copy;
 	this->splitTransaction = transaction;
 
-	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
+	fromAmountField->SetValue(wxString::Format("%.2f", this->transaction->fromAmount));
+	toAmountField->SetValue(wxString::Format("%.2f", 0.0));
 	tagsField->SetValue("");
 	noteField->SetValue("");
-	datePicker->SetValue(*transaction->paidAt);
+	datePicker->SetValue(*this->transaction->paidAt);
 
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->fromAccountId == fromAccounts[i]->id) {
+		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
 			break;
 		}
 	}
 
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (transaction->toAccountId == toAccounts[i]->id) {
+		if (this->transaction->toAccountId == toAccounts[i]->id) {
 			SelectToAccount(i);
 			break;
 		}

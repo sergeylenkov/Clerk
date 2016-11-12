@@ -402,7 +402,7 @@ void MainFrame::OnTreeSpecItemMenu(wxTreeEvent &event)
 
 	menu->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
 	menu->Append(ID_EDIT_ACCOUNT, wxT("Edit Account..."));
-	menu->Append(ID_DELETE_ACCOUNT, wxT("Delete Account..."));
+	menu->Append(ID_DELETE_ACCOUNT, wxT("Delete Account"));
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnEditAccount, this, ID_EDIT_ACCOUNT);
@@ -537,7 +537,7 @@ void MainFrame::SplitTransaction() {
 	auto transaction = transactionList->GetTransaction();
 
 	if (transaction) {
-		transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 400, 350);
+		transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 
 		transactionFrame->Show(true);
 		transactionFrame->CenterOnParent();

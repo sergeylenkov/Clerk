@@ -69,7 +69,7 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 			icon = account->iconId;
 		}
 
-		wxString name = wxString(*account->name.get());
+		wxString name = wxString::FromUTF8(account->name.get()->c_str());
 
 		accountList->Append(name, accountsImageList->GetBitmap(icon));
 	}

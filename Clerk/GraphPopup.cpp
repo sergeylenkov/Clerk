@@ -53,7 +53,9 @@ void GraphPopup::Update(vector<StringValue> values) {
 
 		list->InsertItem(listItem);
 
-		list->SetItem(i, 0, values[i].string);
+		wxString name = wxString::FromUTF8(values[i].string.c_str());
+
+		list->SetItem(i, 0, name);
 		list->SetItem(i, 1, wxString::Format("%.2f", values[i].value));
 	}
 }

@@ -9,7 +9,7 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	amountValidator.SetRange(0.0f, 999999999.0f);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	wxPanel *mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *lineSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -106,6 +106,8 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnFromAmountKillFocus, this);
 	//fromAmountField->Bind(wxEVT_KEY_DOWN, &TransactionFrame::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KEY_UP, &TransactionFrame::OnTextChanged, this);
+	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnTagsKillFocus, this);
+
 	fromValue = 0;
 	toValue = 0;
 
@@ -496,8 +498,10 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 			if (!tags.empty()) {
 				tagsPopup->Update(tags);
 
-				wxPoint pos = this->ClientToScreen(wxPoint(0, 0));
-				tagsPopup->Position(pos, wxSize(200, 200));
+				wxPoint pos = tagsField->GetScreenPosition();
+				wxSize size = tagsField->GetSize();
+				
+				tagsPopup->Position(wxPoint(pos.x - 200, pos.y - 200 + size.GetHeight()), wxSize(200, 200));
 				tagsPopup->Show();
 			}
 			else {
@@ -506,5 +510,10 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		}
 	}
 
+	event.Skip();
+}
+
+void TransactionFrame::OnTagsKillFocus(wxFocusEvent& event) {
+	tagsPopup->Hide();
 	event.Skip();
 }

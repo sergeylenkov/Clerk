@@ -4,8 +4,8 @@
 #include <wx/valnum.h>
 #include <wx/defs.h>
 #include <functional>
-#include "Data/DataHelper.h"
-#include "TagsPopup.h"
+#include "../Data/DataHelper.h"
+#include "../TagsPopup.h"
 
 using namespace std;
 
@@ -22,6 +22,7 @@ public:
 	function<void()> OnClose;
 
 private:
+	wxPanel *mainPanel;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
 	wxBitmapComboBox *fromList;
@@ -56,4 +57,5 @@ private:
 	void SelectFromAccount(int id);
 	void SelectToAccount(int id);
 	void OnTextChanged(wxKeyEvent &event);
+	void OnTagsKillFocus(wxFocusEvent& event);
 };

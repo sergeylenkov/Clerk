@@ -3,9 +3,9 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <functional>
-#include "Data/DataHelper.h"
-#include "TreeMenuItemData.h"
-#include "Settings.h"
+#include "../Data/DataHelper.h"
+#include "../TreeMenuItemData.h"
+#include "../Settings.h"
 
 enum {
 	ID_AddTransaction = 10,

@@ -5,9 +5,9 @@
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
-#include "Data/DataHelper.h"
-#include "LineChart.h"
-#include "GraphPopup.h"
+#include "../Data/DataHelper.h"
+#include "../LineChart.h"
+#include "../GraphPopup.h"
 
 using namespace std;
 

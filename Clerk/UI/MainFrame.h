@@ -5,10 +5,10 @@
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
 #include <memory>
-#include "Data/DataHelper.h"
-#include "Defines.h"
-#include "Settings.h"
-#include "TreeMenuItemData.h"
+#include "../Data/DataHelper.h"
+#include "../Defines.h"
+#include "../Settings.h"
+#include "../TreeMenuItemData.h"
 #include "TransactionFrame.h"
 #include "TransactionsListPanel.h"
 #include "AccountFrame.h"

@@ -1,5 +1,5 @@
 #include "wx/wx.h" 
-#include "MainFrame.h"
+#include "UI/MainFrame.h"
 
 class ClerkApp : public wxApp {
 	virtual bool OnInit();

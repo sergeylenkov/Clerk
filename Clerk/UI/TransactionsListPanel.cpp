@@ -40,7 +40,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxEXPAND, 5);
+	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT, 5);
 
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -51,7 +51,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL, 5);
 
-	filterSizer->Add(searchSizer, 0, wxALIGN_RIGHT | wxALL | wxEXPAND, 5);
+	filterSizer->Add(searchSizer, 0, wxALL, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();

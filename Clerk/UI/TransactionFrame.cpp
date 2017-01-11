@@ -80,7 +80,7 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	lineSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 
 	cancelButton = new wxButton(mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALIGN_RIGHT | wxALL, 5);
+	lineSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
 	panelSizer->Add(lineSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 

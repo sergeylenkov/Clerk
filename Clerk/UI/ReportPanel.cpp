@@ -26,7 +26,7 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT | wxEXPAND, 5);
+	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();

@@ -52,9 +52,10 @@ private:
 
 	void OnListItemClick(wxListEvent &event);
 	void OnListColumnClick(wxListEvent &event);
+	void OnListItemDoubleClick(wxListEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);
-	void OnSearchChanged(wxCommandEvent &event);
+	void OnSearchChanged(wxCommandEvent &event);	
 	void CalculatePeriod();
 };

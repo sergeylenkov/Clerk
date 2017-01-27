@@ -6,6 +6,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
 	transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
+	transactionsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -387,6 +388,12 @@ void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	transactionsList->PopupMenu(menu, event.GetPoint());
 
 	delete menu;
+}
+
+void TransactionsListPanel::OnListItemDoubleClick(wxListEvent &event) {
+	if (OnEditTransaction) {
+		OnEditTransaction();
+	}
 }
 
 void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {

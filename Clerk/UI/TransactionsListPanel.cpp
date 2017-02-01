@@ -371,12 +371,82 @@ void TransactionsListPanel::SplitTransaction() {
 	}
 }
 
+void TransactionsListPanel::MergeTransactions() {
+	long itemIndex = -1;
+	vector<shared_ptr<Transaction>> _transactions;
+
+	for (;;) {
+		itemIndex = transactionsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+		if (itemIndex == -1) {		
+			break;
+		} else {
+			wxLogDebug("found transaction %d", itemIndex);
+			_transactions.push_back(transactions[itemIndex]);
+		}	
+	}
+
+	if (_transactions.size() > 1) {
+		auto firstTransaction = _transactions[0];
+		auto tags = firstTransaction->GetTags();
+		std::vector<wxString> newTags;
+
+		for (int i = 1; i < _transactions.size(); i++) {
+			auto transaction = _transactions[i];
+
+			firstTransaction->fromAmount = firstTransaction->fromAmount + transaction->fromAmount;
+			firstTransaction->toAmount = firstTransaction->toAmount + transaction->toAmount;
+			
+			auto _tags = transaction->GetTags();
+
+			for each (auto _tag in _tags)
+			{
+				for each (auto tag in tags)
+				{
+					if (_tag != tag) {
+						newTags.push_back(_tag);
+					}
+				}
+			}
+
+			transaction->Delete();
+		}
+
+		if (newTags.size() > 0) {
+			wxString tagsString = wxString(*firstTransaction->tags.get());
+			tagsString += ", ";
+
+			for each (auto tag in newTags)
+			{
+				tagsString += tag;
+				tagsString += ", ";
+			}
+
+			tagsString.RemoveLast(2);
+			wxLogDebug("update tags %s", tagsString.c_str());
+			firstTransaction->tags = make_shared<wxString>(tagsString);
+		}
+
+		firstTransaction->Save();
+		Update();
+	}	
+}
+
 void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
 	menu->Append(ID_EditTransaction, wxT("Edit..."));
 	menu->Append(ID_DublicateTransaction, wxT("Dublicate"));
 	menu->Append(ID_SplitTransaction, wxT("Split..."));
+
+	wxMenuItem *mergeItem = new wxMenuItem(menu, ID_MergeTransaction, wxT("Merge"));
+	
+	if (transactionsList->GetSelectedItemCount() < 2) {
+		mergeItem->Enable(false);
+		mergeItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	menu->Append(mergeItem);
 	menu->AppendSeparator();
 	menu->Append(ID_DeleteTransaction, wxT("Delete..."));
 
@@ -386,7 +456,7 @@ void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionsListPanel::OnMenuSelect, this);
 
 	transactionsList->PopupMenu(menu, event.GetPoint());
-
+	
 	delete menu;
 }
 
@@ -425,6 +495,10 @@ void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
 
 		case ID_SplitTransaction:
 			SplitTransaction();
+			break;
+
+		case ID_MergeTransaction:
+			MergeTransactions();
 			break;
 
 		default:

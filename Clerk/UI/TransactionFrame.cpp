@@ -468,7 +468,7 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 	while (tokenizer.HasMoreTokens()) {
 		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
 		search.push_back(token);
-	}	
+	}
 
 	if (event.GetKeyCode() == 27) {
 		tagsPopup->Hide();

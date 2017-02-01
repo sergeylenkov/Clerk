@@ -13,6 +13,7 @@ enum {
 	ID_DeleteTransaction = 12,
 	ID_DublicateTransaction = 13,
 	ID_SplitTransaction = 14,
+	ID_MergeTransaction = 15,
 };
 
 class TransactionsListPanel : public wxPanel
@@ -29,6 +30,7 @@ public:
 	void DeleteTransaction();
 	void DublicateTransaction();
 	void SplitTransaction();
+	void MergeTransactions();
 	wxDateTime GetFromDate();
 	wxDateTime GetToDate();
 	float GetBalance();

@@ -27,6 +27,8 @@ public:
 	void Load();
 	void Save();
 	void Delete();
+	void DeleteCompletely();
+	vector<wxString> GetTags();
 
 private:
 	void UpdateTags();

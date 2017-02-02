@@ -63,7 +63,7 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	buttonsSizer->Add(cancelButton, 0, wxALL, 5);
 
-	mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER | wxALIGN_RIGHT | wxALL, 5);
+	mainSizer->Add(buttonsSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -126,7 +126,7 @@ AccountFrame::~AccountFrame() {
 void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
 	this->account = account;
 
-	wxString name = wxString(*account->name.get());
+	wxString name = wxString::FromUTF8(account->name.get()->c_str());
 
 	nameField->SetValue(name);
 	noteField->SetValue(*account->note);

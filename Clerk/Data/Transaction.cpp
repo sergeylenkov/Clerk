@@ -73,14 +73,14 @@ void Transaction::Save()
 		char *sql = "UPDATE transactions SET from_account_id = ?, to_account_id = ?, from_account_amount = ?, to_account_amount = ?, paid_at = ?, note = ? WHERE id = ?";
 		sqlite3_stmt *statement;
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 7, this->id);
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {			
 			sqlite3_bind_int(statement, 1, this->fromAccountId);
 			sqlite3_bind_int(statement, 2, this->toAccountId);
 			sqlite3_bind_double(statement, 3, this->fromAmount);
 			sqlite3_bind_double(statement, 4, this->toAmount);
 			sqlite3_bind_text(statement, 5, this->paidAt->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 6, this->note->ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_int(statement, 7, this->id);
 
 			sqlite3_step(statement);
 		}
@@ -121,8 +121,8 @@ void Transaction::Delete()
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 2, this->id);
 		sqlite3_bind_int(statement, 1, true);
+		sqlite3_bind_int(statement, 2, this->id);		
 		sqlite3_step(statement);
 	}
 

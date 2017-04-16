@@ -14,6 +14,8 @@
 #include "AccountFrame.h"
 #include "HomePanel.h"
 #include "ReportPanel.h"
+#include "BudgetFrame.h"
+#include "BudgetsListPanel.h"
 
 class MainFrame : public wxFrame
 {
@@ -28,13 +30,16 @@ private:
 	TransactionFrame *transactionFrame;
 	TransactionsListPanel *transactionList;	
 	AccountFrame *accountFrame;
+	BudgetFrame *budgetFrame;
 	HomePanel *homePanel;
 	ReportPanel *reportPanel;
+	BudgetsListPanel *budgetsList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
-	wxPanel *panel2;
+	wxPanel *transactionsPanel;
 	wxPanel *panel3;
 	wxPanel *panel5;
+	wxPanel *budgetsPanel;
 	wxBoxSizer *vbox;
 	int selectedAccountId;
 
@@ -52,13 +57,17 @@ private:
 	void OnTreeSpecItemMenu(wxTreeEvent &event);
 	void OnTreeItemSelect(wxTreeEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
+	void OnAddBudget(wxCommandEvent &event);
 	void AddTransaction();
 	void EditTransaction();
 	void SplitTransaction();
-	void DeleteTransaction();	
 	void OnTransactionClose();
 	void AddAccount();
 	void EditAccount();
 	void DeleteAccount();
 	void OnAccountClose();
+	void AddBudget();
+	void EditBudget();
+	void OnBudgetClose();
+	void UpdateBudgetList();
 };

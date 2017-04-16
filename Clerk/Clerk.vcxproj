@@ -70,6 +70,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\BudgetsListPanel.cpp" />
+    <ClCompile Include="UI\BudgetFrame.cpp" />
     <ClCompile Include="Data\Account.cpp" />
     <ClCompile Include="UI\AccountFrame.cpp" />
     <ClCompile Include="BarChart.cpp" />
@@ -93,6 +95,8 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\BudgetsListPanel.h" />
+    <ClInclude Include="UI\BudgetFrame.h" />
     <ClInclude Include="Data\Account.h" />
     <ClInclude Include="UI\AccountFrame.h" />
     <ClInclude Include="BarChart.h" />

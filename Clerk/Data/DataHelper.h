@@ -43,6 +43,7 @@ public:
 	vector<shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
 	vector<shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
 	vector<shared_ptr<Currency>> GetCurrencies();
+	vector<shared_ptr<Budget>> GetBudgets();
 	float GetBalance(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
@@ -50,6 +51,7 @@ public:
 	vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
+	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
 	vector<shared_ptr<wxString>> GetTagsBySearch(wxString search);
 

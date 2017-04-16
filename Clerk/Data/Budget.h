@@ -4,14 +4,13 @@
 #include <wx/wx.h>
 #include <memory>
 #include "Model.h"
-#include "Currency.h"
+#include "Account.h"
 
 using namespace std;
 
 enum class BudgetTypes {
-	Receipt = 0,
-	Deposit = 1,
-	Expens = 2
+	Limit = 0,
+	Goal = 1,
 };
 
 enum class BudgetPeriods {
@@ -25,12 +24,11 @@ class Budget : public Model
 {
 public:
 	int id;
-	shared_ptr<wxString> name;
-	shared_ptr<wxString> note;
+	shared_ptr<string> name;
+	float amount;
 	BudgetTypes type;
 	BudgetPeriods period;
-	int orderId;
-	shared_ptr<Currency> currency;
+	shared_ptr<Account> account;
 
 	Budget();
 	Budget(int id);

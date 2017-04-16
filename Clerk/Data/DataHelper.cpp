@@ -109,6 +109,24 @@ vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 	return result;
 }
 
+vector<std::shared_ptr<Budget>> DataHelper::GetBudgets() {
+	auto result = vector<std::shared_ptr<Budget>>();
+
+	char *sql = "SELECT id FROM budgets ORDER BY name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto budget = make_shared<Budget>(sqlite3_column_int(statement, 0));
+			result.push_back(budget);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 float DataHelper::GetBalance(Account *account)
 {
 	float receipt_sum = 0.0;
@@ -320,6 +338,27 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 	}	
 
 	return values;
+}
+
+float DataHelper::GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
 }
 
 int DataHelper::GetPairAccountId(Account *account) {

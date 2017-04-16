@@ -40,26 +40,30 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
 
 	wxMenu *menuAccounts = new wxMenu();
-	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account...Ctrl+N"));
+	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account...\tCtrl+N"));
 
 	wxMenu *menuTransactions = new wxMenu();
 	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add...\tCtrl+T"));
 	menuTransactions->Append(ID_DUPLICATE_TRANSACTION, wxT("Duplicate...\tCtrl+D"));
 	menuTransactions->Append(ID_SPLIT_TRANSACTION, wxT("Split...\tCtrl+S"));
 
+	wxMenu *menuBudgets = new wxMenu();
+	menuBudgets->Append(ID_ADD_BUDGET, wxT("Add Budget..."));
+
 	wxMenuBar *menuBar = new wxMenuBar();
 
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(menuAccounts, "&Accounts");
 	menuBar->Append(menuTransactions, "&Transactions");
+	menuBar->Append(menuBudgets, "&Budgets");
 
 	SetMenuBar(menuBar);
 
-	wxToolBar *toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_TEXT | wxTB_HORZ_TEXT | wxBORDER_NONE);
+	/*wxToolBar *toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_TEXT | wxTB_HORZ_TEXT | wxBORDER_NONE);
 	toolbar->AddTool(ID_ADD_TRANSACTION, wxT("Add Transaction"), accountsImageList->GetBitmap(62), wxT("Add Transaction"));	
 	toolbar->Realize();
 
-	SetToolBar(toolbar);
+	SetToolBar(toolbar);*/
 
 	wxSplitterWindow *splittermain = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splittermain->SetSashGravity(0.5);
@@ -85,30 +89,37 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxPanel *panel = new wxPanel(splittermain, wxID_ANY);
 
-	panel2 = new wxPanel(panel, wxID_ANY);
+	transactionsPanel = new wxPanel(panel, wxID_ANY);
 	panel3 = new wxPanel(panel, wxID_ANY);
 	panel5 = new wxPanel(panel, wxID_ANY);
+	budgetsPanel = new wxPanel(panel, wxID_ANY);
 
-	transactionList = new TransactionsListPanel(panel2, wxID_ANY);
+	transactionList = new TransactionsListPanel(transactionsPanel, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
 	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
 
 	homePanel = new HomePanel(panel3, wxID_ANY);
+	reportPanel = new ReportPanel(panel5, wxID_ANY);
+
+	budgetsList = new BudgetsListPanel(budgetsPanel, wxID_ANY);
+	budgetsList->OnEditBudget = std::bind(&MainFrame::EditBudget, this);
 
 	wxBoxSizer *boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
-	panel2->SetSizer(boxSizer);	
+	transactionsPanel->SetSizer(boxSizer);
 
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
 	panel3->SetSizer(boxSizer);
 
-	reportPanel = new ReportPanel(panel5, wxID_ANY);
-
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
 	panel5->SetSizer(boxSizer);
+
+	boxSizer = new wxBoxSizer(wxVERTICAL);
+	boxSizer->Add(budgetsList, 1, wxEXPAND | wxALL, 0);
+	budgetsPanel->SetSizer(boxSizer);
 
 	vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -125,7 +136,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);
 
-	toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+	menuBudgets->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
+	//toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
 	treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &MainFrame::OnTreeItemSelect, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &MainFrame::OnTreeSpecItemMenu, this);
@@ -162,7 +174,11 @@ void MainFrame::UpdateAccountsTree()
 	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 15, 15, itemData);
 	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 33, 33);
 	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 51, 51);
-	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 57, 57);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuBudget;
+
+	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 57, 57, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
@@ -419,14 +435,15 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {		
-		vbox->Detach(panel2);
+		vbox->Detach(transactionsPanel);
 		vbox->Detach(panel3);
 		vbox->Detach(panel5);
+		vbox->Detach(budgetsPanel);
 
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Show();
+			transactionsPanel->Show();
 			panel3->Hide();
 			panel5->Hide();
 
@@ -436,27 +453,27 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 			selectedAccountId = account->id;
 		}
 		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
-			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Show();
+			transactionsPanel->Show();
 			panel3->Hide();
 			panel5->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
-			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Show();
+			transactionsPanel->Show();
 			panel3->Hide();
 			panel5->Hide();
 
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
-			vbox->Add(panel2, 1, wxEXPAND | wxALL, 0);
+			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Show();
+			transactionsPanel->Show();
 			panel3->Hide();
 			panel5->Hide();
 
@@ -465,16 +482,26 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 		else if (item->type == TreeMenuItemTypes::MenuReport) {
 			vbox->Add(panel5, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Hide();
+			transactionsPanel->Hide();
 			panel3->Hide();
 			panel5->Show();
 
 			reportPanel->Update();
 		}
+		else if (item->type == TreeMenuItemTypes::MenuBudget) {
+			vbox->Add(budgetsPanel, 1, wxEXPAND | wxALL, 0);
+
+			transactionsPanel->Hide();
+			panel3->Hide();
+			panel5->Hide();
+			budgetsList->Show();
+
+			budgetsList->Update();
+		}
 		else {
 			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);
 
-			panel2->Hide();
+			transactionsPanel->Hide();
 			panel3->Show();
 
 			homePanel->Update();
@@ -639,4 +666,52 @@ void MainFrame::OnAccountClose() {
 	delete accountFrame;
 
 	UpdateAccountsTree();
+}
+
+void MainFrame::OnAddBudget(wxCommandEvent &event) {
+	AddBudget();
+}
+
+void MainFrame::AddBudget() {
+	budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+
+	budgetFrame->Show(true);
+	budgetFrame->CenterOnParent();
+
+	std::shared_ptr<Budget> budget = make_shared<Budget>();
+
+	budget->id = -1;
+	budget->name = make_shared<string>("");
+	budget->type = BudgetTypes::Limit;
+	budget->period = BudgetPeriods::Month;
+	budget->amount = 0.0;
+
+	budgetFrame->SetBudget(budget);
+
+	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+}
+
+void MainFrame::EditBudget() {
+	auto budget = budgetsList->GetBudget();
+
+	if (budget) {
+		budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+
+		budgetFrame->Show(true);
+		budgetFrame->CenterOnParent();
+
+		budgetFrame->SetBudget(budget);
+		budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+	}
+}
+
+
+void MainFrame::OnBudgetClose() {
+	delete budgetFrame;
+
+	UpdateBudgetList();
+}
+
+void MainFrame::UpdateBudgetList() {
+	budgetsList->Update();
 }

@@ -89,37 +89,37 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxPanel *panel = new wxPanel(splittermain, wxID_ANY);
 
-	transactionsPanel = new wxPanel(panel, wxID_ANY);
-	panel3 = new wxPanel(panel, wxID_ANY);
-	panel5 = new wxPanel(panel, wxID_ANY);
-	budgetsPanel = new wxPanel(panel, wxID_ANY);
+	transactionsPanelPlaceholder = new wxPanel(panel, wxID_ANY);
+	homePanelPlaceholder = new wxPanel(panel, wxID_ANY);
+	reportPanelPlaceholder = new wxPanel(panel, wxID_ANY);
+	budgetsPanelPlaceholder = new wxPanel(panel, wxID_ANY);
 
-	transactionList = new TransactionsListPanel(transactionsPanel, wxID_ANY);
+	transactionList = new TransactionsListPanel(transactionsPanelPlaceholder, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
 	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
 
-	homePanel = new HomePanel(panel3, wxID_ANY);
-	reportPanel = new ReportPanel(panel5, wxID_ANY);
+	homePanel = new HomePanel(homePanelPlaceholder, wxID_ANY);
+	reportPanel = new ReportPanel(reportPanelPlaceholder, wxID_ANY);
 
-	budgetsList = new BudgetsListPanel(budgetsPanel, wxID_ANY);
+	budgetsList = new BudgetsListPanel(budgetsPanelPlaceholder, wxID_ANY);
 	budgetsList->OnEditBudget = std::bind(&MainFrame::EditBudget, this);
 
 	wxBoxSizer *boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
-	transactionsPanel->SetSizer(boxSizer);
+	transactionsPanelPlaceholder->SetSizer(boxSizer);
 
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
-	panel3->SetSizer(boxSizer);
+	homePanelPlaceholder->SetSizer(boxSizer);
 
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
-	panel5->SetSizer(boxSizer);
+	reportPanelPlaceholder->SetSizer(boxSizer);
 
 	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(budgetsList, 1, wxEXPAND | wxALL, 0);
-	budgetsPanel->SetSizer(boxSizer);
+	budgetsPanelPlaceholder->SetSizer(boxSizer);
 
 	vbox = new wxBoxSizer(wxVERTICAL);
 
@@ -435,17 +435,19 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {		
-		vbox->Detach(transactionsPanel);
-		vbox->Detach(panel3);
-		vbox->Detach(panel5);
-		vbox->Detach(budgetsPanel);
+		vbox->Detach(transactionsPanelPlaceholder);
+		vbox->Detach(homePanelPlaceholder);
+		vbox->Detach(reportPanelPlaceholder);
+		vbox->Detach(budgetsPanelPlaceholder);
+
+		transactionsPanelPlaceholder->Hide();
+		homePanelPlaceholder->Hide();
+		reportPanelPlaceholder->Hide();
+		budgetsPanelPlaceholder->Hide();
 
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Show();
-			panel3->Hide();
-			panel5->Hide();
+			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			transactionsPanelPlaceholder->Show();			
 
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
 			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
@@ -453,56 +455,38 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 			selectedAccountId = account->id;
 		}
 		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
-			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Show();
-			panel3->Hide();
-			panel5->Hide();
-
+			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			transactionsPanelPlaceholder->Show();
+			
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
-			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Show();
-			panel3->Hide();
-			panel5->Hide();
-
+			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			transactionsPanelPlaceholder->Show();
+			
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
-			vbox->Add(transactionsPanel, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Show();
-			panel3->Hide();
-			panel5->Hide();
-
+			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			transactionsPanelPlaceholder->Show();
+			
 			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReport) {
-			vbox->Add(panel5, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Hide();
-			panel3->Hide();
-			panel5->Show();
+			vbox->Add(reportPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			reportPanelPlaceholder->Show();
 
 			reportPanel->Update();
 		}
 		else if (item->type == TreeMenuItemTypes::MenuBudget) {
-			vbox->Add(budgetsPanel, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Hide();
-			panel3->Hide();
-			panel5->Hide();
-			budgetsList->Show();
+			vbox->Add(budgetsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			budgetsPanelPlaceholder->Show();
 
 			budgetsList->Update();
 		}
 		else {
-			vbox->Add(panel3, 1, wxEXPAND | wxALL, 0);
-
-			transactionsPanel->Hide();
-			panel3->Show();
+			vbox->Add(homePanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			homePanelPlaceholder->Show();
 
 			homePanel->Update();
 		}

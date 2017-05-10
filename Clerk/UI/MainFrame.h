@@ -36,10 +36,10 @@ private:
 	BudgetsListPanel *budgetsList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
-	wxPanel *transactionsPanel;
-	wxPanel *panel3;
-	wxPanel *panel5;
-	wxPanel *budgetsPanel;
+	wxPanel *transactionsPanelPlaceholder;
+	wxPanel *homePanelPlaceholder;
+	wxPanel *reportPanelPlaceholder;
+	wxPanel *budgetsPanelPlaceholder;
 	wxBoxSizer *vbox;
 	int selectedAccountId;
 

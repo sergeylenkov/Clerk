@@ -24,7 +24,7 @@ class Budget : public Model
 {
 public:
 	int id;
-	shared_ptr<string> name;
+	shared_ptr<wxString> name;
 	float amount;
 	BudgetTypes type;
 	BudgetPeriods period;

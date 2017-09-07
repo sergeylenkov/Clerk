@@ -198,9 +198,8 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -225,9 +224,8 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -252,9 +250,8 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -276,9 +273,8 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -300,9 +296,8 @@ void MainFrame::UpdateAccountsTree()
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, name, icon, icon, itemData);
 		accounts.push_back(account);
 
 		if (account->id == selectedAccountId) {
@@ -601,8 +596,8 @@ void MainFrame::AddAccount() {
 	std::shared_ptr<Account> account = make_shared<Account>();
 
 	account->id = -1;
-	account->name = make_shared<string>("");
-	account->note = make_shared<string>("");
+	account->name = make_shared<wxString>("");
+	account->note = make_shared<wxString>("");
 	account->type = AccountTypes::Deposit;
 	account->iconId = 0;
 	account->orderId = 1000;
@@ -665,7 +660,7 @@ void MainFrame::AddBudget() {
 	std::shared_ptr<Budget> budget = make_shared<Budget>();
 
 	budget->id = -1;
-	budget->name = make_shared<string>("");
+	budget->name = make_shared<wxString>("");
 	budget->type = BudgetTypes::Limit;
 	budget->period = BudgetPeriods::Month;
 	budget->amount = 0.0;

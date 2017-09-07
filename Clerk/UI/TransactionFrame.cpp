@@ -159,8 +159,7 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 				icon = account->iconId;
 			}
 
-			wxString name = wxString::FromUTF8(account->name.get()->c_str());
-			fromList->Append(name, accountsImageList->GetBitmap(icon));
+			fromList->Append(*account->name, accountsImageList->GetBitmap(icon));
 
 			fromAccounts.push_back(account);
 		}
@@ -429,8 +428,7 @@ void TransactionFrame::SelectFromAccount(int id) {
 					icon = toAccount->iconId;
 				}
 
-				wxString name = wxString::FromUTF8(toAccount->name.get()->c_str());
-				toList->Append(name, accountsImageList->GetBitmap(icon));
+				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
 
 				toAccounts.push_back(toAccount);
 			}			
@@ -442,8 +440,7 @@ void TransactionFrame::SelectFromAccount(int id) {
 					icon = toAccount->iconId;
 				}
 
-				wxString name = wxString::FromUTF8(toAccount->name.get()->c_str());
-				toList->Append(name, accountsImageList->GetBitmap(icon));
+				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
 
 				toAccounts.push_back(toAccount);
 			}			

@@ -126,9 +126,7 @@ AccountFrame::~AccountFrame() {
 void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
 	this->account = account;
 
-	wxString name = wxString::FromUTF8(account->name.get()->c_str());
-
-	nameField->SetValue(name);
+	nameField->SetValue(*account->name);
 	noteField->SetValue(*account->note);
 	typeList->SetSelection(static_cast<int>(account->type));
 
@@ -169,8 +167,8 @@ void AccountFrame::OnOK(wxCommandEvent &event) {
 		isNew = true;
 	}
 
-	account->name = make_shared<string>(nameField->GetValue());
-	account->note = make_shared<string>(noteField->GetValue());
+	account->name = make_shared<wxString>(nameField->GetValue());
+	account->note = make_shared<wxString>(noteField->GetValue());
 	account->type = static_cast<AccountTypes>(typeList->GetSelection());
 	account->iconId = iconList->GetSelection();
 	account->currency = currencies[currencyList->GetSelection()];

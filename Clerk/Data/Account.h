@@ -3,6 +3,7 @@
 
 #include <wx/wx.h>
 #include <memory>
+#include <codecvt>
 #include "Model.h"
 #include "Currency.h"
 
@@ -20,8 +21,8 @@ class Account : public Model
 {
 public:
 	int id;
-	shared_ptr<string> name;
-	shared_ptr<string> note;
+	shared_ptr<wxString> name;
+	shared_ptr<wxString> note;
 	AccountTypes type;
 	int iconId;
 	int orderId;

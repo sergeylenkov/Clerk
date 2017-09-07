@@ -89,9 +89,7 @@ void HomePanel::Update() {
 
 		accountsList->InsertItem(listItem);
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
-
-		accountsList->SetItem(i, 0, name);
+		accountsList->SetItem(i, 0, *account->name);
 		accountsList->SetItem(i, 1, wxString::Format("%.2f", amount));
 
 		i++;
@@ -130,9 +128,7 @@ void HomePanel::Update() {
 
 		expensesList->InsertItem(listItem);
 
-		wxString name = wxString::FromUTF8(values[i].string.c_str());
-
-		expensesList->SetItem(i, 0, name);
+		expensesList->SetItem(i, 0, values[i].string);
 		expensesList->SetItem(i, 1, wxString::Format("%.2f", values[i].value));
 	}
 }

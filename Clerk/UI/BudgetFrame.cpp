@@ -116,9 +116,7 @@ BudgetFrame::~BudgetFrame() {
 void BudgetFrame::SetBudget(std::shared_ptr<Budget> budget) {
 	this->budget = budget;
 
-	wxString name = wxString::FromUTF8(this->budget->name.get()->c_str());
-
-	nameField->SetValue(name);
+	nameField->SetValue(*this->budget->name);
 	typeList->SetSelection(static_cast<int>(this->budget->type));
 	periodList->SetSelection(static_cast<int>(this->budget->period));
 	amountField->SetValue(wxString::Format("%.2f", this->budget->amount));
@@ -144,8 +142,7 @@ void BudgetFrame::UpdateAccounts() {
 			icon = account->iconId;
 		}
 
-		wxString name = wxString::FromUTF8(account->name.get()->c_str());
-		accountList->Append(name, accountsImageList->GetBitmap(icon));
+		accountList->Append(*account->name, accountsImageList->GetBitmap(icon));
 	}
 }
 
@@ -155,7 +152,7 @@ void BudgetFrame::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
-	budget->name = make_shared<string>(nameField->GetValue());
+	budget->name = make_shared<wxString>(nameField->GetValue());
 	budget->type = static_cast<BudgetTypes>(typeList->GetSelection());
 	budget->period = static_cast<BudgetPeriods>(periodList->GetSelection());
 	budget->amount = amountValue;

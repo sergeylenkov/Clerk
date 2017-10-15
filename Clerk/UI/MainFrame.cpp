@@ -343,7 +343,7 @@ void MainFrame::UpdateTransactionList(TreeMenuItemTypes type, Account *account)
 			amount = DataHelper::GetInstance().GetToAmountSum(account, &transactionList->GetFromDate(), &transactionList->GetToDate());
 		}
 
-		wxString name = wxString::FromUTF8(account->name->c_str());
+		wxString name = *account->name;
 
 		if (account->creditLimit > 0.0) {
 			SetStatusText(wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(name), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str())));
@@ -414,10 +414,13 @@ void MainFrame::OnTreeSpecItemMenu(wxTreeEvent &event)
 	menu->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
 	menu->Append(ID_EDIT_ACCOUNT, wxT("Edit Account..."));
 	menu->Append(ID_DELETE_ACCOUNT, wxT("Delete Account"));
+	menu->AppendSeparator();
+	menu->Append(ID_ADD_TRANSACTION, wxT("Add Transaction..."));
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnEditAccount, this, ID_EDIT_ACCOUNT);
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDeleteAccount, this, ID_DELETE_ACCOUNT);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
 	PopupMenu(menu, event.GetPoint());
 

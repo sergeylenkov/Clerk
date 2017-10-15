@@ -57,7 +57,32 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
 
+	wxPanel *infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));	
+	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticText *st4 = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(st4, 0, wxALL, 5);
+
+	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(transactionLabel, 0, wxALL, 5);
+
+	wxStaticText *st5 = new wxStaticText(infoPanel, wxID_ANY, wxT("Income:"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(st5, 0, wxALL, 5);
+
+	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("100.20"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(incomeLabel, 0, wxALL, 5);
+
+	wxStaticText *st6 = new wxStaticText(infoPanel, wxID_ANY, wxT("Outcome:"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(st6, 0, wxALL, 5);
+
+	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("2500.00"), wxDefaultPosition, wxDefaultSize, 0);
+	infoSizer->Add(outcomeLabel, 0, wxALL, 5);
+
+	infoPanel->SetSizer(infoSizer);
+	infoPanel->Layout();
+
 	mainSizer->Add(filterPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
+	mainSizer->Add(infoPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
 	mainSizer->Add(transactionsList, 1, wxALL | wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
@@ -80,6 +105,9 @@ TransactionsListPanel::~TransactionsListPanel() {
 	delete fromDatePicker;
 	delete toDatePicker;
 	delete searchField;
+	delete transactionLabel;
+	delete incomeLabel;
+	delete outcomeLabel;
 }
 
 void TransactionsListPanel::SetAccount(Account *account) {
@@ -326,6 +354,39 @@ void TransactionsListPanel::Update() {
 
 		i++;
 	}
+
+	float income = 0;
+	float outcome = 0;
+
+	for each (auto transaction in transactions)
+	{
+		if (this->type == TreeMenuItemTypes::MenuAccount) {
+			if (account->type == AccountTypes::Deposit) {
+				income = income + transaction->toAmount;
+				outcome = outcome + transaction->fromAmount;
+			}
+			else if (account->type == AccountTypes::Receipt) {
+				income = income + transaction->toAmount;
+			}
+			else if (account->type == AccountTypes::Expens) {
+				outcome = outcome + transaction->toAmount;
+			}
+		}
+		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
+			outcome = outcome + transaction->toAmount;
+		}
+		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+			income = income + transaction->toAmount;
+		}
+		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
+			income = income + transaction->toAmount;
+			outcome = outcome + transaction->fromAmount;
+		}
+	}
+
+	transactionLabel->SetLabel(wxString::Format("%d", transactions.size()));
+	incomeLabel->SetLabel(wxString::Format("%.2f", income));
+	outcomeLabel->SetLabel(wxString::Format("%.2f", outcome));
 }
 
 void TransactionsListPanel::EditTransaction() {

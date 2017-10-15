@@ -45,6 +45,9 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	wxTextCtrl *searchField;
+	wxStaticText *transactionLabel;
+	wxStaticText *incomeLabel;
+	wxStaticText *outcomeLabel;
 	Account *account;
 	TreeMenuItemTypes type;
 	vector<shared_ptr<Transaction>> transactions;

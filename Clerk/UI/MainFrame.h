@@ -4,6 +4,7 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
+#include <wx/notebook.h>
 #include <memory>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
@@ -40,7 +41,8 @@ private:
 	wxPanel *homePanelPlaceholder;
 	wxPanel *reportPanelPlaceholder;
 	wxPanel *budgetsPanelPlaceholder;
-	wxBoxSizer *vbox;
+	wxBoxSizer *rightPanelSizer;
+	wxNotebook *tabsPanel;
 	int selectedAccountId;
 
 	void UpdateAccountsTree();
@@ -56,8 +58,8 @@ private:
 	void OnDeleteAccount(wxCommandEvent &event);
 	void OnTreeSpecItemMenu(wxTreeEvent &event);
 	void OnTreeItemSelect(wxTreeEvent &event);
-	void OnMenuSelect(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
+	void OnOpenNewTab(wxCommandEvent &event);
 	void AddTransaction();
 	void EditTransaction();
 	void SplitTransaction();

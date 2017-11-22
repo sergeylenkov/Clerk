@@ -59,40 +59,41 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	SetMenuBar(menuBar);
 
-	/*wxToolBar *toolbar = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_FLAT | wxTB_TEXT | wxTB_HORZ_TEXT | wxBORDER_NONE);
-	toolbar->AddTool(ID_ADD_TRANSACTION, wxT("Add Transaction"), accountsImageList->GetBitmap(62), wxT("Add Transaction"));	
-	toolbar->Realize();
+	wxSplitterWindow *splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
+	splitter->SetSashGravity(0.5);
+	splitter->SetMinimumPaneSize(300);
 
-	SetToolBar(toolbar);*/
+	wxPanel *splitterLeftPanel = new wxPanel(splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+	splitterLeftPanel->SetBackgroundColour(wxColour(245, 245, 245, 1));
 
-	wxSplitterWindow *splittermain = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
-	splittermain->SetSashGravity(0.5);
-	splittermain->SetMinimumPaneSize(300);
+	wxBoxSizer *boxSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxPanel *panel4 = new wxPanel(splittermain, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-	panel4->SetBackgroundColour(wxColour(245, 245, 245, 1));
-
-	wxBoxSizer *boxSizer4 = new wxBoxSizer(wxVERTICAL);
-
-	treeMenu = new wxTreeCtrl(panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
+	treeMenu = new wxTreeCtrl(splitterLeftPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
 	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));
 	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));
 
 	treeMenu->AssignImageList(accountsImageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
 
-	boxSizer4->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
-	panel4->SetSizer(boxSizer4);
+	boxSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
+	splitterLeftPanel->SetSizer(boxSizer);
 
 	CreateStatusBar();
 	SetStatusText("");
 
-	wxPanel *panel = new wxPanel(splittermain, wxID_ANY);
+	wxPanel *splitterRightPanel = new wxPanel(splitter, wxID_ANY);	
 
-	transactionsPanelPlaceholder = new wxPanel(panel, wxID_ANY);
-	homePanelPlaceholder = new wxPanel(panel, wxID_ANY);
-	reportPanelPlaceholder = new wxPanel(panel, wxID_ANY);
-	budgetsPanelPlaceholder = new wxPanel(panel, wxID_ANY);
+	rightPanelSizer = new wxBoxSizer(wxVERTICAL);
+	splitterRightPanel->SetSizer(rightPanelSizer);
+
+	//tabsPanel = new wxNotebook(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBK_TOP);
+	//vbox->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
+	//vbox->Layout();
+
+	transactionsPanelPlaceholder = new wxPanel(splitterRightPanel, wxID_ANY);
+	homePanelPlaceholder = new wxPanel(splitterRightPanel, wxID_ANY);
+	reportPanelPlaceholder = new wxPanel(splitterRightPanel, wxID_ANY);
+	budgetsPanelPlaceholder = new wxPanel(splitterRightPanel, wxID_ANY);
 
 	transactionList = new TransactionsListPanel(transactionsPanelPlaceholder, wxID_ANY);
 	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
@@ -105,7 +106,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	budgetsList = new BudgetsListPanel(budgetsPanelPlaceholder, wxID_ANY);
 	budgetsList->OnEditBudget = std::bind(&MainFrame::EditBudget, this);
 
-	wxBoxSizer *boxSizer = new wxBoxSizer(wxVERTICAL);
+	boxSizer = new wxBoxSizer(wxVERTICAL);
 	boxSizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
 	transactionsPanelPlaceholder->SetSizer(boxSizer);
 
@@ -121,11 +122,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	boxSizer->Add(budgetsList, 1, wxEXPAND | wxALL, 0);
 	budgetsPanelPlaceholder->SetSizer(boxSizer);
 
-	vbox = new wxBoxSizer(wxVERTICAL);
-
-	panel->SetSizer(vbox);
-
-	splittermain->SplitVertically(panel4, panel, 1);
+	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);
@@ -137,7 +134,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);
 
 	menuBudgets->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
-	//toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
 
 	treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &MainFrame::OnTreeItemSelect, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &MainFrame::OnTreeSpecItemMenu, this);
@@ -306,7 +302,7 @@ void MainFrame::UpdateAccountsTree()
 	}
 
 	auto report = make_shared<Report>(-1);
-	report->name = make_shared<wxString>("Expenses");
+	report->name = make_shared<wxString>("Expenses By Month");
 
 	reports.push_back(report);
 
@@ -411,6 +407,8 @@ void MainFrame::OnTreeSpecItemMenu(wxTreeEvent &event)
 {
 	wxMenu *menu = new wxMenu();
 
+	menu->Append(ID_OPEN_NEW_TAB, wxT("Open in New Tab"));
+	menu->AppendSeparator();	
 	menu->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
 	menu->Append(ID_EDIT_ACCOUNT, wxT("Edit Account..."));
 	menu->Append(ID_DELETE_ACCOUNT, wxT("Delete Account"));
@@ -421,6 +419,7 @@ void MainFrame::OnTreeSpecItemMenu(wxTreeEvent &event)
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnEditAccount, this, ID_EDIT_ACCOUNT);
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDeleteAccount, this, ID_DELETE_ACCOUNT);
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnOpenNewTab, this, ID_OPEN_NEW_TAB);	
 
 	PopupMenu(menu, event.GetPoint());
 
@@ -433,10 +432,10 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {		
-		vbox->Detach(transactionsPanelPlaceholder);
-		vbox->Detach(homePanelPlaceholder);
-		vbox->Detach(reportPanelPlaceholder);
-		vbox->Detach(budgetsPanelPlaceholder);
+		rightPanelSizer->Detach(transactionsPanelPlaceholder);
+		rightPanelSizer->Detach(homePanelPlaceholder);
+		rightPanelSizer->Detach(reportPanelPlaceholder);
+		rightPanelSizer->Detach(budgetsPanelPlaceholder);
 
 		transactionsPanelPlaceholder->Hide();
 		homePanelPlaceholder->Hide();
@@ -444,7 +443,7 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 		budgetsPanelPlaceholder->Hide();
 
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			transactionsPanelPlaceholder->Show();			
 
 			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
@@ -453,43 +452,43 @@ void MainFrame::OnTreeItemSelect(wxTreeEvent &event)
 			selectedAccountId = account->id;
 		}
 		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
-			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			transactionsPanelPlaceholder->Show();
 			
 			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
-			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			transactionsPanelPlaceholder->Show();
 			
 			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
-			vbox->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(transactionsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			transactionsPanelPlaceholder->Show();
 			
 			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReport) {
-			vbox->Add(reportPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(reportPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			reportPanelPlaceholder->Show();
 
 			reportPanel->Update();
 		}
 		else if (item->type == TreeMenuItemTypes::MenuBudget) {
-			vbox->Add(budgetsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(budgetsPanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			budgetsPanelPlaceholder->Show();
 
 			budgetsList->Update();
 		}
 		else {
-			vbox->Add(homePanelPlaceholder, 1, wxEXPAND | wxALL, 0);
+			rightPanelSizer->Add(homePanelPlaceholder, 1, wxEXPAND | wxALL, 0);
 			homePanelPlaceholder->Show();
 
 			homePanel->Update();
 		}
 
-		vbox->Layout();
+		rightPanelSizer->Layout();
 	}
 }
 
@@ -503,6 +502,10 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 
 void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
 	SplitTransaction();
+}
+
+void MainFrame::OnOpenNewTab(wxCommandEvent &event) {
+
 }
 
 void MainFrame::AddTransaction() {

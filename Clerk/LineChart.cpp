@@ -83,10 +83,10 @@ void LineChart::Draw() {
 		y2 = round(_values[i + 1].value * stepY);
 
 		dc.DrawLine(x, height - y, x2, height - y2);
-		dc.DrawCircle(x, height - y, 5);
+		dc.DrawCircle(x, height - y, 3);
 	}
 
-	dc.DrawCircle(x2, height - y2, 5);
+	dc.DrawCircle(x2, height - y2, 3);
 }
 
 void LineChart::OnPaint(wxPaintEvent& event) {

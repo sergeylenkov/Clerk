@@ -4,6 +4,7 @@
 #include <wx/wx.h>
 #include <wx/popupwin.h>
 #include <wx/listctrl.h>
+#include <wx/numformatter.h>
 #include <vector>
 #include <memory>
 #include <algorithm>

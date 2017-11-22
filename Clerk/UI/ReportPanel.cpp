@@ -39,7 +39,7 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 	auto account = make_shared<Account>();
 	account->name = make_shared<wxString>("All");
 	account->id = -1;
-	account->iconId = 0;
+	account->iconId = -1;
 
 	accounts.push_back(account);
 
@@ -48,12 +48,14 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) 
 		accounts.push_back(account);
 	}
 
-	accountsImageList = new wxImageList(16, 16, true);
+	accountsImageList = new wxImageList(16, 16, false);
 	wxImage image;
 
 	for (int i = 0; i <= 50; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
-		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
+		wxImage image(path);
+
+		if (image.IsOk())
 		{
 			wxBitmap *bitmap = new wxBitmap(image);
 			accountsImageList->Add(*bitmap);

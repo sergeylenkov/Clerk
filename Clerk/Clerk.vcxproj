@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\TreeMenu.cpp" />
     <ClCompile Include="UI\BudgetsListPanel.cpp" />
     <ClCompile Include="UI\BudgetFrame.cpp" />
     <ClCompile Include="Data\Account.cpp" />
@@ -95,6 +96,7 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\TreeMenu.h" />
     <ClInclude Include="UI\BudgetsListPanel.h" />
     <ClInclude Include="UI\BudgetFrame.h" />
     <ClInclude Include="Data\Account.h" />

@@ -340,6 +340,96 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 	return values;
 }
 
+vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to) {
+	vector<StringValue> values;
+
+	if (account->id == -1) {
+		char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
+		sqlite3_stmt *statement;
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			while (sqlite3_step(statement) == SQLITE_ROW) {
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				values.push_back(value);
+			}
+		}
+
+		sqlite3_finalize(statement);
+	}
+	else {
+		vector<StringValue> receipts;
+		vector<StringValue> expenses;
+
+		char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
+		sqlite3_stmt *statement;
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			sqlite3_bind_int(statement, 1, account->id);
+
+			while (sqlite3_step(statement) == SQLITE_ROW) {
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				receipts.push_back(value);
+			}
+		}
+
+		sqlite3_finalize(statement);
+
+		sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS amount FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			sqlite3_bind_int(statement, 1, account->id);
+
+			while (sqlite3_step(statement) == SQLITE_ROW) {
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				expenses.push_back(value);
+			}
+		}
+
+		sqlite3_finalize(statement);
+
+		/*
+		for (var i = 0; i < receipts.length; i++) {
+		dates[receipts[i].date] = { receipt: 0, expense: 0 };
+		dates[receipts[i].date].receipt = receipts[i].value;
+		}
+
+		for (var i = 0; i < expenses.length; i++) {
+		if (!dates[expenses[i].date]) {
+		dates[expenses[i].date] = { receipt: 0, expense: 0 };
+		}
+
+		dates[expenses[i].date].expense = expenses[i].value;
+		}
+
+		self.reportData = dates;
+		var datesSorted = [];
+
+		Object.keys(dates).forEach(function(key) {
+		datesSorted.push({ date: key, receipt: dates[key].receipt, expense: dates[key].expense });
+		});
+
+		datesSorted.sort(function(a, b) {
+		return d3.ascending(a.date, b.date);
+		});
+
+		var reportData = [];
+		var balance = 0;
+
+		datesSorted.forEach(function(data) {
+		if (account && account.credit_limit > 0) {
+		balance = balance + data.receipt - data.expense;
+		reportData.push({ date: data.date, value: account.credit_limit + balance });
+		} else {
+		balance = balance + data.receipt - data.expense;
+		reportData.push({ date: data.date, value: balance });
+		}
+		});
+		*/
+	}
+
+	return values;
+}
+
 float DataHelper::GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 

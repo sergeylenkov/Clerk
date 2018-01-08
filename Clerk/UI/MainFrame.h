@@ -10,6 +10,7 @@
 #include "../Defines.h"
 #include "../Settings.h"
 #include "../TreeMenuItemData.h"
+#include "TreeMenu.h"
 #include "TransactionFrame.h"
 #include "TransactionsListPanel.h"
 #include "AccountFrame.h"
@@ -25,9 +26,7 @@ public:
 	~MainFrame();
 
 private:
-	wxTreeCtrl *treeMenu;
-	wxImageList *imageList;
-	wxImageList *accountsImageList;
+	TreeMenu *treeMenu;
 	TransactionFrame *transactionFrame;
 	TransactionsListPanel *transactionList;	
 	AccountFrame *accountFrame;
@@ -35,17 +34,13 @@ private:
 	HomePanel *homePanel;
 	ReportPanel *reportPanel;
 	BudgetsListPanel *budgetsList;
-	vector<std::shared_ptr<Account>> accounts;
-	vector<std::shared_ptr<Report>> reports;
 	wxPanel *transactionsPanelPlaceholder;
 	wxPanel *homePanelPlaceholder;
 	wxPanel *reportPanelPlaceholder;
 	wxPanel *budgetsPanelPlaceholder;
 	wxBoxSizer *rightPanelSizer;
 	wxNotebook *tabsPanel;
-	int selectedAccountId;
 
-	void UpdateAccountsTree();
 	void UpdateTransactionList(TreeMenuItemTypes type, Account *account);
 	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
@@ -53,11 +48,12 @@ private:
 	void OnAddTransaction(wxCommandEvent &event);
 	void OnDuplicateTransaction(wxCommandEvent &event);
 	void OnSplitTransaction(wxCommandEvent &event);
+	void HideAllPanels();
+	void OnTreeMenuAccountSelect(std::shared_ptr<Account> account);
+	void OnTreeMenuReportSelect(std::shared_ptr<Report> report);
+	void OnTreeMenuHomeSelect();
+	void OnTreeMenuBudgetsSelect();
 	void OnAddAccount(wxCommandEvent &event);
-	void OnEditAccount(wxCommandEvent &event);
-	void OnDeleteAccount(wxCommandEvent &event);
-	void OnTreeSpecItemMenu(wxTreeEvent &event);
-	void OnTreeItemSelect(wxTreeEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
 	void AddTransaction();
@@ -65,8 +61,8 @@ private:
 	void SplitTransaction();
 	void OnTransactionClose();
 	void AddAccount();
-	void EditAccount();
-	void DeleteAccount();
+	void EditAccount(std::shared_ptr<Account> account);
+	void DeleteAccount(std::shared_ptr<Account> account);
 	void OnAccountClose();
 	void AddBudget();
 	void EditBudget();

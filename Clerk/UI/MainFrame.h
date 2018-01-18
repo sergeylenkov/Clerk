@@ -28,10 +28,10 @@ public:
 private:
 	TreeMenu *treeMenu;
 	TransactionFrame *transactionFrame;
-	TransactionsListPanel *transactionList;	
+	//TransactionsListPanel *transactionList;	
 	AccountFrame *accountFrame;
 	BudgetFrame *budgetFrame;
-	HomePanel *homePanel;
+	//HomePanel *homePanel;
 	ReportPanel *reportPanel;
 	BudgetsListPanel *budgetsList;
 	wxPanel *transactionsPanelPlaceholder;
@@ -40,19 +40,24 @@ private:
 	wxPanel *budgetsPanelPlaceholder;
 	wxBoxSizer *rightPanelSizer;
 	wxNotebook *tabsPanel;
+	std::vector<wxPanel *> tabs;
+	std::vector<wxBoxSizer *> tabsSizer;
+	std::vector<wxPanel *> tabsPanels;
+	wxPanel *currentTabPanel;
 
-	void UpdateTransactionList(TreeMenuItemTypes type, Account *account);
+	void UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, Account *account);
 	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
 	void OnDuplicateTransaction(wxCommandEvent &event);
 	void OnSplitTransaction(wxCommandEvent &event);
-	void HideAllPanels();
+	//void HideAllPanels();
 	void OnTreeMenuAccountSelect(std::shared_ptr<Account> account);
 	void OnTreeMenuReportSelect(std::shared_ptr<Report> report);
 	void OnTreeMenuHomeSelect();
 	void OnTreeMenuBudgetsSelect();
+	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
@@ -68,4 +73,6 @@ private:
 	void EditBudget();
 	void OnBudgetClose();
 	void UpdateBudgetList();
+	void AddTab();
+	void OnTabChanged(wxNotebookEvent &event);
 };

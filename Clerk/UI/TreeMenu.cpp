@@ -237,6 +237,8 @@ std::shared_ptr<Account> TreeMenu::GetAccount() {
 }
 
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
+	selectedMenuItem = event.GetItem();
+
 	wxMenu *menu = new wxMenu();
 
 	menu->Append(ID_OPEN_NEW_TAB, wxT("Open in New Tab"));
@@ -290,6 +292,11 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnReportSelect(report);
 			}
 		}
+		else if (item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts) {
+			if (OnAccountsSelect) {
+				OnAccountsSelect(item->type);
+			}
+		}
 	}
 }
 
@@ -322,5 +329,11 @@ void TreeMenu::OnMenuAddTransaction(wxCommandEvent &event) {
 }
 
 void TreeMenu::OnOpenNewTab(wxCommandEvent &event) {
+	if (OnNewTab) {
+		OnNewTab();
+	}
 
+	if (selectedMenuItem) {
+		treeMenu->SelectItem(selectedMenuItem);
+	}
 }

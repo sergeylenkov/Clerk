@@ -19,10 +19,12 @@ public:
 	std::function<void(std::shared_ptr<Report> report)> OnReportSelect;
 	std::function<void()> OnHomeSelect;
 	std::function<void()> OnBudgetsSelect;
+	std::function<void(TreeMenuItemTypes type)> OnAccountsSelect;
 	std::function<void()> OnAddAccount;
 	std::function<void(std::shared_ptr<Account> account)> OnEditAccount;
 	std::function<void(std::shared_ptr<Account> account)> OnDeleteAccount;
 	std::function<void()> OnAddTransaction;
+	std::function<void()> OnNewTab;
 
 private:
 	wxTreeCtrl *treeMenu;
@@ -31,6 +33,7 @@ private:
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
 	int selectedAccountId;
+	wxTreeItemId selectedMenuItem;
 
 	void CreateImageList();
 	void OnTreeSpecItemMenu(wxTreeEvent &event);

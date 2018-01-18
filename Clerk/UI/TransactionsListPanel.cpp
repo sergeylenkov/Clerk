@@ -569,7 +569,8 @@ void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
 
 void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 	CalculatePeriod();
-	
+	Update();
+
 	if (OnPeriodChanged) {
 		OnPeriodChanged();
 	}
@@ -579,12 +580,16 @@ void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
 	Settings::GetInstance().SetFromPeriodDate(GetFromDate());
 	Settings::GetInstance().SetToPeriodDate(GetToDate());
 
+	Update();
+
 	if (OnPeriodChanged) {
 		OnPeriodChanged();
 	}
 }
 
 void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
+	Update();
+
 	if (OnPeriodChanged) {
 		OnPeriodChanged();
 	}

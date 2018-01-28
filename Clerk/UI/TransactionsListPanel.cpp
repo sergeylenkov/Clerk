@@ -137,10 +137,6 @@ shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 void TransactionsListPanel::Update() {
 	transactionsList->ClearAll();
 	transactions.clear();
-
-	if (account == NULL) {
-		return;
-	}	
 		
 	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
 	balance = 0;

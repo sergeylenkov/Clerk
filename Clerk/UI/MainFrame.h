@@ -32,8 +32,8 @@ private:
 	AccountFrame *accountFrame;
 	BudgetFrame *budgetFrame;
 	//HomePanel *homePanel;
-	ReportPanel *reportPanel;
-	BudgetsListPanel *budgetsList;
+	//ReportPanel *reportPanel;
+	//BudgetsListPanel *budgetsList;
 	wxPanel *transactionsPanelPlaceholder;
 	wxPanel *homePanelPlaceholder;
 	wxPanel *reportPanelPlaceholder;

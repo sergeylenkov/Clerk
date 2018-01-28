@@ -51,11 +51,19 @@ void BudgetsListPanel::Update() {
 
 	wxListItem column2;
 
-	column1.SetId(2);
-	column1.SetText(_("Limit"));
-	column1.SetWidth(200);
+	column2.SetId(2);
+	column2.SetText(_("Limit"));
+	column2.SetWidth(200);
 
-	budgetsList->InsertColumn(2, column1);
+	budgetsList->InsertColumn(2, column2);
+
+	wxListItem column3;
+
+	column3.SetId(3);
+	column3.SetText(_("Remain"));
+	column3.SetWidth(200);
+
+	budgetsList->InsertColumn(3, column3);
 
 	int i = 0;
 
@@ -78,16 +86,25 @@ void BudgetsListPanel::Update() {
 			}
 		}
 
+		float remainAmount = budget->amount - currentAmount;
+		float remainPercent = currentAmount / (budget->amount / 100.0);
+
 		wxListItem listItem;
 
 		listItem.SetId(i);
 		listItem.SetData(budget->id);
 
+		if (remainAmount < 0 || remainPercent < 10) {
+			listItem.SetMask(wxLIST_MASK_TEXT);
+			listItem.SetTextColour(wxColour(255, 0, 0));
+		}
+
 		budgetsList->InsertItem(listItem);
 		budgetsList->SetItem(i, 0, *budget->name);
 		budgetsList->SetItem(i, 1, wxString::Format("%.2f", currentAmount));
-		budgetsList->SetItem(i, 2, wxString::Format("%.2f", budget->amount));		
-
+		budgetsList->SetItem(i, 2, wxString::Format("%.2f", budget->amount));
+		budgetsList->SetItem(i, 3, wxString::Format("%.2f", budget->amount - currentAmount));
+		
 		i++;
 	}
 }

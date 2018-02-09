@@ -57,7 +57,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
 
-	wxPanel *infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));	
+	infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));	
 	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *st4 = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"), wxDefaultPosition, wxDefaultSize, 0);
@@ -383,6 +383,8 @@ void TransactionsListPanel::Update() {
 	transactionLabel->SetLabel(wxString::Format("%d", transactions.size()));
 	incomeLabel->SetLabel(wxString::Format("%.2f", income));
 	outcomeLabel->SetLabel(wxString::Format("%.2f", outcome));
+
+	infoPanel->Layout();
 }
 
 void TransactionsListPanel::EditTransaction() {

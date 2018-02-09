@@ -48,6 +48,7 @@ private:
 	wxStaticText *transactionLabel;
 	wxStaticText *incomeLabel;
 	wxStaticText *outcomeLabel;
+	wxPanel *infoPanel;
 	Account *account;
 	TreeMenuItemTypes type;
 	vector<shared_ptr<Transaction>> transactions;

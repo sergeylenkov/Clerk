@@ -1,6 +1,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "../Data/DataHelper.h"
+#include "DataPanel.h"
 
 enum {
 	ID_EditBudget = 10,
@@ -8,7 +9,7 @@ enum {
 };
 
 
-class BudgetsListPanel : public wxPanel
+class BudgetsListPanel : public DataPanel
 {
 public:
 	BudgetsListPanel(wxWindow *parent, wxWindowID id);

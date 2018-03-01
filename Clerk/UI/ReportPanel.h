@@ -5,13 +5,14 @@
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
+#include "DataPanel.h"
 #include "../Data/DataHelper.h"
 #include "../LineChart.h"
 #include "../GraphPopup.h"
 
 using namespace std;
 
-class ReportPanel : public wxPanel
+class ReportPanel : public DataPanel
 {
 public:
 	ReportPanel(wxWindow *parent, wxWindowID id);

@@ -4,8 +4,6 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 {
 	CreateImageList();
 
-	selectedAccountId = Settings::GetInstance().GetSelectedAccountId();
-
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	treeMenu = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
@@ -57,7 +55,7 @@ void TreeMenu::CreateImageList() {
 }
 
 void TreeMenu::Update() {
-	selectedAccountId = Settings::GetInstance().GetSelectedAccountId();
+	selectedAccountId = -1; //Settings::GetInstance().GetSelectedAccountId();
 
 	wxTreeItemId rootItem = treeMenu->GetRootItem();
 
@@ -215,11 +213,11 @@ void TreeMenu::Update() {
 
 	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 51, 51, itemData);
 
-	treeMenu->Expand(accountsItem);
+	/*treeMenu->Expand(accountsItem);
 
 	if (selectedItem) {
 		treeMenu->SelectItem(selectedItem);
-	}
+	}*/
 }
 
 std::shared_ptr<Account> TreeMenu::GetAccount() {
@@ -234,6 +232,10 @@ std::shared_ptr<Account> TreeMenu::GetAccount() {
 	}
 
 	return nullptr;
+}
+
+vector<std::shared_ptr<Account>> TreeMenu::GetAccounts() {
+	return accounts;
 }
 
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {

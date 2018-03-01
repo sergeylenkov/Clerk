@@ -3,10 +3,11 @@
 #include <algorithm>
 #include <map>
 #include "../Data/DataHelper.h"
+#include "DataPanel.h"
 
 using namespace std;
 
-class HomePanel : public wxPanel 
+class HomePanel : public DataPanel 
 {
 public:
 	HomePanel(wxWindow *parent, wxWindowID id);

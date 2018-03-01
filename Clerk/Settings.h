@@ -4,6 +4,11 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 
+struct TabSettings {
+	int type;
+	int id;
+};
+
 class Settings
 {
 public:
@@ -27,6 +32,8 @@ public:
 	void SetWindowHeight(int height);
 	void SetFromPeriodDate(wxDateTime date);
 	void SetToPeriodDate(wxDateTime date);
+	void AddTab(int type, int accountId);
+	std::vector<TabSettings> GetTabs();
 
 private:
 	wxFileConfig *config;
@@ -35,6 +42,7 @@ private:
 	int windowHeight;
 	wxDateTime fromPeriodDate;
 	wxDateTime toPeriodDate;
+	std::vector<TabSettings> tabs;
 };
 
 #endif

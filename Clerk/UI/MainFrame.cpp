@@ -68,9 +68,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	rightPanelSizer->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
 	tabsPanel->Show();
-	rightPanelSizer->Layout();	
-
-	AddTab();
+	rightPanelSizer->Layout();
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
@@ -88,6 +86,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &MainFrame::OnTabChanged, this, ID_TAB_CHANGED);
 
 	treeMenu->Update();
+	RestoreTabs();	
 }
 
 MainFrame::~MainFrame() 
@@ -106,7 +105,30 @@ void MainFrame::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 		transactionList->SetType(type);
 		transactionList->SetAccount(account);
 		transactionList->Update();
+	}
+	else if (type == TreeMenuItemTypes::MenuExpenses) {
+		transactionList->SetType(type);
+		transactionList->Update();
+	}
+	else if (type == TreeMenuItemTypes::MenuReceipts) {
+		transactionList->SetType(type);
+		transactionList->Update();
+	}
+	else if (type == TreeMenuItemTypes::MenuDeposits) {
+		transactionList->SetType(type);
+		transactionList->Update();
+	}
 
+	this->UpdateStatus();
+}
+
+void MainFrame::UpdateStatus() {
+	int i = tabsPanel->GetSelection();
+	DataPanel *currentPanel = tabsPanels[i];
+
+	if (currentPanel->type == TreeMenuItemTypes::MenuAccount) {
+		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
+		Account *account = transactionList->GetAccount();
 		float amount = 0;
 
 		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Credit) {
@@ -128,49 +150,24 @@ void MainFrame::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 			SetStatusText(wxString::Format("%s: %.2f %s", static_cast<const char*>(name), amount, static_cast<const char*>(account->currency->shortName->c_str())));
 		}
 	}
-	else if (type == TreeMenuItemTypes::MenuExpenses) {
-		transactionList->SetType(type);
-		transactionList->Update();
+	else if (currentPanel->type == TreeMenuItemTypes::MenuExpenses) {
+		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
 
 		float amount = transactionList->GetBalance();
 		SetStatusText(wxString::Format("Expenses: %.2f", amount));
 	}
-	else if (type == TreeMenuItemTypes::MenuReceipts) {
-		transactionList->SetType(type);
-		transactionList->Update();
+	else if (currentPanel->type == TreeMenuItemTypes::MenuReceipts) {
+		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
 
 		float amount = transactionList->GetBalance();
 		SetStatusText(wxString::Format("Receipts: %.2f", amount));
 	}
-	else if (type == TreeMenuItemTypes::MenuDeposits) {
-		transactionList->SetType(type);
-		transactionList->Update();
+	else if (currentPanel->type == TreeMenuItemTypes::MenuDeposits) {
+		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
 
 		float amount = transactionList->GetBalance();
 		SetStatusText(wxString::Format("Deposits: %.2f", amount));
 	}
-}
-
-void MainFrame::UpdateStatus() {	
-	/*wxTreeItemId itemId = treeMenu->GetSelection();
-
-	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
-
-	if (item != NULL) {
-		if (item->type == TreeMenuItemTypes::MenuAccount) {
-			std::shared_ptr<Account> account = std::static_pointer_cast<Account>(item->object);
-			UpdateTransactionList(TreeMenuItemTypes::MenuAccount, account.get());
-		}
-		else if (item->type == TreeMenuItemTypes::MenuExpenses) {
-			UpdateTransactionList(TreeMenuItemTypes::MenuExpenses, 0);
-		}
-		else if (item->type == TreeMenuItemTypes::MenuReceipts) {
-			UpdateTransactionList(TreeMenuItemTypes::MenuReceipts, 0);
-		}
-		else if (item->type == TreeMenuItemTypes::MenuDeposits) {
-			UpdateTransactionList(TreeMenuItemTypes::MenuDeposits, 0);
-		}
-	}*/
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -188,28 +185,11 @@ void MainFrame::OnAddAccount(wxCommandEvent &event) {
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
+	Settings::GetInstance().AddTab(TreeMenuItemTypes::MenuAccount, account->id);
+
 	int i = tabsPanel->GetSelection();
 
-	wxPanel *panel = tabs[i];
-	wxBoxSizer *sizer = tabsSizer[i];
-	wxPanel *currentPanel = tabsPanels[i];
-
-	if (currentPanel) {
-		currentPanel->Destroy();
-	}
-
-	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
-	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
-	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
-	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);	
-
-	tabsPanels[i] = transactionList;	
-	
-	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
-	sizer->Layout();
-
-	tabsPanel->SetPageText(i, *account->name);
-	UpdateTransactionList(transactionList, TreeMenuItemTypes::MenuAccount, account.get());
+	CreateTransactionsList(i, account);
 }
 
 void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
@@ -217,7 +197,7 @@ void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
 
 	wxPanel *panel = tabs[i];
 	wxBoxSizer *sizer = tabsSizer[i];
-	wxPanel *currentPanel = tabsPanels[i];
+	DataPanel *currentPanel = tabsPanels[i];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -226,6 +206,7 @@ void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
 	ReportPanel *reportPanel = new ReportPanel(panel, wxID_ANY);
 
 	tabsPanels[i] = reportPanel;
+	tabsPanels[i]->type = TreeMenuItemTypes::MenuReport;
 
 	sizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -236,49 +217,27 @@ void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
 }
 
 void MainFrame::OnTreeMenuHomeSelect() {
-	int i = tabsPanel->GetSelection();
+	if (IsTabExists(TreeMenuItemTypes::MenuHome)) {
 
-	wxPanel *panel = tabs[i];
-	wxBoxSizer *sizer = tabsSizer[i];
-	wxPanel *currentPanel = tabsPanels[i];
-
-	if (currentPanel) {
-		currentPanel->Destroy();
 	}
+	else {
+		Settings::GetInstance().AddTab(TreeMenuItemTypes::MenuHome, 0);
+		int i = tabsPanel->GetSelection();
 
-	HomePanel *homePanel = new HomePanel(panel, wxID_ANY);
-
-	tabsPanels[i] = homePanel;
-
-	sizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
-	sizer->Layout();
-
-	tabsPanel->SetPageText(i, wxT("Home"));
-
-	homePanel->Update();
+		CreateHomePanel(i);
+	}
 }
 
 void MainFrame::OnTreeMenuBudgetsSelect() {
-	int i = tabsPanel->GetSelection();
+	if (IsTabExists(TreeMenuItemTypes::MenuBudget)) {
 
-	wxPanel *panel = tabs[i];
-	wxBoxSizer *sizer = tabsSizer[i];
-	wxPanel *currentPanel = tabsPanels[i];
-
-	if (currentPanel) {
-		currentPanel->Destroy();
 	}
+	else {
+		Settings::GetInstance().AddTab(TreeMenuItemTypes::MenuBudget, 0);
+		int i = tabsPanel->GetSelection();
 
-	BudgetsListPanel *budgetPanel = new BudgetsListPanel(panel, wxID_ANY);
-
-	tabsPanels[i] = budgetPanel;
-
-	sizer->Add(budgetPanel, 1, wxEXPAND | wxALL, 0);
-	sizer->Layout();
-
-	tabsPanel->SetPageText(i, wxT("Budgets"));
-
-	budgetPanel->Update();
+		CreateBudgetsPanel(i);
+	}
 }
 
 void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
@@ -286,7 +245,7 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 
 	wxPanel *panel = tabs[i];
 	wxBoxSizer *sizer = tabsSizer[i];
-	wxPanel *currentPanel = tabsPanels[i];
+	DataPanel *currentPanel = tabsPanels[i];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -298,6 +257,7 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
 
 	tabsPanels[i] = transactionList;
+	tabsPanels[i]->type = type;
 
 	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -386,6 +346,8 @@ void MainFrame::OnTransactionClose() {
 	for (int i = 0; i < tabsPanels.size(); i++) {
 		tabsPanels[i]->Update();
 	}
+
+	this->UpdateStatus();
 }
 
 void MainFrame::AddAccount() {
@@ -495,4 +457,122 @@ void MainFrame::AddTab() {
 void MainFrame::OnTabChanged(wxNotebookEvent &event) {
 	int i = tabsPanel->GetSelection();
 	tabsPanels[i]->Update();
+
+	this->UpdateStatus();
+}
+
+void MainFrame::RestoreTabs() {
+	for each (auto tab in Settings::GetInstance().GetTabs()) {
+		wxPanel *panel = new wxPanel(tabsPanel);
+		wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
+		panel->SetSizer(sizer);
+
+		tabs.push_back(panel);
+		tabsSizer.push_back(sizer);
+		tabsPanels.push_back(nullptr);
+
+		tabsPanel->AddPage(panel, "");
+
+		int index = tabs.size() - 1;
+
+		if (tab.type == TreeMenuItemTypes::MenuAccount) {
+			std::shared_ptr<Account> selectedAccount;
+
+			for each (auto account in treeMenu->GetAccounts()) {
+				if (account->id == tab.id) {
+					selectedAccount = account;
+				}
+			}
+
+			if (selectedAccount) {
+				CreateTransactionsList(index, selectedAccount);
+			}
+		}
+		else if (tab.type == TreeMenuItemTypes::MenuHome) {
+			CreateHomePanel(index);
+		}
+		else if (tab.type == TreeMenuItemTypes::MenuBudget) {
+			CreateBudgetsPanel(index);
+		}
+	}
+
+	tabsPanel->ChangeSelection(0);
+}
+
+bool MainFrame::IsTabExists(int type) {
+	for each (auto tabPanel in tabsPanels) {
+		if (tabPanel->type == type) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void MainFrame::CreateTransactionsList(int tabIndex, std::shared_ptr<Account> account) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
+	transactionList->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this);
+	transactionList->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this);
+	transactionList->OnPeriodChanged = std::bind(&MainFrame::UpdateStatus, this);
+
+	tabsPanels[tabIndex] = transactionList;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuAccount;
+
+	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	tabsPanel->SetPageText(tabIndex, *account->name);
+	UpdateTransactionList(transactionList, TreeMenuItemTypes::MenuAccount, account.get());
+}
+
+void MainFrame::CreateHomePanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	HomePanel *homePanel = new HomePanel(panel, wxID_ANY);
+
+	tabsPanels[tabIndex] = homePanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuHome;
+
+	sizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	tabsPanel->SetPageText(tabIndex, wxT("Home"));
+
+	homePanel->Update();
+}
+
+void MainFrame::CreateBudgetsPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	BudgetsListPanel *budgetPanel = new BudgetsListPanel(panel, wxID_ANY);
+
+	tabsPanels[tabIndex] = budgetPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuBudget;
+
+	sizer->Add(budgetPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	tabsPanel->SetPageText(tabIndex, wxT("Budgets"));
+
+	budgetPanel->Update();
 }

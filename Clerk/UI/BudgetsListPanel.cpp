@@ -1,6 +1,6 @@
 #include "BudgetsListPanel.h"
 
-BudgetsListPanel::BudgetsListPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+BudgetsListPanel::BudgetsListPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	budgetsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	budgetsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &BudgetsListPanel::OnListItemClick, this);
 	budgetsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsListPanel::OnListItemDoubleClick, this);

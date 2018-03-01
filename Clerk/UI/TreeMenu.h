@@ -14,6 +14,7 @@ public:
 
 	void Update();
 	std::shared_ptr<Account> GetAccount();
+	vector<std::shared_ptr<Account>> GetAccounts();
 
 	std::function<void(std::shared_ptr<Account> account)> OnAccountSelect;
 	std::function<void(std::shared_ptr<Report> report)> OnReportSelect;

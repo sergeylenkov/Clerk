@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <string> 
 
-TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
 	transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
@@ -114,6 +114,9 @@ void TransactionsListPanel::SetAccount(Account *account) {
 	this->account = account;
 }
 
+Account *TransactionsListPanel::GetAccount() {
+	return this->account;
+}
 void TransactionsListPanel::SetType(TreeMenuItemTypes type) {
 	this->type = type;
 }

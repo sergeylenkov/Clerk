@@ -1,6 +1,6 @@
 #include "ReportPanel.h"
 
-ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);

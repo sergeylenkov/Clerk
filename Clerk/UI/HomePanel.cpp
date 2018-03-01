@@ -1,6 +1,6 @@
 #include "HomePanel.h"
 
-HomePanel::HomePanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+HomePanel::HomePanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	wxPanel *panel = new wxPanel(this, wxID_ANY);
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 

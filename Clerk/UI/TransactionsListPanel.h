@@ -3,6 +3,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <functional>
+#include "DataPanel.h"
 #include "../Data/DataHelper.h"
 #include "../TreeMenuItemData.h"
 #include "../Settings.h"
@@ -16,13 +17,14 @@ enum {
 	ID_MergeTransaction = 15,
 };
 
-class TransactionsListPanel : public wxPanel
+class TransactionsListPanel : public DataPanel
 {
 public:
 	TransactionsListPanel(wxWindow *parent, wxWindowID id);
 	~TransactionsListPanel();
 
 	void SetAccount(Account *account);
+	Account *GetAccount();
 	void SetType(TreeMenuItemTypes type);
 	shared_ptr<Transaction> GetTransaction();
 	void Update();

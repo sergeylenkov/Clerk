@@ -443,7 +443,6 @@ void TransactionsListPanel::MergeTransactions() {
 		if (itemIndex == -1) {		
 			break;
 		} else {
-			wxLogDebug("found transaction %d", itemIndex);
 			_transactions.push_back(transactions[itemIndex]);
 		}	
 	}
@@ -453,7 +452,7 @@ void TransactionsListPanel::MergeTransactions() {
 		auto tags = firstTransaction->GetTags();
 		std::vector<wxString> newTags;
 
-		for (int i = 1; i < _transactions.size(); i++) {
+		for (unsigned int i = 1; i < _transactions.size(); i++) {
 			auto transaction = _transactions[i];
 
 			firstTransaction->fromAmount = firstTransaction->fromAmount + transaction->fromAmount;

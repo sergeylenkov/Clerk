@@ -3,6 +3,7 @@
 
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
+#include <map>
 
 struct TabSettings {
 	int type;
@@ -32,8 +33,12 @@ public:
 	void SetWindowHeight(int height);
 	void SetFromPeriodDate(wxDateTime date);
 	void SetToPeriodDate(wxDateTime date);
+	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
+	void AddExpandedMenu(int type);
+	void RemoveExpandedMenu(int type);
+	bool IsMenuExpanded(int type);
 
 private:
 	wxFileConfig *config;
@@ -43,6 +48,7 @@ private:
 	wxDateTime fromPeriodDate;
 	wxDateTime toPeriodDate;
 	std::vector<TabSettings> tabs;
+	std::map<int, bool> expandedMenu;
 };
 
 #endif

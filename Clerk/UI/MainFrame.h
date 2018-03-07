@@ -71,8 +71,9 @@ private:
 	void AddTab();
 	void OnTabChanged(wxNotebookEvent &event);	
 	void RestoreTabs();
-	bool IsTabExists(int type);
-	void CreateTransactionsList(int tabIndex, std::shared_ptr<Account> account);
+	bool IsTabExists(int type, int id = 0);
+	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);
 	void CreateHomePanel(int tabIndex);
 	void CreateBudgetsPanel(int tabIndex);
+	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
 };

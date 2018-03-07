@@ -19,6 +19,8 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 
 	treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &TreeMenu::OnTreeItemSelect, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &TreeMenu::OnTreeSpecItemMenu, this);
+	treeMenu->Bind(wxEVT_TREE_ITEM_EXPANDED, &TreeMenu::OnTreeItemExpanded, this);
+	treeMenu->Bind(wxEVT_TREE_ITEM_COLLAPSED, &TreeMenu::OnTreeItemCollapsed, this);
 }
 
 TreeMenu::~TreeMenu()
@@ -33,6 +35,7 @@ void TreeMenu::CreateImageList() {
 
 	for (int i = 0; i <= 50; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
+
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
 		{
 			wxBitmap *bitmap = new wxBitmap(image);
@@ -44,6 +47,7 @@ void TreeMenu::CreateImageList() {
 
 	for (int i = 0; i <= 19; i++) {
 		wxString path = wxString::Format("Resources\\%d.png", i);
+
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
 		{
 			wxBitmap *bitmap = new wxBitmap(image);
@@ -55,8 +59,6 @@ void TreeMenu::CreateImageList() {
 }
 
 void TreeMenu::Update() {
-	selectedAccountId = -1; //Settings::GetInstance().GetSelectedAccountId();
-
 	wxTreeItemId rootItem = treeMenu->GetRootItem();
 
 	accounts.clear();
@@ -68,11 +70,19 @@ void TreeMenu::Update() {
 	itemData->type = TreeMenuItemTypes::MenuHome;
 
 	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 15, 15, itemData);
-	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 33, 33);
-	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 51, 51);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuBudget;
+	itemData->type = TreeMenuItemTypes::MenuAccounts;
+
+	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 33, 33, itemData);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuReports;
+
+	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 51, 51, itemData);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuBudgets;
 
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 57, 57, itemData);
 
@@ -80,7 +90,6 @@ void TreeMenu::Update() {
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
 
 	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 32, 32, itemData);
-	wxTreeItemId selectedItem = homeItem;
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
@@ -97,10 +106,6 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
 		accounts.push_back(account);
-
-		if (account->id == selectedAccountId) {
-			selectedItem = itemId;
-		}
 	}
 
 	itemData = new TreeMenuItemData();
@@ -123,10 +128,6 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
 		accounts.push_back(account);
-
-		if (account->id == selectedAccountId) {
-			selectedItem = itemId;
-		}
 	}
 
 	itemData = new TreeMenuItemData();
@@ -149,10 +150,6 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
 		accounts.push_back(account);
-
-		if (account->id == selectedAccountId) {
-			selectedItem = itemId;
-		}
 	}
 
 	child = treeMenu->AppendItem(accountsItem, "Debt", 32, 32);
@@ -172,10 +169,6 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
 		accounts.push_back(account);
-
-		if (account->id == selectedAccountId) {
-			selectedItem = itemId;
-		}
 	}
 
 	child = treeMenu->AppendItem(accountsItem, "Credits", 32, 32);
@@ -195,10 +188,6 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
 
 		accounts.push_back(account);
-
-		if (account->id == selectedAccountId) {
-			selectedItem = itemId;
-		}
 	}
 
 	auto report = make_shared<Report>(-1);
@@ -212,12 +201,31 @@ void TreeMenu::Update() {
 	itemData->object = report;
 
 	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 51, 51, itemData);
+}
 
-	/*treeMenu->Expand(accountsItem);
+void TreeMenu::RestoreState() {
+	wxTreeItemId rootItem = treeMenu->GetRootItem();
+	ExpandItem(rootItem);	
+}
 
-	if (selectedItem) {
-		treeMenu->SelectItem(selectedItem);
-	}*/
+void TreeMenu::ExpandItem(wxTreeItemId item) {
+	wxTreeItemIdValue cookie;
+	wxTreeItemId child = treeMenu->GetFirstChild(item, cookie);
+
+	while (child.IsOk())
+	{
+		TreeMenuItemData *data = (TreeMenuItemData *)treeMenu->GetItemData(child);
+
+		if (data != NULL && Settings::GetInstance().IsMenuExpanded(data->type)) {
+			treeMenu->Expand(child);
+		}
+
+		if (treeMenu->HasChildren(child)) {
+			ExpandItem(child);
+		}
+
+		child = treeMenu->GetNextChild(item, cookie);
+	}
 }
 
 std::shared_ptr<Account> TreeMenu::GetAccount() {
@@ -269,9 +277,6 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 	if (item != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			auto account = std::static_pointer_cast<Account>(item->object);
-			selectedAccountId = account->id;
-
-			Settings::GetInstance().SetSelectedAccountId(selectedAccountId);
 
 			if (OnAccountSelect) {
 				OnAccountSelect(account);
@@ -337,5 +342,22 @@ void TreeMenu::OnOpenNewTab(wxCommandEvent &event) {
 
 	if (selectedMenuItem) {
 		treeMenu->SelectItem(selectedMenuItem);
+	}
+}
+
+void TreeMenu::OnTreeItemExpanded(wxTreeEvent &event) {
+	wxTreeItemId itemId = event.GetItem();
+	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
+
+	if (item != NULL) {
+		Settings::GetInstance().AddExpandedMenu(item->type);
+	}
+}
+
+void TreeMenu::OnTreeItemCollapsed(wxTreeEvent &event) {
+	wxTreeItemId itemId = event.GetItem();
+	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
+
+	if (item != NULL) {
 	}
 }

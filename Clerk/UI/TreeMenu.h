@@ -13,6 +13,7 @@ public:
 	~TreeMenu();
 
 	void Update();
+	void RestoreState();
 	std::shared_ptr<Account> GetAccount();
 	vector<std::shared_ptr<Account>> GetAccounts();
 
@@ -33,10 +34,10 @@ private:
 	wxImageList *accountsImageList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
-	int selectedAccountId;
 	wxTreeItemId selectedMenuItem;
 
 	void CreateImageList();
+	void ExpandItem(wxTreeItemId item);
 	void OnTreeSpecItemMenu(wxTreeEvent &event);
 	void OnTreeItemSelect(wxTreeEvent &event);
 	void OnMenuAddAccount(wxCommandEvent &event);
@@ -44,5 +45,7 @@ private:
 	void OnMenuDeleteAccount(wxCommandEvent &event);
 	void OnMenuAddTransaction(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
+	void OnTreeItemExpanded(wxTreeEvent &event);
+	void OnTreeItemCollapsed(wxTreeEvent &event);	
 };
 

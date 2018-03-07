@@ -10,5 +10,6 @@ public:
 	void Update();
 
 	TreeMenuItemTypes type;
+	int id;
 };
 

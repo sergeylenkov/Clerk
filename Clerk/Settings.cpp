@@ -31,6 +31,21 @@ void Settings::Open(char *configName) {
 
 		entry = config->GetNextGroup(key, index);
 	}
+
+	config->SetPath("/ExpandedMenu");
+
+	entry = config->GetFirstEntry(key, index);
+
+	while (entry)
+	{
+		int type = config->ReadLong(key, -1);
+
+		if (type != -1) {
+			expandedMenu[type] = true;
+		}
+
+		entry = config->GetNextEntry(key, index);
+	}
 }
 
 void Settings::Save() {
@@ -42,13 +57,27 @@ void Settings::Save() {
 	config->Write("FromPeriodDate", fromPeriodDate.FormatISODate());
 	config->Write("ToPeriodDate", toPeriodDate.FormatISODate());
 
-	config->DeleteEntry("/Tabs");
+	config->DeleteGroup("/Tabs");
 
 	for (unsigned int i = 0; i < tabs.size(); i++) {
 		wxString key = wxString::Format(wxT("/Tabs/Tab%i/"), i);
 
 		config->Write(key + "Type", tabs[i].type);
 		config->Write(key + "Id", tabs[i].id);
+	}
+
+	config->DeleteGroup("/ExpandedMenu");
+
+	int i = 0;
+
+	for (const auto &value : expandedMenu)
+	{
+		if (value.second) {
+			wxString key = wxString::Format(wxT("/ExpandedMenu/Item%i"), i);
+			config->Write(key, value.first);
+
+			i++;
+		}
 	}
 
 	config->Flush();
@@ -99,6 +128,10 @@ void Settings::SetToPeriodDate(wxDateTime date) {
 	toPeriodDate = date;
 }
 
+void Settings::ClearTabs() {
+	tabs.clear();
+}
+
 void Settings::AddTab(int type, int id) {
 	TabSettings tab = { type, id };
 	tabs.push_back(tab);
@@ -106,4 +139,20 @@ void Settings::AddTab(int type, int id) {
 
 std::vector<TabSettings> Settings::GetTabs() {
 	return tabs;
+}
+
+void Settings::AddExpandedMenu(int type) {
+	expandedMenu[type] = true;
+}
+
+void Settings::RemoveExpandedMenu(int type) {
+	expandedMenu[type] = false;
+}
+
+bool Settings::IsMenuExpanded(int type) {
+	if (expandedMenu.find(type) != expandedMenu.end()) {
+		return expandedMenu[type];
+	}
+
+	return false;
 }

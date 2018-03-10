@@ -42,6 +42,24 @@ vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 	return result;
 }
 
+shared_ptr<Account>  DataHelper::GetAccountById(int id) {
+	char *sql = "SELECT a.id FROM accounts a WHERE a.id = ?";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, (int)id);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
+			return account;
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return nullptr;
+}
+
 vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *account, wxDateTime *from, wxDateTime *to)
 {
 	auto result = vector<std::shared_ptr<Transaction>>();

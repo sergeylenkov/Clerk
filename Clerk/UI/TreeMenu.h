@@ -25,8 +25,8 @@ public:
 	std::function<void()> OnAddAccount;
 	std::function<void(std::shared_ptr<Account> account)> OnEditAccount;
 	std::function<void(std::shared_ptr<Account> account)> OnDeleteAccount;
-	std::function<void()> OnAddTransaction;
-	std::function<void()> OnNewTab;
+	std::function<void(std::shared_ptr<Account> account)> OnAddTransaction;
+	std::function<void(int type, shared_ptr<void> object)> OnNewTab;
 
 private:
 	wxTreeCtrl *treeMenu;
@@ -34,7 +34,7 @@ private:
 	wxImageList *accountsImageList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
-	wxTreeItemId selectedMenuItem;
+	wxTreeItemId contextMenuItem;
 
 	void CreateImageList();
 	void ExpandItem(wxTreeItemId item);

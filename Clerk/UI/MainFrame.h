@@ -56,7 +56,7 @@ private:
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
-	void AddTransaction();
+	void AddTransaction(std::shared_ptr<Account> account);
 	void EditTransaction();
 	void SplitTransaction();
 	void OnTransactionClose();
@@ -68,8 +68,9 @@ private:
 	void EditBudget();
 	void OnBudgetClose();
 	void UpdateBudgetList();
-	void AddTab();
-	void OnTabChanged(wxNotebookEvent &event);	
+	void CreateTab(int type, shared_ptr<void> object);
+	void AddTab(int type, shared_ptr<void> object);
+	void OnTabChanged(wxBookCtrlEvent &event);
 	void RestoreTabs();
 	bool IsTabExists(int type, int id = 0);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);

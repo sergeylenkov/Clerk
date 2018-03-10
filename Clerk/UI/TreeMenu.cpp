@@ -247,7 +247,8 @@ vector<std::shared_ptr<Account>> TreeMenu::GetAccounts() {
 }
 
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
-	selectedMenuItem = event.GetItem();
+	contextMenuItem = event.GetItem();
+	//TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(selectedMenuItem);
 
 	wxMenu *menu = new wxMenu();
 
@@ -287,7 +288,7 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnHomeSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuBudget) {
+		else if (item->type == TreeMenuItemTypes::MenuBudgets) {
 			if (OnBudgetsSelect) {
 				OnBudgetsSelect();
 			}
@@ -331,17 +332,27 @@ void TreeMenu::OnMenuDeleteAccount(wxCommandEvent &event) {
 
 void TreeMenu::OnMenuAddTransaction(wxCommandEvent &event) {
 	if (OnAddTransaction) {
-		OnAddTransaction();
+		TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(contextMenuItem);
+
+		if (item != NULL) {
+			if (item->type == TreeMenuItemTypes::MenuAccount) {
+				auto account = std::static_pointer_cast<Account>(item->object);
+				OnAddTransaction(account);
+			}
+		}
+		else {
+			OnAddTransaction(nullptr);
+		}
 	}
 }
 
 void TreeMenu::OnOpenNewTab(wxCommandEvent &event) {
 	if (OnNewTab) {
-		OnNewTab();
-	}
+		TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(contextMenuItem);
 
-	if (selectedMenuItem) {
-		treeMenu->SelectItem(selectedMenuItem);
+		if (item != NULL) {
+			OnNewTab(item->type, item->object);			
+		}		
 	}
 }
 
@@ -359,5 +370,6 @@ void TreeMenu::OnTreeItemCollapsed(wxTreeEvent &event) {
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {
+		Settings::GetInstance().RemoveExpandedMenu(item->type);
 	}
 }

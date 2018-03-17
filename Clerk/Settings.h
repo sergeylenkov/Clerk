@@ -36,6 +36,8 @@ public:
 	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
+	void SetSelectedTab(int id);
+	int GetSelectedTab();
 	void AddExpandedMenu(int type);
 	void RemoveExpandedMenu(int type);
 	bool IsMenuExpanded(int type);
@@ -49,6 +51,7 @@ private:
 	wxDateTime toPeriodDate;
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
+	int selectedTab;
 };
 
 #endif

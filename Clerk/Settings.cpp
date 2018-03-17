@@ -5,6 +5,7 @@ void Settings::Open(char *configName) {
 	config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
 
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
+	selectedTab = config->ReadLong("SelectedTab", 0);
 	windowWidth = config->ReadLong("WindowWidth", 1000);
 	windowHeight = config->ReadLong("WindowHeight", 800);
 	fromPeriodDate = wxDateTime::Now();
@@ -56,6 +57,7 @@ void Settings::Save() {
 	config->Write("WindowHeight", windowHeight);
 	config->Write("FromPeriodDate", fromPeriodDate.FormatISODate());
 	config->Write("ToPeriodDate", toPeriodDate.FormatISODate());
+	config->Write("SelectedTab", selectedTab);
 
 	config->DeleteGroup("/Tabs");
 
@@ -139,6 +141,14 @@ void Settings::AddTab(int type, int id) {
 
 std::vector<TabSettings> Settings::GetTabs() {
 	return tabs;
+}
+
+void Settings::SetSelectedTab(int id) {
+	selectedTab = id;
+}
+
+int Settings::GetSelectedTab() {
+	return selectedTab;
 }
 
 void Settings::AddExpandedMenu(int type) {

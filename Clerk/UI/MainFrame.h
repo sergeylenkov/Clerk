@@ -73,7 +73,9 @@ private:
 	void OnTabChanged(wxBookCtrlEvent &event);
 	void RestoreTabs();
 	bool IsTabExists(int type, int id = 0);
+	void SelectTab(int type, int id = 0);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);
+	void CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type);
 	void CreateHomePanel(int tabIndex);
 	void CreateBudgetsPanel(int tabIndex);
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);

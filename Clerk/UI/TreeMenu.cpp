@@ -248,8 +248,7 @@ vector<std::shared_ptr<Account>> TreeMenu::GetAccounts() {
 
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	contextMenuItem = event.GetItem();
-	//TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(selectedMenuItem);
-
+	
 	wxMenu *menu = new wxMenu();
 
 	menu->Append(ID_OPEN_NEW_TAB, wxT("Open in New Tab"));
@@ -274,8 +273,9 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 	wxTreeItemId itemId = event.GetItem();
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
-
-	if (item != NULL) {
+	wxTreeItemId oldItem = event.GetOldItem();
+	
+	if (item != NULL && oldItem != NULL) {
 		if (item->type == TreeMenuItemTypes::MenuAccount) {
 			auto account = std::static_pointer_cast<Account>(item->object);
 

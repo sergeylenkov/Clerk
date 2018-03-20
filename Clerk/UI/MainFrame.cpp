@@ -84,6 +84,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuBudgets->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
 
 	tabsPanel->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &MainFrame::OnTabChanged, this);
+	tabsPanel->Bind(wxEVT_RIGHT_DOWN, &MainFrame::OnTabClick, this);
 
 	treeMenu->Update();
 	treeMenu->RestoreState();
@@ -660,4 +661,28 @@ void MainFrame::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 	tabsPanel->SetPageText(tabIndex, *report->name);
 
 	reportPanel->Update();
+}
+
+void MainFrame::OnTabClick(wxMouseEvent &event) {
+	int id = tabsPanel->HitTest(event.GetPosition());	
+	wxPoint point = event.GetPosition();
+
+	wxMenu *menu = new wxMenu();
+	
+	menu->Append(ID_TAB_MOVE_LEFT, wxT("Move to Left"));
+	menu->Append(ID_TAB_MOVE_RIGHT, wxT("Move to Right"));
+	menu->AppendSeparator();
+	menu->Append(ID_TAB_CLOSE, wxT("Close"));
+
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnTabMenuClose, this, ID_TAB_CLOSE);
+
+	tabsPanel->PopupMenu(menu, point);
+
+	delete menu;
+
+	event.Skip();
+}
+
+void MainFrame::OnTabMenuClose(wxCommandEvent &event) {
+
 }

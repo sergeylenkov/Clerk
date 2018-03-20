@@ -79,4 +79,6 @@ private:
 	void CreateHomePanel(int tabIndex);
 	void CreateBudgetsPanel(int tabIndex);
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
+	void OnTabClick(wxMouseEvent &event);
+	void OnTabMenuClose(wxCommandEvent &event);
 };

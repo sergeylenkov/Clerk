@@ -110,11 +110,11 @@ TransactionsListPanel::~TransactionsListPanel() {
 	delete outcomeLabel;
 }
 
-void TransactionsListPanel::SetAccount(Account *account) {
+void TransactionsListPanel::SetAccount(shared_ptr<Account> account) {
 	this->account = account;
 }
 
-Account *TransactionsListPanel::GetAccount() {
+shared_ptr<Account> TransactionsListPanel::GetAccount() {
 	return this->account;
 }
 void TransactionsListPanel::SetType(TreeMenuItemTypes type) {
@@ -145,7 +145,7 @@ void TransactionsListPanel::Update() {
 	balance = 0;
 	
 	if (this->type == TreeMenuItemTypes::MenuAccount) {
-		for each (auto transaction in DataHelper::GetInstance().GetTransactions(account, &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		for each (auto transaction in DataHelper::GetInstance().GetTransactions(account.get(), &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
 		{
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();

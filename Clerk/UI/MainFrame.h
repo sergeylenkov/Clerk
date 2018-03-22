@@ -4,7 +4,6 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
-#include <wx/notebook.h>
 #include <memory>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
@@ -12,12 +11,9 @@
 #include "../TreeMenuItemData.h"
 #include "TreeMenu.h"
 #include "TransactionFrame.h"
-#include "TransactionsListPanel.h"
 #include "AccountFrame.h"
-#include "HomePanel.h"
-#include "ReportPanel.h"
 #include "BudgetFrame.h"
-#include "BudgetsListPanel.h"
+#include "TabsPanel.h"
 
 class MainFrame : public wxFrame
 {
@@ -35,14 +31,9 @@ private:
 	wxPanel *reportPanelPlaceholder;
 	wxPanel *budgetsPanelPlaceholder;
 	wxBoxSizer *rightPanelSizer;
-	wxNotebook *tabsPanel;
-	std::vector<wxPanel *> tabs;
-	std::vector<wxBoxSizer *> tabsSizer;
-	std::vector<DataPanel *> tabsPanels;
-	wxPanel *currentTabPanel;
-
-	void UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, Account *account);
-	void UpdateStatus();
+	TabsPanel *tabsPanel;
+	
+	void UpdateStatus(wxString text);
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
@@ -57,28 +48,15 @@ private:
 	void OnAddBudget(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
 	void AddTransaction(std::shared_ptr<Account> account);
-	void EditTransaction();
-	void SplitTransaction();
+	void EditTransaction(std::shared_ptr<Transaction> transaction);
+	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void OnTransactionClose();
 	void AddAccount();
 	void EditAccount(std::shared_ptr<Account> account);
 	void DeleteAccount(std::shared_ptr<Account> account);
 	void OnAccountClose();
 	void AddBudget();
-	void EditBudget();
-	void OnBudgetClose();
-	void UpdateBudgetList();
-	void CreateTab(int type, shared_ptr<void> object);
-	void AddTab(int type, shared_ptr<void> object);
-	void OnTabChanged(wxBookCtrlEvent &event);
-	void RestoreTabs();
-	bool IsTabExists(int type, int id = 0);
-	void SelectTab(int type, int id = 0);
-	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);
-	void CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type);
-	void CreateHomePanel(int tabIndex);
-	void CreateBudgetsPanel(int tabIndex);
-	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
-	void OnTabClick(wxMouseEvent &event);
-	void OnTabMenuClose(wxCommandEvent &event);
+	void EditBudget(std::shared_ptr<Budget> budget);
+	void OnBudgetClose();	
+	void AddTab(int type, shared_ptr<void> object);	
 };

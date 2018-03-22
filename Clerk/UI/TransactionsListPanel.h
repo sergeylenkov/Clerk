@@ -23,8 +23,8 @@ public:
 	TransactionsListPanel(wxWindow *parent, wxWindowID id);
 	~TransactionsListPanel();
 
-	void SetAccount(Account *account);
-	Account *GetAccount();
+	void SetAccount(shared_ptr<Account> account);
+	shared_ptr<Account> GetAccount();
 	void SetType(TreeMenuItemTypes type);
 	shared_ptr<Transaction> GetTransaction();
 	void Update();
@@ -51,7 +51,7 @@ private:
 	wxStaticText *incomeLabel;
 	wxStaticText *outcomeLabel;
 	wxPanel *infoPanel;
-	Account *account;
+	shared_ptr<Account> account;
 	TreeMenuItemTypes type;
 	vector<shared_ptr<Transaction>> transactions;
 	float balance;

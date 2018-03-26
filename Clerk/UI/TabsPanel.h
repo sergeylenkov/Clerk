@@ -23,6 +23,7 @@ public:
 	bool IsTabExists(int type, int id = 0);
 	void SelectTab(int type, int id = 0);	
 	void Update();
+	void UpdateStatus();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
 	std::shared_ptr<Budget> GetSelectedBudget();
 
@@ -37,7 +38,8 @@ private:
 	std::vector<wxBoxSizer *> tabsSizer;
 	std::vector<DataPanel *> tabsPanels;
 	wxPanel *currentTabPanel;
-	
+	int contextMenuTab;
+
 	void CreatePanel(int tabIndex, int type, shared_ptr<void> object);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);
 	void CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type);
@@ -48,8 +50,8 @@ private:
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);
 	void EditTransaction();
-	void SplitTransaction();
-	void UpdateStatus();
+	void SplitTransaction();	
 	void UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, std::shared_ptr<Account>);
+	void RemoveTab(int index);
 };
 

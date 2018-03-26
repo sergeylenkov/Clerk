@@ -90,16 +90,18 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->RestoreState();
 
 	tabsPanel->RestoreTabs();
+	tabsPanel->UpdateStatus();
 }
 
 MainFrame::~MainFrame() 
 {
+	delete treeMenu;
+	delete tabsPanel;
+
 	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
-	
-	delete treeMenu;
 }
 
 void MainFrame::UpdateStatus(wxString text) {

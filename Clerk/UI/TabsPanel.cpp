@@ -263,7 +263,7 @@ void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
 }
 
 void TabsPanel::OnTabClick(wxMouseEvent &event) {
-	int id = notebook->HitTest(event.GetPosition());
+	contextMenuTab = notebook->HitTest(event.GetPosition());
 	wxPoint point = event.GetPosition();
 
 	wxMenu *menu = new wxMenu();
@@ -282,8 +282,8 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	event.Skip();
 }
 
-void TabsPanel::OnTabMenuClose(wxCommandEvent &event) {
-
+void TabsPanel::OnTabMenuClose(wxCommandEvent &event) {	
+	RemoveTab(contextMenuTab);
 }
 
 void TabsPanel::Update() {
@@ -424,4 +424,12 @@ std::shared_ptr<Budget> TabsPanel::GetSelectedBudget() {
 	}
 
 	return nullptr;
+}
+
+void TabsPanel::RemoveTab(int index) {
+	notebook->RemovePage(index);
+
+	tabs.erase(tabs.begin() + index);
+	tabsSizer.erase(tabsSizer.begin() + index);
+	tabsPanels.erase(tabsPanels.begin() + index);
 }

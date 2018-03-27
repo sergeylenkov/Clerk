@@ -392,7 +392,7 @@ void TransactionsListPanel::Update() {
 
 void TransactionsListPanel::EditTransaction() {
 	if (OnEditTransaction) {
-		OnEditTransaction();
+		OnEditTransaction(GetTransaction());
 	}
 }
 
@@ -429,7 +429,7 @@ void TransactionsListPanel::DublicateTransaction() {
 
 void TransactionsListPanel::SplitTransaction() {
 	if (OnSplitTransaction) {
-		OnSplitTransaction();
+		OnSplitTransaction(GetTransaction());
 	}
 }
 
@@ -523,7 +523,7 @@ void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 
 void TransactionsListPanel::OnListItemDoubleClick(wxListEvent &event) {
 	if (OnEditTransaction) {
-		OnEditTransaction();
+		OnEditTransaction(GetTransaction());
 	}
 }
 

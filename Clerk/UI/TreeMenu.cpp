@@ -190,17 +190,17 @@ void TreeMenu::Update() {
 		accounts.push_back(account);
 	}
 
-	auto report = make_shared<Report>(-1);
-	report->name = make_shared<wxString>("Expenses By Month");
+	for each (auto report in DataHelper::GetInstance().GetReports())
+	{
+		itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuReport;
 
-	reports.push_back(report);
+		itemData->object = report;
 
-	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuReport;
+		wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 51, 51, itemData);
 
-	itemData->object = report;
-
-	wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 51, 51, itemData);
+		reports.push_back(report);
+	}
 }
 
 void TreeMenu::RestoreState() {

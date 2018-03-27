@@ -29,9 +29,9 @@ public:
 	std::shared_ptr<Account> GetSelectedAccount();
 
 	std::function<void(wxString text)> OnUpdateStatus;
-	std::function<void(std::shared_ptr<Transaction> transaction)> OnEditTransaction;
-	std::function<void(std::shared_ptr<Transaction> transaction)> OnSplitTransaction;
-	std::function<void(std::shared_ptr<Budget> transaction)> OnEditBudget;
+	std::function<void(std::shared_ptr<Transaction>)> OnEditTransaction;
+	std::function<void(std::shared_ptr<Transaction>)> OnSplitTransaction;
+	std::function<void(std::shared_ptr<Budget>)> OnEditBudget;
 
 private:
 	wxNotebook *notebook;
@@ -50,8 +50,8 @@ private:
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);
-	void EditTransaction();
-	void SplitTransaction();	
+	void EditTransaction(std::shared_ptr<Transaction> transaction);
+	void SplitTransaction(std::shared_ptr<Transaction> ransaction);
 	void UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, std::shared_ptr<Account>);
 	void RemoveTab(int index);
 };

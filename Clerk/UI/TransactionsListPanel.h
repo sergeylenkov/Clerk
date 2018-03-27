@@ -23,10 +23,10 @@ public:
 	TransactionsListPanel(wxWindow *parent, wxWindowID id);
 	~TransactionsListPanel();
 
-	void SetAccount(shared_ptr<Account> account);
-	shared_ptr<Account> GetAccount();
+	void SetAccount(std::shared_ptr<Account> account);
+	std::shared_ptr<Account> GetAccount();
 	void SetType(TreeMenuItemTypes type);
-	shared_ptr<Transaction> GetTransaction();
+	std::shared_ptr<Transaction> GetTransaction();
 	void Update();
 	void EditTransaction();
 	void DeleteTransaction();
@@ -37,8 +37,8 @@ public:
 	wxDateTime GetToDate();
 	float GetBalance();
 
-	std::function<void()> OnEditTransaction;
-	std::function<void()> OnSplitTransaction;
+	std::function<void(std::shared_ptr<Transaction>)> OnEditTransaction;
+	std::function<void(std::shared_ptr<Transaction>)> OnSplitTransaction;
 	std::function<void()> OnPeriodChanged;	
 
 private:
@@ -51,9 +51,9 @@ private:
 	wxStaticText *incomeLabel;
 	wxStaticText *outcomeLabel;
 	wxPanel *infoPanel;
-	shared_ptr<Account> account;
+	std::shared_ptr<Account> account;
 	TreeMenuItemTypes type;
-	vector<shared_ptr<Transaction>> transactions;
+	std::vector<std::shared_ptr<Transaction>> transactions;
 	float balance;
 	int sortBy;
 	bool sortDesc;

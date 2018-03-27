@@ -39,28 +39,29 @@ public:
 
 	void Open(char *database);
 	sqlite3* Connection();
-	vector<shared_ptr<Account>> GetAccounts(AccountTypes type);
-	shared_ptr<Account> GetAccountById(int id);
-	vector<shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
-	vector<shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
-	vector<shared_ptr<Currency>> GetCurrencies();
-	vector<shared_ptr<Budget>> GetBudgets();
+	std::vector<std::shared_ptr<Account>> GetAccounts(AccountTypes type);
+	std::shared_ptr<Account> GetAccountById(int id);
+	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
+	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
+	std::vector<std::shared_ptr<Currency>> GetCurrencies();
+	std::vector<std::shared_ptr<Budget>> GetBudgets();
+	std::vector<std::shared_ptr<Report>> GetReports();
+	std::shared_ptr<Report> GetReportById(int id);
 	float GetBalance(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
-	vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
-	vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
-	vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
-	vector<StringValue> GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to);
+	std::vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
+	std::vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
+	std::vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
+	std::vector<StringValue> GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
-	vector<shared_ptr<wxString>> GetTagsBySearch(wxString search);
+	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);
 
 private:
 	DataHelper();                 
 	DataHelper(DataHelper const&);
-	void operator=(DataHelper const&);
 
 	sqlite3 *_db;
 };

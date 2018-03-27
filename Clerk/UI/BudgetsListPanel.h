@@ -4,8 +4,8 @@
 #include "DataPanel.h"
 
 enum {
-	ID_EditBudget = 10,
-	ID_DeleteBudget = 11,	
+	ID_EditBudget = 1,
+	ID_DeleteBudget = 2,	
 };
 
 
@@ -14,16 +14,16 @@ class BudgetsListPanel : public DataPanel
 public:
 	BudgetsListPanel(wxWindow *parent, wxWindowID id);
 
-	shared_ptr<Budget> GetBudget();
+	std::shared_ptr<Budget> GetBudget();
 	void Update();
 	void EditBudget();
 	void DeleteBudget();
 
-	std::function<void()> OnEditBudget;
+	std::function<void(std::shared_ptr<Budget> budget)> OnEditBudget;
 
 private:
 	wxListCtrl *budgetsList;
-	vector<shared_ptr<Budget>> budgets;
+	std::vector<std::shared_ptr<Budget>> budgets;
 
 	void OnListItemClick(wxListEvent &event);	
 	void OnListItemDoubleClick(wxListEvent &event);

@@ -21,9 +21,9 @@ sqlite3* DataHelper::Connection() {
 	return _db;
 }
 
-vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
+std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 {
-	auto result = vector<shared_ptr<Account>>();
+	auto result = std::vector<std::shared_ptr<Account>>();
 
 	char *sql = "SELECT a.id FROM accounts a WHERE a.type_id = ? AND a.active = 1 ORDER BY a.order_id";
 	sqlite3_stmt *statement;
@@ -42,7 +42,7 @@ vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 	return result;
 }
 
-shared_ptr<Account>  DataHelper::GetAccountById(int id) {
+std::shared_ptr<Account> DataHelper::GetAccountById(int id) {
 	char *sql = "SELECT a.id FROM accounts a WHERE a.id = ?";
 	sqlite3_stmt *statement;
 
@@ -60,9 +60,9 @@ shared_ptr<Account>  DataHelper::GetAccountById(int id) {
 	return nullptr;
 }
 
-vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *account, wxDateTime *from, wxDateTime *to)
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *account, wxDateTime *from, wxDateTime *to)
 {
-	auto result = vector<std::shared_ptr<Transaction>>();
+	auto result = std::vector<std::shared_ptr<Transaction>>();
 
 	char *sql = "SELECT t.id FROM transactions t, accounts fa, accounts ta \
 				  WHERE (t.from_account_id = ? OR t.to_account_id = ?) AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 AND fa.id = t.from_account_id AND ta.id = t.to_account_id ORDER BY t.paid_at DESC, t.created_at DESC";
@@ -85,8 +85,8 @@ vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *accoun
 	return result;
 }
 
-vector<shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to) {
-	auto result = vector<std::shared_ptr<Transaction>>();
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to) {
+	auto result = std::vector<std::shared_ptr<Transaction>>();
 
 	char *sql = "SELECT t.id FROM transactions t, accounts a \
 								  WHERE t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 AND a.type_id = ? AND (a.id = t.to_account_id OR a.id = t.from_account_id)  ORDER BY t.paid_at DESC, t.created_at DESC";
@@ -108,9 +108,9 @@ vector<shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountTypes t
 	return result;
 }
 
-vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies() 
+std::vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 {
-	auto result = vector<std::shared_ptr<Currency>>();
+	auto result = std::vector<std::shared_ptr<Currency>>();
 
 	char *sql = "SELECT id FROM currencies ORDER BY name";
 	sqlite3_stmt *statement;
@@ -127,8 +127,8 @@ vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 	return result;
 }
 
-vector<std::shared_ptr<Budget>> DataHelper::GetBudgets() {
-	auto result = vector<std::shared_ptr<Budget>>();
+std::vector<std::shared_ptr<Budget>> DataHelper::GetBudgets() {
+	auto result = std::vector<std::shared_ptr<Budget>>();
 
 	char *sql = "SELECT id FROM budgets ORDER BY name";
 	sqlite3_stmt *statement;
@@ -143,6 +143,24 @@ vector<std::shared_ptr<Budget>> DataHelper::GetBudgets() {
 	sqlite3_finalize(statement);
 
 	return result;
+}
+
+std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
+	auto result = std::vector<std::shared_ptr<Report>>();
+
+	auto report = make_shared<Report>(-1);
+	report->name = make_shared<wxString>("Expenses By Month");
+
+	result.push_back(report);
+
+	return result;
+}
+
+std::shared_ptr<Report> DataHelper::GetReportById(int id) {
+	auto report = make_shared<Report>(-1);
+	report->name = make_shared<wxString>("Expenses By Month");
+
+	return report;
 }
 
 float DataHelper::GetBalance(Account *account)

@@ -109,9 +109,11 @@ void BudgetsListPanel::Update() {
 	}
 }
 
-void BudgetsListPanel::EditBudget() {
+void BudgetsListPanel::EditBudget() {	
 	if (OnEditBudget) {
-		OnEditBudget();
+		auto budget = GetBudget();
+
+		OnEditBudget(budget);
 	}
 }
 
@@ -143,7 +145,8 @@ void BudgetsListPanel::OnListItemClick(wxListEvent &event) {
 
 void BudgetsListPanel::OnListItemDoubleClick(wxListEvent &event) {
 	if (OnEditBudget) {
-		OnEditBudget();
+		auto budget = GetBudget();
+		OnEditBudget(budget);
 	}
 }
 

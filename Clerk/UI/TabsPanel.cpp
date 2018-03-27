@@ -141,8 +141,8 @@ void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<Account> accoun
 
 	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
 
-	transactionList->OnEditTransaction = std::bind(&TabsPanel::EditTransaction, this);
-	transactionList->OnSplitTransaction = std::bind(&TabsPanel::SplitTransaction, this);
+	transactionList->OnEditTransaction = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
+	transactionList->OnSplitTransaction = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
 	transactionList->OnPeriodChanged = std::bind(&TabsPanel::UpdateStatus, this);
 
 	tabsPanels[tabIndex] = transactionList;
@@ -166,8 +166,8 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 	}
 
 	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
-	transactionList->OnEditTransaction = std::bind(&TabsPanel::EditTransaction, this);
-	transactionList->OnSplitTransaction = std::bind(&TabsPanel::SplitTransaction, this);
+	transactionList->OnEditTransaction = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
+	transactionList->OnSplitTransaction = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
 	transactionList->OnPeriodChanged = std::bind(&TabsPanel::UpdateStatus, this);
 
 	tabsPanels[tabIndex] = transactionList;
@@ -296,10 +296,7 @@ void TabsPanel::Update() {
 	}
 }
 
-void TabsPanel::EditTransaction() {
-	TransactionsListPanel *list = (TransactionsListPanel *)tabsPanels[notebook->GetSelection()];
-	auto transaction = list->GetTransaction();
-
+void TabsPanel::EditTransaction(std::shared_ptr<Transaction> transaction) {
 	if (transaction) {
 		if (OnEditTransaction) {
 			OnEditTransaction(transaction);
@@ -307,10 +304,7 @@ void TabsPanel::EditTransaction() {
 	}
 }
 
-void TabsPanel::SplitTransaction() {
-	TransactionsListPanel *list = (TransactionsListPanel *)tabsPanels[notebook->GetSelection()];
-	auto transaction = list->GetTransaction();
-
+void TabsPanel::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 	if (transaction) {
 		if (OnSplitTransaction) {
 			OnSplitTransaction(transaction);

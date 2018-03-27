@@ -168,7 +168,8 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 }
 
 void MainFrame::OnAddTransaction(wxCommandEvent &event) {
-	AddTransaction(nullptr);
+	auto account = tabsPanel->GetSelectedAccount();
+	AddTransaction(account);
 }
 
 void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {

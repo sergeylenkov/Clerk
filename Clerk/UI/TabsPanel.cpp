@@ -426,6 +426,18 @@ std::shared_ptr<Budget> TabsPanel::GetSelectedBudget() {
 	return nullptr;
 }
 
+std::shared_ptr<Account> TabsPanel::GetSelectedAccount() {
+	int i = notebook->GetSelection();
+	DataPanel *currentPanel = tabsPanels[i];
+
+	if (currentPanel->type == TreeMenuItemTypes::MenuAccount) {
+		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
+		return transactionList->GetAccount();
+	}
+
+	return nullptr;
+}
+
 void TabsPanel::RemoveTab(int index) {
 	notebook->RemovePage(index);
 

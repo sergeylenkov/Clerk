@@ -61,6 +61,12 @@ void TabsPanel::RestoreTabs() {
 			if (tabAccount) {
 				CreateTab(tab.type, tabAccount);
 			}
+		} else if (tab.type == TreeMenuItemTypes::MenuReport) {
+			std::shared_ptr<Report> tabReport = DataHelper::GetInstance().GetReportById(tab.id);
+
+			if (tabReport) {
+				CreateTab(tab.type, tabReport);
+			}
 		}
 		else {
 			CreateTab(tab.type, nullptr);

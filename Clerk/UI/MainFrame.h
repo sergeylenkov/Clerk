@@ -57,5 +57,5 @@ private:
 	void AddBudget();
 	void EditBudget(std::shared_ptr<Budget> budget);
 	void OnBudgetClose();	
-	void AddTab(int type, shared_ptr<void> object);	
+	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 };

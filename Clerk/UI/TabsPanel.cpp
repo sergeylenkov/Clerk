@@ -27,7 +27,7 @@ TabsPanel::~TabsPanel()
 	delete notebook;
 }
 
-void TabsPanel::CreateTab(int type, shared_ptr<void> object) {
+void TabsPanel::CreateTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	wxPanel *panel = new wxPanel(notebook);
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	panel->SetSizer(sizer);
@@ -43,33 +43,35 @@ void TabsPanel::CreateTab(int type, shared_ptr<void> object) {
 	CreatePanel(index, type, object);
 }
 
-void TabsPanel::AddTab(int type, shared_ptr<void> object) {
+void TabsPanel::AddTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	CreateTab(type, object);
 	notebook->ChangeSelection(tabs.size() - 1);
 }
 
-void TabsPanel::UpdateCurrentTab(int type, shared_ptr<void> object) {
+void TabsPanel::UpdateCurrentTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	int i = notebook->GetSelection();
 	CreatePanel(i, type, object);
 }
 
 void TabsPanel::RestoreTabs() {
 	for each (auto tab in Settings::GetInstance().GetTabs()) {
-		if (tab.type == TreeMenuItemTypes::MenuAccount) {
+		TreeMenuItemTypes type = (TreeMenuItemTypes)tab.type;
+
+		if (type == TreeMenuItemTypes::MenuAccount) {
 			std::shared_ptr<Account> tabAccount = DataHelper::GetInstance().GetAccountById(tab.id);
 
 			if (tabAccount) {
-				CreateTab(tab.type, tabAccount);
+				CreateTab(type, tabAccount);
 			}
 		} else if (tab.type == TreeMenuItemTypes::MenuReport) {
 			std::shared_ptr<Report> tabReport = DataHelper::GetInstance().GetReportById(tab.id);
 
 			if (tabReport) {
-				CreateTab(tab.type, tabReport);
+				CreateTab(type, tabReport);
 			}
 		}
 		else {
-			CreateTab(tab.type, nullptr);
+			CreateTab(type, nullptr);
 		}
 	}
 
@@ -77,7 +79,7 @@ void TabsPanel::RestoreTabs() {
 	notebook->ChangeSelection(index);
 }
 
-bool TabsPanel::IsTabExists(int type, int id) {
+bool TabsPanel::IsTabExists(TreeMenuItemTypes type, int id) {
 	bool found = false;
 
 	for each (auto tabPanel in tabsPanels) {
@@ -99,7 +101,7 @@ bool TabsPanel::IsTabExists(int type, int id) {
 	return false;
 }
 
-void TabsPanel::SelectTab(int type, int id) {
+void TabsPanel::SelectTab(TreeMenuItemTypes type, int id) {
 	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
 		DataPanel *tabPanel = tabsPanels[i];
 
@@ -119,7 +121,7 @@ void TabsPanel::SelectTab(int type, int id) {
 	}
 }
 
-void TabsPanel::CreatePanel(int tabIndex, int type, shared_ptr<void> object) {
+void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<void> object) {
 	if (type == TreeMenuItemTypes::MenuAccount) {
 		auto account = std::static_pointer_cast<Account>(object);
 		CreateAccountPanel(tabIndex, account);

@@ -327,6 +327,6 @@ void MainFrame::OnBudgetClose() {
 	tabsPanel->Update();
 }
 
-void MainFrame::AddTab(int type, shared_ptr<void> object) {
+void MainFrame::AddTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	tabsPanel->AddTab(type, object);
 }

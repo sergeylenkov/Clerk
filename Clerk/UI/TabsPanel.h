@@ -16,12 +16,12 @@ public:
 	TabsPanel(wxWindow *parent, wxWindowID id);
 	~TabsPanel();
 
-	void CreateTab(int type, shared_ptr<void> object);
-	void AddTab(int type, shared_ptr<void> object);
-	void UpdateCurrentTab(int type, shared_ptr<void> object);
+	void CreateTab(TreeMenuItemTypes type, shared_ptr<void> object);
+	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
+	void UpdateCurrentTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void RestoreTabs();
-	bool IsTabExists(int type, int id = 0);
-	void SelectTab(int type, int id = 0);	
+	bool IsTabExists(TreeMenuItemTypes type, int id = 0);
+	void SelectTab(TreeMenuItemTypes type, int id = 0);
 	void Update();
 	void UpdateStatus();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
@@ -41,7 +41,7 @@ private:
 	wxPanel *currentTabPanel;
 	int contextMenuTab;
 
-	void CreatePanel(int tabIndex, int type, shared_ptr<void> object);
+	void CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<void> object);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account);
 	void CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type);
 	void CreateHomePanel(int tabIndex);

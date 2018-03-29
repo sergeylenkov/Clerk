@@ -17,16 +17,16 @@ public:
 	std::shared_ptr<Account> GetAccount();
 	vector<std::shared_ptr<Account>> GetAccounts();
 
-	std::function<void(std::shared_ptr<Account> account)> OnAccountSelect;
-	std::function<void(std::shared_ptr<Report> report)> OnReportSelect;
+	std::function<void(std::shared_ptr<Account>)> OnAccountSelect;
+	std::function<void(std::shared_ptr<Report>)> OnReportSelect;
 	std::function<void()> OnHomeSelect;
 	std::function<void()> OnBudgetsSelect;
-	std::function<void(TreeMenuItemTypes type)> OnAccountsSelect;
+	std::function<void(TreeMenuItemTypes)> OnAccountsSelect;
 	std::function<void()> OnAddAccount;
-	std::function<void(std::shared_ptr<Account> account)> OnEditAccount;
-	std::function<void(std::shared_ptr<Account> account)> OnDeleteAccount;
-	std::function<void(std::shared_ptr<Account> account)> OnAddTransaction;
-	std::function<void(int type, shared_ptr<void> object)> OnNewTab;
+	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
+	std::function<void(std::shared_ptr<Account>)> OnDeleteAccount;
+	std::function<void(std::shared_ptr<Account>)> OnAddTransaction;
+	std::function<void(TreeMenuItemTypes type, shared_ptr<void> object)> OnNewTab;
 
 private:
 	wxTreeCtrl *treeMenu;

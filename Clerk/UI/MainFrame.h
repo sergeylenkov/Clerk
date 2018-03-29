@@ -46,7 +46,6 @@ private:
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
-	void OnOpenNewTab(wxCommandEvent &event);
 	void AddTransaction(std::shared_ptr<Account> account);
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);

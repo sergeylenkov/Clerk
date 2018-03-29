@@ -203,10 +203,6 @@ void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
 	}
 }
 
-void MainFrame::OnOpenNewTab(wxCommandEvent &event) {
-
-}
-
 void MainFrame::AddTransaction(std::shared_ptr<Account> account) {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 	

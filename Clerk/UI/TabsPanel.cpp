@@ -124,6 +124,10 @@ void TabsPanel::CreatePanel(int tabIndex, int type, shared_ptr<void> object) {
 		auto account = std::static_pointer_cast<Account>(object);
 		CreateAccountPanel(tabIndex, account);
 	}
+	else if (type == TreeMenuItemTypes::MenuAccounts || type == TreeMenuItemTypes::MenuReceipts 
+		|| type == TreeMenuItemTypes::MenuExpenses || type == TreeMenuItemTypes::MenuDeposits) {
+		CreateAccountsPanel(tabIndex, (TreeMenuItemTypes)type);
+	}
 	else if (type == TreeMenuItemTypes::MenuHome) {
 		CreateHomePanel(tabIndex);
 	}

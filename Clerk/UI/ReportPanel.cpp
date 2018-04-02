@@ -100,7 +100,7 @@ void ReportPanel::Update() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDate.SetMonth(wxDateTime::Month::Jan);
+	fromDate.Add(wxDateSpan::Months(-6));
 	fromDate.SetDay(1);
 
 	Account *account = accounts[accountList->GetSelection()].get();

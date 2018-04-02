@@ -284,10 +284,35 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 
 	wxMenu *menu = new wxMenu();
 
-	menu->Append(ID_TAB_MOVE_LEFT, wxT("Move to Left"));
-	menu->Append(ID_TAB_MOVE_RIGHT, wxT("Move to Right"));
+	wxMenuItem *leftItem = new wxMenuItem(menu, ID_TAB_MOVE_LEFT, wxT("Move to Left"));
+	wxMenuItem *rightItem = new wxMenuItem(menu, ID_TAB_MOVE_RIGHT, wxT("Move to Right"));
+	wxMenuItem *closeItem = new wxMenuItem(menu, ID_TAB_CLOSE, wxT("Close"));
+
+	if (notebook->GetPageCount() == 1) {
+		leftItem->Enable(false);
+		leftItem->SetTextColour(*wxLIGHT_GREY);
+
+		rightItem->Enable(false);
+		rightItem->SetTextColour(*wxLIGHT_GREY);
+
+		closeItem->Enable(false);
+		closeItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	if (contextMenuTab == 0) {
+		leftItem->Enable(false);
+		leftItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	if (contextMenuTab == notebook->GetPageCount() - 1) {
+		rightItem->Enable(false);
+		rightItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	menu->Append(leftItem);
+	menu->Append(rightItem);
 	menu->AppendSeparator();
-	menu->Append(ID_TAB_CLOSE, wxT("Close"));
+	menu->Append(closeItem);
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, ID_TAB_CLOSE);
 
@@ -306,6 +331,8 @@ void TabsPanel::Update() {
 	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
 		tabsPanels[i]->Update();
 	}
+
+	UpdateStatus();
 }
 
 void TabsPanel::EditTransaction(std::shared_ptr<Transaction> transaction) {

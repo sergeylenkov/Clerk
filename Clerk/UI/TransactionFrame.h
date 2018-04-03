@@ -14,10 +14,9 @@ class TransactionFrame : public wxFrame
 public:
 	TransactionFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 	~TransactionFrame();
-	
-	void SetAccount(shared_ptr<Account> account);
-	void SetTransaction(shared_ptr<Transaction> transaction);
-	void SetSplitTransaction(shared_ptr<Transaction> transaction);
+		
+	void SetTransaction(std::shared_ptr<Transaction> transaction);
+	void SetSplitTransaction(std::shared_ptr<Transaction> transaction);
 
 	function<void()> OnClose;
 
@@ -41,21 +40,26 @@ private:
 	wxTextCtrl *toAmountField;
 	float fromValue = 0.0;
 	float toValue = 0.0;
-	vector<shared_ptr<Account>> accounts;
-	vector<shared_ptr<Account>> fromAccounts;
-	vector<shared_ptr<Account>> toAccounts;
-	shared_ptr<Transaction> transaction;
-	shared_ptr<Transaction> splitTransaction;
+	std::vector<std::shared_ptr<Account>> accounts;
+	std::vector<std::shared_ptr<Account>> fromAccounts;
+	std::vector<std::shared_ptr<Account>> toAccounts;
+	std::shared_ptr<Transaction> transaction;
+	std::shared_ptr<Transaction> splitTransaction;	
+	std::shared_ptr<Account> fromAccount;
+	std::shared_ptr<Account> toAccount;
 	wxImageList *accountsImageList;
 	TagsPopup *tagsPopup;
 
+	void SelectFromAccount(int index);
+	void SelectToAccount(int index);
+	void SelectToAccount(std::shared_ptr<Account> account);
+	void UpdateFromList();
+	void UpdateToList(std::shared_ptr<Account> account);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);
 	void OnToAccountSelect(wxCommandEvent &event);
 	void OnFromAmountKillFocus(wxFocusEvent &event);
-	void SelectFromAccount(int id);
-	void SelectToAccount(int id);
 	void OnTextChanged(wxKeyEvent &event);
-	void OnTagsKillFocus(wxFocusEvent& event);
+	void OnTagsKillFocus(wxFocusEvent& event);	
 };

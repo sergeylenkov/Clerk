@@ -50,7 +50,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
 	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
-	treeMenu->OnAddTransaction = std::bind(&MainFrame::AddTransaction, this, std::placeholders::_1);
+	treeMenu->OnAddTransaction = std::bind(&MainFrame::OnTreeMenuAddTransaction, this, std::placeholders::_1);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
 
 	boxSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
@@ -168,6 +168,10 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 	}
 }
 
+void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
+	AddTransaction(account);
+}
+
 void MainFrame::OnAddTransaction(wxCommandEvent &event) {
 	auto account = tabsPanel->GetSelectedAccount();
 	AddTransaction(account);
@@ -211,11 +215,19 @@ void MainFrame::AddTransaction(std::shared_ptr<Account> account) {
 
 	auto transaction = make_shared<Transaction>();
 
-	transactionFrame->SetTransaction(transaction);
-
 	if (account) {
-		transactionFrame->SetAccount(account);
-	}	
+		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
+			transaction->fromAccountId = account->id;
+			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account.get());
+		}
+
+		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Credit) {
+			transaction->toAccountId = account->id;
+			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account.get());
+		}
+	}
+
+	transactionFrame->SetTransaction(transaction);
 
 	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 }

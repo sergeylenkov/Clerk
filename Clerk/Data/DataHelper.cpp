@@ -492,10 +492,10 @@ int DataHelper::GetPairAccountId(Account *account) {
 	char *sql = "";
 
 	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt) {
-		sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
-		sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
 	sqlite3_stmt *statement;

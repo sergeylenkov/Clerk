@@ -104,7 +104,6 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	fromList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnFromAccountSelect, this);
 	toList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnToAccountSelect, this);
 	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnFromAmountKillFocus, this);
-	//fromAmountField->Bind(wxEVT_KEY_DOWN, &TransactionFrame::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KEY_UP, &TransactionFrame::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnTagsKillFocus, this);
 
@@ -151,21 +150,11 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 		}
 	}
 
-	for each (auto account in accounts) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
-			int icon = 0;
-
-			if (account->iconId < accountsImageList->GetImageCount()) {
-				icon = account->iconId;
-			}
-
-			fromList->Append(*account->name, accountsImageList->GetBitmap(icon));
-
-			fromAccounts.push_back(account);
-		}
-	}
-
+	UpdateFromList();
 	SelectFromAccount(0);
+
+	UpdateToList(fromAccount);
+	SelectToAccount(0);
 }
 
 TransactionFrame::~TransactionFrame() {
@@ -184,91 +173,101 @@ TransactionFrame::~TransactionFrame() {
 	delete dateLabel;
 	delete datePicker;
 	delete accountsImageList;
-	delete tagsPopup;
-	
+	delete tagsPopup;	
 }
 
-void TransactionFrame::SetAccount(shared_ptr<Account> account) {
-	if (account->type == AccountTypes::Receipt) {
-		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-			if (account->id == fromAccounts[i]->id) {
-				SelectFromAccount(i);
-				transaction->fromAccountId = account->id;
-				break;
+void TransactionFrame::UpdateFromList() {
+	for each (auto account in accounts) {
+		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
+			int icon = 0;
+
+			if (account->iconId < accountsImageList->GetImageCount()) {
+				icon = account->iconId;
 			}
+
+			fromList->Append(*account->name, accountsImageList->GetBitmap(icon));
+
+			fromAccounts.push_back(account);
+		}
+	}
+}
+
+void TransactionFrame::UpdateToList(std::shared_ptr<Account> account) {
+	toList->Clear();
+	toAccounts.clear();
+
+	for each (auto toAccount in accounts)
+	{
+		if (account->id == toAccount->id) {
+			continue;
 		}
 
-		int id = DataHelper::GetInstance().GetPairAccountId(account.get());
+		if (account->type == AccountTypes::Receipt) {
+			if (toAccount->type == AccountTypes::Deposit) {
+				int icon = 0;
 
-		if (id == -1) {
-			for (unsigned int i = 0; i < toAccounts.size(); i++) {
-				if (toAccounts[i]->type == AccountTypes::Deposit) {
-					SelectToAccount(i);
-					break;
+				if (toAccount->iconId < accountsImageList->GetImageCount()) {
+					icon = toAccount->iconId;
 				}
-			}
-		} else {
-			for (unsigned int i = 0; i < toAccounts.size(); i++) {
-				if (toAccounts[i]->id == id) {
-					SelectToAccount(i);
-					break;
-				}
-			}
-		}
-	} else if (account->type == AccountTypes::Deposit) {
-		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-			if (account->id == fromAccounts[i]->id) {
-				SelectFromAccount(i);
-				transaction->fromAccountId = account->id;
-				break;
-			}
-		}
-	} else if (account->type == AccountTypes::Expens) {
-		int id = DataHelper::GetInstance().GetPairAccountId(account.get());
 
-		if (id == -1) {
-			for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-				if (fromAccounts[i]->type == AccountTypes::Deposit) {
-					SelectFromAccount(i);
-					break;
-				}
-			}
-		} else {
-			for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-				if (fromAccounts[i]->id == id) {
-					SelectFromAccount(i);
-					break;
-				}
-			}
-		}		
+				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
 
-		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (account->id == toAccounts[i]->id) {
-				SelectToAccount(i);
-				transaction->toAccountId = account->id;
-				break;
+				toAccounts.push_back(toAccount);
 			}
 		}
-	} else if (account->type == AccountTypes::Debt) {
-		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (account->id == toAccounts[i]->id) {
-				SelectToAccount(i);
-				transaction->toAccountId = account->id;
-				break;
-			}
-		}
-	} else if (account->type == AccountTypes::Credit) {
-		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (account->id == toAccounts[i]->id) {
-				SelectToAccount(i);
-				transaction->toAccountId = account->id;
-				break;
+		else if (account->type == AccountTypes::Deposit) {
+			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Credit) {
+				int icon = 0;
+
+				if (toAccount->iconId < accountsImageList->GetImageCount()) {
+					icon = toAccount->iconId;
+				}
+
+				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
+
+				toAccounts.push_back(toAccount);
 			}
 		}
 	}
+}
 
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
+void TransactionFrame::SelectFromAccount(int index) {
+	auto account = fromAccounts[index];
+
+	fromList->Select(index);
+	fromAmountLabel->SetLabel(*account->currency->shortName);
+	fromAccount = account;
+}
+
+void TransactionFrame::SelectToAccount(int id) {
+	auto account = toAccounts[id];
+
+	toList->Select(id);
+	toAmountLabel->SetLabel(*account->currency->shortName);
+
+	toAccount = account;
+}
+
+void TransactionFrame::SelectToAccount(std::shared_ptr<Account> account) {
+	for (unsigned int i = 0; i < toAccounts.size(); i++) {
+		if (toAccounts[i]->id == account->id) {
+			SelectToAccount(i);
+			return;
+		}
+	}
+
+	SelectToAccount(0);
+}
+
+void TransactionFrame::OnFromAccountSelect(wxCommandEvent &event) {
+	SelectFromAccount(fromList->GetSelection());
+
+	UpdateToList(fromAccount);
+	SelectToAccount(toAccount);
+}
+
+void TransactionFrame::OnToAccountSelect(wxCommandEvent &event) {
+	SelectToAccount(toList->GetSelection());
 }
 
 void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
@@ -283,16 +282,26 @@ void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) 
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
 		if (transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
+			UpdateToList(fromAccounts[i]);
+
 			break;
 		}
 	}
 
-	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (transaction->toAccountId == toAccounts[i]->id) {
-			SelectToAccount(i);
-			break;
+	if (transaction->toAccountId != -1) {
+		for (unsigned int i = 0; i < toAccounts.size(); i++) {
+			if (transaction->toAccountId == toAccounts[i]->id) {
+				SelectToAccount(i);
+				break;
+			}
 		}
 	}
+	else {
+		SelectToAccount(0);
+	}	
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
@@ -376,86 +385,19 @@ void TransactionFrame::OnCancel(wxCommandEvent &event) {
 	Close();
 }
 
-void TransactionFrame::OnFromAccountSelect(wxCommandEvent &event) {
-	SelectFromAccount(fromList->GetSelection());
-}
-
-void TransactionFrame::OnToAccountSelect(wxCommandEvent &event) {
-	SelectToAccount(toList->GetSelection());
-}
-
 void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 	
 	double val;
 
 	toAmountField->GetValue().ToDouble(&val);
+
 	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
 	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
 
 	if (val == 0 && fromCurrencyId == toCurrencyId) {
 		toAmountField->SetValue(fromAmountField->GetValue());
 	}
-}
-
-void TransactionFrame::SelectFromAccount(int id) {
-	int index = fromList->GetSelection();
-	auto account = fromAccounts[id];
-	
-	fromList->Select(id);
-	fromAmountLabel->SetLabel(*account->currency->shortName);
-
-	if (index != -1) {
-		if (account->type == fromAccounts[index]->type) {
-			return;
-		}
-	}
-
-	toList->Clear();
-	toAccounts.clear();
-
-	for each (auto toAccount in accounts)
-	{
-		if (account->id == toAccount->id) {
-			continue;
-		}
-
-		if (account->type == AccountTypes::Receipt) {
-			if (toAccount->type == AccountTypes::Deposit) {
-				int icon = 0;
-
-				if (toAccount->iconId < accountsImageList->GetImageCount()) {
-					icon = toAccount->iconId;
-				}
-
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
-
-				toAccounts.push_back(toAccount);
-			}			
-		} else if (account->type == AccountTypes::Deposit) {
-			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Credit) {
-				int icon = 0;
-
-				if (toAccount->iconId < accountsImageList->GetImageCount()) {
-					icon = toAccount->iconId;
-				}
-
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
-
-				toAccounts.push_back(toAccount);
-			}			
-		}
-	}
-
-	toList->Select(0);
-	SelectToAccount(0);
-}
-
-void TransactionFrame::SelectToAccount(int id) {
-	auto account = toAccounts[id];
-	
-	toList->Select(id);
-	toAmountLabel->SetLabel(*account->currency->shortName);
 }
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {

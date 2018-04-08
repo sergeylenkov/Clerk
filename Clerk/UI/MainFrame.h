@@ -47,7 +47,7 @@ private:
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
-	void AddTransaction(std::shared_ptr<Account> account);
+	void AddTransaction(Account *account);
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void OnTransactionClose();

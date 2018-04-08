@@ -169,12 +169,12 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 }
 
 void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
-	AddTransaction(account);
+	AddTransaction(account.get());
 }
 
 void MainFrame::OnAddTransaction(wxCommandEvent &event) {
 	auto account = tabsPanel->GetSelectedAccount();
-	AddTransaction(account);
+	AddTransaction(account.get());
 }
 
 void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
@@ -207,7 +207,7 @@ void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
 	}
 }
 
-void MainFrame::AddTransaction(std::shared_ptr<Account> account) {
+void MainFrame::AddTransaction(Account *account) {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 	
 	transactionFrame->Show(true);
@@ -218,12 +218,12 @@ void MainFrame::AddTransaction(std::shared_ptr<Account> account) {
 	if (account) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
 			transaction->fromAccountId = account->id;
-			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account.get());
+			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
 
 		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Credit) {
 			transaction->toAccountId = account->id;
-			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account.get());
+			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
 	}
 

@@ -325,6 +325,8 @@ void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transact
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
 		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
+			UpdateToList(fromAccounts[i]);
+
 			break;
 		}
 	}

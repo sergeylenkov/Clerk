@@ -490,18 +490,24 @@ float DataHelper::GetExpensesSumForAccount(Account *account, wxDateTime *from, w
 int DataHelper::GetPairAccountId(Account *account) {
 	int id = -1;
 	char *sql = "";
+	
+	wxDateTime fromDate = wxDateTime::Now();
+
+	fromDate.Add(wxDateSpan::Months(-3));
+	fromDate.SetDay(1);
 
 	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt) {
-		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
+		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
-		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
+		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, fromDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			id = sqlite3_column_int(statement, 0);
@@ -509,6 +515,25 @@ int DataHelper::GetPairAccountId(Account *account) {
 	}
 
 	sqlite3_finalize(statement);
+
+	if (id == -1) {
+		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt) {
+			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+		}
+		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
+		}
+
+		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+			sqlite3_bind_int(statement, 1, account->id);
+
+			if (sqlite3_step(statement) == SQLITE_ROW) {
+				id = sqlite3_column_int(statement, 0);
+			}
+		}
+
+		sqlite3_finalize(statement);
+	}
 
 	return id;
 }

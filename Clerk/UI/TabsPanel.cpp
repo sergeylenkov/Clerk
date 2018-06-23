@@ -221,7 +221,7 @@ void TabsPanel::CreateHomePanel(int tabIndex) {
 	sizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Home"));
+	notebook->SetPageText(tabIndex, wxT("Dashboard"));
 
 	homePanel->Update();
 }

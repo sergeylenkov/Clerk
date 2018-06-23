@@ -45,7 +45,7 @@ void TreeMenu::CreateImageList() {
 		}
 	}
 
-	for (int i = 0; i <= 19; i++) {
+	for (int i = 0; i <= 23; i++) {
 		wxString path = wxString::Format("Resources\\%d.png", i);
 
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
@@ -69,22 +69,22 @@ void TreeMenu::Update() {
 	TreeMenuItemData *itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuHome;
 
-	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Home", 15, 15, itemData);
+	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Dashboard", 74, 74, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuAccounts;
 
-	wxTreeItemId accountsItem = treeMenu->AppendItem(homeItem, "Accounts", 33, 33, itemData);
+	wxTreeItemId accountsItem = treeMenu->AppendItem(rootItem, "Accounts", 33, 33, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuReports;
 
-	wxTreeItemId reportsItem = treeMenu->AppendItem(homeItem, "Reports", 51, 51, itemData);
+	wxTreeItemId reportsItem = treeMenu->AppendItem(rootItem, "Reports", 73, 73, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuBudgets;
 
-	wxTreeItemId budgetsItem = treeMenu->AppendItem(homeItem, "Budgets", 57, 57, itemData);
+	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 57, 57, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;

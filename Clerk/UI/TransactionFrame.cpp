@@ -412,14 +412,14 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		search.push_back(token);
 	}
 
-	if (event.GetKeyCode() == 27) {
+	if (event.GetKeyCode() == WXK_ESCAPE) {
 		tagsPopup->Hide();
-	} else if (event.GetKeyCode() == 315) {
+	} else if (event.GetKeyCode() == WXK_UP) {
 		tagsPopup->SelectPrev();
 		event.StopPropagation();
-	} else if (event.GetKeyCode() == 317) {
+	} else if (event.GetKeyCode() == WXK_DOWN) {
 		tagsPopup->SelectNext();
-	} else if (event.GetKeyCode() == 13) {
+	} else if (event.GetKeyCode() == WXK_RETURN) {
 		wxString tag = tagsPopup->GetSelectedTag();
 		tagsPopup->Hide();
 
@@ -434,7 +434,7 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 
 		tagsField->SetValue(result);
 		tagsField->SetInsertionPointEnd();
-	} else if (event.GetKeyCode() != 8) {
+	} else {
 		if (!search.empty()) {
 			auto tags = DataHelper::GetInstance().GetTagsBySearch(search.back());
 

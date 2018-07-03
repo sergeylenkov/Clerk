@@ -4,10 +4,11 @@ TagsPopup::TagsPopup(wxWindow *parent) :wxPopupWindow(parent) {
 	panel = new wxScrolledWindow(this, wxID_ANY);
 	panel->SetBackgroundColour(*wxLIGHT_GREY);
 	
-	list = new wxListBox(panel, wxID_ANY, wxPoint(0, 0), wxSize(200, 100));
+	list = new wxListCtrl(panel, wxID_ANY, wxPoint(0, 0), wxSize(200, 200), wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
+	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TagsPopup::OnListItemDoubleClick, this);
 
 	wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
-	topSizer->Add(list, 0, wxALL, 5);
+	topSizer->Add(list, 0, wxALL, 1);
 
 	panel->SetAutoLayout(true);
 	panel->SetSizer(topSizer);
@@ -22,53 +23,64 @@ TagsPopup::~TagsPopup() {
 }
 
 void TagsPopup::Update(vector<shared_ptr<wxString>> tags) {
-	list->Clear();
+	this->tags = tags;
+	list->ClearAll();
 
-	for each (auto tag in tags) {
-		list->Append(*tag.get());
+	wxListItem col;
+
+	col.SetId(0);
+	col.SetText(_(""));
+	col.SetWidth(200);
+
+	list->InsertColumn(0, col);
+
+	for (unsigned int i = 0; i < tags.size(); i++) {
+		wxListItem listItem;
+
+		listItem.SetId(i);
+
+		list->InsertItem(listItem);
+
+		list->SetItem(i, 0, *tags[i].get());
 	}
 
-	if (list->GetCount() > 0) {
-		list->Select(0);
-	}
+	list->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);	
 }
 
 void TagsPopup::SelectNext() {
-	if (list->GetCount() < 2) {
-		return;
+	long index = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+	if (index != -1 && index < list->GetItemCount() - 1) {
+		index++;
+
+		list->SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+		list->EnsureVisible(index);
 	}
-
-	unsigned int index = list->GetSelection();
-
-	index++;
-
-	if (index >= list->GetCount()) {
-		index = list->GetCount() - 1;
-	}
-
-	list->Select(index);
 }
 
 void TagsPopup::SelectPrev() {
-	if (list->GetCount() < 2) {
-		return;
+	long index = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+	if (index != -1 && index > 0) {
+		index--;
+
+		list->SetItemState(index, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);
+		list->EnsureVisible(index);
 	}
-
-	int index = list->GetSelection();
-
-	index--;
-
-	if (index < 0) {
-		index = 0;
-	}
-
-	list->Select(index);
 }
 
 wxString TagsPopup::GetSelectedTag() {
-	if (!list->IsEmpty()) {
-		return list->GetStringSelection();
+	long index = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+	if (index != -1) {	
+		return *tags[index].get();
 	}
 
 	return wxString("");
+}
+
+void TagsPopup::OnListItemDoubleClick(wxListEvent &event) {
+	if (OnSelectTag) {
+		OnSelectTag();
+	}
 }

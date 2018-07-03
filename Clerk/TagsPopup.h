@@ -19,10 +19,14 @@ public:
 	void SelectNext();
 	void SelectPrev();
 	wxString GetSelectedTag();
+	std::function<void()> OnSelectTag;
 
 private:
 	wxScrolledWindow *panel;
-	wxListBox *list;
+	wxListCtrl *list;
+	vector<shared_ptr<wxString>> tags;
+
+	void OnListItemDoubleClick(wxListEvent &event);
 };
 
 #endif

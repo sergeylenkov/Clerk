@@ -97,6 +97,7 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	this->Centre(wxBOTH);
 
 	tagsPopup = new TagsPopup(this);	
+	tagsPopup->OnSelectTag = std::bind(&TransactionFrame::OnSelectTag, this);
 
 	okButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnCancel, this);
@@ -415,6 +416,7 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		tagsPopup->Hide();
 	} else if (event.GetKeyCode() == 315) {
 		tagsPopup->SelectPrev();
+		event.StopPropagation();
 	} else if (event.GetKeyCode() == 317) {
 		tagsPopup->SelectNext();
 	} else if (event.GetKeyCode() == 13) {
@@ -457,4 +459,8 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 void TransactionFrame::OnTagsKillFocus(wxFocusEvent& event) {
 	tagsPopup->Hide();
 	event.Skip();
+}
+
+void TransactionFrame::OnSelectTag() {
+	tagsPopup->Hide();
 }

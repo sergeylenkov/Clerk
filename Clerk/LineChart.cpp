@@ -149,6 +149,6 @@ void LineChart::OnMouseEnter(wxMouseEvent& event) {
 
 void LineChart::OnMouseExit(wxMouseEvent& event) {
 	if (OnHidePopup) {
-		//OnHidePopup();
+		OnHidePopup();
 	}
 }

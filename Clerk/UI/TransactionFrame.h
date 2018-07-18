@@ -63,4 +63,5 @@ private:
 	void OnTextChanged(wxKeyEvent &event);
 	void OnTagsKillFocus(wxFocusEvent& event);	
 	void OnSelectTag();
+	void AddTag();
 };

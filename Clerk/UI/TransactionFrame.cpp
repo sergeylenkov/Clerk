@@ -404,14 +404,6 @@ void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 }
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
-	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
-	vector<wxString> search;
-
-	while (tokenizer.HasMoreTokens()) {
-		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
-		search.push_back(token);
-	}
-
 	if (event.GetKeyCode() == WXK_ESCAPE) {
 		tagsPopup->Hide();
 	} else if (event.GetKeyCode() == WXK_UP) {
@@ -419,26 +411,22 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 		event.StopPropagation();
 	} else if (event.GetKeyCode() == WXK_DOWN) {
 		tagsPopup->SelectNext();
-	} else if (event.GetKeyCode() == WXK_RETURN) {
-		wxString tag = tagsPopup->GetSelectedTag();
+	} else if (event.GetKeyCode() == WXK_RETURN) {		
+		AddTag();
 		tagsPopup->Hide();
+	} else {
+		wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
+		vector<wxString> tokens;
 
-		wxString result = "";
-
-		for (unsigned int i = 0; i < search.size() - 1; i++) {
-			result.Append(search[i]);
-			result.Append(", ");
+		while (tokenizer.HasMoreTokens()) {
+			wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
+			tokens.push_back(token);
 		}
 
-		result.Append(tag);
+		if (!tokens.empty()) {
+			auto tags = DataHelper::GetInstance().GetTagsBySearch(tokens.back());
 
-		tagsField->SetValue(result);
-		tagsField->SetInsertionPointEnd();
-	} else {
-		if (!search.empty()) {
-			auto tags = DataHelper::GetInstance().GetTagsBySearch(search.back());
-
-			if (!tags.empty()) {
+			if (!tokens.empty()) {
 				tagsPopup->Update(tags);
 
 				wxPoint pos = tagsField->GetScreenPosition();
@@ -462,5 +450,29 @@ void TransactionFrame::OnTagsKillFocus(wxFocusEvent& event) {
 }
 
 void TransactionFrame::OnSelectTag() {
-	tagsPopup->Hide();
+	AddTag();
+	tagsPopup->Hide();	
+}
+
+void TransactionFrame::AddTag() {
+	wxString tag = tagsPopup->GetSelectedTag();
+	wxString result = "";
+
+	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
+	vector<wxString> tokens;
+
+	while (tokenizer.HasMoreTokens()) {
+		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
+		tokens.push_back(token);
+	}
+
+	for (unsigned int i = 0; i < tokens.size() - 1; i++) {
+		result.Append(tokens[i]);
+		result.Append(", ");
+	}
+
+	result.Append(tag);
+
+	tagsField->SetValue(result);
+	tagsField->SetInsertionPointEnd();
 }

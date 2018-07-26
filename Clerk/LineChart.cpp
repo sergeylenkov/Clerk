@@ -6,14 +6,14 @@ LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	this->Connect(wxEVT_PAINT, wxPaintEventHandler(LineChart::OnPaint));
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);
 	this->Bind(wxEVT_ENTER_WINDOW, &LineChart::OnMouseEnter, this);
-	this->Bind(wxEVT_LEAVE_WINDOW, &LineChart::OnMouseExit, this);
+	//this->Bind(wxEVT_LEAVE_WINDOW, &LineChart::OnMouseExit, this);
 }
 
 LineChart::~LineChart() {
 
 }
 
-void LineChart::SetValues(std::vector<DateValue> values) {
+void LineChart::SetValues(std::vector<StringValue> values) {
 	currentPopupIndex = -1;
 	_values = values;
 	Draw();
@@ -35,38 +35,55 @@ void LineChart::Draw() {
 	this->DoGetSize(&width, &height);
 
 	auto ptr = max_element(_values.begin(), _values.end(),
-		[](const DateValue p1, const DateValue p2) {
+		[](const StringValue p1, const StringValue p2) {
 		return p1.value < p2.value;
 	});
 
 	float maxValue = ptr->value;
-	int maxX = round(maxValue);
+	int maxY = round(maxValue);
+	int labelStepY = 10;
 
-	if (maxX <= 1000) {
-		maxX = ceil(maxValue / 100) * 100;
+	if (maxY <= 1000) {
+		maxY = ceil(maxValue / 100) * 100;
+		labelStepY = 100;
 	}
-	else if (maxX > 1000 && maxX <= 10000) {
-		maxX = ceil(maxValue / 1000) * 1000;
+	else if (maxY > 1000 && maxY <= 10000) {
+		maxY = ceil(maxValue / 1000) * 1000;
+		labelStepY = 1000;
 	}
-	else if (maxX > 10000 && maxX <= 100000) {
-		maxX = ceil(maxValue / 10000) * 10000;
-	} else if (maxX > 10000 && maxX <= 100000) {
-		maxX = ceil(maxValue / 100000) * 100000;
+	else if (maxY > 10000 && maxY <= 100000) {
+		maxY = ceil(maxValue / 10000) * 10000;
+		labelStepY = 10000;
+	} else if (maxY > 10000 && maxY <= 100000) {
+		maxY = ceil(maxValue / 100000) * 100000;
+		labelStepY = 20000;
 	}
 	else {
-		maxX = ceil(maxValue / 100000) * 100000;
+		maxY = ceil(maxValue / 100000) * 100000;
+		labelStepY = 20000;
 	}
 
-	offsetX = 100;
-	offsetY = 20;
+	offsetX = 80;
+	offsetY = 40;
 
 	stepX = (width - offsetX) / _values.size();
-	stepY = (height - offsetY) / (float)maxX;
+	stepY = (height - offsetY) / (float)maxY;
 
-	dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+	for (int i = 0; i <= maxY; i += labelStepY) {
+		int y = (height - offsetY) - round(i * stepY);
+		
+		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+		dc.DrawLabel(wxString::Format("%d", i), wxRect(0, y - 10, 100, 20), 0);
 
-	dc.DrawLabel(wxString::Format("%d", maxX), wxRect(0, 0, 100, 20), 0);
-	dc.DrawLabel("0", wxRect(0, height - 20, 100, 20), 0);
+		dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
+		dc.DrawLine(offsetX, y, width, y);
+	}
+	
+	for (unsigned int i = 0; i < _values.size(); i++) {
+		int x = round(i * stepX) + offsetX;
+
+		dc.DrawLabel(_values[i].string, wxRect(x, height - 20, 100, 20), 0);
+	}
 
 	dc.SetBrush(wxColor(10, 110, 170));
 	dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
@@ -78,15 +95,15 @@ void LineChart::Draw() {
 
 	for (unsigned int i = 0; i < _values.size() - 1; i++) {
 		x = round(i * stepX) + offsetX;
-		y = round(_values[i].value * stepY);
+		y = (height - offsetY) - round(_values[i].value * stepY);
 		x2 = round((i + 1) * stepX) + offsetX;
-		y2 = round(_values[i + 1].value * stepY);
+		y2 = (height - offsetY) - round(_values[i + 1].value * stepY);
 
-		dc.DrawLine(x, height - y, x2, height - y2);
-		dc.DrawCircle(x, height - y, 3);
+		dc.DrawLine(x,  y, x2, y2);
+		dc.DrawCircle(x, y, 3);
 	}
 
-	dc.DrawCircle(x2, height - y2, 3);
+	dc.DrawCircle(x2, y2, 3);
 }
 
 void LineChart::OnPaint(wxPaintEvent& event) {
@@ -94,7 +111,15 @@ void LineChart::OnPaint(wxPaintEvent& event) {
 }
 
 void LineChart::OnMouseMove(wxMouseEvent& event) {
-	if (event.GetX() < offsetX) {
+	int width = 0;
+	int height = 0;
+
+	this->DoGetSize(&width, &height);
+
+	int mouseX = event.GetX();
+	int mouseY = event.GetY();
+
+	if (mouseX < offsetX || mouseX > width - offsetX || mouseY < offsetY || mouseY > height - offsetY) {
 		if (OnHidePopup) {
 			OnHidePopup();
 		}
@@ -106,12 +131,7 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 		OnShowPopup();
 	}
 
-	int width = 0;
-	int height = 0;
-
-	this->DoGetSize(&width, &height);
-
-	int mouseX = event.GetX();
+	
 	int index = 0;
 	
 	for (unsigned int i = 0; i < _values.size(); i++) {

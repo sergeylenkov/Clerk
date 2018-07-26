@@ -16,7 +16,7 @@ public:
 	LineChart(wxWindow *parent, wxWindowID id);
 	~LineChart();
 
-	void SetValues(std::vector<DateValue> values);
+	void SetValues(std::vector<StringValue> values);
 	void Draw();
 
 	std::function<void()> OnShowPopup;
@@ -24,7 +24,7 @@ public:
 	std::function<void(int x, int y , int index)> OnUpdatePopup;
 
 private:
-	std::vector<DateValue> _values;
+	std::vector<StringValue> _values;
 	float stepX;
 	float stepY;
 	int offsetX;

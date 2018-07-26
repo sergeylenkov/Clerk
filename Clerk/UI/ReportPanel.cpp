@@ -107,7 +107,15 @@ void ReportPanel::Update() {
 
 	values = DataHelper::GetInstance().GetExpensesByMonth(account, &fromDate, &toDate);
 
-	chart->SetValues(values);
+	std::vector<StringValue> chartValues;
+
+	for each (auto value in values)
+	{
+		StringValue chartValue = { value.date.Format("%B"), value.value };
+		chartValues.push_back(chartValue);
+	}
+
+	chart->SetValues(chartValues);
 }
 
 void ReportPanel::OnAccountSelect(wxCommandEvent &event) {

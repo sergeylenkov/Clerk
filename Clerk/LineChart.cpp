@@ -5,8 +5,6 @@ LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 
 	this->Connect(wxEVT_PAINT, wxPaintEventHandler(LineChart::OnPaint));
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);
-	this->Bind(wxEVT_ENTER_WINDOW, &LineChart::OnMouseEnter, this);
-	//this->Bind(wxEVT_LEAVE_WINDOW, &LineChart::OnMouseExit, this);
 }
 
 LineChart::~LineChart() {
@@ -33,6 +31,8 @@ void LineChart::Draw() {
 	int height = 0;
 
 	this->DoGetSize(&width, &height);
+
+	height = height;
 
 	auto ptr = max_element(_values.begin(), _values.end(),
 		[](const StringValue p1, const StringValue p2) {
@@ -63,11 +63,11 @@ void LineChart::Draw() {
 		labelStepY = 20000;
 	}
 
-	offsetX = 80;
+	offsetX = 60;
 	offsetY = 40;
 
 	stepX = (width - offsetX) / _values.size();
-	stepY = (height - offsetY) / (float)maxY;
+	stepY = (height - offsetY - 10) / (float)maxY;
 
 	for (int i = 0; i <= maxY; i += labelStepY) {
 		int y = (height - offsetY) - round(i * stepY);
@@ -130,7 +130,6 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	if (OnShowPopup) {
 		OnShowPopup();
 	}
-
 	
 	int index = 0;
 	
@@ -153,22 +152,10 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	if (index != currentPopupIndex) {
 		currentPopupIndex = index;
 		int x = round(index * stepX) + offsetX;
-		int y = height - round(_values[index].value * stepY);
+		int y = height - offsetY - round(_values[index].value * stepY);
 
 		if (OnUpdatePopup) {
 			OnUpdatePopup(x, y, index);
 		}
 	}	
-}
-
-void LineChart::OnMouseEnter(wxMouseEvent& event) {
-	if (OnShowPopup) {
-		//OnShowPopup();
-	}
-}
-
-void LineChart::OnMouseExit(wxMouseEvent& event) {
-	if (OnHidePopup) {
-		OnHidePopup();
-	}
 }

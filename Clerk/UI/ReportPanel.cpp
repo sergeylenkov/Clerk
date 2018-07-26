@@ -32,7 +32,20 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id
 	filterPanel->Layout();
 
 	mainSizer->Add(filterPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
-	mainSizer->Add(chart, 1, wxALL | wxEXPAND, 0);
+
+	wxPanel *chartPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+
+	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	chart->SetMinSize(wxSize(-1, 600));
+	chart->SetMaxSize(wxSize(-1, 600));
+
+	chartSizer->Add(chart, 1, wxALIGN_CENTER_VERTICAL | wxALL, 10);
+
+	chartPanel->SetSizer(chartSizer);
+	chartPanel->Layout();
+
+	mainSizer->Add(chartPanel, 1, wxALL | wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
 

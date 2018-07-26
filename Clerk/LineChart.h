@@ -32,9 +32,7 @@ private:
 	int currentPopupIndex;
 
 	void OnPaint(wxPaintEvent& event);
-	void OnMouseMove(wxMouseEvent& event);
-	void OnMouseEnter(wxMouseEvent& event);
-	void OnMouseExit(wxMouseEvent& event);
+	void OnMouseMove(wxMouseEvent& event);	
 };
 
 #endif

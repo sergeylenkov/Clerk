@@ -205,6 +205,44 @@ float DataHelper::GetBalance(Account *account)
 	return total;
 }
 
+float DataHelper::GetAccountTotalExpense(Account *account) {
+	float expense = 0.0;
+
+	char *sql = "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id = ? AND deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			expense = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return expense;
+}
+
+float DataHelper::GetAccountTotalReceipt(Account *account) {
+	float receipt = 0;
+
+	char *sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id = ? AND deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			receipt = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return receipt;
+}
+
 float DataHelper::GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to)
 {
 	float total = 0;
@@ -422,45 +460,6 @@ vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *
 		}
 
 		sqlite3_finalize(statement);
-
-		/*
-		for (var i = 0; i < receipts.length; i++) {
-		dates[receipts[i].date] = { receipt: 0, expense: 0 };
-		dates[receipts[i].date].receipt = receipts[i].value;
-		}
-
-		for (var i = 0; i < expenses.length; i++) {
-		if (!dates[expenses[i].date]) {
-		dates[expenses[i].date] = { receipt: 0, expense: 0 };
-		}
-
-		dates[expenses[i].date].expense = expenses[i].value;
-		}
-
-		self.reportData = dates;
-		var datesSorted = [];
-
-		Object.keys(dates).forEach(function(key) {
-		datesSorted.push({ date: key, receipt: dates[key].receipt, expense: dates[key].expense });
-		});
-
-		datesSorted.sort(function(a, b) {
-		return d3.ascending(a.date, b.date);
-		});
-
-		var reportData = [];
-		var balance = 0;
-
-		datesSorted.forEach(function(data) {
-		if (account && account.credit_limit > 0) {
-		balance = balance + data.receipt - data.expense;
-		reportData.push({ date: data.date, value: account.credit_limit + balance });
-		} else {
-		balance = balance + data.receipt - data.expense;
-		reportData.push({ date: data.date, value: balance });
-		}
-		});
-		*/
 	}
 
 	return values;

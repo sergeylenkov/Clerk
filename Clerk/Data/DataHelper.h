@@ -48,6 +48,8 @@ public:
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);
 	float GetBalance(Account *account);
+	float GetAccountTotalExpense(Account *account);
+	float GetAccountTotalReceipt(Account *account);
 	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);

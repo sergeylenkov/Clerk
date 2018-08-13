@@ -130,7 +130,7 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 		|| type == TreeMenuItemTypes::MenuExpenses || type == TreeMenuItemTypes::MenuDeposits) {
 		CreateAccountsPanel(tabIndex, (TreeMenuItemTypes)type);
 	}
-	else if (type == TreeMenuItemTypes::MenuHome) {
+	else if (type == TreeMenuItemTypes::MenuDashboard) {
 		CreateHomePanel(tabIndex);
 	}
 	else if (type == TreeMenuItemTypes::MenuBudgets) {
@@ -213,17 +213,17 @@ void TabsPanel::CreateHomePanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	HomePanel *homePanel = new HomePanel(panel, wxID_ANY);
+	DashboardPanel *dashboardPanel = new DashboardPanel(panel, wxID_ANY);
 
-	tabsPanels[tabIndex] = homePanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuHome;
+	tabsPanels[tabIndex] = dashboardPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuDashboard;
 
-	sizer->Add(homePanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Add(dashboardPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
 	notebook->SetPageText(tabIndex, wxT("Dashboard"));
 
-	homePanel->Update();
+	dashboardPanel->Update();
 }
 
 void TabsPanel::CreateBudgetsPanel(int tabIndex) {
@@ -398,7 +398,7 @@ void TabsPanel::UpdateStatus() {
 		float amount = transactionList->GetBalance();
 		result = wxString::Format("Deposits: %.2f", amount);
 	}
-	else if (currentPanel->type == TreeMenuItemTypes::MenuHome) {
+	else if (currentPanel->type == TreeMenuItemTypes::MenuDashboard) {
 		wxDateTime fromDate = wxDateTime::Now();
 		wxDateTime toDate = wxDateTime::Now();
 

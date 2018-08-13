@@ -6,7 +6,7 @@
 #include "../Settings.h"
 #include "../TreeMenuItemData.h"
 #include "TransactionsListPanel.h"
-#include "HomePanel.h"
+#include "DashboardPanel.h"
 #include "ReportPanel.h"
 #include "BudgetsListPanel.h"
 

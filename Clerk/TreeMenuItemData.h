@@ -7,7 +7,7 @@
 enum TreeMenuItemTypes {
 	MenuAccount = 0,
 	MenuReport = 1,
-	MenuHome = 2,
+	MenuDashboard = 2,
 	MenuBudget = 3,
 	MenuExpenses = 4,
 	MenuReceipts = 5,

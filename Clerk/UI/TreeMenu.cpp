@@ -67,7 +67,7 @@ void TreeMenu::Update() {
 	treeMenu->DeleteChildren(rootItem);
 
 	TreeMenuItemData *itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuHome;
+	itemData->type = TreeMenuItemTypes::MenuDashboard;
 
 	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Dashboard", 87, 87, itemData);
 
@@ -283,7 +283,7 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnAccountSelect(account);
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuHome) {
+		else if (item->type == TreeMenuItemTypes::MenuDashboard) {
 			if (OnHomeSelect) {
 				OnHomeSelect();
 			}

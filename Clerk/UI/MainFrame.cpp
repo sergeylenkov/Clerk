@@ -142,11 +142,11 @@ void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
 }
 
 void MainFrame::OnTreeMenuHomeSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuHome)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuHome);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuDashboard)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::MenuDashboard);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuHome, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuDashboard, nullptr);
 	}
 }
 

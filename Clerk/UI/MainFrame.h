@@ -26,10 +26,6 @@ private:
 	TransactionFrame *transactionFrame;
 	AccountFrame *accountFrame;
 	BudgetFrame *budgetFrame;
-	wxPanel *transactionsPanelPlaceholder;
-	wxPanel *homePanelPlaceholder;
-	wxPanel *reportPanelPlaceholder;
-	wxPanel *budgetsPanelPlaceholder;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	

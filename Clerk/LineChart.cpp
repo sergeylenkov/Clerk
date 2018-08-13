@@ -32,8 +32,6 @@ void LineChart::Draw() {
 
 	this->DoGetSize(&width, &height);
 
-	height = height;
-
 	auto ptr = max_element(_values.begin(), _values.end(),
 		[](const StringValue p1, const StringValue p2) {
 		return p1.value < p2.value;

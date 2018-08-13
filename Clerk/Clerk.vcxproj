@@ -70,6 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\DashboardPanel.cpp" />
     <ClCompile Include="UI\TabsPanel.cpp" />
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu.cpp" />
@@ -98,6 +99,7 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\DashboardPanel.h" />
     <ClInclude Include="UI\TabsPanel.h" />
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu.h" />

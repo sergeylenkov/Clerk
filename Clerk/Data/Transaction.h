@@ -28,6 +28,7 @@ public:
 	void Save();
 	void Delete();
 	void DeleteCompletely();
+	void Restore();
 	vector<wxString> GetTags();
 
 private:

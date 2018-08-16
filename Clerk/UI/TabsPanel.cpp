@@ -131,10 +131,13 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 		CreateAccountsPanel(tabIndex, (TreeMenuItemTypes)type);
 	}
 	else if (type == TreeMenuItemTypes::MenuDashboard) {
-		CreateHomePanel(tabIndex);
+		CreateDashboardPanel(tabIndex);
 	}
 	else if (type == TreeMenuItemTypes::MenuBudgets) {
 		CreateBudgetsPanel(tabIndex);
+	}
+	else if (type == TreeMenuItemTypes::MenuTrash) {
+		CreateTrashPanel(tabIndex);
 	}
 	else if (type == TreeMenuItemTypes::MenuReport) {
 		auto report = std::static_pointer_cast<Report>(object);
@@ -204,7 +207,7 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 	UpdateTransactionList(transactionList, type, nullptr);
 }
 
-void TabsPanel::CreateHomePanel(int tabIndex) {
+void TabsPanel::CreateDashboardPanel(int tabIndex) {
 	wxPanel *panel = tabs[tabIndex];
 	wxBoxSizer *sizer = tabsSizer[tabIndex];
 	DataPanel *currentPanel = tabsPanels[tabIndex];
@@ -235,7 +238,7 @@ void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	BudgetsListPanel *budgetPanel = new BudgetsListPanel(panel, wxID_ANY);
+	BudgetsPanel *budgetPanel = new BudgetsPanel(panel, wxID_ANY);
 
 	tabsPanels[tabIndex] = budgetPanel;
 	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuBudgets;
@@ -269,6 +272,28 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 	notebook->SetPageText(tabIndex, *report->name);
 
 	reportPanel->Update();
+}
+
+void TabsPanel::CreateTrashPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	TrashPanel *trashPanel = new TrashPanel(panel, wxID_ANY);
+
+	tabsPanels[tabIndex] = trashPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuTrash;
+
+	sizer->Add(trashPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	notebook->SetPageText(tabIndex, wxT("Trash"));
+
+	trashPanel->Update();
 }
 
 void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
@@ -456,7 +481,7 @@ std::shared_ptr<Budget> TabsPanel::GetSelectedBudget() {
 	DataPanel *currentPanel = tabsPanels[i];
 
 	if (currentPanel->type == TreeMenuItemTypes::MenuBudgets) {
-		BudgetsListPanel *budgetsList = (BudgetsListPanel *)currentPanel;
+		BudgetsPanel *budgetsList = (BudgetsPanel *)currentPanel;
 		return budgetsList->GetBudget();
 	}
 

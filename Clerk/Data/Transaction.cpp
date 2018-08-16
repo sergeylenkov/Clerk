@@ -151,6 +151,20 @@ void Transaction::DeleteCompletely()
 	sqlite3_finalize(statement);
 }
 
+void Transaction::Restore()
+{
+	char *sql = "UPDATE transactions SET deleted = ? WHERE id = ?";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, false);
+		sqlite3_bind_int(statement, 2, this->id);
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+}
+
 vector<wxString> Transaction::GetTags() {
 	wxStringTokenizer tokenizer(*this->tags, ",");
 	vector<wxString> result;

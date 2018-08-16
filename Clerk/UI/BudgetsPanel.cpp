@@ -1,9 +1,9 @@
-#include "BudgetsListPanel.h"
+#include "BudgetsPanel.h"
 
-BudgetsListPanel::BudgetsListPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	budgetsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	budgetsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &BudgetsListPanel::OnListItemClick, this);
-	budgetsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsListPanel::OnListItemDoubleClick, this);
+	budgetsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &BudgetsPanel::OnListItemClick, this);
+	budgetsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -13,7 +13,7 @@ BudgetsListPanel::BudgetsListPanel(wxWindow *parent, wxWindowID id) : DataPanel(
 	this->Layout();
 }
 
-shared_ptr<Budget> BudgetsListPanel::GetBudget() {
+shared_ptr<Budget> BudgetsPanel::GetBudget() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -29,7 +29,7 @@ shared_ptr<Budget> BudgetsListPanel::GetBudget() {
 	return NULL;
 }
 
-void BudgetsListPanel::Update() {
+void BudgetsPanel::Update() {
 	budgetsList->ClearAll();	
 	budgets = DataHelper::GetInstance().GetBudgets();
 
@@ -109,7 +109,7 @@ void BudgetsListPanel::Update() {
 	}
 }
 
-void BudgetsListPanel::EditBudget() {	
+void BudgetsPanel::EditBudget() {	
 	if (OnEditBudget) {
 		auto budget = GetBudget();
 
@@ -117,7 +117,7 @@ void BudgetsListPanel::EditBudget() {
 	}
 }
 
-void BudgetsListPanel::DeleteBudget() {
+void BudgetsPanel::DeleteBudget() {
 	auto budget = GetBudget();
 
 	if (budget) {
@@ -126,39 +126,39 @@ void BudgetsListPanel::DeleteBudget() {
 	}
 }
 
-void BudgetsListPanel::OnListItemClick(wxListEvent &event) {
+void BudgetsPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(ID_EditBudget, wxT("Edit..."));
+	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
 	menu->AppendSeparator();
-	menu->Append(ID_DeleteBudget, wxT("Delete..."));
+	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));
 
 	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
 	menu->SetClientData(data);
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsListPanel::OnMenuSelect, this);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsPanel::OnMenuSelect, this);
 
 	budgetsList->PopupMenu(menu, event.GetPoint());
 
 	delete menu;
 }
 
-void BudgetsListPanel::OnListItemDoubleClick(wxListEvent &event) {
+void BudgetsPanel::OnListItemDoubleClick(wxListEvent &event) {
 	if (OnEditBudget) {
 		auto budget = GetBudget();
 		OnEditBudget(budget);
 	}
 }
 
-void BudgetsListPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (event.GetId()) {
-		case ID_EditBudget:
-			EditBudget();
-			break;
+void BudgetsPanel::OnMenuSelect(wxCommandEvent &event) {
+	switch (static_cast<BudgetsPanelMenuTypes>(event.GetId())) {
+		case BudgetsPanelMenuTypes::Edit:
+				EditBudget();
+				break;
 
-		case ID_DeleteBudget:
-			DeleteBudget();
-			break;
+		case BudgetsPanelMenuTypes::Delete:
+				DeleteBudget();
+				break;
 
 		default:
 			break;

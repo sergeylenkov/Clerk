@@ -37,8 +37,9 @@ private:
 	void OnSplitTransaction(wxCommandEvent &event);
 	void OnTreeMenuAccountSelect(std::shared_ptr<Account> account);
 	void OnTreeMenuReportSelect(std::shared_ptr<Report> report);
-	void OnTreeMenuHomeSelect();
+	void OnTreeMenuDashboardSelect();
 	void OnTreeMenuBudgetsSelect();
+	void OnTreeMenuTrashSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
 	void OnAddAccount(wxCommandEvent &event);

@@ -1,18 +1,20 @@
+#pragma once
+
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "../Data/DataHelper.h"
 #include "DataPanel.h"
 
-enum {
-	ID_EditBudget = 1,
-	ID_DeleteBudget = 2,	
+enum class BudgetsPanelMenuTypes {
+	Edit = 1,
+	Delete = 2,
 };
 
 
-class BudgetsListPanel : public DataPanel
+class BudgetsPanel : public DataPanel
 {
 public:
-	BudgetsListPanel(wxWindow *parent, wxWindowID id);
+	BudgetsPanel(wxWindow *parent, wxWindowID id);
 
 	std::shared_ptr<Budget> GetBudget();
 	void Update();

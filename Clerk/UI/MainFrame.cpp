@@ -45,8 +45,9 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	treeMenu->OnAccountSelect = std::bind(&MainFrame::OnTreeMenuAccountSelect, this, std::placeholders::_1);
 	treeMenu->OnReportSelect = std::bind(&MainFrame::OnTreeMenuReportSelect, this, std::placeholders::_1);
-	treeMenu->OnHomeSelect = std::bind(&MainFrame::OnTreeMenuHomeSelect, this);
+	treeMenu->OnDashboardSelect = std::bind(&MainFrame::OnTreeMenuDashboardSelect, this);
 	treeMenu->OnBudgetsSelect = std::bind(&MainFrame::OnTreeMenuBudgetsSelect, this);
+	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
 	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
@@ -141,7 +142,7 @@ void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
 	}
 }
 
-void MainFrame::OnTreeMenuHomeSelect() {
+void MainFrame::OnTreeMenuDashboardSelect() {
 	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuDashboard)) {
 		tabsPanel->SelectTab(TreeMenuItemTypes::MenuDashboard);
 	}
@@ -158,6 +159,16 @@ void MainFrame::OnTreeMenuBudgetsSelect() {
 		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuBudgets, nullptr);
 	}
 }
+
+void MainFrame::OnTreeMenuTrashSelect() {
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuTrash)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::MenuTrash);
+	}
+	else {
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuTrash, nullptr);
+	}
+}
+
 
 void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 	if (tabsPanel->IsTabExists(type)) {

@@ -43,6 +43,7 @@ public:
 	std::shared_ptr<Account> GetAccountById(int id);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
+	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
 	std::vector<std::shared_ptr<Budget>> GetBudgets();
 	std::vector<std::shared_ptr<Report>> GetReports();
@@ -60,6 +61,7 @@ public:
 	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
 	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);
+	int GetDeletedTransactionsCount();
 
 private:
 	DataHelper();                 

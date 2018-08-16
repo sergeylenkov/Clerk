@@ -45,7 +45,7 @@ void TreeMenu::CreateImageList() {
 		}
 	}
 
-	for (int i = 0; i <= 41; i++) {
+	for (int i = 0; i <= 44; i++) {
 		wxString path = wxString::Format("Resources\\%d.png", i);
 
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
@@ -85,6 +85,18 @@ void TreeMenu::Update() {
 	itemData->type = TreeMenuItemTypes::MenuBudgets;
 
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 57, 57, itemData);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuTrash;
+
+	int count = DataHelper::GetInstance().GetDeletedTransactionsCount();
+	int trashIcon = 94;
+
+	if (count == 0) {
+		trashIcon = 95;
+	}
+
+	wxTreeItemId trashItem = treeMenu->AppendItem(rootItem, "Trash", trashIcon, trashIcon, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
@@ -284,13 +296,18 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 			}
 		}
 		else if (item->type == TreeMenuItemTypes::MenuDashboard) {
-			if (OnHomeSelect) {
-				OnHomeSelect();
+			if (OnDashboardSelect) {
+				OnDashboardSelect();
 			}
 		}
 		else if (item->type == TreeMenuItemTypes::MenuBudgets) {
 			if (OnBudgetsSelect) {
 				OnBudgetsSelect();
+			}
+		}
+		else if (item->type == TreeMenuItemTypes::MenuTrash) {
+			if (OnTrashSelect) {
+				OnTrashSelect();
 			}
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReport) {

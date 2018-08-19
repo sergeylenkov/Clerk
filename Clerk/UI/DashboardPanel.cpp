@@ -166,7 +166,7 @@ void DashboardPanel::Draw() {
 		dc.SetPen(wxPen(wxColor(200, 200, 200), 3));
 		dc.DrawLine(x, y, x + progressWidth, y);
 
-		int width = (progressWidth / 100) * account.percent;
+		int width = (progressWidth / 100.0) * account.percent;
 
 		if (account.percent <= 50) {
 			dc.SetPen(wxPen(color100, 3));
@@ -245,7 +245,7 @@ void DashboardPanel::Draw() {
 		dc.SetPen(wxPen(wxColor(200, 200, 200), 3));
 		dc.DrawLine(x, y, x + progressWidth, y);
 
-		int width = (progressWidth / 100) * budget.percent;
+		int width = (progressWidth / 100.0) * budget.percent;
 
 		if (budget.percent <= 50) {
 			dc.SetPen(wxPen(color0, 3));

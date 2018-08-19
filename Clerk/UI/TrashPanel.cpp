@@ -95,21 +95,36 @@ std::shared_ptr<Transaction> TrashPanel::GetTransaction() {
 }
 
 void TrashPanel::RestoreTransaction() {
-	auto transaction = GetTransaction();
+	long itemIndex = -1;
 
-	if (transaction) {
-		transaction->Restore();
-		Update();
+	for (;;) {
+		itemIndex = transactionsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+		if (itemIndex == -1) {
+			break;
+		}
+		else {
+			transactions[itemIndex]->Restore();
+		}
 	}
+
+	Update();
 }
 
 void TrashPanel::DeleteTransaction() {
-	auto transaction = GetTransaction();
+	long itemIndex = -1;
 
-	if (transaction) {
-		transaction->DeleteCompletely();
-		Update();
+	for (;;) {
+		itemIndex = transactionsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+
+		if (itemIndex == -1) {		
+			break;
+		} else {
+			transactions[itemIndex]->DeleteCompletely();
+		}	
 	}
+
+	Update();
 }
 
 void TrashPanel::ClearAll() {

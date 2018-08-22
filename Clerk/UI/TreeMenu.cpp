@@ -45,7 +45,7 @@ void TreeMenu::CreateImageList() {
 		}
 	}
 
-	for (int i = 0; i <= 44; i++) {
+	for (int i = 0; i <= 50; i++) {
 		wxString path = wxString::Format("Resources\\%d.png", i);
 
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
@@ -87,6 +87,11 @@ void TreeMenu::Update() {
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 57, 57, itemData);
 
 	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuArchive;
+
+	wxTreeItemId archivehItem = treeMenu->AppendItem(rootItem, "Archive", 96, 96, itemData);
+
+	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuTrash;
 
 	int count = DataHelper::GetInstance().GetDeletedTransactionsCount();
@@ -101,7 +106,7 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDeposits;
 
-	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 85, 85, itemData);
+	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Deposits", 101, 101, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
@@ -123,7 +128,7 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuReceipts;
 
-	child = treeMenu->AppendItem(accountsItem, "Receipts", 85, 85, itemData);
+	child = treeMenu->AppendItem(accountsItem, "Receipts", 101, 101, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
@@ -145,7 +150,7 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuExpenses;
 
-	child = treeMenu->AppendItem(accountsItem, "Expenes", 85, 85, itemData);
+	child = treeMenu->AppendItem(accountsItem, "Expenes", 101, 101, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
@@ -164,7 +169,7 @@ void TreeMenu::Update() {
 		accounts.push_back(account);
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Debt", 85, 85);
+	child = treeMenu->AppendItem(accountsItem, "Debt", 101, 101);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
 	{
@@ -183,7 +188,7 @@ void TreeMenu::Update() {
 		accounts.push_back(account);
 	}
 
-	child = treeMenu->AppendItem(accountsItem, "Credits", 85, 85);
+	child = treeMenu->AppendItem(accountsItem, "Credits", 101, 101);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
 	{
@@ -212,6 +217,23 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 90, 90, itemData);
 
 		reports.push_back(report);
+	}
+
+	for each (auto account in DataHelper::GetInstance().GetArchiveAccounts())
+	{
+		int icon = 28;
+
+		if (account->iconId <= accountsImageList->GetImageCount()) {
+			icon = account->iconId;
+		}
+
+		TreeMenuItemData *itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->object = account;
+
+		wxTreeItemId itemId = treeMenu->AppendItem(archivehItem, *account->name, icon, icon, itemData);
+
+		accounts.push_back(account);
 	}
 }
 

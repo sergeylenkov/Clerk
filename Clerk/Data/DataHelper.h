@@ -62,6 +62,7 @@ public:
 	int GetPairAccountId(Account *account);
 	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);
 	int GetDeletedTransactionsCount();
+	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
 
 private:
 	DataHelper();                 

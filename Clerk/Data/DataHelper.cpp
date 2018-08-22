@@ -591,3 +591,21 @@ int DataHelper::GetDeletedTransactionsCount() {
 
 	return result;
 }
+
+std::vector<std::shared_ptr<Account>> DataHelper::GetArchiveAccounts() {
+	auto result = std::vector<std::shared_ptr<Account>>();
+
+	char *sql = "SELECT a.id FROM accounts a WHERE a.active = 0 ORDER BY a.order_id";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
+			result.push_back(account);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}

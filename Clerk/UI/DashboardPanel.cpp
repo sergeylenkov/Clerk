@@ -257,18 +257,30 @@ void DashboardPanel::Draw() {
 			dc.SetPen(wxPen(color100, 3));
 		}
 
+		if (width > progressWidth) {
+			width = progressWidth;
+		}
+
 		dc.DrawLine(x, y, x + width, y);
 
 		y = y + 5;
 
 		dc.SetFont(budgetFont);
-		dc.SetTextForeground(wxColor(60, 60, 60));
+		
+		if (budget.percent <= 100) {
+			dc.SetTextForeground(wxColor(60, 60, 60));
+		}
+		else {
+			dc.SetTextForeground(wxColor(185, 25, 0));
+		}
+
 		dc.DrawText(budget.currentAmount, wxPoint(x, y));
 
 		size = dc.GetTextExtent(budget.amount);
 
 		dc.SetFont(budgetFont);
-		dc.SetTextForeground(wxColor(120, 120, 120));
+		dc.SetTextForeground(wxColor(120, 120, 120));		
+		
 		dc.DrawText(budget.amount, wxPoint(x + progressWidth - size.GetWidth(), y));
 
 		y = y + 40;

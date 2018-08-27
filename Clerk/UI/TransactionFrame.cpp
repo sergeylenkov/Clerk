@@ -5,8 +5,10 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
-	wxFloatingPointValidator<float> amountValidator(2, &fromValue, wxNUM_VAL_DEFAULT);
-	amountValidator.SetRange(0.0f, 999999999.0f);
+	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
+	wxArrayString chars(13, allowedChars);
+	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
+	amountValidator.SetIncludes(chars);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -105,6 +107,7 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	fromList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnFromAccountSelect, this);
 	toList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnToAccountSelect, this);
 	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnFromAmountKillFocus, this);
+	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnToAmountKillFocus, this);
 	tagsField->Bind(wxEVT_KEY_UP, &TransactionFrame::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnTagsKillFocus, this);
 
@@ -390,17 +393,26 @@ void TransactionFrame::OnCancel(wxCommandEvent &event) {
 
 void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
-	
+
+	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());	
+	fromAmountField->SetValue(stringAmount);
+
+	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
+	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
 	double val;
 
 	toAmountField->GetValue().ToDouble(&val);
 
-	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
-	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
-
 	if (val == 0 && fromCurrencyId == toCurrencyId) {
 		toAmountField->SetValue(fromAmountField->GetValue());
 	}
+}
+
+void TransactionFrame::OnToAmountKillFocus(wxFocusEvent &event) {
+	event.Skip();
+
+	wxString stringAmount = this->ClearAmountValue(toAmountField->GetValue());	
+	toAmountField->SetValue(stringAmount);
 }
 
 void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
@@ -475,4 +487,13 @@ void TransactionFrame::AddTag() {
 
 	tagsField->SetValue(result);
 	tagsField->SetInsertionPointEnd();
+}
+
+wxString TransactionFrame::ClearAmountValue(wxString &value) {
+	value.Trim(true);
+	value.Trim(false);
+	value.Replace(",", ".", true);
+	value.Replace(" ", "", true);
+
+	return value;
 }

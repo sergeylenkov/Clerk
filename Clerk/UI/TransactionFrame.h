@@ -60,8 +60,10 @@ private:
 	void OnFromAccountSelect(wxCommandEvent &event);
 	void OnToAccountSelect(wxCommandEvent &event);
 	void OnFromAmountKillFocus(wxFocusEvent &event);
+	void OnToAmountKillFocus(wxFocusEvent &event);
 	void OnTextChanged(wxKeyEvent &event);
 	void OnTagsKillFocus(wxFocusEvent& event);	
 	void OnSelectTag();
 	void AddTag();
+	wxString ClearAmountValue(wxString &value);
 };

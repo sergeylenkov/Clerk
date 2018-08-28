@@ -10,7 +10,6 @@ enum class BudgetsPanelMenuTypes {
 	Delete = 2,
 };
 
-
 class BudgetsPanel : public DataPanel
 {
 public:

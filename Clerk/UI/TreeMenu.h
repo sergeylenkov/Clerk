@@ -21,6 +21,7 @@ public:
 	std::function<void(std::shared_ptr<Report>)> OnReportSelect;
 	std::function<void()> OnDashboardSelect;
 	std::function<void()> OnBudgetsSelect;
+	std::function<void()> OnSchedulersSelect;
 	std::function<void()> OnTrashSelect;
 	std::function<void(TreeMenuItemTypes)> OnAccountsSelect;
 	std::function<void()> OnAddAccount;

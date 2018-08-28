@@ -45,8 +45,8 @@ void TreeMenu::CreateImageList() {
 		}
 	}
 
-	for (int i = 0; i <= 50; i++) {
-		wxString path = wxString::Format("Resources\\%d.png", i);
+	for (int i = 0; i <= 52; i++) {
+		wxString path = wxString::Format("Resources\\Menu Icons\\%d.png", i);
 
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
 		{
@@ -84,7 +84,12 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuBudgets;
 
-	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 57, 57, itemData);
+	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 102, 102, itemData);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuSchedulers;
+
+	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", 103, 103, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuArchive;
@@ -325,6 +330,11 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 		else if (item->type == TreeMenuItemTypes::MenuBudgets) {
 			if (OnBudgetsSelect) {
 				OnBudgetsSelect();
+			}
+		}
+		else if (item->type == TreeMenuItemTypes::MenuSchedulers) {
+			if (OnSchedulersSelect) {
+				OnSchedulersSelect();
 			}
 		}
 		else if (item->type == TreeMenuItemTypes::MenuTrash) {

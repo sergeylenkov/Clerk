@@ -1,5 +1,4 @@
-#ifndef Budget_h
-#define Budget_h
+#pragma once
 
 #include <wx/wx.h>
 #include <memory>
@@ -36,5 +35,3 @@ public:
 	void Save();
 	void Delete();
 };
-
-#endif

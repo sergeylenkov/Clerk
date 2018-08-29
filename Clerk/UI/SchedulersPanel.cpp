@@ -1,9 +1,9 @@
-#include "BudgetsPanel.h"
+#include "SchedulersPanel.h"
 
-BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+SchedulersPanel::SchedulersPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	list->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &BudgetsPanel::OnListItemClick, this);
-	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
+	list->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &SchedulersPanel::OnListItemClick, this);
+	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &SchedulersPanel::OnListItemDoubleClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -13,7 +13,7 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, 
 	this->Layout();
 }
 
-shared_ptr<Budget> BudgetsPanel::GetBudget() {
+shared_ptr<Scheduler> SchedulersPanel::GetScheduler() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -23,15 +23,15 @@ shared_ptr<Budget> BudgetsPanel::GetBudget() {
 			break;
 		}
 
-		return budgets[itemIndex];
+		return schedulers[itemIndex];
 	}
 
 	return NULL;
 }
 
-void BudgetsPanel::Update() {
-	list->ClearAll();	
-	budgets = DataHelper::GetInstance().GetBudgets();
+void SchedulersPanel::Update() {
+	list->ClearAll();
+	schedulers = DataHelper::GetInstance().GetSchedulers();
 
 	wxListItem column;
 
@@ -41,13 +41,13 @@ void BudgetsPanel::Update() {
 
 	list->InsertColumn(0, column);
 
-	wxListItem column1;
+	/*wxListItem column1;
 
 	column1.SetId(1);
 	column1.SetText(_("Current"));
 	column1.SetWidth(200);
 
-	list->InsertColumn(1, column1);
+	budgetsList->InsertColumn(1, column1);
 
 	wxListItem column2;
 
@@ -55,7 +55,7 @@ void BudgetsPanel::Update() {
 	column2.SetText(_("Limit"));
 	column2.SetWidth(200);
 
-	list->InsertColumn(2, column2);
+	budgetsList->InsertColumn(2, column2);
 
 	wxListItem column3;
 
@@ -63,7 +63,7 @@ void BudgetsPanel::Update() {
 	column3.SetText(_("Remain"));
 	column3.SetWidth(200);
 
-	list->InsertColumn(3, column3);
+	budgetsList->InsertColumn(3, column3);
 
 	int i = 0;
 
@@ -76,7 +76,7 @@ void BudgetsPanel::Update() {
 		if (budget->period == BudgetPeriods::Month) {
 			fromDate.SetDay(1);
 		}
-		
+
 		if (budget->type == BudgetTypes::Limit) {
 			if (!budget->account) {
 				currentAmount = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
@@ -99,68 +99,68 @@ void BudgetsPanel::Update() {
 			listItem.SetTextColour(wxColour(255, 0, 0));
 		}
 
-		list->InsertItem(listItem);
-		list->SetItem(i, 0, *budget->name);
-		list->SetItem(i, 1, wxString::Format("%.2f", currentAmount));
-		list->SetItem(i, 2, wxString::Format("%.2f", budget->amount));
-		list->SetItem(i, 3, wxString::Format("%.2f", budget->amount - currentAmount));
-		
+		budgetsList->InsertItem(listItem);
+		budgetsList->SetItem(i, 0, *budget->name);
+		budgetsList->SetItem(i, 1, wxString::Format("%.2f", currentAmount));
+		budgetsList->SetItem(i, 2, wxString::Format("%.2f", budget->amount));
+		budgetsList->SetItem(i, 3, wxString::Format("%.2f", budget->amount - currentAmount));
+
 		i++;
+	}*/
+}
+
+void SchedulersPanel::EditScheduler() {
+	if (OnEditScheduler) {
+		auto scheduler = GetScheduler();
+
+		OnEditScheduler(scheduler);
 	}
 }
 
-void BudgetsPanel::EditBudget() {	
-	if (OnEditBudget) {
-		auto budget = GetBudget();
+void SchedulersPanel::DeleteScheduler() {
+	auto scheduler = GetScheduler();
 
-		OnEditBudget(budget);
-	}
-}
-
-void BudgetsPanel::DeleteBudget() {
-	auto budget = GetBudget();
-
-	if (budget) {
-		budget->Delete();
+	if (scheduler) {
+		scheduler->Delete();
 		Update();
 	}
 }
 
-void BudgetsPanel::OnListItemClick(wxListEvent &event) {
+void SchedulersPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
+	menu->Append(static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
 	menu->AppendSeparator();
-	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));
+	menu->Append(static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete..."));
 
 	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
 	menu->SetClientData(data);
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsPanel::OnMenuSelect, this);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersPanel::OnMenuSelect, this);
 
 	list->PopupMenu(menu, event.GetPoint());
 
 	delete menu;
 }
 
-void BudgetsPanel::OnListItemDoubleClick(wxListEvent &event) {
-	if (OnEditBudget) {
-		auto budget = GetBudget();
-		OnEditBudget(budget);
+void SchedulersPanel::OnListItemDoubleClick(wxListEvent &event) {
+	if (OnEditScheduler) {
+		auto budget = GetScheduler();
+		OnEditScheduler(budget);
 	}
 }
 
-void BudgetsPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<BudgetsPanelMenuTypes>(event.GetId())) {
-		case BudgetsPanelMenuTypes::Edit:
-				EditBudget();
-				break;
+void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
+	switch (static_cast<SchedulersPanelMenuTypes>(event.GetId())) {
+	case SchedulersPanelMenuTypes::Edit:
+		EditScheduler();
+		break;
 
-		case BudgetsPanelMenuTypes::Delete:
-				DeleteBudget();
-				break;
+	case SchedulersPanelMenuTypes::Delete:
+		DeleteScheduler();
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 }

@@ -39,6 +39,7 @@ private:
 	void OnTreeMenuReportSelect(std::shared_ptr<Report> report);
 	void OnTreeMenuDashboardSelect();
 	void OnTreeMenuBudgetsSelect();
+	void OnTreeMenuSchedulersSelect();
 	void OnTreeMenuTrashSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);

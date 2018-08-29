@@ -81,9 +81,6 @@
     <ClCompile Include="UI\BudgetFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\BudgetsListPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\TreeMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -97,6 +94,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TrashPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BudgetsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\SchedulersPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -170,9 +176,6 @@
     <ClInclude Include="UI\BudgetFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\BudgetsListPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\TreeMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -186,6 +189,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TrashPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BudgetsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SchedulersPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

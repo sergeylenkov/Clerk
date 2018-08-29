@@ -12,6 +12,7 @@
 #include "Transaction.h"
 #include "Report.h"
 #include "Budget.h"
+#include "Scheduler.h"
 
 using namespace std;
 
@@ -46,6 +47,7 @@ public:
 	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
 	std::vector<std::shared_ptr<Budget>> GetBudgets();
+	std::vector<std::shared_ptr<Scheduler>> GetSchedulers();
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);
 	float GetBalance(Account *account);

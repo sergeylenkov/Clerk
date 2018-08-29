@@ -10,6 +10,7 @@
 #include "ReportPanel.h"
 #include "BudgetsPanel.h"
 #include "TrashPanel.h"
+#include "SchedulersPanel.h"
 
 class TabsPanel : public wxPanel
 {
@@ -47,8 +48,9 @@ private:
 	void CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type);
 	void CreateDashboardPanel(int tabIndex);
 	void CreateBudgetsPanel(int tabIndex);
+	void CreateSchedulersPanel(int tabIndex);
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
-	void CreateTrashPanel(int tabIndex);
+	void CreateTrashPanel(int tabIndex);	
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);

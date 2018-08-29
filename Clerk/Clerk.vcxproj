@@ -70,6 +70,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Data\Scheduler.cpp" />
+    <ClCompile Include="UI\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\DashboardPanel.cpp" />
     <ClCompile Include="UI\TabsPanel.cpp" />
@@ -100,6 +102,8 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data\Scheduler.h" />
+    <ClInclude Include="UI\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\DashboardPanel.h" />
     <ClInclude Include="UI\TabsPanel.h" />

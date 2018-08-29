@@ -23,7 +23,7 @@ public:
 	std::function<void(std::shared_ptr<Budget> budget)> OnEditBudget;
 
 private:
-	wxListCtrl *budgetsList;
+	wxListCtrl *list;
 	std::vector<std::shared_ptr<Budget>> budgets;
 
 	void OnListItemClick(wxListEvent &event);	

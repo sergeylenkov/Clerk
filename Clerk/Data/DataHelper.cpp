@@ -163,6 +163,24 @@ std::vector<std::shared_ptr<Budget>> DataHelper::GetBudgets() {
 	return result;
 }
 
+std::vector<std::shared_ptr<Scheduler>> DataHelper::GetSchedulers() {
+	auto result = std::vector<std::shared_ptr<Scheduler>>();
+
+	char *sql = "SELECT id FROM schedulers ORDER BY name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto scheduler = make_shared<Scheduler>(sqlite3_column_int(statement, 0));
+			result.push_back(scheduler);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
 	auto result = std::vector<std::shared_ptr<Report>>();
 

@@ -136,6 +136,9 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 	else if (type == TreeMenuItemTypes::MenuBudgets) {
 		CreateBudgetsPanel(tabIndex);
 	}
+	else if (type == TreeMenuItemTypes::MenuSchedulers) {
+		CreateSchedulersPanel(tabIndex);
+	}
 	else if (type == TreeMenuItemTypes::MenuTrash) {
 		CreateTrashPanel(tabIndex);
 	}
@@ -249,6 +252,28 @@ void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 	notebook->SetPageText(tabIndex, wxT("Budgets"));
 
 	budgetPanel->Update();
+}
+
+void TabsPanel::CreateSchedulersPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	SchedulersPanel *schedulersPanel = new SchedulersPanel(panel, wxID_ANY);
+
+	tabsPanels[tabIndex] = schedulersPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuSchedulers;
+
+	sizer->Add(schedulersPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	notebook->SetPageText(tabIndex, wxT("Schedulers"));
+
+	schedulersPanel->Update();
 }
 
 void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) {

@@ -146,18 +146,18 @@ void TransactionsListPanel::Update() {
 	
 	if (this->type == TreeMenuItemTypes::MenuAccount) {
 		for each (auto transaction in DataHelper::GetInstance().GetTransactions(account.get(), &fromDatePicker->GetValue(), &toDatePicker->GetValue()))
-		{
+		{			
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();
 				wxString tags = transaction->tags->Lower();
 				wxString name;
 
 				if (account->id == transaction->fromAccountId) {
-					name = *transaction->toAccountName;
+					name = transaction->toAccountName->Lower();
 				}
 
 				if (account->id == transaction->toAccountId) {
-					name = *transaction->fromAccountName;
+					name = transaction->fromAccountName->Lower();
 				}
 
 				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
@@ -174,7 +174,7 @@ void TransactionsListPanel::Update() {
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();
 				wxString tags = transaction->tags->Lower();
-				wxString name = *transaction->toAccountName;
+				wxString name = transaction->toAccountName->Lower();
 
 				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
 					continue;
@@ -191,7 +191,7 @@ void TransactionsListPanel::Update() {
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();
 				wxString tags = transaction->tags->Lower();
-				wxString name = *transaction->fromAccountName;
+				wxString name = transaction->fromAccountName->Lower();
 
 				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
 					continue;
@@ -208,7 +208,7 @@ void TransactionsListPanel::Update() {
 			if (searchField->GetValue().Length() > 0) {
 				wxString search = searchField->GetValue().Lower();
 				wxString tags = transaction->tags->Lower();
-				wxString name = *transaction->fromAccountName;
+				wxString name = transaction->fromAccountName->Lower();
 
 				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
 					continue;

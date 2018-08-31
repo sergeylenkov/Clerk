@@ -25,7 +25,7 @@ BudgetFrame::BudgetFrame(wxFrame *parent, const wxChar *title, int x, int y, int
 	typeList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	fieldsSizer->Add(typeList, 0, wxALL | wxEXPAND, 5);
 
-	periodLabel = new wxStaticText(this, wxID_ANY, "Pertiod:", wxDefaultPosition, wxDefaultSize, 0);
+	periodLabel = new wxStaticText(this, wxID_ANY, "Period:", wxDefaultPosition, wxDefaultSize, 0);
 	periodLabel->Wrap(-1);
 	fieldsSizer->Add(periodLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 

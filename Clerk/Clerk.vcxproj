@@ -71,6 +71,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data\Scheduler.cpp" />
+    <ClCompile Include="UI\SchedulerFrame.cpp" />
     <ClCompile Include="UI\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\DashboardPanel.cpp" />
@@ -103,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Scheduler.h" />
+    <ClInclude Include="UI\SchedulerFrame.h" />
     <ClInclude Include="UI\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\DashboardPanel.h" />

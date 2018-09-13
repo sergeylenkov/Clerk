@@ -4,6 +4,7 @@
 #include <wx/bmpcbox.h>
 #include <wx/valnum.h>
 #include "../Data/DataHelper.h"
+#include "../TagsPopup.h"
 
 class SchedulerFrame : public wxFrame
 {
@@ -15,11 +16,48 @@ public:
 
 	std::function<void()> OnClose;
 
-private:	
+private:
+	wxPanel *mainPanel;
+	wxStaticText *fromLabel;
+	wxStaticText *toLabel;
+	wxBitmapComboBox *fromList;
+	wxBitmapComboBox *toList;
 	wxButton *okButton;
 	wxButton *cancelButton;
+	wxStaticText *tagsLabel;
+	wxTextCtrl *tagsField;
+	wxStaticText *noteLabel;
+	wxTextCtrl *noteField;
+	wxStaticText *dateLabel;
+	wxStaticText *fromAmountLabel;
+	wxTextCtrl *fromAmountField;
+	wxStaticText *toAmountLabel;
+	wxTextCtrl *toAmountField;
+	float fromValue = 0.0;
+	float toValue = 0.0;
+	std::vector<std::shared_ptr<Account>> accounts;
+	std::vector<std::shared_ptr<Account>> fromAccounts;
+	std::vector<std::shared_ptr<Account>> toAccounts;
 	std::shared_ptr<Scheduler> scheduler;
+	std::shared_ptr<Account> fromAccount;
+	std::shared_ptr<Account> toAccount;
+	wxImageList *accountsImageList;
+	TagsPopup *tagsPopup;
 
+	void SelectFromAccount(int index);
+	void SelectToAccount(int index);
+	void SelectToAccount(std::shared_ptr<Account> account);
+	void UpdateFromList();
+	void UpdateToList(std::shared_ptr<Account> account);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	void OnFromAccountSelect(wxCommandEvent &event);
+	void OnToAccountSelect(wxCommandEvent &event);
+	void OnFromAmountKillFocus(wxFocusEvent &event);
+	void OnToAmountKillFocus(wxFocusEvent &event);
+	void OnTextChanged(wxKeyEvent &event);
+	void OnTagsKillFocus(wxFocusEvent& event);
+	void OnSelectTag();
+	void AddTag();
+	wxString ClearAmountValue(wxString &value);	
 };

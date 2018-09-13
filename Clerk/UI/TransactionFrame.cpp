@@ -159,6 +159,8 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
+
+	mainPanel->Bind(wxEVT_CHAR_HOOK, &TransactionFrame::OnKeyDown, this);
 }
 
 TransactionFrame::~TransactionFrame() {
@@ -178,6 +180,78 @@ TransactionFrame::~TransactionFrame() {
 	delete datePicker;
 	delete accountsImageList;
 	delete tagsPopup;	
+}
+
+void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
+	this->transaction = transaction;
+
+	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
+	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
+	tagsField->SetValue(*transaction->tags);
+	noteField->SetValue(*transaction->note);
+	datePicker->SetValue(*transaction->paidAt);
+
+	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+		if (transaction->fromAccountId == fromAccounts[i]->id) {
+			SelectFromAccount(i);
+			UpdateToList(fromAccounts[i]);
+
+			break;
+		}
+	}
+
+	if (transaction->toAccountId != -1) {
+		for (unsigned int i = 0; i < toAccounts.size(); i++) {
+			if (transaction->toAccountId == toAccounts[i]->id) {
+				SelectToAccount(i);
+				break;
+			}
+		}
+	}
+	else {
+		SelectToAccount(0);
+	}
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
+}
+
+void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
+	auto copy = make_shared<Transaction>();
+
+	copy->fromAccountId = transaction->fromAccountId;
+	copy->toAccountId = transaction->toAccountId;
+	copy->fromAmount = transaction->fromAmount;
+	copy->toAmount = 0.0;
+	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+
+	this->transaction = copy;
+	this->splitTransaction = transaction;
+
+	fromAmountField->SetValue(wxString::Format("%.2f", this->transaction->fromAmount));
+	toAmountField->SetValue(wxString::Format("%.2f", 0.0));
+	tagsField->SetValue("");
+	noteField->SetValue("");
+	datePicker->SetValue(*this->transaction->paidAt);
+
+	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
+			SelectFromAccount(i);
+			UpdateToList(fromAccounts[i]);
+
+			break;
+		}
+	}
+
+	for (unsigned int i = 0; i < toAccounts.size(); i++) {
+		if (this->transaction->toAccountId == toAccounts[i]->id) {
+			SelectToAccount(i);
+			break;
+		}
+	}
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionFrame::UpdateFromList() {
@@ -272,78 +346,6 @@ void TransactionFrame::OnFromAccountSelect(wxCommandEvent &event) {
 
 void TransactionFrame::OnToAccountSelect(wxCommandEvent &event) {
 	SelectToAccount(toList->GetSelection());
-}
-
-void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
-	this->transaction = transaction;
-
-	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
-	tagsField->SetValue(*transaction->tags);
-	noteField->SetValue(*transaction->note);
-	datePicker->SetValue(*transaction->paidAt);
-
-	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->fromAccountId == fromAccounts[i]->id) {
-			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i]);
-
-			break;
-		}
-	}
-
-	if (transaction->toAccountId != -1) {
-		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (transaction->toAccountId == toAccounts[i]->id) {
-				SelectToAccount(i);
-				break;
-			}
-		}
-	}
-	else {
-		SelectToAccount(0);
-	}	
-
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
-}
-
-void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
-	auto copy = make_shared<Transaction>();
-
-	copy->fromAccountId = transaction->fromAccountId;
-	copy->toAccountId = transaction->toAccountId;
-	copy->fromAmount = transaction->fromAmount;
-	copy->toAmount = 0.0;
-	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
-
-	this->transaction = copy;
-	this->splitTransaction = transaction;
-
-	fromAmountField->SetValue(wxString::Format("%.2f", this->transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", 0.0));
-	tagsField->SetValue("");
-	noteField->SetValue("");
-	datePicker->SetValue(*this->transaction->paidAt);
-
-	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
-			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i]);
-
-			break;
-		}
-	}
-
-	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (this->transaction->toAccountId == toAccounts[i]->id) {
-			SelectToAccount(i);
-			break;
-		}
-	}
-
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
 }
 
 void TransactionFrame::OnOK(wxCommandEvent &event) {
@@ -496,4 +498,12 @@ wxString TransactionFrame::ClearAmountValue(wxString &value) {
 	value.Replace(" ", "", true);
 
 	return value;
+}
+
+void TransactionFrame::OnKeyDown(wxKeyEvent &event) {	
+	if ((int)event.GetKeyCode() == 27) {
+		Close();
+	}
+
+	event.Skip();
 }

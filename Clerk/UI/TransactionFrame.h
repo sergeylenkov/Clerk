@@ -1,3 +1,5 @@
+#pragma once
+
 #include <wx/wx.h>
 #include <wx/datectrl.h>
 #include <wx/bmpcbox.h>
@@ -66,4 +68,5 @@ private:
 	void OnSelectTag();
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);
+	void OnKeyDown(wxKeyEvent &event);
 };

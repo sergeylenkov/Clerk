@@ -23,12 +23,16 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxMenu *menuBudgets = new wxMenu();
 	menuBudgets->Append(ID_ADD_BUDGET, wxT("Add Budget..."));
 
+	wxMenu *menuSchedulers = new wxMenu();
+	menuSchedulers->Append(ID_ADD_SCHEDULER, wxT("Add Scheduler..."));
+
 	wxMenuBar *menuBar = new wxMenuBar();
 
 	menuBar->Append(menuFile, "&File");
 	menuBar->Append(menuAccounts, "&Accounts");
 	menuBar->Append(menuTransactions, "&Transactions");
 	menuBar->Append(menuBudgets, "&Budgets");
+	menuBar->Append(menuSchedulers, "&Schedulers");
 
 	SetMenuBar(menuBar);
 
@@ -88,6 +92,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);
 
 	menuBudgets->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
+	menuSchedulers->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, ID_ADD_SCHEDULER);
 
 	treeMenu->Update();
 	treeMenu->RestoreState();
@@ -356,6 +361,25 @@ void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
 
 void MainFrame::OnBudgetClose() {
 	delete budgetFrame;
+
+	tabsPanel->Update();
+}
+
+void MainFrame::OnAddScheduler(wxCommandEvent &event) {
+	AddScheduler();
+}
+
+void MainFrame::AddScheduler() {
+	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 400);
+
+	schedulerFrame->Show(true);
+	schedulerFrame->CenterOnParent();
+
+	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
+}
+
+void MainFrame::OnSchedulerClose() {
+	delete schedulerFrame;
 
 	tabsPanel->Update();
 }

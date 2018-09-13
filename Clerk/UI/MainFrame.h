@@ -13,6 +13,7 @@
 #include "TransactionFrame.h"
 #include "AccountFrame.h"
 #include "BudgetFrame.h"
+#include "SchedulerFrame.h"
 #include "TabsPanel.h"
 
 class MainFrame : public wxFrame
@@ -26,6 +27,7 @@ private:
 	TransactionFrame *transactionFrame;
 	AccountFrame *accountFrame;
 	BudgetFrame *budgetFrame;
+	SchedulerFrame *schedulerFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	
@@ -45,6 +47,7 @@ private:
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
+	void OnAddScheduler(wxCommandEvent &event);
 	void AddTransaction(Account *account);
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
@@ -56,5 +59,7 @@ private:
 	void AddBudget();
 	void EditBudget(std::shared_ptr<Budget> budget);
 	void OnBudgetClose();	
+	void AddScheduler();
+	void OnSchedulerClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 };

@@ -2,6 +2,7 @@
 
 #include <wx/wx.h>
 #include <wx/bmpcbox.h>
+#include <wx/statline.h>
 #include <wx/valnum.h>
 #include "../Data/DataHelper.h"
 #include "../TagsPopup.h"
@@ -18,6 +19,12 @@ public:
 
 private:
 	wxPanel *mainPanel;
+	wxStaticText *nameLabel;
+	wxTextCtrl *nameField;
+	wxRadioButton *dailyButton;
+	wxRadioButton *weeklyButton;
+	wxRadioButton *monthlyButton;
+	wxRadioButton *yearlyButton;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
 	wxBitmapComboBox *fromList;

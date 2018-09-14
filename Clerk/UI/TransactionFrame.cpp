@@ -164,20 +164,6 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 }
 
 TransactionFrame::~TransactionFrame() {
-	delete fromLabel;
-	delete toLabel;
-	delete fromList;
-	delete toList;
-	delete fromAmountField;
-	delete fromAmountLabel;
-	delete okButton;
-	delete cancelButton;
-	delete tagsLabel;
-	delete tagsField;
-	delete noteLabel;
-	delete noteField;
-	delete dateLabel;
-	delete datePicker;
 	delete accountsImageList;
 	delete tagsPopup;	
 }

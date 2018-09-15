@@ -5,219 +5,113 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 
-	wxBoxSizer* bSizer1;
-	bSizer1 = new wxBoxSizer(wxVERTICAL);
-
-	wxBoxSizer* bSizer5;
-	bSizer5 = new wxBoxSizer(wxHORIZONTAL);
-
-	nameLabel = new wxStaticText(this, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(40, -1), 0);
-	nameLabel->Wrap(-1);
-	bSizer5->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	nameField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	bSizer5->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-
-	bSizer1->Add(bSizer5, 0, wxALL | wxEXPAND, 5);
-
-	wxBoxSizer *bSizer6 = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Recurrence pattern")), wxHORIZONTAL);
-
-	wxPanel *m_panel5 = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(100, -1), wxTAB_TRAVERSAL);
-	wxBoxSizer* bSizer14;
-	bSizer14 = new wxBoxSizer(wxVERTICAL);
-
-	dailyButton = new wxRadioButton(m_panel5, wxID_ANY, wxT("Daily"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer14->Add(dailyButton, 0, wxALL, 5);
-
-	weeklyButton = new wxRadioButton(m_panel5, wxID_ANY, wxT("Weekly"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer14->Add(weeklyButton, 0, wxALL, 5);
-
-	monthlyButton = new wxRadioButton(m_panel5, wxID_ANY, wxT("Monthly"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer14->Add(monthlyButton, 0, wxALL, 5);
-
-	yearlyButton = new wxRadioButton(m_panel5, wxID_ANY, wxT("Yearly"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer14->Add(yearlyButton, 0, wxALL, 5);
-
-
-	m_panel5->SetSizer(bSizer14);
-	m_panel5->Layout();
-	bSizer6->Add(m_panel5, 0, wxALL, 5);
-
-	wxStaticLine *m_staticline2 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
-	bSizer6->Add(m_staticline2, 0, wxEXPAND | wxALL, 5);
-
-	wxPanel *m_panel6 = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	bSizer6->Add(m_panel6, 1, wxEXPAND | wxALL, 5);
-
-
-	bSizer1->Add(bSizer6, 1, wxEXPAND | wxALL, 10);
-
-	wxBoxSizer* bSizer9;
-	bSizer9 = new wxBoxSizer(wxHORIZONTAL);
-
-	fromLabel = new wxStaticText(this, wxID_ANY, wxT("From:"), wxDefaultPosition, wxSize(40, -1), 0);
-	fromLabel->Wrap(-1);
-	bSizer9->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	fromList = new wxBitmapComboBox(this, wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	bSizer9->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	fromAmountField = new wxTextCtrl(this, wxID_ANY, wxT("1000"), wxDefaultPosition, wxSize(80, -1), 0);
-	bSizer9->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	fromAmountLabel = new wxStaticText(this, wxID_ANY, wxT("RUB"), wxDefaultPosition, wxDefaultSize, 0);
-	fromAmountLabel->Wrap(-1);
-	bSizer9->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-
-	bSizer1->Add(bSizer9, 0, wxALL | wxEXPAND, 5);
-
-	wxBoxSizer* bSizer10;
-	bSizer10 = new wxBoxSizer(wxHORIZONTAL);
-
-	toLabel = new wxStaticText(this, wxID_ANY, wxT("To:"), wxDefaultPosition, wxSize(40, -1), 0);
-	toLabel->Wrap(-1);
-	bSizer10->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	toList = new wxBitmapComboBox(this, wxID_ANY, wxT("Combo!"), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	bSizer10->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	toAmountField = new wxTextCtrl(this, wxID_ANY, wxT("1000"), wxDefaultPosition, wxSize(80, -1), 0);
-	bSizer10->Add(toAmountField, 0, wxALL, 5);
-
-	toAmountLabel = new wxStaticText(this, wxID_ANY, wxT("RUB"), wxDefaultPosition, wxDefaultSize, 0);
-	toAmountLabel->Wrap(-1);
-	bSizer10->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-
-	bSizer1->Add(bSizer10, 0, wxALL | wxEXPAND, 5);
-
-	wxBoxSizer* bSizer11;
-	bSizer11 = new wxBoxSizer(wxHORIZONTAL);
-
-	tagsLabel = new wxStaticText(this, wxID_ANY, wxT("Tags:"), wxDefaultPosition, wxSize(40, -1), 0);
-	tagsLabel->Wrap(-1);
-	bSizer11->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	tagsField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	bSizer11->Add(tagsField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-
-	bSizer1->Add(bSizer11, 0, wxALL | wxEXPAND, 5);
-
-	wxBoxSizer* bSizer2;
-	bSizer2 = new wxBoxSizer(wxHORIZONTAL);
-
-	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer2->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
-
-	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer2->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-
-	bSizer1->Add(bSizer2, 0, wxALIGN_RIGHT | wxALL, 5);
-
-
-	this->SetSizer(bSizer1);
-	this->Layout();
-
-	this->Centre(wxBOTH);
-
-	/*wxBoxSizer *statsizer = new wxStaticBoxSizer(
-		new wxStaticBox(p, wxID_ANY, wxT("A wxStaticBoxSizer")), wxVERTICAL);*/
-
-	/*wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
+	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
 	wxArrayString chars(13, allowedChars);
 	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
 	amountValidator.SetIncludes(chars);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
-	wxBoxSizer *lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	nameLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	nameLabel = new wxStaticText(this, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(40, -1), 0);
+	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	nameField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	mainSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);	
+	wxBoxSizer *staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Recurrence pattern")), wxHORIZONTAL);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(80, -1), wxTAB_TRAVERSAL);
 
-	fromLabel = new wxStaticText(mainPanel, wxID_ANY, "From:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxBoxSizer *buttonsSizer = new wxBoxSizer(wxVERTICAL);
 
-	fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	lineSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	dailyButton = new wxRadioButton(buttonsPanel, wxID_ANY, wxT("Daily"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(dailyButton, 0, wxALL, 5);
 
-	fromAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	lineSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	weeklyButton = new wxRadioButton(buttonsPanel, wxID_ANY, wxT("Weekly"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(weeklyButton, 0, wxALL, 5);
 
-	fromAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	monthlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, wxT("Monthly"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(monthlyButton, 0, wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	yearlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, wxT("Yearly"), wxDefaultPosition, wxDefaultSize, 0);
+	buttonsSizer->Add(yearlyButton, 0, wxALL, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	buttonsPanel->SetSizer(buttonsSizer);
+	buttonsPanel->Layout();
 
-	toLabel = new wxStaticText(mainPanel, wxID_ANY, "To:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	staticBoxSizer->Add(buttonsPanel, 0, wxALL, 5);
 
-	toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	lineSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticLine *staticLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
+	staticBoxSizer->Add(staticLine, 0, wxEXPAND | wxALL, 5);
 
-	toAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	lineSizer->Add(toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	staticBoxSizer->Add(patternPanel, 1, wxEXPAND | wxALL, 5);
 
-	toAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	mainSizer->Add(staticBoxSizer, 1, wxEXPAND | wxALL, 10);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Transaction")), wxVERTICAL);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	tagsLabel = new wxStaticText(mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	fromLabel = new wxStaticText(this, wxID_ANY, wxT("From:"), wxDefaultPosition, wxSize(40, -1), 0);
+	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	tagsField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(tagsField, 1, wxALL | wxEXPAND, 5);
+	fromList = new wxBitmapComboBox(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	fromAmountField = new wxTextCtrl(this, wxID_ANY, wxT("1000"), wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	horizontalSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	fromAmountLabel = new wxStaticText(this, wxID_ANY, wxT("RUB"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	noteLabel = new wxStaticText(mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(noteLabel, 0, wxALL, 5);
+	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	lineSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	panelSizer->Add(lineSizer, 1, wxALL | wxEXPAND, 5);
+	toLabel = new wxStaticText(this, wxID_ANY, wxT("To:"), wxDefaultPosition, wxSize(40, -1), 0);
+	toLabel->Wrap(-1);
+	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	toList = new wxBitmapComboBox(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	okButton = new wxButton(mainPanel, wxID_ANY, "OK", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	toAmountField = new wxTextCtrl(this, wxID_ANY, wxT("1000"), wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	horizontalSizer->Add(toAmountField, 0, wxALL, 5);
 
-	cancelButton = new wxButton(mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	toAmountLabel = new wxStaticText(this, wxID_ANY, wxT("RUB"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	mainPanel->SetSizer(panelSizer);
-	mainPanel->Layout();
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	panelSizer->Fit(mainPanel);
+	tagsLabel = new wxStaticText(this, wxID_ANY, wxT("Tags:"), wxDefaultPosition, wxSize(40, -1), 0);
+	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, 0);
+	tagsField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(tagsField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+
+	mainSizer->Add(staticBoxSizer, 1, wxEXPAND | wxALL, 10);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+
+	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	this->SetSizer(mainSizer);
-	this->Layout();*/
+	this->Layout();
 
 	this->Centre(wxBOTH);
 

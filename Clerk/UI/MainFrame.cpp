@@ -370,7 +370,7 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 }
 
 void MainFrame::AddScheduler() {
-	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 420);
+	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
 
 	schedulerFrame->Show(true);
 	schedulerFrame->CenterOnParent();

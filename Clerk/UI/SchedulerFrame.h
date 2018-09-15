@@ -17,14 +17,14 @@ public:
 
 	std::function<void()> OnClose;
 
-private:
-	wxPanel *mainPanel;
+private:	
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
 	wxRadioButton *dailyButton;
 	wxRadioButton *weeklyButton;
 	wxRadioButton *monthlyButton;
 	wxRadioButton *yearlyButton;
+	wxPanel *patternPanel;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
 	wxBitmapComboBox *fromList;

@@ -4,6 +4,7 @@
 #include <wx/bmpcbox.h>
 #include <wx/statline.h>
 #include <wx/valnum.h>
+#include <wx/wrapsizer.h>
 #include "../Data/DataHelper.h"
 #include "../TagsPopup.h"
 
@@ -24,7 +25,10 @@ private:
 	wxRadioButton *weeklyButton;
 	wxRadioButton *monthlyButton;
 	wxRadioButton *yearlyButton;
+	wxBoxSizer *patternSizer;
 	wxPanel *patternPanel;
+	wxPanel *dailyPatternPanel;
+	wxPanel *weeklyPatternPanel;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
 	wxBitmapComboBox *fromList;
@@ -40,6 +44,14 @@ private:
 	wxTextCtrl *fromAmountField;
 	wxStaticText *toAmountLabel;
 	wxTextCtrl *toAmountField;
+	wxCheckBox *mondayCheckBox;
+	wxCheckBox *tuesdayCheckBox;
+	wxCheckBox *wednesdayCheckBox;
+	wxCheckBox *thursdayCheckBox;
+	wxCheckBox *fridayCheckBox;
+	wxCheckBox *saturdayCheckBox;
+	wxCheckBox *sundayCheckBox;
+
 	float fromValue = 0.0;
 	float toValue = 0.0;
 	std::vector<std::shared_ptr<Account>> accounts;
@@ -67,4 +79,5 @@ private:
 	void OnSelectTag();
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);	
+	void OnPatternSelect(wxCommandEvent& event);
 };

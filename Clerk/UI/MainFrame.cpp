@@ -5,36 +5,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	Settings::GetInstance().Open("Config.txt");
 
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
-	
-	wxMenu *menuFile = new wxMenu();
-
-	menuFile->Append(wxID_ABOUT, "&About...");
-	menuFile->AppendSeparator();
-	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
-
-	wxMenu *menuAccounts = new wxMenu();
-	menuAccounts->Append(ID_ADD_ACCOUNT, wxT("Add Account...\tCtrl+N"));
-
-	wxMenu *menuTransactions = new wxMenu();
-	menuTransactions->Append(ID_ADD_TRANSACTION, wxT("Add...\tCtrl+T"));
-	menuTransactions->Append(ID_DUPLICATE_TRANSACTION, wxT("Duplicate...\tCtrl+D"));
-	menuTransactions->Append(ID_SPLIT_TRANSACTION, wxT("Split...\tCtrl+S"));
-
-	wxMenu *menuBudgets = new wxMenu();
-	menuBudgets->Append(ID_ADD_BUDGET, wxT("Add Budget..."));
-
-	wxMenu *menuSchedulers = new wxMenu();
-	menuSchedulers->Append(ID_ADD_SCHEDULER, wxT("Add Scheduler..."));
-
-	wxMenuBar *menuBar = new wxMenuBar();
-
-	menuBar->Append(menuFile, "&File");
-	menuBar->Append(menuAccounts, "&Accounts");
-	menuBar->Append(menuTransactions, "&Transactions");
-	menuBar->Append(menuBudgets, "&Budgets");
-	menuBar->Append(menuSchedulers, "&Schedulers");
-
-	SetMenuBar(menuBar);
 
 	wxSplitterWindow *splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splitter->SetSashGravity(0.5);
@@ -62,6 +32,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	boxSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
 	splitterLeftPanel->SetSizer(boxSizer);
 
+	CreateMainMenu();
 	CreateStatusBar();
 	SetStatusText("");
 
@@ -82,18 +53,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);
-
-	menuAccounts->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
-
-	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
-	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
-	menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);
-
-	menuBudgets->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
-	menuSchedulers->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, ID_ADD_SCHEDULER);
-
 	treeMenu->Update();
 	treeMenu->RestoreState();
 
@@ -110,6 +69,45 @@ MainFrame::~MainFrame()
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
+}
+
+void MainFrame::CreateMainMenu() {
+	wxMenu *menuFile = new wxMenu();
+	wxMenu *menuHelp = new wxMenu();
+
+	menuHelp->Append(wxID_ABOUT, "&About...");
+	
+	menuFile->Append(ID_ADD_TRANSACTION, wxT("Add Transaction...\tCtrl+T"));
+	menuFile->AppendSeparator();
+	menuFile->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
+	menuFile->Append(ID_ADD_BUDGET, wxT("Add Budget..."));
+	menuFile->Append(ID_ADD_SCHEDULER, wxT("Add Scheduler..."));
+	menuFile->AppendSeparator();
+	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
+
+	//wxMenu *menuTransactions = new wxMenu();
+
+	//menuTransactions->Append(ID_DUPLICATE_TRANSACTION, wxT("Duplicate...\tCtrl+D"));
+	//menuTransactions->Append(ID_SPLIT_TRANSACTION, wxT("Split...\tCtrl+S"));	
+
+	wxMenuBar *menuBar = new wxMenuBar();
+
+	menuBar->Append(menuFile, "&File");
+	menuBar->Append(menuHelp, "&Help");	
+
+	SetMenuBar(menuBar);
+
+	menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
+
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, ID_ADD_SCHEDULER);
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);	
+
+	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
+	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
+	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);	
 }
 
 void MainFrame::UpdateStatus(wxString text) {

@@ -31,6 +31,7 @@ private:
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	
+	void CreateMainMenu();
 	void UpdateStatus(wxString text);
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);

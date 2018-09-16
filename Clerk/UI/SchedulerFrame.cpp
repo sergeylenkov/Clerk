@@ -46,10 +46,17 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	staticBoxSizer->Add(buttonsPanel, 0, wxALL, 5);
 
 	wxStaticLine *staticLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
-	staticBoxSizer->Add(staticLine, 0, wxEXPAND | wxALL, 5);
+	staticBoxSizer->Add(staticLine, 0, wxEXPAND | wxALL, 5);	
 
 	patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	staticBoxSizer->Add(patternPanel, 1, wxEXPAND | wxALL, 5);
+
+	patternSizer = new wxBoxSizer(wxVERTICAL);
+
+	patternPanel->SetSizer(patternSizer);
+	patternPanel->Layout();
+
+	patternSizer->Fit(patternPanel);
 
 	mainSizer->Add(staticBoxSizer, 1, wxEXPAND | wxALL, 10);
 
@@ -110,6 +117,62 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
+	//
+
+	dailyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+
+	wxBoxSizer *bSizer12 = new wxBoxSizer(wxHORIZONTAL);
+	bSizer12->SetMinSize(wxSize(-1, 40));
+
+	wxStaticText *m_staticText91 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer12->Add(m_staticText91, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	wxTextCtrl *m_textCtrl6 = new wxTextCtrl(dailyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(60, -1), wxTE_RIGHT);
+	bSizer12->Add(m_textCtrl6, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	wxStaticText *m_staticText101 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("days"), wxDefaultPosition, wxDefaultSize, 0);
+	bSizer12->Add(m_staticText101, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	dailyPatternPanel->SetSizer(bSizer12);
+	dailyPatternPanel->Layout();
+
+	bSizer12->Fit(dailyPatternPanel);
+
+	patternSizer->Add(dailyPatternPanel, 0, wxALIGN_TOP, 0);
+
+	//
+
+	weeklyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxWrapSizer *wrapSizer = new wxWrapSizer(wxHORIZONTAL, wxWRAPSIZER_DEFAULT_FLAGS);
+
+	mondayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Monday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(mondayCheckBox, 0, wxALL, 5);
+
+	tuesdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Tuesday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(tuesdayCheckBox, 0, wxALL, 5);
+
+	wednesdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Wednesday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(wednesdayCheckBox, 0, wxALL, 5);
+
+	thursdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Thursday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(thursdayCheckBox, 0, wxALL, 5);
+
+	fridayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Friday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(fridayCheckBox, 0, wxALL, 5);
+
+	saturdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Saturday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(saturdayCheckBox, 0, wxALL, 5);
+
+	sundayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Sunday"), wxDefaultPosition, wxDefaultSize, 0);
+	wrapSizer->Add(sundayCheckBox, 0, wxALL, 5);
+
+	weeklyPatternPanel->SetSizer(wrapSizer);
+	weeklyPatternPanel->Layout();
+
+	wrapSizer->Fit(weeklyPatternPanel);
+
+	patternSizer->Add(weeklyPatternPanel, 1, wxEXPAND | wxALL, 5);
+
 	this->SetSizer(mainSizer);
 	this->Layout();
 
@@ -127,11 +190,17 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	toAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerFrame::OnToAmountKillFocus, this);
 	tagsField->Bind(wxEVT_KEY_UP, &SchedulerFrame::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KILL_FOCUS, &SchedulerFrame::OnTagsKillFocus, this);
+	dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
+	weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
+	monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
+	yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
 
 	fromValue = 0;
 	toValue = 0;
 
 	dailyButton->SetValue(true);
+	dailyPatternPanel->Show();
+	weeklyPatternPanel->Hide();
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
@@ -418,7 +487,7 @@ void SchedulerFrame::OnTextChanged(wxKeyEvent &event) {
 	event.Skip();
 }
 
-void SchedulerFrame::OnTagsKillFocus(wxFocusEvent& event) {
+void SchedulerFrame::OnTagsKillFocus(wxFocusEvent &event) {
 	tagsPopup->Hide();
 	event.Skip();
 }
@@ -458,4 +527,19 @@ wxString SchedulerFrame::ClearAmountValue(wxString &value) {
 	value.Replace(" ", "", true);
 
 	return value;
+}
+
+void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
+	dailyPatternPanel->Hide();
+	weeklyPatternPanel->Hide();
+
+	if (dailyButton->GetValue()) {
+		dailyPatternPanel->Show();
+	}
+
+	if (weeklyButton->GetValue()) {
+		weeklyPatternPanel->Show();
+	}
+
+	patternPanel->Layout();
 }

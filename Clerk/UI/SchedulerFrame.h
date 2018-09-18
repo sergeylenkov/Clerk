@@ -29,6 +29,14 @@ private:
 	wxPanel *patternPanel;
 	wxPanel *dailyPatternPanel;
 	wxPanel *weeklyPatternPanel;
+	wxPanel *monthlyPatternPanel;
+	wxPanel *yearlyPatternPanel;
+	wxTextCtrl *dailyDayField;
+	wxTextCtrl *weeklyDayField;
+	wxTextCtrl *monthlyDayField;
+	wxTextCtrl *monthlyMonthField;
+	wxComboBox *yearlyMonthChoice;
+	wxTextCtrl *yearlyDayField;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
 	wxBitmapComboBox *fromList;

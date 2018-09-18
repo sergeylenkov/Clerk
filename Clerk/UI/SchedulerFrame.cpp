@@ -10,6 +10,23 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
 	amountValidator.SetIncludes(chars);
 
+	int daysValue;
+	int dayValue;
+	int monthValue;
+	int weekValue;
+
+	wxIntegerValidator<int> daysValidator(&daysValue, wxNUM_VAL_DEFAULT);
+	daysValidator.SetRange(1, 365);
+
+	wxIntegerValidator<int> dayValidator(&dayValue, wxNUM_VAL_DEFAULT);
+	dayValidator.SetRange(1, 31);
+
+	wxIntegerValidator<int> weekValidator(&weekValue, wxNUM_VAL_DEFAULT);
+	weekValidator.SetRange(1, 52);
+
+	wxIntegerValidator<int> monthValidator(&monthValue, wxNUM_VAL_DEFAULT);
+	monthValidator.SetRange(1, 12);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -121,28 +138,42 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	dailyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
-	wxBoxSizer *bSizer12 = new wxBoxSizer(wxHORIZONTAL);
-	bSizer12->SetMinSize(wxSize(-1, 40));
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *m_staticText91 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer12->Add(m_staticText91, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(m_staticText91, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	wxTextCtrl *m_textCtrl6 = new wxTextCtrl(dailyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(60, -1), wxTE_RIGHT);
-	bSizer12->Add(m_textCtrl6, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	dailyDayField = new wxTextCtrl(dailyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, daysValidator);
+	horizontalSizer->Add(dailyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	wxStaticText *m_staticText101 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("days"), wxDefaultPosition, wxDefaultSize, 0);
-	bSizer12->Add(m_staticText101, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(m_staticText101, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	dailyPatternPanel->SetSizer(bSizer12);
+	dailyPatternPanel->SetSizer(horizontalSizer);
 	dailyPatternPanel->Layout();
 
-	bSizer12->Fit(dailyPatternPanel);
+	horizontalSizer->Fit(dailyPatternPanel);
 
-	patternSizer->Add(dailyPatternPanel, 0, wxALIGN_TOP, 0);
+	patternSizer->Add(dailyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
 
 	//
 
 	weeklyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+
+	wxBoxSizer *verticalSizer = new wxBoxSizer(wxVERTICAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticText *m_staticText1011 = new wxStaticText(weeklyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText1011, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	weeklyDayField = new wxTextCtrl(weeklyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, weekValidator);
+	horizontalSizer->Add(weeklyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	wxStaticText *m_staticText911 = new wxStaticText(weeklyPatternPanel, wxID_ANY, wxT("weeks on:"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText911, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	verticalSizer->Add(horizontalSizer, 0, wxALIGN_TOP | wxBOTTOM, 5);
+
 	wxWrapSizer *wrapSizer = new wxWrapSizer(wxHORIZONTAL, wxWRAPSIZER_DEFAULT_FLAGS);
 
 	mondayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Monday"), wxDefaultPosition, wxDefaultSize, 0);
@@ -166,12 +197,65 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	sundayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Sunday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(sundayCheckBox, 0, wxALL, 5);
 
-	weeklyPatternPanel->SetSizer(wrapSizer);
+	verticalSizer->Add(wrapSizer, 1, wxEXPAND, 5);
+
+	weeklyPatternPanel->SetSizer(verticalSizer);
 	weeklyPatternPanel->Layout();
 
 	wrapSizer->Fit(weeklyPatternPanel);
 
-	patternSizer->Add(weeklyPatternPanel, 1, wxEXPAND | wxALL, 5);
+	patternSizer->Add(weeklyPatternPanel, 1, wxEXPAND | wxALL, 0);
+
+	//
+
+	monthlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticText *m_staticText912 = new wxStaticText(monthlyPatternPanel, wxID_ANY, wxT("Day"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText912, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	monthlyDayField = new wxTextCtrl(monthlyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, dayValidator);
+	horizontalSizer->Add(monthlyDayField, 0, wxLEFT | wxRIGHT, 5);
+
+	wxStaticText *m_staticText1012 = new wxStaticText(monthlyPatternPanel, wxID_ANY, wxT("every"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText1012, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	monthlyMonthField = new wxTextCtrl(monthlyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, monthValidator);
+	horizontalSizer->Add(monthlyMonthField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	wxStaticText *m_staticText10121 = new wxStaticText(monthlyPatternPanel, wxID_ANY, wxT("month(s)"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText10121, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, 5);
+
+	monthlyPatternPanel->SetSizer(horizontalSizer);
+	monthlyPatternPanel->Layout();
+
+	horizontalSizer->Fit(monthlyPatternPanel);
+	
+	patternSizer->Add(monthlyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
+
+	//
+
+	yearlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTAB_TRAVERSAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticText *m_staticText913 = new wxStaticText(yearlyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(m_staticText913, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	yearlyDayField = new wxTextCtrl(yearlyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, dayValidator);
+	horizontalSizer->Add(yearlyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+
+	wxString months[] = { wxT("January"), wxT("February"), wxT("March"), wxT("April"), wxT("May"), wxT("June"), wxT("Jule"), wxT("August"), wxT("September"), wxT("October"), wxT("November"), wxT("December") };
+
+	yearlyMonthChoice = new wxComboBox(yearlyPatternPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 12, months, wxCB_READONLY);
+	yearlyMonthChoice->SetSelection(0);
+	horizontalSizer->Add(yearlyMonthChoice, 0, wxLEFT | wxRIGHT, 5);
+
+	yearlyPatternPanel->SetSizer(horizontalSizer);
+	yearlyPatternPanel->Layout();
+
+	horizontalSizer->Fit(yearlyPatternPanel);
+	
+	patternSizer->Add(yearlyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -201,6 +285,8 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	dailyButton->SetValue(true);
 	dailyPatternPanel->Show();
 	weeklyPatternPanel->Hide();
+	monthlyPatternPanel->Hide();
+	yearlyPatternPanel->Hide();
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
@@ -532,6 +618,8 @@ wxString SchedulerFrame::ClearAmountValue(wxString &value) {
 void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
 	dailyPatternPanel->Hide();
 	weeklyPatternPanel->Hide();
+	monthlyPatternPanel->Hide();
+	yearlyPatternPanel->Hide();
 
 	if (dailyButton->GetValue()) {
 		dailyPatternPanel->Show();
@@ -539,6 +627,14 @@ void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
 
 	if (weeklyButton->GetValue()) {
 		weeklyPatternPanel->Show();
+	}
+
+	if (monthlyButton->GetValue()) {
+		monthlyPatternPanel->Show();
+	}
+
+	if (yearlyButton->GetValue()) {
+		yearlyPatternPanel->Show();
 	}
 
 	patternPanel->Layout();

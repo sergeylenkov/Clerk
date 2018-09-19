@@ -21,6 +21,17 @@ sqlite3* DataHelper::Connection() {
 	return _db;
 }
 
+void DataHelper::Init() {
+	char *sql = "CREATE TABLE IF NOT EXISTS schedulers (id INTEGER PRIMARY KEY, name TEXT, active INTEGER, type INTEGER, day INTEGER, week INTEGER, month INTEGER, from_account_id INTEGER, to_account_id INTEGER, from_account_amount INTEGER, to_account_amount INTEGER, tags TEXT, prev_date TEXT, next_date TEXT)";
+	sqlite3_stmt *statement;	
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+}
+
 std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 {
 	auto result = std::vector<std::shared_ptr<Account>>();

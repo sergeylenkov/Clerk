@@ -40,6 +40,7 @@ public:
 
 	void Open(char *database);
 	sqlite3* Connection();
+	void Init();
 	std::vector<std::shared_ptr<Account>> GetAccounts(AccountTypes type);
 	std::shared_ptr<Account> GetAccountById(int id);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);

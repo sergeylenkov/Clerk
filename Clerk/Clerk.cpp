@@ -9,6 +9,8 @@ bool ClerkApp::OnInit()
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Database.sqlite");
 
 	DataHelper::GetInstance().Open(path.GetFullPath().char_str());
+	DataHelper::GetInstance().Init();
+
 	Model::SetConnection(DataHelper::GetInstance().Connection());
 
 	wxInitAllImageHandlers();

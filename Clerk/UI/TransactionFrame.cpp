@@ -335,29 +335,27 @@ void TransactionFrame::OnToAccountSelect(wxCommandEvent &event) {
 }
 
 void TransactionFrame::OnOK(wxCommandEvent &event) {
-	double val;
+	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
+	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
+	transaction->note = make_shared<wxString>(noteField->GetValue());
+	transaction->tags = make_shared<wxString>(tagsField->GetValue());
+	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());
+
+	double amountValue;
 
 	wxString value = fromAmountField->GetValue();
 	value.Replace(" ", "");
 	value.Replace(",", ".");
-	value.ToDouble(&val);
+	value.ToDouble(&amountValue);
 	  
-	fromValue = val;
+	transaction->fromAmount = amountValue;
 	
 	value = toAmountField->GetValue();
 	value.Replace(" ", "");
 	value.Replace(",", ".");
-	value.ToDouble(&val);
+	value.ToDouble(&amountValue);
 
-	toValue = val;
-
-	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
-	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
-	transaction->fromAmount = fromValue;
-	transaction->toAmount = toValue;
-	transaction->note = make_shared<wxString>(noteField->GetValue());
-	transaction->tags = make_shared<wxString>(tagsField->GetValue());
-	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());
+	transaction->toAmount = amountValue;
 
 	transaction->Save();
 

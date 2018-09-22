@@ -1,5 +1,4 @@
-#ifndef Account_h
-#define Account_h
+#pragma once
 
 #include <wx/wx.h>
 #include <memory>
@@ -35,5 +34,3 @@ public:
 	void Save();
 	void Delete();
 };
-
-#endif

@@ -47,6 +47,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this, std::placeholders::_1);
 	tabsPanel->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this, std::placeholders::_1);
 	tabsPanel->OnEditBudget = std::bind(&MainFrame::EditBudget, this, std::placeholders::_1);
+	tabsPanel->OnEditScheduler = std::bind(&MainFrame::EditScheduler, this, std::placeholders::_1);
 
 	rightPanelSizer->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
@@ -232,11 +233,6 @@ void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
 }
 
 void MainFrame::AddTransaction(Account *account) {
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
-	
-	transactionFrame->Show(true);
-	transactionFrame->CenterOnParent();
-
 	auto transaction = make_shared<Transaction>();
 
 	if (account) {
@@ -251,29 +247,33 @@ void MainFrame::AddTransaction(Account *account) {
 		}
 	}
 
-	transactionFrame->SetTransaction(transaction);
+	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 
+	transactionFrame->SetTransaction(transaction);
 	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+
+	transactionFrame->Show(true);
+	transactionFrame->CenterOnParent();
 }
 
 void MainFrame::EditTransaction(std::shared_ptr<Transaction> transaction) {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	
+	transactionFrame->SetTransaction(transaction);
+	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
 	transactionFrame->Show(true);
 	transactionFrame->CenterOnParent();
-
-	transactionFrame->SetTransaction(transaction);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 }
 
 void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	
+	transactionFrame->SetSplitTransaction(transaction);
+	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
 	transactionFrame->Show(true);
 	transactionFrame->CenterOnParent();
-
-	transactionFrame->SetSplitTransaction(transaction);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 }
 
 void MainFrame::OnTransactionClose() {
@@ -283,35 +283,25 @@ void MainFrame::OnTransactionClose() {
 }
 
 void MainFrame::AddAccount() {
+	std::shared_ptr<Account> account = make_shared<Account>();
+	
 	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
+
+	accountFrame->SetAccount(account);
+	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
 
 	accountFrame->Show(true);
 	accountFrame->CenterOnParent();
-
-	std::shared_ptr<Account> account = make_shared<Account>();
-
-	account->id = -1;
-	account->name = make_shared<wxString>("");
-	account->note = make_shared<wxString>("");
-	account->type = AccountTypes::Deposit;
-	account->iconId = 0;
-	account->orderId = 1000;
-	account->currency = make_shared<Currency>(152);
-	
-	accountFrame->SetAccount(account);
-
-	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
 }
 
 void MainFrame::EditAccount(std::shared_ptr<Account> account) {
 	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
+		
+	accountFrame->SetAccount(account);
+	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
 
 	accountFrame->Show(true);
 	accountFrame->CenterOnParent();
-
-	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
-	
-	accountFrame->SetAccount(account);
 }
 
 void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
@@ -329,32 +319,25 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 }
 
 void MainFrame::AddBudget() {
+	std::shared_ptr<Budget> budget = make_shared<Budget>();
+	
 	budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+
+	budgetFrame->SetBudget(budget);
+	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
 
 	budgetFrame->Show(true);
 	budgetFrame->CenterOnParent();
-
-	std::shared_ptr<Budget> budget = make_shared<Budget>();
-
-	budget->id = -1;
-	budget->name = make_shared<wxString>("");
-	budget->type = BudgetTypes::Limit;
-	budget->period = BudgetPeriods::Month;
-	budget->amount = 0.0;
-
-	budgetFrame->SetBudget(budget);
-
-	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
 	budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
 
-	budgetFrame->Show(true);
-	budgetFrame->CenterOnParent();
-
 	budgetFrame->SetBudget(budget);
 	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+
+	budgetFrame->Show(true);
+	budgetFrame->CenterOnParent();
 }
 
 void MainFrame::OnBudgetClose() {
@@ -368,12 +351,25 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 }
 
 void MainFrame::AddScheduler() {
+	std::shared_ptr<Scheduler> scheduler = make_shared<Scheduler>();
+
 	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+	
+	schedulerFrame->SetScheduler(scheduler);
+	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
 
 	schedulerFrame->Show(true);
 	schedulerFrame->CenterOnParent();
+}
 
+void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
+	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+
+	schedulerFrame->SetScheduler(scheduler);
 	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
+
+	schedulerFrame->Show(true);
+	schedulerFrame->CenterOnParent();
 }
 
 void MainFrame::OnSchedulerClose() {

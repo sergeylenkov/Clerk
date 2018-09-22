@@ -6,8 +6,9 @@
 #include "DataPanel.h"
 
 enum class SchedulersPanelMenuTypes {
-	Edit = 1,
-	Delete = 2,
+	Add = 1,
+	Edit = 2,
+	Delete = 3,
 };
 
 class SchedulersPanel : public DataPanel

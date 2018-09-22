@@ -265,6 +265,8 @@ void TabsPanel::CreateSchedulersPanel(int tabIndex) {
 
 	SchedulersPanel *schedulersPanel = new SchedulersPanel(panel, wxID_ANY);
 
+	schedulersPanel->OnEditScheduler = std::bind(&TabsPanel::EditScheduler, this, std::placeholders::_1);
+
 	tabsPanels[tabIndex] = schedulersPanel;
 	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuSchedulers;
 
@@ -531,4 +533,12 @@ void TabsPanel::RemoveTab(int index) {
 	tabs.erase(tabs.begin() + index);
 	tabsSizer.erase(tabsSizer.begin() + index);
 	tabsPanels.erase(tabsPanels.begin() + index);
+}
+
+void TabsPanel::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
+	if (scheduler) {
+		if (OnEditScheduler) {
+			OnEditScheduler(scheduler);
+		}
+	}
 }

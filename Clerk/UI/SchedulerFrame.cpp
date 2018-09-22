@@ -166,8 +166,8 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	wxStaticText *m_staticText1011 = new wxStaticText(weeklyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(m_staticText1011, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	weeklyDayField = new wxTextCtrl(weeklyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, weekValidator);
-	horizontalSizer->Add(weeklyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	weeklyWeekField = new wxTextCtrl(weeklyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, weekValidator);
+	horizontalSizer->Add(weeklyWeekField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	wxStaticText *m_staticText911 = new wxStaticText(weeklyPatternPanel, wxID_ANY, wxT("weeks on:"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(m_staticText911, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
@@ -282,12 +282,6 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	fromValue = 0;
 	toValue = 0;
 
-	dailyButton->SetValue(true);
-	dailyPatternPanel->Show();
-	weeklyPatternPanel->Hide();
-	monthlyPatternPanel->Hide();
-	yearlyPatternPanel->Hide();
-
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
 		accounts.push_back(account);
@@ -333,6 +327,8 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
+	
+	SelectPatternType(SchedulerTypes::Daily);
 }
 
 SchedulerFrame::~SchedulerFrame() {	
@@ -343,23 +339,28 @@ SchedulerFrame::~SchedulerFrame() {
 void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 	this->scheduler = scheduler;
 
-	/*fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
-	tagsField->SetValue(*transaction->tags);
-	noteField->SetValue(*transaction->note);	
+	nameField->SetValue(*scheduler->name);
+	fromAmountField->SetValue(wxString::Format("%.2f", scheduler->fromAmount));
+	toAmountField->SetValue(wxString::Format("%.2f", scheduler->toAmount));
+	tagsField->SetValue(*scheduler->tags);
 
-	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->fromAccountId == fromAccounts[i]->id) {
-			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i]);
+	if (scheduler->fromAccount) {
+		for (unsigned int i = 0; i < fromAccounts.size(); i++) {
+			if (scheduler->fromAccount->id == fromAccounts[i]->id) {
+				SelectFromAccount(i);
+				UpdateToList(fromAccounts[i]);
 
-			break;
+				break;
+			}
 		}
 	}
+	else {
+		SelectFromAccount(0);
+	}
 
-	if (transaction->toAccountId != -1) {
+	if (scheduler->toAccount) {
 		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (transaction->toAccountId == toAccounts[i]->id) {
+			if (scheduler->toAccount->id == toAccounts[i]->id) {
 				SelectToAccount(i);
 				break;
 			}
@@ -367,10 +368,68 @@ void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 	}
 	else {
 		SelectToAccount(0);
-	}*/
+	}
 
 	fromAmountField->SetFocus();
 	fromAmountField->SelectAll();
+
+	SelectPatternType(scheduler->type);
+
+	if (scheduler->type == SchedulerTypes::Daily) {
+		dailyDayField->SetValue(wxString::Format("%d", scheduler->day));
+	}
+
+	if (scheduler->type == SchedulerTypes::Weekly) {
+		weeklyWeekField->SetValue(wxString::Format("%d", scheduler->week));
+
+		mondayCheckBox->SetValue(false);
+		tuesdayCheckBox->SetValue(false);
+		wednesdayCheckBox->SetValue(false);
+		thursdayCheckBox->SetValue(false);
+		fridayCheckBox->SetValue(false);
+		saturdayCheckBox->SetValue(false);
+		sundayCheckBox->SetValue(false);
+
+		bitset<8> bitset(scheduler->day);
+
+		if (bitset.test(0)) {
+			mondayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(1)) {
+			tuesdayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(2)) {
+			wednesdayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(3)) {
+			thursdayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(4)) {
+			fridayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(5)) {
+			saturdayCheckBox->SetValue(true);
+		}
+
+		if (bitset.test(6)) {
+			sundayCheckBox->SetValue(true);
+		}
+	}
+
+	if (scheduler->type == SchedulerTypes::Monthly) {
+		monthlyDayField->SetValue(wxString::Format("%d", scheduler->day));
+		monthlyMonthField->SetValue(wxString::Format("%d", scheduler->month));
+	}
+
+	if (scheduler->type == SchedulerTypes::Daily) {
+		yearlyDayField->SetValue(wxString::Format("%d", scheduler->day));
+		yearlyMonthChoice->SetSelection(scheduler->month);
+	}
 }
 
 void SchedulerFrame::UpdateFromList() {
@@ -468,30 +527,90 @@ void SchedulerFrame::OnToAccountSelect(wxCommandEvent &event) {
 }
 
 void SchedulerFrame::OnOK(wxCommandEvent &event) {
-	/*double val;
+	scheduler->name = make_shared<wxString>(nameField->GetValue());
+	scheduler->fromAccount = fromAccounts[fromList->GetSelection()];
+	scheduler->toAccount = toAccounts[toList->GetSelection()];
+	scheduler->tags = make_shared<wxString>(tagsField->GetValue());
+	scheduler->type = type;
+
+	double amountValue;
 
 	wxString value = fromAmountField->GetValue();
 	value.Replace(" ", "");
 	value.Replace(",", ".");
-	value.ToDouble(&val);
+	value.ToDouble(&amountValue);
 
-	fromValue = val;
+	scheduler->fromAmount = amountValue;
 
 	value = toAmountField->GetValue();
 	value.Replace(" ", "");
 	value.Replace(",", ".");
-	value.ToDouble(&val);
+	value.ToDouble(&amountValue);
 
-	toValue = val;
+	scheduler->toAmount = amountValue;
 
-	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
-	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
-	transaction->fromAmount = fromValue;
-	transaction->toAmount = toValue;
-	transaction->note = make_shared<wxString>(noteField->GetValue());
-	transaction->tags = make_shared<wxString>(tagsField->GetValue());
+	unsigned long intValue;
 
-	transaction->Save();*/
+	if (type == SchedulerTypes::Daily) {
+		dailyDayField->GetValue().ToULong(&intValue);
+		scheduler->day = intValue;
+	}
+
+	if (type == SchedulerTypes::Weekly) {
+		weeklyWeekField->GetValue().ToULong(&intValue);
+		scheduler->week = intValue;
+
+		bitset<8> bitset;
+
+		bitset.reset();
+
+		if (mondayCheckBox->GetValue()) {
+			bitset.set(0);
+		}
+
+		if (tuesdayCheckBox->GetValue()) {
+			bitset.set(1);
+		}
+
+		if (wednesdayCheckBox->GetValue()) {
+			bitset.set(2);
+		}
+
+		if (thursdayCheckBox->GetValue()) {
+			bitset.set(3);
+		}
+
+		if (fridayCheckBox->GetValue()) {
+			bitset.set(4);
+		}
+
+		if (saturdayCheckBox->GetValue()) {
+			bitset.set(5);
+		}
+
+		if (sundayCheckBox->GetValue()) {
+			bitset.set(6);
+		}
+
+		scheduler->day = bitset.to_ulong();
+	}
+
+	if (type == SchedulerTypes::Monthly) {
+		monthlyDayField->GetValue().ToULong(&intValue);
+		scheduler->day = intValue;
+
+		monthlyMonthField->GetValue().ToULong(&intValue);
+		scheduler->month = intValue;
+	}
+
+	if (type == SchedulerTypes::Yearly) {
+		yearlyDayField->GetValue().ToULong(&intValue);
+		scheduler->day = intValue;
+
+		scheduler->month = yearlyMonthChoice->GetSelection();
+	}
+
+	scheduler->Save();
 
 	Close();
 
@@ -616,24 +735,48 @@ wxString SchedulerFrame::ClearAmountValue(wxString &value) {
 }
 
 void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
+	if (dailyButton->GetValue()) {
+		SelectPatternType(SchedulerTypes::Daily);
+	}
+
+	if (weeklyButton->GetValue()) {
+		SelectPatternType(SchedulerTypes::Weekly);
+	}
+
+	if (monthlyButton->GetValue()) {
+		SelectPatternType(SchedulerTypes::Monthly);
+	}
+
+	if (yearlyButton->GetValue()) {
+		SelectPatternType(SchedulerTypes::Yearly);
+	}
+}
+
+void SchedulerFrame::SelectPatternType(SchedulerTypes type) {
+	this->type = type;
+
 	dailyPatternPanel->Hide();
 	weeklyPatternPanel->Hide();
 	monthlyPatternPanel->Hide();
 	yearlyPatternPanel->Hide();
 
-	if (dailyButton->GetValue()) {
+	if (type == SchedulerTypes::Daily) {
+		dailyButton->SetValue(true);
 		dailyPatternPanel->Show();
 	}
 
-	if (weeklyButton->GetValue()) {
+	if (type == SchedulerTypes::Weekly) {
+		weeklyButton->SetValue(true);
 		weeklyPatternPanel->Show();
 	}
 
-	if (monthlyButton->GetValue()) {
+	if (type == SchedulerTypes::Monthly) {
+		monthlyButton->SetValue(true);
 		monthlyPatternPanel->Show();
 	}
 
-	if (yearlyButton->GetValue()) {
+	if (type == SchedulerTypes::Yearly) {
+		yearlyButton->SetValue(true);
 		yearlyPatternPanel->Show();
 	}
 

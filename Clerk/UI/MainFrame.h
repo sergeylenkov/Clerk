@@ -61,6 +61,7 @@ private:
 	void EditBudget(std::shared_ptr<Budget> budget);
 	void OnBudgetClose();	
 	void AddScheduler();
+	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void OnSchedulerClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 };

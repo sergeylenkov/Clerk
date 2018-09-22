@@ -7,7 +7,7 @@ Account::Account()
 	this->note = make_shared<wxString>();
 	this->type = AccountTypes::Deposit;
 	this->iconId = 0;
-	this->orderId = 0;
+	this->orderId = 1000;
 	this->currency = make_shared<Currency>(152);
 	this->creditLimit = 0;
 }

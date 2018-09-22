@@ -5,6 +5,7 @@
 #include <wx/statline.h>
 #include <wx/valnum.h>
 #include <wx/wrapsizer.h>
+#include <bitset>
 #include "../Data/DataHelper.h"
 #include "../TagsPopup.h"
 
@@ -32,7 +33,7 @@ private:
 	wxPanel *monthlyPatternPanel;
 	wxPanel *yearlyPatternPanel;
 	wxTextCtrl *dailyDayField;
-	wxTextCtrl *weeklyDayField;
+	wxTextCtrl *weeklyWeekField;
 	wxTextCtrl *monthlyDayField;
 	wxTextCtrl *monthlyMonthField;
 	wxComboBox *yearlyMonthChoice;
@@ -59,9 +60,10 @@ private:
 	wxCheckBox *fridayCheckBox;
 	wxCheckBox *saturdayCheckBox;
 	wxCheckBox *sundayCheckBox;
-
+	
 	float fromValue = 0.0;
 	float toValue = 0.0;
+	SchedulerTypes type;
 	std::vector<std::shared_ptr<Account>> accounts;
 	std::vector<std::shared_ptr<Account>> fromAccounts;
 	std::vector<std::shared_ptr<Account>> toAccounts;
@@ -88,4 +90,5 @@ private:
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
+	void SelectPatternType(SchedulerTypes type);
 };

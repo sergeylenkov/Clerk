@@ -4,9 +4,10 @@
 
 TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TransactionsListPanel::OnListItemClick, this);
+
 	transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 	transactionsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
+	transactionsList->Bind(wxEVT_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -390,13 +391,26 @@ void TransactionsListPanel::Update() {
 	infoPanel->Layout();
 }
 
-void TransactionsListPanel::EditTransaction() {
-	if (OnEditTransaction) {
-		OnEditTransaction(GetTransaction());
+void TransactionsListPanel::Add() {
+	if (OnAdd) {
+		OnAdd();
 	}
 }
 
-void TransactionsListPanel::DeleteTransaction() {
+
+void TransactionsListPanel::Edit() {
+	if (OnEdit) {
+		OnEdit(GetTransaction());
+	}
+}
+
+void TransactionsListPanel::Copy() {
+	if (OnCopy) {
+		OnCopy(GetTransaction());
+	}
+}
+
+void TransactionsListPanel::Delete() {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
@@ -405,7 +419,7 @@ void TransactionsListPanel::DeleteTransaction() {
 	}
 }
 
-void TransactionsListPanel::DublicateTransaction() {
+void TransactionsListPanel::Duplicate() {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
@@ -427,13 +441,13 @@ void TransactionsListPanel::DublicateTransaction() {
 	}
 }
 
-void TransactionsListPanel::SplitTransaction() {
-	if (OnSplitTransaction) {
-		OnSplitTransaction(GetTransaction());
+void TransactionsListPanel::Split() {
+	if (OnSplit) {
+		OnSplit(GetTransaction());
 	}
 }
 
-void TransactionsListPanel::MergeTransactions() {
+void TransactionsListPanel::Merge() {
 	long itemIndex = -1;
 	vector<shared_ptr<Transaction>> _transactions;
 
@@ -493,7 +507,7 @@ void TransactionsListPanel::MergeTransactions() {
 	}	
 }
 
-void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
+/*void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
 	menu->Append(ID_EditTransaction, wxT("Edit..."));
@@ -519,11 +533,11 @@ void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
 	transactionsList->PopupMenu(menu, event.GetPoint());
 	
 	delete menu;
-}
+}*/
 
 void TransactionsListPanel::OnListItemDoubleClick(wxListEvent &event) {
-	if (OnEditTransaction) {
-		OnEditTransaction(GetTransaction());
+	if (OnEdit) {
+		OnEdit(GetTransaction());
 	}
 }
 
@@ -536,30 +550,101 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 	Update();
 }
 
+void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {
+	wxMenu *menu = new wxMenu;
+
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Add), wxT("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Edit..."));
+	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Copy..."));
+	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Dublicate"));
+	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Splite..."));
+	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Merge"));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Delete), wxT("Delete"));
+
+	addItem->Enable(true);
+	editItem->Enable(true);
+	copyItem->Enable(true);
+	duplicateItem->Enable(true);
+	splitItem->Enable(true);
+	mergeItem->Enable(true);
+	deleteItem->Enable(true);
+
+	if (transactionsList->GetSelectedItemCount() == 0) {
+		editItem->Enable(false);
+		editItem->SetTextColour(*wxLIGHT_GREY);
+
+		copyItem->Enable(false);
+		copyItem->SetTextColour(*wxLIGHT_GREY);
+
+		copyItem->Enable(false);
+		copyItem->SetTextColour(*wxLIGHT_GREY);
+
+		duplicateItem->Enable(false);
+		duplicateItem->SetTextColour(*wxLIGHT_GREY);
+
+		splitItem->Enable(false);
+		splitItem->SetTextColour(*wxLIGHT_GREY);
+
+		mergeItem->Enable(false);
+		mergeItem->SetTextColour(*wxLIGHT_GREY);
+
+		deleteItem->Enable(false);
+		deleteItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	if (transactionsList->GetSelectedItemCount() < 2) {
+		mergeItem->Enable(false);
+		mergeItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	menu->Append(addItem);
+	menu->Append(editItem);
+	menu->Append(copyItem);
+	menu->Append(duplicateItem);
+	menu->AppendSeparator();
+	menu->Append(splitItem);
+	menu->Append(mergeItem);
+	menu->AppendSeparator();
+	menu->Append(deleteItem);
+
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionsListPanel::OnMenuSelect, this);
+
+	wxPoint point = event.GetPosition();
+	point = transactionsList->ScreenToClient(point);
+
+	transactionsList->PopupMenu(menu, point);
+
+	delete menu;
+}
+
 void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (event.GetId()) {
-		case ID_AddTransaction:
-			//AddTransaction();
+	switch (static_cast<TransactionsPanelMenuTypes>(event.GetId())) {
+		case TransactionsPanelMenuTypes::Add:
+			Add();
 			break;
 
-		case ID_EditTransaction:
-			EditTransaction();
+		case TransactionsPanelMenuTypes::Edit:
+			Edit();
 			break;
 
-		case ID_DeleteTransaction:
-			DeleteTransaction();
+		case TransactionsPanelMenuTypes::Copy:
+			Copy();
 			break;
 
-		case ID_DublicateTransaction:
-			DublicateTransaction();
+		case TransactionsPanelMenuTypes::Duplicate:
+			Duplicate();
 			break;
 
-		case ID_SplitTransaction:
-			SplitTransaction();
+		case TransactionsPanelMenuTypes::Split:
+			Split();
 			break;
 
-		case ID_MergeTransaction:
-			MergeTransactions();
+		case TransactionsPanelMenuTypes::Merge:
+			Merge();
+			break;
+
+		case TransactionsPanelMenuTypes::Delete:
+			Delete();
 			break;
 
 		default:

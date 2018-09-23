@@ -50,6 +50,8 @@ private:
 	void OnAddBudget(wxCommandEvent &event);
 	void OnAddScheduler(wxCommandEvent &event);
 	void AddTransaction(Account *account);
+	void AddTransactionFromContextMenu();
+	void CopyTransaction(std::shared_ptr<Transaction> transaction);
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void OnTransactionClose();

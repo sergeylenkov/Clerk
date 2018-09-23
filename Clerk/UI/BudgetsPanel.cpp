@@ -145,7 +145,7 @@ void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
 
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -167,7 +167,7 @@ void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsPanel::OnMenuSelect, this);
 
 	wxPoint point = event.GetPosition();
-	point = ScreenToClient(point);
+	point = list->ScreenToClient(point);
 
 	list->PopupMenu(menu, point);
 

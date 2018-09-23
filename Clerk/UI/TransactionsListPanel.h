@@ -10,14 +10,16 @@
 #include "../TreeMenuItemData.h"
 #include "../Settings.h"
 
-enum {
-	ID_AddTransaction = 10,
-	ID_EditTransaction = 11,
-	ID_DeleteTransaction = 12,
-	ID_DublicateTransaction = 13,
-	ID_SplitTransaction = 14,
-	ID_MergeTransaction = 15,
+enum class TransactionsPanelMenuTypes {
+	Add = 1,
+	Edit = 2,
+	Delete = 3,
+	Duplicate = 4,
+	Split = 5,
+	Merge = 6,
+	Copy = 7,
 };
+
 
 class TransactionsListPanel : public DataPanel
 {
@@ -29,18 +31,15 @@ public:
 	std::shared_ptr<Account> GetAccount();
 	void SetType(TreeMenuItemTypes type);
 	std::shared_ptr<Transaction> GetTransaction();
-	void Update();
-	void EditTransaction();
-	void DeleteTransaction();
-	void DublicateTransaction();
-	void SplitTransaction();
-	void MergeTransactions();
+	void Update();	
 	wxDateTime GetFromDate();
 	wxDateTime GetToDate();
 	float GetBalance();
 
-	std::function<void(std::shared_ptr<Transaction>)> OnEditTransaction;
-	std::function<void(std::shared_ptr<Transaction>)> OnSplitTransaction;
+	std::function<void()> OnAdd;
+	std::function<void(std::shared_ptr<Transaction>)> OnEdit;
+	std::function<void(std::shared_ptr<Transaction>)> OnSplit;
+	std::function<void(std::shared_ptr<Transaction>)> OnCopy;
 	std::function<void()> OnPeriodChanged;	
 
 private:
@@ -60,9 +59,16 @@ private:
 	int sortBy;
 	bool sortDesc;
 
-	void OnListItemClick(wxListEvent &event);
+	void Add();
+	void Edit();
+	void Copy();
+	void Delete();
+	void Duplicate();
+	void Split();
+	void Merge();	
 	void OnListColumnClick(wxListEvent &event);
 	void OnListItemDoubleClick(wxListEvent &event);
+	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);

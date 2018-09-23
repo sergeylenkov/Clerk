@@ -149,7 +149,7 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Add), wxT("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -171,7 +171,7 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersPanel::OnMenuSelect, this);
 
 	wxPoint point = event.GetPosition();
-	point = ScreenToClient(point);
+	point = list->ScreenToClient(point);
 
 	list->PopupMenu(menu, point);
 

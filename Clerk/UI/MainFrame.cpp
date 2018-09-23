@@ -44,6 +44,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel = new TabsPanel(splitterRightPanel, wxID_ANY);
 
 	tabsPanel->OnUpdateStatus = std::bind(&MainFrame::UpdateStatus, this, std::placeholders::_1);
+	tabsPanel->OnAddTransaction = std::bind(&MainFrame::AddTransactionFromContextMenu, this);
+	tabsPanel->OnCopyTransaction = std::bind(&MainFrame::CopyTransaction, this, std::placeholders::_1);
 	tabsPanel->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this, std::placeholders::_1);
 	tabsPanel->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this, std::placeholders::_1);
 	tabsPanel->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
@@ -252,6 +254,42 @@ void MainFrame::AddTransaction(Account *account) {
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 
 	transactionFrame->SetTransaction(transaction);
+	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+
+	transactionFrame->Show(true);
+	transactionFrame->CenterOnParent();
+}
+
+void MainFrame::AddTransactionFromContextMenu() {
+	auto transaction = tabsPanel->GetSelectedTransaction();
+
+	if (transaction) {
+		auto copy = make_shared<Transaction>();
+
+		copy->fromAccountId = transaction->fromAccountId;
+		copy->toAccountId = transaction->toAccountId;		
+
+		EditTransaction(copy);
+	}
+	else {
+		AddTransaction(nullptr);
+	}
+}
+
+void MainFrame::CopyTransaction(std::shared_ptr<Transaction> transaction) {
+	auto copy = make_shared<Transaction>();
+
+	copy->fromAccountId = transaction->fromAccountId;
+	copy->toAccountId = transaction->toAccountId;
+	copy->fromAmount = transaction->fromAmount;
+	copy->toAmount = transaction->toAmount;
+	copy->note = transaction->note;
+	copy->tags = transaction->tags;
+	copy->paidAt = transaction->paidAt;
+
+	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+
+	transactionFrame->SetTransaction(copy);
 	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
 	transactionFrame->Show(true);

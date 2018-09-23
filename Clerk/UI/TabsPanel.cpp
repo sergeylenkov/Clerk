@@ -243,6 +243,9 @@ void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 
 	BudgetsPanel *budgetPanel = new BudgetsPanel(panel, wxID_ANY);
 
+	budgetPanel->OnAdd = std::bind(&TabsPanel::AddBudget, this);
+	budgetPanel->OnEdit = std::bind(&TabsPanel::EditBudget, this, std::placeholders::_1);
+
 	tabsPanels[tabIndex] = budgetPanel;
 	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuBudgets;
 
@@ -536,6 +539,18 @@ void TabsPanel::RemoveTab(int index) {
 	tabsPanels.erase(tabsPanels.begin() + index);
 }
 
+void TabsPanel::AddBudget() {
+	if (OnAddBudget) {
+		OnAddBudget();
+	}
+}
+
+void TabsPanel::EditBudget(std::shared_ptr<Budget> budget) {
+	if (OnEditBudget) {
+		OnEditBudget(budget);
+	}
+}
+
 void TabsPanel::AddScheduler() {
 	if (OnAddScheduler) {
 		OnAddScheduler();
@@ -543,9 +558,7 @@ void TabsPanel::AddScheduler() {
 }
 
 void TabsPanel::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
-	if (scheduler) {
-		if (OnEditScheduler) {
-			OnEditScheduler(scheduler);
-		}
+	if (OnEditScheduler) {
+		OnEditScheduler(scheduler);
 	}
 }

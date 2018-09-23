@@ -2,8 +2,9 @@
 
 BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	list->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &BudgetsPanel::OnListItemClick, this);
+	
 	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
+	list->Bind(wxEVT_CONTEXT_MENU, &BudgetsPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -109,15 +110,21 @@ void BudgetsPanel::Update() {
 	}
 }
 
-void BudgetsPanel::EditBudget() {	
-	if (OnEditBudget) {
-		auto budget = GetBudget();
-
-		OnEditBudget(budget);
+void BudgetsPanel::Add() {
+	if (OnAdd) {
+		OnAdd();
 	}
 }
 
-void BudgetsPanel::DeleteBudget() {
+void BudgetsPanel::Edit() {	
+	if (OnEdit) {
+		auto budget = GetBudget();
+
+		OnEdit(budget);
+	}
+}
+
+void BudgetsPanel::Delete() {
 	auto budget = GetBudget();
 
 	if (budget) {
@@ -126,40 +133,60 @@ void BudgetsPanel::DeleteBudget() {
 	}
 }
 
-void BudgetsPanel::OnListItemClick(wxListEvent &event) {
+void BudgetsPanel::OnListItemDoubleClick(wxListEvent &event) {
+	if (OnEdit) {
+		auto budget = GetBudget();
+		OnEdit(budget);
+	}
+}
+
+void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
-	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
-	menu->AppendSeparator();
-	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));
 
-	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
-	menu->SetClientData(data);
+	addItem->Enable(true);
+	editItem->Enable(true);
+	deleteItem->Enable(true);
+
+	if (list->GetSelectedItemCount() == 0) {
+		editItem->Enable(false);
+		editItem->SetTextColour(*wxLIGHT_GREY);
+
+		deleteItem->Enable(false);
+		deleteItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	menu->Append(addItem);
+	menu->Append(editItem);
+	menu->AppendSeparator();
+	menu->Append(deleteItem);
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsPanel::OnMenuSelect, this);
 
-	list->PopupMenu(menu, event.GetPoint());
+	wxPoint point = event.GetPosition();
+	point = ScreenToClient(point);
+
+	list->PopupMenu(menu, point);
 
 	delete menu;
 }
 
-void BudgetsPanel::OnListItemDoubleClick(wxListEvent &event) {
-	if (OnEditBudget) {
-		auto budget = GetBudget();
-		OnEditBudget(budget);
-	}
-}
-
 void BudgetsPanel::OnMenuSelect(wxCommandEvent &event) {
 	switch (static_cast<BudgetsPanelMenuTypes>(event.GetId())) {
+		case BudgetsPanelMenuTypes::Add:
+			Add();
+			break;
+
 		case BudgetsPanelMenuTypes::Edit:
-				EditBudget();
-				break;
+			Edit();
+			break;
 
 		case BudgetsPanelMenuTypes::Delete:
-				DeleteBudget();
-				break;
+			Delete();
+			break;
 
 		default:
 			break;

@@ -26,9 +26,9 @@ private:
 	wxListCtrl *list;
 	std::vector<std::shared_ptr<Scheduler>> schedulers;
 
-	void Edit();
-	void Delete();
 	void Add();
+	void Edit();
+	void Delete();	
 	void OnListItemDoubleClick(wxListEvent &event);
 	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);

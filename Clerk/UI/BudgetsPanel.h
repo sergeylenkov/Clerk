@@ -17,17 +17,19 @@ public:
 	BudgetsPanel(wxWindow *parent, wxWindowID id);
 
 	std::shared_ptr<Budget> GetBudget();
-	void Update();
-	void EditBudget();
-	void DeleteBudget();
+	void Update();	
 
-	std::function<void(std::shared_ptr<Budget> budget)> OnEditBudget;
+	std::function<void(std::shared_ptr<Budget> budget)> OnEdit;
+	std::function<void()> OnAdd;
 
 private:
 	wxListCtrl *list;
 	std::vector<std::shared_ptr<Budget>> budgets;
 
-	void OnListItemClick(wxListEvent &event);	
+	void Add();
+	void Edit();
+	void Delete();
 	void OnListItemDoubleClick(wxListEvent &event);
+	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

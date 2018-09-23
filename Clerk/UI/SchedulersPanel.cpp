@@ -180,19 +180,19 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 
 void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
 	switch (static_cast<SchedulersPanelMenuTypes>(event.GetId())) {
-	case SchedulersPanelMenuTypes::Add:
-		Add();
-		break;
+		case SchedulersPanelMenuTypes::Add:
+			Add();
+			break;
 
-	case SchedulersPanelMenuTypes::Edit:
-		Edit();
-		break;
+		case SchedulersPanelMenuTypes::Edit:
+			Edit();
+			break;
 
-	case SchedulersPanelMenuTypes::Delete:
-		Delete();
-		break;
+		case SchedulersPanelMenuTypes::Delete:
+			Delete();
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 }

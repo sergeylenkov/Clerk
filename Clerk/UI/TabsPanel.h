@@ -34,6 +34,7 @@ public:
 	std::function<void(std::shared_ptr<Transaction>)> OnEditTransaction;
 	std::function<void(std::shared_ptr<Transaction>)> OnSplitTransaction;
 	std::function<void(std::shared_ptr<Budget>)> OnEditBudget;
+	std::function<void()> OnAddScheduler;
 	std::function<void(std::shared_ptr<Scheduler>)> OnEditScheduler;
 
 private:
@@ -58,6 +59,7 @@ private:
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> ransaction);
 	void UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, std::shared_ptr<Account>);
+	void AddScheduler();
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void RemoveTab(int index);
 };

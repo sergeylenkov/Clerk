@@ -2,9 +2,10 @@
 
 SchedulersPanel::SchedulersPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	list->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &SchedulersPanel::OnListItemClick, this);
+	
 	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &SchedulersPanel::OnListItemDoubleClick, this);
-
+	list->Bind(wxEVT_CONTEXT_MENU, &SchedulersPanel::OnRightClick, this);
+	
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	mainSizer->Add(list, 1, wxALL | wxEXPAND, 0);
@@ -26,7 +27,7 @@ shared_ptr<Scheduler> SchedulersPanel::GetScheduler() {
 		return schedulers[itemIndex];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void SchedulersPanel::Update() {
@@ -117,15 +118,20 @@ void SchedulersPanel::Update() {
 	}
 }
 
-void SchedulersPanel::EditScheduler() {
-	if (OnEditScheduler) {
-		auto scheduler = GetScheduler();
-
-		OnEditScheduler(scheduler);
+void SchedulersPanel::Add() {
+	if (OnAdd) {
+		OnAdd();
 	}
 }
 
-void SchedulersPanel::DeleteScheduler() {
+void SchedulersPanel::Edit() {
+	if (OnEdit) {
+		auto scheduler = GetScheduler();
+		OnEdit(scheduler);
+	}
+}
+
+void SchedulersPanel::Delete() {
 	auto scheduler = GetScheduler();
 
 	if (scheduler) {
@@ -134,38 +140,56 @@ void SchedulersPanel::DeleteScheduler() {
 	}
 }
 
-void SchedulersPanel::OnListItemClick(wxListEvent &event) {
+void SchedulersPanel::OnListItemDoubleClick(wxListEvent &event) {
+	Edit();
+}
+
+void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
-	menu->AppendSeparator();
-	menu->Append(static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete..."));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Add), wxT("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete..."));
 
-	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
-	menu->SetClientData(data);
+	addItem->Enable(true);
+	editItem->Enable(true);
+	deleteItem->Enable(true);
+
+	if (list->GetSelectedItemCount() == 0) {
+		editItem->Enable(false);
+		editItem->SetTextColour(*wxLIGHT_GREY);
+
+		deleteItem->Enable(false);
+		deleteItem->SetTextColour(*wxLIGHT_GREY);
+	}
+
+	menu->Append(addItem);
+	menu->Append(editItem);
+	menu->AppendSeparator();
+	menu->Append(deleteItem);
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersPanel::OnMenuSelect, this);
 
-	list->PopupMenu(menu, event.GetPoint());
+	wxPoint point = event.GetPosition();
+	point = ScreenToClient(point);
+
+	list->PopupMenu(menu, point);
 
 	delete menu;
 }
 
-void SchedulersPanel::OnListItemDoubleClick(wxListEvent &event) {
-	if (OnEditScheduler) {
-		auto budget = GetScheduler();
-		OnEditScheduler(budget);
-	}
-}
-
 void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
 	switch (static_cast<SchedulersPanelMenuTypes>(event.GetId())) {
+	case SchedulersPanelMenuTypes::Add:
+		Add();
+		break;
+
 	case SchedulersPanelMenuTypes::Edit:
-		EditScheduler();
+		Edit();
 		break;
 
 	case SchedulersPanelMenuTypes::Delete:
-		DeleteScheduler();
+		Delete();
 		break;
 
 	default:

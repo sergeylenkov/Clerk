@@ -139,3 +139,24 @@ void Scheduler::Delete()
 
 	sqlite3_finalize(statement);
 }
+
+void Scheduler::SetActive(boolean active) {
+	this->active = active;
+
+	this->previousDate = make_shared<wxDateTime>(wxDateTime::Now());
+	this->nextDate = make_shared<wxDateTime>(wxDateTime::Now());
+
+	this->CalculateNextDate();
+}
+
+void Scheduler::CalculateNextDate() {
+	this->previousDate = this->nextDate;
+
+	auto date = make_shared<wxDateTime>(*this->previousDate);
+
+	if (type == SchedulerTypes::Daily) {
+		date->Add(wxDateSpan::Days(day));
+	}
+
+	this->nextDate = date;
+}

@@ -129,6 +129,7 @@ void BudgetsPanel::DeleteBudget() {
 void BudgetsPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
+	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
 	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
 	menu->AppendSeparator();
 	menu->Append(static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete..."));

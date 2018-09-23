@@ -17,17 +17,19 @@ public:
 	SchedulersPanel(wxWindow *parent, wxWindowID id);
 	
 	std::shared_ptr<Scheduler> GetScheduler();
-	void Update();
-	void EditScheduler();
-	void DeleteScheduler();
+	void Update();	
 
-	std::function<void(std::shared_ptr<Scheduler> scheduler)> OnEditScheduler;
+	std::function<void(std::shared_ptr<Scheduler> scheduler)> OnEdit;
+	std::function<void()> OnAdd;
 
 private:
 	wxListCtrl *list;
 	std::vector<std::shared_ptr<Scheduler>> schedulers;
 
-	void OnListItemClick(wxListEvent &event);
+	void Edit();
+	void Delete();
+	void Add();
 	void OnListItemDoubleClick(wxListEvent &event);
+	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

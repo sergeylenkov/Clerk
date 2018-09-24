@@ -140,13 +140,17 @@ void Scheduler::Delete()
 	sqlite3_finalize(statement);
 }
 
-void Scheduler::SetActive(boolean active) {
-	this->active = active;
+void Scheduler::Run() {
+	this->active = true;
 
 	this->previousDate = make_shared<wxDateTime>(wxDateTime::Now());
 	this->nextDate = make_shared<wxDateTime>(wxDateTime::Now());
 
 	this->CalculateNextDate();
+}
+
+void Scheduler::Pause() {
+	this->active = false;
 }
 
 void Scheduler::CalculateNextDate() {

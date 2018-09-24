@@ -9,6 +9,8 @@ enum class SchedulersPanelMenuTypes {
 	Add = 1,
 	Edit = 2,
 	Delete = 3,
+	Run = 4,
+	Pause = 5,
 };
 
 class SchedulersPanel : public DataPanel
@@ -28,7 +30,9 @@ private:
 
 	void Add();
 	void Edit();
-	void Delete();	
+	void Delete();
+	void Run();
+	void Pause();
 	void OnListItemDoubleClick(wxListEvent &event);
 	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);

@@ -140,6 +140,24 @@ void SchedulersPanel::Delete() {
 	}
 }
 
+void SchedulersPanel::Run() {
+	auto scheduler = GetScheduler();
+
+	scheduler->Run();
+	scheduler->Save();
+
+	Update();
+}
+
+void SchedulersPanel::Pause() {
+	auto scheduler = GetScheduler();
+
+	scheduler->active = false;
+	scheduler->Save();
+
+	Update();
+}
+
 void SchedulersPanel::OnListItemDoubleClick(wxListEvent &event) {
 	Edit();
 }
@@ -150,6 +168,8 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Add), wxT("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
 	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete"));
+	wxMenuItem *runItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Run), wxT("Run"));
+	wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Pause), wxT("Pause"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -166,6 +186,20 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	menu->Append(addItem);
 	menu->Append(editItem);
 	menu->AppendSeparator();
+
+	if (list->GetSelectedItemCount() > 0) {
+		auto scheduler = GetScheduler();
+
+		if (scheduler->active) {
+			menu->Append(pauseItem);
+		}
+		else {
+			menu->Append(runItem);
+		}
+
+		menu->AppendSeparator();
+	}
+
 	menu->Append(deleteItem);
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersPanel::OnMenuSelect, this);
@@ -190,6 +224,14 @@ void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
 
 		case SchedulersPanelMenuTypes::Delete:
 			Delete();
+			break;
+
+		case SchedulersPanelMenuTypes::Run:
+			Run();
+			break;
+
+		case SchedulersPanelMenuTypes::Pause:
+			Pause();
 			break;
 
 		default:

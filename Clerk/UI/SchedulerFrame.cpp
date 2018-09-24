@@ -176,25 +176,25 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	wxWrapSizer *wrapSizer = new wxWrapSizer(wxHORIZONTAL, wxWRAPSIZER_DEFAULT_FLAGS);
 
-	mondayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Monday"), wxDefaultPosition, wxDefaultSize, 0);
+	mondayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Monday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(mondayCheckBox, 0, wxALL, 5);
 
-	tuesdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Tuesday"), wxDefaultPosition, wxDefaultSize, 0);
+	tuesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Tuesday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(tuesdayCheckBox, 0, wxALL, 5);
 
-	wednesdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Wednesday"), wxDefaultPosition, wxDefaultSize, 0);
+	wednesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Wednesday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(wednesdayCheckBox, 0, wxALL, 5);
 
-	thursdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Thursday"), wxDefaultPosition, wxDefaultSize, 0);
+	thursdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Thursday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(thursdayCheckBox, 0, wxALL, 5);
 
-	fridayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Friday"), wxDefaultPosition, wxDefaultSize, 0);
+	fridayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Friday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(fridayCheckBox, 0, wxALL, 5);
 
-	saturdayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Saturday"), wxDefaultPosition, wxDefaultSize, 0);
+	saturdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Saturday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(saturdayCheckBox, 0, wxALL, 5);
 
-	sundayCheckBox = new wxCheckBox(weeklyPatternPanel, wxID_ANY, wxT("Sunday"), wxDefaultPosition, wxDefaultSize, 0);
+	sundayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, wxT("Sunday"), wxDefaultPosition, wxDefaultSize, 0);
 	wrapSizer->Add(sundayCheckBox, 0, wxALL, 5);
 
 	verticalSizer->Add(wrapSizer, 1, wxEXPAND, 5);
@@ -329,6 +329,7 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	SelectToAccount(0);
 	
 	SelectPatternType(SchedulerTypes::Daily);
+	SelectWeekday(1);
 }
 
 SchedulerFrame::~SchedulerFrame() {	
@@ -381,44 +382,7 @@ void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 
 	if (scheduler->type == SchedulerTypes::Weekly) {
 		weeklyWeekField->SetValue(wxString::Format("%d", scheduler->week));
-
-		mondayCheckBox->SetValue(false);
-		tuesdayCheckBox->SetValue(false);
-		wednesdayCheckBox->SetValue(false);
-		thursdayCheckBox->SetValue(false);
-		fridayCheckBox->SetValue(false);
-		saturdayCheckBox->SetValue(false);
-		sundayCheckBox->SetValue(false);
-
-		bitset<8> bitset(scheduler->day);
-
-		if (bitset.test(0)) {
-			mondayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(1)) {
-			tuesdayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(2)) {
-			wednesdayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(3)) {
-			thursdayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(4)) {
-			fridayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(5)) {
-			saturdayCheckBox->SetValue(true);
-		}
-
-		if (bitset.test(6)) {
-			sundayCheckBox->SetValue(true);
-		}
+		SelectWeekday(scheduler->day);		
 	}
 
 	if (scheduler->type == SchedulerTypes::Monthly) {
@@ -560,39 +524,35 @@ void SchedulerFrame::OnOK(wxCommandEvent &event) {
 		weeklyWeekField->GetValue().ToULong(&intValue);
 		scheduler->week = intValue;
 
-		bitset<8> bitset;
-
-		bitset.reset();
+		scheduler->day = 1;
 
 		if (mondayCheckBox->GetValue()) {
-			bitset.set(0);
+			scheduler->day = 1;
 		}
 
 		if (tuesdayCheckBox->GetValue()) {
-			bitset.set(1);
+			scheduler->day = 2;
 		}
 
 		if (wednesdayCheckBox->GetValue()) {
-			bitset.set(2);
+			scheduler->day = 3;
 		}
 
 		if (thursdayCheckBox->GetValue()) {
-			bitset.set(3);
+			scheduler->day = 4;
 		}
 
 		if (fridayCheckBox->GetValue()) {
-			bitset.set(4);
+			scheduler->day = 5;
 		}
 
 		if (saturdayCheckBox->GetValue()) {
-			bitset.set(5);
+			scheduler->day = 6;
 		}
 
 		if (sundayCheckBox->GetValue()) {
-			bitset.set(6);
+			scheduler->day = 7;
 		}
-
-		scheduler->day = bitset.to_ulong();
 	}
 
 	if (type == SchedulerTypes::Monthly) {
@@ -781,4 +741,49 @@ void SchedulerFrame::SelectPatternType(SchedulerTypes type) {
 	}
 
 	patternPanel->Layout();
+}
+
+void SchedulerFrame::SelectWeekday(int day) {
+	mondayCheckBox->SetValue(false);
+	tuesdayCheckBox->SetValue(false);
+	wednesdayCheckBox->SetValue(false);
+	thursdayCheckBox->SetValue(false);
+	fridayCheckBox->SetValue(false);
+	saturdayCheckBox->SetValue(false);
+	sundayCheckBox->SetValue(false);
+
+	switch (day)
+	{
+	case 1:
+		mondayCheckBox->SetValue(true);
+		break;
+
+	case 2:
+		tuesdayCheckBox->SetValue(true);
+		break;
+
+	case 3:
+		wednesdayCheckBox->SetValue(true);
+		break;
+
+	case 4:
+		thursdayCheckBox->SetValue(true);
+		break;
+
+	case 5:
+		fridayCheckBox->SetValue(true);
+		break;
+
+	case 6:
+		saturdayCheckBox->SetValue(true);
+		break;
+
+	case 7:
+		sundayCheckBox->SetValue(true);
+		break;
+
+	default:
+		mondayCheckBox->SetValue(true);
+		break;
+	}
 }

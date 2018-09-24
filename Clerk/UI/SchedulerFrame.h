@@ -5,7 +5,6 @@
 #include <wx/statline.h>
 #include <wx/valnum.h>
 #include <wx/wrapsizer.h>
-#include <bitset>
 #include "../Data/DataHelper.h"
 #include "../TagsPopup.h"
 
@@ -53,13 +52,13 @@ private:
 	wxTextCtrl *fromAmountField;
 	wxStaticText *toAmountLabel;
 	wxTextCtrl *toAmountField;
-	wxCheckBox *mondayCheckBox;
-	wxCheckBox *tuesdayCheckBox;
-	wxCheckBox *wednesdayCheckBox;
-	wxCheckBox *thursdayCheckBox;
-	wxCheckBox *fridayCheckBox;
-	wxCheckBox *saturdayCheckBox;
-	wxCheckBox *sundayCheckBox;
+	wxRadioButton *mondayCheckBox;
+	wxRadioButton *tuesdayCheckBox;
+	wxRadioButton *wednesdayCheckBox;
+	wxRadioButton *thursdayCheckBox;
+	wxRadioButton *fridayCheckBox;
+	wxRadioButton *saturdayCheckBox;
+	wxRadioButton *sundayCheckBox;
 	
 	float fromValue = 0.0;
 	float toValue = 0.0;
@@ -91,4 +90,5 @@ private:
 	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
 	void SelectPatternType(SchedulerTypes type);
+	void SelectWeekday(int day);
 };

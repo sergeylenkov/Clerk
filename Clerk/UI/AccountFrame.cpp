@@ -131,7 +131,7 @@ void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
 	typeList->SetSelection(static_cast<int>(account->type));
 
 	if (account->iconId < iconList->GetCount()) {
-		iconList->SetSelection(static_cast<int>(account->iconId));
+		iconList->SetSelection(account->iconId);
 	} else {
 		iconList->SetSelection(0);
 	}

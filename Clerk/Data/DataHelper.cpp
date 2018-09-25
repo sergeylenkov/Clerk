@@ -368,7 +368,7 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account *account, wxDateTime *f
 				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
 				date.SetDay(1);
 
-				DateValue value = { date, sqlite3_column_double(statement, 1) };
+				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -388,7 +388,7 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account *account, wxDateTime *f
 				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
 				date.SetDay(1);
 
-				DateValue value = { date, sqlite3_column_double(statement, 1) };
+				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -411,7 +411,7 @@ vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTim
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+			StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 			values.push_back(value);
 		}
 	}
@@ -433,7 +433,7 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -450,7 +450,7 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -470,7 +470,7 @@ vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -488,7 +488,7 @@ vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *
 			sqlite3_bind_int(statement, 1, account->id);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 				receipts.push_back(value);
 			}
 		}
@@ -501,7 +501,7 @@ vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *
 			sqlite3_bind_int(statement, 1, account->id);
 
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), sqlite3_column_double(statement, 1) };
+				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
 				expenses.push_back(value);
 			}
 		}

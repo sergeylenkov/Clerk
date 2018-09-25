@@ -129,7 +129,7 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 		OnShowPopup();
 	}
 	
-	int index = 0;
+	unsigned int index = 0;
 	
 	for (unsigned int i = 0; i < _values.size(); i++) {
 		int x = round(i * stepX) + offsetX;

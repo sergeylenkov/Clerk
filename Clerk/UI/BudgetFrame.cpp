@@ -98,18 +98,6 @@ BudgetFrame::BudgetFrame(wxFrame *parent, const wxChar *title, int x, int y, int
 }
 
 BudgetFrame::~BudgetFrame() {
-	delete nameLabel;
-	delete nameField;
-	delete typeLabel;
-	delete typeList;
-	delete periodLabel;
-	delete periodList;
-	delete accountLabel;
-	delete accountList;
-	delete amountLabel;
-	delete amountField;
-	delete okButton;
-	delete cancelButton;
 	delete accountsImageList;
 }
 

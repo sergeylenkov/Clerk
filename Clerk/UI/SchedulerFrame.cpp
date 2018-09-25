@@ -392,10 +392,12 @@ void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 		monthlyMonthField->SetValue(wxString::Format("%d", scheduler->month));
 	}
 
-	if (scheduler->type == SchedulerTypes::Daily) {
+	if (scheduler->type == SchedulerTypes::Yearly) {
 		yearlyDayField->SetValue(wxString::Format("%d", scheduler->day));
 		yearlyMonthChoice->SetSelection(scheduler->month);
 	}
+
+	nameField->SetFocus();
 }
 
 void SchedulerFrame::UpdateFromList() {

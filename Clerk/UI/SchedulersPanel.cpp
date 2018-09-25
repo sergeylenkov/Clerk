@@ -46,7 +46,7 @@ void SchedulersPanel::Update() {
 
 	column1.SetId(1);
 	column1.SetText(_("Type"));
-	column1.SetWidth(200);
+	column1.SetWidth(120);
 
 	list->InsertColumn(1, column1);
 
@@ -54,7 +54,7 @@ void SchedulersPanel::Update() {
 
 	column2.SetId(2);
 	column2.SetText(_("Previous Date"));
-	column2.SetWidth(200);
+	column2.SetWidth(120);
 
 	list->InsertColumn(2, column2);
 
@@ -62,7 +62,7 @@ void SchedulersPanel::Update() {
 
 	column3.SetId(3);
 	column3.SetText(_("Next Date"));
-	column3.SetWidth(200);
+	column3.SetWidth(120);
 
 	list->InsertColumn(3, column3);
 
@@ -70,7 +70,8 @@ void SchedulersPanel::Update() {
 
 	column4.SetId(4);
 	column4.SetText(_("Status"));
-	column4.SetWidth(200);
+	column4.SetWidth(100);
+	column4.SetAlign(wxLIST_FORMAT_CENTER);
 
 	list->InsertColumn(4, column4);
 
@@ -83,7 +84,13 @@ void SchedulersPanel::Update() {
 		listItem.SetId(i);
 		listItem.SetData(scheduler->id);
 
+		if (!scheduler->active) {
+			listItem.SetMask(wxLIST_MASK_TEXT);
+			listItem.SetTextColour(wxColour(100, 100, 100));
+		}
+
 		list->InsertItem(listItem);
+
 		list->SetItem(i, 0, *scheduler->name);
 
 		wxString type("");
@@ -115,6 +122,8 @@ void SchedulersPanel::Update() {
 		else {
 			list->SetItem(i, 4, "Paused");
 		}
+
+		i++;
 	}
 }
 

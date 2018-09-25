@@ -107,20 +107,7 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 }
 
 AccountFrame::~AccountFrame() {
-	delete nameLabel;
-	delete nameField;
-	delete typeLabel;
-	delete typeList;
-	delete currencyLabel;
-	delete currencyList;
-	delete iconLabel;
 	delete iconList;
-	delete amountLabel;
-	delete amountField;
-	delete noteLabel;
-	delete noteField;
-	delete okButton;
-	delete cancelButton;
 }
 
 void AccountFrame::SetAccount(std::shared_ptr<Account> account) {

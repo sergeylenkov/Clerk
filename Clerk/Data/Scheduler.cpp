@@ -146,7 +146,7 @@ void Scheduler::Run() {
 	this->previousDate = make_shared<wxDateTime>(wxDateTime::Now());
 	this->nextDate = make_shared<wxDateTime>(wxDateTime::Now());
 
-	this->CalculateNextDate();
+	CalculateNextDate();
 }
 
 void Scheduler::Pause() {
@@ -159,7 +159,31 @@ void Scheduler::CalculateNextDate() {
 	auto date = make_shared<wxDateTime>(*this->previousDate);
 
 	if (type == SchedulerTypes::Daily) {
-		date->Add(wxDateSpan::Days(day));
+		date->Add(wxDateSpan::Days(this->day));
+	}
+
+	if (type == SchedulerTypes::Weekly) {
+		if (week > 1) {
+			date->Add(wxDateSpan::Weeks(week));
+			date->SetToWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
+		}
+		else {
+			date->SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
+		}
+	}
+
+	if (type == SchedulerTypes::Monthly) {
+		date->Add(wxDateSpan::Months(this->month));
+		date->SetDay(this->day);
+	}
+
+	if (type == SchedulerTypes::Yearly) {
+		date->SetDay(this->day);
+		date->SetMonth(static_cast<wxDateTime::Month>(this->month));
+
+		if (date->IsEarlierThan(wxDateTime::Now())) {
+			date->SetYear(date->GetYear() + 1);
+		}
 	}
 
 	this->nextDate = date;

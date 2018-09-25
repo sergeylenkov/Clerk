@@ -41,7 +41,7 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 
 	wxBoxSizer *staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, wxT("Recurrence pattern")), wxHORIZONTAL);
 
-	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(80, -1), wxTAB_TRAVERSAL);
+	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(80, -1));
 
 	wxBoxSizer *buttonsSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -65,7 +65,7 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	wxStaticLine *staticLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
 	staticBoxSizer->Add(staticLine, 0, wxEXPAND | wxALL, 5);	
 
-	patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	staticBoxSizer->Add(patternPanel, 1, wxEXPAND | wxALL, 5);
 
 	patternSizer = new wxBoxSizer(wxVERTICAL);
@@ -330,6 +330,8 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	
 	SelectPatternType(SchedulerTypes::Daily);
 	SelectWeekday(1);
+
+	nameField->SetFocus();
 }
 
 SchedulerFrame::~SchedulerFrame() {	

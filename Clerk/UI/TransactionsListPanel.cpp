@@ -431,7 +431,7 @@ void TransactionsListPanel::Duplicate() {
 		copy->toAmount = transaction->toAmount;
 		copy->note = transaction->note;
 		copy->tags = transaction->tags;
-		copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+		copy->paidAt = transaction->paidAt;
 
 		copy->Save();
 
@@ -507,34 +507,6 @@ void TransactionsListPanel::Merge() {
 	}	
 }
 
-/*void TransactionsListPanel::OnListItemClick(wxListEvent &event) {
-	wxMenu *menu = new wxMenu;
-
-	menu->Append(ID_EditTransaction, wxT("Edit..."));
-	menu->Append(ID_DublicateTransaction, wxT("Dublicate"));
-	menu->Append(ID_SplitTransaction, wxT("Split..."));
-
-	wxMenuItem *mergeItem = new wxMenuItem(menu, ID_MergeTransaction, wxT("Merge"));
-	
-	if (transactionsList->GetSelectedItemCount() < 2) {
-		mergeItem->Enable(false);
-		mergeItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	menu->Append(mergeItem);
-	menu->AppendSeparator();
-	menu->Append(ID_DeleteTransaction, wxT("Delete..."));
-
-	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
-	menu->SetClientData(data);
-
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionsListPanel::OnMenuSelect, this);
-
-	transactionsList->PopupMenu(menu, event.GetPoint());
-	
-	delete menu;
-}*/
-
 void TransactionsListPanel::OnListItemDoubleClick(wxListEvent &event) {
 	if (OnEdit) {
 		OnEdit(GetTransaction());
@@ -555,10 +527,10 @@ void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {
 
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Add), wxT("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Copy..."));
-	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Dublicate"));
-	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Splite..."));
-	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Merge"));
+	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Copy), wxT("Copy..."));
+	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Duplicate), wxT("Dublicate"));
+	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Split), wxT("Splite..."));
+	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Merge), wxT("Merge"));
 	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Delete), wxT("Delete"));
 
 	addItem->Enable(true);

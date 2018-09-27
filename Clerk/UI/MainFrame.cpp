@@ -285,7 +285,7 @@ void MainFrame::CopyTransaction(std::shared_ptr<Transaction> transaction) {
 	copy->toAmount = transaction->toAmount;
 	copy->note = transaction->note;
 	copy->tags = transaction->tags;
-	copy->paidAt = transaction->paidAt;
+	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
 	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
 

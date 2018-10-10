@@ -177,8 +177,6 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Add), wxT("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Edit), wxT("Edit..."));
 	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Delete), wxT("Delete"));
-	wxMenuItem *runItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Run), wxT("Run"));
-	wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Pause), wxT("Pause"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -200,9 +198,11 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 		auto scheduler = GetScheduler();
 
 		if (scheduler->active) {
+			wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Pause), wxT("Pause"));
 			menu->Append(pauseItem);
 		}
 		else {
+			wxMenuItem *runItem = new wxMenuItem(menu, static_cast<int>(SchedulersPanelMenuTypes::Run), wxT("Run"));
 			menu->Append(runItem);
 		}
 
@@ -217,7 +217,7 @@ void SchedulersPanel::OnRightClick(wxContextMenuEvent &event) {
 	point = list->ScreenToClient(point);
 
 	list->PopupMenu(menu, point);
-
+	
 	delete menu;
 }
 

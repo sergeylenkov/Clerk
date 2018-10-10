@@ -355,7 +355,7 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 void MainFrame::AddBudget() {
 	std::shared_ptr<Budget> budget = make_shared<Budget>();
 	
-	budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+	BudgetFrame *budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
 
 	budgetFrame->SetBudget(budget);
 	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
@@ -365,7 +365,7 @@ void MainFrame::AddBudget() {
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
-	budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+	BudgetFrame *budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
 
 	budgetFrame->SetBudget(budget);
 	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
@@ -385,7 +385,7 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 void MainFrame::AddScheduler() {
 	std::shared_ptr<Scheduler> scheduler = make_shared<Scheduler>();
 
-	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+	SchedulerFrame *schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
 	
 	schedulerFrame->SetScheduler(scheduler);
 	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
@@ -395,7 +395,7 @@ void MainFrame::AddScheduler() {
 }
 
 void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
-	schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+	SchedulerFrame *schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
 
 	schedulerFrame->SetScheduler(scheduler);
 	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);

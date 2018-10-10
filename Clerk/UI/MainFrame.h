@@ -28,8 +28,6 @@ private:
 	TreeMenu *treeMenu;
 	TransactionFrame *transactionFrame;
 	AccountFrame *accountFrame;
-	BudgetFrame *budgetFrame;
-	SchedulerFrame *schedulerFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	

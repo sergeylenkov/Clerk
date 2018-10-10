@@ -27,5 +27,6 @@ private:
 	void OnSkipAll(wxCommandEvent &event);
 	void OnSkip(wxCommandEvent &event);
 	void OnApplyAll(wxCommandEvent &event);
+	void OnCloseWindow(wxCloseEvent &event);
 };
 

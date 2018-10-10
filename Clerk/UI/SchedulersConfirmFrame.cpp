@@ -42,6 +42,7 @@ SchedulersConfirmFrame::SchedulersConfirmFrame(wxFrame *parent, const wxChar *ti
 	skipAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnSkipAll, this);
 	skipButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnSkip, this);
 	applyAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnApplyAll, this);
+	this->Bind(wxEVT_CLOSE_WINDOW, &SchedulersConfirmFrame::OnCloseWindow, this);
 }
 
 SchedulersConfirmFrame::~SchedulersConfirmFrame()
@@ -60,7 +61,7 @@ void SchedulersConfirmFrame::UpdateList() {
 
 	column.SetId(0);
 	column.SetText(_("Name"));
-	column.SetWidth(200);
+	column.SetWidth(280);
 
 	list->InsertColumn(0, column);
 
@@ -69,6 +70,7 @@ void SchedulersConfirmFrame::UpdateList() {
 	column1.SetId(1);
 	column1.SetText(_("Amount"));
 	column1.SetWidth(120);
+	column1.SetAlign(wxLIST_FORMAT_RIGHT);
 
 	list->InsertColumn(1, column1);
 
@@ -109,6 +111,7 @@ void SchedulersConfirmFrame::OnSkipAll(wxCommandEvent &event) {
 	for each (auto scheduler in schedulers)
 	{
 		scheduler->CalculateNextDate();
+		scheduler->Save();
 	}
 
 	Close();
@@ -119,6 +122,8 @@ void SchedulersConfirmFrame::OnSkip(wxCommandEvent &event) {
 
 	if (index != -1) {
 		schedulers[index]->CalculateNextDate();
+		schedulers[index]->Save();
+
 		schedulers.erase(schedulers.begin() + index);
 
 		list->DeleteItem(index);
@@ -130,7 +135,16 @@ void SchedulersConfirmFrame::OnApplyAll(wxCommandEvent &event) {
 	{
 		scheduler->Execute();
 		scheduler->CalculateNextDate();
+		scheduler->Save();
 	}
 
 	Close();
+}
+
+void SchedulersConfirmFrame::OnCloseWindow(wxCloseEvent &event) {
+	if (OnClose) {
+		OnClose();
+	}
+
+	Destroy();
 }

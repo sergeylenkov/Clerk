@@ -155,7 +155,7 @@ void Scheduler::Pause() {
 
 void Scheduler::CalculateNextDate() {
 	this->previousDate = this->nextDate;
-
+	
 	auto date = make_shared<wxDateTime>(*this->previousDate);
 
 	if (type == SchedulerTypes::Daily) {
@@ -163,13 +163,8 @@ void Scheduler::CalculateNextDate() {
 	}
 
 	if (type == SchedulerTypes::Weekly) {
-		if (week > 1) {
-			date->Add(wxDateSpan::Weeks(week));
-			date->SetToWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
-		}
-		else {
-			date->SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
-		}
+		date->Add(wxDateSpan::Weeks(week));
+		date->SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
 	}
 
 	if (type == SchedulerTypes::Monthly) {

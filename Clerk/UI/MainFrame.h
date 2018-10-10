@@ -5,6 +5,7 @@
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
 #include <memory>
+#include <thread>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Settings.h"
@@ -68,4 +69,5 @@ private:
 	void OnSchedulerClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void CheckSchedulers();
+	void OnSchedulersConfirmClose();
 };

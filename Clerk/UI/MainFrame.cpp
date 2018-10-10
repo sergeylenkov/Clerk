@@ -63,8 +63,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	tabsPanel->RestoreTabs();
 	tabsPanel->UpdateStatus();
-
-	CheckSchedulers();
+	
+	std::thread([=]()
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(3));		
+		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
+	}).detach();
 }
 
 MainFrame::~MainFrame() 
@@ -92,11 +96,6 @@ void MainFrame::CreateMainMenu() {
 	menuFile->AppendSeparator();
 	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
 
-	//wxMenu *menuTransactions = new wxMenu();
-
-	//menuTransactions->Append(ID_DUPLICATE_TRANSACTION, wxT("Duplicate...\tCtrl+D"));
-	//menuTransactions->Append(ID_SPLIT_TRANSACTION, wxT("Split...\tCtrl+S"));	
-
 	wxMenuBar *menuBar = new wxMenuBar();
 
 	menuBar->Append(menuFile, "&File");
@@ -111,10 +110,6 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, ID_ADD_SCHEDULER);
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);	
-
-	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
-	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnDuplicateTransaction, this, ID_DUPLICATE_TRANSACTION);
-	//menuTransactions->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnSplitTransaction, this, ID_SPLIT_TRANSACTION);	
 }
 
 void MainFrame::UpdateStatus(wxString text) {
@@ -319,8 +314,6 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 }
 
 void MainFrame::OnTransactionClose() {
-	delete transactionFrame;
-
 	tabsPanel->Update();
 }
 
@@ -352,7 +345,6 @@ void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
 }
 
 void MainFrame::OnAccountClose() {
-	delete accountFrame;
 	treeMenu->Update();
 }
 
@@ -383,8 +375,6 @@ void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
 }
 
 void MainFrame::OnBudgetClose() {
-	delete budgetFrame;
-
 	tabsPanel->Update();
 }
 
@@ -439,8 +429,13 @@ void MainFrame::CheckSchedulers() {
 		SchedulersConfirmFrame *confirmFrame = new SchedulersConfirmFrame(this, wxT("Schedulers"), 0, 0, 450, 400);
 
 		confirmFrame->SetSchedulers(schedulers);
+		confirmFrame->OnClose = std::bind(&MainFrame::OnSchedulersConfirmClose, this);
 
 		confirmFrame->Show(true);
 		confirmFrame->CenterOnParent();
 	}
+}
+
+void MainFrame::OnSchedulersConfirmClose() {
+	tabsPanel->Update();
 }

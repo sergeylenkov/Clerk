@@ -14,6 +14,7 @@
 #include "AccountFrame.h"
 #include "BudgetFrame.h"
 #include "SchedulerFrame.h"
+#include "SchedulersConfirmFrame.h"
 #include "TabsPanel.h"
 
 class MainFrame : public wxFrame
@@ -66,4 +67,5 @@ private:
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void OnSchedulerClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
+	void CheckSchedulers();
 };

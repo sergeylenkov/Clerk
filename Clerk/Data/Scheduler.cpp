@@ -188,3 +188,18 @@ void Scheduler::CalculateNextDate() {
 
 	this->nextDate = date;
 }
+
+void Scheduler::Execute() {
+	auto transaction = new Transaction();
+
+	transaction->fromAccountId = fromAccount->id;
+	transaction->toAccountId = toAccount->id;
+	transaction->fromAmount = fromAmount;
+	transaction->toAmount = toAmount;
+	transaction->tags = tags;
+	transaction->paidAt = nextDate;
+
+	transaction->Save();
+
+	delete transaction;
+}

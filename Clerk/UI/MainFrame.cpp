@@ -63,6 +63,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	tabsPanel->RestoreTabs();
 	tabsPanel->UpdateStatus();
+
+	CheckSchedulers();
 }
 
 MainFrame::~MainFrame() 
@@ -413,11 +415,32 @@ void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
 }
 
 void MainFrame::OnSchedulerClose() {
-	delete schedulerFrame;
-
 	tabsPanel->Update();
 }
 
 void MainFrame::AddTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	tabsPanel->AddTab(type, object);
+}
+
+void MainFrame::CheckSchedulers() {
+	wxDateTime today = wxDateTime::Now();
+	today.ResetTime();
+
+	std::vector<shared_ptr<Scheduler>> schedulers;
+
+	for each (auto scheduler in DataHelper::GetInstance().GetSchedulers())
+	{
+		if (scheduler->active && today.IsLaterThan(*scheduler->nextDate)) {			
+			schedulers.push_back(scheduler);
+		}
+	}
+
+	if (schedulers.size() > 0) {
+		SchedulersConfirmFrame *confirmFrame = new SchedulersConfirmFrame(this, wxT("Schedulers"), 0, 0, 450, 400);
+
+		confirmFrame->SetSchedulers(schedulers);
+
+		confirmFrame->Show(true);
+		confirmFrame->CenterOnParent();
+	}
 }

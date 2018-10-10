@@ -4,6 +4,7 @@
 #include <memory>
 #include "Model.h"
 #include "Account.h"
+#include "Transaction.h"
 
 using namespace std;
 
@@ -40,5 +41,6 @@ public:
 	void Run();
 	void Pause();
 	void CalculateNextDate();
+	void Execute();
 };
 

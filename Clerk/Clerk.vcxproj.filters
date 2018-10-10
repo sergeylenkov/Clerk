@@ -108,6 +108,9 @@
     <ClCompile Include="UI\SchedulerFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\SchedulersConfirmFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -204,6 +207,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\SchedulerFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SchedulersConfirmFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

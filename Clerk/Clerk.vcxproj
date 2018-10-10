@@ -13,7 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{930DA72E-D847-42E9-8315-F9F5FE257BED}</ProjectGuid>
     <RootNamespace>Clerk</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -74,6 +74,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data\Scheduler.cpp" />
+    <ClCompile Include="UI\SchedulersConfirmFrame.cpp" />
     <ClCompile Include="UI\SchedulerFrame.cpp" />
     <ClCompile Include="UI\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Scheduler.h" />
+    <ClInclude Include="UI\SchedulersConfirmFrame.h" />
     <ClInclude Include="UI\SchedulerFrame.h" />
     <ClInclude Include="UI\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />

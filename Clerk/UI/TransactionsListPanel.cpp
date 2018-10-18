@@ -141,8 +141,7 @@ shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 void TransactionsListPanel::Update() {
 	transactionsList->ClearAll();
 	transactions.clear();
-		
-	wxDateTime date = wxDateTime::Now() - wxTimeSpan::Days(30);
+
 	balance = 0;
 	
 	if (this->type == TreeMenuItemTypes::MenuAccount) {
@@ -292,6 +291,7 @@ void TransactionsListPanel::Update() {
 	transactionsList->InsertColumn(index, column4);
 
 	int i = 0;
+	wxDateTime date = wxDateTime::Now();
 
 	for each (auto transaction in transactions)
 	{
@@ -322,7 +322,14 @@ void TransactionsListPanel::Update() {
 		
 		transactionsList->SetItemImage(i, 1);
 		transactionsList->SetItem(i, column++, *transaction->tags);
-		transactionsList->SetItem(i, column++, transaction->paidAt->Format("%B %d"));
+
+		wxString dateFormat = transaction->paidAt->Format("%B %d");
+
+		if (date.GetYear() != transaction->paidAt->GetYear()) {
+			dateFormat = transaction->paidAt->Format("%B %d %Y");
+		}
+
+		transactionsList->SetItem(i, column++, dateFormat);
 
 		if (this->type == TreeMenuItemTypes::MenuAccount) {
 			if (account->id == transaction->fromAccountId) {

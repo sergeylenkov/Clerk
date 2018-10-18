@@ -123,7 +123,7 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	wxMessageBox(wxString::Format("Version: %s", "0.1"), "About Clerk", wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(wxString::Format("Version: %s", "0.1.2"), "About Clerk", wxOK | wxICON_INFORMATION, this);
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {

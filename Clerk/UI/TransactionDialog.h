@@ -11,11 +11,11 @@
 
 using namespace std;
 
-class TransactionFrame : public wxFrame
+class TransactionDialog : public wxFrame
 {
 public:
-	TransactionFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~TransactionFrame();
+	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	~TransactionDialog();
 		
 	void SetTransaction(std::shared_ptr<Transaction> transaction);
 	void SetSplitTransaction(std::shared_ptr<Transaction> transaction);

@@ -74,8 +74,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data\Scheduler.cpp" />
-    <ClCompile Include="UI\SchedulersConfirmFrame.cpp" />
-    <ClCompile Include="UI\SchedulerFrame.cpp" />
+    <ClCompile Include="UI\SchedulersConfirmDialog.cpp" />
+    <ClCompile Include="UI\SchedulerDialog.cpp" />
     <ClCompile Include="UI\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\DashboardPanel.cpp" />
@@ -83,9 +83,9 @@
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu.cpp" />
     <ClCompile Include="UI\BudgetsPanel.cpp" />
-    <ClCompile Include="UI\BudgetFrame.cpp" />
+    <ClCompile Include="UI\BudgetDialog.cpp" />
     <ClCompile Include="Data\Account.cpp" />
-    <ClCompile Include="UI\AccountFrame.cpp" />
+    <ClCompile Include="UI\AccountDialog.cpp" />
     <ClCompile Include="BarChart.cpp" />
     <ClCompile Include="Data\Budget.cpp" />
     <ClCompile Include="Data\Currency.cpp" />
@@ -103,13 +103,13 @@
     <ClCompile Include="Clerk.cpp" />
     <ClCompile Include="Data\DataHelper.cpp" />
     <ClCompile Include="UI\MainFrame.cpp" />
-    <ClCompile Include="UI\TransactionFrame.cpp" />
+    <ClCompile Include="UI\TransactionDialog.cpp" />
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\Scheduler.h" />
-    <ClInclude Include="UI\SchedulersConfirmFrame.h" />
-    <ClInclude Include="UI\SchedulerFrame.h" />
+    <ClInclude Include="UI\SchedulersConfirmDialog.h" />
+    <ClInclude Include="UI\SchedulerDialog.h" />
     <ClInclude Include="UI\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\DashboardPanel.h" />
@@ -117,9 +117,9 @@
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu.h" />
     <ClInclude Include="UI\BudgetsPanel.h" />
-    <ClInclude Include="UI\BudgetFrame.h" />
+    <ClInclude Include="UI\BudgetDialog.h" />
     <ClInclude Include="Data\Account.h" />
-    <ClInclude Include="UI\AccountFrame.h" />
+    <ClInclude Include="UI\AccountDialog.h" />
     <ClInclude Include="BarChart.h" />
     <ClInclude Include="Data\Budget.h" />
     <ClInclude Include="Data\Currency.h" />
@@ -138,7 +138,7 @@
     <ClInclude Include="Clerk.h" />
     <ClInclude Include="Data\DataHelper.h" />
     <ClInclude Include="UI\MainFrame.h" />
-    <ClInclude Include="UI\TransactionFrame.h" />
+    <ClInclude Include="UI\TransactionDialog.h" />
     <ClInclude Include="UI\TransactionsListPanel.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

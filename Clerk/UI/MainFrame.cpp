@@ -26,6 +26,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
 	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
+	treeMenu->OnArchiveAccount = std::bind(&MainFrame::DeleteAccount, this, std::placeholders::_1);
 	treeMenu->OnAddTransaction = std::bind(&MainFrame::OnTreeMenuAddTransaction, this, std::placeholders::_1);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
 
@@ -123,7 +124,7 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	wxMessageBox(wxString::Format("Version: %s", "0.1.2"), "About Clerk", wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(wxString::Format("Version: %s", "0.1.3"), "About Clerk", wxOK | wxICON_INFORMATION, this);
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
@@ -248,7 +249,7 @@ void MainFrame::AddTransaction(Account *account) {
 		}
 	}
 
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	transactionFrame = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
 
 	transactionFrame->SetTransaction(transaction);
 	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
@@ -284,33 +285,33 @@ void MainFrame::CopyTransaction(std::shared_ptr<Transaction> transaction) {
 	copy->tags = transaction->tags;
 	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
 
-	transactionFrame->SetTransaction(copy);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+	transactionDialog->SetTransaction(copy);
+	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
-	transactionFrame->Show(true);
-	transactionFrame->CenterOnParent();
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
 }
 
 void MainFrame::EditTransaction(std::shared_ptr<Transaction> transaction) {
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
 	
-	transactionFrame->SetTransaction(transaction);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+	transactionDialog->SetTransaction(transaction);
+	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
-	transactionFrame->Show(true);
-	transactionFrame->CenterOnParent();
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
 }
 
 void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
-	transactionFrame = new TransactionFrame(this, wxT("Transaction"), 0, 0, 450, 350);
+	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
 	
-	transactionFrame->SetSplitTransaction(transaction);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+	transactionDialog->SetSplitTransaction(transaction);
+	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
 
-	transactionFrame->Show(true);
-	transactionFrame->CenterOnParent();
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
 }
 
 void MainFrame::OnTransactionClose() {
@@ -320,23 +321,23 @@ void MainFrame::OnTransactionClose() {
 void MainFrame::AddAccount() {
 	std::shared_ptr<Account> account = make_shared<Account>();
 	
-	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
+	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
 
-	accountFrame->SetAccount(account);
-	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
+	accountDialog->SetAccount(account);
+	accountDialog->OnClose = std::bind(&MainFrame::OnAccountClose, this);
 
-	accountFrame->Show(true);
-	accountFrame->CenterOnParent();
+	accountDialog->Show(true);
+	accountDialog->CenterOnParent();
 }
 
 void MainFrame::EditAccount(std::shared_ptr<Account> account) {
-	accountFrame = new AccountFrame(this, wxT("Account"), 0, 0, 340, 400);
+	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
 		
-	accountFrame->SetAccount(account);
-	accountFrame->OnClose = std::bind(&MainFrame::OnAccountClose, this);
+	accountDialog->SetAccount(account);
+	accountDialog->OnClose = std::bind(&MainFrame::OnAccountClose, this);
 
-	accountFrame->Show(true);
-	accountFrame->CenterOnParent();
+	accountDialog->Show(true);
+	accountDialog->CenterOnParent();
 }
 
 void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
@@ -355,23 +356,23 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 void MainFrame::AddBudget() {
 	std::shared_ptr<Budget> budget = make_shared<Budget>();
 	
-	BudgetFrame *budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+	BudgetDialog *budgetDialog = new BudgetDialog(this, wxT("Budget"), 0, 0, 340, 400);
 
-	budgetFrame->SetBudget(budget);
-	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+	budgetDialog->SetBudget(budget);
+	budgetDialog->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
 
-	budgetFrame->Show(true);
-	budgetFrame->CenterOnParent();
+	budgetDialog->Show(true);
+	budgetDialog->CenterOnParent();
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
-	BudgetFrame *budgetFrame = new BudgetFrame(this, wxT("Budget"), 0, 0, 340, 400);
+	BudgetDialog *budgetDialog = new BudgetDialog(this, wxT("Budget"), 0, 0, 340, 400);
 
-	budgetFrame->SetBudget(budget);
-	budgetFrame->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+	budgetDialog->SetBudget(budget);
+	budgetDialog->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
 
-	budgetFrame->Show(true);
-	budgetFrame->CenterOnParent();
+	budgetDialog->Show(true);
+	budgetDialog->CenterOnParent();
 }
 
 void MainFrame::OnBudgetClose() {
@@ -385,23 +386,23 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 void MainFrame::AddScheduler() {
 	std::shared_ptr<Scheduler> scheduler = make_shared<Scheduler>();
 
-	SchedulerFrame *schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
 	
-	schedulerFrame->SetScheduler(scheduler);
-	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
+	schedulerDialog->SetScheduler(scheduler);
+	schedulerDialog->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
 
-	schedulerFrame->Show(true);
-	schedulerFrame->CenterOnParent();
+	schedulerDialog->Show(true);
+	schedulerDialog->CenterOnParent();
 }
 
 void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
-	SchedulerFrame *schedulerFrame = new SchedulerFrame(this, wxT("Scheduler"), 0, 0, 450, 480);
+	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
 
-	schedulerFrame->SetScheduler(scheduler);
-	schedulerFrame->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
+	schedulerDialog->SetScheduler(scheduler);
+	schedulerDialog->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
 
-	schedulerFrame->Show(true);
-	schedulerFrame->CenterOnParent();
+	schedulerDialog->Show(true);
+	schedulerDialog->CenterOnParent();
 }
 
 void MainFrame::OnSchedulerClose() {
@@ -426,13 +427,13 @@ void MainFrame::CheckSchedulers() {
 	}
 
 	if (schedulers.size() > 0) {
-		SchedulersConfirmFrame *confirmFrame = new SchedulersConfirmFrame(this, wxT("Schedulers"), 0, 0, 450, 400);
+		SchedulersConfirmDialog *confirmDialog = new SchedulersConfirmDialog(this, wxT("Schedulers"), 0, 0, 450, 400);
 
-		confirmFrame->SetSchedulers(schedulers);
-		confirmFrame->OnClose = std::bind(&MainFrame::OnSchedulersConfirmClose, this);
+		confirmDialog->SetSchedulers(schedulers);
+		confirmDialog->OnClose = std::bind(&MainFrame::OnSchedulersConfirmClose, this);
 
-		confirmFrame->Show(true);
-		confirmFrame->CenterOnParent();
+		confirmDialog->Show(true);
+		confirmDialog->CenterOnParent();
 	}
 }
 

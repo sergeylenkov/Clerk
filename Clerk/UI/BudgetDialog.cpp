@@ -1,6 +1,6 @@
-#include "BudgetFrame.h"
+#include "BudgetDialog.h"
 
-BudgetFrame::BudgetFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -93,15 +93,15 @@ BudgetFrame::BudgetFrame(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	UpdateAccounts();
 
-	okButton->Bind(wxEVT_BUTTON, &BudgetFrame::OnOK, this);
-	cancelButton->Bind(wxEVT_BUTTON, &BudgetFrame::OnCancel, this);
+	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
+	cancelButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnCancel, this);
 }
 
-BudgetFrame::~BudgetFrame() {
+BudgetDialog::~BudgetDialog() {
 	delete accountsImageList;
 }
 
-void BudgetFrame::SetBudget(std::shared_ptr<Budget> budget) {
+void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 	this->budget = budget;
 
 	nameField->SetValue(*this->budget->name);
@@ -119,7 +119,7 @@ void BudgetFrame::SetBudget(std::shared_ptr<Budget> budget) {
 	}
 }
 
-void BudgetFrame::UpdateAccounts() {
+void BudgetDialog::UpdateAccounts() {
 	accounts = DataHelper::GetInstance().GetAccounts(AccountTypes::Expens);
 
 	for each (auto account in accounts)
@@ -134,7 +134,7 @@ void BudgetFrame::UpdateAccounts() {
 	}
 }
 
-void BudgetFrame::OnOK(wxCommandEvent &event) {
+void BudgetDialog::OnOK(wxCommandEvent &event) {
 	double val;
 
 	amountField->GetValue().ToDouble(&val);
@@ -160,6 +160,6 @@ void BudgetFrame::OnOK(wxCommandEvent &event) {
 	}
 }
 
-void BudgetFrame::OnCancel(wxCommandEvent &event) {
+void BudgetDialog::OnCancel(wxCommandEvent &event) {
 	Close();
 }

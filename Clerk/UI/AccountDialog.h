@@ -4,11 +4,11 @@
 #include <functional>
 #include "../Data/DataHelper.h"
 
-class AccountFrame : public wxFrame
+class AccountDialog : public wxFrame
 {
 public:
-	AccountFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~AccountFrame();
+	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	~AccountDialog();
 
 	void SetAccount(std::shared_ptr<Account> account);
 

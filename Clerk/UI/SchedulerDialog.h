@@ -8,11 +8,11 @@
 #include "../Data/DataHelper.h"
 #include "../TagsPopup.h"
 
-class SchedulerFrame : public wxFrame
+class SchedulerDialog : public wxFrame
 {
 public:
-	SchedulerFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~SchedulerFrame();
+	SchedulerDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	~SchedulerDialog();
 
 	void SetScheduler(std::shared_ptr<Scheduler> scheduler);
 

@@ -11,11 +11,11 @@
 #include "../Settings.h"
 #include "../TreeMenuItemData.h"
 #include "TreeMenu.h"
-#include "TransactionFrame.h"
-#include "AccountFrame.h"
-#include "BudgetFrame.h"
-#include "SchedulerFrame.h"
-#include "SchedulersConfirmFrame.h"
+#include "TransactionDialog.h"
+#include "AccountDialog.h"
+#include "BudgetDialog.h"
+#include "SchedulerDialog.h"
+#include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
 
 class MainFrame : public wxFrame
@@ -26,8 +26,8 @@ public:
 
 private:
 	TreeMenu *treeMenu;
-	TransactionFrame *transactionFrame;
-	AccountFrame *accountFrame;
+	TransactionDialog *transactionFrame;
+	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	

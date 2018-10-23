@@ -92,7 +92,7 @@ void DashboardPanel::Update() {
 
 void DashboardPanel::Draw() {
 	wxClientDC dc(this);
-
+	
 	int width = 0;
 	int height = 0;
 

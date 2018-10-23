@@ -26,7 +26,7 @@ public:
 	std::function<void(TreeMenuItemTypes)> OnAccountsSelect;
 	std::function<void()> OnAddAccount;
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
-	std::function<void(std::shared_ptr<Account>)> OnDeleteAccount;
+	std::function<void(std::shared_ptr<Account>)> OnArchiveAccount;
 	std::function<void(std::shared_ptr<Account>)> OnAddTransaction;
 	std::function<void(TreeMenuItemTypes type, shared_ptr<void> object)> OnNewTab;
 
@@ -39,6 +39,7 @@ private:
 	wxTreeItemId contextMenuItem;
 
 	void CreateImageList();
+	std::shared_ptr<Account> GetContextMenuAccount();
 	void ExpandItem(wxTreeItemId item);
 	void OnTreeSpecItemMenu(wxTreeEvent &event);
 	void OnTreeItemSelect(wxTreeEvent &event);

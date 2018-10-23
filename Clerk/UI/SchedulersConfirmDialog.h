@@ -4,11 +4,11 @@
 #include <wx/listctrl.h>
 #include "../Data/Scheduler.h"
 
-class SchedulersConfirmFrame : public wxFrame
+class SchedulersConfirmDialog : public wxFrame
 {
 public:
-	SchedulersConfirmFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~SchedulersConfirmFrame();
+	SchedulersConfirmDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	~SchedulersConfirmDialog();
 
 	void SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers);
 

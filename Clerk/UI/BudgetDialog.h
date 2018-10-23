@@ -3,11 +3,11 @@
 #include <wx/valnum.h>
 #include "../Data/DataHelper.h"
 
-class BudgetFrame : public wxFrame
+class BudgetDialog : public wxFrame
 {
 public:
-	BudgetFrame(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~BudgetFrame();
+	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	~BudgetDialog();
 
 	void SetBudget(std::shared_ptr<Budget> budget);
 

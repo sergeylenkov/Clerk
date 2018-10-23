@@ -1,6 +1,6 @@
-#include "TransactionFrame.h"
+#include "TransactionDialog.h"
 
-TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(* wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -99,17 +99,17 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	this->Centre(wxBOTH);
 
 	tagsPopup = new TagsPopup(this);	
-	tagsPopup->OnSelectTag = std::bind(&TransactionFrame::OnSelectTag, this);
+	tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);
 
-	okButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnOK, this);
-	cancelButton->Bind(wxEVT_BUTTON, &TransactionFrame::OnCancel, this);
+	okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
+	cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
 
-	fromList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnFromAccountSelect, this);
-	toList->Bind(wxEVT_COMBOBOX, &TransactionFrame::OnToAccountSelect, this);
-	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnFromAmountKillFocus, this);
-	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnToAmountKillFocus, this);
-	tagsField->Bind(wxEVT_KEY_UP, &TransactionFrame::OnTextChanged, this);
-	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionFrame::OnTagsKillFocus, this);
+	fromList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnFromAccountSelect, this);
+	toList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnToAccountSelect, this);
+	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnFromAmountKillFocus, this);
+	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
+	tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
+	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
 
 	fromValue = 0;
 	toValue = 0;
@@ -160,15 +160,15 @@ TransactionFrame::TransactionFrame(wxFrame *parent, const wxChar *title, int x, 
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
 
-	mainPanel->Bind(wxEVT_CHAR_HOOK, &TransactionFrame::OnKeyDown, this);
+	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
-TransactionFrame::~TransactionFrame() {
+TransactionDialog::~TransactionDialog() {
 	delete accountsImageList;
 	delete tagsPopup;	
 }
 
-void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) {
+void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction) {
 	this->transaction = transaction;
 
 	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
@@ -202,7 +202,7 @@ void TransactionFrame::SetTransaction(std::shared_ptr<Transaction> transaction) 
 	fromAmountField->SelectAll();
 }
 
-void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
+void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
 	auto copy = make_shared<Transaction>();
 
 	copy->fromAccountId = transaction->fromAccountId;
@@ -240,7 +240,7 @@ void TransactionFrame::SetSplitTransaction(std::shared_ptr<Transaction> transact
 	fromAmountField->SelectAll();
 }
 
-void TransactionFrame::UpdateFromList() {
+void TransactionDialog::UpdateFromList() {
 	for each (auto account in accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
 			int icon = 0;
@@ -256,7 +256,7 @@ void TransactionFrame::UpdateFromList() {
 	}
 }
 
-void TransactionFrame::UpdateToList(std::shared_ptr<Account> account) {
+void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 	toList->Clear();
 	toAccounts.clear();
 
@@ -295,7 +295,7 @@ void TransactionFrame::UpdateToList(std::shared_ptr<Account> account) {
 	}
 }
 
-void TransactionFrame::SelectFromAccount(int index) {
+void TransactionDialog::SelectFromAccount(int index) {
 	auto account = fromAccounts[index];
 
 	fromList->Select(index);
@@ -303,7 +303,7 @@ void TransactionFrame::SelectFromAccount(int index) {
 	fromAccount = account;
 }
 
-void TransactionFrame::SelectToAccount(int id) {
+void TransactionDialog::SelectToAccount(int id) {
 	auto account = toAccounts[id];
 
 	toList->Select(id);
@@ -312,7 +312,7 @@ void TransactionFrame::SelectToAccount(int id) {
 	toAccount = account;
 }
 
-void TransactionFrame::SelectToAccount(std::shared_ptr<Account> account) {
+void TransactionDialog::SelectToAccount(std::shared_ptr<Account> account) {
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
 		if (toAccounts[i]->id == account->id) {
 			SelectToAccount(i);
@@ -323,18 +323,18 @@ void TransactionFrame::SelectToAccount(std::shared_ptr<Account> account) {
 	SelectToAccount(0);
 }
 
-void TransactionFrame::OnFromAccountSelect(wxCommandEvent &event) {
+void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {
 	SelectFromAccount(fromList->GetSelection());
 
 	UpdateToList(fromAccount);
 	SelectToAccount(toAccount);
 }
 
-void TransactionFrame::OnToAccountSelect(wxCommandEvent &event) {
+void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 	SelectToAccount(toList->GetSelection());
 }
 
-void TransactionFrame::OnOK(wxCommandEvent &event) {
+void TransactionDialog::OnOK(wxCommandEvent &event) {
 	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
 	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
 	transaction->note = make_shared<wxString>(noteField->GetValue());
@@ -373,11 +373,11 @@ void TransactionFrame::OnOK(wxCommandEvent &event) {
 	}
 }
 
-void TransactionFrame::OnCancel(wxCommandEvent &event) {
+void TransactionDialog::OnCancel(wxCommandEvent &event) {
 	Close();
 }
 
-void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
+void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
 	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());	
@@ -394,14 +394,14 @@ void TransactionFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 	}
 }
 
-void TransactionFrame::OnToAmountKillFocus(wxFocusEvent &event) {
+void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
 	wxString stringAmount = this->ClearAmountValue(toAmountField->GetValue());	
 	toAmountField->SetValue(stringAmount);
 }
 
-void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
+void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 	if (event.GetKeyCode() == WXK_ESCAPE) {
 		tagsPopup->Hide();
 	} else if (event.GetKeyCode() == WXK_UP) {
@@ -442,17 +442,17 @@ void TransactionFrame::OnTextChanged(wxKeyEvent &event) {
 	event.Skip();
 }
 
-void TransactionFrame::OnTagsKillFocus(wxFocusEvent& event) {
+void TransactionDialog::OnTagsKillFocus(wxFocusEvent& event) {
 	tagsPopup->Hide();
 	event.Skip();
 }
 
-void TransactionFrame::OnSelectTag() {
+void TransactionDialog::OnSelectTag() {
 	AddTag();
 	tagsPopup->Hide();	
 }
 
-void TransactionFrame::AddTag() {
+void TransactionDialog::AddTag() {
 	wxString tag = tagsPopup->GetSelectedTag();
 	wxString result = "";
 
@@ -475,7 +475,7 @@ void TransactionFrame::AddTag() {
 	tagsField->SetInsertionPointEnd();
 }
 
-wxString TransactionFrame::ClearAmountValue(wxString &value) {
+wxString TransactionDialog::ClearAmountValue(wxString &value) {
 	value.Trim(true);
 	value.Trim(false);
 	value.Replace(",", ".", true);
@@ -484,10 +484,10 @@ wxString TransactionFrame::ClearAmountValue(wxString &value) {
 	return value;
 }
 
-void TransactionFrame::OnKeyDown(wxKeyEvent &event) {	
+void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
+	event.StopPropagation();
+
 	if ((int)event.GetKeyCode() == 27) {
 		Close();
 	}
-
-	event.Skip();
 }

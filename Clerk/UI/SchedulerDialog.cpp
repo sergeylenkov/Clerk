@@ -1,6 +1,6 @@
-#include "SchedulerFrame.h"
+#include "SchedulerDialog.h"
 
-SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -263,21 +263,21 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	this->Centre(wxBOTH);
 
 	tagsPopup = new TagsPopup(this);
-	tagsPopup->OnSelectTag = std::bind(&SchedulerFrame::OnSelectTag, this);
+	tagsPopup->OnSelectTag = std::bind(&SchedulerDialog::OnSelectTag, this);
 
-	okButton->Bind(wxEVT_BUTTON, &SchedulerFrame::OnOK, this);
-	cancelButton->Bind(wxEVT_BUTTON, &SchedulerFrame::OnCancel, this);
+	okButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnOK, this);
+	cancelButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnCancel, this);
 
-	fromList->Bind(wxEVT_COMBOBOX, &SchedulerFrame::OnFromAccountSelect, this);
-	toList->Bind(wxEVT_COMBOBOX, &SchedulerFrame::OnToAccountSelect, this);
-	fromAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerFrame::OnFromAmountKillFocus, this);
-	toAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerFrame::OnToAmountKillFocus, this);
-	tagsField->Bind(wxEVT_KEY_UP, &SchedulerFrame::OnTextChanged, this);
-	tagsField->Bind(wxEVT_KILL_FOCUS, &SchedulerFrame::OnTagsKillFocus, this);
-	dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
-	weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
-	monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
-	yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerFrame::OnPatternSelect, this);
+	fromList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnFromAccountSelect, this);
+	toList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnToAccountSelect, this);
+	fromAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnFromAmountKillFocus, this);
+	toAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnToAmountKillFocus, this);
+	tagsField->Bind(wxEVT_KEY_UP, &SchedulerDialog::OnTextChanged, this);
+	tagsField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnTagsKillFocus, this);
+	dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
+	weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
+	monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
+	yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 
 	fromValue = 0;
 	toValue = 0;
@@ -334,12 +334,12 @@ SchedulerFrame::SchedulerFrame(wxFrame *parent, const wxChar *title, int x, int 
 	nameField->SetFocus();
 }
 
-SchedulerFrame::~SchedulerFrame() {	
+SchedulerDialog::~SchedulerDialog() {	
 	delete accountsImageList;
 	delete tagsPopup;
 }
 
-void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
+void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 	this->scheduler = scheduler;
 
 	nameField->SetValue(*scheduler->name);
@@ -400,7 +400,7 @@ void SchedulerFrame::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 	nameField->SetFocus();
 }
 
-void SchedulerFrame::UpdateFromList() {
+void SchedulerDialog::UpdateFromList() {
 	for each (auto account in accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
 			int icon = 0;
@@ -416,7 +416,7 @@ void SchedulerFrame::UpdateFromList() {
 	}
 }
 
-void SchedulerFrame::UpdateToList(std::shared_ptr<Account> account) {
+void SchedulerDialog::UpdateToList(std::shared_ptr<Account> account) {
 	toList->Clear();
 	toAccounts.clear();
 
@@ -455,7 +455,7 @@ void SchedulerFrame::UpdateToList(std::shared_ptr<Account> account) {
 	}
 }
 
-void SchedulerFrame::SelectFromAccount(int index) {
+void SchedulerDialog::SelectFromAccount(int index) {
 	auto account = fromAccounts[index];
 
 	fromList->Select(index);
@@ -463,7 +463,7 @@ void SchedulerFrame::SelectFromAccount(int index) {
 	fromAccount = account;
 }
 
-void SchedulerFrame::SelectToAccount(int id) {
+void SchedulerDialog::SelectToAccount(int id) {
 	auto account = toAccounts[id];
 
 	toList->Select(id);
@@ -472,7 +472,7 @@ void SchedulerFrame::SelectToAccount(int id) {
 	toAccount = account;
 }
 
-void SchedulerFrame::SelectToAccount(std::shared_ptr<Account> account) {
+void SchedulerDialog::SelectToAccount(std::shared_ptr<Account> account) {
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
 		if (toAccounts[i]->id == account->id) {
 			SelectToAccount(i);
@@ -483,18 +483,18 @@ void SchedulerFrame::SelectToAccount(std::shared_ptr<Account> account) {
 	SelectToAccount(0);
 }
 
-void SchedulerFrame::OnFromAccountSelect(wxCommandEvent &event) {
+void SchedulerDialog::OnFromAccountSelect(wxCommandEvent &event) {
 	SelectFromAccount(fromList->GetSelection());
 
 	UpdateToList(fromAccount);
 	SelectToAccount(toAccount);
 }
 
-void SchedulerFrame::OnToAccountSelect(wxCommandEvent &event) {
+void SchedulerDialog::OnToAccountSelect(wxCommandEvent &event) {
 	SelectToAccount(toList->GetSelection());
 }
 
-void SchedulerFrame::OnOK(wxCommandEvent &event) {
+void SchedulerDialog::OnOK(wxCommandEvent &event) {
 	scheduler->name = make_shared<wxString>(nameField->GetValue());
 	scheduler->fromAccount = fromAccounts[fromList->GetSelection()];
 	scheduler->toAccount = toAccounts[toList->GetSelection()];
@@ -583,11 +583,11 @@ void SchedulerFrame::OnOK(wxCommandEvent &event) {
 	}
 }
 
-void SchedulerFrame::OnCancel(wxCommandEvent &event) {
+void SchedulerDialog::OnCancel(wxCommandEvent &event) {
 	Close();
 }
 
-void SchedulerFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
+void SchedulerDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
 	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());
@@ -604,14 +604,14 @@ void SchedulerFrame::OnFromAmountKillFocus(wxFocusEvent &event) {
 	}
 }
 
-void SchedulerFrame::OnToAmountKillFocus(wxFocusEvent &event) {
+void SchedulerDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
 	wxString stringAmount = this->ClearAmountValue(toAmountField->GetValue());
 	toAmountField->SetValue(stringAmount);
 }
 
-void SchedulerFrame::OnTextChanged(wxKeyEvent &event) {
+void SchedulerDialog::OnTextChanged(wxKeyEvent &event) {
 	if (event.GetKeyCode() == WXK_ESCAPE) {
 		tagsPopup->Hide();
 	}
@@ -656,17 +656,17 @@ void SchedulerFrame::OnTextChanged(wxKeyEvent &event) {
 	event.Skip();
 }
 
-void SchedulerFrame::OnTagsKillFocus(wxFocusEvent &event) {
+void SchedulerDialog::OnTagsKillFocus(wxFocusEvent &event) {
 	tagsPopup->Hide();
 	event.Skip();
 }
 
-void SchedulerFrame::OnSelectTag() {
+void SchedulerDialog::OnSelectTag() {
 	AddTag();
 	tagsPopup->Hide();
 }
 
-void SchedulerFrame::AddTag() {
+void SchedulerDialog::AddTag() {
 	wxString tag = tagsPopup->GetSelectedTag();
 	wxString result = "";
 
@@ -689,7 +689,7 @@ void SchedulerFrame::AddTag() {
 	tagsField->SetInsertionPointEnd();
 }
 
-wxString SchedulerFrame::ClearAmountValue(wxString &value) {
+wxString SchedulerDialog::ClearAmountValue(wxString &value) {
 	value.Trim(true);
 	value.Trim(false);
 	value.Replace(",", ".", true);
@@ -698,7 +698,7 @@ wxString SchedulerFrame::ClearAmountValue(wxString &value) {
 	return value;
 }
 
-void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
+void SchedulerDialog::OnPatternSelect(wxCommandEvent &event) {
 	if (dailyButton->GetValue()) {
 		SelectPatternType(SchedulerTypes::Daily);
 	}
@@ -716,7 +716,7 @@ void SchedulerFrame::OnPatternSelect(wxCommandEvent &event) {
 	}
 }
 
-void SchedulerFrame::SelectPatternType(SchedulerTypes type) {
+void SchedulerDialog::SelectPatternType(SchedulerTypes type) {
 	this->type = type;
 
 	dailyPatternPanel->Hide();
@@ -747,7 +747,7 @@ void SchedulerFrame::SelectPatternType(SchedulerTypes type) {
 	patternPanel->Layout();
 }
 
-void SchedulerFrame::SelectWeekday(int day) {
+void SchedulerDialog::SelectWeekday(int day) {
 	mondayCheckBox->SetValue(false);
 	tuesdayCheckBox->SetValue(false);
 	wednesdayCheckBox->SetValue(false);

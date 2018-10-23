@@ -60,12 +60,6 @@
     <ClCompile Include="Data\Report.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\AccountFrame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\TransactionFrame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\MainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -76,9 +70,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\ReportPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\BudgetFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu.cpp">
@@ -105,10 +96,19 @@
     <ClCompile Include="Data\Scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\SchedulerFrame.cpp">
+    <ClCompile Include="UI\SchedulerDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\SchedulersConfirmFrame.cpp">
+    <ClCompile Include="UI\TransactionDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\BudgetDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\AccountDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\SchedulersConfirmDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -161,12 +161,6 @@
     <ClInclude Include="Data\Report.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\AccountFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\TransactionFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\MainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -177,9 +171,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ReportPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\BudgetFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu.h">
@@ -206,10 +197,19 @@
     <ClInclude Include="Data\Scheduler.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\SchedulerFrame.h">
+    <ClInclude Include="UI\SchedulerDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\SchedulersConfirmFrame.h">
+    <ClInclude Include="UI\TransactionDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\BudgetDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\AccountDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\SchedulersConfirmDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

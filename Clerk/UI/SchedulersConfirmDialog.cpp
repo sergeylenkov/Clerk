@@ -1,6 +1,6 @@
-#include "SchedulersConfirmFrame.h"
+#include "SchedulersConfirmDialog.h"
 
-SchedulersConfirmFrame::SchedulersConfirmFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+SchedulersConfirmDialog::SchedulersConfirmDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -39,22 +39,22 @@ SchedulersConfirmFrame::SchedulersConfirmFrame(wxFrame *parent, const wxChar *ti
 
 	this->Centre(wxBOTH);
 
-	skipAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnSkipAll, this);
-	skipButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnSkip, this);
-	applyAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmFrame::OnApplyAll, this);
-	this->Bind(wxEVT_CLOSE_WINDOW, &SchedulersConfirmFrame::OnCloseWindow, this);
+	skipAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnSkipAll, this);
+	skipButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnSkip, this);
+	applyAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnApplyAll, this);
+	this->Bind(wxEVT_CLOSE_WINDOW, &SchedulersConfirmDialog::OnCloseWindow, this);
 }
 
-SchedulersConfirmFrame::~SchedulersConfirmFrame()
+SchedulersConfirmDialog::~SchedulersConfirmDialog()
 {
 }
 
-void SchedulersConfirmFrame::SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers) {
+void SchedulersConfirmDialog::SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers) {
 	this->schedulers = schedulers;
 	UpdateList();
 }
 
-void SchedulersConfirmFrame::UpdateList() {
+void SchedulersConfirmDialog::UpdateList() {
 	list->ClearAll();
 
 	wxListItem column;
@@ -91,7 +91,7 @@ void SchedulersConfirmFrame::UpdateList() {
 	}
 }
 
-int SchedulersConfirmFrame::SelectedItemIndex() {
+int SchedulersConfirmDialog::SelectedItemIndex() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -107,7 +107,7 @@ int SchedulersConfirmFrame::SelectedItemIndex() {
 	return itemIndex;
 }
 
-void SchedulersConfirmFrame::OnSkipAll(wxCommandEvent &event) {
+void SchedulersConfirmDialog::OnSkipAll(wxCommandEvent &event) {
 	for each (auto scheduler in schedulers)
 	{
 		scheduler->CalculateNextDate();
@@ -117,7 +117,7 @@ void SchedulersConfirmFrame::OnSkipAll(wxCommandEvent &event) {
 	Close();
 }
 
-void SchedulersConfirmFrame::OnSkip(wxCommandEvent &event) {
+void SchedulersConfirmDialog::OnSkip(wxCommandEvent &event) {
 	int index = SelectedItemIndex();
 
 	if (index != -1) {
@@ -130,7 +130,7 @@ void SchedulersConfirmFrame::OnSkip(wxCommandEvent &event) {
 	}
 }
 
-void SchedulersConfirmFrame::OnApplyAll(wxCommandEvent &event) {
+void SchedulersConfirmDialog::OnApplyAll(wxCommandEvent &event) {
 	for each (auto scheduler in schedulers)
 	{
 		scheduler->Execute();
@@ -141,7 +141,7 @@ void SchedulersConfirmFrame::OnApplyAll(wxCommandEvent &event) {
 	Close();
 }
 
-void SchedulersConfirmFrame::OnCloseWindow(wxCloseEvent &event) {
+void SchedulersConfirmDialog::OnCloseWindow(wxCloseEvent &event) {
 	if (OnClose) {
 		OnClose();
 	}

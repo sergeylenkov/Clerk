@@ -24,8 +24,7 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 }
 
 TreeMenu::~TreeMenu()
-{
-	delete treeMenu;
+{	
 }
 
 void TreeMenu::CreateImageList() {
@@ -285,6 +284,19 @@ vector<std::shared_ptr<Account>> TreeMenu::GetAccounts() {
 	return accounts;
 }
 
+std::shared_ptr<Account> TreeMenu::GetContextMenuAccount() {
+	if (contextMenuItem != NULL) {
+		TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(contextMenuItem);
+
+		if (item->type == TreeMenuItemTypes::MenuAccount) {
+			shared_ptr<Account> account = static_pointer_cast<Account>(item->object);
+			return account;
+		}
+	}
+
+	return nullptr;
+}
+
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	contextMenuItem = event.GetItem();
 	
@@ -294,7 +306,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	menu->AppendSeparator();
 	menu->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
 	menu->Append(ID_EDIT_ACCOUNT, wxT("Edit Account..."));
-	menu->Append(ID_DELETE_ACCOUNT, wxT("Delete Account"));
+	menu->Append(ID_DELETE_ACCOUNT, wxT("Move Account to Archive"));
 	menu->AppendSeparator();
 	menu->Append(ID_ADD_TRANSACTION, wxT("Add Transaction..."));
 
@@ -364,7 +376,7 @@ void TreeMenu::OnMenuAddAccount(wxCommandEvent &event) {
 }
 
 void TreeMenu::OnMenuEditAccount(wxCommandEvent &event) {
-	auto account = GetAccount();
+	auto account = GetContextMenuAccount();
 
 	if (OnEditAccount) {
 		OnEditAccount(account);
@@ -372,10 +384,10 @@ void TreeMenu::OnMenuEditAccount(wxCommandEvent &event) {
 }
 
 void TreeMenu::OnMenuDeleteAccount(wxCommandEvent &event) {
-	auto account = GetAccount();
+	auto account = GetContextMenuAccount();
 
-	if (OnDeleteAccount) {
-		OnDeleteAccount(account);
+	if (OnArchiveAccount) {
+		OnArchiveAccount(account);
 	}
 }
 

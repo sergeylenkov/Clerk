@@ -1,6 +1,6 @@
-#include "AccountFrame.h"
+#include "AccountDialog.h"
 
-AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -102,15 +102,14 @@ AccountFrame::AccountFrame(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	iconList->SetSelection(0);
 
-	okButton->Bind(wxEVT_BUTTON, &AccountFrame::OnOK, this);
-	cancelButton->Bind(wxEVT_BUTTON, &AccountFrame::OnCancel, this);
+	okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
+	cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
 }
 
-AccountFrame::~AccountFrame() {
-	delete iconList;
+AccountDialog::~AccountDialog() {
 }
 
-void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
+void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 	this->account = account;
 
 	nameField->SetValue(*account->name);
@@ -142,7 +141,7 @@ void AccountFrame::SetAccount(std::shared_ptr<Account> account) {
 	}
 }
 
-void AccountFrame::OnOK(wxCommandEvent &event) {
+void AccountDialog::OnOK(wxCommandEvent &event) {
 	double val;
 
 	amountField->GetValue().ToDouble(&val);
@@ -181,6 +180,6 @@ void AccountFrame::OnOK(wxCommandEvent &event) {
 	}
 }
 
-void AccountFrame::OnCancel(wxCommandEvent &event) {
+void AccountDialog::OnCancel(wxCommandEvent &event) {
 	Close();
 }

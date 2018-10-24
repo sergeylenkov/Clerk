@@ -332,6 +332,8 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	SelectWeekday(1);
 
 	nameField->SetFocus();
+
+	this->Bind(wxEVT_CHAR_HOOK, &SchedulerDialog::OnKeyDown, this);
 }
 
 SchedulerDialog::~SchedulerDialog() {	
@@ -789,5 +791,13 @@ void SchedulerDialog::SelectWeekday(int day) {
 	default:
 		mondayCheckBox->SetValue(true);
 		break;
+	}
+}
+
+void SchedulerDialog::OnKeyDown(wxKeyEvent &event) {
+	event.StopPropagation();
+
+	if ((int)event.GetKeyCode() == 27) {
+		Close();
 	}
 }

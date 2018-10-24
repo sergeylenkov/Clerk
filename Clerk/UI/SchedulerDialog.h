@@ -91,4 +91,5 @@ private:
 	void OnPatternSelect(wxCommandEvent& event);
 	void SelectPatternType(SchedulerTypes type);
 	void SelectWeekday(int day);
+	void OnKeyDown(wxKeyEvent &event);
 };

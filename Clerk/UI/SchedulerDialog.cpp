@@ -795,9 +795,11 @@ void SchedulerDialog::SelectWeekday(int day) {
 }
 
 void SchedulerDialog::OnKeyDown(wxKeyEvent &event) {
-	event.StopPropagation();
-
 	if ((int)event.GetKeyCode() == 27) {
+		event.StopPropagation();
 		Close();
+	}
+	else {
+		event.Skip();
 	}
 }

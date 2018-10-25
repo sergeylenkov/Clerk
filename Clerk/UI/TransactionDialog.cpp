@@ -485,9 +485,11 @@ wxString TransactionDialog::ClearAmountValue(wxString &value) {
 }
 
 void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
-	event.StopPropagation();
-
 	if ((int)event.GetKeyCode() == 27) {
+		event.StopPropagation();
 		Close();
+	}
+	else {
+		event.Skip();
 	}
 }

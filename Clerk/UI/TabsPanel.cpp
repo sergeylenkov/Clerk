@@ -333,10 +333,9 @@ void TabsPanel::CreateTrashPanel(int tabIndex) {
 }
 
 void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
-	int i = notebook->GetSelection();
-	tabsPanels[i]->Update();
-
-	UpdateStatus();
+	//int i = notebook->GetSelection();
+	//tabsPanels[i]->Update();
+	//UpdateStatus();
 }
 
 void TabsPanel::OnTabClick(wxMouseEvent &event) {
@@ -345,9 +344,9 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 
 	wxMenu *menu = new wxMenu();
 
-	wxMenuItem *leftItem = new wxMenuItem(menu, ID_TAB_MOVE_LEFT, wxT("Move to Left"));
-	wxMenuItem *rightItem = new wxMenuItem(menu, ID_TAB_MOVE_RIGHT, wxT("Move to Right"));
-	wxMenuItem *closeItem = new wxMenuItem(menu, ID_TAB_CLOSE, wxT("Close"));
+	wxMenuItem *leftItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::MoveLeft), wxT("Move to Left"));
+	wxMenuItem *rightItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::MoveRight), wxT("Move to Right"));
+	wxMenuItem *closeItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::Close), wxT("Close"));
 
 	if (notebook->GetPageCount() == 1) {
 		leftItem->Enable(false);
@@ -375,7 +374,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	menu->AppendSeparator();
 	menu->Append(closeItem);
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, ID_TAB_CLOSE);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(TabsMenuTypes::Close));
 
 	notebook->PopupMenu(menu, point);
 
@@ -392,8 +391,6 @@ void TabsPanel::Update() {
 	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
 		tabsPanels[i]->Update();
 	}
-
-	UpdateStatus();
 }
 
 void TabsPanel::AddTransaction() {
@@ -401,7 +398,6 @@ void TabsPanel::AddTransaction() {
 		OnAddTransaction();
 	}
 }
-
 
 void TabsPanel::CopyTransaction(std::shared_ptr<Transaction> transaction) {
 	if (OnCopyTransaction) {
@@ -444,10 +440,10 @@ void TabsPanel::UpdateStatus() {
 		wxString name = *account->name;
 
 		if (account->creditLimit > 0.0) {
-			result = wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(name), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str()));
+			result = wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(name.c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str()));
 		}
 		else {
-			result = wxString::Format("%s: %.2f %s", static_cast<const char*>(name), amount, static_cast<const char*>(account->currency->shortName->c_str()));
+			result = wxString::Format("%s: %.2f %s", static_cast<const char*>(name.c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str()));
 		}
 	}
 	else if (currentPanel->type == TreeMenuItemTypes::MenuExpenses) {

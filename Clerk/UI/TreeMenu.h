@@ -6,6 +6,14 @@
 #include "../Settings.h"
 #include "../TreeMenuItemData.h"
 
+enum class TreeMenuTypes {
+	NewTab = 1,	
+	AddAccount = 2,
+	EditAccount = 3,
+	DeleteAccount = 4,
+	AddTransaction = 5,
+};
+
 class TreeMenu : public wxPanel
 {
 public:

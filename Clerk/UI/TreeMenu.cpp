@@ -302,19 +302,19 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	
 	wxMenu *menu = new wxMenu();
 
-	menu->Append(ID_OPEN_NEW_TAB, wxT("Open in New Tab"));
+	menu->Append(static_cast<int>(TreeMenuTypes::NewTab), wxT("Open in New Tab"));
 	menu->AppendSeparator();
-	menu->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
-	menu->Append(ID_EDIT_ACCOUNT, wxT("Edit Account..."));
-	menu->Append(ID_DELETE_ACCOUNT, wxT("Move Account to Archive"));
+	menu->Append(static_cast<int>(TreeMenuTypes::AddAccount), wxT("Add Account..."));
+	menu->Append(static_cast<int>(TreeMenuTypes::EditAccount), wxT("Edit Account..."));
+	menu->Append(static_cast<int>(TreeMenuTypes::DeleteAccount), wxT("Move Account to Archive"));
 	menu->AppendSeparator();
-	menu->Append(ID_ADD_TRANSACTION, wxT("Add Transaction..."));
+	menu->Append(static_cast<int>(TreeMenuTypes::AddTransaction), wxT("Add Transaction..."));
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddAccount, this, ID_ADD_ACCOUNT);
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, ID_EDIT_ACCOUNT);
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuDeleteAccount, this, ID_DELETE_ACCOUNT);
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, ID_ADD_TRANSACTION);
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnOpenNewTab, this, ID_OPEN_NEW_TAB);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnOpenNewTab, this, static_cast<int>(TreeMenuTypes::NewTab));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddAccount, this, static_cast<int>(TreeMenuTypes::AddAccount));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(TreeMenuTypes::EditAccount));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuDeleteAccount, this, static_cast<int>(TreeMenuTypes::DeleteAccount));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, static_cast<int>(TreeMenuTypes::AddTransaction));
 
 	PopupMenu(menu, event.GetPoint());
 

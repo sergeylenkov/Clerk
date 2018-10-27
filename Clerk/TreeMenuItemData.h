@@ -1,5 +1,4 @@
-#ifndef TreeMenuItemData_h
-#define TreeMenuItemData_h
+#pragma once
 
 #include "wx/treectrl.h"
 #include "Data/DataHelper.h"
@@ -25,5 +24,3 @@ public:
 	TreeMenuItemTypes type;
 	shared_ptr<void> object;
 };
-
-#endif

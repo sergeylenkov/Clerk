@@ -12,6 +12,12 @@
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"
 
+enum class TabsMenuTypes {
+	MoveLeft = 1,
+	MoveRight = 2,
+	Close = 3,
+};
+
 class TabsPanel : public wxPanel
 {
 public:

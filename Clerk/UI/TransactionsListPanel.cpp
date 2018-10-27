@@ -141,7 +141,7 @@ shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 void TransactionsListPanel::Update() {
 	transactionsList->ClearAll();
 	transactions.clear();
-
+	
 	balance = 0;
 	
 	if (this->type == TreeMenuItemTypes::MenuAccount) {
@@ -240,7 +240,7 @@ void TransactionsListPanel::Update() {
 	if (sortDesc) {
 		std::reverse(transactions.begin(), transactions.end());
 	}
-
+	
 	int index = 0;
 
 	wxListItem column;
@@ -404,7 +404,6 @@ void TransactionsListPanel::Add() {
 	}
 }
 
-
 void TransactionsListPanel::Edit() {
 	if (OnEdit) {
 		OnEdit(GetTransaction());
@@ -505,7 +504,7 @@ void TransactionsListPanel::Merge() {
 			}
 
 			tagsString.RemoveLast(2);
-			wxLogDebug("update tags %s", tagsString.c_str());
+
 			firstTransaction->tags = make_shared<wxString>(tagsString);
 		}
 

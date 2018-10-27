@@ -18,6 +18,15 @@
 #include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
 
+enum class MainMenuTypes {
+	About = 1,
+	AddTransaction = 2,
+	AddAccount = 3,
+	AddBudget = 4,
+	AddScheduler = 5,
+	Exit = 6,
+};
+
 class MainFrame : public wxFrame
 {
 public:

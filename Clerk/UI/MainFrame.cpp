@@ -87,15 +87,15 @@ void MainFrame::CreateMainMenu() {
 	wxMenu *menuFile = new wxMenu();
 	wxMenu *menuHelp = new wxMenu();
 
-	menuHelp->Append(wxID_ABOUT, "&About...");
+	menuHelp->Append(static_cast<int>(MainMenuTypes::About), "&About...");
 	
-	menuFile->Append(ID_ADD_TRANSACTION, wxT("Add Transaction...\tCtrl+T"));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("Add Transaction...\tCtrl+T"));
 	menuFile->AppendSeparator();
-	menuFile->Append(ID_ADD_ACCOUNT, wxT("Add Account..."));
-	menuFile->Append(ID_ADD_BUDGET, wxT("Add Budget..."));
-	menuFile->Append(ID_ADD_SCHEDULER, wxT("Add Scheduler..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddAccount), wxT("Add Account..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("Add Budget..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("Add Scheduler..."));
 	menuFile->AppendSeparator();
-	menuFile->Append(wxID_EXIT, "E&xit\tCtrl+W");
+	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
 
 	wxMenuBar *menuBar = new wxMenuBar();
 
@@ -104,13 +104,13 @@ void MainFrame::CreateMainMenu() {
 
 	SetMenuBar(menuBar);
 
-	menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, wxID_ABOUT);
+	menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, static_cast<int>(MainMenuTypes::About));
 
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, ID_ADD_TRANSACTION);
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, ID_ADD_ACCOUNT);
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, ID_ADD_BUDGET);
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, ID_ADD_SCHEDULER);
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, wxID_EXIT);	
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, static_cast<int>(MainMenuTypes::AddAccount));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
 
 void MainFrame::UpdateStatus(wxString text) {
@@ -124,7 +124,7 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	wxMessageBox(wxString::Format("Version: %s", "0.1.3"), "About Clerk", wxOK | wxICON_INFORMATION, this);
+	wxMessageBox(wxString::Format("Version: %s", APP_VERSION), "About Clerk", wxOK | wxICON_INFORMATION, this);
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {

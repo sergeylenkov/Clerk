@@ -67,6 +67,7 @@ private:
 	void AddAccount();
 	void EditAccount(std::shared_ptr<Account> account);
 	void DeleteAccount(std::shared_ptr<Account> account);
+	void RestoreAccount(std::shared_ptr<Account> account);
 	void OnAccountClose();
 	void AddBudget();
 	void EditBudget(std::shared_ptr<Budget> budget);
@@ -77,4 +78,5 @@ private:
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void CheckSchedulers();
 	void OnSchedulersConfirmClose();
+	void OnEmptyTrash();
 };

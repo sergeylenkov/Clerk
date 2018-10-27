@@ -2,7 +2,6 @@
 #include <wx/treectrl.h>
 #include <memory>
 #include "../Data/DataHelper.h"
-#include "../Defines.h"
 #include "../Settings.h"
 #include "../TreeMenuItemData.h"
 
@@ -12,6 +11,10 @@ enum class TreeMenuTypes {
 	EditAccount = 3,
 	DeleteAccount = 4,
 	AddTransaction = 5,
+	AddBudget = 6,
+	AddScheduler = 7,
+	RestoreAccount = 8,
+	EmptyTrash = 9,
 };
 
 class TreeMenu : public wxPanel
@@ -35,8 +38,12 @@ public:
 	std::function<void()> OnAddAccount;
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
 	std::function<void(std::shared_ptr<Account>)> OnArchiveAccount;
+	std::function<void(std::shared_ptr<Account>)> OnRestoreAccount;
 	std::function<void(std::shared_ptr<Account>)> OnAddTransaction;
+	std::function<void()> OnAddBudget;
+	std::function<void()> OnAddScheduler;
 	std::function<void(TreeMenuItemTypes type, shared_ptr<void> object)> OnNewTab;
+	std::function<void()> OnEmptyTrash;
 
 private:
 	wxTreeCtrl *treeMenu;
@@ -54,8 +61,12 @@ private:
 	void OnMenuAddAccount(wxCommandEvent &event);
 	void OnMenuEditAccount(wxCommandEvent &event);
 	void OnMenuDeleteAccount(wxCommandEvent &event);
+	void OnMenuRestoreAccount(wxCommandEvent &event);
 	void OnMenuAddTransaction(wxCommandEvent &event);
+	void OnMenuAddBudget(wxCommandEvent &event);
+	void OnMenuAddScheduler(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
+	void OnMenuEmptyTrash(wxCommandEvent &event);
 	void OnTreeItemExpanded(wxTreeEvent &event);
 	void OnTreeItemCollapsed(wxTreeEvent &event);	
 };

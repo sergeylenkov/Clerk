@@ -96,3 +96,16 @@ void Account::Delete()
 
 	sqlite3_finalize(statement);
 }
+
+void Account::Restore() {
+	char *sql = "UPDATE accounts SET active = ? WHERE id = ?";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, true);
+		sqlite3_bind_int(statement, 2, this->id);
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+}

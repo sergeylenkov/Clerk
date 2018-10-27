@@ -33,4 +33,5 @@ public:
 	void Load();
 	void Save();
 	void Delete();
+	void Restore();
 };

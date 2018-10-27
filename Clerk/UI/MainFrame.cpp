@@ -27,8 +27,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
 	treeMenu->OnArchiveAccount = std::bind(&MainFrame::DeleteAccount, this, std::placeholders::_1);
+	treeMenu->OnRestoreAccount = std::bind(&MainFrame::RestoreAccount, this, std::placeholders::_1);
 	treeMenu->OnAddTransaction = std::bind(&MainFrame::OnTreeMenuAddTransaction, this, std::placeholders::_1);
+	treeMenu->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
+	treeMenu->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
+	treeMenu->OnEmptyTrash = std::bind(&MainFrame::OnEmptyTrash, this);
 
 	boxSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
 	splitterLeftPanel->SetSizer(boxSizer);
@@ -345,6 +349,11 @@ void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
 	treeMenu->Update();	
 }
 
+void MainFrame::RestoreAccount(std::shared_ptr<Account> account) {
+	account->Restore();
+	treeMenu->Update();
+}
+
 void MainFrame::OnAccountClose() {
 	treeMenu->Update();
 }
@@ -439,4 +448,8 @@ void MainFrame::CheckSchedulers() {
 
 void MainFrame::OnSchedulersConfirmClose() {
 	tabsPanel->Update();
+}
+
+void MainFrame::OnEmptyTrash() {
+
 }

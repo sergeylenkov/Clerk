@@ -638,3 +638,10 @@ std::vector<std::shared_ptr<Account>> DataHelper::GetArchiveAccounts() {
 
 	return result;
 }
+
+void DataHelper::EmptyTrash() {
+	for each (auto transaction in GetDeletedTransactions())
+	{
+		transaction->DeleteCompletely();
+	}
+}

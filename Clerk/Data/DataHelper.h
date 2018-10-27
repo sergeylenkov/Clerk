@@ -66,6 +66,7 @@ public:
 	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);
 	int GetDeletedTransactionsCount();
 	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
+	void EmptyTrash();
 
 private:
 	DataHelper();                 

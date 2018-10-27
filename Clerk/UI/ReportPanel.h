@@ -26,7 +26,6 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	vector<shared_ptr<Account>> accounts;
-	wxImageList *accountsImageList;
 	GraphPopup *chartPopup;
 	vector<DateValue> values = {};
 

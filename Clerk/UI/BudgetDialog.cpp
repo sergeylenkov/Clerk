@@ -76,21 +76,6 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	periodList->SetSelection(1);
 
-	accountsImageList = new wxImageList(16, 16, false);
-
-	for (int i = 0; i <= 50; i++) {
-		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
-		wxImage image(path);
-
-		if (image.IsOk())
-		{
-			wxBitmap *bitmap = new wxBitmap(image);
-			accountsImageList->Add(*bitmap);
-
-			delete bitmap;
-		}
-	}
-
 	UpdateAccounts();
 
 	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
@@ -98,7 +83,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 }
 
 BudgetDialog::~BudgetDialog() {
-	delete accountsImageList;
+	
 }
 
 void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
@@ -126,11 +111,11 @@ void BudgetDialog::UpdateAccounts() {
 	{
 		int icon = 0;
 
-		if (account->iconId < accountsImageList->GetImageCount()) {
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 			icon = account->iconId;
 		}
 
-		accountList->Append(*account->name, accountsImageList->GetBitmap(icon));
+		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(icon));
 	}
 }
 

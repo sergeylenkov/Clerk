@@ -9,7 +9,7 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 	treeMenu = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxBORDER_NONE);
 	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));	
 	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));	
-	treeMenu->AssignImageList(accountsImageList);
+	treeMenu->AssignImageList(imageList);
 	treeMenu->AddRoot("Accounts", -1, -1, 0);
 
 	mainSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
@@ -25,23 +25,17 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 
 TreeMenu::~TreeMenu()
 {	
+	
 }
 
 void TreeMenu::CreateImageList() {
 	wxImage image;
 
-	accountsImageList = new wxImageList(16, 16, true);
+	imageList = new wxImageList(16, 16, true);
 
-	for (int i = 0; i <= 50; i++) {
-		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
-
-		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
-		{
-			wxBitmap *bitmap = new wxBitmap(image);
-			accountsImageList->Add(*bitmap);
-
-			delete bitmap;
-		}
+	for (int i = 0; i < DataHelper::GetInstance().accountsImageList->GetImageCount(); i++) {
+		wxBitmap bitmap = DataHelper::GetInstance().accountsImageList->GetBitmap(i);
+		imageList->Add(bitmap);		
 	}
 
 	for (int i = 0; i <= 52; i++) {
@@ -50,7 +44,7 @@ void TreeMenu::CreateImageList() {
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
 		{
 			wxBitmap *bitmap = new wxBitmap(image);
-			accountsImageList->Add(*bitmap);
+			imageList->Add(*bitmap);
 
 			delete bitmap;
 		}
@@ -114,17 +108,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
 	{
-		int icon = 27;
+		int iconId = 27;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}
@@ -136,17 +130,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
-		int icon = 26;
+		int iconId = 26;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}
@@ -158,17 +152,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
-		int icon = 28;
+		int iconId = 28;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}
@@ -180,17 +174,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
 	{
-		int icon = 28;
+		int iconId = 28;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}
@@ -202,17 +196,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
 	{
-		int icon = 28;
+		int iconId = 28;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}
@@ -231,17 +225,17 @@ void TreeMenu::Update() {
 
 	for each (auto account in DataHelper::GetInstance().GetArchiveAccounts())
 	{
-		int icon = 28;
+		int iconId = 28;
 
-		if (account->iconId <= accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
 		itemData->type = TreeMenuItemTypes::MenuAccount;
 		itemData->object = account;
 
-		wxTreeItemId itemId = treeMenu->AppendItem(archivehItem, *account->name, icon, icon, itemData);
+		wxTreeItemId itemId = treeMenu->AppendItem(archivehItem, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
 	}

@@ -139,7 +139,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 		accounts.push_back(account);
 	}
 
-	accountsImageList = new wxImageList(16, 16, false);
+	/*accountsImageList = new wxImageList(16, 16, false);
 
 	for (int i = 0; i <= 50; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
@@ -152,7 +152,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 			delete bitmap;
 		}
-	}
+	}*/
 
 	UpdateFromList();
 	SelectFromAccount(0);
@@ -164,7 +164,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 }
 
 TransactionDialog::~TransactionDialog() {
-	delete accountsImageList;
+	//delete accountsImageList;
 	delete tagsPopup;	
 }
 
@@ -243,13 +243,13 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 void TransactionDialog::UpdateFromList() {
 	for each (auto account in accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
-			int icon = 0;
+			int iconId = 0;
 
-			if (account->iconId < accountsImageList->GetImageCount()) {
-				icon = account->iconId;
+			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+				iconId = account->iconId;
 			}
 
-			fromList->Append(*account->name, accountsImageList->GetBitmap(icon));
+			fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 			fromAccounts.push_back(account);
 		}
@@ -268,26 +268,26 @@ void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 
 		if (account->type == AccountTypes::Receipt) {
 			if (toAccount->type == AccountTypes::Deposit) {
-				int icon = 0;
+				int iconId = 0;
 
-				if (toAccount->iconId < accountsImageList->GetImageCount()) {
-					icon = toAccount->iconId;
+				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+					iconId = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
+				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 				toAccounts.push_back(toAccount);
 			}
 		}
 		else if (account->type == AccountTypes::Deposit) {
 			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Credit) {
-				int icon = 0;
+				int iconId = 0;
 
-				if (toAccount->iconId < accountsImageList->GetImageCount()) {
-					icon = toAccount->iconId;
+				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+					iconId = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, accountsImageList->GetBitmap(icon));
+				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 				toAccounts.push_back(toAccount);
 			}

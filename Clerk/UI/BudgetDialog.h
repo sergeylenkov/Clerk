@@ -27,8 +27,7 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<Budget> budget;
-	wxImageList *accountsImageList;
+	std::shared_ptr<Budget> budget;	
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();

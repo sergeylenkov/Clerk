@@ -69,7 +69,6 @@ private:
 	std::shared_ptr<Scheduler> scheduler;
 	std::shared_ptr<Account> fromAccount;
 	std::shared_ptr<Account> toAccount;
-	wxImageList *accountsImageList;
 	TagsPopup *tagsPopup;
 
 	void SelectFromAccount(int index);

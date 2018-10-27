@@ -61,30 +61,14 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id
 		accounts.push_back(account);
 	}
 
-	accountsImageList = new wxImageList(16, 16, false);
-	wxImage image;
-
-	for (int i = 0; i <= 50; i++) {
-		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
-		wxImage image(path);
-
-		if (image.IsOk())
-		{
-			wxBitmap *bitmap = new wxBitmap(image);
-			accountsImageList->Add(*bitmap);
-
-			delete bitmap;
-		}
-	}
-
 	for each (auto account in accounts) {
-		int icon = 0;
+		int iconId = 0;
 
-		if (account->iconId < accountsImageList->GetImageCount()) {
-			icon = account->iconId;
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
 		}
 
-		accountList->Append(*account->name, accountsImageList->GetBitmap(icon));
+		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 	}
 
 	accountList->Select(0);
@@ -102,7 +86,6 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id
 
 ReportPanel::~ReportPanel() {
 	delete chart;
-	delete accountsImageList;
 	delete accountList;
 	delete fromDatePicker;
 	delete toDatePicker;

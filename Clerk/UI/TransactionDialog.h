@@ -49,7 +49,6 @@ private:
 	std::shared_ptr<Transaction> splitTransaction;	
 	std::shared_ptr<Account> fromAccount;
 	std::shared_ptr<Account> toAccount;
-	wxImageList *accountsImageList;
 	TagsPopup *tagsPopup;
 
 	void SelectFromAccount(int index);

@@ -1,5 +1,4 @@
-#ifndef DataHelper_h
-#define DataHelper_h
+#pragma once
 
 #include <wx/wx.h>
 #include <wx/datetime.h>
@@ -67,12 +66,12 @@ public:
 	int GetDeletedTransactionsCount();
 	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
 	void EmptyTrash();
+	wxImageList *accountsImageList;
+	void CreateAccountsImageList();
 
 private:
 	DataHelper();                 
 	DataHelper(DataHelper const&);
-
-	sqlite3 *_db;
+	
+	sqlite3 *_db;		
 };
-
-#endif

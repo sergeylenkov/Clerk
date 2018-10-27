@@ -86,18 +86,11 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 
 	currencyList->SetSelection(191);
 
+	
 	wxImage image;
 
-	for (int i = 0; i <= 50; i++) {
-		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
-
-		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
-		{
-			wxBitmap *bitmap = new wxBitmap(image);
-			iconList->Append("", *bitmap);
-
-			delete bitmap;
-		}
+	for (int i = 0; i < DataHelper::GetInstance().accountsImageList->GetImageCount(); i++) {
+		iconList->Append("", DataHelper::GetInstance().accountsImageList->GetIcon(i));
 	}
 
 	iconList->SetSelection(0);

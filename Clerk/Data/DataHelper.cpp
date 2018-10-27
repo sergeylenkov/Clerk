@@ -2,12 +2,13 @@
 
 DataHelper::DataHelper()
 {
-
+	
 }
 
 DataHelper::~DataHelper()
 {
 	sqlite3_close(_db);
+	delete accountsImageList;
 }
 
 void DataHelper::Open(char *database)
@@ -643,5 +644,22 @@ void DataHelper::EmptyTrash() {
 	for each (auto transaction in GetDeletedTransactions())
 	{
 		transaction->DeleteCompletely();
+	}
+}
+
+void DataHelper::CreateAccountsImageList() {
+	accountsImageList = new wxImageList(16, 16, false);
+
+	for (int i = 0; i <= 50; i++) {
+		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
+		wxImage image(path);
+
+		if (image.IsOk())
+		{
+			wxBitmap *bitmap = new wxBitmap(image);
+			accountsImageList->Add(*bitmap);
+
+			delete bitmap;
+		}
 	}
 }

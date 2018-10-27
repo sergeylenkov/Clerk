@@ -48,7 +48,6 @@ public:
 private:
 	wxTreeCtrl *treeMenu;
 	wxImageList *imageList;
-	wxImageList *accountsImageList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
 	wxTreeItemId contextMenuItem;

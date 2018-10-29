@@ -7,11 +7,6 @@
 
 using namespace std;
 
-enum class BudgetTypes {
-	Limit = 0,
-	Goal = 1,
-};
-
 enum class BudgetPeriods {
 	Week = 0,
 	Month = 1,
@@ -25,9 +20,9 @@ public:
 	int id;
 	shared_ptr<wxString> name;
 	float amount;
-	BudgetTypes type;
 	BudgetPeriods period;
-	shared_ptr<Account> account;
+	shared_ptr<wxDateTime> date;
+	shared_ptr<wxString> accountIds;
 
 	Budget();
 	Budget(int id);

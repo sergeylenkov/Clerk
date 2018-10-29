@@ -140,14 +140,14 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *m_staticText91 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(m_staticText91, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	wxStaticText *dailyPatternLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(dailyPatternLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	dailyDayField = new wxTextCtrl(dailyPatternPanel, wxID_ANY, wxT("1"), wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, daysValidator);
 	horizontalSizer->Add(dailyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	wxStaticText *m_staticText101 = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("days"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(m_staticText101, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	wxStaticText *daysLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, wxT("days"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(daysLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	dailyPatternPanel->SetSizer(horizontalSizer);
 	dailyPatternPanel->Layout();

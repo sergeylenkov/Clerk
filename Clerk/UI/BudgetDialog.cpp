@@ -3,80 +3,87 @@
 BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
+	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
+	wxArrayString chars(13, allowedChars);
+	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
+	amountValidator.SetIncludes(chars);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxFlexGridSizer *fieldsSizer = new wxFlexGridSizer(6, 2, 10, 0);
-	fieldsSizer->AddGrowableCol(1);
-	fieldsSizer->AddGrowableRow(5);
-	fieldsSizer->SetFlexibleDirection(wxBOTH);
-	fieldsSizer->SetNonFlexibleGrowMode(wxFLEX_GROWMODE_SPECIFIED);
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	nameLabel = new wxStaticText(this, wxID_ANY, "Name:", wxDefaultPosition, wxDefaultSize, 0);
-	nameLabel->Wrap(-1);
-	fieldsSizer->Add(nameLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	wxStaticText *nameText = new wxStaticText(this, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(50, -1), 0);	
+	horizontalSizer->Add(nameText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	nameField = new wxTextCtrl(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
-	fieldsSizer->Add(nameField, 0, wxALL | wxEXPAND | wxLEFT | wxRIGHT | wxALIGN_CENTER_VERTICAL, 5);
+	nameField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	typeLabel = new wxStaticText(this, wxID_ANY, "Type:", wxDefaultPosition, wxDefaultSize, 0);
-	typeLabel->Wrap(-1);
-	fieldsSizer->Add(typeLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	typeList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	fieldsSizer->Add(typeList, 0, wxALL | wxEXPAND, 5);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	periodLabel = new wxStaticText(this, wxID_ANY, "Period:", wxDefaultPosition, wxDefaultSize, 0);
-	periodLabel->Wrap(-1);
-	fieldsSizer->Add(periodLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	wxStaticText *periodText = new wxStaticText(this, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
+	horizontalSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	periodList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	fieldsSizer->Add(periodList, 0, wxALL | wxEXPAND, 5);
+	periodList = new wxBitmapComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(periodList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	accountLabel = new wxStaticText(this, wxID_ANY, "Account:", wxDefaultPosition, wxDefaultSize, 0);
-	fieldsSizer->Add(accountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	datePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	horizontalSizer->Add(datePicker, 0, wxALL, 5);
 
-	accountList = new wxBitmapComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	fieldsSizer->Add(accountList, 0, wxALL, 5);
+	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	amountLabel = new wxStaticText(this, wxID_ANY, "Amount:", wxDefaultPosition, wxDefaultSize, 0);
-	fieldsSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxFloatingPointValidator<float> validator(2, &amountValue, wxNUM_VAL_DEFAULT);
-	validator.SetRange(0.0f, 999999999.0f);
+	wxStaticText *amountLabel = new wxStaticText(this, wxID_ANY, wxT("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
+	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	amountField = new wxTextCtrl(this, wxID_ANY, "0.00", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT, validator);
-	fieldsSizer->Add(amountField, 0, wxALL, 5);
+	amountField = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	horizontalSizer->Add(amountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	mainSizer->Add(fieldsSizer, 1, wxALL | wxEXPAND, 5);
+	mainSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
 
-	wxBoxSizer *buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxVERTICAL);
+
+	wxStaticText *accountLabel = new wxStaticText(this, wxID_ANY, wxT("Accounts:"), wxDefaultPosition, wxDefaultSize, 0);	
+	horizontalSizer->Add(accountLabel, 0, wxALL, 5);
+
+	mainSizer->Add(horizontalSizer, 0, wxLEFT | wxRIGHT | wxTOP, 5);
+
+	wxBoxSizer *verticalSizer = new wxBoxSizer(wxVERTICAL);
+
+	accountsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
+	verticalSizer->Add(accountsList, 1, wxALL | wxEXPAND, 5);
+
+	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+
+	mainSizer->Add(verticalSizer, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	buttonsSizer->Add(okButton, 0, wxALIGN_CENTER | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	buttonsSizer->Add(cancelButton, 0, wxALL, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-	mainSizer->Add(buttonsSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
 
 	this->Centre(wxBOTH);
 
-	typeList->AppendString("Limit");
-	typeList->AppendString("Goal");
-
-	typeList->SetSelection(0);
-
 	periodList->AppendString("Week");
 	periodList->AppendString("Month");
 	periodList->AppendString("Year");
 	periodList->AppendString("Custom");
 
-	periodList->SetSelection(1);
+	periodList->SetSelection(static_cast<int>(BudgetPeriods::Month));
 
 	UpdateAccounts();
+
+	periodList->Bind(wxEVT_COMBOBOX, &BudgetDialog::OnPeriodSelect, this);
 
 	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnCancel, this);
@@ -89,33 +96,83 @@ BudgetDialog::~BudgetDialog() {
 void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 	this->budget = budget;
 
-	nameField->SetValue(*this->budget->name);
-	typeList->SetSelection(static_cast<int>(this->budget->type));
+	nameField->SetValue(*this->budget->name);	
 	periodList->SetSelection(static_cast<int>(this->budget->period));
 	amountField->SetValue(wxString::Format("%.2f", this->budget->amount));
+	datePicker->SetValue(*budget->date);
 
-	if (this->budget->account) {
-		for (unsigned int i = 0; i < accounts.size(); i++) {
-			if (this->budget->account->id == accounts[i]->id) {
-				accountList->Select(i);
-				break;
-			}
+	datePicker->Disable();
+
+	if (budget->period == BudgetPeriods::Custom) {
+		datePicker->Enable();
+	}
+
+	std::string str = budget->accountIds->mb_str();
+	std::vector<int> ids;
+
+	std::stringstream ss(str);
+
+	int i;
+
+	while (ss >> i)
+	{
+		ids.push_back(i);
+
+		if (ss.peek() == ',') {
+			ss.ignore();
 		}
+	}
+
+	i = 0;
+
+	for each (auto account in accounts)
+	{
+		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
+			accountsList->CheckItem(i, true);
+		}
+
+		i++;
 	}
 }
 
 void BudgetDialog::UpdateAccounts() {
+	accountsList->ClearAll();
+	accountsList->EnableCheckboxes(true);
+
 	accounts = DataHelper::GetInstance().GetAccounts(AccountTypes::Expens);
+
+	wxListItem column;
+
+	column.SetId(0);
+	column.SetText(_("Name"));
+	column.SetWidth(280);
+
+	accountsList->InsertColumn(0, column);	
+
+	int i = 0;
 
 	for each (auto account in accounts)
 	{
-		int icon = 0;
+		wxListItem listItem;
 
-		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-			icon = account->iconId;
-		}
+		listItem.SetId(i);
+		listItem.SetData(account->id);
 
-		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(icon));
+		accountsList->InsertItem(listItem);
+		accountsList->SetItem(i, 0, *account->name);
+
+		accountsList->SetItemImage(listItem, account->iconId);
+
+		i++;
+	}
+}
+
+void BudgetDialog::OnPeriodSelect(wxCommandEvent &event) {
+	if (periodList->GetSelection() == static_cast<int>(BudgetPeriods::Custom)) {
+		datePicker->Enable();
+	}
+	else {
+		datePicker->Disable();
 	}
 }
 
@@ -126,15 +183,32 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 	amountValue = val;
 
 	budget->name = make_shared<wxString>(nameField->GetValue());
-	budget->type = static_cast<BudgetTypes>(typeList->GetSelection());
 	budget->period = static_cast<BudgetPeriods>(periodList->GetSelection());
+	budget->date = make_shared<wxDateTime>(datePicker->GetValue());
 	budget->amount = amountValue;
+	
+	wxString accountIds("");
 
-	int index = accountList->GetSelection();
+	long itemIndex = -1;
 
-	if (index != -1) {
-		budget->account = accounts[index];
-	}	
+	for (;;) {
+		itemIndex = accountsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
+
+		if (itemIndex == -1) {
+			break;
+		}
+
+		bool checked = accountsList->IsItemChecked(itemIndex);
+
+		if (checked) {
+			auto account = accounts[itemIndex];
+			accountIds = accountIds + wxString::Format(wxT("%i,"), account->id);
+		}
+	}
+
+	accountIds.RemoveLast();
+
+	budget->accountIds = make_shared<wxString>(accountIds);
 
 	budget->Save();
 

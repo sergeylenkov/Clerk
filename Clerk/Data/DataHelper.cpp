@@ -31,6 +31,14 @@ void DataHelper::Init() {
 	}
 
 	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS budgets (id INTEGER PRIMARY KEY, name TEXT, period INTEGER, date TEXT, amount FLOAT, account_ids TEXT, created_at TEXT)";
+	
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }
 
 std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)

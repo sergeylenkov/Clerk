@@ -1,6 +1,11 @@
 #include <wx/wx.h>
 #include <wx/bmpcbox.h>
 #include <wx/valnum.h>
+#include <wx/listctrl.h>
+#include <wx/datectrl.h>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
 #include "../Data/DataHelper.h"
 
 class BudgetDialog : public wxFrame
@@ -15,13 +20,11 @@ public:
 
 private:
 	wxStaticText *nameLabel;
-	wxTextCtrl *nameField;
-	wxStaticText *typeLabel;
-	wxComboBox *typeList;
+	wxTextCtrl *nameField;	
 	wxStaticText *periodLabel;
 	wxComboBox *periodList;
-	wxStaticText *accountLabel;
-	wxBitmapComboBox *accountList;
+	wxDatePickerCtrl *datePicker;
+	wxListCtrl *accountsList;
 	wxStaticText *amountLabel;
 	wxTextCtrl *amountField;
 	wxButton *okButton;
@@ -31,6 +34,7 @@ private:
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();
+	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 };

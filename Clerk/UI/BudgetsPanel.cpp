@@ -78,16 +78,7 @@ void BudgetsPanel::Update() {
 			fromDate.SetDay(1);
 		}
 		
-		currentAmount = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-
-		/*if (budget->type == BudgetTypes::Limit) {
-			if (!budget->account) {
-				currentAmount = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-			}
-			else {
-				currentAmount = DataHelper::GetInstance().GetExpensesSumForAccount(budget->account.get(), &fromDate, &toDate);
-			}
-		}*/
+		currentAmount = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
 
 		float remainAmount = budget->amount - currentAmount;
 		float remainPercent = currentAmount / (budget->amount / 100.0);

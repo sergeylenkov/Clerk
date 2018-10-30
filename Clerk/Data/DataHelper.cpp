@@ -648,6 +648,28 @@ std::vector<std::shared_ptr<Account>> DataHelper::GetArchiveAccounts() {
 	return result;
 }
 
+float DataHelper::GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char sql[512];
+	sqlite3_stmt *statement;
+
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", static_cast<const char*>(budget->accountIds->c_str()));
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
+}
+
 void DataHelper::EmptyTrash() {
 	for each (auto transaction in GetDeletedTransactions())
 	{

@@ -64,19 +64,19 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	wxStaticText *st4 = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(st4, 0, wxALL, 5);
 
-	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("3"), wxDefaultPosition, wxDefaultSize, 0);
+	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(transactionLabel, 0, wxALL, 5);
 
 	wxStaticText *st5 = new wxStaticText(infoPanel, wxID_ANY, wxT("Income:"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(st5, 0, wxALL, 5);
 
-	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("100.20"), wxDefaultPosition, wxDefaultSize, 0);
+	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(incomeLabel, 0, wxALL, 5);
 
 	wxStaticText *st6 = new wxStaticText(infoPanel, wxID_ANY, wxT("Outcome:"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(st6, 0, wxALL, 5);
 
-	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("2500.00"), wxDefaultPosition, wxDefaultSize, 0);
+	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
 	infoSizer->Add(outcomeLabel, 0, wxALL, 5);
 
 	infoPanel->SetSizer(infoSizer);
@@ -102,13 +102,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
-	delete periodList;
-	delete fromDatePicker;
-	delete toDatePicker;
-	delete searchField;
-	delete transactionLabel;
-	delete incomeLabel;
-	delete outcomeLabel;
+
 }
 
 void TransactionsListPanel::SetAccount(shared_ptr<Account> account) {
@@ -246,7 +240,14 @@ void TransactionsListPanel::Update() {
 	wxListItem column;
 
 	column.SetId(index);
-	column.SetText(_("Account"));
+
+	if (this->type != TreeMenuItemTypes::MenuAccount) {
+		column.SetText(_("From Account"));
+	}
+	else {
+		column.SetText(_("Account"));
+	}
+
 	column.SetWidth(200);
 
 	transactionsList->InsertColumn(index, column);

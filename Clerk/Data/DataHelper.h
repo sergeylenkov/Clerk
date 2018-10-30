@@ -66,6 +66,7 @@ public:
 	int GetDeletedTransactionsCount();
 	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
 	void EmptyTrash();
+	float GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to);
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();
 

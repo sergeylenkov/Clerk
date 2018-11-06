@@ -213,6 +213,23 @@ void TransactionsListPanel::Update() {
 			transactions.push_back(transaction);
 		}
 	}
+	else if (this->type == TreeMenuItemTypes::MenuAccounts) {
+		for each (auto transaction in DataHelper::GetInstance().GetTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue()))
+		{
+			if (searchField->GetValue().Length() > 0) {
+				wxString search = searchField->GetValue().Lower();
+				wxString tags = transaction->tags->Lower();
+				wxString name = transaction->fromAccountName->Lower();
+
+				if (tags.Find(search) == wxNOT_FOUND && name.Find(search) == wxNOT_FOUND) {
+					continue;
+				}
+			}
+
+			balance = balance + transaction->toAmount;
+			transactions.push_back(transaction);
+		}
+	}
 
 	std::sort(transactions.begin(), transactions.end(), [this](const std::shared_ptr<Transaction>& v1, const std::shared_ptr<Transaction>& v2) {
 		if (this->sortBy == 0) {
@@ -351,6 +368,9 @@ void TransactionsListPanel::Update() {
 		}
 		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
 			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->fromAmount));
+		}
+		else if (this->type == TreeMenuItemTypes::MenuAccounts) {
+			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->toAmount));
 		}
 
 		if (i % 2 == 0) {

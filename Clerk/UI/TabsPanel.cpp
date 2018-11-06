@@ -210,6 +210,9 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 	else if (type == TreeMenuItemTypes::MenuReceipts) {
 		name = wxT("Receipts");
 	}
+	else if (type == TreeMenuItemTypes::MenuAccounts) {
+		name = wxT("Transactions");
+	}
 
 	notebook->SetPageText(tabIndex, name);
 	UpdateTransactionList(transactionList, type, nullptr);
@@ -498,6 +501,10 @@ void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 		transactionList->Update();
 	}
 	else if (type == TreeMenuItemTypes::MenuDeposits) {
+		transactionList->SetType(type);
+		transactionList->Update();
+	}
+	else if (type == TreeMenuItemTypes::MenuAccounts) {
 		transactionList->SetType(type);
 		transactionList->Update();
 	}

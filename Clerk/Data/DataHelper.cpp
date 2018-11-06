@@ -105,6 +105,30 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *a
 	return result;
 }
 
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(wxDateTime *from, wxDateTime *to)
+{
+	auto result = std::vector<std::shared_ptr<Transaction>>();
+
+	char *sql = "SELECT t.id FROM transactions t, accounts fa, accounts ta \
+				  WHERE t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 AND fa.id = t.from_account_id AND ta.id = t.to_account_id ORDER BY t.paid_at DESC, t.created_at DESC";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto transaction = std::make_shared<Transaction>(sqlite3_column_int(statement, 0));
+			result.push_back(transaction);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
+
 std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to) {
 	auto result = std::vector<std::shared_ptr<Transaction>>();
 

@@ -431,7 +431,7 @@ void MainFrame::CheckSchedulers() {
 
 	for each (auto scheduler in DataHelper::GetInstance().GetSchedulers())
 	{
-		if (scheduler->active && today.IsLaterThan(*scheduler->nextDate)) {			
+		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);
 		}
 	}

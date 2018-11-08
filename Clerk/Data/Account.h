@@ -14,6 +14,7 @@ enum class AccountTypes {
 	Expens = 2,
 	Debt = 3,
 	Credit = 4,
+	Virtual = 5,
 };
 
 class Account : public Model

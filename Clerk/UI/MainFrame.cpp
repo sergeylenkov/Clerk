@@ -347,16 +347,21 @@ void MainFrame::EditAccount(std::shared_ptr<Account> account) {
 
 void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
 	account->Delete();
-	treeMenu->Update();	
+
+	treeMenu->Update();
+	treeMenu->RestoreState();
 }
 
 void MainFrame::RestoreAccount(std::shared_ptr<Account> account) {
 	account->Restore();
+
 	treeMenu->Update();
+	treeMenu->RestoreState();
 }
 
 void MainFrame::OnAccountClose() {
 	treeMenu->Update();
+	treeMenu->RestoreState();
 }
 
 void MainFrame::OnAddBudget(wxCommandEvent &event) {

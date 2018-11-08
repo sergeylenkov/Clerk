@@ -75,6 +75,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	typeList->AppendString("Expens");
 	typeList->AppendString("Debt");
 	typeList->AppendString("Credit");
+	typeList->AppendString("Virtual");
 
 	typeList->SetSelection(0);
 

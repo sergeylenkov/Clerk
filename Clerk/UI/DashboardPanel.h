@@ -28,7 +28,8 @@ public:
 
 private:
 	std::vector<DashboardAccountBalance> balance;
-	std::vector<DashboardAccountBalance> expenses;
+	std::vector<DashboardAccountBalance> virtualBalance;
+	std::vector<DashboardAccountBalance> expenses;	
 	std::vector<DahboardBudget> budgets;
 	std::vector<DahboardBudget> credits;
 

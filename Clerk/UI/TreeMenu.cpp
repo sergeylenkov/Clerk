@@ -146,6 +146,28 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuDeposits;
+
+	child = treeMenu->AppendItem(accountsItem, "Virtual", 101, 101, itemData);
+
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	{
+		int iconId = 26;
+
+		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->iconId;
+		}
+
+		TreeMenuItemData *itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->object = account;
+
+		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
+
+		accounts.push_back(account);
+	}
+
+	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuExpenses;
 
 	child = treeMenu->AppendItem(accountsItem, "Expenes", 101, 101, itemData);

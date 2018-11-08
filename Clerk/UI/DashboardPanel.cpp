@@ -22,6 +22,7 @@ void DashboardPanel::Update() {
 	toDate.SetToLastMonthDay();
 
 	balance.clear();
+	virtualBalance.clear();
 	expenses.clear();
 	budgets.clear();
 	credits.clear();
@@ -39,6 +40,12 @@ void DashboardPanel::Update() {
 		else {
 			balance.push_back({ *account->name, wxString::Format("%.2f", amount) });
 		}
+	}
+
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	{
+		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		virtualBalance.push_back({ *account->name, wxString::Format("%.2f", amount) });
 	}
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
@@ -133,60 +140,88 @@ void DashboardPanel::Draw() {
 		y = y + 20;
 	}
 
-	y = y + 20;
+	if (virtualBalance.size() > 0) {
+		y = y + 20;
 
-	dc.SetTextForeground(wxColor(0, 0, 0));
-	dc.SetFont(titleFont);
-
-	dc.DrawText("Credits", wxPoint(x, y));
-
-	y = y + 40;
-
-	for each (auto account in credits) {
-		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(account.name, wxPoint(x, y));
+		dc.SetFont(titleFont);
 
-		dc.SetFont(amountFont);
-		dc.SetTextForeground(wxColor(60, 60, 60));
-
-		wxSize size = dc.GetTextExtent(account.remainAmount);
-
-		dc.DrawText(account.remainAmount, wxPoint(x + progressWidth - size.GetWidth(), y));
-
-		y = y + 23;
-
-		dc.SetPen(wxPen(wxColor(200, 200, 200), 3));
-		dc.DrawLine(x, y, x + progressWidth, y);
-
-		int width = (progressWidth / 100.0) * account.percent;
-
-		if (account.percent <= 50) {
-			dc.SetPen(wxPen(color100, 3));
-		}
-		else if (account.percent > 50 && account.percent <= 80) {
-			dc.SetPen(wxPen(color50, 3));
-		}
-		else {
-			dc.SetPen(wxPen(color0, 3));
-		}
-
-		dc.DrawLine(x, y, x + width, y);
-
-		y = y + 5;
-
-		dc.SetFont(budgetFont);
-		dc.SetTextForeground(wxColor(60, 60, 60));
-		dc.DrawText(account.currentAmount, wxPoint(x, y));
-
-		size = dc.GetTextExtent(account.amount);
-
-		dc.SetFont(budgetFont);
-		dc.SetTextForeground(wxColor(120, 120, 120));
-		dc.DrawText(account.amount, wxPoint(x + progressWidth - size.GetWidth(), y));
+		dc.DrawText("Virtual balance", wxPoint(x, y));
 
 		y = y + 40;
+
+		for each (auto account in virtualBalance) {
+			dc.SetFont(accountFont);
+			dc.SetTextForeground(wxColor(0, 0, 0));
+			dc.DrawText(account.name, wxPoint(x, y));
+
+			dc.SetFont(amountFont);
+			dc.SetTextForeground(wxColor(60, 60, 60));
+
+			wxSize size = dc.GetTextExtent(account.value);
+
+			dc.DrawText(account.value, wxPoint(x + 250 - size.GetWidth(), y));
+
+			y = y + 20;
+		}
 	}
+
+	if (credits.size() > 0) {
+		y = y + 20;
+
+		dc.SetTextForeground(wxColor(0, 0, 0));
+		dc.SetFont(titleFont);
+
+		dc.DrawText("Credits", wxPoint(x, y));
+
+		y = y + 40;
+
+		for each (auto account in credits) {
+			dc.SetFont(accountFont);
+			dc.SetTextForeground(wxColor(0, 0, 0));
+			dc.DrawText(account.name, wxPoint(x, y));
+
+			dc.SetFont(amountFont);
+			dc.SetTextForeground(wxColor(60, 60, 60));
+
+			wxSize size = dc.GetTextExtent(account.remainAmount);
+
+			dc.DrawText(account.remainAmount, wxPoint(x + progressWidth - size.GetWidth(), y));
+
+			y = y + 23;
+
+			dc.SetPen(wxPen(wxColor(200, 200, 200), 3));
+			dc.DrawLine(x, y, x + progressWidth, y);
+
+			int width = (progressWidth / 100.0) * account.percent;
+
+			if (account.percent <= 50) {
+				dc.SetPen(wxPen(color100, 3));
+			}
+			else if (account.percent > 50 && account.percent <= 80) {
+				dc.SetPen(wxPen(color50, 3));
+			}
+			else {
+				dc.SetPen(wxPen(color0, 3));
+			}
+
+			dc.DrawLine(x, y, x + width, y);
+
+			y = y + 5;
+
+			dc.SetFont(budgetFont);
+			dc.SetTextForeground(wxColor(60, 60, 60));
+			dc.DrawText(account.currentAmount, wxPoint(x, y));
+
+			size = dc.GetTextExtent(account.amount);
+
+			dc.SetFont(budgetFont);
+			dc.SetTextForeground(wxColor(120, 120, 120));
+			dc.DrawText(account.amount, wxPoint(x + progressWidth - size.GetWidth(), y));
+
+			y = y + 40;
+		}
+	}	
 
 	dc.SetTextForeground(wxColor(0, 0, 0));
 	dc.SetFont(titleFont);

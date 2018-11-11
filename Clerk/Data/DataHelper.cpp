@@ -23,8 +23,40 @@ sqlite3* DataHelper::Connection() {
 }
 
 void DataHelper::Init() {
-	char *sql = "CREATE TABLE IF NOT EXISTS schedulers (id INTEGER PRIMARY KEY, name TEXT, active INTEGER, type INTEGER, day INTEGER, week INTEGER, month INTEGER, from_account_id INTEGER, to_account_id INTEGER, from_account_amount INTEGER, to_account_amount INTEGER, tags TEXT, prev_date TEXT, next_date TEXT)";
-	sqlite3_stmt *statement;	
+	char *sql = "CREATE TABLE accounts (id INTEGER PRIMARY KEY, name TEXT, note TEXT, type_id INTEGER, currency_id INTEGER, icon_id INTEGER, order_id INTEGER, active INTEGER, created_at TEXT, credit_limit NUMERIC)";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE transactions (id INTEGER PRIMARY KEY, paid_at TEXT, from_account_id INTEGER, to_account_id INTEGER, from_account_amount NUMERIC, to_account_amount NUMERIC, deleted INTEGER, note TEXT, created_at TEXT";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE tags (id INTEGER PRIMARY KEY, name TEXT)";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE transactions_tags (transaction_id INTEGER, tag_id INTEGER)";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS schedulers (id INTEGER PRIMARY KEY, name TEXT, active INTEGER, type INTEGER, day INTEGER, week INTEGER, month INTEGER, from_account_id INTEGER, to_account_id INTEGER, from_account_amount INTEGER, to_account_amount INTEGER, tags TEXT, prev_date TEXT, next_date TEXT)";	
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);
@@ -34,6 +66,14 @@ void DataHelper::Init() {
 
 	sql = "CREATE TABLE IF NOT EXISTS budgets (id INTEGER PRIMARY KEY, name TEXT, period INTEGER, date TEXT, amount FLOAT, account_ids TEXT, created_at TEXT)";
 	
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS goals (id INTEGER PRIMARY KEY, name TEXT, date TEXT, amount FLOAT, account_ids TEXT, created_at TEXT)";
+
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);
 	}

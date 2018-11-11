@@ -127,7 +127,7 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 		CreateAccountPanel(tabIndex, account);
 	}
 	else if (type == TreeMenuItemTypes::MenuAccounts || type == TreeMenuItemTypes::MenuReceipts 
-		|| type == TreeMenuItemTypes::MenuExpenses || type == TreeMenuItemTypes::MenuDeposits) {
+		|| type == TreeMenuItemTypes::MenuExpenses || type == TreeMenuItemTypes::MenuDeposits || type == TreeMenuItemTypes::MenuVirtual) {
 		CreateAccountsPanel(tabIndex, (TreeMenuItemTypes)type);
 	}
 	else if (type == TreeMenuItemTypes::MenuDashboard) {

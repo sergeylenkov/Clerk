@@ -146,7 +146,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuDeposits;
+	itemData->type = TreeMenuItemTypes::MenuVirtual;
 
 	child = treeMenu->AppendItem(accountsItem, "Virtual", 101, 101, itemData);
 
@@ -424,7 +424,7 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnReportSelect(report);
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts) {
+		else if (item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts || item->type == TreeMenuItemTypes::MenuVirtual) {
 			if (OnAccountsSelect) {
 				OnAccountsSelect(item->type);
 			}

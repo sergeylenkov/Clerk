@@ -17,7 +17,8 @@ enum TreeMenuItemTypes {
 	MenuTrash = 10,
 	MenuArchive = 11,
 	MenuSchedulers = 12,
-	MenuDebt = 13,	
+	MenuDebt = 13,
+	MenuVirtual = 14,
 };
 
 class TreeMenuItemData : public wxTreeItemData {

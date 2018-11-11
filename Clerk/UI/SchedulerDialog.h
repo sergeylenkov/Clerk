@@ -19,6 +19,7 @@ public:
 	std::function<void()> OnClose;
 
 private:	
+	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
 	wxRadioButton *dailyButton;

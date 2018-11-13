@@ -7,7 +7,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
 
-	this->SetIcon(wxICON(AppIcon));
+	this->SetIcon(wxICON(APP_ICON));
 
 	wxSplitterWindow *splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splitter->SetSashGravity(0.5);

@@ -82,12 +82,7 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuSchedulers;
 
-	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", 103, 103, itemData);
-
-	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuArchive;
-
-	wxTreeItemId archivehItem = treeMenu->AppendItem(rootItem, "Archive", 96, 96, itemData);
+	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", 103, 103, itemData);	
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuTrash;
@@ -233,17 +228,10 @@ void TreeMenu::Update() {
 		accounts.push_back(account);
 	}
 
-	for each (auto report in DataHelper::GetInstance().GetReports())
-	{
-		itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuReport;
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuArchive;
 
-		itemData->object = report;
-
-		wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 90, 90, itemData);
-
-		reports.push_back(report);
-	}
+	wxTreeItemId archivehItem = treeMenu->AppendItem(accountsItem, "Archive", 96, 96, itemData);
 
 	for each (auto account in DataHelper::GetInstance().GetArchiveAccounts())
 	{
@@ -260,6 +248,18 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = treeMenu->AppendItem(archivehItem, *account->name, iconId, iconId, itemData);
 
 		accounts.push_back(account);
+	}
+
+	for each (auto report in DataHelper::GetInstance().GetReports())
+	{
+		itemData = new TreeMenuItemData();
+		itemData->type = TreeMenuItemTypes::MenuReport;
+
+		itemData->object = report;
+
+		wxTreeItemId itemId = treeMenu->AppendItem(reportsItem, *report->name, 90, 90, itemData);
+
+		reports.push_back(report);
 	}
 }
 

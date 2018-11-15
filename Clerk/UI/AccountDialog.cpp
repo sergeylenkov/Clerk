@@ -82,7 +82,9 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	for each (auto currency in DataHelper::GetInstance().GetCurrencies())
 	{
 		currencies.push_back(currency);
-		currencyList->AppendString(*currency->name);
+
+		wxString name = wxString::Format("%s (%s)", currency->shortName->c_str(), currency->name->c_str());
+		currencyList->AppendString(name);
 	}
 
 	currencyList->SetSelection(191);

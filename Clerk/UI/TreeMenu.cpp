@@ -80,6 +80,11 @@ void TreeMenu::Update() {
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", 102, 102, itemData);
 
 	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuGoals;
+
+	wxTreeItemId goalsItem = treeMenu->AppendItem(rootItem, "Goals", 90, 90, itemData);
+
+	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuSchedulers;
 
 	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", 103, 103, itemData);	
@@ -372,6 +377,12 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddScheduler, this, static_cast<int>(TreeMenuTypes::AddScheduler));
 	}
+	else if (item->type == TreeMenuItemTypes::MenuGoals) {
+		menu->AppendSeparator();
+		menu->Append(static_cast<int>(TreeMenuTypes::AddGoal), wxT("Add Goal..."));
+
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddGoal, this, static_cast<int>(TreeMenuTypes::AddGoal));
+	}
 	else if (item->type == TreeMenuItemTypes::MenuTrash) {
 		menu->AppendSeparator();
 		menu->Append(static_cast<int>(TreeMenuTypes::EmptyTrash), wxT("Empty Trash..."));
@@ -487,6 +498,12 @@ void TreeMenu::OnMenuAddBudget(wxCommandEvent &event) {
 void TreeMenu::OnMenuAddScheduler(wxCommandEvent &event) {
 	if (OnAddScheduler) {
 		OnAddScheduler();
+	}
+}
+
+void TreeMenu::OnMenuAddGoal(wxCommandEvent &event) {
+	if (OnAddGoal) {
+		OnAddGoal();
 	}
 }
 

@@ -15,6 +15,7 @@ enum class TreeMenuTypes {
 	AddScheduler = 7,
 	RestoreAccount = 8,
 	EmptyTrash = 9,
+	AddGoal = 10,
 };
 
 class TreeMenu : public wxPanel
@@ -42,6 +43,7 @@ public:
 	std::function<void(std::shared_ptr<Account>)> OnAddTransaction;
 	std::function<void()> OnAddBudget;
 	std::function<void()> OnAddScheduler;
+	std::function<void()> OnAddGoal;
 	std::function<void(TreeMenuItemTypes type, shared_ptr<void> object)> OnNewTab;
 	std::function<void()> OnEmptyTrash;
 
@@ -64,6 +66,7 @@ private:
 	void OnMenuAddTransaction(wxCommandEvent &event);
 	void OnMenuAddBudget(wxCommandEvent &event);
 	void OnMenuAddScheduler(wxCommandEvent &event);
+	void OnMenuAddGoal(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
 	void OnMenuEmptyTrash(wxCommandEvent &event);
 	void OnTreeItemExpanded(wxTreeEvent &event);

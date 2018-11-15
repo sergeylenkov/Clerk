@@ -12,6 +12,7 @@
 #include "Report.h"
 #include "Budget.h"
 #include "Scheduler.h"
+#include "Goal.h"
 
 using namespace std;
 

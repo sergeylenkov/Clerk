@@ -17,6 +17,7 @@
 #include "SchedulerDialog.h"
 #include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
+#include "GoalDialog.h"
 
 enum class MainMenuTypes {
 	About = 1,
@@ -25,6 +26,7 @@ enum class MainMenuTypes {
 	AddBudget = 4,
 	AddScheduler = 5,
 	Exit = 6,
+	AddGoal = 7,
 };
 
 class MainFrame : public wxFrame
@@ -58,6 +60,7 @@ private:
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnAddScheduler(wxCommandEvent &event);
+	void OnAddGoal(wxCommandEvent &event);
 	void AddTransaction(Account *account);
 	void AddTransactionFromContextMenu();
 	void CopyTransaction(std::shared_ptr<Transaction> transaction);
@@ -75,6 +78,8 @@ private:
 	void AddScheduler();
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void OnSchedulerClose();
+	void AddGoal();
+	void OnGoalClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void CheckSchedulers();
 	void OnSchedulersConfirmClose();

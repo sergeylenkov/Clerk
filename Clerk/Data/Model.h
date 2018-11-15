@@ -1,5 +1,4 @@
-#ifndef Model_h
-#define Model_h
+#pragma once
 
 #include <sqlite3.h>
 
@@ -13,5 +12,3 @@ public:
 private:
 
 };
-
-#endif

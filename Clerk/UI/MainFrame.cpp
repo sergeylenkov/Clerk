@@ -34,6 +34,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAddTransaction = std::bind(&MainFrame::OnTreeMenuAddTransaction, this, std::placeholders::_1);
 	treeMenu->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
 	treeMenu->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
+	treeMenu->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
 	treeMenu->OnEmptyTrash = std::bind(&MainFrame::OnEmptyTrash, this);
 
@@ -100,6 +101,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddAccount), wxT("Add Account..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("Add Budget..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("Add Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("Add Scheduler..."));
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
@@ -116,6 +118,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, static_cast<int>(MainMenuTypes::AddAccount));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
@@ -423,6 +426,26 @@ void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
 }
 
 void MainFrame::OnSchedulerClose() {
+	tabsPanel->Update();
+}
+
+void MainFrame::OnAddGoal(wxCommandEvent &event) {
+	AddGoal();
+}
+
+void MainFrame::AddGoal() {
+	std::shared_ptr<Goal> goal = make_shared<Goal>();
+
+	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
+
+	goalDialog->SetGoal(goal);
+	goalDialog->OnClose = std::bind(&MainFrame::OnGoalClose, this);
+
+	goalDialog->Show(true);
+	goalDialog->CenterOnParent();
+}
+
+void MainFrame::OnGoalClose() {
 	tabsPanel->Update();
 }
 

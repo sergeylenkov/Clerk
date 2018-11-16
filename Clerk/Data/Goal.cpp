@@ -17,7 +17,7 @@ Goal::Goal(int id) : Goal()
 
 void Goal::Load()
 {
-	char *sql = "SELECT g.id, g.name, g.date, b.amount, g.account_ids FROM goals g WHERE g.id = ?";
+	char *sql = "SELECT g.id, g.name, g.date, g.amount, g.account_ids FROM goals g WHERE g.id = ?";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {

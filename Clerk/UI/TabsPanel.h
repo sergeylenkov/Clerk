@@ -11,6 +11,7 @@
 #include "BudgetsPanel.h"
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"
+#include "GoalsPanel.h"
 
 enum class TabsMenuTypes {
 	MoveLeft = 1,
@@ -45,6 +46,8 @@ public:
 	std::function<void(std::shared_ptr<Budget>)> OnEditBudget;
 	std::function<void()> OnAddScheduler;
 	std::function<void(std::shared_ptr<Scheduler>)> OnEditScheduler;
+	std::function<void()> OnAddGoal;
+	std::function<void(std::shared_ptr<Goal>)> OnEditGoal;
 
 private:
 	wxNotebook *notebook;
@@ -60,6 +63,7 @@ private:
 	void CreateDashboardPanel(int tabIndex);
 	void CreateBudgetsPanel(int tabIndex);
 	void CreateSchedulersPanel(int tabIndex);
+	void CreateGoalsPanel(int tabIndex);
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
 	void CreateTrashPanel(int tabIndex);	
 	void OnTabChanged(wxBookCtrlEvent &event);	
@@ -74,6 +78,8 @@ private:
 	void EditBudget(std::shared_ptr<Budget> budget);
 	void AddScheduler();
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
+	void AddGoal();
+	void EditGoal(std::shared_ptr<Goal> goal);
 	void RemoveTab(int index);
 };
 

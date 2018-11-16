@@ -139,6 +139,9 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 	else if (type == TreeMenuItemTypes::MenuSchedulers) {
 		CreateSchedulersPanel(tabIndex);
 	}
+	else if (type == TreeMenuItemTypes::MenuGoals) {
+		CreateGoalsPanel(tabIndex);
+	}
 	else if (type == TreeMenuItemTypes::MenuTrash) {
 		CreateTrashPanel(tabIndex);
 	}
@@ -288,6 +291,31 @@ void TabsPanel::CreateSchedulersPanel(int tabIndex) {
 	notebook->SetPageText(tabIndex, wxT("Schedulers"));
 
 	schedulersPanel->Update();
+}
+
+void TabsPanel::CreateGoalsPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	GoalsPanel *goalsPanel = new GoalsPanel(panel, wxID_ANY);
+
+	goalsPanel->OnAdd = std::bind(&TabsPanel::AddGoal, this);
+	goalsPanel->OnEdit = std::bind(&TabsPanel::EditGoal, this, std::placeholders::_1);
+
+	tabsPanels[tabIndex] = goalsPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuGoals;
+
+	sizer->Add(goalsPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	notebook->SetPageText(tabIndex, wxT("Goals"));
+
+	goalsPanel->Update();
 }
 
 void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) {
@@ -577,5 +605,17 @@ void TabsPanel::AddScheduler() {
 void TabsPanel::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
 	if (OnEditScheduler) {
 		OnEditScheduler(scheduler);
+	}
+}
+
+void TabsPanel::AddGoal() {
+	if (OnAddGoal) {
+		OnAddGoal();
+	}
+}
+
+void TabsPanel::EditGoal(std::shared_ptr<Goal> goal) {
+	if (OnEditGoal) {
+		OnEditGoal(goal);
 	}
 }

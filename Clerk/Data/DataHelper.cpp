@@ -265,6 +265,24 @@ std::vector<std::shared_ptr<Scheduler>> DataHelper::GetSchedulers() {
 	return result;
 }
 
+std::vector<std::shared_ptr<Goal>> DataHelper::GetGoals() {
+	auto result = std::vector<std::shared_ptr<Goal>>();
+
+	char *sql = "SELECT id FROM goals ORDER BY name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto goal = make_shared<Goal>(sqlite3_column_int(statement, 0));
+			result.push_back(goal);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
 	auto result = std::vector<std::shared_ptr<Report>>();
 
@@ -730,6 +748,38 @@ float DataHelper::GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateT
 	}
 
 	sqlite3_reset(statement);
+
+	return total;
+}
+
+float DataHelper::GetBalanceForGoal(Goal *goal) {
+	float total = 0.0;
+	float receipt_sum = 0.0;
+	float expense_sum = 0.0;
+	char sql[512];
+
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal->accountIds->c_str()));
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {		
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			receipt_sum = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal->accountIds->c_str()));
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {		
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			expense_sum = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	total = receipt_sum - expense_sum;
 
 	return total;
 }

@@ -61,6 +61,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel->OnEditBudget = std::bind(&MainFrame::EditBudget, this, std::placeholders::_1);
 	tabsPanel->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
 	tabsPanel->OnEditScheduler = std::bind(&MainFrame::EditScheduler, this, std::placeholders::_1);
+	tabsPanel->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
+	tabsPanel->OnEditGoal = std::bind(&MainFrame::EditGoal, this, std::placeholders::_1);
 
 	rightPanelSizer->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
@@ -436,6 +438,16 @@ void MainFrame::OnAddGoal(wxCommandEvent &event) {
 void MainFrame::AddGoal() {
 	std::shared_ptr<Goal> goal = make_shared<Goal>();
 
+	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
+
+	goalDialog->SetGoal(goal);
+	goalDialog->OnClose = std::bind(&MainFrame::OnGoalClose, this);
+
+	goalDialog->Show(true);
+	goalDialog->CenterOnParent();
+}
+
+void MainFrame::EditGoal(std::shared_ptr<Goal> goal) {
 	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
 
 	goalDialog->SetGoal(goal);

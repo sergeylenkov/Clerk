@@ -79,6 +79,7 @@ private:
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void OnSchedulerClose();
 	void AddGoal();
+	void EditGoal(std::shared_ptr<Goal> goal);
 	void OnGoalClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void CheckSchedulers();

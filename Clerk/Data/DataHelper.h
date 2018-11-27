@@ -47,6 +47,7 @@ public:
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
+	std::vector<std::shared_ptr<Transaction>> GetRecentTransactions();
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
 	std::vector<std::shared_ptr<Budget>> GetBudgets();
 	std::vector<std::shared_ptr<Scheduler>> GetSchedulers();
@@ -70,7 +71,7 @@ public:
 	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
 	void EmptyTrash();
 	float GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to);
-	float GetBalanceForGoal(Goal *goal);
+	float GetBalanceForGoal(Goal *goal);	
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();
 

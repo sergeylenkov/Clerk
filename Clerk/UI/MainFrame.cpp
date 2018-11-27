@@ -94,17 +94,37 @@ MainFrame::~MainFrame()
 }
 
 void MainFrame::CreateMainMenu() {
+	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
+
 	wxMenu *menuFile = new wxMenu();
 	wxMenu *menuHelp = new wxMenu();
 
 	menuHelp->Append(static_cast<int>(MainMenuTypes::About), "&About...");
-	
-	menuFile->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("Add Transaction...\tCtrl+T"));
+
+	if (transactions.size() == 0) {
+		menuFile->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction...\tCtrl+T"));
+		menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
+	}
+	else {
+		wxMenu *menuTransaction = new wxMenu();
+		menuFile->AppendSubMenu(menuTransaction, wxT("New Transaction"));
+
+		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
+		menuTransaction->AppendSeparator();
+
+		for each (auto transaction in transactions)
+		{
+			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+		}
+
+		menuTransaction->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::OnAddMenuTransaction), NULL, this);
+	}
+
 	menuFile->AppendSeparator();
-	menuFile->Append(static_cast<int>(MainMenuTypes::AddAccount), wxT("Add Account..."));
-	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("Add Budget..."));
-	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("Add Goal..."));
-	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("Add Scheduler..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddAccount), wxT("New Account..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
 
@@ -116,8 +136,7 @@ void MainFrame::CreateMainMenu() {
 	SetMenuBar(menuBar);
 
 	menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAbout, this, static_cast<int>(MainMenuTypes::About));
-
-	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
+	
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAccount, this, static_cast<int>(MainMenuTypes::AddAccount));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
@@ -495,4 +514,20 @@ void MainFrame::OnSchedulersConfirmClose() {
 
 void MainFrame::OnEmptyTrash() {
 
+}
+
+void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
+	int itemId = event.GetId();
+
+	if (itemId == 0) {
+		auto account = tabsPanel->GetSelectedAccount();
+		AddTransaction(account.get());
+	}
+	else {
+		auto transaction = make_shared<Transaction>(itemId);
+		transaction->fromAmount = 0;
+		transaction->toAmount = 0;
+
+		CopyTransaction(transaction);
+	}
 }

@@ -210,6 +210,24 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetDeletedTransactions() {
 	return result;
 }
 
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetRecentTransactions() {
+	auto result = std::vector<std::shared_ptr<Transaction>>();
+
+	char *sql = "SELECT t.id FROM transactions t, accounts fa, accounts ta WHERE t.from_account_id = fa.id AND t.to_account_id = ta.id GROUP BY t.from_account_id, t.to_account_id ORDER BY t.paid_at DESC LIMIT 10";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto transaction = std::make_shared<Transaction>(sqlite3_column_int(statement, 0));
+			result.push_back(transaction);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 {
 	auto result = std::vector<std::shared_ptr<Currency>>();

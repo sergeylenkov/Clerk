@@ -85,4 +85,5 @@ private:
 	void CheckSchedulers();
 	void OnSchedulersConfirmClose();
 	void OnEmptyTrash();
+	void OnAddMenuTransaction(wxCommandEvent &event);
 };

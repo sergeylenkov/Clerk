@@ -418,6 +418,11 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnBudgetsSelect();
 			}
 		}
+		else if (item->type == TreeMenuItemTypes::MenuGoals) {
+			if (OnGoalsSelect) {
+				OnGoalsSelect();
+			}
+		}
 		else if (item->type == TreeMenuItemTypes::MenuSchedulers) {
 			if (OnSchedulersSelect) {
 				OnSchedulersSelect();

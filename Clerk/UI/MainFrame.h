@@ -53,6 +53,7 @@ private:
 	void OnTreeMenuReportSelect(std::shared_ptr<Report> report);
 	void OnTreeMenuDashboardSelect();
 	void OnTreeMenuBudgetsSelect();
+	void OnTreeMenuGoalsSelect();
 	void OnTreeMenuSchedulersSelect();
 	void OnTreeMenuTrashSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);

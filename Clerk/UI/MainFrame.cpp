@@ -24,6 +24,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnReportSelect = std::bind(&MainFrame::OnTreeMenuReportSelect, this, std::placeholders::_1);
 	treeMenu->OnDashboardSelect = std::bind(&MainFrame::OnTreeMenuDashboardSelect, this);
 	treeMenu->OnBudgetsSelect = std::bind(&MainFrame::OnTreeMenuBudgetsSelect, this);
+	treeMenu->OnGoalsSelect = std::bind(&MainFrame::OnTreeMenuGoalsSelect, this);
 	treeMenu->OnSchedulersSelect = std::bind(&MainFrame::OnTreeMenuSchedulersSelect, this);
 	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
@@ -195,6 +196,15 @@ void MainFrame::OnTreeMenuBudgetsSelect() {
 	}
 	else {
 		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuBudgets, nullptr);
+	}
+}
+
+void MainFrame::OnTreeMenuGoalsSelect() {
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuGoals)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::MenuGoals);
+	}
+	else {
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuGoals, nullptr);
 	}
 }
 

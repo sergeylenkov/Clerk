@@ -10,7 +10,7 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));	
 	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));	
 	treeMenu->AssignImageList(imageList);
-	treeMenu->AddRoot("Accounts", -1, -1, 0);
+	treeMenu->AddRoot("", -1, -1, 0);
 
 	mainSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
 
@@ -435,7 +435,7 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 				OnReportSelect(report);
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts || item->type == TreeMenuItemTypes::MenuVirtual) {
+		else if (item->type == TreeMenuItemTypes::MenuAccounts || item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts || item->type == TreeMenuItemTypes::MenuVirtual) {
 			if (OnAccountsSelect) {
 				OnAccountsSelect(item->type);
 			}

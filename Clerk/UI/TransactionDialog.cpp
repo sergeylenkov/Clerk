@@ -124,6 +124,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 		accounts.push_back(account);
 	}
 
+	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	{
+		accounts.push_back(account);
+	}
+
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
 	{
 		accounts.push_back(account);
@@ -226,7 +231,7 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 
 void TransactionDialog::UpdateFromList() {
 	for each (auto account in accounts) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
+		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 			int iconId = 0;
 
 			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -251,7 +256,7 @@ void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 		}
 
 		if (account->type == AccountTypes::Receipt) {
-			if (toAccount->type == AccountTypes::Deposit) {
+			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Virtual) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -263,8 +268,9 @@ void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 				toAccounts.push_back(toAccount);
 			}
 		}
-		else if (account->type == AccountTypes::Deposit) {
-			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Credit) {
+		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt 
+				|| toAccount->type == AccountTypes::Credit || toAccount->type == AccountTypes::Virtual) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {

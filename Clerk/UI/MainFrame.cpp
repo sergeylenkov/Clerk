@@ -279,7 +279,7 @@ void MainFrame::AddTransaction(Account *account) {
 	auto transaction = make_shared<Transaction>();
 
 	if (account) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit) {
+		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 			transaction->fromAccountId = account->id;
 			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}

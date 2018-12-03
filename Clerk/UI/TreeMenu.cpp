@@ -90,6 +90,11 @@ void TreeMenu::Update() {
 	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", 103, 103, itemData);	
 
 	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::MenuTags;
+
+	wxTreeItemId tagsItem = treeMenu->AppendItem(rootItem, "Tags", 92, 92, itemData);
+
+	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuTrash;
 
 	int count = DataHelper::GetInstance().GetDeletedTransactionsCount();
@@ -431,6 +436,11 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 		else if (item->type == TreeMenuItemTypes::MenuTrash) {
 			if (OnTrashSelect) {
 				OnTrashSelect();
+			}
+		}
+		else if (item->type == TreeMenuItemTypes::MenuTags) {
+			if (OnTagsSelect) {
+				OnTagsSelect();
 			}
 		}
 		else if (item->type == TreeMenuItemTypes::MenuReport) {

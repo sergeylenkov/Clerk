@@ -36,6 +36,7 @@ public:
 	std::function<void()> OnGoalsSelect;
 	std::function<void()> OnSchedulersSelect;
 	std::function<void()> OnTrashSelect;
+	std::function<void()> OnTagsSelect;
 	std::function<void(TreeMenuItemTypes)> OnAccountsSelect;
 	std::function<void()> OnAddAccount;
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;

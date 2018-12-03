@@ -20,6 +20,7 @@ enum TreeMenuItemTypes {
 	MenuDebt = 13,
 	MenuVirtual = 14,
 	MenuGoals = 15,
+	MenuTags = 16,
 };
 
 class TreeMenuItemData : public wxTreeItemData {

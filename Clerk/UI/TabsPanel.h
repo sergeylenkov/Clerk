@@ -12,6 +12,7 @@
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"
 #include "GoalsPanel.h"
+#include "TagsPanel.h"
 
 enum class TabsMenuTypes {
 	MoveLeft = 1,
@@ -65,7 +66,8 @@ private:
 	void CreateSchedulersPanel(int tabIndex);
 	void CreateGoalsPanel(int tabIndex);
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
-	void CreateTrashPanel(int tabIndex);	
+	void CreateTrashPanel(int tabIndex);
+	void CreateTagsPanel(int tabIndex);
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);

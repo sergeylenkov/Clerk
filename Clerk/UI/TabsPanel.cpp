@@ -145,6 +145,9 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 	else if (type == TreeMenuItemTypes::MenuTrash) {
 		CreateTrashPanel(tabIndex);
 	}
+	else if (type == TreeMenuItemTypes::MenuTags) {
+		CreateTagsPanel(tabIndex);
+	}
 	else if (type == TreeMenuItemTypes::MenuReport) {
 		auto report = std::static_pointer_cast<Report>(object);
 		CreateReportPanel(tabIndex, report);
@@ -363,6 +366,28 @@ void TabsPanel::CreateTrashPanel(int tabIndex) {
 	trashPanel->Update();
 }
 
+void TabsPanel::CreateTagsPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	TagsPanel *tagsPanel = new TagsPanel(panel, wxID_ANY);
+
+	tabsPanels[tabIndex] = tagsPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuTags;
+
+	sizer->Add(tagsPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	notebook->SetPageText(tabIndex, wxT("Tags"));
+
+	tagsPanel->Update();
+}
+
 void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
 	//int i = notebook->GetSelection();
 	//tabsPanels[i]->Update();
@@ -577,11 +602,15 @@ std::shared_ptr<Account> TabsPanel::GetSelectedAccount() {
 }
 
 void TabsPanel::RemoveTab(int index) {
+	DataPanel *currentPanel = tabsPanels[index];
+
 	notebook->RemovePage(index);
 
 	tabs.erase(tabs.begin() + index);
 	tabsSizer.erase(tabsSizer.begin() + index);
 	tabsPanels.erase(tabsPanels.begin() + index);
+	
+	delete currentPanel;
 }
 
 void TabsPanel::AddBudget() {

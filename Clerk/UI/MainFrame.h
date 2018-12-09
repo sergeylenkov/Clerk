@@ -56,6 +56,7 @@ private:
 	void OnTreeMenuGoalsSelect();
 	void OnTreeMenuSchedulersSelect();
 	void OnTreeMenuTrashSelect();
+	void OnTreeMenuTagsSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
 	void OnAddAccount(wxCommandEvent &event);

@@ -319,6 +319,28 @@ std::shared_ptr<Report> DataHelper::GetReportById(int id) {
 	return report;
 }
 
+std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
+	auto result = std::vector<std::shared_ptr<Tag>>();
+
+	char *sql = "SELECT t.id, t.name, COUNT(t2.id) FROM tags t, transactions t2, transactions_tags tt WHERE t.id = tt.tag_id AND tt.transaction_id = t2.id GROUP BY t.id ORDER BY t.name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto tag = std::make_shared<Tag>();
+			tag->id = sqlite3_column_int(statement, 0);
+			tag->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
+			tag->count= sqlite3_column_int(statement, 2);
+
+			result.push_back(tag);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 float DataHelper::GetBalance(Account *account)
 {
 	float receipt_sum = 0.0;

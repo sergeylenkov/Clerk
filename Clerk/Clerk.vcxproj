@@ -77,6 +77,8 @@
   <ItemGroup>
     <ClCompile Include="Data\Scheduler.cpp" />
     <ClCompile Include="Data\Goal.cpp" />
+    <ClCompile Include="Data\Tag.cpp" />
+    <ClCompile Include="UI\TagsPanel.cpp" />
     <ClCompile Include="UI\GoalsPanel.cpp" />
     <ClCompile Include="UI\GoalDialog.cpp" />
     <ClCompile Include="UI\SchedulersConfirmDialog.cpp" />
@@ -114,6 +116,8 @@
   <ItemGroup>
     <ClInclude Include="Data\Scheduler.h" />
     <ClInclude Include="Data\Goal.h" />
+    <ClInclude Include="Data\Tag.h" />
+    <ClInclude Include="UI\TagsPanel.h" />
     <ClInclude Include="UI\GoalsPanel.h" />
     <ClInclude Include="UI\GoalDialog.h" />
     <ClInclude Include="resource.h" />

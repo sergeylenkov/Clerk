@@ -322,7 +322,7 @@ std::shared_ptr<Report> DataHelper::GetReportById(int id) {
 std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
 	auto result = std::vector<std::shared_ptr<Tag>>();
 
-	char *sql = "SELECT t.id, t.name, COUNT(t2.id) FROM tags t, transactions t2, transactions_tags tt WHERE t.id = tt.tag_id AND tt.transaction_id = t2.id GROUP BY t.id ORDER BY t.name";
+	char *sql = "SELECT t.id, t.name, COUNT(t2.id) FROM tags t LEFT JOIN transactions_tags tt ON t.id = tt.tag_id LEFT JOIN transactions t2 ON tt.transaction_id = t2.id GROUP BY t.id ORDER BY t.name";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -822,6 +822,20 @@ float DataHelper::GetBalanceForGoal(Goal *goal) {
 	total = receipt_sum - expense_sum;
 
 	return total;
+}
+
+void DataHelper::ReplaceTag(int oldId, int newId) {
+	char *sql = "UPDATE transactions_tags SET tag_id = ? WHERE tag_id = ?";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, newId);
+		sqlite3_bind_int(statement, 2, oldId);
+
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }
 
 void DataHelper::EmptyTrash() {

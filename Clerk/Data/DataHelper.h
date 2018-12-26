@@ -75,6 +75,7 @@ public:
 	void EmptyTrash();
 	float GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to);
 	float GetBalanceForGoal(Goal *goal);	
+	void ReplaceTag(int oldId, int newId);
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();
 

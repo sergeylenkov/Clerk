@@ -8,6 +8,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 	transactionsList->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
 	transactionsList->Bind(wxEVT_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
+	transactionsList->Bind(wxEVT_LIST_COL_END_DRAG, &TransactionsListPanel::OnColumnDragged, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -129,7 +130,7 @@ shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 		return transactions[itemIndex];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void TransactionsListPanel::Update() {
@@ -373,13 +374,6 @@ void TransactionsListPanel::Update() {
 			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->toAmount));
 		}
 
-		if (i % 2 == 0) {
-			transactionsList->SetItemBackgroundColour(i, wxColor(255, 255, 255, 1));
-		}
-		else {
-			transactionsList->SetItemBackgroundColour(i, wxColor(225, 235, 250, 1));
-		}
-
 		i++;
 	}
 
@@ -547,6 +541,16 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 
 	sortBy = event.GetColumn();
 	Update();
+}
+
+void TransactionsListPanel::OnColumnDragged(wxListEvent &event) {
+	wxListItem item = event.GetItem();
+	wxListItem column;
+
+	transactionsList->GetColumn(event.GetColumn(), column);
+	wxString key = event.GetText();
+
+	Settings::GetInstance().SetTransactionsColumnWidth(key.ToStdString(), item.GetWidth());
 }
 
 void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {

@@ -1,7 +1,16 @@
+#pragma once
+
 #include <wx/wx.h>
+#include <wx/listctrl.h>
+#include <thread>
+#include <memory>
 #include "DataPanel.h"
 
-#pragma once
+enum class TagsPanelMenuTypes {
+	Show = 1,
+	Rename = 2,
+	Delete = 3,	
+};
 
 class TagsPanel : public DataPanel
 {
@@ -10,9 +19,25 @@ public:
 	~TagsPanel();
 
 	void Update();
+	shared_ptr<Tag> GetTag();
 
 private:
 	wxTextCtrl *searchField;
-	wxScrolledWindow *scrolledWindow;
+	wxListCtrl *list;
+	std::vector<std::shared_ptr<Tag>> tags;
+	std::vector<std::shared_ptr<Tag>> filteredTags;
+	long editedIndex;
+
+	void Filter();
+	void UpdateList();
+	void ShowTransactions();
+	void Rename();
+	void Delete();
+	long GetSelectedIndex();
+	void OnSearchChanged(wxCommandEvent &event);
+	void OnListItemBeginEdit(wxListEvent &event);
+	void OnListItemEndEdit(wxListEvent &event);
+	void OnRightClick(wxContextMenuEvent &event);
+	void OnMenuSelect(wxCommandEvent &event);
 };
 

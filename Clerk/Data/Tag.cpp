@@ -71,4 +71,13 @@ void Tag::Delete()
 	}
 
 	sqlite3_finalize(statement);
+
+	sql = "DELETE FROM transactions_tags WHERE tag_id = ?";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, this->id);
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }

@@ -47,6 +47,20 @@ void Settings::Open(char *configName) {
 
 		entry = config->GetNextEntry(key, index);
 	}
+
+	config->SetPath("/TransactionsColumns");
+
+	entry = config->GetFirstGroup(key, index);
+
+	while (entry)
+	{
+		int width = config->ReadLong(key + "/Width", -1);
+		wxString id = config->Read(key + "/Id", wxT(""));
+
+		SetTransactionsColumnWidth(id.ToStdString(), width);
+
+		entry = config->GetNextGroup(key, index);
+	}
 }
 
 void Settings::Save() {
@@ -80,6 +94,20 @@ void Settings::Save() {
 
 			i++;
 		}
+	}
+
+	config->DeleteGroup("/TransactionsColumns");
+
+	i = 0;
+
+	for (const auto &value : transactionsColumns)
+	{		
+		wxString key = wxString::Format(wxT("/TransactionsColumns/Column%i/"), i);
+
+		config->Write(key + "Width", value.second);
+		config->Write(key + "Id", wxString(value.first));
+
+		i++;		
 	}
 
 	config->Flush();
@@ -165,4 +193,16 @@ bool Settings::IsMenuExpanded(int type) {
 	}
 
 	return false;
+}
+
+void Settings::SetTransactionsColumnWidth(std::string key, int width) {
+	transactionsColumns[key] = width;
+}
+
+int Settings::GetTransactionsColumnWidth(std::string key) {
+	if (transactionsColumns.find(key) != transactionsColumns.end()) {
+		return transactionsColumns[key];
+	}
+
+	return 200;
 }

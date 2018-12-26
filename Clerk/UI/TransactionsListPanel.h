@@ -20,6 +20,13 @@ enum class TransactionsPanelMenuTypes {
 	Copy = 7,
 };
 
+struct TransactionsListColumn {
+	int index;
+	wxString key;
+	wxString title;
+	int width;
+	bool sorted;
+};
 
 class TransactionsListPanel : public DataPanel
 {
@@ -68,6 +75,7 @@ private:
 	void Merge();	
 	void OnListColumnClick(wxListEvent &event);
 	void OnListItemDoubleClick(wxListEvent &event);
+	void OnColumnDragged(wxListEvent &event);
 	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);

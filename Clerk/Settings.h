@@ -41,6 +41,8 @@ public:
 	void AddExpandedMenu(int type);
 	void RemoveExpandedMenu(int type);
 	bool IsMenuExpanded(int type);
+	void SetTransactionsColumnWidth(std::string key, int width);
+	int GetTransactionsColumnWidth(std::string key);
 
 private:
 	wxFileConfig *config;
@@ -52,6 +54,7 @@ private:
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
+	std::map <std::string, int> transactionsColumns;
 };
 
 #endif

@@ -110,6 +110,20 @@ long TagsPanel::GetSelectedIndex() {
 	return itemIndex;
 }
 
+void TagsPanel::DeleteItemAtIndex(long index) {
+	auto tag = filteredTags[index];
+
+	for (int i = 0; i < tags.size(); i++) {
+		if (tag->id == tags[i]->id) {
+			tags.erase(tags.begin() + i);
+			break;
+		}
+	}
+
+	list->DeleteItem(index);
+	filteredTags.erase(filteredTags.begin() + index);
+}
+
 void TagsPanel::ShowTransactions() {
 
 }
@@ -135,7 +149,12 @@ void TagsPanel::Delete() {
 
 		if (dialog->ShowModal() == wxID_OK) {
 			tag->Delete();
-			Update();
+
+			long index = GetSelectedIndex();
+
+			if (index != -1) {
+				DeleteItemAtIndex(index);
+			}
 		}
 	}
 }
@@ -161,18 +180,23 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 		if (newValue != *editedTag->name) {
 			bool isReplaced = false;
 
-			for each (auto tag in tags)
+			for (int i = 0; i < tags.size(); i++)
 			{
+				auto tag = tags[i];
+
 				if (newValue == *tag->name) {
 					DataHelper::GetInstance().ReplaceTag(editedTag->id, tag->id);
 					editedTag->Delete();
+
+					tag->count = tag->count + editedTag->count;
+					list->SetItemText(i, wxString::Format("%s (%d)", *tag->name, tag->count));
 
 					isReplaced = true;
 				}
 			}
 
-			if (isReplaced) {
-				Update();
+			if (isReplaced) {	
+				DeleteItemAtIndex(editedIndex);
 			} else {
 				editedTag->name = std::make_shared<wxString>(newValue);
 				editedTag->Save();
@@ -185,6 +209,9 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 		}
 
 		editedIndex = -1;
+
+		event.Veto();
+		list->EndEditLabel(false);
 	}
 }
 

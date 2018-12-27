@@ -34,6 +34,7 @@ private:
 	void Rename();
 	void Delete();
 	long GetSelectedIndex();
+	void DeleteItemAtIndex(long index);
 	void OnSearchChanged(wxCommandEvent &event);
 	void OnListItemBeginEdit(wxListEvent &event);
 	void OnListItemEndEdit(wxListEvent &event);

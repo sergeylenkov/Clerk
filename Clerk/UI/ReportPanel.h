@@ -7,8 +7,8 @@
 #include <map>
 #include "DataPanel.h"
 #include "../Data/DataHelper.h"
-#include "../LineChart.h"
-#include "../GraphPopup.h"
+#include "./Charts/LineChart.h"
+#include "./Charts/GraphPopup.h"
 
 using namespace std;
 

@@ -1,12 +1,11 @@
-#ifndef LineChart_h
-#define LineChart_h
+#pragma once
 
 #include <wx/wx.h>
 #include <vector>
 #include <algorithm>
 #include <map>
 #include <functional>
-#include "Data/DataHelper.h"
+#include "../../Data/DataHelper.h"
 
 using namespace std;
 
@@ -34,5 +33,3 @@ private:
 	void OnPaint(wxPaintEvent& event);
 	void OnMouseMove(wxMouseEvent& event);	
 };
-
-#endif

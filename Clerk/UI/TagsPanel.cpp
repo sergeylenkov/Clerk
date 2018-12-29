@@ -25,6 +25,7 @@ TagsPanel::TagsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	list->Bind(wxEVT_LIST_BEGIN_LABEL_EDIT, &TagsPanel::OnListItemBeginEdit, this);
 	list->Bind(wxEVT_LIST_END_LABEL_EDIT, &TagsPanel::OnListItemEndEdit, this);
 	list->Bind(wxEVT_CONTEXT_MENU, &TagsPanel::OnRightClick, this);
+	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TagsPanel::OnListItemDoubleClick, this);
 
 	mainSizer->Add(list, 1, wxEXPAND | wxALL, 5);
 
@@ -213,6 +214,10 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 		event.Veto();
 		list->EndEditLabel(false);
 	}
+}
+
+void TagsPanel::OnListItemDoubleClick(wxListEvent &event) {
+	Rename();
 }
 
 void TagsPanel::OnRightClick(wxContextMenuEvent &event) {

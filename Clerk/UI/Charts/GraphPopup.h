@@ -1,5 +1,4 @@
-#ifndef GraphPopup_h
-#define GraphPopup_h
+#pragma once
 
 #include <wx/wx.h>
 #include <wx/popupwin.h>
@@ -8,7 +7,7 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include "Data/DataHelper.h"
+#include "../../Data/DataHelper.h"
 
 using namespace std;
 
@@ -24,5 +23,3 @@ private:
 	wxScrolledWindow *panel;
 	wxListCtrl *list;
 };
-
-#endif

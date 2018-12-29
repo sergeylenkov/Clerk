@@ -38,6 +38,7 @@ private:
 	void OnSearchChanged(wxCommandEvent &event);
 	void OnListItemBeginEdit(wxListEvent &event);
 	void OnListItemEndEdit(wxListEvent &event);
+	void OnListItemDoubleClick(wxListEvent &event);
 	void OnRightClick(wxContextMenuEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

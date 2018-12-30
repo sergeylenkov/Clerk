@@ -5,6 +5,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <functional>
+#include <thread>
 #include "DataPanel.h"
 #include "../Data/DataHelper.h"
 #include "../TreeMenuItemData.h"
@@ -62,10 +63,13 @@ private:
 	std::shared_ptr<Account> account;
 	TreeMenuItemTypes type;
 	std::vector<std::shared_ptr<Transaction>> transactions;
+	std::vector<std::shared_ptr<Transaction>> filtered;
 	float balance;
 	int sortBy;
 	bool sortDesc;
 
+	void Filter();
+	void UpdateList();
 	void Add();
 	void Edit();
 	void Copy();

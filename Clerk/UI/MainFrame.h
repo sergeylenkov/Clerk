@@ -18,6 +18,7 @@
 #include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
 #include "GoalDialog.h"
+#include "AboutFrame.h"
 
 enum class MainMenuTypes {
 	About = 1,

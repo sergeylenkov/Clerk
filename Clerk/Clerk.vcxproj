@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\AboutFrame.cpp" />
     <ClCompile Include="Data\Scheduler.cpp" />
     <ClCompile Include="Data\Goal.cpp" />
     <ClCompile Include="Data\Tag.cpp" />
@@ -114,6 +115,7 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\AboutFrame.h" />
     <ClInclude Include="Data\Scheduler.h" />
     <ClInclude Include="Data\Goal.h" />
     <ClInclude Include="Data\Tag.h" />

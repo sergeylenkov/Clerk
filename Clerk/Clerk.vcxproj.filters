@@ -126,6 +126,9 @@
     <ClCompile Include="UI\Charts\GraphPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\AboutFrame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -243,6 +246,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Charts\GraphPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\AboutFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

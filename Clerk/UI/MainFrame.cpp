@@ -157,7 +157,11 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	wxMessageBox(wxString::Format("Version: %s", APP_VERSION), "About Clerk", wxOK | wxICON_INFORMATION, this);
+	//wxMessageBox(wxString::Format("Version: %s", APP_VERSION), "About Clerk", wxOK | wxICON_INFORMATION, this);
+	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
+
+	aboutFrame->Show(true);
+	aboutFrame->CenterOnParent();
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {

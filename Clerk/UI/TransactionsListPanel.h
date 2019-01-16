@@ -4,6 +4,7 @@
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
+#include <wx/numformatter.h>
 #include <functional>
 #include <thread>
 #include "DataPanel.h"
@@ -68,6 +69,7 @@ private:
 	int sortBy;
 	bool sortDesc;
 
+	void Sort();
 	void Filter();
 	void UpdateList();
 	void Add();

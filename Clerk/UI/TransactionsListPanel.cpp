@@ -152,31 +152,34 @@ void TransactionsListPanel::Update() {
 			transactions = DataHelper::GetInstance().GetTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 
-		std::sort(transactions.begin(), transactions.end(), [this](const std::shared_ptr<Transaction>& v1, const std::shared_ptr<Transaction>& v2) {
-			if (this->sortBy == 0) {
-				return v1->fromAccountName->Cmp(*v2->fromAccountName) == 0;
-			}
-			else if (this->sortBy == 1) {
-				wxString s = v1->tags->Lower();
-				wxString s1 = v2->tags->Lower();
-				return s.CmpNoCase(s1) == 0;
-			}
-			else if (this->sortBy == 2) {
-				return v1->paidAt->GetMillisecond() < v2->paidAt->GetMillisecond();
-			}
-			else {
-				return v1->fromAmount < v2->fromAmount;
-			}
-		});
-
-		if (sortDesc) {
-			std::reverse(transactions.begin(), transactions.end());
-		}
-
+		Sort();
 		Filter();
 
 		this->GetEventHandler()->CallAfter(&TransactionsListPanel::UpdateList);
 	}).detach();
+}
+
+void TransactionsListPanel::Sort() {
+	std::sort(transactions.begin(), transactions.end(), [this](const std::shared_ptr<Transaction>& v1, const std::shared_ptr<Transaction>& v2) {
+		if (this->sortBy == 0) {
+			return v1->fromAccountName->Cmp(*v2->fromAccountName) == 0;
+		}
+		else if (this->sortBy == 1) {
+			wxString s = v1->tags->Lower();
+			wxString s1 = v2->tags->Lower();
+			return s.CmpNoCase(s1) == 0;
+		}
+		else if (this->sortBy == 2) {
+			return v1->paidAt->GetMillisecond() < v2->paidAt->GetMillisecond();
+		}
+		else {
+			return v1->fromAmount < v2->fromAmount;
+		}
+	});
+
+	if (sortDesc) {
+		std::reverse(transactions.begin(), transactions.end());
+	}
 }
 
 void TransactionsListPanel::Filter() {
@@ -293,37 +296,37 @@ void TransactionsListPanel::UpdateList() {
 
 		transactionsList->SetItemImage(i, 1);
 		transactionsList->SetItem(i, column++, *transaction->tags);
-
-		wxString dateFormat = transaction->paidAt->Format("%B %d");
+		
+		wxString dateFormat = transaction->paidAt->Format("%B %e");
 
 		if (date.GetYear() != transaction->paidAt->GetYear()) {
-			dateFormat = transaction->paidAt->Format("%B %d %Y");
+			dateFormat = transaction->paidAt->Format("%B %e %Y");
 		}
 
 		transactionsList->SetItem(i, column++, dateFormat);
 
 		if (this->type == TreeMenuItemTypes::MenuAccount) {
 			if (account->id == transaction->fromAccountId) {
-				transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->fromAmount));
+				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
 			}
 			else if (account->id == transaction->toAccountId) {
-				transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->toAmount));
+				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
 			}
 			else {
-				transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->fromAmount));
+				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
 			}
 		}
 		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
-			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->toAmount));
+			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
 		}
 		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
-			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->fromAmount));
+			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
 		}
 		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
-			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->fromAmount));
+			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
 		}
 		else if (this->type == TreeMenuItemTypes::MenuAccounts) {
-			transactionsList->SetItem(i, column++, wxString::Format("%.2f", transaction->toAmount));
+			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
 		}
 
 		i++;
@@ -359,8 +362,8 @@ void TransactionsListPanel::UpdateList() {
 	}
 
 	transactionLabel->SetLabel(wxString::Format("%d", transactions.size()));
-	incomeLabel->SetLabel(wxString::Format("%.2f", income));
-	outcomeLabel->SetLabel(wxString::Format("%.2f", outcome));
+	incomeLabel->SetLabel(wxNumberFormatter::ToString(income, 2));
+	outcomeLabel->SetLabel(wxNumberFormatter::ToString(outcome, 2));
 
 	infoPanel->Layout();
 }

@@ -6,6 +6,8 @@ IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
+	wxLocale locale(wxLANGUAGE_DEFAULT);
+
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Database.sqlite");
 
 	DataHelper::GetInstance().Open(path.GetFullPath().char_str());

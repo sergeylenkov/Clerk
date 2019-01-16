@@ -1,7 +1,8 @@
-#include <wx/wx.h>
-#include "DataPanel.h"
-
 #pragma once
+
+#include <wx/wx.h>
+#include <wx/numformatter.h>
+#include "DataPanel.h"
 
 struct DashboardAccountBalance
 {
@@ -32,6 +33,7 @@ private:
 	std::vector<DashboardAccountBalance> expenses;	
 	std::vector<DahboardBudget> budgets;
 	std::vector<DahboardBudget> credits;
+	std::vector<DahboardBudget> goals;
 
 	int paddingX;
 	int paddingY;

@@ -69,11 +69,20 @@ void SchedulersPanel::Update() {
 	wxListItem column4;
 
 	column4.SetId(4);
-	column4.SetText(_("Status"));
-	column4.SetWidth(100);
+	column4.SetText(_("Days Left"));
 	column4.SetAlign(wxLIST_FORMAT_CENTER);
+	column4.SetWidth(120);
 
 	list->InsertColumn(4, column4);
+
+	wxListItem column5;
+
+	column5.SetId(5);
+	column5.SetText(_("Status"));
+	column5.SetWidth(100);
+	column5.SetAlign(wxLIST_FORMAT_CENTER);
+
+	list->InsertColumn(5, column5);
 
 	int i = 0;
 
@@ -115,12 +124,16 @@ void SchedulersPanel::Update() {
 
 		list->SetItem(i, 2, scheduler->previousDate->Format("%B %d"));
 		list->SetItem(i, 3, scheduler->nextDate->Format("%B %d"));
+		
+		wxTimeSpan days = *scheduler->nextDate - wxDateTime::Today();
+		
+		list->SetItem(i, 4, wxString::Format("%d days", days.GetDays()));
 
 		if (scheduler->active) {
-			list->SetItem(i, 4, "Running");
+			list->SetItem(i, 5, "Active");
 		}
 		else {
-			list->SetItem(i, 4, "Paused");
+			list->SetItem(i, 5, "Paused");
 		}
 
 		i++;

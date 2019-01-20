@@ -3,6 +3,11 @@
 AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
+	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
+	wxArrayString chars(13, allowedChars);
+	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
+	amountValidator.SetIncludes(chars);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxFlexGridSizer *fieldsSizer = new wxFlexGridSizer(6, 2, 10, 0);
@@ -40,11 +45,8 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 
 	amountLabel = new wxStaticText(this, wxID_ANY, "Amount:", wxDefaultPosition, wxDefaultSize, 0);
 	fieldsSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
-
-	wxFloatingPointValidator<float> validator(2, &amountValue, wxNUM_VAL_DEFAULT);
-	validator.SetRange(0.0f, 999999999.0f);
-
-	amountField = new wxTextCtrl(this, wxID_ANY, "0.00", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT, validator);
+	
+	amountField = new wxTextCtrl(this, wxID_ANY, "0.00", wxDefaultPosition, wxDefaultSize, wxTE_RIGHT, amountValidator);
 	fieldsSizer->Add(amountField, 0, wxALL, 5);
 
 	noteLabel = new wxStaticText(this, wxID_ANY, "Note:", wxDefaultPosition, wxDefaultSize, 0);
@@ -88,7 +90,6 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	}
 
 	currencyList->SetSelection(191);
-
 	
 	wxImage image;
 
@@ -98,6 +99,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 
 	iconList->SetSelection(0);
 
+	amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
 }
@@ -118,12 +120,6 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 		iconList->SetSelection(0);
 	}
 
-	if (account->id != -1) {
-		amountField->Disable();
-	} else {
-		amountField->Enable();
-	}
-
 	int i = 0;
 
 	for each (auto currency in currencies)
@@ -135,13 +131,24 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 
 		i++;
 	}
+
+	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(account.get());
+
+	if (initialTransaction) {
+		amountField->SetValue(wxString::Format("%.2f", initialTransaction->fromAmount));
+	}
+	else {
+		amountField->SetValue("0.00");
+	}
 }
 
 void AccountDialog::OnOK(wxCommandEvent &event) {
-	double val;
+	double amountValue;
 
-	amountField->GetValue().ToDouble(&val);
-	amountValue = val;
+	wxString value = amountField->GetValue();
+	value.Replace(" ", "");
+	value.Replace(",", ".");
+	value.ToDouble(&amountValue);
 
 	bool isNew = false;
 
@@ -156,17 +163,27 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 	account->currency = currencies[currencyList->GetSelection()];
 
 	account->Save();
+	
+	if (amountValue > 0) {
+		if (account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+			if (isNew) {
+				Transaction *transaction = new Transaction();
 
-	if ((account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) && isNew) {
-		Transaction *transaction = new Transaction();
+				transaction->fromAccountId = account->id;
+				transaction->toAccountId = -1;
+				transaction->fromAmount = amountValue;
+				transaction->toAmount = amountValue;
+				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
-		transaction->fromAccountId = account->id;
-		transaction->toAccountId = -1;
-		transaction->fromAmount = amountValue;
-		transaction->toAmount = amountValue;
-		transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+				transaction->Save();
+			}
+			else if (initialTransaction) {
+				initialTransaction->fromAmount = amountValue;
+				initialTransaction->toAmount = amountValue;
 
-		transaction->Save();
+				initialTransaction->Save();
+			}
+		}
 	}
 
 	Close();
@@ -178,4 +195,20 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 
 void AccountDialog::OnCancel(wxCommandEvent &event) {
 	Close();
+}
+
+void AccountDialog::OnAmountKillFocus(wxFocusEvent &event) {
+	event.Skip();
+
+	wxString stringAmount = this->ClearAmountValue(amountField->GetValue());
+	amountField->SetValue(stringAmount);
+}
+
+wxString AccountDialog::ClearAmountValue(wxString &value) {
+	value.Trim(true);
+	value.Trim(false);
+	value.Replace(",", ".", true);
+	value.Replace(" ", "", true);
+
+	return value;
 }

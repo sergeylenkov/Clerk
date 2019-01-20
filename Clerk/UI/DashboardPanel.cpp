@@ -36,7 +36,7 @@ void DashboardPanel::Update() {
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-			credits.push_back({ *account->name, wxString::Format("%.2f", account->creditLimit), wxString::Format("%.2f", currentAmount),  wxString::Format("%.2f", amount), remainPercent });
+			credits.push_back({ *account->name,wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(amount, 2), remainPercent });
 		}
 		else {
 			balance.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2) });
@@ -57,7 +57,7 @@ void DashboardPanel::Update() {
 
 		float remainPercent = (currentAmount / amount) * 100.0;
 
-		credits.push_back({ *account->name, wxString::Format("%.2f", amount), wxString::Format("%.2f", currentAmount),  wxString::Format("%.2f", remainAmount), remainPercent });
+		credits.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
 	vector<StringValue> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
@@ -85,7 +85,7 @@ void DashboardPanel::Update() {
 		float remainAmount = budget->amount - currentAmount;
 		float remainPercent = (currentAmount / budget->amount) * 100.0;
 
-		budgets.push_back({ *budget->name, wxString::Format("%.2f", budget->amount), wxString::Format("%.2f", currentAmount),  wxString::Format("%.2f", remainAmount), remainPercent });
+		budgets.push_back({ *budget->name,wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
 	for each (auto goal in DataHelper::GetInstance().GetGoals()) {
@@ -94,7 +94,7 @@ void DashboardPanel::Update() {
 		float remainAmount = goal->amount - currentAmount;
 		float remainPercent = currentAmount / (goal->amount / 100.0);
 		
-		goals.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxString::Format("%.2f", currentAmount),  wxString::Format("%.2f", remainAmount), remainPercent });
+		goals.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
 	Draw();

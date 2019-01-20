@@ -525,8 +525,7 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account *account, wxDateTime *f
 		}
 
 		sqlite3_finalize(statement);
-	}
-	
+	}	
 
 	return values;
 }
@@ -836,6 +835,36 @@ void DataHelper::ReplaceTag(int oldId, int newId) {
 	}
 
 	sqlite3_finalize(statement);
+}
+
+std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account *account) {
+	std::shared_ptr<Transaction> transaction = nullptr;
+
+	char *sql = "SELECT t.id, t.from_account_id, t.to_account_id, t.from_account_amount, t.to_account_amount, t.paid_at FROM transactions t WHERE t.from_account_id = ? AND t.to_account_id = -1";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			transaction = std::make_shared<Transaction>();
+
+			transaction->id = sqlite3_column_int(statement, 0);
+			transaction->fromAmount = sqlite3_column_double(statement, 3);
+			transaction->toAmount = sqlite3_column_double(statement, 4);
+			transaction->fromAccountId = sqlite3_column_int(statement, 1);
+			transaction->toAccountId = sqlite3_column_int(statement, 2);
+
+			auto date = make_shared<wxDateTime>();
+			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
+
+			transaction->paidAt = date;
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return transaction;
 }
 
 void DataHelper::EmptyTrash() {

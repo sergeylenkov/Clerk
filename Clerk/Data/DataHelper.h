@@ -74,7 +74,8 @@ public:
 	std::vector<std::shared_ptr<Account>> GetArchiveAccounts();
 	void EmptyTrash();
 	float GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to);
-	float GetBalanceForGoal(Goal *goal);	
+	float GetBalanceForGoal(Goal *goal);
+	std::shared_ptr<Transaction> GetInitialTransactionForAccount(Account *account);
 	void ReplaceTag(int oldId, int newId);
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();

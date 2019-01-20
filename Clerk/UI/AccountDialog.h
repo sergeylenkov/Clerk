@@ -32,7 +32,10 @@ private:
 	float amountValue = 0.0;
 	std::shared_ptr<Account> account;
 	vector<std::shared_ptr<Currency>> currencies;
+	std::shared_ptr<Transaction> initialTransaction;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	void OnAmountKillFocus(wxFocusEvent &event);
+	wxString ClearAmountValue(wxString &value);
 };

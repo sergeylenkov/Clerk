@@ -110,6 +110,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
 	tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
+	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 
 	fromValue = 0;
 	toValue = 0;
@@ -149,8 +150,6 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
-
-	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
 TransactionDialog::~TransactionDialog() {

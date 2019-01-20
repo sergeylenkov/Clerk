@@ -15,6 +15,7 @@ public:
 	std::function<void()> OnClose;
 
 private:
+	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
 	wxStaticText *typeLabel;
@@ -37,5 +38,6 @@ private:
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnAmountKillFocus(wxFocusEvent &event);
+	void OnKeyDown(wxKeyEvent &event);
 	wxString ClearAmountValue(wxString &value);
 };

@@ -4,6 +4,7 @@ SchedulersConfirmDialog::SchedulersConfirmDialog(wxFrame *parent, const wxChar *
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	this->SetIcon(wxICON(APP_ICON));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 

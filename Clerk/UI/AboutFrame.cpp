@@ -6,6 +6,7 @@ AboutFrame::AboutFrame(wxFrame *parent, const wxChar *title, int x, int y, int w
 	wxString version = wxString::Format("Version %s", APP_VERSION);
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	this->SetIcon(wxICON(APP_ICON));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 

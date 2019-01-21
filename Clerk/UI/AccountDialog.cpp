@@ -3,6 +3,8 @@
 AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
+	this->SetIcon(wxICON(APP_ICON));
+
 	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
 	wxArrayString chars(13, allowedChars);
 	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
@@ -187,9 +189,9 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 
 	account->Save();
 	
-	if (amountValue > 0) {
-		if (account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
-			if (isNew) {
+	if (amountValue > 0) {		
+		if (isNew) {
+			if (account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
 				Transaction *transaction = new Transaction();
 
 				transaction->fromAccountId = account->id;
@@ -200,13 +202,24 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 
 				transaction->Save();
 			}
-			else if (initialTransaction) {
-				initialTransaction->fromAmount = amountValue;
-				initialTransaction->toAmount = amountValue;
+			else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+				Transaction *transaction = new Transaction();
 
-				initialTransaction->Save();
+				transaction->fromAccountId = -1;
+				transaction->toAccountId = account->id;
+				transaction->fromAmount = amountValue;
+				transaction->toAmount = amountValue;
+				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+
+				transaction->Save();
 			}
 		}
+		else if (initialTransaction) {
+			initialTransaction->fromAmount = amountValue;
+			initialTransaction->toAmount = amountValue;
+
+			initialTransaction->Save();
+		}		
 	}
 
 	Close();

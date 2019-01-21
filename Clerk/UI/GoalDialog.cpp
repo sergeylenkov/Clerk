@@ -3,6 +3,8 @@
 GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
+	this->SetIcon(wxICON(APP_ICON));
+
 	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
 	wxArrayString chars(13, allowedChars);
 	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);

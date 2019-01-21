@@ -4,6 +4,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	this->SetIcon(wxICON(APP_ICON));
 
 	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
 	wxArrayString chars(13, allowedChars);

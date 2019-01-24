@@ -111,6 +111,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
 	tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
 	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
+	tagsField->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnTagsKeyDown, this);
 	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 
 	fromValue = 0;
@@ -432,6 +433,15 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 	event.Skip();
 }
 
+void TransactionDialog::OnTagsKeyDown(wxKeyEvent &event) {
+	if ((int)event.GetKeyCode() == WXK_ESCAPE && tagsPopup->IsShown()) {
+		event.StopPropagation();		 
+	}
+	else {
+		event.Skip();
+	}
+}
+
 void TransactionDialog::OnTagsKillFocus(wxFocusEvent& event) {
 	tagsPopup->Hide();
 	event.Skip();
@@ -475,7 +485,7 @@ wxString TransactionDialog::ClearAmountValue(wxString &value) {
 }
 
 void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
-	if ((int)event.GetKeyCode() == 27) {
+	if ((int)event.GetKeyCode() == WXK_ESCAPE) {
 		event.StopPropagation();
 		Close();
 	}

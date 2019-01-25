@@ -191,10 +191,11 @@ void TransactionsListPanel::Filter() {
 		for each (auto transaction in transactions)
 		{
 			wxString tags = transaction->tags->Lower();
+			wxString note = transaction->note->Lower();
 			wxString toName = transaction->toAccountName->Lower();
 			wxString fromName = transaction->fromAccountName->Lower();
 
-			if (tags.Find(search) != wxNOT_FOUND || toName.Find(search) != wxNOT_FOUND || fromName.Find(search) != wxNOT_FOUND) {
+			if (tags.Find(search) != wxNOT_FOUND || toName.Find(search) != wxNOT_FOUND || fromName.Find(search) != wxNOT_FOUND || note.Find(search) != wxNOT_FOUND) {
 				filtered.push_back(transaction);
 			}
 		}
@@ -247,21 +248,29 @@ void TransactionsListPanel::UpdateList() {
 	wxListItem column3;
 
 	column3.SetId(index++);
-	column3.SetText(_("Date"));
-	column3.SetWidth(100);
-	column3.SetStateMask(wxLIST_MASK_STATE);
-	column3.SetState(wxLIST_STATE_SELECTED);
+	column3.SetText(_("Note"));
+	column3.SetWidth(200);
 
 	transactionsList->InsertColumn(index, column3);
 
 	wxListItem column4;
 
 	column4.SetId(index++);
-	column4.SetText(_("Amount"));
+	column4.SetText(_("Date"));
 	column4.SetWidth(100);
-	column4.SetAlign(wxLIST_FORMAT_RIGHT);
+	column4.SetStateMask(wxLIST_MASK_STATE);
+	column4.SetState(wxLIST_STATE_SELECTED);
 
 	transactionsList->InsertColumn(index, column4);
+
+	wxListItem column5;
+
+	column5.SetId(index++);
+	column5.SetText(_("Amount"));
+	column5.SetWidth(100);
+	column5.SetAlign(wxLIST_FORMAT_RIGHT);
+
+	transactionsList->InsertColumn(index, column5);
 
 	int i = 0;
 	wxDateTime date = wxDateTime::Now();
@@ -296,6 +305,7 @@ void TransactionsListPanel::UpdateList() {
 
 		transactionsList->SetItemImage(i, 1);
 		transactionsList->SetItem(i, column++, *transaction->tags);
+		transactionsList->SetItem(i, column++, *transaction->note);
 		
 		wxString dateFormat = transaction->paidAt->Format("%B %e");
 

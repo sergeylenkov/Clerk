@@ -415,7 +415,7 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 		if (!tokens.empty()) {
 			auto tags = DataHelper::GetInstance().GetTagsBySearch(tokens.back());
 
-			if (!tokens.empty()) {
+			if (!tokens.empty() && tags.size() > 0) {
 				tagsPopup->Update(tags);
 
 				wxPoint pos = tagsField->GetScreenPosition();

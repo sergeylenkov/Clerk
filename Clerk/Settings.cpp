@@ -4,6 +4,8 @@ void Settings::Open(char *configName) {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), configName);
 	config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
 
+	fileName = path.GetFullPath() + ".json";
+
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
 	selectedTab = config->ReadLong("SelectedTab", 0);
 	windowWidth = config->ReadLong("WindowWidth", 1000);
@@ -47,20 +49,6 @@ void Settings::Open(char *configName) {
 
 		entry = config->GetNextEntry(key, index);
 	}
-
-	config->SetPath("/TransactionsColumns");
-
-	entry = config->GetFirstGroup(key, index);
-
-	while (entry)
-	{
-		int width = config->ReadLong(key + "/Width", -1);
-		wxString id = config->Read(key + "/Id", wxT(""));
-
-		SetTransactionsColumnWidth(id.ToStdString(), width);
-
-		entry = config->GetNextGroup(key, index);
-	}
 }
 
 void Settings::Save() {
@@ -96,21 +84,26 @@ void Settings::Save() {
 		}
 	}
 
-	config->DeleteGroup("/TransactionsColumns");
-
-	i = 0;
-
-	for (const auto &value : transactionsColumns)
-	{		
-		wxString key = wxString::Format(wxT("/TransactionsColumns/Column%i/"), i);
-
-		config->Write(key + "Width", value.second);
-		config->Write(key + "Id", wxString(value.first));
-
-		i++;		
-	}
-
 	config->Flush();
+
+	Document json;
+
+	json.SetObject();
+
+	json.AddMember("WindowWidth", windowWidth, json.GetAllocator());
+	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
+	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
+	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());
+
+	FILE *fp = fopen(fileName.char_str(), "wb"); 
+	char writeBuffer[65536];
+
+	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
+	Writer<FileWriteStream> writer(os);
+
+	json.Accept(writer);
+
+	fclose(fp);
 }
 
 Settings::~Settings() {
@@ -195,14 +188,41 @@ bool Settings::IsMenuExpanded(int type) {
 	return false;
 }
 
-void Settings::SetTransactionsColumnWidth(std::string key, int width) {
-	transactionsColumns[key] = width;
-}
+void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {
+	bool found = false;
 
-int Settings::GetTransactionsColumnWidth(std::string key) {
-	if (transactionsColumns.find(key) != transactionsColumns.end()) {
-		return transactionsColumns[key];
+	for each (auto settings in filterSettings)
+	{
+		if (settings.type == type && settings.id == id) {
+			settings.period = period;
+			settings.fromDate = fromDate;
+			settings.toDate = toDate;
+
+			found = true;
+			break;
+		}
 	}
 
-	return 200;
+	if (!found) {
+		filterSettings.push_back({ type, id, period, fromDate, toDate });
+	}
+}
+
+ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetDay(1);
+	toDate.SetToLastMonthDay();
+
+	ListFilterSettings result = { 0, 0, 3, fromDate, toDate };
+
+	for each (auto settings in filterSettings)
+	{
+		if (settings.type == type && settings.id == id) {
+			return settings;
+		}
+	}
+
+	return result;
 }

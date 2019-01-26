@@ -1,5 +1,4 @@
-#ifndef Transaction_h
-#define Transaction_h
+#pragma once
 
 #include <wx/wx.h>
 #include <wx/tokenzr.h>
@@ -34,5 +33,3 @@ public:
 private:
 	void UpdateTags();
 };
-
-#endif

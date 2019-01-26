@@ -1,13 +1,32 @@
-#ifndef Settings_h
-#define Settings_h
+#pragma once
 
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <map>
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include <rapidjson/writer.h>
+
+using namespace rapidjson;
 
 struct TabSettings {
 	int type;
 	int id;
+};
+
+struct ListColumnsSettings {
+	int index;
+	std::string key;
+	int width;
+	bool sorted;
+};
+
+struct ListFilterSettings {	
+	int type;
+	int id;
+	int period;
+	wxDateTime fromDate;
+	wxDateTime toDate;
 };
 
 class Settings
@@ -40,12 +59,13 @@ public:
 	int GetSelectedTab();
 	void AddExpandedMenu(int type);
 	void RemoveExpandedMenu(int type);
-	bool IsMenuExpanded(int type);
-	void SetTransactionsColumnWidth(std::string key, int width);
-	int GetTransactionsColumnWidth(std::string key);
+	bool IsMenuExpanded(int type);	
+	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
+	ListFilterSettings GetListFilterSettings(int type, int id);
 
 private:
 	wxFileConfig *config;
+	wxString fileName;
 	int selectedAccountId;
 	int windowWidth;
 	int windowHeight;
@@ -54,7 +74,6 @@ private:
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
-	std::map <std::string, int> transactionsColumns;
+	std::map <std::string, int> columnsSettings;
+	std::vector<ListFilterSettings> filterSettings;
 };
-
-#endif

@@ -103,7 +103,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
-
+	SaveFilterSettings();
 }
 
 void TransactionsListPanel::SetAccount(shared_ptr<Account> account) {
@@ -136,6 +136,8 @@ shared_ptr<Transaction> TransactionsListPanel::GetTransaction() {
 void TransactionsListPanel::Update() {
 	std::thread([=]()
 	{
+		RestoreFilterSettings();
+
 		if (this->type == TreeMenuItemTypes::MenuAccount) {
 			transactions = DataHelper::GetInstance().GetTransactions(account.get(), &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
@@ -515,7 +517,7 @@ void TransactionsListPanel::OnColumnDragged(wxListEvent &event) {
 	transactionsList->GetColumn(event.GetColumn(), column);
 	wxString key = event.GetText();
 
-	Settings::GetInstance().SetTransactionsColumnWidth(key.ToStdString(), item.GetWidth());
+	//Settings::GetInstance().SetTransactionsColumnWidth(key.ToStdString(), item.GetWidth());
 }
 
 void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {
@@ -624,14 +626,18 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 	CalculatePeriod();
 	Update();
 
+	SaveFilterSettings();
+
 	if (OnPeriodChanged) {
 		OnPeriodChanged();
 	}
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
-	Settings::GetInstance().SetFromPeriodDate(GetFromDate());
-	Settings::GetInstance().SetToPeriodDate(GetToDate());
+	periodFromDate = GetFromDate();
+	periodToDate = GetToDate();
+
+	SaveFilterSettings();
 
 	Update();
 
@@ -692,8 +698,8 @@ void TransactionsListPanel::CalculatePeriod() {
 		break;
 
 	case 5:
-		fromDate = Settings::GetInstance().GetFromPeriodDate();
-		toDate = Settings::GetInstance().GetToPeriodDate();
+		fromDate = periodFromDate;
+		toDate = periodToDate;
 
 		fromDatePicker->Enable();
 		toDatePicker->Enable();
@@ -709,4 +715,31 @@ void TransactionsListPanel::CalculatePeriod() {
 
 float TransactionsListPanel::GetBalance() {
 	return balance;
+}
+
+void TransactionsListPanel::RestoreFilterSettings() {
+	int id = -1;
+
+	if (account) {
+		id = account->id;
+	}
+
+	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(type, id);
+
+	periodFromDate = settings.fromDate;
+	periodToDate = settings.toDate;
+
+	periodList->SetSelection(settings.period);
+	CalculatePeriod();
+}
+
+void TransactionsListPanel::SaveFilterSettings() {
+	int id = -1;
+
+	if (account)
+	{
+		id = account->id;
+	}
+
+	Settings::GetInstance().SetListFilterSettings(type, id, periodList->GetSelection(), periodFromDate, periodToDate);
 }

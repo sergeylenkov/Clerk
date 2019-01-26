@@ -68,6 +68,8 @@ private:
 	float balance;
 	int sortBy;
 	bool sortDesc;
+	wxDateTime periodFromDate;
+	wxDateTime periodToDate;
 
 	void Sort();
 	void Filter();
@@ -88,4 +90,6 @@ private:
 	void OnDateChanged(wxDateEvent &event);
 	void OnSearchChanged(wxCommandEvent &event);	
 	void CalculatePeriod();
+	void RestoreFilterSettings();
+	void SaveFilterSettings();
 };

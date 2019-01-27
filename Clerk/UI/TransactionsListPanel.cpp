@@ -190,7 +190,7 @@ void TransactionsListPanel::Filter() {
 	if (searchField->GetValue().Length() > 0) {
 		wxString search = searchField->GetValue().Lower();
 
-		for each (auto transaction in transactions)
+		for (auto transaction : transactions)
 		{
 			wxString tags = transaction->tags->Lower();
 			wxString note = transaction->note->Lower();
@@ -277,7 +277,7 @@ void TransactionsListPanel::UpdateList() {
 	int i = 0;
 	wxDateTime date = wxDateTime::Now();
 
-	for each (auto transaction in filtered)
+	for (auto transaction : filtered)
 	{
 		wxListItem listItem;
 
@@ -347,7 +347,7 @@ void TransactionsListPanel::UpdateList() {
 	float income = 0;
 	float outcome = 0;
 
-	for each (auto transaction in filtered)
+	for (auto transaction : filtered)
 	{
 		if (this->type == TreeMenuItemTypes::MenuAccount) {
 			if (account->type == AccountTypes::Deposit) {
@@ -462,9 +462,9 @@ void TransactionsListPanel::Merge() {
 			
 			auto _tags = transaction->GetTags();
 
-			for each (auto _tag in _tags)
+			for (auto _tag : _tags)
 			{
-				for each (auto tag in tags)
+				for (auto tag : tags)
 				{
 					if (_tag != tag) {
 						newTags.push_back(_tag);
@@ -479,7 +479,7 @@ void TransactionsListPanel::Merge() {
 			wxString tagsString = wxString(*firstTransaction->tags.get());
 			tagsString += ", ";
 
-			for each (auto tag in newTags)
+			for (auto tag : newTags)
 			{
 				tagsString += tag;
 				tagsString += ", ";
@@ -515,9 +515,6 @@ void TransactionsListPanel::OnColumnDragged(wxListEvent &event) {
 	wxListItem column;
 
 	transactionsList->GetColumn(event.GetColumn(), column);
-	wxString key = event.GetText();
-
-	//Settings::GetInstance().SetTransactionsColumnWidth(key.ToStdString(), item.GetWidth());
 }
 
 void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {
@@ -623,10 +620,10 @@ void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
 }
 
 void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
+	SaveFilterSettings();
+
 	CalculatePeriod();
 	Update();
-
-	SaveFilterSettings();
 
 	if (OnPeriodChanged) {
 		OnPeriodChanged();

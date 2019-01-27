@@ -2,86 +2,76 @@
 
 void Settings::Open(char *configName) {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), configName);
-	config = new wxFileConfig("", "", path.GetFullPath(), "", wxCONFIG_USE_LOCAL_FILE);
+	fileName = path.GetFullPath();
 
-	fileName = path.GetFullPath() + ".json";
+	selectedAccountId = -1;
+	selectedTab = 0;
+	windowWidth = 1000;
+	windowHeight = 800;
 
-	selectedAccountId = config->ReadLong("SelectedAccount", -1);
-	selectedTab = config->ReadLong("SelectedTab", 0);
-	windowWidth = config->ReadLong("WindowWidth", 1000);
-	windowHeight = config->ReadLong("WindowHeight", 800);	
+	if (wxFile::Exists(fileName)) {
+		FILE *fp = fopen(fileName.char_str(), "rb");
+		char readBuffer[65536];
+		FileReadStream is(fp, readBuffer, sizeof(readBuffer));
 
-	//fromPeriodDate.ParseISODate(config->ReadObject("FromPeriodDate", wxDateTime::Now().FormatISODate()));
-	//toPeriodDate.ParseISODate(config->ReadObject("ToPeriodDate", wxDateTime::Now().FormatISODate()));
+		Document json;
+		json.ParseStream(is);
 
-	config->SetPath("/Tabs");
+		fclose(fp);
 
-	long index;
-	wxString key;
-
-	bool entry = config->GetFirstGroup(key, index);
-
-	while (entry)
-	{
-		int type = config->ReadLong(key + "/Type", -1);
-		int accountId = config->ReadLong(key + "/Id", -1);
-
-		if (type != -1) {
-			AddTab(type, accountId);
+		if (json["SelectedAccount"].IsInt()) {
+			selectedAccountId = json["SelectedAccount"].GetInt();
 		}
 
-		entry = config->GetNextGroup(key, index);
-	}
-
-	config->SetPath("/ExpandedMenu");
-
-	entry = config->GetFirstEntry(key, index);
-
-	while (entry)
-	{
-		int type = config->ReadLong(key, -1);
-
-		if (type != -1) {
-			expandedMenu[type] = true;
+		if (json["SelectedTab"].IsInt()) {
+			selectedTab = json["SelectedTab"].GetInt();
 		}
 
-		entry = config->GetNextEntry(key, index);
+		if (json["WindowWidth"].IsInt()) {
+			windowWidth = json["WindowWidth"].GetInt();
+		}
+
+		if (json["WindowHeight"].IsInt()) {
+			windowHeight = json["WindowHeight"].GetInt();
+		}
+
+		if (json["ExpandedMenu"].IsArray()) {
+			const Value &array = json["ExpandedMenu"];
+			
+			for (SizeType i = 0; i < array.Size(); i++) {
+				expandedMenu[array[i].GetInt()] = true;
+			}
+		}
+
+		if (json["Tabs"].IsArray()) {
+			const Value &array = json["Tabs"];
+
+			for (SizeType i = 0; i < array.Size(); i++) {
+				const Value &tab = array[i];
+
+				AddTab(tab["Type"].GetInt(), tab["Id"].GetInt());
+			}
+		}
+
+		if (json["Filters"].IsArray()) {
+			const Value &array = json["Filters"];
+
+			for (SizeType i = 0; i < array.Size(); i++) {
+				const Value &filter = array[i];
+
+				wxDateTime fromDate = wxDateTime::Now();
+				wxDateTime toDate = wxDateTime::Now();
+
+				fromDate.ParseISODate(wxString::FromUTF8(filter["FromDate"].GetString()));
+				toDate.ParseISODate(wxString::FromUTF8(filter["ToDate"].GetString()));
+
+				SetListFilterSettings(filter["Type"].GetInt(), filter["Id"].GetInt(), filter["Period"].GetInt(), fromDate, toDate);
+			}
+		}
 	}
 }
 
 void Settings::Save() {
-	config->SetPath("/");
-
-	config->Write("SelectedAccount", selectedAccountId);
-	config->Write("WindowWidth", windowWidth);
-	config->Write("WindowHeight", windowHeight);	
-	config->Write("SelectedTab", selectedTab);
-
-	config->DeleteGroup("/Tabs");
-
-	for (unsigned int i = 0; i < tabs.size(); i++) {
-		wxString key = wxString::Format(wxT("/Tabs/Tab%i/"), i);
-
-		config->Write(key + "Type", tabs[i].type);
-		config->Write(key + "Id", tabs[i].id);
-	}
-
-	config->DeleteGroup("/ExpandedMenu");
-
-	int i = 0;
-
-	for (const auto &value : expandedMenu)
-	{
-		if (value.second) {
-			wxString key = wxString::Format(wxT("/ExpandedMenu/Item%i"), i);
-			config->Write(key, value.first);
-
-			i++;
-		}
-	}
-
-	config->Flush();
-
 	Document json;
 
 	json.SetObject();
@@ -156,8 +146,7 @@ void Settings::Save() {
 }
 
 Settings::~Settings() {
-	config->Flush();
-	delete config;
+	
 }
 
 int Settings::GetSelectedAccountId() {
@@ -224,8 +213,8 @@ bool Settings::IsMenuExpanded(int type) {
 void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
-	for each (auto settings in filterSettings)
-	{
+	for (auto &settings : filterSettings)
+	{		
 		if (settings.type == type && settings.id == id) {
 			settings.period = period;
 			settings.fromDate = fromDate;
@@ -250,7 +239,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 
 	ListFilterSettings result = { 0, 0, 3, fromDate, toDate };
 
-	for each (auto settings in filterSettings)
+	for (auto &settings : filterSettings)
 	{
 		if (settings.type == type && settings.id == id) {
 			return settings;

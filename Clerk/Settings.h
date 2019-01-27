@@ -1,10 +1,12 @@
 #pragma once
 
+#include <wx/wx.h>
+#include <wx/filename.h>
 #include <wx/stdpaths.h>
-#include <wx/fileconf.h>
 #include <map>
 #include "rapidjson/document.h"
 #include "rapidjson/filewritestream.h"
+#include "rapidjson/filereadstream.h"
 #include <rapidjson/writer.h>
 
 using namespace rapidjson;
@@ -48,8 +50,6 @@ public:
 	void SetSelectedAccountId(int id);
 	void SetWindowWidth(int width);
 	void SetWindowHeight(int height);
-	void SetFromPeriodDate(wxDateTime date);
-	void SetToPeriodDate(wxDateTime date);
 	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
@@ -62,7 +62,6 @@ public:
 	ListFilterSettings GetListFilterSettings(int type, int id);
 
 private:
-	wxFileConfig *config;
 	wxString fileName;
 	int selectedAccountId;
 	int windowWidth;
@@ -70,6 +69,5 @@ private:
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
-	std::map <std::string, int> columnsSettings;
 	std::vector<ListFilterSettings> filterSettings;
 };

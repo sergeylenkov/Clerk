@@ -86,7 +86,7 @@ void SchedulersPanel::Update() {
 
 	int i = 0;
 
-	for each (auto scheduler in schedulers)
+	for (auto scheduler : schedulers)
 	{
 		wxListItem listItem;
 

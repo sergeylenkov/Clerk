@@ -1,8 +1,7 @@
 #include "MainFrame.h"
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size)
-{
-	Settings::GetInstance().Open("Config.txt");	
+{	
 	DataHelper::GetInstance().CreateAccountsImageList();
 
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));

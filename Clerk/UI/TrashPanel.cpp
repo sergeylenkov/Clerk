@@ -60,7 +60,7 @@ void TrashPanel::Update() {
 
 	int i = 0;
 
-	for each (auto transaction in transactions)
+	for (auto transaction : transactions)
 	{
 		wxListItem listItem;
 

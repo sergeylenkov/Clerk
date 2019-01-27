@@ -77,7 +77,7 @@ void SchedulersConfirmDialog::UpdateList() {
 
 	int i = 0;
 
-	for each (auto scheduler in schedulers)
+	for (auto scheduler : schedulers)
 	{
 		wxListItem listItem;
 

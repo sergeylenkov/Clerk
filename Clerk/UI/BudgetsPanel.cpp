@@ -68,7 +68,7 @@ void BudgetsPanel::Update() {
 
 	int i = 0;
 
-	for each (auto budget in budgets)
+	for (auto budget : budgets)
 	{
 		float currentAmount = 0.0;
 		wxDateTime toDate = wxDateTime::Now();

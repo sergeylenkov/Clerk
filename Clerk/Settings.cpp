@@ -9,12 +9,10 @@ void Settings::Open(char *configName) {
 	selectedAccountId = config->ReadLong("SelectedAccount", -1);
 	selectedTab = config->ReadLong("SelectedTab", 0);
 	windowWidth = config->ReadLong("WindowWidth", 1000);
-	windowHeight = config->ReadLong("WindowHeight", 800);
-	fromPeriodDate = wxDateTime::Now();
-	toPeriodDate = wxDateTime::Now();
+	windowHeight = config->ReadLong("WindowHeight", 800);	
 
-	fromPeriodDate.ParseISODate(config->ReadObject("FromPeriodDate", wxDateTime::Now().FormatISODate()));
-	toPeriodDate.ParseISODate(config->ReadObject("ToPeriodDate", wxDateTime::Now().FormatISODate()));
+	//fromPeriodDate.ParseISODate(config->ReadObject("FromPeriodDate", wxDateTime::Now().FormatISODate()));
+	//toPeriodDate.ParseISODate(config->ReadObject("ToPeriodDate", wxDateTime::Now().FormatISODate()));
 
 	config->SetPath("/Tabs");
 
@@ -56,9 +54,7 @@ void Settings::Save() {
 
 	config->Write("SelectedAccount", selectedAccountId);
 	config->Write("WindowWidth", windowWidth);
-	config->Write("WindowHeight", windowHeight);
-	config->Write("FromPeriodDate", fromPeriodDate.FormatISODate());
-	config->Write("ToPeriodDate", toPeriodDate.FormatISODate());
+	config->Write("WindowHeight", windowHeight);	
 	config->Write("SelectedTab", selectedTab);
 
 	config->DeleteGroup("/Tabs");
@@ -93,7 +89,60 @@ void Settings::Save() {
 	json.AddMember("WindowWidth", windowWidth, json.GetAllocator());
 	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
 	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
-	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());
+	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
+
+	Value menuJson(kArrayType);
+
+	for (const auto &value : expandedMenu)
+	{
+		if (value.second) {
+			menuJson.PushBack(value.first, json.GetAllocator());
+		}
+	}
+
+	json.AddMember("ExpandedMenu", menuJson, json.GetAllocator());
+
+	if (tabs.size() > 0) {
+		Value tabsJson(kArrayType);
+
+		for each (auto tab in tabs) {
+			Value tabJson(kObjectType);
+
+			tabJson.AddMember("Type", tab.type, json.GetAllocator());
+			tabJson.AddMember("Id", tab.id, json.GetAllocator());
+
+			tabsJson.PushBack(tabJson, json.GetAllocator());
+		}
+
+		json.AddMember("Tabs", tabsJson, json.GetAllocator());
+	}
+
+	if (filterSettings.size() > 0) {
+		Value settingsJson(kArrayType);
+
+		for each (auto settings in filterSettings)
+		{
+			Value filterJson(kObjectType);
+
+			filterJson.AddMember("Type", settings.type, json.GetAllocator());
+			filterJson.AddMember("Id", settings.id, json.GetAllocator());
+			filterJson.AddMember("Period", settings.period, json.GetAllocator());
+
+			wxString dateString = settings.fromDate.FormatISODate();			
+			Value string(dateString.c_str(), json.GetAllocator());
+
+			filterJson.AddMember("FromDate", string, json.GetAllocator());
+
+			dateString = settings.toDate.FormatISODate();			
+			string.SetString(dateString.c_str(), json.GetAllocator());
+
+			filterJson.AddMember("ToDate", string, json.GetAllocator());
+
+			settingsJson.PushBack(filterJson, json.GetAllocator());
+		}
+
+		json.AddMember("Filters", settingsJson, json.GetAllocator());
+	}
 
 	FILE *fp = fopen(fileName.char_str(), "wb"); 
 	char writeBuffer[65536];
@@ -123,14 +172,6 @@ int Settings::GetWindowHeight() {
 	return windowHeight;
 }
 
-wxDateTime Settings::GetFromPeriodDate() {
-	return fromPeriodDate;
-}
-
-wxDateTime Settings::GetToPeriodDate() {
-	return toPeriodDate;
-}
-
 void Settings::SetSelectedAccountId(int id) {
 	selectedAccountId = id;
 }
@@ -141,14 +182,6 @@ void Settings::SetWindowWidth(int width) {
 
 void Settings::SetWindowHeight(int height) {
 	windowHeight = height;
-}
-
-void Settings::SetFromPeriodDate(wxDateTime date) {
-	fromPeriodDate = date;
-}
-
-void Settings::SetToPeriodDate(wxDateTime date) {
-	toPeriodDate = date;
 }
 
 void Settings::ClearTabs() {

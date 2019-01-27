@@ -44,9 +44,7 @@ public:
 
 	int GetSelectedAccountId();
 	int GetWindowWidth();
-	int GetWindowHeight();
-	wxDateTime Settings::GetFromPeriodDate();
-	wxDateTime Settings::GetToPeriodDate();
+	int GetWindowHeight();	
 	void SetSelectedAccountId(int id);
 	void SetWindowWidth(int width);
 	void SetWindowHeight(int height);
@@ -68,9 +66,7 @@ private:
 	wxString fileName;
 	int selectedAccountId;
 	int windowWidth;
-	int windowHeight;
-	wxDateTime fromPeriodDate;
-	wxDateTime toPeriodDate;
+	int windowHeight;	
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;

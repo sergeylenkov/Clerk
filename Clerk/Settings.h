@@ -8,6 +8,7 @@
 #include "rapidjson/filewritestream.h"
 #include "rapidjson/filereadstream.h"
 #include <rapidjson/writer.h>
+#include "TreeMenuItemData.h"
 
 using namespace rapidjson;
 
@@ -18,7 +19,8 @@ struct TabSettings {
 
 struct ListColumnsSettings {
 	int index;
-	std::string key;
+	int order;
+	wxString title;
 	int width;
 	bool sorted;
 };
@@ -60,6 +62,8 @@ public:
 	bool IsMenuExpanded(int type);	
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
+	std::vector<ListColumnsSettings> GetColumns(TreeMenuItemTypes type);
+	void SetColumns(TreeMenuItemTypes type, std::vector<ListColumnsSettings> settings);
 
 private:
 	wxString fileName;
@@ -70,4 +74,5 @@ private:
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
 	std::vector<ListFilterSettings> filterSettings;
+	std::vector<ListColumnsSettings> columnsAccounts;
 };

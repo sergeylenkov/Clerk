@@ -22,14 +22,6 @@ enum class TransactionsPanelMenuTypes {
 	Copy = 7,
 };
 
-struct TransactionsListColumn {
-	int index;
-	wxString key;
-	wxString title;
-	int width;
-	bool sorted;
-};
-
 class TransactionsListPanel : public DataPanel
 {
 public:
@@ -92,4 +84,5 @@ private:
 	void CalculatePeriod();
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
+	void SaveColumnsSettings();
 };

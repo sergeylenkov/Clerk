@@ -104,6 +104,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 
 TransactionsListPanel::~TransactionsListPanel() {
 	SaveFilterSettings();
+	SaveColumnsSettings();	
 }
 
 void TransactionsListPanel::SetAccount(shared_ptr<Account> account) {
@@ -210,17 +211,35 @@ void TransactionsListPanel::Filter() {
 void TransactionsListPanel::UpdateList() {
 	transactionsList->ClearAll();
 
-	int index = 0;
+	for (auto &settings : Settings::GetInstance().GetColumns(type)) {
+		wxListItem column;
+
+		column.SetId(settings.index);
+		column.SetText(settings.title);
+		column.SetWidth(settings.width);
+
+		if (settings.title == "Date") {
+			column.SetStateMask(wxLIST_MASK_STATE);
+			column.SetState(wxLIST_STATE_SELECTED);
+		}
+		else if (settings.title == "Amount") {
+			column.SetAlign(wxLIST_FORMAT_RIGHT);
+		}
+
+		transactionsList->InsertColumn(settings.index, column);
+	}
+
+	/*int index = 0;
 
 	wxListItem column;
 
 	column.SetId(index);
 
 	if (this->type != TreeMenuItemTypes::MenuAccount) {
-		column.SetText(_("From Account"));
+		column.SetText(wxT("From Account"));
 	}
 	else {
-		column.SetText(_("Account"));
+		column.SetText(wxT("Account"));
 	}
 
 	column.SetWidth(200);
@@ -228,12 +247,12 @@ void TransactionsListPanel::UpdateList() {
 	transactionsList->InsertColumn(index, column);
 
 	if (this->type != TreeMenuItemTypes::MenuAccount) {
-		column.SetText(_("From Account"));
+		column.SetText(wxT("From Account"));
 
 		wxListItem column1;
 
 		column1.SetId(index++);
-		column1.SetText(_("To Account"));
+		column1.SetText(wxT("To Account"));
 		column1.SetWidth(200);
 
 		transactionsList->InsertColumn(index, column1);
@@ -242,7 +261,7 @@ void TransactionsListPanel::UpdateList() {
 	wxListItem column2;
 
 	column2.SetId(index++);
-	column2.SetText(_("Tags"));
+	column2.SetText(wxT("Tags"));
 	column2.SetWidth(200);
 
 	transactionsList->InsertColumn(index, column2);
@@ -250,7 +269,7 @@ void TransactionsListPanel::UpdateList() {
 	wxListItem column3;
 
 	column3.SetId(index++);
-	column3.SetText(_("Note"));
+	column3.SetText(wxT("Note"));
 	column3.SetWidth(200);
 
 	transactionsList->InsertColumn(index, column3);
@@ -258,7 +277,7 @@ void TransactionsListPanel::UpdateList() {
 	wxListItem column4;
 
 	column4.SetId(index++);
-	column4.SetText(_("Date"));
+	column4.SetText(wxT("Date"));
 	column4.SetWidth(100);
 	column4.SetStateMask(wxLIST_MASK_STATE);
 	column4.SetState(wxLIST_STATE_SELECTED);
@@ -268,11 +287,11 @@ void TransactionsListPanel::UpdateList() {
 	wxListItem column5;
 
 	column5.SetId(index++);
-	column5.SetText(_("Amount"));
+	column5.SetText(wxT("Amount"));
 	column5.SetWidth(100);
 	column5.SetAlign(wxLIST_FORMAT_RIGHT);
 
-	transactionsList->InsertColumn(index, column5);
+	transactionsList->InsertColumn(index, column5);*/
 
 	int i = 0;
 	wxDateTime date = wxDateTime::Now();
@@ -376,7 +395,7 @@ void TransactionsListPanel::UpdateList() {
 	transactionLabel->SetLabel(wxString::Format("%d", transactions.size()));
 	incomeLabel->SetLabel(wxNumberFormatter::ToString(income, 2));
 	outcomeLabel->SetLabel(wxNumberFormatter::ToString(outcome, 2));
-
+	
 	infoPanel->Layout();
 }
 
@@ -739,4 +758,18 @@ void TransactionsListPanel::SaveFilterSettings() {
 	}
 
 	Settings::GetInstance().SetListFilterSettings(type, id, periodList->GetSelection(), periodFromDate, periodToDate);
+}
+
+void TransactionsListPanel::SaveColumnsSettings() {
+	auto settings = Settings::GetInstance().GetColumns(type);
+
+	for (auto &setting : settings) {
+		wxListItem column;
+
+		transactionsList->GetColumn(setting.index, column);
+
+		setting.width = column.GetWidth();
+	}
+
+	Settings::GetInstance().SetColumns(type, settings);
 }

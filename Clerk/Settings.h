@@ -62,8 +62,8 @@ public:
 	bool IsMenuExpanded(int type);	
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
-	std::vector<ListColumnsSettings> GetColumns(TreeMenuItemTypes type);
-	void SetColumns(TreeMenuItemTypes type, std::vector<ListColumnsSettings> settings);
+	std::vector<ListColumnsSettings> GetColumns(int type);
+	void SetColumns(int type, std::vector<ListColumnsSettings> columns);
 
 private:
 	wxString fileName;
@@ -74,5 +74,7 @@ private:
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
 	std::vector<ListFilterSettings> filterSettings;
-	std::vector<ListColumnsSettings> columnsAccounts;
+	std::map<int, std::vector<ListColumnsSettings>> columnsSettings;
+
+	void RestoreDefaultColumns();
 };

@@ -211,87 +211,28 @@ void TransactionsListPanel::Filter() {
 void TransactionsListPanel::UpdateList() {
 	transactionsList->ClearAll();
 
-	for (auto &settings : Settings::GetInstance().GetColumns(type)) {
-		wxListItem column;
+	auto &columns = Settings::GetInstance().GetColumns(0);
 
-		column.SetId(settings.index);
-		column.SetText(settings.title);
-		column.SetWidth(settings.width);
+	for (unsigned int i = 0; i < columns.size(); i++) {
+		auto column = columns[i];
+		column.index = i;
 
-		if (settings.title == "Date") {
-			column.SetStateMask(wxLIST_MASK_STATE);
-			column.SetState(wxLIST_STATE_SELECTED);
+		wxListItem listItem;
+
+		listItem.SetId(i);
+		listItem.SetText(column.title);
+		listItem.SetWidth(column.width);
+
+		if (column.title == "Date") {
+			listItem.SetStateMask(wxLIST_MASK_STATE);
+			listItem.SetState(wxLIST_STATE_SELECTED);
 		}
-		else if (settings.title == "Amount") {
-			column.SetAlign(wxLIST_FORMAT_RIGHT);
+		else if (column.title == "Amount") {
+			listItem.SetAlign(wxLIST_FORMAT_RIGHT);
 		}
 
-		transactionsList->InsertColumn(settings.index, column);
+		transactionsList->InsertColumn(i, listItem);
 	}
-
-	/*int index = 0;
-
-	wxListItem column;
-
-	column.SetId(index);
-
-	if (this->type != TreeMenuItemTypes::MenuAccount) {
-		column.SetText(wxT("From Account"));
-	}
-	else {
-		column.SetText(wxT("Account"));
-	}
-
-	column.SetWidth(200);
-
-	transactionsList->InsertColumn(index, column);
-
-	if (this->type != TreeMenuItemTypes::MenuAccount) {
-		column.SetText(wxT("From Account"));
-
-		wxListItem column1;
-
-		column1.SetId(index++);
-		column1.SetText(wxT("To Account"));
-		column1.SetWidth(200);
-
-		transactionsList->InsertColumn(index, column1);
-	}
-
-	wxListItem column2;
-
-	column2.SetId(index++);
-	column2.SetText(wxT("Tags"));
-	column2.SetWidth(200);
-
-	transactionsList->InsertColumn(index, column2);
-
-	wxListItem column3;
-
-	column3.SetId(index++);
-	column3.SetText(wxT("Note"));
-	column3.SetWidth(200);
-
-	transactionsList->InsertColumn(index, column3);
-
-	wxListItem column4;
-
-	column4.SetId(index++);
-	column4.SetText(wxT("Date"));
-	column4.SetWidth(100);
-	column4.SetStateMask(wxLIST_MASK_STATE);
-	column4.SetState(wxLIST_STATE_SELECTED);
-
-	transactionsList->InsertColumn(index, column4);
-
-	wxListItem column5;
-
-	column5.SetId(index++);
-	column5.SetText(wxT("Amount"));
-	column5.SetWidth(100);
-	column5.SetAlign(wxLIST_FORMAT_RIGHT);
-
-	transactionsList->InsertColumn(index, column5);*/
 
 	int i = 0;
 	wxDateTime date = wxDateTime::Now();
@@ -305,59 +246,59 @@ void TransactionsListPanel::UpdateList() {
 
 		transactionsList->InsertItem(listItem);
 
-		int column = 0;
+		for (unsigned int n = 0; n < columns.size(); n++) {
+			auto column = columns[n];
 
-		if (this->type == TreeMenuItemTypes::MenuAccount) {
-			if (account->id == transaction->fromAccountId) {
-				transactionsList->SetItem(i, column++, *transaction->toAccountName);
+			if (column.title == "From Account") {
+				transactionsList->SetItem(i, n, *transaction->fromAccountName);
 			}
-
-			if (account->id == transaction->toAccountId) {
-				transactionsList->SetItem(i, column++, *transaction->fromAccountName);
+			else if (column.title == "To Account") {
+				transactionsList->SetItem(i, n, *transaction->toAccountName);
 			}
-		}
-		else {
-			transactionsList->SetItem(i, column++, *transaction->fromAccountName);
-		}
-
-		if (this->type != TreeMenuItemTypes::MenuAccount) {
-			transactionsList->SetItem(i, column++, *transaction->toAccountName);
-		}
-
-		transactionsList->SetItemImage(i, 1);
-		transactionsList->SetItem(i, column++, *transaction->tags);
-		transactionsList->SetItem(i, column++, *transaction->note);
-		
-		wxString dateFormat = transaction->paidAt->Format("%B %e");
-
-		if (date.GetYear() != transaction->paidAt->GetYear()) {
-			dateFormat = transaction->paidAt->Format("%B %e %Y");
-		}
-
-		transactionsList->SetItem(i, column++, dateFormat);
-
-		if (this->type == TreeMenuItemTypes::MenuAccount) {
-			if (account->id == transaction->fromAccountId) {
-				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
+			else if (column.title == "Tags") {
+				transactionsList->SetItem(i, n, *transaction->tags);				
 			}
-			else if (account->id == transaction->toAccountId) {
-				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
+			else if (column.title == "Note") {
+				transactionsList->SetItem(i, n, *transaction->note);
 			}
-			else {
-				transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
+			else if (column.title == "Date") {
+				wxString dateFormat = transaction->paidAt->Format("%B %e");
+
+				if (date.GetYear() != transaction->paidAt->GetYear()) {
+					dateFormat = transaction->paidAt->Format("%B %e %Y");
+				}
+
+				transactionsList->SetItem(i, n, dateFormat);
 			}
-		}
-		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
-			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
-		}
-		else if (this->type == TreeMenuItemTypes::MenuReceipts) {
-			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
-		}
-		else if (this->type == TreeMenuItemTypes::MenuDeposits) {
-			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->fromAmount, 2));
-		}
-		else if (this->type == TreeMenuItemTypes::MenuAccounts) {
-			transactionsList->SetItem(i, column++, wxNumberFormatter::ToString(transaction->toAmount, 2));
+			else if (column.title == "Amount") {
+				float amount = 0;
+
+				if (this->type == TreeMenuItemTypes::MenuAccount) {
+					if (account->id == transaction->fromAccountId) {
+						amount = transaction->fromAmount;
+					}
+					else if (account->id == transaction->toAccountId) {
+						amount = transaction->toAmount;
+					}
+					else {
+						amount = transaction->fromAmount;
+					}
+				}
+				else if (this->type == TreeMenuItemTypes::MenuExpenses) {
+					amount = transaction->toAmount;
+				}
+				else if (this->type == TreeMenuItemTypes::MenuReceipts) {
+					amount = transaction->fromAmount;
+				}
+				else if (this->type == TreeMenuItemTypes::MenuDeposits) {
+					amount = transaction->fromAmount;
+				}
+				else if (this->type == TreeMenuItemTypes::MenuAccounts) {
+					amount = transaction->toAmount;
+				}
+
+				transactionsList->SetItem(i, n, wxNumberFormatter::ToString(amount, 2));
+			}
 		}
 
 		i++;
@@ -761,15 +702,12 @@ void TransactionsListPanel::SaveFilterSettings() {
 }
 
 void TransactionsListPanel::SaveColumnsSettings() {
-	auto settings = Settings::GetInstance().GetColumns(type);
+	auto columns = Settings::GetInstance().GetColumns(0);	
 
-	for (auto &setting : settings) {
-		wxListItem column;
-
-		transactionsList->GetColumn(setting.index, column);
-
-		setting.width = column.GetWidth();
+	for (unsigned int i = 0; i < columns.size(); i++) {
+		columns[i].order = transactionsList->GetColumnOrder(i);
+		columns[i].width = transactionsList->GetColumnWidth(i);
 	}
 
-	Settings::GetInstance().SetColumns(type, settings);
+	Settings::GetInstance().SetColumns(0, columns);
 }

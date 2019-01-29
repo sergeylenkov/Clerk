@@ -9,12 +9,7 @@ void Settings::Open(char *configName) {
 	windowWidth = 1000;
 	windowHeight = 800;
 
-	columnsAccounts.push_back({ 0, 0, wxT("From Account"), 200, false });
-	columnsAccounts.push_back({ 1, 1, wxT("To Account"), 200, false });
-	columnsAccounts.push_back({ 2, 2, wxT("Tags"), 200, false });
-	columnsAccounts.push_back({ 3, 3, wxT("Note"), 200, false });
-	columnsAccounts.push_back({ 4, 4, wxT("Date"), 200, true });
-	columnsAccounts.push_back({ 5, 5, wxT("Amount"), 200, false });
+	RestoreDefaultColumns();	
 
 	if (wxFile::Exists(fileName)) {
 		FILE *fp = fopen(fileName.char_str(), "rb");
@@ -51,12 +46,12 @@ void Settings::Open(char *configName) {
 		}
 
 		if (json["Tabs"].IsArray()) {
-			const Value &array = json["Tabs"];
+			const Value &values = json["Tabs"];
 
-			for (SizeType i = 0; i < array.Size(); i++) {
-				const Value &tab = array[i];
+			for (SizeType i = 0; i < values.Size(); i++) {
+				const Value &value = values[i];
 
-				AddTab(tab["Type"].GetInt(), tab["Id"].GetInt());
+				AddTab(value["Type"].GetInt(), value["Id"].GetInt());
 			}
 		}
 
@@ -74,15 +69,24 @@ void Settings::Open(char *configName) {
 			}
 		}
 
-		if (json["ColumnsAccounts"].IsArray()) {
-			columnsAccounts.clear();
+		if (json["Columns"].IsArray()) {
+			const Value &types = json["Columns"];
 
-			const Value &array = json["ColumnsAccounts"];
+			for (SizeType i = 0; i < types.Size(); i++) {
+				const Value &type = types[i];
 
-			for (SizeType i = 0; i < array.Size(); i++) {
-				const Value &column = array[i];
+				int columnsType = type["Type"].GetInt();
+				const Value &values = type["Columns"];
 
-				columnsAccounts.push_back({ column["Index"].GetInt(), column["Order"].GetInt(),wxString::FromUTF8(column["Title"].GetString()), column["Width"].GetInt(), column["Sorted"].GetBool() });
+				std::vector<ListColumnsSettings> columns;
+
+				for (SizeType i = 0; i < values.Size(); i++) {
+					const Value &value = values[i];
+
+					columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
+				}
+
+				columnsSettings[columnsType] = columns;
 			}
 		}
 	}
@@ -151,24 +155,37 @@ void Settings::Save() {
 		json.AddMember("Filters", settingsJson, json.GetAllocator());
 	}
 
-	Value columnsJson(kArrayType);
+	Value settingsJson(kArrayType);
 
-	for each (auto column in columnsAccounts)
+	for (const auto &value : columnsSettings)
 	{
-		Value columnJson(kObjectType);
+		auto columns = columnsSettings[value.first];
 
-		Value string(column.title.c_str(), json.GetAllocator());
+		Value columnsTypeJson(kObjectType);
+		Value columnsJson(kArrayType);
 
-		columnJson.AddMember("Index", column.index, json.GetAllocator());
-		columnJson.AddMember("Order", column.order, json.GetAllocator());
-		columnJson.AddMember("Title", string, json.GetAllocator());
-		columnJson.AddMember("Width", column.width, json.GetAllocator());
-		columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
+		for each (auto column in columns)
+		{
+			Value columnJson(kObjectType);
 
-		columnsJson.PushBack(columnJson, json.GetAllocator());
+			Value string(column.title.c_str(), json.GetAllocator());
+
+			columnJson.AddMember("Index", column.index, json.GetAllocator());
+			columnJson.AddMember("Order", column.order, json.GetAllocator());
+			columnJson.AddMember("Title", string, json.GetAllocator());
+			columnJson.AddMember("Width", column.width, json.GetAllocator());
+			columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
+
+			columnsJson.PushBack(columnJson, json.GetAllocator());
+		}
+
+		columnsTypeJson.AddMember("Type", value.first, json.GetAllocator());
+		columnsTypeJson.AddMember("Columns", columnsJson, json.GetAllocator());
+
+		settingsJson.PushBack(columnsTypeJson, json.GetAllocator());
 	}
 
-	json.AddMember("ColumnsAccounts", columnsJson, json.GetAllocator());
+	json.AddMember("Columns", settingsJson, json.GetAllocator());
 
 	FILE *fp = fopen(fileName.char_str(), "wb"); 
 	char writeBuffer[65536];
@@ -183,6 +200,29 @@ void Settings::Save() {
 
 Settings::~Settings() {
 	
+}
+
+void Settings::RestoreDefaultColumns() {
+	std::vector<ListColumnsSettings> columns;
+
+	columns.push_back({ 0, 0, wxT("From Account"), 100, false });
+	columns.push_back({ 1, 1, wxT("To Account"), 100, false });
+	columns.push_back({ 2, 2, wxT("Tags"), 100, false });
+	columns.push_back({ 3, 3, wxT("Note"), 100, false });
+	columns.push_back({ 4, 4, wxT("Date"), 100, true });
+	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
+
+	columnsSettings[0] = columns;
+
+	std::vector<ListColumnsSettings> columns2;
+
+	columns2.push_back({ 0, 0, wxT("Account"), 100, false });	
+	columns2.push_back({ 1, 1, wxT("Tags"), 100, false });
+	columns2.push_back({ 2, 2, wxT("Note"), 100, false });
+	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
+	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
+
+	columnsSettings[1] = columns;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -285,14 +325,16 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	return result;
 }
 
-std::vector<ListColumnsSettings> Settings::GetColumns(TreeMenuItemTypes type) {
-	if (type != TreeMenuItemTypes::MenuAccount) {
-		return columnsAccounts;
-	}
+std::vector<ListColumnsSettings> Settings::GetColumns(int type) {
+	auto columns = columnsSettings[type];
 
-	return columnsAccounts;
+	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+		return v1.order < v2.order;
+	});
+
+	return columns;
 }
 
-void Settings::SetColumns(TreeMenuItemTypes type, std::vector<ListColumnsSettings> settings) {
-	columnsAccounts = settings;
+void Settings::SetColumns(int type, std::vector<ListColumnsSettings> columns) {
+	columnsSettings[type] = columns;
 }

@@ -33,6 +33,13 @@ struct ListFilterSettings {
 	wxDateTime toDate;
 };
 
+enum class ListColumnsTypes {
+	All = 0,
+	Receipts = 1,
+	Deposits = 2,
+	Expenses = 3,	
+};
+
 class Settings
 {
 public:
@@ -62,8 +69,8 @@ public:
 	bool IsMenuExpanded(int type);	
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
-	std::vector<ListColumnsSettings> GetColumns(int type);
-	void SetColumns(int type, std::vector<ListColumnsSettings> columns);
+	std::vector<ListColumnsSettings> GetColumns(ListColumnsTypes type);
+	void SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
 
 private:
 	wxString fileName;

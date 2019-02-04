@@ -211,7 +211,21 @@ void TransactionsListPanel::Filter() {
 void TransactionsListPanel::UpdateList() {
 	transactionsList->ClearAll();
 
-	auto &columns = Settings::GetInstance().GetColumns(0);
+	ListColumnsTypes columnsType = ListColumnsTypes::All;
+
+	if (this->type == TreeMenuItemTypes::MenuAccount) {
+		if (account->type == AccountTypes::Receipt) {
+			columnsType = ListColumnsTypes::Receipts;
+		}
+		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			columnsType = ListColumnsTypes::Deposits;
+		}
+		else {
+			columnsType = ListColumnsTypes::Expenses;
+		}
+	}
+
+	auto &columns = Settings::GetInstance().GetColumns(columnsType);
 
 	for (unsigned int i = 0; i < columns.size(); i++) {
 		auto column = columns[i];
@@ -702,12 +716,26 @@ void TransactionsListPanel::SaveFilterSettings() {
 }
 
 void TransactionsListPanel::SaveColumnsSettings() {
-	auto columns = Settings::GetInstance().GetColumns(0);	
+	ListColumnsTypes columnsType = ListColumnsTypes::All;
+
+	if (this->type == TreeMenuItemTypes::MenuAccount) {
+		if (account->type == AccountTypes::Receipt) {
+			columnsType = ListColumnsTypes::Receipts;
+		}
+		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			columnsType = ListColumnsTypes::Deposits;
+		}
+		else {
+			columnsType = ListColumnsTypes::Expenses;
+		}
+	}
+
+	auto columns = Settings::GetInstance().GetColumns(columnsType);
 
 	for (unsigned int i = 0; i < columns.size(); i++) {
 		columns[i].order = transactionsList->GetColumnOrder(i);
 		columns[i].width = transactionsList->GetColumnWidth(i);
 	}
 
-	Settings::GetInstance().SetColumns(0, columns);
+	Settings::GetInstance().SetColumns(columnsType, columns);
 }

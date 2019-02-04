@@ -212,17 +212,38 @@ void Settings::RestoreDefaultColumns() {
 	columns.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	columnsSettings[0] = columns;
+	columnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
 
 	std::vector<ListColumnsSettings> columns2;
 
-	columns2.push_back({ 0, 0, wxT("Account"), 100, false });	
+	columns2.push_back({ 0, 0, wxT("To Account"), 100, false });	
 	columns2.push_back({ 1, 1, wxT("Tags"), 100, false });
 	columns2.push_back({ 2, 2, wxT("Note"), 100, false });
 	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	columnsSettings[1] = columns;
+	columnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
+
+	std::vector<ListColumnsSettings> columns3;
+
+	columns3.push_back({ 0, 0, wxT("From Account"), 100, false });
+	columns3.push_back({ 1, 1, wxT("Tags"), 100, false });
+	columns3.push_back({ 2, 2, wxT("Note"), 100, false });
+	columns3.push_back({ 3, 3, wxT("Date"), 100, true });
+	columns3.push_back({ 4, 4, wxT("Amount"), 100, false });
+
+	columnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
+
+	std::vector<ListColumnsSettings> columns4;
+
+	columns4.push_back({ 0, 0, wxT("From Account"), 100, false });
+	columns4.push_back({ 1, 1, wxT("To Account"), 100, false });
+	columns4.push_back({ 2, 2, wxT("Tags"), 100, false });
+	columns4.push_back({ 3, 3, wxT("Note"), 100, false });
+	columns4.push_back({ 4, 4, wxT("Date"), 100, true });
+	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
+
+	columnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -325,8 +346,8 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	return result;
 }
 
-std::vector<ListColumnsSettings> Settings::GetColumns(int type) {
-	auto columns = columnsSettings[type];
+std::vector<ListColumnsSettings> Settings::GetColumns(ListColumnsTypes type) {
+	auto columns = columnsSettings[static_cast<int>(type)];
 
 	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;
@@ -335,6 +356,6 @@ std::vector<ListColumnsSettings> Settings::GetColumns(int type) {
 	return columns;
 }
 
-void Settings::SetColumns(int type, std::vector<ListColumnsSettings> columns) {
-	columnsSettings[type] = columns;
+void Settings::SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
+	columnsSettings[static_cast<int>(type)] = columns;
 }

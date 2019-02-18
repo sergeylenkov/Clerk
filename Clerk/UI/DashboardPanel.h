@@ -34,6 +34,8 @@ private:
 	std::vector<DahboardBudget> budgets;
 	std::vector<DahboardBudget> credits;
 	std::vector<DahboardBudget> goals;
+	wxString totalBalance;
+	wxString totalExpenses;
 
 	int paddingX;
 	int paddingY;

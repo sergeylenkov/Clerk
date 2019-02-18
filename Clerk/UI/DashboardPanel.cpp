@@ -28,6 +28,8 @@ void DashboardPanel::Update() {
 	credits.clear();
 	goals.clear();
 
+	float sum = 0;
+
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
@@ -36,12 +38,15 @@ void DashboardPanel::Update() {
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-			credits.push_back({ *account->name,wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(amount, 2), remainPercent });
+			credits.push_back({ *account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(amount, 2), remainPercent });
 		}
 		else {
 			balance.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2) });
+			sum = sum + amount;
 		}
 	}
+
+	totalBalance = wxNumberFormatter::ToString(sum, 2);
 
 	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
 	{
@@ -85,7 +90,7 @@ void DashboardPanel::Update() {
 		float remainAmount = budget->amount - currentAmount;
 		float remainPercent = (currentAmount / budget->amount) * 100.0;
 
-		budgets.push_back({ *budget->name,wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+		budgets.push_back({ *budget->name, wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
 	for each (auto goal in DataHelper::GetInstance().GetGoals()) {
@@ -96,6 +101,8 @@ void DashboardPanel::Update() {
 		
 		goals.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
+
+	totalExpenses = wxNumberFormatter::ToString(DataHelper::GetInstance().GetExpenses(&fromDate, &toDate), 2);
 
 	Draw();
 }
@@ -130,9 +137,17 @@ void DashboardPanel::Draw() {
 
 	int y = paddingY + 10;
 	int x = paddingX + 10;
+	int amountOffset = x + 250;
 
 	dc.DrawText("Balance", wxPoint(x, y));
 	
+	dc.SetFont(amountFont);
+	dc.SetTextForeground(wxColor(60, 60, 60));
+
+	wxSize size = dc.GetTextExtent(totalBalance);
+
+	dc.DrawText(totalBalance, wxPoint(amountOffset - size.GetWidth(), y + 5));
+
 	y = paddingY + 50;
 	
 	for each (auto account in balance) {
@@ -145,7 +160,7 @@ void DashboardPanel::Draw() {
 
 		wxSize size = dc.GetTextExtent(account.value);
 
-		dc.DrawText(account.value, wxPoint(x + 250 - size.GetWidth(), y));
+		dc.DrawText(account.value, wxPoint(amountOffset - size.GetWidth(), y));
 
 		y = y + 20;
 	}
@@ -170,7 +185,7 @@ void DashboardPanel::Draw() {
 
 			wxSize size = dc.GetTextExtent(account.value);
 
-			dc.DrawText(account.value, wxPoint(x + 250 - size.GetWidth(), y));
+			dc.DrawText(account.value, wxPoint(amountOffset - size.GetWidth(), y));
 
 			y = y + 20;
 		}
@@ -238,9 +253,18 @@ void DashboardPanel::Draw() {
 	y = paddingY + 10;
 	x = width / 2;
 
+	amountOffset = x + 250;
+
 	if (expenses.size() > 0) {
 		dc.SetFont(titleFont);
 		dc.DrawText("Expenses", wxPoint(x, y));
+		
+		dc.SetFont(amountFont);
+		dc.SetTextForeground(wxColor(60, 60, 60));
+
+		wxSize size = dc.GetTextExtent(totalExpenses);
+
+		dc.DrawText(totalExpenses, wxPoint(amountOffset - size.GetWidth(), y + 5));
 
 		y = paddingY + 50;
 
@@ -254,7 +278,7 @@ void DashboardPanel::Draw() {
 
 			wxSize size = dc.GetTextExtent(account.value);
 
-			dc.DrawText(account.value, wxPoint(x + 250 - size.GetWidth(), y));
+			dc.DrawText(account.value, wxPoint(amountOffset - size.GetWidth(), y));
 
 			y = y + 20;
 		}

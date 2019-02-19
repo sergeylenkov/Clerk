@@ -213,12 +213,13 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetDeletedTransactions() {
 std::vector<std::shared_ptr<Transaction>> DataHelper::GetRecentTransactions() {
 	auto result = std::vector<std::shared_ptr<Transaction>>();
 
-	char *sql = "SELECT t.id FROM transactions t, accounts fa, accounts ta WHERE t.from_account_id = fa.id AND t.to_account_id = ta.id GROUP BY t.from_account_id, t.to_account_id ORDER BY t.paid_at DESC LIMIT 10";
+	char *sql = "SELECT MAX(t.paid_at), t.id FROM transactions t GROUP BY t.from_account_id, t.to_account_id ORDER BY paid_at DESC LIMIT 10";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto transaction = std::make_shared<Transaction>(sqlite3_column_int(statement, 0));
+			int id = sqlite3_column_int(statement, 1);
+			auto transaction = std::make_shared<Transaction>(id);
 			result.push_back(transaction);
 		}
 	}
@@ -304,8 +305,13 @@ std::vector<std::shared_ptr<Goal>> DataHelper::GetGoals() {
 std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
 	auto result = std::vector<std::shared_ptr<Report>>();
 
-	auto report = make_shared<Report>(-1);
+	auto report = make_shared<Report>(0);
 	report->name = make_shared<wxString>("Expenses By Month");
+
+	result.push_back(report);
+
+	report = make_shared<Report>(1);
+	report->name = make_shared<wxString>("Balance By Month");
 
 	result.push_back(report);
 
@@ -591,16 +597,20 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 	return values;
 }
 
-vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to) {
-	vector<StringValue> values;
+vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to) {
+	vector<DateValue> values;
 
 	if (account->id == -1) {
-		char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
+		char *sql = "SELECT strftime('%Y-%m-01', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
+				wxDateTime date = wxDateTime::Now();
+				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
+				date.SetDay(1);
+
+				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
 				values.push_back(value);
 			}
 		}
@@ -608,35 +618,57 @@ vector<StringValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *
 		sqlite3_finalize(statement);
 	}
 	else {
-		vector<StringValue> receipts;
-		vector<StringValue> expenses;
+		wxDateSpan diff = to->DiffAsDateSpan(*from);
 
-		char *sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
-		sqlite3_stmt *statement;
+		for (int i = 0; i < diff.GetMonths(); i++) {
+			wxDateTime date = from->Add(wxDateSpan(0, 1, 0, 0));
+			date.SetDay(1);
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account->id);
+			wxDateTime queryDate = wxDateTime(date);
+			queryDate.SetToLastMonthDay();
 
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
-				receipts.push_back(value);
+			float expenses = 0.0;
+			float receipt = 0.0;
+
+			char *sql = "SELECT TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at <= ?";
+			sqlite3_stmt *statement;
+
+			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+				sqlite3_bind_int(statement, 1, account->id);
+				sqlite3_bind_text(statement, 2, date.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+				if (sqlite3_step(statement) == SQLITE_ROW) {
+					expenses = sqlite3_column_double(statement, 0);
+				}
 			}
-		}
 
-		sqlite3_finalize(statement);
+			sqlite3_finalize(statement);
 
-		sql = "SELECT strftime('%Y %m', t.paid_at) AS date, TOTAL(t.from_account_amount) AS amount FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
+			sql = "SELECT TOTAL(t.from_account_amount) AS amount FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at <= ?";
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account->id);
+			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+				sqlite3_bind_int(statement, 1, account->id);
+				sqlite3_bind_text(statement, 2, date.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
-				expenses.push_back(value);
+				if (sqlite3_step(statement) == SQLITE_ROW) {
+					receipt = sqlite3_column_double(statement, 0);
+				}
 			}
-		}
 
-		sqlite3_finalize(statement);
+			sqlite3_finalize(statement);
+
+			wxLogDebug("%s %s %f %f", date.FormatDate(), queryDate.FormatDate(), expenses, receipt);
+			float amount = expenses - receipt;
+
+			DateValue value = { date, amount };
+			values.push_back(value);
+
+			/*
+			if (account->creditLimit > 0) {
+					balance = balance + receipt - expense;
+					sum = account->creditLimit + balance;
+				}*/
+		}
 	}
 
 	return values;

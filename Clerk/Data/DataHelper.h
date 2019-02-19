@@ -66,7 +66,7 @@ public:
 	std::vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	std::vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	std::vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
-	std::vector<StringValue> GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to);
+	std::vector<DateValue> GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	int GetPairAccountId(Account *account);
 	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);

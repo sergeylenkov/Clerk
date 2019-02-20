@@ -1,6 +1,6 @@
-#include "ReportPanel.h"
+#include "ReportExpensesPanel.h"
 
-ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+ReportExpensesPanel::ReportExpensesPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -75,16 +75,16 @@ ReportPanel::ReportPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id
 
 	chartPopup = new GraphPopup(this);
 
-	accountList->Bind(wxEVT_COMBOBOX, &ReportPanel::OnAccountSelect, this);
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportPanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportPanel::OnDateChanged, this);
+	accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesPanel::OnAccountSelect, this);
+	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesPanel::OnDateChanged, this);
+	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesPanel::OnDateChanged, this);
 
-	chart->OnShowPopup = std::bind(&ReportPanel::ShowPopup, this);
-	chart->OnHidePopup = std::bind(&ReportPanel::HidePopup, this);
-	chart->OnUpdatePopup = std::bind(&ReportPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	chart->OnShowPopup = std::bind(&ReportExpensesPanel::ShowPopup, this);
+	chart->OnHidePopup = std::bind(&ReportExpensesPanel::HidePopup, this);
+	chart->OnUpdatePopup = std::bind(&ReportExpensesPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 }
 
-ReportPanel::~ReportPanel() {
+ReportExpensesPanel::~ReportExpensesPanel() {
 	delete chart;
 	delete accountList;
 	delete fromDatePicker;
@@ -92,7 +92,7 @@ ReportPanel::~ReportPanel() {
 	delete chartPopup;
 }
 
-void ReportPanel::Update() {
+void ReportExpensesPanel::Update() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
@@ -114,23 +114,23 @@ void ReportPanel::Update() {
 	chart->SetValues(chartValues);
 }
 
-void ReportPanel::OnAccountSelect(wxCommandEvent &event) {
+void ReportExpensesPanel::OnAccountSelect(wxCommandEvent &event) {
 	Update();
 }
 
-void ReportPanel::OnDateChanged(wxDateEvent &event) {
+void ReportExpensesPanel::OnDateChanged(wxDateEvent &event) {
 	Update();
 }
 
-void ReportPanel::ShowPopup() {
+void ReportExpensesPanel::ShowPopup() {
 	chartPopup->Show();
 }
 
-void ReportPanel::HidePopup() {
+void ReportExpensesPanel::HidePopup() {
 	chartPopup->Hide();
 }
 
-void ReportPanel::UpdatePopup(int x, int y, int index) {
+void ReportExpensesPanel::UpdatePopup(int x, int y, int index) {
 	wxDateTime date = values[index].date;
 
 	wxDateTime fromDate = date;

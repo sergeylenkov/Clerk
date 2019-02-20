@@ -303,26 +303,30 @@ std::vector<std::shared_ptr<Goal>> DataHelper::GetGoals() {
 }
 
 std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
-	auto result = std::vector<std::shared_ptr<Report>>();
+	reports.clear();
 
-	auto report = make_shared<Report>(0);
+	auto report = make_shared<Report>(1);
 	report->name = make_shared<wxString>("Expenses By Month");
 
-	result.push_back(report);
+	reports.push_back(report);
 
-	report = make_shared<Report>(1);
+	report = make_shared<Report>(2);
 	report->name = make_shared<wxString>("Balance By Month");
 
-	result.push_back(report);
+	reports.push_back(report);
 
-	return result;
+	return reports;
 }
 
 std::shared_ptr<Report> DataHelper::GetReportById(int id) {
-	auto report = make_shared<Report>(-1);
-	report->name = make_shared<wxString>("Expenses By Month");
+	for (auto report : reports)
+	{
+		if (report->id == id) {
+			return report;
+		}
+	}
 
-	return report;
+	return nullptr;
 }
 
 std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
@@ -349,8 +353,8 @@ std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
 
 float DataHelper::GetBalance(Account *account)
 {
-	float receipt_sum = 0.0;
-	float expense_sum = 0.0;
+	float receipt = 0.0;
+	float expense = 0.0;
 
 	char *sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id = ? AND deleted = 0";
 	sqlite3_stmt *statement;
@@ -359,7 +363,7 @@ float DataHelper::GetBalance(Account *account)
 		sqlite3_bind_int(statement, 1, account->id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
-			receipt_sum = sqlite3_column_double(statement, 0);
+			receipt = sqlite3_column_double(statement, 0);
 		}
 	}
 
@@ -371,7 +375,7 @@ float DataHelper::GetBalance(Account *account)
 		sqlite3_bind_int(statement, 1, account->id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
-			expense_sum = sqlite3_column_double(statement, 0);
+			expense = sqlite3_column_double(statement, 0);
 		}
 	}
 
@@ -380,10 +384,10 @@ float DataHelper::GetBalance(Account *account)
 	float total;
 
 	if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Expens) {
-		total = expense_sum - receipt_sum;
+		total = expense - receipt;
 	}
 	else {
-		total = receipt_sum - expense_sum;
+		total = receipt - expense;
 	}
 
 	return total;
@@ -601,21 +605,52 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 	vector<DateValue> values;
 
 	if (account->id == -1) {
-		char *sql = "SELECT strftime('%Y-%m-01', t.paid_at) AS date, TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.deleted = 0 GROUP BY date ORDER BY t.paid_at";
-		sqlite3_stmt *statement;
+		wxDateSpan diff = to->DiffAsDateSpan(*from);
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				wxDateTime date = wxDateTime::Now();
-				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
-				date.SetDay(1);
+		for (int i = 0; i < diff.GetMonths(); i++) {
+			wxDateTime date = from->Add(wxDateSpan(0, 1, 0, 0));
+			date.SetDay(1);
 
-				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
-				values.push_back(value);
+			wxDateTime queryDate = wxDateTime(date);
+			queryDate.SetToLastMonthDay();
+
+			float expenses = 0.0;
+			float receipt = 0.0;
+
+			char *sql = "SELECT TOTAL(t.to_account_amount) AS amount FROM transactions t, accounts a WHERE a.type_id = 1 AND t.to_account_id = a.id AND t.deleted = 0 AND t.paid_at <= ?";
+			sqlite3_stmt *statement;
+
+			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+				sqlite3_bind_text(statement, 1, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+				if (sqlite3_step(statement) == SQLITE_ROW) {
+					expenses = sqlite3_column_double(statement, 0);
+				}
 			}
-		}
 
-		sqlite3_finalize(statement);
+			sqlite3_finalize(statement);
+
+			sql = "SELECT TOTAL(t.from_account_amount) AS amount FROM transactions t, accounts a WHERE a.type_id = 1 AND t.from_account_id = a.id AND t.deleted = 0 AND t.paid_at <= ?";
+
+			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+				sqlite3_bind_text(statement, 1, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+				if (sqlite3_step(statement) == SQLITE_ROW) {
+					receipt = sqlite3_column_double(statement, 0);
+				}
+			}
+
+			sqlite3_finalize(statement);
+
+			float amount = expenses - receipt;
+
+			if (account->creditLimit > 0) {
+				amount = account->creditLimit + amount;
+			}
+
+			DateValue value = { date, amount };
+			values.push_back(value);
+		}
 	}
 	else {
 		wxDateSpan diff = to->DiffAsDateSpan(*from);
@@ -632,10 +667,10 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 
 			char *sql = "SELECT TOTAL(t.to_account_amount) AS amount FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at <= ?";
 			sqlite3_stmt *statement;
-
+			
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 				sqlite3_bind_int(statement, 1, account->id);
-				sqlite3_bind_text(statement, 2, date.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_text(statement, 2, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 				if (sqlite3_step(statement) == SQLITE_ROW) {
 					expenses = sqlite3_column_double(statement, 0);
@@ -648,7 +683,7 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 				sqlite3_bind_int(statement, 1, account->id);
-				sqlite3_bind_text(statement, 2, date.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_text(statement, 2, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 				if (sqlite3_step(statement) == SQLITE_ROW) {
 					receipt = sqlite3_column_double(statement, 0);
@@ -656,18 +691,15 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 			}
 
 			sqlite3_finalize(statement);
-
-			wxLogDebug("%s %s %f %f", date.FormatDate(), queryDate.FormatDate(), expenses, receipt);
+			
 			float amount = expenses - receipt;
+
+			if (account->creditLimit > 0) {
+				amount = account->creditLimit + amount;
+			}
 
 			DateValue value = { date, amount };
 			values.push_back(value);
-
-			/*
-			if (account->creditLimit > 0) {
-					balance = balance + receipt - expense;
-					sum = account->creditLimit + balance;
-				}*/
 		}
 	}
 

@@ -142,7 +142,7 @@ void DashboardPanel::Draw() {
 	dc.DrawText("Balance", wxPoint(x, y));
 	
 	dc.SetFont(amountFont);
-	dc.SetTextForeground(wxColor(60, 60, 60));
+	dc.SetTextForeground(wxColor(120, 120, 120));
 
 	wxSize size = dc.GetTextExtent(totalBalance);
 
@@ -260,7 +260,7 @@ void DashboardPanel::Draw() {
 		dc.DrawText("Expenses", wxPoint(x, y));
 		
 		dc.SetFont(amountFont);
-		dc.SetTextForeground(wxColor(60, 60, 60));
+		dc.SetTextForeground(wxColor(120, 120, 120));
 
 		wxSize size = dc.GetTextExtent(totalExpenses);
 

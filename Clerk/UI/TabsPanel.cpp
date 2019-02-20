@@ -330,7 +330,17 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 		currentPanel->Destroy();
 	}
 
-	ReportPanel *reportPanel = new ReportPanel(panel, wxID_ANY);
+	DataPanel *reportPanel;
+
+	if (report->id == 1) {
+		reportPanel = new ReportExpensesPanel(panel, wxID_ANY);
+	}
+	else if (report->id == 2) {
+		reportPanel = new ReportBalancePanel(panel, wxID_ANY);
+	}
+	else {
+		reportPanel = new ReportExpensesPanel(panel, wxID_ANY);
+	}
 
 	tabsPanels[tabIndex] = reportPanel;
 	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuReport;

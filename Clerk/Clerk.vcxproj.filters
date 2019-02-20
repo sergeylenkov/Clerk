@@ -57,9 +57,6 @@
     <ClCompile Include="UI\HomePanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ReportPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\TreeMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -129,6 +126,12 @@
     <ClCompile Include="UI\AboutFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ReportExpensesPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\ReportBalancePanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -174,9 +177,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\HomePanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\ReportPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu.h">
@@ -249,6 +249,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\AboutFrame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ReportExpensesPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ReportBalancePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

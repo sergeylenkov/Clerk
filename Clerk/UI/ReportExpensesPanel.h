@@ -12,11 +12,11 @@
 
 using namespace std;
 
-class ReportPanel : public DataPanel
+class ReportExpensesPanel : public DataPanel
 {
 public:
-	ReportPanel(wxWindow *parent, wxWindowID id);
-	~ReportPanel();
+	ReportExpensesPanel(wxWindow *parent, wxWindowID id);
+	~ReportExpensesPanel();
 
 	void Update();
 

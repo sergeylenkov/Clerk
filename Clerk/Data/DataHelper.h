@@ -84,5 +84,6 @@ private:
 	DataHelper();                 
 	DataHelper(DataHelper const&);
 	
-	sqlite3 *_db;		
+	sqlite3 *_db;
+	std::vector<std::shared_ptr<Report>> reports;
 };

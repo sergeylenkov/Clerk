@@ -73,6 +73,8 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 
 	accountList->Select(0);
 
+	RestoreFilterSettings();
+
 	chartPopup = new GraphPopup(this);
 
 	accountList->Bind(wxEVT_COMBOBOX, &ReportBalancePanel::OnAccountSelect, this);
@@ -85,6 +87,8 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 }
 
 ReportBalancePanel::~ReportBalancePanel() {
+	SaveFilterSettings();
+
 	delete chart;
 	delete accountList;
 	delete fromDatePicker;
@@ -93,11 +97,8 @@ ReportBalancePanel::~ReportBalancePanel() {
 }
 
 void ReportBalancePanel::Update() {
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
-
-	fromDate.Add(wxDateSpan::Months(-6));
-	fromDate.SetDay(1);
+	wxDateTime fromDate = fromDatePicker->GetValue();
+	wxDateTime toDate = toDatePicker->GetValue();
 
 	Account *account = accounts[accountList->GetSelection()].get();
 
@@ -141,4 +142,23 @@ void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
 	chartPopup->SetPosition(pos);
 
 	chartPopup->Update(popupValues);
+}
+
+void ReportBalancePanel::RestoreFilterSettings() {
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(2);
+
+	for (unsigned int i = 0; i < accounts.size(); i++) {
+		if (accounts[i]->id == settings.accountId) {
+			accountList->SetSelection(i);
+		}
+	}
+
+	fromDatePicker->SetValue(settings.fromDate);
+	toDatePicker->SetValue(settings.toDate);
+}
+
+void ReportBalancePanel::SaveFilterSettings() {
+	Account *account = accounts[accountList->GetSelection()].get();
+
+	Settings::GetInstance().SetReportFilterSettings(2, account->id, fromDatePicker->GetValue(), toDatePicker->GetValue());
 }

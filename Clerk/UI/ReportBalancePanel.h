@@ -9,6 +9,7 @@
 #include "../Data/DataHelper.h"
 #include "./Charts/LineChart.h"
 #include "./Charts/GraphPopup.h"
+#include "../Settings.h"
 
 using namespace std;
 
@@ -29,9 +30,12 @@ private:
 	GraphPopup *chartPopup;
 	vector<DateValue> values = {};
 
+	void UpdateChart();
 	void OnAccountSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);
+	void RestoreFilterSettings();
+	void SaveFilterSettings();
 };

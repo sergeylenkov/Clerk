@@ -40,6 +40,13 @@ enum class ListColumnsTypes {
 	Expenses = 3,	
 };
 
+struct ReportFilterSettings {	
+	int id;
+	int accountId;
+	wxDateTime fromDate;
+	wxDateTime toDate;
+};
+
 class Settings
 {
 public:
@@ -71,6 +78,8 @@ public:
 	ListFilterSettings GetListFilterSettings(int type, int id);
 	std::vector<ListColumnsSettings> GetColumns(ListColumnsTypes type);
 	void SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
+	ReportFilterSettings GetReportFilterSettings(int id);
+	void SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate);
 
 private:
 	wxString fileName;
@@ -82,6 +91,7 @@ private:
 	int selectedTab;
 	std::vector<ListFilterSettings> filterSettings;
 	std::map<int, std::vector<ListColumnsSettings>> columnsSettings;
+	std::vector<ReportFilterSettings> reportSettings;
 
 	void RestoreDefaultColumns();
 };

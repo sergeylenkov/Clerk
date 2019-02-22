@@ -66,6 +66,13 @@ void Settings::Open(char *configName) {
 
 				fromDate.ParseISODate(wxString::FromUTF8(filter["FromDate"].GetString()));
 				toDate.ParseISODate(wxString::FromUTF8(filter["ToDate"].GetString()));
+
+				int type = filter["Type"].GetInt();
+				int id = filter["Id"].GetInt();
+				int period = filter["Period"].GetInt();
+
+				ListFilterSettings value = { type, id, period, fromDate, toDate };
+				filterSettings.push_back(value);
 			}
 		}
 
@@ -89,6 +96,27 @@ void Settings::Open(char *configName) {
 				columnsSettings[columnsType] = columns;
 			}
 		}
+
+		if (json["ReportFilters"].IsArray()) {
+			const Value &array = json["ReportFilters"];
+
+			for (SizeType i = 0; i < array.Size(); i++) {
+				const Value &filter = array[i];
+
+				wxDateTime fromDate = wxDateTime::Now();
+				wxDateTime toDate = wxDateTime::Now();
+
+				fromDate.ParseISODate(wxString::FromUTF8(filter["FromDate"].GetString()));
+				toDate.ParseISODate(wxString::FromUTF8(filter["ToDate"].GetString()));
+
+				int id = filter["Id"].GetInt();
+				int accountId = filter["AccountId"].GetInt();
+
+				ReportFilterSettings value = { id, accountId, fromDate, toDate };
+				reportSettings.push_back(value);
+			}
+		}
+
 	}
 }
 
@@ -186,6 +214,32 @@ void Settings::Save() {
 	}
 
 	json.AddMember("Columns", settingsJson, json.GetAllocator());
+
+	if (reportSettings.size() > 0) {
+		Value settingsJson(kArrayType);
+
+		for each (auto settings in reportSettings)
+		{
+			Value filterJson(kObjectType);
+			
+			filterJson.AddMember("Id", settings.id, json.GetAllocator());
+			filterJson.AddMember("AccountId", settings.accountId, json.GetAllocator());
+
+			wxString dateString = settings.fromDate.FormatISODate();
+			Value string(dateString.c_str(), json.GetAllocator());
+
+			filterJson.AddMember("FromDate", string, json.GetAllocator());
+
+			dateString = settings.toDate.FormatISODate();
+			string.SetString(dateString.c_str(), json.GetAllocator());
+
+			filterJson.AddMember("ToDate", string, json.GetAllocator());
+
+			settingsJson.PushBack(filterJson, json.GetAllocator());
+		}
+
+		json.AddMember("ReportFilters", settingsJson, json.GetAllocator());
+	}
 
 	FILE *fp = fopen(fileName.char_str(), "wb"); 
 	char writeBuffer[65536];
@@ -358,4 +412,43 @@ std::vector<ListColumnsSettings> Settings::GetColumns(ListColumnsTypes type) {
 
 void Settings::SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
 	columnsSettings[static_cast<int>(type)] = columns;
+}
+
+ReportFilterSettings Settings::GetReportFilterSettings(int id) {
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetDay(1);
+	toDate.SetToLastMonthDay();
+
+	ReportFilterSettings result = { 0, -1, fromDate, toDate };
+
+	for (auto &settings : reportSettings)
+	{
+		if (settings.id == id) {
+			return settings;
+		}
+	}
+
+	return result;
+}
+
+void Settings::SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate) {
+	bool found = false;
+
+	for (auto &settings : reportSettings)
+	{
+		if (settings.id == id) {
+			settings.accountId = accountId;
+			settings.fromDate = fromDate;
+			settings.toDate = toDate;
+
+			found = true;
+			break;
+		}
+	}
+
+	if (!found) {
+		reportSettings.push_back({ id, accountId, fromDate, toDate });
+	}
 }

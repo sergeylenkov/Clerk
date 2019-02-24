@@ -56,25 +56,37 @@ void LineChart::Draw() {
 		maxY = ceil(maxValue / 100000) * 100000;
 		labelStepY = 20000;
 	}
+	else if (maxY > 100000 && maxY <= 1000000) {
+		maxY = ceil(maxValue / 100000) * 100000;
+		labelStepY = 50000;
+	}
 	else {
 		maxY = ceil(maxValue / 100000) * 100000;
-		labelStepY = 20000;
+		labelStepY = 100000;
 	}
 
-	offsetX = 60;
+	wxString maxValueString = wxNumberFormatter::ToString(maxValue, 2);
+	wxSize maxSize = dc.GetTextExtent(maxValueString);
+
+	offsetX = maxSize.GetWidth() + 20;
 	offsetY = 40;
 
 	stepX = (width - offsetX) / _values.size();
 	stepY = (height - offsetY - 10) / (float)maxY;
-
+	
 	for (int i = 0; i <= maxY; i += labelStepY) {
 		int y = (height - offsetY) - round(i * stepY);
-		
+
+		wxString label = wxNumberFormatter::ToString((float)i, 0);
+		wxSize size = dc.GetTextExtent(label);
+
+		int x = maxSize.GetWidth() - size.GetWidth();
+
 		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
-		dc.DrawLabel(wxString::Format("%d", i), wxRect(0, y - 10, 100, 20), 0);
+		dc.DrawText(label, wxPoint(x, y - 10));
 
 		dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
-		dc.DrawLine(offsetX, y, width, y);
+		dc.DrawLine(offsetX, y, width - offsetX, y);
 	}
 	
 	for (unsigned int i = 0; i < _values.size(); i++) {

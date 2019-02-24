@@ -498,7 +498,7 @@ void TransactionsListPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Edit..."));
 	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Copy), wxT("Copy..."));
 	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Duplicate), wxT("Dublicate"));
-	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Split), wxT("Splite..."));
+	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Split), wxT("Split..."));
 	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Merge), wxT("Merge"));
 	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Delete), wxT("Delete"));
 

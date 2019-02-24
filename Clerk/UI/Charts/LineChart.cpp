@@ -71,7 +71,7 @@ void LineChart::Draw() {
 	offsetX = maxSize.GetWidth() + 20;
 	offsetY = 40;
 
-	stepX = (width - offsetX) / _values.size();
+	stepX = width / _values.size();
 	stepY = (height - offsetY - 10) / (float)maxY;
 	
 	for (int i = 0; i <= maxY; i += labelStepY) {
@@ -89,31 +89,48 @@ void LineChart::Draw() {
 		dc.DrawLine(offsetX, y, width - offsetX, y);
 	}
 	
-	for (unsigned int i = 0; i < _values.size(); i++) {
-		int x = round(i * stepX) + offsetX;
+	if (_values.size() > 1) {
+		for (unsigned int i = 0; i < _values.size(); i++) {
+			int x = round(i * stepX) + offsetX;
 
-		dc.DrawLabel(_values[i].string, wxRect(x, height - 20, 100, 20), 0);
+			wxSize size = dc.GetTextExtent(_values[i].string);
+			dc.DrawText(_values[i].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
+		}
+	}
+	else {
+		int x = (width - offsetX) / 2;
+
+		wxSize size = dc.GetTextExtent(_values[0].string);
+		dc.DrawText(_values[0].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
 	}
 
 	dc.SetBrush(wxColor(10, 110, 170));
 	dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
 
-	int x = 0;
-	int y = 0;
-	int x2 = 0;
-	int y2 = 0;
+	if (_values.size() > 1) {
+		int x = 0;
+		int y = 0;
+		int x2 = 0;
+		int y2 = 0;
 
-	for (unsigned int i = 0; i < _values.size() - 1; i++) {
-		x = round(i * stepX) + offsetX;
-		y = (height - offsetY) - round(_values[i].value * stepY);
-		x2 = round((i + 1) * stepX) + offsetX;
-		y2 = (height - offsetY) - round(_values[i + 1].value * stepY);
+		for (unsigned int i = 0; i < _values.size() - 1; i++) {
+			x = round(i * stepX) + offsetX;
+			y = (height - offsetY) - round(_values[i].value * stepY);
+			x2 = round((i + 1) * stepX) + offsetX;
+			y2 = (height - offsetY) - round(_values[i + 1].value * stepY);
 
-		dc.DrawLine(x,  y, x2, y2);
+			dc.DrawLine(x, y, x2, y2);
+			dc.DrawCircle(x, y, 3);
+		}
+
+		dc.DrawCircle(x2, y2, 3);
+	}
+	else {
+		int x = (width - offsetX) / 2;
+		int y = (height - offsetY) - round(_values[0].value * stepY);
+
 		dc.DrawCircle(x, y, 3);
 	}
-
-	dc.DrawCircle(x2, y2, 3);
 }
 
 void LineChart::OnPaint(wxPaintEvent& event) {

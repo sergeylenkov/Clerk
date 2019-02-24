@@ -5,18 +5,19 @@
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
-#include "DataPanel.h"
-#include "../Data/DataHelper.h"
-#include "./Charts/LineChart.h"
-#include "./Charts/GraphPopup.h"
+#include "../DataPanel.h"
+#include "../../Data/DataHelper.h"
+#include "../Charts/LineChart.h"
+#include "../Charts/GraphPopup.h"
+#include "../../Settings.h"
 
 using namespace std;
 
-class ReportExpensesPanel : public DataPanel
+class ReportBalancePanel : public DataPanel
 {
 public:
-	ReportExpensesPanel(wxWindow *parent, wxWindowID id);
-	~ReportExpensesPanel();
+	ReportBalancePanel(wxWindow *parent, wxWindowID id);
+	~ReportBalancePanel();
 
 	void Update();
 
@@ -34,4 +35,6 @@ private:
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);
+	void RestoreFilterSettings();
+	void SaveFilterSettings();
 };

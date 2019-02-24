@@ -1,4 +1,4 @@
-#include "TransactionsListPanel.h"
+﻿#include "TransactionsListPanel.h"
 #include <algorithm>
 #include <string> 
 
@@ -189,16 +189,28 @@ void TransactionsListPanel::Filter() {
 	filtered.clear();
 
 	if (searchField->GetValue().Length() > 0) {
-		wxString search = searchField->GetValue().Lower();
+		wxString search = searchField->GetValue();
+
+		auto &f = std::use_facet<std::ctype<wchar_t>>(std::locale());
+
+		std::wstring searchW = search.ToStdWstring();
+		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
 		for (auto transaction : transactions)
 		{
-			wxString tags = transaction->tags->Lower();
-			wxString note = transaction->note->Lower();
-			wxString toName = transaction->toAccountName->Lower();
-			wxString fromName = transaction->fromAccountName->Lower();
+			wxString fromName = *transaction->fromAccountName;
+			wxString toName = *transaction->toAccountName;			
+			wxString tags = *transaction->tags;
+			wxString note = *transaction->note;			
 
-			if (tags.Find(search) != wxNOT_FOUND || toName.Find(search) != wxNOT_FOUND || fromName.Find(search) != wxNOT_FOUND || note.Find(search) != wxNOT_FOUND) {
+			wxString searchString = fromName + " " + toName + " " + tags + " " + note;
+
+			std::wstring searchStringW = searchString.ToStdWstring();
+			f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
+
+			std::size_t found = searchStringW.find(searchW);
+
+			if (found != std::string::npos) {
 				filtered.push_back(transaction);
 			}
 		}

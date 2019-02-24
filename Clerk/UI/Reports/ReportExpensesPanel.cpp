@@ -73,6 +73,8 @@ ReportExpensesPanel::ReportExpensesPanel(wxWindow *parent, wxWindowID id) : Data
 
 	accountList->Select(0);
 
+	RestoreFilterSettings();
+
 	chartPopup = new GraphPopup(this);
 
 	accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesPanel::OnAccountSelect, this);
@@ -85,6 +87,8 @@ ReportExpensesPanel::ReportExpensesPanel(wxWindow *parent, wxWindowID id) : Data
 }
 
 ReportExpensesPanel::~ReportExpensesPanel() {
+	SaveFilterSettings();
+
 	delete chart;
 	delete accountList;
 	delete fromDatePicker;
@@ -93,11 +97,8 @@ ReportExpensesPanel::~ReportExpensesPanel() {
 }
 
 void ReportExpensesPanel::Update() {
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
-
-	fromDate.Add(wxDateSpan::Months(-6));
-	fromDate.SetDay(1);
+	wxDateTime fromDate = fromDatePicker->GetValue();
+	wxDateTime toDate = toDatePicker->GetValue();
 
 	Account *account = accounts[accountList->GetSelection()].get();
 
@@ -145,4 +146,23 @@ void ReportExpensesPanel::UpdatePopup(int x, int y, int index) {
 	chartPopup->SetPosition(pos);
 
 	chartPopup->Update(popupValues);
+}
+
+void ReportExpensesPanel::RestoreFilterSettings() {
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
+
+	for (unsigned int i = 0; i < accounts.size(); i++) {
+		if (accounts[i]->id == settings.accountId) {
+			accountList->SetSelection(i);
+		}
+	}
+
+	fromDatePicker->SetValue(settings.fromDate);
+	toDatePicker->SetValue(settings.toDate);
+}
+
+void ReportExpensesPanel::SaveFilterSettings() {
+	Account *account = accounts[accountList->GetSelection()].get();
+
+	Settings::GetInstance().SetReportFilterSettings(1, account->id, fromDatePicker->GetValue(), toDatePicker->GetValue());
 }

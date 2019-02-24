@@ -315,6 +315,11 @@ std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
 
 	reports.push_back(report);
 
+	report = make_shared<Report>(3);
+	report->name = make_shared<wxString>("Compare Expenses");
+
+	reports.push_back(report);
+
 	return reports;
 }
 

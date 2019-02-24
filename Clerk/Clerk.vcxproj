@@ -75,7 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="UI\ReportBalancePanel.cpp" />
+    <ClCompile Include="UI\Reports\ReportBalancePanel.cpp" />
     <ClCompile Include="UI\AboutFrame.cpp" />
     <ClCompile Include="Data\Scheduler.cpp" />
     <ClCompile Include="Data\Goal.cpp" />
@@ -104,7 +104,7 @@
     <ClCompile Include="Data\Model.cpp" />
     <ClCompile Include="UI\Charts\PieChart.cpp" />
     <ClCompile Include="Data\Report.cpp" />
-    <ClCompile Include="UI\ReportExpensesPanel.cpp" />
+    <ClCompile Include="UI\Reports\ReportExpensesPanel.cpp" />
     <ClCompile Include="Settings.cpp" />
     <ClCompile Include="TagsPopup.cpp" />
     <ClCompile Include="Data\Transaction.cpp" />
@@ -116,7 +116,7 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="UI\ReportBalancePanel.h" />
+    <ClInclude Include="UI\Reports\ReportBalancePanel.h" />
     <ClInclude Include="UI\AboutFrame.h" />
     <ClInclude Include="Data\Scheduler.h" />
     <ClInclude Include="Data\Goal.h" />
@@ -147,7 +147,7 @@
     <ClInclude Include="Data\Model.h" />
     <ClInclude Include="UI\Charts\PieChart.h" />
     <ClInclude Include="Data\Report.h" />
-    <ClInclude Include="UI\ReportExpensesPanel.h" />
+    <ClInclude Include="UI\Reports\ReportExpensesPanel.h" />
     <ClInclude Include="Settings.h" />
     <ClInclude Include="TagsPopup.h" />
     <ClInclude Include="Data\Transaction.h" />

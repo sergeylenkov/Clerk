@@ -51,11 +51,22 @@ void TagsPanel::Filter() {
 	filteredTags.clear();
 
 	if (searchField->GetValue().Length() > 0) {
-		wxString search = searchField->GetValue().Lower();		
+		wxString search = searchField->GetValue();		
+
+		auto &f = std::use_facet<std::ctype<wchar_t>>(std::locale());
+
+		std::wstring searchW = search.ToStdWstring();
+		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
 		for each (auto tag in tags)
 		{
-			if (tag->name->Find(search) != wxNOT_FOUND) {
+			wxString searchString = *tag->name;
+			std::wstring searchStringW = searchString.ToStdWstring();
+			f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
+
+			std::size_t found = searchStringW.find(searchW);
+
+			if (found != std::string::npos) {
 				filteredTags.push_back(tag);
 			}
 		}

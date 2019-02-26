@@ -19,7 +19,7 @@ public:
 	~TagsPanel();
 
 	void Update();
-	shared_ptr<Tag> GetTag();
+	std::shared_ptr<Tag> GetTag();
 
 private:
 	wxTextCtrl *searchField;

@@ -81,6 +81,27 @@ void DataHelper::Init() {
 	sqlite3_finalize(statement);
 }
 
+void DataHelper::InitData() {
+	tags.clear();
+
+	char *sql = "SELECT t.id, t.name, COUNT(t2.id) FROM tags t LEFT JOIN transactions_tags tt ON t.id = tt.tag_id LEFT JOIN transactions t2 ON tt.transaction_id = t2.id GROUP BY t.id ORDER BY t.name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto tag = std::make_shared<Tag>();
+
+			tag->id = sqlite3_column_int(statement, 0);
+			tag->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
+			tag->count = sqlite3_column_int(statement, 2);
+
+			tags.push_back(tag);
+		}
+	}
+
+	sqlite3_finalize(statement);
+}
+
 std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
 {
 	auto result = std::vector<std::shared_ptr<Account>>();
@@ -335,25 +356,7 @@ std::shared_ptr<Report> DataHelper::GetReportById(int id) {
 }
 
 std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
-	auto result = std::vector<std::shared_ptr<Tag>>();
-
-	char *sql = "SELECT t.id, t.name, COUNT(t2.id) FROM tags t LEFT JOIN transactions_tags tt ON t.id = tt.tag_id LEFT JOIN transactions t2 ON tt.transaction_id = t2.id GROUP BY t.id ORDER BY t.name";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto tag = std::make_shared<Tag>();
-			tag->id = sqlite3_column_int(statement, 0);
-			tag->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			tag->count= sqlite3_column_int(statement, 2);
-
-			result.push_back(tag);
-		}
-	}
-
-	sqlite3_finalize(statement);
-
-	return result;
+	return tags;
 }
 
 float DataHelper::GetBalance(Account *account)
@@ -786,19 +789,22 @@ int DataHelper::GetPairAccountId(Account *account) {
 vector<shared_ptr<wxString>> DataHelper::GetTagsBySearch(wxString search) {
 	auto result = vector<shared_ptr<wxString>>();
 
-	char *sql = "SELECT DISTINCT TRIM(t.name) FROM tags t WHERE t.name LIKE '%' || ? || '%' ORDER BY t.name";
-	sqlite3_stmt *statement;
+	auto &f = std::use_facet<std::ctype<wchar_t>>(std::locale());
 
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_text(statement, 1, search.ToUTF8(), -1, SQLITE_TRANSIENT);
+	std::wstring searchW = search.ToStdWstring();
+	f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
-		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto tag = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
-			result.push_back(tag);
+	for (auto tag : tags) {
+		wxString searchString = *tag->name;
+		std::wstring searchStringW = searchString.ToStdWstring();
+		f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
+
+		std::size_t found = searchStringW.find(searchW);
+
+		if (found != std::string::npos) {
+			result.push_back(tag->name);
 		}
 	}
-
-	sqlite3_finalize(statement);
 
 	return result;
 }

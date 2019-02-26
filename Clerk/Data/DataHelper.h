@@ -42,6 +42,7 @@ public:
 	void Open(char *database);
 	sqlite3* Connection();
 	void Init();
+	void InitData();
 	std::vector<std::shared_ptr<Account>> GetAccounts(AccountTypes type);
 	std::shared_ptr<Account> GetAccountById(int id);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account *account, wxDateTime *from, wxDateTime *to);
@@ -83,7 +84,8 @@ public:
 private:
 	DataHelper();                 
 	DataHelper(DataHelper const&);
-	
+
 	sqlite3 *_db;
 	std::vector<std::shared_ptr<Report>> reports;
+	std::vector<std::shared_ptr<Tag>> tags;
 };

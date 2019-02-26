@@ -58,7 +58,7 @@ void TagsPanel::Filter() {
 		std::wstring searchW = search.ToStdWstring();
 		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
-		for each (auto tag in tags)
+		for (auto tag : tags)
 		{
 			wxString searchString = *tag->name;
 			std::wstring searchStringW = searchString.ToStdWstring();
@@ -83,7 +83,7 @@ void TagsPanel::UpdateList() {
 
 	int i = 0;
 
-	for each (auto tag in filteredTags)
+	for (auto tag : filteredTags)
 	{
 		list->InsertItem(i, wxString::Format("%s (%d)", *tag->name, tag->count));
 		i++;

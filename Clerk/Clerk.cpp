@@ -12,9 +12,10 @@ bool ClerkApp::OnInit()
 
 	DataHelper::GetInstance().Open(path.GetFullPath().char_str());
 	DataHelper::GetInstance().Init();
-	DataHelper::GetInstance().InitData();
 
 	Model::SetConnection(DataHelper::GetInstance().Connection());
+	
+	DataHelper::GetInstance().InitData();	
 
 	Settings::GetInstance().Open("Config.json");
 

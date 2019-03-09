@@ -56,7 +56,7 @@ ReportExpensesPanel::ReportExpensesPanel(wxWindow *parent, wxWindowID id) : Data
 
 	accounts.push_back(account);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
 		accounts.push_back(account);
 	}

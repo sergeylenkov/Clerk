@@ -292,32 +292,32 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	fromValue = 0;
 	toValue = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		accounts.push_back(account);
 	}

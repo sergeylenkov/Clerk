@@ -66,6 +66,7 @@ private:
 	void Sort();
 	void Filter();
 	void UpdateList();
+	void UpdateInfo();
 	void Add();
 	void Edit();
 	void Copy();

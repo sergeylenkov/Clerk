@@ -100,45 +100,40 @@ void DataHelper::InitData() {
 	}
 
 	sqlite3_finalize(statement);
-}
 
-std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts(AccountTypes type)
-{
-	auto result = std::vector<std::shared_ptr<Account>>();
+	accounts.clear();
 
-	char *sql = "SELECT a.id FROM accounts a WHERE a.type_id = ? AND a.active = 1 ORDER BY a.order_id";
-	sqlite3_stmt *statement;
+	sql = "SELECT a.id FROM accounts a WHERE a.active = 1 ORDER BY a.type_id, a.order_id";	
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, (int)type);
-
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
-			result.push_back(account);
+			accounts.push_back(account);
+
+			accountsHash[account->id] = account;
 		}
 	}
 
 	sqlite3_finalize(statement);
+}
+
+std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts() {
+	return accounts;
+}
+
+std::vector<std::shared_ptr<Account>> DataHelper::GetAccountsByType(AccountTypes type)
+{
+	std::vector<std::shared_ptr<Account>> result;
+
+	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [type](const std::shared_ptr<Account>& account) {
+		return account->type == type;
+	});
 
 	return result;
 }
 
 std::shared_ptr<Account> DataHelper::GetAccountById(int id) {
-	char *sql = "SELECT a.id FROM accounts a WHERE a.id = ?";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, (int)id);
-
-		if (sqlite3_step(statement) == SQLITE_ROW) {
-			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
-			return account;
-		}
-	}
-
-	sqlite3_finalize(statement);
-
-	return nullptr;
+	return accountsHash[id];
 }
 
 std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *account, wxDateTime *from, wxDateTime *to)

@@ -79,7 +79,7 @@ void HomePanel::Update() {
 
 	int i = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
 

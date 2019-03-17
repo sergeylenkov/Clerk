@@ -330,6 +330,10 @@ void TransactionsListPanel::UpdateList() {
 		i++;
 	}
 
+	UpdateInfo();
+}
+
+void TransactionsListPanel::UpdateInfo() {
 	float income = 0;
 	float outcome = 0;
 
@@ -347,6 +351,18 @@ void TransactionsListPanel::UpdateList() {
 				outcome = outcome + transaction->toAmount;
 			}
 		}
+		else if (type == TreeMenuItemTypes::MenuAccounts) {
+			auto fromAccount = DataHelper::GetInstance().GetAccountById(transaction->fromAccountId);
+			auto toAccount = DataHelper::GetInstance().GetAccountById(transaction->toAccountId);
+
+			if (toAccount->type == AccountTypes::Expens) {
+				outcome = outcome + transaction->toAmount;
+			}			
+			
+			if (fromAccount->type == AccountTypes::Receipt) {
+				income = income + transaction->toAmount;
+			}
+		}
 		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
 			outcome = outcome + transaction->toAmount;
 		}
@@ -359,10 +375,10 @@ void TransactionsListPanel::UpdateList() {
 		}
 	}
 
-	transactionLabel->SetLabel(wxString::Format("%d", transactions.size()));
+	transactionLabel->SetLabel(wxString::Format("%d", filtered.size()));
 	incomeLabel->SetLabel(wxNumberFormatter::ToString(income, 2));
 	outcomeLabel->SetLabel(wxNumberFormatter::ToString(outcome, 2));
-	
+
 	infoPanel->Layout();
 }
 

@@ -30,7 +30,7 @@ void DashboardPanel::Update() {
 
 	float sum = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
 
@@ -48,13 +48,13 @@ void DashboardPanel::Update() {
 
 	totalBalance = wxNumberFormatter::ToString(sum, 2);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
 		virtualBalance.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2) });
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		float remainAmount = abs(DataHelper::GetInstance().GetBalance(account.get()));
 		float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(account.get()));

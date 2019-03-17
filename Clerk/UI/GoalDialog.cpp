@@ -122,8 +122,8 @@ void GoalDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckboxes(true);
 
-	accounts = DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit);
-	auto virtualAccounts = DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual);
+	accounts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit);
+	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual);
 
 	accounts.insert(accounts.end(), virtualAccounts.begin(), virtualAccounts.end());
 

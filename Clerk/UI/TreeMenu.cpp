@@ -21,6 +21,8 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 	treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &TreeMenu::OnTreeSpecItemMenu, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_EXPANDED, &TreeMenu::OnTreeItemExpanded, this);
 	treeMenu->Bind(wxEVT_TREE_ITEM_COLLAPSED, &TreeMenu::OnTreeItemCollapsed, this);
+	treeMenu->Bind(wxEVT_TREE_BEGIN_DRAG, &TreeMenu::OnBeginDrag, this);
+	treeMenu->Bind(wxEVT_TREE_END_DRAG, &TreeMenu::OnEndDrag, this);
 }
 
 TreeMenu::~TreeMenu()
@@ -111,7 +113,7 @@ void TreeMenu::Update() {
 
 	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Receipts", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Receipt))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
 		int iconId = 27;
 
@@ -133,7 +135,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Deposits", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Deposit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		int iconId = 26;
 
@@ -155,7 +157,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Virtual", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Virtual))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
 		int iconId = 26;
 
@@ -177,7 +179,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Expenes", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Expens))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
 		int iconId = 28;
 
@@ -199,7 +201,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Debt", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Debt))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
 		int iconId = 28;
 
@@ -221,7 +223,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Credits", 101, 101, itemData);
 
-	for each (auto account in DataHelper::GetInstance().GetAccounts(AccountTypes::Credit))
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		int iconId = 28;
 
@@ -278,7 +280,7 @@ void TreeMenu::RestoreState() {
 	ExpandItem(rootItem);	
 }
 
-void TreeMenu::ExpandItem(wxTreeItemId item) {
+void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	wxTreeItemIdValue cookie;
 	wxTreeItemId child = treeMenu->GetFirstChild(item, cookie);
 
@@ -553,5 +555,56 @@ void TreeMenu::OnTreeItemCollapsed(wxTreeEvent &event) {
 
 	if (item != NULL) {
 		Settings::GetInstance().RemoveExpandedMenu(item->type);
+	}
+}
+
+void TreeMenu::OnBeginDrag(wxTreeEvent &event) {
+	draggedMenuItem = event.GetItem();
+	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(draggedMenuItem);
+
+	if (item->type == TreeMenuItemTypes::MenuAccount) {
+		event.Allow();
+	}
+}
+
+void TreeMenu::OnEndDrag(wxTreeEvent &event) {	
+	wxTreeItemId itemId = event.GetItem();
+
+	if (itemId.IsOk()) {
+		wxTreeItemId parent = treeMenu->GetItemParent(itemId);
+
+		TreeMenuItemData *draggedData = (TreeMenuItemData *)treeMenu->GetItemData(draggedMenuItem);
+		TreeMenuItemData *itemData = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
+
+		if (draggedData->type == itemData->type) {
+			auto account = std::static_pointer_cast<Account>(draggedData->object);
+
+			TreeMenuItemData *itemData = new TreeMenuItemData();
+			itemData->type = draggedData->type;
+			itemData->object = account;
+
+			treeMenu->InsertItem(parent, itemId, *account->name, account->iconId, account->iconId, itemData);
+
+			treeMenu->Delete(draggedMenuItem);
+
+			ReorderAccounts(parent);
+		}
+	}
+}
+
+void TreeMenu::ReorderAccounts(wxTreeItemId &item) {
+	wxTreeItemIdValue cookie;
+	wxTreeItemId child = treeMenu->GetFirstChild(item, cookie);
+	int orderId = 0;
+
+	while (child.IsOk())
+	{
+		TreeMenuItemData *data = (TreeMenuItemData *)treeMenu->GetItemData(child);
+		auto account = std::static_pointer_cast<Account>(data->object);
+
+		account->orderId = orderId++;
+		account->Save();
+
+		child = treeMenu->GetNextChild(item, cookie);
 	}
 }

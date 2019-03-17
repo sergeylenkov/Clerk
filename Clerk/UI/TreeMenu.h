@@ -55,10 +55,11 @@ private:
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
 	wxTreeItemId contextMenuItem;
+	wxTreeItemId draggedMenuItem;
 
 	void CreateImageList();
 	std::shared_ptr<Account> GetContextMenuAccount();
-	void ExpandItem(wxTreeItemId item);
+	void ExpandItem(wxTreeItemId &item);
 	void OnTreeSpecItemMenu(wxTreeEvent &event);
 	void OnTreeItemSelect(wxTreeEvent &event);
 	void OnMenuAddAccount(wxCommandEvent &event);
@@ -72,6 +73,9 @@ private:
 	void OnOpenNewTab(wxCommandEvent &event);
 	void OnMenuEmptyTrash(wxCommandEvent &event);
 	void OnTreeItemExpanded(wxTreeEvent &event);
-	void OnTreeItemCollapsed(wxTreeEvent &event);	
+	void OnTreeItemCollapsed(wxTreeEvent &event);
+	void OnBeginDrag(wxTreeEvent &event);
+	void OnEndDrag(wxTreeEvent &event);
+	void ReorderAccounts(wxTreeItemId &item);
 };
 

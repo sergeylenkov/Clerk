@@ -28,6 +28,7 @@ public:
 	int orderId;
 	shared_ptr<Currency> currency;
 	float creditLimit;
+	boolean isActive;
 
 	Account();
 	Account(int id);

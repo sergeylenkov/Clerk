@@ -88,12 +88,6 @@ ReportExpensesPanel::ReportExpensesPanel(wxWindow *parent, wxWindowID id) : Data
 
 ReportExpensesPanel::~ReportExpensesPanel() {
 	SaveFilterSettings();
-
-	delete chart;
-	delete accountList;
-	delete fromDatePicker;
-	delete toDatePicker;
-	delete chartPopup;
 }
 
 void ReportExpensesPanel::Update() {

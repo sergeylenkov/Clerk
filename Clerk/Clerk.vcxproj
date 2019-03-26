@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Reports\ReportComparePanel.cpp" />
     <ClCompile Include="UI\Reports\ReportBalancePanel.cpp" />
     <ClCompile Include="UI\AboutFrame.cpp" />
     <ClCompile Include="Data\Scheduler.cpp" />
@@ -116,6 +117,7 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Reports\ReportComparePanel.h" />
     <ClInclude Include="UI\Reports\ReportBalancePanel.h" />
     <ClInclude Include="UI\AboutFrame.h" />
     <ClInclude Include="Data\Scheduler.h" />

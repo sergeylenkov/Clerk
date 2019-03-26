@@ -9,6 +9,7 @@
 #include "DashboardPanel.h"
 #include "./Reports/ReportExpensesPanel.h"
 #include "./Reports/ReportBalancePanel.h"
+#include "./Reports/ReportComparePanel.h"
 #include "BudgetsPanel.h"
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"

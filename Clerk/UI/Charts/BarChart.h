@@ -1,19 +1,23 @@
 #include <wx/wx.h>
+#include <wx/numformatter.h>
 #include <vector>
 #include <algorithm>
-#include <map>
-
-using namespace std;
+#include "../../Data/DataHelper.h"
 
 class BarChart : public wxPanel {
 public:
 	BarChart(wxWindow *parent, wxWindowID id);
 	~BarChart();
 
-	void SetValues(map<wxString, float> values);
+	void SetValues(std::vector<StringValue> values);
 	void Draw();
 
 private:
-	map<wxString, float> _values;
+	std::vector<StringValue> _values;
+	float stepX;
+	float stepY;
+	int offsetX;
+	int offsetY;
+
 	void OnPaint(wxPaintEvent& event);
 };

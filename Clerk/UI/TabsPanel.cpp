@@ -339,7 +339,7 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 		reportPanel = new ReportBalancePanel(panel, wxID_ANY);
 	}
 	else {
-		reportPanel = new ReportExpensesPanel(panel, wxID_ANY);
+		reportPanel = new ReportComparePanel(panel, wxID_ANY);
 	}
 
 	tabsPanels[tabIndex] = reportPanel;

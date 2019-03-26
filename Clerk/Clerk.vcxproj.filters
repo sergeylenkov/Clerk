@@ -132,6 +132,9 @@
     <ClCompile Include="UI\Reports\ReportExpensesPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Reports\ReportComparePanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -255,6 +258,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\ReportExpensesPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Reports\ReportComparePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

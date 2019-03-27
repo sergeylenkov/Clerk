@@ -126,13 +126,13 @@
     <ClCompile Include="UI\AboutFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ReportBalancePanel.cpp">
+    <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ReportExpensesPanel.cpp">
+    <ClCompile Include="UI\Reports\ReportExpensesByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ReportComparePanel.cpp">
+    <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -254,13 +254,13 @@
     <ClInclude Include="UI\AboutFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ReportBalancePanel.h">
+    <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ReportExpensesPanel.h">
+    <ClInclude Include="UI\Reports\ReportExpensesByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ReportComparePanel.h">
+    <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -333,13 +333,13 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 	DataPanel *reportPanel;
 
 	if (report->id == 1) {
-		reportPanel = new ReportExpensesPanel(panel, wxID_ANY);
+		reportPanel = new ReportExpensesByMonthPanel(panel, wxID_ANY);
 	}
 	else if (report->id == 2) {
 		reportPanel = new ReportBalancePanel(panel, wxID_ANY);
 	}
 	else {
-		reportPanel = new ReportComparePanel(panel, wxID_ANY);
+		reportPanel = new ReportExpensesForPeriodPanel(panel, wxID_ANY);
 	}
 
 	tabsPanels[tabIndex] = reportPanel;

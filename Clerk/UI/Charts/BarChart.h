@@ -13,11 +13,7 @@ public:
 	void Draw();
 
 private:
-	std::vector<StringValue> _values;
-	float stepX;
-	float stepY;
-	int offsetX;
-	int offsetY;
+	std::vector<StringValue> _values;	
 
 	void OnPaint(wxPaintEvent& event);
 };

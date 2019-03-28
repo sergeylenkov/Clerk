@@ -19,7 +19,7 @@ TabsPanel::~TabsPanel()
 
 	for each (auto panel in tabsPanels)
 	{
-		Settings::GetInstance().AddTab(panel->type, panel->id);
+		Settings::GetInstance().AddTab(static_cast<int>(panel->type), panel->id);
 	}
 
 	Settings::GetInstance().SetSelectedTab(notebook->GetSelection());
@@ -63,7 +63,7 @@ void TabsPanel::RestoreTabs() {
 			if (tabAccount) {
 				CreateTab(type, tabAccount);
 			}
-		} else if (tab.type == TreeMenuItemTypes::MenuReport) {
+		} else if (type == TreeMenuItemTypes::MenuReport) {
 			std::shared_ptr<Report> tabReport = DataHelper::GetInstance().GetReportById(tab.id);
 
 			if (tabReport) {

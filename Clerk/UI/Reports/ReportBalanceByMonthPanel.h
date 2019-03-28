@@ -9,7 +9,7 @@
 #include "../../Data/DataHelper.h"
 #include "../Charts/LineChart.h"
 #include "../Charts/GraphPopup.h"
-#include "../../Settings.h"
+#include "../../Data/Settings.h"
 
 using namespace std;
 

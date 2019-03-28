@@ -8,8 +8,7 @@
 #include <thread>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
-#include "../Settings.h"
-#include "../TreeMenuItemData.h"
+#include "../Data/Settings.h"
 #include "TreeMenu.h"
 #include "TransactionDialog.h"
 #include "AccountDialog.h"

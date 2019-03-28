@@ -3,8 +3,7 @@
 #include <memory>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
-#include "../Settings.h"
-#include "../TreeMenuItemData.h"
+#include "../Data/Settings.h"
 #include "TransactionsListPanel.h"
 #include "DashboardPanel.h"
 #include "./Reports/ReportExpensesByMonthPanel.h"
@@ -15,6 +14,7 @@
 #include "SchedulersPanel.h"
 #include "GoalsPanel.h"
 #include "TagsPanel.h"
+#include "TreeMenu.h"
 
 enum class TabsMenuTypes {
 	MoveLeft = 1,

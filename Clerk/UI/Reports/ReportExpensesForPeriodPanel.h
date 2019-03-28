@@ -9,7 +9,7 @@
 #include "../DataPanel.h"
 #include "../../Data/DataHelper.h"
 #include "../Charts/BarChart.h"
-#include "../../Settings.h"
+#include "../../Data/Settings.h"
 
 using namespace std;
 

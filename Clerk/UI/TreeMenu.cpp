@@ -290,7 +290,7 @@ void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	{
 		TreeMenuItemData *data = (TreeMenuItemData *)treeMenu->GetItemData(child);
 
-		if (data != NULL && Settings::GetInstance().IsMenuExpanded(data->type)) {
+		if (data != NULL && Settings::GetInstance().IsMenuExpanded(static_cast<int>(data->type))) {
 			treeMenu->Expand(child);
 		}
 
@@ -551,7 +551,7 @@ void TreeMenu::OnTreeItemExpanded(wxTreeEvent &event) {
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {
-		Settings::GetInstance().AddExpandedMenu(item->type);
+		Settings::GetInstance().AddExpandedMenu(static_cast<int>(item->type));
 	}
 }
 
@@ -560,7 +560,7 @@ void TreeMenu::OnTreeItemCollapsed(wxTreeEvent &event) {
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {
-		Settings::GetInstance().RemoveExpandedMenu(item->type);
+		Settings::GetInstance().RemoveExpandedMenu(static_cast<int>(item->type));
 	}
 }
 

@@ -9,8 +9,8 @@
 #include <thread>
 #include "DataPanel.h"
 #include "../Data/DataHelper.h"
-#include "../TreeMenuItemData.h"
-#include "../Settings.h"
+#include "../Data/Settings.h"
+#include "TreeMenu.h"
 
 enum class TransactionsPanelMenuTypes {
 	Add = 1,

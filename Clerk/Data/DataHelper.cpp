@@ -948,7 +948,7 @@ void DataHelper::EmptyTrash() {
 void DataHelper::CreateAccountsImageList() {
 	accountsImageList = new wxImageList(16, 16, false);
 
-	for (int i = 0; i <= 57; i++) {
+	for (int i = 0; i <= 62; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
 		wxImage image(path);
 

@@ -43,6 +43,7 @@ public:
 	sqlite3* Connection();
 	void Init();
 	void InitData();
+	void ReloadAccounts();
 	std::vector<std::shared_ptr<Account>> GetAccounts();
 	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountTypes type);
 	std::shared_ptr<Account> GetAccountById(int id);
@@ -58,7 +59,6 @@ public:
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);
 	std::vector<std::shared_ptr<Tag>> GetTags();
-
 	float GetBalance(Account *account);
 	float GetAccountTotalExpense(Account *account);
 	float GetAccountTotalReceipt(Account *account);

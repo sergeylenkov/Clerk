@@ -101,9 +101,14 @@ void DataHelper::InitData() {
 
 	sqlite3_finalize(statement);
 
+	ReloadAccounts();
+}
+
+void DataHelper::ReloadAccounts() {
 	accounts.clear();
 
-	sql = "SELECT a.id FROM accounts a ORDER BY a.type_id, a.order_id";	
+	char *sql = "SELECT a.id FROM accounts a ORDER BY a.type_id, a.order_id";
+	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -943,7 +948,7 @@ void DataHelper::EmptyTrash() {
 void DataHelper::CreateAccountsImageList() {
 	accountsImageList = new wxImageList(16, 16, false);
 
-	for (int i = 0; i <= 50; i++) {
+	for (int i = 0; i <= 57; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
 		wxImage image(path);
 

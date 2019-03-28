@@ -37,8 +37,8 @@ public:
 	std::function<void()> OnSchedulersSelect;
 	std::function<void()> OnTrashSelect;
 	std::function<void()> OnTagsSelect;
-	std::function<void(TreeMenuItemTypes)> OnAccountsSelect;
-	std::function<void()> OnAddAccount;
+	std::function<void(TreeMenuItemTypes type)> OnAccountsSelect;
+	std::function<void(TreeMenuItemTypes type)> OnAddAccount;
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
 	std::function<void(std::shared_ptr<Account>)> OnArchiveAccount;
 	std::function<void(std::shared_ptr<Account>)> OnRestoreAccount;
@@ -56,6 +56,7 @@ private:
 	vector<std::shared_ptr<Report>> reports;
 	wxTreeItemId contextMenuItem;
 	wxTreeItemId draggedMenuItem;
+	int menuImageIndex;
 
 	void CreateImageList();
 	std::shared_ptr<Account> GetContextMenuAccount();

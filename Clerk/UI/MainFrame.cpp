@@ -27,7 +27,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnTagsSelect = std::bind(&MainFrame::OnTreeMenuTagsSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
-	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
+	treeMenu->OnAddAccount = std::bind(&MainFrame::OnTreeMenuAddAccount, this, std::placeholders::_1);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
 	treeMenu->OnArchiveAccount = std::bind(&MainFrame::DeleteAccount, this, std::placeholders::_1);
 	treeMenu->OnRestoreAccount = std::bind(&MainFrame::RestoreAccount, this, std::placeholders::_1);
@@ -155,7 +155,6 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	//wxMessageBox(wxString::Format("Version: %s", APP_VERSION), "About Clerk", wxOK | wxICON_INFORMATION, this);
 	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
 
 	aboutFrame->Show(true);
@@ -163,7 +162,7 @@ void MainFrame::OnAbout(wxCommandEvent &event)
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
-	AddAccount();
+	AddAccount(AccountTypes::Deposit);
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
@@ -244,6 +243,21 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 	}
 	else {
 		tabsPanel->AddTab(type, nullptr);
+	}
+}
+
+void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
+	if (type == TreeMenuItemTypes::MenuReceipts) {
+		AddAccount(AccountTypes::Receipt);
+	}
+	else if (type == TreeMenuItemTypes::MenuExpenses) {
+		AddAccount(AccountTypes::Expens);
+	}
+	else if (type == TreeMenuItemTypes::MenuCredits) {
+		AddAccount(AccountTypes::Credit);
+	}
+	else {
+		AddAccount(AccountTypes::Deposit);
 	}
 }
 
@@ -370,9 +384,10 @@ void MainFrame::OnTransactionClose() {
 	tabsPanel->Update();
 }
 
-void MainFrame::AddAccount() {
+void MainFrame::AddAccount(AccountTypes type) {
 	std::shared_ptr<Account> account = make_shared<Account>();
-	
+	account->type = type;
+
 	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
 
 	accountDialog->SetAccount(account);

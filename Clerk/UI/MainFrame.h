@@ -60,6 +60,7 @@ private:
 	void OnTreeMenuTagsSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
+	void OnTreeMenuAddAccount(TreeMenuItemTypes type);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnAddScheduler(wxCommandEvent &event);
@@ -70,7 +71,7 @@ private:
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void OnTransactionClose();
-	void AddAccount();
+	void AddAccount(AccountTypes type);
 	void EditAccount(std::shared_ptr<Account> account);
 	void DeleteAccount(std::shared_ptr<Account> account);
 	void RestoreAccount(std::shared_ptr<Account> account);

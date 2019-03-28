@@ -222,6 +222,10 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 		}		
 	}
 
+	if (isNew) {
+		DataHelper::GetInstance().ReloadAccounts();
+	}
+
 	Close();
 
 	if (OnClose) {

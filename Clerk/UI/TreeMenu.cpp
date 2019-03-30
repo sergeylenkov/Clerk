@@ -348,8 +348,10 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 		
 		if (parentItem->type == TreeMenuItemTypes::MenuArchive) {
 			menu->AppendSeparator();
+			menu->Append(static_cast<int>(TreeMenuTypes::EditAccount), wxT("Edit Account..."));
 			menu->Append(static_cast<int>(TreeMenuTypes::RestoreAccount), wxT("Restore from Archive"));
 
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(TreeMenuTypes::EditAccount));
 			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuRestoreAccount, this, static_cast<int>(TreeMenuTypes::RestoreAccount));
 		}
 		else {

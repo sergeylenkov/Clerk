@@ -35,7 +35,6 @@ public:
 	bool IsTabExists(TreeMenuItemTypes type, int id = 0);
 	void SelectTab(TreeMenuItemTypes type, int id = 0);
 	void Update();
-	void UpdateStatus();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
 	std::shared_ptr<Budget> GetSelectedBudget();
 	std::shared_ptr<Account> GetSelectedAccount();

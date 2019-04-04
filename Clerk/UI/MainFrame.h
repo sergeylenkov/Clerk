@@ -36,14 +36,21 @@ public:
 	~MainFrame();
 
 private:
+	wxPanel *toolbar;
+	wxPanel *statusbar;
 	TreeMenu *treeMenu;
 	TransactionDialog *transactionFrame;
 	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
-	
+	wxButton *addTransactionButton;
+	wxStaticText *periodLabel;
+	wxStaticText *receiptsLabel;
+	wxStaticText *expensesLabel;
+	wxStaticText *balanceLabel;
+
 	void CreateMainMenu();
-	void UpdateStatus(wxString text);
+	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);

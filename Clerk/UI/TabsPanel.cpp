@@ -169,7 +169,6 @@ void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<Account> accoun
 	transactionList->OnCopy = std::bind(&TabsPanel::CopyTransaction, this, std::placeholders::_1);
 	transactionList->OnEdit = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
 	transactionList->OnSplit = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
-	transactionList->OnPeriodChanged = std::bind(&TabsPanel::UpdateStatus, this);
 
 	tabsPanels[tabIndex] = transactionList;
 	tabsPanels[tabIndex]->type = TreeMenuItemTypes::MenuAccount;
@@ -197,7 +196,6 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 	transactionList->OnCopy = std::bind(&TabsPanel::CopyTransaction, this, std::placeholders::_1);
 	transactionList->OnEdit = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
 	transactionList->OnSplit = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
-	transactionList->OnPeriodChanged = std::bind(&TabsPanel::UpdateStatus, this);
 
 	tabsPanels[tabIndex] = transactionList;
 	tabsPanels[tabIndex]->type = type;
@@ -399,9 +397,7 @@ void TabsPanel::CreateTagsPanel(int tabIndex) {
 }
 
 void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
-	//int i = notebook->GetSelection();
-	//tabsPanels[i]->Update();
-	//UpdateStatus();
+	//
 }
 
 void TabsPanel::OnTabClick(wxMouseEvent &event) {
@@ -483,71 +479,6 @@ void TabsPanel::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 	}
 }
 
-void TabsPanel::UpdateStatus() {
-	int i = notebook->GetSelection();
-	DataPanel *currentPanel = tabsPanels[i];
-	wxString result = wxT("");
-
-	if (currentPanel->type == TreeMenuItemTypes::MenuAccount) {
-		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-		auto account = transactionList->GetAccount();
-		float amount = 0;
-
-		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Credit) {
-			amount = DataHelper::GetInstance().GetBalance(account.get());
-		}
-		else if (account->type == AccountTypes::Expens) {
-			amount = transactionList->GetBalance();
-		}
-		else {
-			amount = DataHelper::GetInstance().GetToAmountSum(account.get(), &transactionList->GetFromDate(), &transactionList->GetToDate());
-		}
-
-		wxString name = *account->name;
-
-		if (account->creditLimit > 0.0) {
-			result = wxString::Format("%s: %.2f (%.2f %.2f) %s", static_cast<const char*>(name.c_str()), account->creditLimit + amount, account->creditLimit, amount, static_cast<const char*>(account->currency->shortName->c_str()));
-		}
-		else {
-			result = wxString::Format("%s: %.2f %s", static_cast<const char*>(name.c_str()), amount, static_cast<const char*>(account->currency->shortName->c_str()));
-		}
-	}
-	else if (currentPanel->type == TreeMenuItemTypes::MenuExpenses) {
-		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-
-		float amount = transactionList->GetBalance();
-		result = wxString::Format("Expenses: %.2f", amount);
-	}
-	else if (currentPanel->type == TreeMenuItemTypes::MenuReceipts) {
-		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-
-		float amount = transactionList->GetBalance();
-		result = wxString::Format("Receipts: %.2f", amount);
-	}
-	else if (currentPanel->type == TreeMenuItemTypes::MenuDeposits) {
-		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-
-		float amount = transactionList->GetBalance();
-		result = wxString::Format("Deposits: %.2f", amount);
-	}
-	else if (currentPanel->type == TreeMenuItemTypes::MenuDashboard) {
-		wxDateTime fromDate = wxDateTime::Now();
-		wxDateTime toDate = wxDateTime::Now();
-
-		fromDate.SetDay(1);
-		toDate.SetToLastMonthDay();
-
-		float expenses = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-		float receipts = DataHelper::GetInstance().GetReceipts(&fromDate, &toDate);
-
-		result = wxString::Format("%s: Expenses: %.2f, Receipts: %.2f", wxDateTime::Now().Format("%B"), expenses, receipts);
-	}
-
-	if (OnUpdateStatus) {
-		OnUpdateStatus(result);
-	}
-}
-
 void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, std::shared_ptr<Account> account)
 {
 	if (type == TreeMenuItemTypes::MenuAccount) {
@@ -571,8 +502,6 @@ void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 		transactionList->SetType(type);
 		transactionList->Update();
 	}
-
-	UpdateStatus();
 }
 
 std::shared_ptr<Transaction> TabsPanel::GetSelectedTransaction() {

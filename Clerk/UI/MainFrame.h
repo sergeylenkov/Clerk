@@ -18,6 +18,7 @@
 #include "TabsPanel.h"
 #include "GoalDialog.h"
 #include "AboutFrame.h"
+#include "SplitButton.h"
 
 enum class MainMenuTypes {
 	About = 1,
@@ -43,7 +44,7 @@ private:
 	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
-	wxButton *addTransactionButton;
+	SplitButton *addTransactionButton;
 	wxStaticText *periodLabel;
 	wxStaticText *receiptsLabel;
 	wxStaticText *expensesLabel;

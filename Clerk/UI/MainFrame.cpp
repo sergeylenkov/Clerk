@@ -9,14 +9,14 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	/*toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40), 0);
+	toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40), wxBORDER_NONE);
 	toolbar->SetBackgroundColour(wxColour(255, 255, 255));
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	addTransactionButton = new wxButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+	addTransactionButton = new SplitButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxDefaultSize);
 
-	addTransactionButton->SetBitmap(wxBitmap(wxT("../Clerk/Resources/AddForm_16x.png"), wxBITMAP_TYPE_ANY));
+	//addTransactionButton->SetBitmap(wxBitmap(wxT("../Clerk/Resources/AddForm_16x.png"), wxBITMAP_TYPE_ANY));
 	addTransactionButton->SetBackgroundColour(wxColour(255, 255, 255));
 
 	addTransactionButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddTransaction, this);
@@ -26,7 +26,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	toolbar->SetSizer(horizontalSizer);
 	toolbar->Layout();
 
-	mainSizer->Add(toolbar, 0, wxEXPAND, 0);*/
+	mainSizer->Add(toolbar, 0, wxEXPAND, 0);
 
 	wxSplitterWindow *splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splitter->SetSashGravity(0.5);
@@ -94,38 +94,38 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxBoxSizer *statusbarSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticBitmap *bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("../Clerk/Resources/Calendar_16xMD.png"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticBitmap *bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_CALENDAR"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
-	periodLabel = new wxStaticText(statusbar, wxID_ANY, wxT("Апрель"), wxDefaultPosition, wxDefaultSize, 0);
+	periodLabel = new wxStaticText(statusbar, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
 	periodLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
 
 	statusbarSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
 	statusbarSizer->Add(20, 0, 0, wxEXPAND, 5);
 
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("../Clerk/Resources/Upload_gray_16xSM.png"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize, 0);
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_UP"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
-	receiptsLabel = new wxStaticText(statusbar, wxID_ANY, wxT("1 200,00"), wxDefaultPosition, wxDefaultSize, 0);
+	receiptsLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
 	receiptsLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
 
 	statusbarSizer->Add(receiptsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("../Clerk/Resources/Download_grey_16xSM.png"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize, 0);
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
-	expensesLabel = new wxStaticText(statusbar, wxID_ANY, wxT("2 500,00"), wxDefaultPosition, wxDefaultSize, 0);
+	expensesLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
 	expensesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
 
 	statusbarSizer->Add(expensesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
 	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
 
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("../Clerk/Resources/AutoSum_16xMD.png"), wxBITMAP_TYPE_ANY), wxDefaultPosition, wxDefaultSize, 0);
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_BALANCE"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
-	balanceLabel = new wxStaticText(statusbar, wxID_ANY, wxT("10 200.00"), wxDefaultPosition, wxDefaultSize, 0);
+	balanceLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
 	balanceLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
 
 	statusbarSizer->Add(balanceLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);

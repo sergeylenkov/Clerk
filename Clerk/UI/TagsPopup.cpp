@@ -1,6 +1,6 @@
 #include "TagsPopup.h"
 
-TagsPopup::TagsPopup(wxWindow *parent) :wxPopupWindow(parent) {
+TagsPopup::TagsPopup(wxWindow *parent) : wxPopupWindow(parent) {
 	panel = new wxScrolledWindow(this, wxID_ANY);
 	panel->SetBackgroundColour(*wxLIGHT_GREY);
 	

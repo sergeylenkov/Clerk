@@ -9,12 +9,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40), wxBORDER_NONE);
+	toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	toolbar->SetBackgroundColour(wxColour(255, 255, 255));
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	addTransactionButton = new SplitButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxDefaultSize);
+	addTransactionButton = new DropDownButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34));
 
 	//addTransactionButton->SetBitmap(wxBitmap(wxT("../Clerk/Resources/AddForm_16x.png"), wxBITMAP_TYPE_ANY));
 	addTransactionButton->SetBackgroundColour(wxColour(255, 255, 255));
@@ -141,6 +141,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	this->Centre(wxBOTH);
 
 	CreateMainMenu();
+	CreateDropdownMenu();
 
 	treeMenu->Update();
 	treeMenu->RestoreState();
@@ -191,7 +192,7 @@ void MainFrame::CreateMainMenu() {
 			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 		}
 
-		menuTransaction->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::OnAddMenuTransaction), NULL, this);
+		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
 	}
 
 	menuFile->AppendSeparator();
@@ -216,6 +217,18 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
+}
+
+void MainFrame::CreateDropdownMenu() {
+	wxMenu *menu = addTransactionButton->GetMenu();
+	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
+
+	for each (auto transaction in transactions)
+	{
+		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+	}
+
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
 }
 
 void MainFrame::UpdateStatus() {

@@ -1,7 +1,7 @@
 #include "BarChart.h"
 
 BarChart::BarChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Connect(wxEVT_PAINT, wxPaintEventHandler(BarChart::OnPaint));
+	this->Bind(wxEVT_PAINT, &BarChart::OnPaint, this);
 }
 
 BarChart::~BarChart() {

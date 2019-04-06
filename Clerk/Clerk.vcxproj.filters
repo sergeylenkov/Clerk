@@ -132,7 +132,7 @@
     <ClCompile Include="Data\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\SplitButton.cpp">
+    <ClCompile Include="UI\Controls\DropDownButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -260,7 +260,7 @@
     <ClInclude Include="Data\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\SplitButton.h">
+    <ClInclude Include="UI\Controls\DropDownButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

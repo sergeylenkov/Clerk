@@ -52,36 +52,30 @@ wxMenu* DropDownButton::GetMenu()
 
 void DropDownButton::OnKillFocus(wxFocusEvent& event)
 {
-	state = wxCONTROL_CURRENT;	
+	state = wxCONTROL_NONE;
 	Refresh();
-
-	event.Skip();
 }
 
 void DropDownButton::OnMouseLeave(wxMouseEvent& event)
 {
 	state = wxCONTROL_NONE;	
 	Refresh();
-
-	event.Skip();
 }
 
 void DropDownButton::OnMouseEnter(wxMouseEvent& event)
 {
 	state = wxCONTROL_CURRENT;
 	Refresh();
-
-	event.Skip();
 }
 
 void DropDownButton::OnLeftButtonUp(wxMouseEvent& event)
 {	
-	state = wxCONTROL_NONE;
-	
+	state = wxCONTROL_NONE;	
 	Refresh();
 
 	int x = -1;
 	int y = -1;
+
 	event.GetPosition(&x, &y);
 
 	if (x < (GetSize().GetWidth() - arrowButtonWidth))
@@ -96,14 +90,13 @@ void DropDownButton::OnLeftButtonUp(wxMouseEvent& event)
 			GetEventHandler()->ProcessEvent(evt);
 		});
 	}
-
-	event.Skip();
 }
 
 void DropDownButton::OnLeftButtonDown(wxMouseEvent& event)
 {
 	int x = -1;
 	int y = -1;
+
 	event.GetPosition(&x, &y);
 
 	if (x >= (GetSize().GetWidth() - arrowButtonWidth))
@@ -119,19 +112,15 @@ void DropDownButton::OnLeftButtonDown(wxMouseEvent& event)
 		position.y = size.GetHeight();
 
 		PopupMenu(menu, position);
-
-		Refresh();
 	}
 	else
 	{
 		state = wxCONTROL_PRESSED;
 		Refresh();
 	}
-
-	event.Skip();
 }
 
-void DropDownButton::OnPaint(wxPaintEvent& WXUNUSED(event))
+void DropDownButton::OnPaint(wxPaintEvent& event)
 {
 	wxPaintDC dc(this);
 	wxSize size = GetSize();
@@ -139,7 +128,7 @@ void DropDownButton::OnPaint(wxPaintEvent& WXUNUSED(event))
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();	
-	
+
 	wxRect r1;
 	r1.x = 0;
 	r1.y = 0;
@@ -148,8 +137,7 @@ void DropDownButton::OnPaint(wxPaintEvent& WXUNUSED(event))
 	
 	if (state == wxCONTROL_NONE && !IsMenuVisible) {
 		dc.SetPen(wxPen(wxColor(255, 255, 255), 1));
-		dc.SetBrush(wxBrush(wxColor(255, 255, 255), wxBRUSHSTYLE_SOLID));
-		
+		dc.SetBrush(wxBrush(wxColor(255, 255, 255), wxBRUSHSTYLE_SOLID));		
 	}
 	else if (state == wxCONTROL_CURRENT) {
 		dc.SetPen(wxPen(wxColor(169, 211, 230), 1));
@@ -206,6 +194,7 @@ bool DropDownButton::Enable(bool enable)
 
 	wxPaintEvent event;
 	ProcessEvent(event);
+
 	Refresh();
 
 	return enable;
@@ -214,6 +203,6 @@ bool DropDownButton::Enable(bool enable)
 void DropDownButton::OnMenuClose(wxMenuEvent& event) {
 	IsMenuVisible = false;
 	state = wxCONTROL_NONE;
-
-	Refresh();
+	
+	Update();
 }

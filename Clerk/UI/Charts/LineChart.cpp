@@ -3,8 +3,8 @@
 LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	currentPopupIndex = -1;
 
-	this->Connect(wxEVT_PAINT, wxPaintEventHandler(LineChart::OnPaint));
-	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);
+	this->Bind(wxEVT_PAINT, &LineChart::OnPaint, this);
+	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
 }
 
 LineChart::~LineChart() {

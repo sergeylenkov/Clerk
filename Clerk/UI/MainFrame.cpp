@@ -1,4 +1,4 @@
-#include "MainFrame.h"
+﻿#include "MainFrame.h"
 
 MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& size) : wxFrame((wxFrame *)NULL, -1, title, pos, size)
 {	
@@ -7,9 +7,32 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
 	this->SetIcon(wxICON(APP_ICON));
 
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+
+	toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+	toolbar->SetBackgroundColour(wxColour(255, 255, 255));
+
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	addTransactionButton = new DropDownButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34));
+
+	//addTransactionButton->SetBitmap(wxBitmap(wxT("../Clerk/Resources/AddForm_16x.png"), wxBITMAP_TYPE_ANY));
+	addTransactionButton->SetBackgroundColour(wxColour(255, 255, 255));
+
+	addTransactionButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddTransaction, this);
+
+	horizontalSizer->Add(addTransactionButton, 0, wxALL, 5);
+
+	toolbar->SetSizer(horizontalSizer);
+	toolbar->Layout();
+
+	mainSizer->Add(toolbar, 0, wxEXPAND, 0);
+
 	wxSplitterWindow *splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	splitter->SetSashGravity(0.5);
 	splitter->SetMinimumPaneSize(300);
+
+	mainSizer->Add(splitter, 1, wxEXPAND, 5);
 
 	wxPanel *splitterLeftPanel = new wxPanel(splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	splitterLeftPanel->SetBackgroundColour(wxColour(245, 245, 245, 1));
@@ -27,7 +50,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnTagsSelect = std::bind(&MainFrame::OnTreeMenuTagsSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
-	treeMenu->OnAddAccount = std::bind(&MainFrame::AddAccount, this);
+	treeMenu->OnAddAccount = std::bind(&MainFrame::OnTreeMenuAddAccount, this, std::placeholders::_1);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
 	treeMenu->OnArchiveAccount = std::bind(&MainFrame::DeleteAccount, this, std::placeholders::_1);
 	treeMenu->OnRestoreAccount = std::bind(&MainFrame::RestoreAccount, this, std::placeholders::_1);
@@ -39,11 +62,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnEmptyTrash = std::bind(&MainFrame::OnEmptyTrash, this);
 
 	boxSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
-	splitterLeftPanel->SetSizer(boxSizer);
-
-	CreateMainMenu();
-	CreateStatusBar();
-	SetStatusText("");
+	splitterLeftPanel->SetSizer(boxSizer);		
 
 	wxPanel *splitterRightPanel = new wxPanel(splitter, wxID_ANY);	
 
@@ -52,7 +71,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	tabsPanel = new TabsPanel(splitterRightPanel, wxID_ANY);
 
-	tabsPanel->OnUpdateStatus = std::bind(&MainFrame::UpdateStatus, this, std::placeholders::_1);
 	tabsPanel->OnAddTransaction = std::bind(&MainFrame::AddTransactionFromContextMenu, this);
 	tabsPanel->OnCopyTransaction = std::bind(&MainFrame::CopyTransaction, this, std::placeholders::_1);
 	tabsPanel->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this, std::placeholders::_1);
@@ -69,12 +87,69 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
+	statusbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20), wxTAB_TRAVERSAL);
+	statusbar->SetBackgroundColour(wxColour(245, 245, 245, 1));
+	statusbar->SetForegroundColour(wxColour(68, 68, 68, 1));
+	statusbar->SetMinSize(wxSize(-1, 20));
+
+	wxBoxSizer *statusbarSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticBitmap *bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_CALENDAR"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	periodLabel = new wxStaticText(statusbar, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
+	periodLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
+
+	statusbarSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+	statusbarSizer->Add(20, 0, 0, wxEXPAND, 5);
+
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_UP"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	receiptsLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
+	receiptsLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+
+	statusbarSizer->Add(receiptsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	expensesLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
+	expensesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+
+	statusbarSizer->Add(expensesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
+
+	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_BALANCE"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	balanceLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
+	balanceLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+
+	statusbarSizer->Add(balanceLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+
+	statusbar->SetSizer(statusbarSizer);
+	statusbar->Layout();
+
+	mainSizer->Add(statusbar, 0, wxEXPAND, 0);
+
+	this->SetSizer(mainSizer);
+	this->Layout();
+
+	this->Centre(wxBOTH);
+
+	CreateMainMenu();
+	CreateDropdownMenu();
+
 	treeMenu->Update();
 	treeMenu->RestoreState();
 
 	tabsPanel->RestoreTabs();
-	tabsPanel->UpdateStatus();
 	
+	UpdateStatus();
+
 	std::thread([=]()
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
@@ -117,7 +192,7 @@ void MainFrame::CreateMainMenu() {
 			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 		}
 
-		menuTransaction->Connect(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler(MainFrame::OnAddMenuTransaction), NULL, this);
+		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
 	}
 
 	menuFile->AppendSeparator();
@@ -144,8 +219,43 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
 
-void MainFrame::UpdateStatus(wxString text) {
-	SetStatusText(text);	
+void MainFrame::CreateDropdownMenu() {
+	wxMenu *menu = addTransactionButton->GetMenu();
+	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
+
+	for each (auto transaction in transactions)
+	{
+		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+	}
+
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
+}
+
+void MainFrame::UpdateStatus() {
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetDay(1);
+	toDate.SetToLastMonthDay();
+
+	float expenses = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
+	float receipts = DataHelper::GetInstance().GetReceipts(&fromDate, &toDate);
+
+	float balance = 0;
+
+	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
+		float amount = DataHelper::GetInstance().GetBalance(account.get());
+
+		if (account->creditLimit == 0) {
+			balance = balance + amount;
+		}
+	}
+
+	periodLabel->SetLabelText(wxDateTime::Now().Format("%B"));
+	receiptsLabel->SetLabelText(wxNumberFormatter::ToString(receipts, 2));
+	expensesLabel->SetLabelText(wxNumberFormatter::ToString(expenses, 2));
+	balanceLabel->SetLabelText(wxNumberFormatter::ToString(balance, 2));
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -155,7 +265,6 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	//wxMessageBox(wxString::Format("Version: %s", APP_VERSION), "About Clerk", wxOK | wxICON_INFORMATION, this);
 	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
 
 	aboutFrame->Show(true);
@@ -163,7 +272,7 @@ void MainFrame::OnAbout(wxCommandEvent &event)
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
-	AddAccount();
+	AddAccount(AccountTypes::Deposit);
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
@@ -244,6 +353,21 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 	}
 	else {
 		tabsPanel->AddTab(type, nullptr);
+	}
+}
+
+void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
+	if (type == TreeMenuItemTypes::MenuReceipts) {
+		AddAccount(AccountTypes::Receipt);
+	}
+	else if (type == TreeMenuItemTypes::MenuExpenses) {
+		AddAccount(AccountTypes::Expens);
+	}
+	else if (type == TreeMenuItemTypes::MenuCredits) {
+		AddAccount(AccountTypes::Credit);
+	}
+	else {
+		AddAccount(AccountTypes::Deposit);
 	}
 }
 
@@ -370,9 +494,10 @@ void MainFrame::OnTransactionClose() {
 	tabsPanel->Update();
 }
 
-void MainFrame::AddAccount() {
+void MainFrame::AddAccount(AccountTypes type) {
 	std::shared_ptr<Account> account = make_shared<Account>();
-	
+	account->type = type;
+
 	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
 
 	accountDialog->SetAccount(account);

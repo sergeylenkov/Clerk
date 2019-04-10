@@ -10,6 +10,7 @@ Account::Account()
 	this->orderId = 1000;
 	this->currency = make_shared<Currency>(152);
 	this->creditLimit = 0;
+	this->isActive = true;
 }
 
 Account::Account(int id) : Account()
@@ -20,7 +21,7 @@ Account::Account(int id) : Account()
 
 void Account::Load()
 {
-	char *sql = "SELECT a.id, a.name, a.note, a.icon_id, a.type_id, a.order_id, a.currency_id, a.credit_limit FROM accounts a WHERE a.id = ?";
+	char *sql = "SELECT a.id, a.name, a.note, a.icon_id, a.type_id, a.order_id, a.currency_id, a.credit_limit, a.active FROM accounts a WHERE a.id = ?";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -35,6 +36,7 @@ void Account::Load()
 			this->orderId = sqlite3_column_int(statement, 5);
 			this->currency = make_shared<Currency>(sqlite3_column_int(statement, 6));
 			this->creditLimit = sqlite3_column_double(statement, 7);
+			this->isActive = sqlite3_column_int(statement, 8);
 		}
 	}
 	
@@ -95,6 +97,8 @@ void Account::Delete()
 	}
 
 	sqlite3_finalize(statement);
+
+	isActive = false;
 }
 
 void Account::Restore() {
@@ -108,4 +112,6 @@ void Account::Restore() {
 	}
 
 	sqlite3_finalize(statement);
+
+	isActive = true;
 }

@@ -101,9 +101,14 @@ void DataHelper::InitData() {
 
 	sqlite3_finalize(statement);
 
+	ReloadAccounts();
+}
+
+void DataHelper::ReloadAccounts() {
 	accounts.clear();
 
-	sql = "SELECT a.id FROM accounts a WHERE a.active = 1 ORDER BY a.type_id, a.order_id";	
+	char *sql = "SELECT a.id FROM accounts a ORDER BY a.type_id, a.order_id";
+	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
@@ -126,7 +131,11 @@ std::vector<std::shared_ptr<Account>> DataHelper::GetAccountsByType(AccountTypes
 	std::vector<std::shared_ptr<Account>> result;
 
 	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [type](const std::shared_ptr<Account>& account) {
-		return account->type == type;
+		if (account->isActive && account->type == type) {
+			return true;
+		}
+
+		return false;
 	});
 
 	return result;
@@ -332,7 +341,7 @@ std::vector<std::shared_ptr<Report>> DataHelper::GetReports() {
 	reports.push_back(report);
 
 	report = make_shared<Report>(3);
-	report->name = make_shared<wxString>("Compare Expenses");
+	report->name = make_shared<wxString>("Expenses For Period");
 
 	reports.push_back(report);
 
@@ -822,19 +831,11 @@ int DataHelper::GetDeletedTransactionsCount() {
 }
 
 std::vector<std::shared_ptr<Account>> DataHelper::GetArchiveAccounts() {
-	auto result = std::vector<std::shared_ptr<Account>>();
+	std::vector<std::shared_ptr<Account>> result;
 
-	char *sql = "SELECT a.id FROM accounts a WHERE a.active = 0 ORDER BY a.order_id";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		while (sqlite3_step(statement) == SQLITE_ROW) {
-			auto account = std::make_shared<Account>(sqlite3_column_int(statement, 0));
-			result.push_back(account);
-		}
-	}
-
-	sqlite3_finalize(statement);
+	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [](const std::shared_ptr<Account>& account) {
+		return !account->isActive;
+	});
 
 	return result;
 }
@@ -947,7 +948,7 @@ void DataHelper::EmptyTrash() {
 void DataHelper::CreateAccountsImageList() {
 	accountsImageList = new wxImageList(16, 16, false);
 
-	for (int i = 0; i <= 50; i++) {
+	for (int i = 0; i <= 62; i++) {
 		wxString path = wxString::Format("Resources\\Accounts Icons\\%d.png", i);
 		wxImage image(path);
 

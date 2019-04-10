@@ -8,8 +8,7 @@
 #include <thread>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
-#include "../Settings.h"
-#include "../TreeMenuItemData.h"
+#include "../Data/Settings.h"
 #include "TreeMenu.h"
 #include "TransactionDialog.h"
 #include "AccountDialog.h"
@@ -19,6 +18,7 @@
 #include "TabsPanel.h"
 #include "GoalDialog.h"
 #include "AboutFrame.h"
+#include "Controls/DropDownButton.h"
 
 enum class MainMenuTypes {
 	About = 1,
@@ -37,14 +37,22 @@ public:
 	~MainFrame();
 
 private:
+	wxPanel *toolbar;
+	wxPanel *statusbar;
 	TreeMenu *treeMenu;
 	TransactionDialog *transactionFrame;
 	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
-	
+	DropDownButton *addTransactionButton;
+	wxStaticText *periodLabel;
+	wxStaticText *receiptsLabel;
+	wxStaticText *expensesLabel;
+	wxStaticText *balanceLabel;
+
 	void CreateMainMenu();
-	void UpdateStatus(wxString text);
+	void CreateDropdownMenu();
+	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
@@ -60,6 +68,7 @@ private:
 	void OnTreeMenuTagsSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
+	void OnTreeMenuAddAccount(TreeMenuItemTypes type);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);
 	void OnAddScheduler(wxCommandEvent &event);
@@ -70,7 +79,7 @@ private:
 	void EditTransaction(std::shared_ptr<Transaction> transaction);
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void OnTransactionClose();
-	void AddAccount();
+	void AddAccount(AccountTypes type);
 	void EditAccount(std::shared_ptr<Account> account);
 	void DeleteAccount(std::shared_ptr<Account> account);
 	void RestoreAccount(std::shared_ptr<Account> account);

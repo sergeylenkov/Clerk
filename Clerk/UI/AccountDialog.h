@@ -11,7 +11,7 @@ public:
 	~AccountDialog();
 
 	void SetAccount(std::shared_ptr<Account> account);
-
+	
 	std::function<void()> OnClose;
 
 private:

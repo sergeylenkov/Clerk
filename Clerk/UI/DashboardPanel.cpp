@@ -378,13 +378,13 @@ void DashboardPanel::Draw() {
 			int width = (progressWidth / 100.0) * goal.percent;
 
 			if (goal.percent <= 50) {
-				dc.SetPen(wxPen(color0, 3));
+				dc.SetPen(wxPen(color100, 3));
 			}
 			else if (goal.percent > 50 && goal.percent <= 80) {
 				dc.SetPen(wxPen(color50, 3));
 			}
 			else {
-				dc.SetPen(wxPen(color100, 3));
+				dc.SetPen(wxPen(color0, 3));
 			}
 
 			if (width > progressWidth) {

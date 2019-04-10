@@ -7,7 +7,7 @@
 #include <wx/defs.h>
 #include <functional>
 #include "../Data/DataHelper.h"
-#include "../TagsPopup.h"
+#include "TagsPopup.h"
 
 using namespace std;
 

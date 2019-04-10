@@ -1,14 +1,14 @@
 #include "BarChart.h"
 
 BarChart::BarChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Connect(wxEVT_PAINT, wxPaintEventHandler(BarChart::OnPaint));
+	this->Bind(wxEVT_PAINT, &BarChart::OnPaint, this);
 }
 
 BarChart::~BarChart() {
 
 }
 
-void BarChart::SetValues(map<wxString, float> values) {
+void BarChart::SetValues(std::vector<StringValue> values) {
 	_values = values;
 	Draw();
 }
@@ -19,7 +19,7 @@ void BarChart::Draw() {
 	}
 
 	wxClientDC dc(this);
-	
+
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
@@ -29,31 +29,111 @@ void BarChart::Draw() {
 	this->DoGetSize(&width, &height);
 
 	auto ptr = max_element(_values.begin(), _values.end(),
-		[](const pair<wxString, float>& p1, const pair<wxString, float>& p2) {
-			return p1.second < p2.second; 
-		});
+		[](const StringValue p1, const StringValue p2) {
+		return p1.value < p2.value;
+	});
 
-	int offsetX = 100;
+	float maxValue = ptr->value;
+	int maxX = round(maxValue);
+	int labelStepX = 10;
+
+	if (maxX <= 1000) {
+		maxX = ceil(maxValue / 100) * 100;
+		labelStepX = 100;
+	}
+	else if (maxX > 1000 && maxX <= 10000) {
+		maxX = ceil(maxValue / 1000) * 1000;
+		labelStepX = 1000;
+	}
+	else if (maxX > 10000 && maxX <= 100000) {
+		maxX = ceil(maxValue / 10000) * 10000;
+		labelStepX = 10000;
+	}
+	else if (maxX > 10000 && maxX <= 100000) {
+		maxX = ceil(maxValue / 100000) * 100000;
+		labelStepX = 20000;
+	}
+	else if (maxX > 100000 && maxX <= 1000000) {
+		maxX = ceil(maxValue / 100000) * 100000;
+		labelStepX = 50000;
+	}
+	else {
+		maxX = ceil(maxValue / 100000) * 100000;
+		labelStepX = 100000;
+	}
+
+	wxString maxValueString = wxNumberFormatter::ToString(maxValue, 2);
+	wxSize maxSize = dc.GetTextExtent(maxValueString);
+
 	int offsetY = 20;
+	float stepY = (height - offsetY) / _values.size();
+	
+	//offsetY = 20;	
+	//stepY =  //(height - offsetY - 10) / (float)maxY;
 
-	int stepX = (width - offsetX) / _values.size();
-	float stepY = (height - offsetY) / ptr->second;	
+	int maxLabelWidth = 0;
 
-	dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+	for (unsigned int i = 0; i < _values.size(); i++) {
+		wxSize size = dc.GetTextExtent(_values[i].string);
 
-	dc.DrawLabel("100", wxRect(0, 0, 100, 20), 0);
+		if (size.GetWidth() > maxLabelWidth) {
+			maxLabelWidth = size.GetWidth();
+		}
+	}
 
-	dc.SetBrush(wxColor(10, 110, 170));
-	dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
+	int offsetX = maxLabelWidth + 10;
+	int barMaxWidth = width - offsetX;
+	float stepX = barMaxWidth / (float)maxX;
 
-	int i = 0;
+	dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
+	dc.DrawLine(offsetX, height - offsetY, width, height - offsetY);
 
-	for (auto it = _values.begin(); it != _values.end(); it++) {
-		int x = round(i * stepX) + offsetX;
-		int y = round(it->second * stepY);
+	for (int i = 0; i <= maxX; i += labelStepX) {
+		wxString label = wxNumberFormatter::ToString((float)i, 0);
+		wxSize size = dc.GetTextExtent(label);
 
-		dc.DrawRectangle(x, height - y, stepX - 1, height);
-		i++;
+		int x = offsetX + round(i * stepX);
+		int labelX = x - size.GetWidth() / 2;
+		int y = height - size.GetHeight();
+
+		if (labelX > width - size.GetWidth()) {
+			labelX = width - size.GetWidth();
+		}
+
+		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+		dc.DrawText(label, wxPoint(labelX, y));
+
+		if (x >= width) {
+			x = width - 1;
+		}
+
+		dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
+		dc.DrawLine(x, 0, x, height - offsetY);
+	}
+
+	int y = offsetY;
+	int barSize = 10;
+
+	for (unsigned int i = 0; i < _values.size(); i++) {
+		wxSize size = dc.GetTextExtent(_values[i].string);
+
+		int x = maxLabelWidth - size.GetWidth();
+
+		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
+		dc.DrawText(_values[i].string, wxPoint(x, y - (size.GetHeight() / 2) - 2));
+
+		dc.SetBrush(wxColor(10, 110, 170));
+		dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
+
+		int barWidth = round(_values[i].value * stepX);
+
+		if (barWidth < 5) {
+			barWidth = 5;
+		}
+
+		dc.DrawRectangle(offsetX, y - (barSize / 2), barWidth, barSize);
+
+		y = y + stepY;
 	}
 }
 

@@ -18,15 +18,6 @@
     <ClCompile Include="Clerk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TreeMenuItemData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Settings.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TagsPopup.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\Account.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -126,10 +117,22 @@
     <ClCompile Include="UI\AboutFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ReportBalancePanel.cpp">
+    <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ReportExpensesPanel.cpp">
+    <ClCompile Include="UI\Reports\ReportExpensesByMonthPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TagsPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\DropDownButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -137,16 +140,7 @@
     <ClInclude Include="Clerk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TreeMenuItemData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Defines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Settings.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TagsPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Account.h">
@@ -251,10 +245,22 @@
     <ClInclude Include="UI\AboutFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ReportBalancePanel.h">
+    <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ReportExpensesPanel.h">
+    <ClInclude Include="UI\Reports\ReportExpensesByMonthPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TagsPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Settings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\DropDownButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

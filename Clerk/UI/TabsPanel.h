@@ -3,17 +3,18 @@
 #include <memory>
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
-#include "../Settings.h"
-#include "../TreeMenuItemData.h"
+#include "../Data/Settings.h"
 #include "TransactionsListPanel.h"
 #include "DashboardPanel.h"
-#include "./Reports/ReportExpensesPanel.h"
-#include "./Reports/ReportBalancePanel.h"
+#include "./Reports/ReportExpensesByMonthPanel.h"
+#include "./Reports/ReportBalanceByMonthPanel.h"
+#include "./Reports/ReportExpensesForPeriodPanel.h"
 #include "BudgetsPanel.h"
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"
 #include "GoalsPanel.h"
 #include "TagsPanel.h"
+#include "TreeMenu.h"
 
 enum class TabsMenuTypes {
 	MoveLeft = 1,
@@ -34,7 +35,6 @@ public:
 	bool IsTabExists(TreeMenuItemTypes type, int id = 0);
 	void SelectTab(TreeMenuItemTypes type, int id = 0);
 	void Update();
-	void UpdateStatus();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
 	std::shared_ptr<Budget> GetSelectedBudget();
 	std::shared_ptr<Account> GetSelectedAccount();

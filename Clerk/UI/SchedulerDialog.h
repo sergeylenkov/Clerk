@@ -6,7 +6,7 @@
 #include <wx/valnum.h>
 #include <wx/wrapsizer.h>
 #include "../Data/DataHelper.h"
-#include "../TagsPopup.h"
+#include "TagsPopup.h"
 
 class SchedulerDialog : public wxFrame
 {

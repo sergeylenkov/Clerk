@@ -723,7 +723,7 @@ void TransactionsListPanel::RestoreFilterSettings() {
 		id = account->id;
 	}
 
-	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(type, id);
+	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(static_cast<int>(type), id);
 
 	periodFromDate = settings.fromDate;
 	periodToDate = settings.toDate;
@@ -740,7 +740,7 @@ void TransactionsListPanel::SaveFilterSettings() {
 		id = account->id;
 	}
 
-	Settings::GetInstance().SetListFilterSettings(type, id, periodList->GetSelection(), periodFromDate, periodToDate);
+	Settings::GetInstance().SetListFilterSettings(static_cast<int>(type), id, periodList->GetSelection(), periodFromDate, periodToDate);
 }
 
 void TransactionsListPanel::SaveColumnsSettings() {

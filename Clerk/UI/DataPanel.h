@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../TreeMenuItemData.h"
+#include "TreeMenu.h"
 
 class DataPanel : public wxPanel
 {
@@ -12,4 +12,3 @@ public:
 	TreeMenuItemTypes type;
 	int id;
 };
-

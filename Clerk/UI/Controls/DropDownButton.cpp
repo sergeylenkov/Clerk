@@ -125,7 +125,7 @@ void DropDownButton::OnPaint(wxPaintEvent& event)
 	wxPaintDC dc(this);
 	wxSize size = GetSize();
 	const int width = size.GetWidth() - arrowButtonWidth;
-
+	wxLogDebug("OnPaint %d %d", state, IsMenuVisible);
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();	
 
@@ -203,6 +203,6 @@ bool DropDownButton::Enable(bool enable)
 void DropDownButton::OnMenuClose(wxMenuEvent& event) {
 	IsMenuVisible = false;
 	state = wxCONTROL_NONE;
-	
-	Update();
+
+	Refresh();
 }

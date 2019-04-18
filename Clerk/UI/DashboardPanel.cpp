@@ -1,7 +1,8 @@
 #include "DashboardPanel.h"
 
 DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
-	this->Connect(wxEVT_PAINT, wxPaintEventHandler(DashboardPanel::OnPaint));
+	schedulersPanel = new DashboardSchedulersPanel(this, wxID_ANY);
+	schedulersPanel->SetSize(500, 400);
 
 	paddingX = 20;
 	paddingY = 20;
@@ -9,6 +10,8 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	color0 = wxColor(165, 210, 75);
 	color50 = wxColor(250, 210, 50);
 	color100 = wxColor(185, 25, 0);
+
+	this->Bind(wxEVT_PAINT, &DashboardPanel::OnPaint, this);
 }
 
 DashboardPanel::~DashboardPanel() {
@@ -17,6 +20,8 @@ DashboardPanel::~DashboardPanel() {
 void DashboardPanel::Update() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
+	wxDateTime today = wxDateTime::Now();
+	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
 
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
@@ -27,10 +32,12 @@ void DashboardPanel::Update() {
 	budgets.clear();
 	credits.clear();
 	goals.clear();
+	
+	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 
 	float sum = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
 
@@ -48,13 +55,13 @@ void DashboardPanel::Update() {
 
 	totalBalance = wxNumberFormatter::ToString(sum, 2);
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
 		float amount = DataHelper::GetInstance().GetBalance(account.get());
 		virtualBalance.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2) });
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		float remainAmount = abs(DataHelper::GetInstance().GetBalance(account.get()));
 		float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(account.get()));
@@ -71,11 +78,11 @@ void DashboardPanel::Update() {
 		return a.value > b.value;
 	});
 
-	for each (auto value in values) {
+	for (auto value : values) {
 		expenses.push_back({ value.string, wxNumberFormatter::ToString(value.value, 2) });
 	}
 
-	for each (auto budget in DataHelper::GetInstance().GetBudgets())
+	for (auto budget : DataHelper::GetInstance().GetBudgets())
 	{
 		float currentAmount = 0.0;
 		wxDateTime toDate = wxDateTime::Now();
@@ -93,7 +100,7 @@ void DashboardPanel::Update() {
 		budgets.push_back({ *budget->name, wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
-	for each (auto goal in DataHelper::GetInstance().GetGoals()) {
+	for (auto goal : DataHelper::GetInstance().GetGoals()) {
 		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
 
 		float remainAmount = goal->amount - currentAmount;

@@ -135,6 +135,9 @@
     <ClCompile Include="UI\Controls\DropDownButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -261,6 +264,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\DropDownButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

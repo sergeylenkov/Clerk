@@ -55,6 +55,7 @@ public:
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
 	std::vector<std::shared_ptr<Budget>> GetBudgets();
 	std::vector<std::shared_ptr<Scheduler>> GetSchedulers();
+	std::vector<std::shared_ptr<Scheduler>> GetSchedulers(wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Goal>> GetGoals();
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);

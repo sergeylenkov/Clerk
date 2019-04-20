@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="UI\Controls\DropDownButton.cpp" />
+    <ClCompile Include="UI\Dashboard\DashboardBudgetsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp" />
     <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp" />
     <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp" />
@@ -119,6 +120,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UI\Controls\DropDownButton.h" />
+    <ClInclude Include="UI\Dashboard\DashboardBudgetsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h" />
     <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h" />
     <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h" />

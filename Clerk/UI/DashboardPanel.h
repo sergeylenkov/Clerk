@@ -4,6 +4,7 @@
 #include <wx/numformatter.h>
 #include "DataPanel.h"
 #include "./Dashboard/DashboardSchedulersPanel.h"
+#include "./Dashboard/DashboardBudgetsPanel.h"
 
 struct DashboardAccountBalance
 {
@@ -30,6 +31,7 @@ public:
 
 private:
 	DashboardSchedulersPanel *schedulersPanel;
+	DashboardBudgetsPanel *budgetsPanel;
 	std::vector<DashboardAccountBalance> balance;
 	std::vector<DashboardAccountBalance> virtualBalance;
 	std::vector<DashboardAccountBalance> expenses;	

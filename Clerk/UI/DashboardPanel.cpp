@@ -4,6 +4,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	schedulersPanel = new DashboardSchedulersPanel(this, wxID_ANY);
 	schedulersPanel->SetSize(500, 400);
 
+	budgetsPanel = new DashboardBudgetsPanel(this, wxID_ANY);
+	budgetsPanel->SetSize(500, 400);
+
 	paddingX = 20;
 	paddingY = 20;
 
@@ -34,6 +37,7 @@ void DashboardPanel::Update() {
 	goals.clear();
 	
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
+	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 
 	float sum = 0;
 

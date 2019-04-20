@@ -138,6 +138,9 @@
     <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardBudgetsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -267,6 +270,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardBudgetsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

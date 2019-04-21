@@ -52,9 +52,7 @@ void DashboardExpensesPanel::Draw() {
 	dc.DrawText("Expenses", wxPoint(0, 0));
 
 	wxFont accountFont = this->GetFont();
-
-	wxFont amountFont = this->GetFont();
-	amountFont.SetWeight(wxFONTWEIGHT_BOLD);
+	wxFont amountFont = this->GetFont();	
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));

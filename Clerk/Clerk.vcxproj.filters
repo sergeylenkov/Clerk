@@ -144,6 +144,9 @@
     <ClCompile Include="UI\Dashboard\DashboardExpensesPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardAccountsPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -279,6 +282,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Dashboard\DashboardExpensesPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardAccountsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

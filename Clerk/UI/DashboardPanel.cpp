@@ -10,6 +10,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	expensesPanel = new DashboardExpensesPanel(this, wxID_ANY);
 	expensesPanel->SetSize(300, 500);
 
+	accountsPanel = new DashboardAccountsPanel(this, wxID_ANY);
+	accountsPanel->SetSize(300, 500);
+
 	paddingX = 20;
 	paddingY = 20;
 
@@ -42,6 +45,22 @@ void DashboardPanel::Update() {
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
+
+	std::vector<StringValue> accounts;
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
+		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		accounts.push_back({ *account->name, amount });
+	}
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
+	{
+		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		accounts.push_back({ *account->name, amount });
+	}
+
+	accountsPanel->SetAccounts(accounts);
 
 	float sum = 0;
 

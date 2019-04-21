@@ -5,15 +5,6 @@
 #include <map>
 #include "../../Data//DataHelper.h"
 
-struct DahboardBudgetValue
-{
-	wxString name;
-	wxString amount;
-	wxString currentAmount;
-	wxString remainAmount;
-	float percent;
-};
-
 class DashboardBudgetsPanel : public wxPanel
 {
 public:
@@ -29,8 +20,7 @@ private:
 	int daysCount;
 	int currentDay;
 
-	void Draw();	
-	void DrawHeader();
+	void Draw();
 	void OnPaint(wxPaintEvent& event);
 };
 

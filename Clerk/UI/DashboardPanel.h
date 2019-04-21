@@ -5,6 +5,7 @@
 #include "DataPanel.h"
 #include "./Dashboard/DashboardSchedulersPanel.h"
 #include "./Dashboard/DashboardBudgetsPanel.h"
+#include "./Dashboard/DashboardExpensesPanel.h"
 
 struct DashboardAccountBalance
 {
@@ -32,6 +33,7 @@ public:
 private:
 	DashboardSchedulersPanel *schedulersPanel;
 	DashboardBudgetsPanel *budgetsPanel;
+	DashboardExpensesPanel *expensesPanel;
 	std::vector<DashboardAccountBalance> balance;
 	std::vector<DashboardAccountBalance> virtualBalance;
 	std::vector<DashboardAccountBalance> expenses;	

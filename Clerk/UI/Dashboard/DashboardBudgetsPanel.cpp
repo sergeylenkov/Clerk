@@ -175,20 +175,6 @@ void DashboardBudgetsPanel::Draw() {
 	dc.DrawText(monthStr, wxPoint((progressX + x) - (size.GetWidth() / 2), y + 2));
 }
 
-void DashboardBudgetsPanel::DrawHeader() {
-	wxClientDC dc(this);
-
-	int width = 0;
-	int height = 0;
-
-	this->DoGetSize(&width, &height);
-
-	int y = 80;
-
-	dc.SetPen(wxPen(wxColor(203, 203, 203), 1));
-	dc.DrawLine(0, y, width, y);
-}
-
 void DashboardBudgetsPanel::OnPaint(wxPaintEvent& event) {
 	Draw();
 }

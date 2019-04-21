@@ -7,6 +7,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	budgetsPanel = new DashboardBudgetsPanel(this, wxID_ANY);
 	budgetsPanel->SetSize(500, 400);
 
+	expensesPanel = new DashboardExpensesPanel(this, wxID_ANY);
+	expensesPanel->SetSize(300, 500);
+
 	paddingX = 20;
 	paddingY = 20;
 
@@ -38,6 +41,7 @@ void DashboardPanel::Update() {
 	
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
+	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
 
 	float sum = 0;
 

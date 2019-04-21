@@ -29,6 +29,15 @@ struct StringValue
 	float value;
 };
 
+struct DahboardBudgetValue
+{
+	wxString name;
+	wxString amount;
+	wxString currentAmount;
+	wxString remainAmount;
+	float percent;
+};
+
 class DataHelper
 {
 public:

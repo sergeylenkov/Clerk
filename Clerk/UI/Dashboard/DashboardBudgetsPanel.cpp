@@ -99,6 +99,12 @@ void DashboardBudgetsPanel::Draw() {
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
+	wxSize size = dc.GetTextExtent("Budget");
+	dc.DrawText("Budget", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
+
+	size = dc.GetTextExtent("Remain");
+	dc.DrawText("Remain", wxPoint(width - size.GetWidth(), y));
+
 	y = y + 20;
 
 	dc.SetPen(wxPen(wxColor(203, 203, 203), 1));
@@ -169,7 +175,7 @@ void DashboardBudgetsPanel::Draw() {
 	dc.DrawLine(progressX + x, 100, progressX + x, y);
 
 	wxString monthStr = wxDateTime::Now().Format("%b %d").Upper();
-	wxSize size = dc.GetTextExtent(monthStr);
+	size = dc.GetTextExtent(monthStr);
 
 	int rectWidth = size.GetWidth() + 10;
 	int rectHeight = size.GetHeight() + 5;

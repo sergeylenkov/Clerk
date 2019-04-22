@@ -24,9 +24,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	leftPanel->Layout();
 
 	leftSizer->Fit(leftPanel);
-	horizontalSizer->Add(leftPanel, 1, wxEXPAND | wxALL, 5);
+	horizontalSizer->Add(leftPanel, 3, wxEXPAND | wxALL, 5);
 
-	horizontalSizer->Add(50, 0, 0, wxEXPAND, 0);
+	horizontalSizer->Add(0, 0, 1, wxEXPAND, 0);
 
 	rightPanel = new wxPanel(scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
@@ -41,7 +41,7 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	rightPanel->Layout();
 	rightSizer->Fit(rightPanel);
 
-	horizontalSizer->Add(rightPanel, 2, wxEXPAND | wxALL, 5);
+	horizontalSizer->Add(rightPanel, 6, wxEXPAND | wxALL, 5);
 
 	scrolledWindow->SetSizer(horizontalSizer);
 	scrolledWindow->Layout();
@@ -64,13 +64,6 @@ void DashboardPanel::Update() {
 
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
-
-	/*balance.clear();
-	virtualBalance.clear();
-	expenses.clear();
-	budgets.clear();
-	credits.clear();
-	goals.clear();*/
 	
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());

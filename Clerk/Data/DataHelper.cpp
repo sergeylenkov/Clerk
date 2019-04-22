@@ -309,6 +309,27 @@ std::vector<std::shared_ptr<Scheduler>> DataHelper::GetSchedulers() {
 	return result;
 }
 
+std::vector<std::shared_ptr<Scheduler>> DataHelper::GetSchedulers(wxDateTime *from, wxDateTime *to) {
+	auto result = std::vector<std::shared_ptr<Scheduler>>();
+
+	char *sql = "SELECT id FROM schedulers WHERE next_date >= ? AND next_date <= ? AND active = 1 ORDER BY next_date, name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto scheduler = make_shared<Scheduler>(sqlite3_column_int(statement, 0));
+			result.push_back(scheduler);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Goal>> DataHelper::GetGoals() {
 	auto result = std::vector<std::shared_ptr<Goal>>();
 

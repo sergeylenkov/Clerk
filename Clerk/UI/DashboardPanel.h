@@ -3,21 +3,13 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "DataPanel.h"
-
-struct DashboardAccountBalance
-{
-	wxString name;
-	wxString value;
-};
-
-struct DahboardBudget
-{
-	wxString name;
-	wxString amount;
-	wxString currentAmount;
-	wxString remainAmount;
-	float percent;
-};
+#include "./Dashboard/DashboardSchedulersPanel.h"
+#include "./Dashboard/DashboardBudgetsPanel.h"
+#include "./Dashboard/DashboardExpensesPanel.h"
+#include "./Dashboard/DashboardAccountsPanel.h"
+#include "./Dashboard/DashboardBalancePanel.h"
+#include "./Dashboard/DashboardGoalsPanel.h"
+#include "./Dashboard/DashboardCreditsPanel.h"
 
 class DashboardPanel : public DataPanel
 {
@@ -28,23 +20,15 @@ public:
 	void Update();
 
 private:
-	std::vector<DashboardAccountBalance> balance;
-	std::vector<DashboardAccountBalance> virtualBalance;
-	std::vector<DashboardAccountBalance> expenses;	
-	std::vector<DahboardBudget> budgets;
-	std::vector<DahboardBudget> credits;
-	std::vector<DahboardBudget> goals;
-	wxString totalBalance;
-	wxString totalExpenses;
-
-	int paddingX;
-	int paddingY;
-
-	wxColor color0;
-	wxColor color50;
-	wxColor color100;
-
-	void Draw();
-	void OnPaint(wxPaintEvent& event);
+	wxScrolledWindow *scrolledWindow;
+	wxPanel *leftPanel;
+	wxPanel *rightPanel;
+	DashboardSchedulersPanel *schedulersPanel;
+	DashboardBudgetsPanel *budgetsPanel;
+	DashboardExpensesPanel *expensesPanel;
+	DashboardAccountsPanel *accountsPanel;
+	DashboardBalancePanel *balancePanel;
+	DashboardGoalsPanel *goalsPanel;
+	DashboardCreditsPanel *creditsPanel;
 };
 

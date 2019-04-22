@@ -1,36 +1,47 @@
-#include "DashboardGoalsPanel.h"
+#include "DashboardCreditsPanel.h"
 
-DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
+DashboardCreditsPanel::DashboardCreditsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+	this->Bind(wxEVT_PAINT, &DashboardCreditsPanel::OnPaint, this);
 }
 
-DashboardGoalsPanel::~DashboardGoalsPanel() {
+DashboardCreditsPanel::~DashboardCreditsPanel() {
 }
 
-void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
-	this->goals = goals;
+void DashboardCreditsPanel::SetCredits(std::vector<std::shared_ptr<Account>> credits) {
+	this->credits = credits;	
 	values.clear();
 
-	for (auto goal : goals) {
-		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
-		float remainAmount = goal->amount - currentAmount;
-		float remainPercent = currentAmount / (goal->amount / 100.0);		
+	for (auto account : credits) {
+		if (account->creditLimit > 0) {
+			float amount = DataHelper::GetInstance().GetBalance(account.get());
+			float currentAmount = account->creditLimit + amount;
+			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-		values.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+			values.push_back({ *account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(amount, 2), remainPercent });
+		}
+		else {
+			float remainAmount = abs(DataHelper::GetInstance().GetBalance(account.get()));
+			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(account.get()));
+			float currentAmount = DataHelper::GetInstance().GetAccountTotalReceipt(account.get());
+
+			float remainPercent = (currentAmount / amount) * 100.0;
+
+			values.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+		}
 	}
 
 	Update();
 }
 
-void DashboardGoalsPanel::Update()
+void DashboardCreditsPanel::Update()
 {
-	int height = 170 + (goals.size() * 30);
+	int height = 170 + (credits.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Draw();
 }
 
-void DashboardGoalsPanel::Draw() {
+void DashboardCreditsPanel::Draw() {
 	wxClientDC dc(this);
 
 	int width = 0;
@@ -46,7 +57,7 @@ void DashboardGoalsPanel::Draw() {
 	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Goals", wxPoint(0, 0));
+	dc.DrawText("Credits", wxPoint(0, 0));
 
 	wxFont font = this->GetFont();
 	font.SetPointSize(8);
@@ -83,8 +94,8 @@ void DashboardGoalsPanel::Draw() {
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
-	wxSize size = dc.GetTextExtent("Goal");
-	dc.DrawText("Goal", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
+	wxSize size = dc.GetTextExtent("Credit");
+	dc.DrawText("Credit", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
 
 	size = dc.GetTextExtent("Remain");
 	dc.DrawText("Remain", wxPoint(width - size.GetWidth(), y));
@@ -153,6 +164,6 @@ void DashboardGoalsPanel::Draw() {
 	}
 }
 
-void DashboardGoalsPanel::OnPaint(wxPaintEvent& event) {
+void DashboardCreditsPanel::OnPaint(wxPaintEvent& event) {
 	Draw();
 }

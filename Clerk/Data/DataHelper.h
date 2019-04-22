@@ -29,7 +29,7 @@ struct StringValue
 	float value;
 };
 
-struct DahboardBudgetValue
+struct DahboardProgressValue
 {
 	wxString name;
 	wxString amount;

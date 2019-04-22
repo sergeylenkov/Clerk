@@ -15,10 +15,8 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Goal>> goals;
-	std::vector<DahboardBudgetValue> values;
-	int daysCount;
-	int currentDay;
-
+	std::vector<DahboardProgressValue> values;
+	
 	void Draw();
 	void OnPaint(wxPaintEvent& event);
 };

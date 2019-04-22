@@ -69,7 +69,7 @@ void DashboardBalancePanel::Draw() {
 	}
 
 	y = 50;
-	int x = columnWidth + 60;
+	int x = columnWidth + 80;
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText("Credit funds", wxPoint(x, y));

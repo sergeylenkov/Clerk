@@ -79,6 +79,7 @@
     <ClCompile Include="UI\Dashboard\DashboardAccountsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBalancePanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBudgetsPanel.cpp" />
+    <ClCompile Include="UI\Dashboard\DashboardCreditsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardExpensesPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp" />
@@ -127,6 +128,7 @@
     <ClInclude Include="UI\Dashboard\DashboardAccountsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBalancePanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBudgetsPanel.h" />
+    <ClInclude Include="UI\Dashboard\DashboardCreditsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardExpensesPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h" />

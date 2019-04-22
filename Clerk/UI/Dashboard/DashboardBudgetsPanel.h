@@ -16,7 +16,7 @@ public:
 
 private:
 	std::vector<std::shared_ptr<Budget>> budgets;
-	std::vector<DahboardBudgetValue> values;
+	std::vector<DahboardProgressValue> values;
 	int daysCount;
 	int currentDay;
 

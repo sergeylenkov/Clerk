@@ -124,6 +124,10 @@ void DashboardBudgetsPanel::Draw() {
 		int progressY = y + size.GetHeight() / 2;
 		int percentWidth = (progressWidth / 100) * value.percent;
 
+		if (percentWidth > progressWidth) {
+			percentWidth = progressWidth;
+		}
+
 		dc.SetPen(wxPen(wxColor(216, 216, 216), 1));
 		dc.SetBrush(wxBrush(wxColor(216, 216, 216)));
 

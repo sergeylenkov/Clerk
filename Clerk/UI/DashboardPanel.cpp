@@ -13,6 +13,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	accountsPanel = new DashboardAccountsPanel(this, wxID_ANY);
 	accountsPanel->SetSize(300, 500);
 
+	balancePanel = new DashboardBalancePanel(this, wxID_ANY);
+	balancePanel->SetSize(300, 500);
+
 	paddingX = 20;
 	paddingY = 20;
 
@@ -46,7 +49,7 @@ void DashboardPanel::Update() {
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
 
-	std::vector<StringValue> accounts;
+	/*std::vector<StringValue> accounts;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -60,9 +63,38 @@ void DashboardPanel::Update() {
 		accounts.push_back({ *account->name, amount });
 	}
 
-	accountsPanel->SetAccounts(accounts);
+	accountsPanel->SetAccounts(accounts);*/
 
-	float sum = 0;
+	std::map<wxString, float> ownFounds;
+	std::map<wxString, float> creditFounds;
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
+		float amount = DataHelper::GetInstance().GetBalance(account.get());
+
+		if (account->creditLimit > 0) {
+			float currentAmount = account->creditLimit + amount;
+
+			if (creditFounds[*account->currency->shortName]) {
+				creditFounds[*account->currency->shortName] = creditFounds[*account->currency->shortName] + currentAmount;
+			}
+			else {
+				creditFounds[*account->currency->shortName] = currentAmount;
+			}
+		}
+		else {
+			if (ownFounds[*account->currency->shortName]) {
+				ownFounds[*account->currency->shortName] = ownFounds[*account->currency->shortName] + amount;
+			}
+			else {
+				ownFounds[*account->currency->shortName] = amount;
+			}
+		}
+	}
+
+	balancePanel->SetBalance(ownFounds, creditFounds);
+
+	/*float sum = 0;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -138,7 +170,7 @@ void DashboardPanel::Update() {
 
 	totalExpenses = wxNumberFormatter::ToString(DataHelper::GetInstance().GetExpenses(&fromDate, &toDate), 2);
 
-	Draw();
+	Draw();*/
 }
 
 void DashboardPanel::Draw() {

@@ -16,6 +16,9 @@ void DashboardBalancePanel::SetBalance(std::map<wxString, float> own, std::map<w
 
 void DashboardBalancePanel::Update()
 {
+	int height = 100 + (ownFunds.size() * 30);	
+	this->SetMinSize(wxSize(-1, height));
+
 	Draw();
 }
 

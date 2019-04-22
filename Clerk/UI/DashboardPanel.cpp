@@ -1,29 +1,56 @@
 #include "DashboardPanel.h"
 
 DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
-	schedulersPanel = new DashboardSchedulersPanel(this, wxID_ANY);
-	schedulersPanel->SetSize(500, 400);
+	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
-	budgetsPanel = new DashboardBudgetsPanel(this, wxID_ANY);
-	budgetsPanel->SetSize(500, 400);
+	scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
+	scrolledWindow->SetScrollRate(5, 5);
 
-	expensesPanel = new DashboardExpensesPanel(this, wxID_ANY);
-	expensesPanel->SetSize(300, 500);
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	accountsPanel = new DashboardAccountsPanel(this, wxID_ANY);
-	accountsPanel->SetSize(300, 500);
+	leftPanel = new wxPanel(scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
-	balancePanel = new DashboardBalancePanel(this, wxID_ANY);
-	balancePanel->SetSize(300, 500);
+	balancePanel = new DashboardBalancePanel(leftPanel, wxID_ANY);
+	leftSizer->Add(balancePanel, 0, wxEXPAND | wxALL, 5);
 
-	paddingX = 20;
-	paddingY = 20;
+	accountsPanel = new DashboardAccountsPanel(leftPanel, wxID_ANY);
+	leftSizer->Add(accountsPanel, 0, wxEXPAND | wxALL, 5);
 
-	color0 = wxColor(165, 210, 75);
-	color50 = wxColor(250, 210, 50);
-	color100 = wxColor(185, 25, 0);
+	expensesPanel = new DashboardExpensesPanel(leftPanel, wxID_ANY);
+	leftSizer->Add(expensesPanel, 0, wxEXPAND | wxALL, 5);
 
-	this->Bind(wxEVT_PAINT, &DashboardPanel::OnPaint, this);
+	leftPanel->SetSizer(leftSizer);
+	leftPanel->Layout();
+
+	leftSizer->Fit(leftPanel);
+	horizontalSizer->Add(leftPanel, 1, wxEXPAND | wxALL, 5);
+
+	horizontalSizer->Add(50, 0, 0, wxEXPAND, 0);
+
+	rightPanel = new wxPanel(scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
+
+	schedulersPanel = new DashboardSchedulersPanel(rightPanel, wxID_ANY);
+	rightSizer->Add(schedulersPanel, 0, wxEXPAND | wxALL, 5);
+
+	budgetsPanel = new DashboardBudgetsPanel(rightPanel, wxID_ANY);
+	rightSizer->Add(budgetsPanel, 0, wxEXPAND | wxALL, 5);
+
+	rightPanel->SetSizer(rightSizer);
+	rightPanel->Layout();
+	rightSizer->Fit(rightPanel);
+
+	horizontalSizer->Add(rightPanel, 2, wxEXPAND | wxALL, 5);
+
+	scrolledWindow->SetSizer(horizontalSizer);
+	scrolledWindow->Layout();
+
+	horizontalSizer->Fit(scrolledWindow);
+	mainSizer->Add(scrolledWindow, 1, wxEXPAND | wxALL, 0);
+
+	this->SetSizer(mainSizer);
+	this->Layout();
 }
 
 DashboardPanel::~DashboardPanel() {
@@ -38,18 +65,18 @@ void DashboardPanel::Update() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 
-	balance.clear();
+	/*balance.clear();
 	virtualBalance.clear();
 	expenses.clear();
 	budgets.clear();
 	credits.clear();
-	goals.clear();
+	goals.clear();*/
 	
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
 
-	/*std::vector<StringValue> accounts;
+	std::vector<StringValue> accounts;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -63,7 +90,7 @@ void DashboardPanel::Update() {
 		accounts.push_back({ *account->name, amount });
 	}
 
-	accountsPanel->SetAccounts(accounts);*/
+	accountsPanel->SetAccounts(accounts);
 
 	std::map<wxString, float> ownFounds;
 	std::map<wxString, float> creditFounds;
@@ -93,6 +120,8 @@ void DashboardPanel::Update() {
 	}
 
 	balancePanel->SetBalance(ownFounds, creditFounds);
+
+	this->Layout();
 
 	/*float sum = 0;
 

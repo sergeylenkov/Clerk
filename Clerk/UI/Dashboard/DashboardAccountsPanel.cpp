@@ -14,6 +14,9 @@ void DashboardAccountsPanel::SetAccounts(std::vector<StringValue> accounts) {
 
 void DashboardAccountsPanel::Update()
 {
+	int height = 70 + (accounts.size() * 30);
+	this->SetMinSize(wxSize(-1, height));
+
 	Draw();
 }
 

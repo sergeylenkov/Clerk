@@ -40,6 +40,9 @@ void DashboardBudgetsPanel::Update()
 	daysCount = toDate.GetDay();
 	currentDay = wxDateTime::Now().GetDay();
 
+	int height = 170 + (budgets.size() * 40);
+	this->SetMinSize(wxSize(-1, height));
+
 	Draw();
 }
 

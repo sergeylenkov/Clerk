@@ -25,6 +25,9 @@ void DashboardExpensesPanel::SetExpenses(std::vector<StringValue> expenses) {
 		}
 	}
 
+	int height = 50 + (expenses.size() * 30);
+	this->SetMinSize(wxSize(-1, height));
+
 	Update();
 }
 

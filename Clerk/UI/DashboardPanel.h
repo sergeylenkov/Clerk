@@ -33,6 +33,9 @@ public:
 	void Update();
 
 private:
+	wxScrolledWindow *scrolledWindow;
+	wxPanel *leftPanel;
+	wxPanel *rightPanel;
 	DashboardSchedulersPanel *schedulersPanel;
 	DashboardBudgetsPanel *budgetsPanel;
 	DashboardExpensesPanel *expensesPanel;

@@ -123,9 +123,10 @@ void DropDownButton::OnLeftButtonDown(wxMouseEvent& event)
 void DropDownButton::OnPaint(wxPaintEvent& event)
 {
 	wxPaintDC dc(this);
+
 	wxSize size = GetSize();
 	const int width = size.GetWidth() - arrowButtonWidth;
-	wxLogDebug("OnPaint %d %d", state, IsMenuVisible);
+
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();	
 

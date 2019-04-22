@@ -9,21 +9,6 @@
 #include "./Dashboard/DashboardAccountsPanel.h"
 #include "./Dashboard/DashboardBalancePanel.h"
 
-struct DashboardAccountBalance
-{
-	wxString name;
-	wxString value;
-};
-
-struct DahboardBudget
-{
-	wxString name;
-	wxString amount;
-	wxString currentAmount;
-	wxString remainAmount;
-	float percent;
-};
-
 class DashboardPanel : public DataPanel
 {
 public:
@@ -41,23 +26,5 @@ private:
 	DashboardExpensesPanel *expensesPanel;
 	DashboardAccountsPanel *accountsPanel;
 	DashboardBalancePanel *balancePanel;
-	std::vector<DashboardAccountBalance> balance;
-	std::vector<DashboardAccountBalance> virtualBalance;
-	std::vector<DashboardAccountBalance> expenses;	
-	std::vector<DahboardBudget> budgets;
-	std::vector<DahboardBudget> credits;
-	std::vector<DahboardBudget> goals;
-	wxString totalBalance;
-	wxString totalExpenses;
-
-	int paddingX;
-	int paddingY;
-
-	wxColor color0;
-	wxColor color50;
-	wxColor color100;
-
-	void Draw();
-	void OnPaint(wxPaintEvent& event);
 };
 

@@ -35,7 +35,6 @@ void DashboardBalancePanel::Draw() {
 
 	wxFont titleFont = this->GetFont();
 	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Balance", wxPoint(0, 0));
@@ -44,7 +43,7 @@ void DashboardBalancePanel::Draw() {
 	font.SetPointSize(10);
 
 	int columnWidth = 0;
-	int y = 50;
+	int y = 40;
 
 	dc.SetFont(font);
 
@@ -68,7 +67,7 @@ void DashboardBalancePanel::Draw() {
 		y = y + 30;
 	}
 
-	y = 50;
+	y = 40;
 	int x = columnWidth + 80;
 
 	dc.SetTextForeground(wxColor(127, 127, 127));

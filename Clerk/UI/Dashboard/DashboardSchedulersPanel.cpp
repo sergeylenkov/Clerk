@@ -46,7 +46,6 @@ void DashboardSchedulersPanel::Draw() {
 
 	wxFont titleFont = this->GetFont();
 	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Schedulers", wxPoint(0, 0));

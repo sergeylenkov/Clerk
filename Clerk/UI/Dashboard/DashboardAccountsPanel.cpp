@@ -33,7 +33,6 @@ void DashboardAccountsPanel::Draw() {
 
 	wxFont titleFont = this->GetFont();
 	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Accounts", wxPoint(0, 0));

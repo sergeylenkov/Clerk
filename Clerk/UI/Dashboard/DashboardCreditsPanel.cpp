@@ -53,8 +53,7 @@ void DashboardCreditsPanel::Draw() {
 	dc.Clear();
 
 	wxFont titleFont = this->GetFont();
-	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
+	titleFont.SetPointSize(12);	
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Credits", wxPoint(0, 0));
@@ -88,7 +87,7 @@ void DashboardCreditsPanel::Draw() {
 		}
 	}
 
-	int y = 60;
+	int y = 40;
 
 	dc.SetTextForeground(wxColor(151, 151, 151));
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));

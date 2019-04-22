@@ -59,7 +59,7 @@ void DashboardBudgetsPanel::Draw() {
 
 	wxFont titleFont = this->GetFont();
 	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
+	//titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Budgets", wxPoint(0, 0));
@@ -93,7 +93,7 @@ void DashboardBudgetsPanel::Draw() {
 		}
 	}
 
-	int y = 60;
+	int y = 40;
 	
 	dc.SetTextForeground(wxColor(151, 151, 151));
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));

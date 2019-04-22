@@ -48,8 +48,7 @@ void DashboardExpensesPanel::Draw() {
 	dc.Clear();
 
 	wxFont titleFont = this->GetFont();
-	titleFont.SetPointSize(12);
-	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
+	titleFont.SetPointSize(12);	
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Expenses", wxPoint(0, 0));

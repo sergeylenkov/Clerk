@@ -24,7 +24,7 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	leftPanel->Layout();
 
 	leftSizer->Fit(leftPanel);
-	horizontalSizer->Add(leftPanel, 3, wxEXPAND | wxALL, 5);
+	horizontalSizer->Add(leftPanel, 4, wxEXPAND | wxALL, 10);
 
 	horizontalSizer->Add(0, 0, 1, wxEXPAND, 0);
 
@@ -47,7 +47,7 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	rightPanel->Layout();
 	rightSizer->Fit(rightPanel);
 
-	horizontalSizer->Add(rightPanel, 6, wxEXPAND | wxALL, 5);
+	horizontalSizer->Add(rightPanel, 6, wxEXPAND | wxALL, 10);
 
 	scrolledWindow->SetSizer(horizontalSizer);
 	scrolledWindow->Layout();

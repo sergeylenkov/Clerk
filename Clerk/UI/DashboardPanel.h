@@ -8,6 +8,7 @@
 #include "./Dashboard/DashboardExpensesPanel.h"
 #include "./Dashboard/DashboardAccountsPanel.h"
 #include "./Dashboard/DashboardBalancePanel.h"
+#include "./Dashboard/DashboardGoalsPanel.h"
 
 class DashboardPanel : public DataPanel
 {
@@ -26,5 +27,6 @@ private:
 	DashboardExpensesPanel *expensesPanel;
 	DashboardAccountsPanel *accountsPanel;
 	DashboardBalancePanel *balancePanel;
+	DashboardGoalsPanel *goalsPanel;
 };
 

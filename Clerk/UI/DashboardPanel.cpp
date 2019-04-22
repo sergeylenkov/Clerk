@@ -37,6 +37,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	budgetsPanel = new DashboardBudgetsPanel(rightPanel, wxID_ANY);
 	rightSizer->Add(budgetsPanel, 0, wxEXPAND | wxALL, 5);
 
+	goalsPanel = new DashboardGoalsPanel(rightPanel, wxID_ANY);
+	rightSizer->Add(goalsPanel, 0, wxEXPAND | wxALL, 5);
+
 	rightPanel->SetSizer(rightSizer);
 	rightPanel->Layout();
 	rightSizer->Fit(rightPanel);
@@ -68,6 +71,7 @@ void DashboardPanel::Update() {
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
+	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
 
 	std::vector<StringValue> accounts;
 

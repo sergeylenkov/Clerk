@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
-#include "../../Data//DataHelper.h"
+#include "../../Data/DataHelper.h"
 
 class DashboardAccountsPanel : public wxPanel
 {

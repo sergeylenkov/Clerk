@@ -17,7 +17,7 @@ Goal::Goal(int id) : Goal()
 
 void Goal::Load()
 {
-	char *sql = "SELECT g.id, g.name, g.date, g.amount, g.account_ids FROM goals g WHERE g.id = ?";
+	char *sql = "SELECT g.id, g.name, g.date, g.amount, g.account_ids, g.created_at FROM goals g WHERE g.id = ?";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -25,15 +25,16 @@ void Goal::Load()
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
-			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));		
+			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
 
-			auto date = make_shared<wxDateTime>();
-			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
-
-			this->date = date;
+			this->date = make_shared<wxDateTime>();
+			this->date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
 
 			this->amount = sqlite3_column_double(statement, 3);
 			this->accountIds = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 4)));
+			
+			this->createdDate = make_shared<wxDateTime>();
+			this->createdDate->ParseISOCombined(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)), ' ');
 		}
 	}
 

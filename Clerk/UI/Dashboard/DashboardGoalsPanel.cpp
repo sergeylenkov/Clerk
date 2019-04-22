@@ -1,52 +1,54 @@
-#include "DashboardBudgetsPanel.h"
+#include "DashboardGoalsPanel.h"
 
-DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
+DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
-DashboardBudgetsPanel::~DashboardBudgetsPanel() {
+DashboardGoalsPanel::~DashboardGoalsPanel() {
 }
 
-void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budgets) {
-	this->budgets = budgets;
+void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
+	this->goals = goals;
 	values.clear();
 
-	wxDateTime toDate = wxDateTime::Now();
-	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime maxDate = wxDateTime::Now();	
+	wxDateTime minDate = wxDateTime::Now();
+	wxDateTime todayDate = wxDateTime::Now();
 
-	for (auto budget : budgets) {
-		if (budget->period == BudgetPeriods::Month) {
-			fromDate.SetDay(1);
+	for (auto goal : goals) {
+		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
+		float remainAmount = goal->amount - currentAmount;
+		float remainPercent = currentAmount / (goal->amount / 100.0);		
+
+		values.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+
+		if (goal->date->IsLaterThan(maxDate)) {
+			maxDate = *goal->date;
 		}
 
-		float currentAmount = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
-		float remainAmount = budget->amount - currentAmount;
-		float remainPercent = (currentAmount / budget->amount) * 100.0;
-
-		values.push_back({ *budget->name, wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+		if (goal->createdDate->IsEarlierThan(minDate)) {
+			minDate = *goal->createdDate;
+		}
 	}
+
+	wxTimeSpan span = maxDate - minDate;
+	daysCount = span.GetDays();
+
+	span = todayDate - minDate;
+	currentDay = span.GetDays();
 
 	Update();
 }
 
-void DashboardBudgetsPanel::Update()
+void DashboardGoalsPanel::Update()
 {
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
-
-	fromDate.SetDay(1);
-	toDate.SetToLastMonthDay();
-
-	daysCount = toDate.GetDay();
-	currentDay = wxDateTime::Now().GetDay();
-
-	int height = 170 + (budgets.size() * 40);
+	int height = 170 + (goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Draw();
 }
 
-void DashboardBudgetsPanel::Draw() {	
+void DashboardGoalsPanel::Draw() {
 	wxClientDC dc(this);
 
 	int width = 0;
@@ -62,7 +64,7 @@ void DashboardBudgetsPanel::Draw() {
 	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Budgets", wxPoint(0, 0));
+	dc.DrawText("Goals", wxPoint(0, 0));
 
 	wxFont font = this->GetFont();
 	font.SetPointSize(8);
@@ -72,7 +74,7 @@ void DashboardBudgetsPanel::Draw() {
 	int columnWidth0 = 0;
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
-	
+
 	for (auto value : values) {
 		wxSize size = dc.GetTextExtent(value.name);
 
@@ -94,13 +96,13 @@ void DashboardBudgetsPanel::Draw() {
 	}
 
 	int y = 60;
-	
+
 	dc.SetTextForeground(wxColor(151, 151, 151));
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
-	wxSize size = dc.GetTextExtent("Budget");
-	dc.DrawText("Budget", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
+	wxSize size = dc.GetTextExtent("Goal");
+	dc.DrawText("Goal", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
 
 	size = dc.GetTextExtent("Remain");
 	dc.DrawText("Remain", wxPoint(width - size.GetWidth(), y));
@@ -183,11 +185,11 @@ void DashboardBudgetsPanel::Draw() {
 	dc.SetPen(wxPen(wxColor(153, 153, 153), 1));
 	dc.SetBrush(wxBrush(wxColor(153, 153, 153)));
 	dc.DrawRectangle((progressX + x) - (rectWidth / 2), y, rectWidth, rectHeight);
-	
+
 	dc.SetTextForeground(wxColor(255, 255, 255));
 	dc.DrawText(monthStr, wxPoint((progressX + x) - (size.GetWidth() / 2), y + 2));
 }
 
-void DashboardBudgetsPanel::OnPaint(wxPaintEvent& event) {
+void DashboardGoalsPanel::OnPaint(wxPaintEvent& event) {
 	Draw();
 }

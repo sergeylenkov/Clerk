@@ -4,9 +4,6 @@ DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent, wxWindowID id) : 
 	this->Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
 }
 
-DashboardBudgetsPanel::~DashboardBudgetsPanel() {
-}
-
 void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budgets) {
 	this->budgets = budgets;
 	values.clear();
@@ -131,7 +128,7 @@ void DashboardBudgetsPanel::Draw() {
 		dc.DrawText(value.remainAmount, wxPoint(width - size.GetWidth(), y));
 
 		int progressY = y + size.GetHeight() / 2;
-		int percentWidth = (progressWidth / 100) * value.percent;
+		int percentWidth = (progressWidth / 100.0) * value.percent;
 
 		if (percentWidth > progressWidth) {
 			percentWidth = progressWidth;

@@ -156,6 +156,9 @@
     <ClCompile Include="UI\Dashboard\DashboardCreditsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\Statusbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -303,6 +306,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Dashboard\DashboardCreditsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\Statusbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

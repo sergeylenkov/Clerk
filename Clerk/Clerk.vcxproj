@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="UI\Controls\DropDownButton.cpp" />
+    <ClCompile Include="UI\Controls\Statusbar.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardAccountsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBalancePanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBudgetsPanel.cpp" />
@@ -125,6 +126,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UI\Controls\DropDownButton.h" />
+    <ClInclude Include="UI\Controls\Statusbar.h" />
     <ClInclude Include="UI\Dashboard\DashboardAccountsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBalancePanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBudgetsPanel.h" />

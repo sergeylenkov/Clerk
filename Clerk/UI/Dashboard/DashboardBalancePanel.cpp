@@ -4,9 +4,6 @@ DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent, wxWindowID id) : 
 	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
-DashboardBalancePanel::~DashboardBalancePanel() {
-}
-
 void DashboardBalancePanel::SetBalance(std::map<wxString, float> own, std::map<wxString, float> credit) {
 	ownFunds = own;
 	creditFunds = credit;

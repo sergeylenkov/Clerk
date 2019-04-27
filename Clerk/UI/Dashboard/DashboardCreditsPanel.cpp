@@ -4,9 +4,6 @@ DashboardCreditsPanel::DashboardCreditsPanel(wxWindow *parent, wxWindowID id) : 
 	this->Bind(wxEVT_PAINT, &DashboardCreditsPanel::OnPaint, this);
 }
 
-DashboardCreditsPanel::~DashboardCreditsPanel() {
-}
-
 void DashboardCreditsPanel::SetCredits(std::vector<std::shared_ptr<Account>> credits) {
 	this->credits = credits;	
 	values.clear();

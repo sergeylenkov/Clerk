@@ -4,9 +4,6 @@ DashboardSchedulersPanel::DashboardSchedulersPanel(wxWindow *parent, wxWindowID 
 	this->Bind(wxEVT_PAINT, &DashboardSchedulersPanel::OnPaint, this);
 }
 
-DashboardSchedulersPanel::~DashboardSchedulersPanel() {
-}
-
 void DashboardSchedulersPanel::SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers) {
 	this->schedulers = schedulers;
 	Update();

@@ -8,7 +8,6 @@ class DashboardCreditsPanel : public wxPanel
 {
 public:
 	DashboardCreditsPanel(wxWindow *parent, wxWindowID id);
-	~DashboardCreditsPanel();
 
 	void SetCredits(std::vector<std::shared_ptr<Account>> credits);
 	void Update();

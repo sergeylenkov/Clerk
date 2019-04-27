@@ -9,8 +9,7 @@ class DashboardBudgetsPanel : public wxPanel
 {
 public:
 	DashboardBudgetsPanel(wxWindow *parent, wxWindowID id);
-	~DashboardBudgetsPanel();
-
+	
 	void SetBudgets(std::vector<std::shared_ptr<Budget>> budgets);
 	void Update();
 

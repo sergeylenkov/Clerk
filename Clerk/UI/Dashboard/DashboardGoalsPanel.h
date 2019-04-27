@@ -8,7 +8,6 @@ class DashboardGoalsPanel : public wxPanel
 {
 public:
 	DashboardGoalsPanel(wxWindow *parent, wxWindowID id);
-	~DashboardGoalsPanel();
 
 	void SetGoals(std::vector<std::shared_ptr<Goal>> goals);
 	void Update();

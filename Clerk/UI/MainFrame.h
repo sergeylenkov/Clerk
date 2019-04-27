@@ -19,6 +19,7 @@
 #include "GoalDialog.h"
 #include "AboutFrame.h"
 #include "Controls/DropDownButton.h"
+#include "Controls/Statusbar.h"
 
 enum class MainMenuTypes {
 	About = 1,
@@ -38,17 +39,13 @@ public:
 
 private:
 	wxPanel *toolbar;
-	wxPanel *statusbar;
+	Statusbar *statusbar;
 	TreeMenu *treeMenu;
 	TransactionDialog *transactionFrame;
 	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	DropDownButton *addTransactionButton;
-	wxStaticText *periodLabel;
-	wxStaticText *receiptsLabel;
-	wxStaticText *expensesLabel;
-	wxStaticText *balanceLabel;
 
 	void CreateMainMenu();
 	void CreateDropdownMenu();

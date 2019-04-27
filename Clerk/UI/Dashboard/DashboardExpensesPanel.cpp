@@ -4,9 +4,6 @@ DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent, wxWindowID id) 
 	this->Bind(wxEVT_PAINT, &DashboardExpensesPanel::OnPaint, this);
 }
 
-DashboardExpensesPanel::~DashboardExpensesPanel() {
-}
-
 void DashboardExpensesPanel::SetExpenses(std::vector<StringValue> expenses) {
 	this->expenses = expenses;
 

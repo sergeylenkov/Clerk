@@ -4,9 +4,6 @@ DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent, wxWindowID id) 
 	this->Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
-DashboardAccountsPanel::~DashboardAccountsPanel() {
-}
-
 void DashboardAccountsPanel::SetAccounts(std::vector<StringValue> accounts) {
 	this->accounts = accounts;	
 	Update();

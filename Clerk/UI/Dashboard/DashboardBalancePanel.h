@@ -8,7 +8,6 @@ class DashboardBalancePanel : public wxPanel
 {
 public:
 	DashboardBalancePanel(wxWindow *parent, wxWindowID id);
-	~DashboardBalancePanel();
 
 	void SetBalance(std::map<wxString, float> ownFunds, std::map<wxString, float> creditFunds);
 	void Update();

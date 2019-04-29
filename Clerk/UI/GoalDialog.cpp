@@ -61,10 +61,10 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 

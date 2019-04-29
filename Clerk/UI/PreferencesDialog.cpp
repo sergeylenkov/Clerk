@@ -22,10 +22,10 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
@@ -33,10 +33,10 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	this->Layout();
 
 	this->Centre(wxBOTH);
-
+		
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 	int index = 0;
 	int i = 0;
-	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 
 	for (auto currency : DataHelper::GetInstance().GetCurrencies())
 	{

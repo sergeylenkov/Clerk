@@ -3,6 +3,7 @@
 #include <wx/bmpcbox.h>
 #include <functional>
 #include "../Data/DataHelper.h"
+#include "../Data/Settings.h"
 
 class AccountDialog : public wxFrame
 {
@@ -13,7 +14,6 @@ public:
 	std::function<void()> OnClose;
 
 private:
-	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
 	wxStaticText *typeLabel;

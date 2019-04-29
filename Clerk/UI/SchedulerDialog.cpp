@@ -130,7 +130,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(mainPanel, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	cancelButton = new wxButton(mainPanel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -289,35 +289,37 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 	yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 
+	Bind(wxEVT_CHAR_HOOK, &SchedulerDialog::OnKeyDown, this);
+
 	fromValue = 0;
 	toValue = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		accounts.push_back(account);
 	}
@@ -332,8 +334,6 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	SelectWeekday(1);
 
 	nameField->SetFocus();
-
-	this->Bind(wxEVT_CHAR_HOOK, &SchedulerDialog::OnKeyDown, this);
 }
 
 SchedulerDialog::~SchedulerDialog() {	

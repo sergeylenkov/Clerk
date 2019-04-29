@@ -8,6 +8,7 @@ void Settings::Open(char *configName) {
 	selectedTab = 0;
 	windowWidth = 1000;
 	windowHeight = 800;
+	baseCurrencyId = 180;
 
 	RestoreDefaultColumns();	
 
@@ -35,6 +36,10 @@ void Settings::Open(char *configName) {
 
 		if (json["WindowHeight"].IsInt()) {
 			windowHeight = json["WindowHeight"].GetInt();
+		}
+
+		if (json["BaseCurrency"].IsInt()) {
+			baseCurrencyId = json["BaseCurrency"].GetInt();
 		}
 
 		if (json["ExpandedMenu"].IsArray()) {
@@ -129,6 +134,7 @@ void Settings::Save() {
 	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
 	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
 	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
+	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -304,6 +310,10 @@ int Settings::GetSelectedAccountId() {
 	return selectedAccountId;
 }
 
+void Settings::SetSelectedAccountId(int id) {
+	selectedAccountId = id;
+}
+
 int Settings::GetWindowWidth() {
 	return windowWidth;
 }
@@ -312,16 +322,20 @@ int Settings::GetWindowHeight() {
 	return windowHeight;
 }
 
-void Settings::SetSelectedAccountId(int id) {
-	selectedAccountId = id;
-}
-
 void Settings::SetWindowWidth(int width) {
 	windowWidth = width;
 }
 
 void Settings::SetWindowHeight(int height) {
 	windowHeight = height;
+}
+
+int Settings::GetBaseCurrencyId() {
+	return baseCurrencyId;
+}
+
+void Settings::SetBaseCurrencyId(int id) {
+	baseCurrencyId = id;
 }
 
 void Settings::ClearTabs() {

@@ -17,7 +17,8 @@
 #include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
 #include "GoalDialog.h"
-#include "AboutFrame.h"
+#include "AboutDialog.h"
+#include "PreferencesDialog.h"
 #include "Controls/DropDownButton.h"
 #include "Controls/Statusbar.h"
 
@@ -29,6 +30,7 @@ enum class MainMenuTypes {
 	AddScheduler = 5,
 	Exit = 6,
 	AddGoal = 7,
+	Preferences = 8
 };
 
 class MainFrame : public wxFrame
@@ -52,6 +54,7 @@ private:
 	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
+	void OnPreferences(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
 	void OnDuplicateTransaction(wxCommandEvent &event);
 	void OnSplitTransaction(wxCommandEvent &event);

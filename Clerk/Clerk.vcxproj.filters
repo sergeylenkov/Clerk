@@ -114,9 +114,6 @@
     <ClCompile Include="UI\Charts\GraphPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\AboutFrame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -157,6 +154,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controls\Statusbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PreferencesDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\AboutDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,9 +269,6 @@
     <ClInclude Include="UI\Charts\GraphPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\AboutFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -309,6 +309,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\Statusbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PreferencesDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\AboutDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

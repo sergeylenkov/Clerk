@@ -8,10 +8,8 @@ class AccountDialog : public wxFrame
 {
 public:
 	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~AccountDialog();
 
-	void SetAccount(std::shared_ptr<Account> account);
-	
+	void SetAccount(std::shared_ptr<Account> account);	
 	std::function<void()> OnClose;
 
 private:

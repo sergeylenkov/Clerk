@@ -15,77 +15,77 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	fromLabel = new wxStaticText(mainPanel, wxID_ANY, "From:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	lineSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	fromAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	lineSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	fromAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	toLabel = new wxStaticText(mainPanel, wxID_ANY, "To:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	lineSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	toAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	lineSizer->Add(toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	toAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 	
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	dateLabel = new wxStaticText(mainPanel, wxID_ANY, "Date:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-	lineSizer->Add(datePicker, 0, wxALL, 5);
+	horizontalSizer->Add(datePicker, 0, wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	tagsLabel = new wxStaticText(mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	tagsField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(tagsField, 1, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(tagsField, 1, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	noteLabel = new wxStaticText(mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(40, -1), 0);
-	lineSizer->Add(noteLabel, 0, wxALL, 5);
+	horizontalSizer->Add(noteLabel, 0, wxALL, 5);
 
 	noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	lineSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 1, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
 	
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(mainPanel, wxID_ANY, "OK", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 
 	cancelButton = new wxButton(mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	mainPanel->SetSizer(panelSizer);
 	mainPanel->Layout();

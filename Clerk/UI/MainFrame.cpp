@@ -154,6 +154,8 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
 	menuFile->AppendSeparator();
+	menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...");
+	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
 
 	wxMenuBar *menuBar = new wxMenuBar();
@@ -169,6 +171,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
 
@@ -218,10 +221,18 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
+	AboutDialog *aboutDialog = new AboutDialog(this, wxT("About"), 0, 0, 250, 340);
 
-	aboutFrame->Show(true);
-	aboutFrame->CenterOnParent();
+	aboutDialog->Show(true);
+	aboutDialog->CenterOnParent();
+}
+
+void MainFrame::OnPreferences(wxCommandEvent &event)
+{
+	PreferencesDialog *preferencesDialog = new PreferencesDialog(this, wxT("Preferences"), 0, 0, 400, 300);
+
+	preferencesDialog->Show(true);
+	preferencesDialog->CenterOnParent();
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {

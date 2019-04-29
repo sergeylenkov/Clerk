@@ -12,10 +12,8 @@ class GoalDialog : public wxFrame
 {
 public:
 	GoalDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~GoalDialog();
 
 	void SetGoal(std::shared_ptr<Goal> goal);
-
 	std::function<void()> OnClose;
 
 private:
@@ -33,8 +31,8 @@ private:
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();
-	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	void OnKeyDown(wxKeyEvent &event);
 };
 

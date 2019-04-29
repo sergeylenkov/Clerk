@@ -14,75 +14,75 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 	
 	nameLabel = new wxStaticText(mainPanel, wxID_ANY, "Name:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	nameField = new wxTextCtrl(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(nameField, 1, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(nameField, 1, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	typeLabel = new wxStaticText(mainPanel, wxID_ANY, "Type:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(typeLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	horizontalSizer->Add(typeLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	typeList = new wxComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	lineSizer->Add(typeList, 0, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(typeList, 0, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	currencyLabel = new wxStaticText(mainPanel, wxID_ANY, "Currency:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(currencyLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	horizontalSizer->Add(currencyLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	currencyList = new wxComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	lineSizer->Add(currencyList, 0, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(currencyList, 0, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	iconLabel = new wxStaticText(mainPanel, wxID_ANY, "Icon:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(iconLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	horizontalSizer->Add(iconLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	iconList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxSize(80, -1), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	lineSizer->Add(iconList, 0, wxALL, 5);
+	horizontalSizer->Add(iconList, 0, wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	amountLabel = new wxStaticText(mainPanel, wxID_ANY, "Amount:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	horizontalSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
 	amountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	lineSizer->Add(amountField, 0, wxALL, 5);
+	horizontalSizer->Add(amountField, 0, wxALL, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	noteLabel = new wxStaticText(mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(60, -1), 0);
-	lineSizer->Add(noteLabel, 0, wxALIGN_TOP | wxALL, 5);
+	horizontalSizer->Add(noteLabel, 0, wxALIGN_TOP | wxALL, 5);
 
 	noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	lineSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
+	horizontalSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
 
-	panelSizer->Add(lineSizer, 1, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
 
-	lineSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(mainPanel, wxID_ANY, "OK", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 
 	cancelButton = new wxButton(mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
-	lineSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
 
-	panelSizer->Add(lineSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	mainPanel->SetSizer(panelSizer);
 	mainPanel->Layout();
@@ -105,7 +105,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 
 	typeList->SetSelection(0);
 
-	for each (auto currency in DataHelper::GetInstance().GetCurrencies())
+	for (auto currency : DataHelper::GetInstance().GetCurrencies())
 	{
 		currencies.push_back(currency);
 
@@ -126,10 +126,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
-	this->Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
-}
-
-AccountDialog::~AccountDialog() {
+	Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
 void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
@@ -147,7 +144,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 
 	int i = 0;
 
-	for each (auto currency in currencies)
+	for (auto currency : currencies)
 	{
 		if (currency->id == account->currency->id) {
 			currencyList->SetSelection(i);

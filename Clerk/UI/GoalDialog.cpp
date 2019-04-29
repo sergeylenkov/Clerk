@@ -77,10 +77,7 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 
 	okButton->Bind(wxEVT_BUTTON, &GoalDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &GoalDialog::OnCancel, this);
-}
-
-GoalDialog::~GoalDialog() {
-
+	Bind(wxEVT_CHAR_HOOK, &GoalDialog::OnKeyDown, this);
 }
 
 void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
@@ -137,7 +134,7 @@ void GoalDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		wxListItem listItem;
 
@@ -197,4 +194,14 @@ void GoalDialog::OnOK(wxCommandEvent &event) {
 
 void GoalDialog::OnCancel(wxCommandEvent &event) {
 	Close();
+}
+
+void GoalDialog::OnKeyDown(wxKeyEvent &event) {
+	if ((int)event.GetKeyCode() == 27) {
+		event.StopPropagation();
+		Close();
+	}
+	else {
+		event.Skip();
+	}
 }

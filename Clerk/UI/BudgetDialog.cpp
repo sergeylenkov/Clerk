@@ -89,10 +89,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnCancel, this);
-}
-
-BudgetDialog::~BudgetDialog() {
-	
+	Bind(wxEVT_CHAR_HOOK, &BudgetDialog::OnKeyDown, this);
 }
 
 void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
@@ -223,4 +220,14 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 
 void BudgetDialog::OnCancel(wxCommandEvent &event) {
 	Close();
+}
+
+void BudgetDialog::OnKeyDown(wxKeyEvent &event) {
+	if ((int)event.GetKeyCode() == 27) {
+		event.StopPropagation();
+		Close();
+	}
+	else {
+		event.Skip();
+	}
 }

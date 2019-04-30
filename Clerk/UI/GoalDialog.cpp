@@ -105,7 +105,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 	i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
 			accountsList->CheckItem(i, true);

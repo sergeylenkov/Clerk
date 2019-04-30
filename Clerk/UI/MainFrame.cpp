@@ -140,7 +140,7 @@ void MainFrame::CreateMainMenu() {
 		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
 		menuTransaction->AppendSeparator();
 
-		for each (auto transaction in transactions)
+		for (auto transaction : transactions)
 		{
 			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 		}
@@ -179,7 +179,7 @@ void MainFrame::CreateDropdownMenu() {
 	wxMenu *menu = addTransactionButton->GetMenu();
 	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
 
-	for each (auto transaction in transactions)
+	for (auto transaction : transactions)
 	{
 		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 	}
@@ -194,16 +194,34 @@ void MainFrame::UpdateStatus() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 
-	float expenses = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-	float receipts = DataHelper::GetInstance().GetReceipts(&fromDate, &toDate);
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 
+	float receipts = 0;
+	float expenses = 0;
 	float balance = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		float amount = DataHelper::GetInstance().GetReceipts(account.get(), &fromDate, &toDate);
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
+		receipts = receipts + amount;
+	}
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);		
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+		
+		expenses = expenses + amount;
+	}
+	
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
 		if (account->creditLimit == 0) {
+			float amount = DataHelper::GetInstance().GetBalance(account.get());
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+
 			balance = balance + amount;
 		}
 	}
@@ -600,7 +618,7 @@ void MainFrame::CheckSchedulers() {
 
 	std::vector<shared_ptr<Scheduler>> schedulers;
 
-	for each (auto scheduler in DataHelper::GetInstance().GetSchedulers())
+	for (auto scheduler : DataHelper::GetInstance().GetSchedulers())
 	{
 		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);

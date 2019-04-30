@@ -110,7 +110,6 @@
     <ClCompile Include="Data\Budget.cpp" />
     <ClCompile Include="Data\Currency.cpp" />
     <ClCompile Include="UI\Charts\GraphPopup.cpp" />
-    <ClCompile Include="UI\HomePanel.cpp" />
     <ClCompile Include="UI\Charts\LineChart.cpp" />
     <ClCompile Include="Data\Model.cpp" />
     <ClCompile Include="UI\Charts\PieChart.cpp" />
@@ -163,7 +162,6 @@
     <ClInclude Include="Data\Currency.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="UI\Charts\GraphPopup.h" />
-    <ClInclude Include="UI\HomePanel.h" />
     <ClInclude Include="UI\Charts\LineChart.h" />
     <ClInclude Include="Data\Model.h" />
     <ClInclude Include="UI\Charts\PieChart.h" />

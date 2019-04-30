@@ -231,7 +231,7 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 }
 
 void TransactionDialog::UpdateFromList() {
-	for each (auto account in accounts) {
+	for (auto account : accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 			int iconId = 0;
 
@@ -250,7 +250,7 @@ void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 	toList->Clear();
 	toAccounts.clear();
 
-	for each (auto toAccount in accounts)
+	for (auto toAccount : accounts)
 	{
 		if (account->id == toAccount->id) {
 			continue;

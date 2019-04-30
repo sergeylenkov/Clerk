@@ -402,7 +402,7 @@ void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 }
 
 void SchedulerDialog::UpdateFromList() {
-	for each (auto account in accounts) {
+	for (auto account : accounts) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 			int iconId = 0;
 
@@ -421,7 +421,7 @@ void SchedulerDialog::UpdateToList(std::shared_ptr<Account> account) {
 	toList->Clear();
 	toAccounts.clear();
 
-	for each (auto toAccount in accounts)
+	for (auto toAccount : accounts)
 	{
 		if (account->id == toAccount->id) {
 			continue;

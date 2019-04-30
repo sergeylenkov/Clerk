@@ -14,8 +14,7 @@
 class DashboardPanel : public DataPanel
 {
 public:
-	DashboardPanel(wxWindow *parent, wxWindowID id);
-	~DashboardPanel();
+	DashboardPanel(wxWindow *parent, wxWindowID id);	
 
 	void Update();
 

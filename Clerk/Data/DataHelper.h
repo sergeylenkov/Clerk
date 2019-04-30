@@ -71,15 +71,16 @@ public:
 	std::vector<std::shared_ptr<Tag>> GetTags();
 	float GetBalance(Account *account);
 	float GetAccountTotalExpense(Account *account);
-	float GetAccountTotalReceipt(Account *account);
-	float GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to);
+	float GetAccountTotalReceipt(Account *account);	
 	float GetExpenses(wxDateTime *from, wxDateTime *to);
+	float GetExpenses(Account *account, wxDateTime *from, wxDateTime *to);
 	float GetReceipts(wxDateTime *from, wxDateTime *to);
+	float GetReceipts(Account *account, wxDateTime *from, wxDateTime *to);
 	std::vector<DateValue> GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to);
 	std::vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);
 	std::vector<StringValue> GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to);
 	std::vector<DateValue> GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to);
-	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);
+	float GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to);	
 	int GetPairAccountId(Account *account);
 	std::vector<std::shared_ptr<wxString>> GetTagsBySearch(wxString search);
 	int GetDeletedTransactionsCount();
@@ -91,6 +92,7 @@ public:
 	void ReplaceTag(int oldId, int newId);
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();
+	float ConvertCurrency(int fromId, int toId, float amount);
 
 private:
 	DataHelper();                 
@@ -101,4 +103,5 @@ private:
 	std::vector<std::shared_ptr<Tag>> tags;
 	std::vector<std::shared_ptr<Account>> accounts;
 	std::map<int, std::shared_ptr<Account>> accountsHash;
+	std::map<std::pair<int, int>, float> exchangeRates;
 };

@@ -128,7 +128,7 @@ void TrashPanel::DeleteTransaction() {
 }
 
 void TrashPanel::ClearAll() {
-	for each (auto transaction in transactions)
+	for (auto transaction : transactions)
 	{
 		transaction->DeleteCompletely();
 	}

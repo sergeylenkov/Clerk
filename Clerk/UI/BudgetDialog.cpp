@@ -124,7 +124,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 	i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
 			accountsList->CheckItem(i, true);
@@ -150,7 +150,7 @@ void BudgetDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		wxListItem listItem;
 

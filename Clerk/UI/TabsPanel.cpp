@@ -17,7 +17,7 @@ TabsPanel::~TabsPanel()
 {
 	Settings::GetInstance().ClearTabs();
 
-	for each (auto panel in tabsPanels)
+	for (auto panel : tabsPanels)
 	{
 		Settings::GetInstance().AddTab(static_cast<int>(panel->type), panel->id);
 	}
@@ -54,7 +54,7 @@ void TabsPanel::UpdateCurrentTab(TreeMenuItemTypes type, shared_ptr<void> object
 }
 
 void TabsPanel::RestoreTabs() {
-	for each (auto tab in Settings::GetInstance().GetTabs()) {
+	for (auto tab : Settings::GetInstance().GetTabs()) {
 		TreeMenuItemTypes type = (TreeMenuItemTypes)tab.type;
 
 		if (type == TreeMenuItemTypes::MenuAccount) {
@@ -82,7 +82,7 @@ void TabsPanel::RestoreTabs() {
 bool TabsPanel::IsTabExists(TreeMenuItemTypes type, int id) {
 	bool found = false;
 
-	for each (auto tabPanel in tabsPanels) {
+	for (auto tabPanel : tabsPanels) {
 		if (type == TreeMenuItemTypes::MenuAccount) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				return true;

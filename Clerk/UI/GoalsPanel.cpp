@@ -68,7 +68,7 @@ void GoalsPanel::Update() {
 
 	int i = 0;
 
-	for each (auto goal in goals)
+	for (auto goal : goals)
 	{
 		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
 

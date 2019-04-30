@@ -22,23 +22,23 @@ void Settings::Open(char *configName) {
 
 		fclose(fp);
 
-		if (json["SelectedAccount"].IsInt()) {
+		if (json.HasMember("SelectedAccount") && json["SelectedAccount"].IsInt()) {
 			selectedAccountId = json["SelectedAccount"].GetInt();
 		}
 
-		if (json["SelectedTab"].IsInt()) {
+		if (json.HasMember("SelectedTab") && json["SelectedTab"].IsInt()) {
 			selectedTab = json["SelectedTab"].GetInt();
 		}
 
-		if (json["WindowWidth"].IsInt()) {
+		if (json.HasMember("WindowWidth") && json["WindowWidth"].IsInt()) {
 			windowWidth = json["WindowWidth"].GetInt();
 		}
 
-		if (json["WindowHeight"].IsInt()) {
+		if (json.HasMember("WindowHeight") && json["WindowHeight"].IsInt()) {
 			windowHeight = json["WindowHeight"].GetInt();
 		}
 
-		if (json["BaseCurrency"].IsInt()) {
+		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
 			baseCurrencyId = json["BaseCurrency"].GetInt();
 		}
 
@@ -150,7 +150,7 @@ void Settings::Save() {
 	if (tabs.size() > 0) {
 		Value tabsJson(kArrayType);
 
-		for each (auto tab in tabs) {
+		for (auto tab : tabs) {
 			Value tabJson(kObjectType);
 
 			tabJson.AddMember("Type", tab.type, json.GetAllocator());
@@ -165,7 +165,7 @@ void Settings::Save() {
 	if (filterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for each (auto settings in filterSettings)
+		for (auto settings : filterSettings)
 		{
 			Value filterJson(kObjectType);
 
@@ -198,7 +198,7 @@ void Settings::Save() {
 		Value columnsTypeJson(kObjectType);
 		Value columnsJson(kArrayType);
 
-		for each (auto column in columns)
+		for (auto column : columns)
 		{
 			Value columnJson(kObjectType);
 
@@ -224,7 +224,7 @@ void Settings::Save() {
 	if (reportSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for each (auto settings in reportSettings)
+		for (auto settings : reportSettings)
 		{
 			Value filterJson(kObjectType);
 			

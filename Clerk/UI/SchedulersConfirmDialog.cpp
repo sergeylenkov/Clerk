@@ -43,7 +43,7 @@ SchedulersConfirmDialog::SchedulersConfirmDialog(wxFrame *parent, const wxChar *
 	skipAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnSkipAll, this);
 	skipButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnSkip, this);
 	applyAllButton->Bind(wxEVT_BUTTON, &SchedulersConfirmDialog::OnApplyAll, this);
-	this->Bind(wxEVT_CLOSE_WINDOW, &SchedulersConfirmDialog::OnCloseWindow, this);
+	Bind(wxEVT_CLOSE_WINDOW, &SchedulersConfirmDialog::OnCloseWindow, this);
 }
 
 SchedulersConfirmDialog::~SchedulersConfirmDialog()
@@ -109,7 +109,7 @@ int SchedulersConfirmDialog::SelectedItemIndex() {
 }
 
 void SchedulersConfirmDialog::OnSkipAll(wxCommandEvent &event) {
-	for each (auto scheduler in schedulers)
+	for (auto scheduler : schedulers)
 	{
 		scheduler->CalculateNextDate();
 		scheduler->Save();
@@ -132,7 +132,7 @@ void SchedulersConfirmDialog::OnSkip(wxCommandEvent &event) {
 }
 
 void SchedulersConfirmDialog::OnApplyAll(wxCommandEvent &event) {
-	for each (auto scheduler in schedulers)
+	for (auto scheduler : schedulers)
 	{
 		scheduler->Execute();
 		scheduler->CalculateNextDate();

@@ -3,19 +3,17 @@
 #include <wx/bmpcbox.h>
 #include <functional>
 #include "../Data/DataHelper.h"
+#include "../Data/Settings.h"
 
 class AccountDialog : public wxFrame
 {
 public:
 	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~AccountDialog();
 
-	void SetAccount(std::shared_ptr<Account> account);
-	
+	void SetAccount(std::shared_ptr<Account> account);	
 	std::function<void()> OnClose;
 
 private:
-	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
 	wxStaticText *typeLabel;

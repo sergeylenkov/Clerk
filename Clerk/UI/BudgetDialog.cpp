@@ -64,10 +64,10 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
@@ -89,10 +89,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnCancel, this);
-}
-
-BudgetDialog::~BudgetDialog() {
-	
+	Bind(wxEVT_CHAR_HOOK, &BudgetDialog::OnKeyDown, this);
 }
 
 void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
@@ -127,7 +124,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 	i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
 			accountsList->CheckItem(i, true);
@@ -153,7 +150,7 @@ void BudgetDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for each (auto account in accounts)
+	for (auto account : accounts)
 	{
 		wxListItem listItem;
 
@@ -223,4 +220,14 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 
 void BudgetDialog::OnCancel(wxCommandEvent &event) {
 	Close();
+}
+
+void BudgetDialog::OnKeyDown(wxKeyEvent &event) {
+	if ((int)event.GetKeyCode() == 27) {
+		event.StopPropagation();
+		Close();
+	}
+	else {
+		event.Skip();
+	}
 }

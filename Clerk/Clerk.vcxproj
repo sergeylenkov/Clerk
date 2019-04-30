@@ -84,9 +84,10 @@
     <ClCompile Include="UI\Dashboard\DashboardExpensesPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp" />
+    <ClCompile Include="UI\PreferencesDialog.cpp" />
     <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp" />
     <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp" />
-    <ClCompile Include="UI\AboutFrame.cpp" />
+    <ClCompile Include="UI\AboutDialog.cpp" />
     <ClCompile Include="Data\Scheduler.cpp" />
     <ClCompile Include="Data\Goal.cpp" />
     <ClCompile Include="Data\Tag.cpp" />
@@ -109,7 +110,6 @@
     <ClCompile Include="Data\Budget.cpp" />
     <ClCompile Include="Data\Currency.cpp" />
     <ClCompile Include="UI\Charts\GraphPopup.cpp" />
-    <ClCompile Include="UI\HomePanel.cpp" />
     <ClCompile Include="UI\Charts\LineChart.cpp" />
     <ClCompile Include="Data\Model.cpp" />
     <ClCompile Include="UI\Charts\PieChart.cpp" />
@@ -134,9 +134,10 @@
     <ClInclude Include="UI\Dashboard\DashboardExpensesPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h" />
+    <ClInclude Include="UI\PreferencesDialog.h" />
     <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h" />
     <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h" />
-    <ClInclude Include="UI\AboutFrame.h" />
+    <ClInclude Include="UI\AboutDialog.h" />
     <ClInclude Include="Data\Scheduler.h" />
     <ClInclude Include="Data\Goal.h" />
     <ClInclude Include="Data\Tag.h" />
@@ -161,7 +162,6 @@
     <ClInclude Include="Data\Currency.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="UI\Charts\GraphPopup.h" />
-    <ClInclude Include="UI\HomePanel.h" />
     <ClInclude Include="UI\Charts\LineChart.h" />
     <ClInclude Include="Data\Model.h" />
     <ClInclude Include="UI\Charts\PieChart.h" />

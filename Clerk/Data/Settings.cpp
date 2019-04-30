@@ -8,6 +8,7 @@ void Settings::Open(char *configName) {
 	selectedTab = 0;
 	windowWidth = 1000;
 	windowHeight = 800;
+	baseCurrencyId = 180;
 
 	RestoreDefaultColumns();	
 
@@ -21,20 +22,24 @@ void Settings::Open(char *configName) {
 
 		fclose(fp);
 
-		if (json["SelectedAccount"].IsInt()) {
+		if (json.HasMember("SelectedAccount") && json["SelectedAccount"].IsInt()) {
 			selectedAccountId = json["SelectedAccount"].GetInt();
 		}
 
-		if (json["SelectedTab"].IsInt()) {
+		if (json.HasMember("SelectedTab") && json["SelectedTab"].IsInt()) {
 			selectedTab = json["SelectedTab"].GetInt();
 		}
 
-		if (json["WindowWidth"].IsInt()) {
+		if (json.HasMember("WindowWidth") && json["WindowWidth"].IsInt()) {
 			windowWidth = json["WindowWidth"].GetInt();
 		}
 
-		if (json["WindowHeight"].IsInt()) {
+		if (json.HasMember("WindowHeight") && json["WindowHeight"].IsInt()) {
 			windowHeight = json["WindowHeight"].GetInt();
+		}
+
+		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
+			baseCurrencyId = json["BaseCurrency"].GetInt();
 		}
 
 		if (json["ExpandedMenu"].IsArray()) {
@@ -129,6 +134,7 @@ void Settings::Save() {
 	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
 	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
 	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
+	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -144,7 +150,7 @@ void Settings::Save() {
 	if (tabs.size() > 0) {
 		Value tabsJson(kArrayType);
 
-		for each (auto tab in tabs) {
+		for (auto tab : tabs) {
 			Value tabJson(kObjectType);
 
 			tabJson.AddMember("Type", tab.type, json.GetAllocator());
@@ -159,7 +165,7 @@ void Settings::Save() {
 	if (filterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for each (auto settings in filterSettings)
+		for (auto settings : filterSettings)
 		{
 			Value filterJson(kObjectType);
 
@@ -192,7 +198,7 @@ void Settings::Save() {
 		Value columnsTypeJson(kObjectType);
 		Value columnsJson(kArrayType);
 
-		for each (auto column in columns)
+		for (auto column : columns)
 		{
 			Value columnJson(kObjectType);
 
@@ -218,7 +224,7 @@ void Settings::Save() {
 	if (reportSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for each (auto settings in reportSettings)
+		for (auto settings : reportSettings)
 		{
 			Value filterJson(kObjectType);
 			
@@ -304,6 +310,10 @@ int Settings::GetSelectedAccountId() {
 	return selectedAccountId;
 }
 
+void Settings::SetSelectedAccountId(int id) {
+	selectedAccountId = id;
+}
+
 int Settings::GetWindowWidth() {
 	return windowWidth;
 }
@@ -312,16 +322,20 @@ int Settings::GetWindowHeight() {
 	return windowHeight;
 }
 
-void Settings::SetSelectedAccountId(int id) {
-	selectedAccountId = id;
-}
-
 void Settings::SetWindowWidth(int width) {
 	windowWidth = width;
 }
 
 void Settings::SetWindowHeight(int height) {
 	windowHeight = height;
+}
+
+int Settings::GetBaseCurrencyId() {
+	return baseCurrencyId;
+}
+
+void Settings::SetBaseCurrencyId(int id) {
+	baseCurrencyId = id;
 }
 
 void Settings::ClearTabs() {

@@ -140,7 +140,7 @@ void MainFrame::CreateMainMenu() {
 		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
 		menuTransaction->AppendSeparator();
 
-		for each (auto transaction in transactions)
+		for (auto transaction : transactions)
 		{
 			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 		}
@@ -153,6 +153,8 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
+	menuFile->AppendSeparator();
+	menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...");
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
 
@@ -169,6 +171,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
 
@@ -176,7 +179,7 @@ void MainFrame::CreateDropdownMenu() {
 	wxMenu *menu = addTransactionButton->GetMenu();
 	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
 
-	for each (auto transaction in transactions)
+	for (auto transaction : transactions)
 	{
 		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 	}
@@ -191,16 +194,34 @@ void MainFrame::UpdateStatus() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 
-	float expenses = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-	float receipts = DataHelper::GetInstance().GetReceipts(&fromDate, &toDate);
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 
+	float receipts = 0;
+	float expenses = 0;
 	float balance = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		float amount = DataHelper::GetInstance().GetReceipts(account.get(), &fromDate, &toDate);
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
+		receipts = receipts + amount;
+	}
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);		
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+		
+		expenses = expenses + amount;
+	}
+	
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
 		if (account->creditLimit == 0) {
+			float amount = DataHelper::GetInstance().GetBalance(account.get());
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+
 			balance = balance + amount;
 		}
 	}
@@ -218,10 +239,18 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
+	AboutDialog *aboutDialog = new AboutDialog(this, wxT("About"), 0, 0, 250, 340);
 
-	aboutFrame->Show(true);
-	aboutFrame->CenterOnParent();
+	aboutDialog->Show(true);
+	aboutDialog->CenterOnParent();
+}
+
+void MainFrame::OnPreferences(wxCommandEvent &event)
+{
+	PreferencesDialog *preferencesDialog = new PreferencesDialog(this, wxT("Preferences"), 0, 0, 400, 300);
+
+	preferencesDialog->Show(true);
+	preferencesDialog->CenterOnParent();
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
@@ -589,7 +618,7 @@ void MainFrame::CheckSchedulers() {
 
 	std::vector<shared_ptr<Scheduler>> schedulers;
 
-	for each (auto scheduler in DataHelper::GetInstance().GetSchedulers())
+	for (auto scheduler : DataHelper::GetInstance().GetSchedulers())
 	{
 		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);

@@ -59,9 +59,6 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	this->Layout();
 }
 
-DashboardPanel::~DashboardPanel() {
-}
-
 void DashboardPanel::Update() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();

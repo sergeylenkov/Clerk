@@ -56,12 +56,12 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	accounts.push_back(account);
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in accounts) {
+	for (auto account : accounts) {
 		int iconId = 0;
 
 		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -100,7 +100,7 @@ void ReportExpensesByMonthPanel::Update() {
 
 	std::vector<StringValue> chartValues;
 
-	for each (auto value in values)
+	for (auto value : values)
 	{
 		StringValue chartValue = { value.date.Format("%B"), value.value };
 		chartValues.push_back(chartValue);

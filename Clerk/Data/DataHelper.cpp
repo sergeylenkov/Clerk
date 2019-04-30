@@ -79,6 +79,14 @@ void DataHelper::Init() {
 	}
 
 	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate FLOAT, created_at TEXT)";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }
 
 void DataHelper::InitData() {
@@ -100,6 +108,11 @@ void DataHelper::InitData() {
 	}
 
 	sqlite3_finalize(statement);
+
+	exchangeRates[std::make_pair(152, 180)] = 1 / 64.0;
+	exchangeRates[std::make_pair(180, 152)] = 64.0;
+	exchangeRates[std::make_pair(152, 62)] = 1 / 72.0;
+	exchangeRates[std::make_pair(62, 152)] = 72.0;
 
 	ReloadAccounts();
 }
@@ -464,28 +477,6 @@ float DataHelper::GetAccountTotalReceipt(Account *account) {
 	return receipt;
 }
 
-float DataHelper::GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to)
-{
-	float total = 0;
-
-	char *sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id = ? AND paid_at >= ? AND paid_at <= ? AND deleted = 0";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
-		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-
-		if (sqlite3_step(statement) == SQLITE_ROW) {
-			total = sqlite3_column_double(statement, 0);
-		}
-	}
-
-	sqlite3_reset(statement);
-
-	return total;
-}
-
 float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
@@ -506,6 +497,27 @@ float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
+float  DataHelper::GetExpenses(Account *account, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
+}
+
 float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
@@ -515,6 +527,27 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
+}
+
+float DataHelper::GetReceipts(Account *account, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char *sql = "SELECT TOTAL(t.from_account_amount) FROM transactions t, accounts a WHERE a.type_id = 0 AND t.from_account_id = ? AND t.from_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			total = sqlite3_column_double(statement, 0);
@@ -960,7 +993,7 @@ std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account
 }
 
 void DataHelper::EmptyTrash() {
-	for each (auto transaction in GetDeletedTransactions())
+	for (auto transaction : GetDeletedTransactions())
 	{
 		transaction->DeleteCompletely();
 	}
@@ -981,4 +1014,18 @@ void DataHelper::CreateAccountsImageList() {
 			delete bitmap;
 		}
 	}
+}
+
+float DataHelper::ConvertCurrency(int fromId, int toId, float amount) {
+	if (fromId == toId) {
+		return amount;
+	}
+
+	float rate = 1;
+
+	if (exchangeRates[std::make_pair(fromId, toId)]) {
+		rate = exchangeRates[std::make_pair(fromId, toId)];
+	}
+	
+	return amount * rate;
 }

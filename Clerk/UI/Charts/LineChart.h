@@ -14,7 +14,6 @@ class LineChart : public wxPanel
 {
 public:
 	LineChart(wxWindow *parent, wxWindowID id);
-	~LineChart();
 
 	void SetValues(std::vector<StringValue> values);
 	void Draw();
@@ -24,13 +23,19 @@ public:
 	std::function<void(int x, int y , int index)> OnUpdatePopup;
 
 private:
-	std::vector<StringValue> _values;
+	std::vector<StringValue> values;
+	std::vector<std::pair<int, int>> points;
+	float maxValue;
+	int width;
+	int height;
+	int graphWidth;
 	float stepX;
 	float stepY;
 	int offsetX;
 	int offsetY;
 	int currentPopupIndex;
 
+	void DrawGraph();
 	void OnPaint(wxPaintEvent& event);
 	void OnMouseMove(wxMouseEvent& event);	
 };

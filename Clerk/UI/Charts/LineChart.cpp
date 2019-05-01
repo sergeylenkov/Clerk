@@ -7,37 +7,35 @@ LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
 }
 
-LineChart::~LineChart() {
-
-}
-
 void LineChart::SetValues(std::vector<StringValue> values) {
 	currentPopupIndex = -1;
-	_values = values;
+	this->values = values;
+
+	auto ptr = max_element(values.begin(), values.end(),
+		[](const StringValue p1, const StringValue p2) {
+		return p1.value < p2.value;
+	});
+
+	maxValue = ptr->value;
+
 	Draw();
 }
 
 void LineChart::Draw() {
-	if (_values.size() == 0) {
-		return;
-	}
-
 	wxClientDC dc(this);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	int width = 0;
-	int height = 0;
+	if (values.size() == 0) {
+		return;
+	}
+
+	width = 0;
+	height = 0;
 
 	this->DoGetSize(&width, &height);
-
-	auto ptr = max_element(_values.begin(), _values.end(),
-		[](const StringValue p1, const StringValue p2) {
-		return p1.value < p2.value;
-	});
-
-	float maxValue = ptr->value;
+		
 	int maxY = round(maxValue);
 	int labelStepY = 10;
 
@@ -71,9 +69,17 @@ void LineChart::Draw() {
 	offsetX = maxSize.GetWidth() + 20;
 	offsetY = 40;
 
-	stepX = width / _values.size();
+	wxSize size = dc.GetTextExtent(values[values.size() - 1].string);
+
+	graphWidth = width - offsetX - (size.GetWidth() + 20);
+
+	stepX = 0;
 	stepY = (height - offsetY - 10) / (float)maxY;
 	
+	if (values.size() > 1) {
+		stepX = graphWidth / (values.size() - 1);
+	}
+
 	for (int i = 0; i <= maxY; i += labelStepY) {
 		int y = (height - offsetY) - round(i * stepY);
 
@@ -86,50 +92,64 @@ void LineChart::Draw() {
 		dc.DrawText(label, wxPoint(x, y - 10));
 
 		dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
-		dc.DrawLine(offsetX, y, width - offsetX, y);
+		dc.DrawLine(offsetX, y, offsetX + graphWidth, y);
 	}
 	
-	if (_values.size() > 1) {
-		for (unsigned int i = 0; i < _values.size(); i++) {
+	if (values.size() > 1) {
+		for (unsigned int i = 0; i < values.size(); i++) {
 			int x = round(i * stepX) + offsetX;
 
-			wxSize size = dc.GetTextExtent(_values[i].string);
-			dc.DrawText(_values[i].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
+			wxSize size = dc.GetTextExtent(values[i].string);
+			dc.DrawText(values[i].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
 		}
 	}
 	else {
-		int x = (width - offsetX) / 2;
+		int x = offsetX + (graphWidth / 2);
 
-		wxSize size = dc.GetTextExtent(_values[0].string);
-		dc.DrawText(_values[0].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
+		wxSize size = dc.GetTextExtent(values[0].string);
+		dc.DrawText(values[0].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
 	}
+
+	DrawGraph();
+}
+
+void LineChart::DrawGraph() {
+	wxClientDC dc(this);
 
 	dc.SetBrush(wxColor(10, 110, 170));
 	dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
 
-	if (_values.size() > 1) {
+	points.clear();
+
+	if (values.size() > 1) {
 		int x = 0;
 		int y = 0;
 		int x2 = 0;
 		int y2 = 0;
 
-		for (unsigned int i = 0; i < _values.size() - 1; i++) {
-			x = round(i * stepX) + offsetX;
-			y = (height - offsetY) - round(_values[i].value * stepY);
-			x2 = round((i + 1) * stepX) + offsetX;
-			y2 = (height - offsetY) - round(_values[i + 1].value * stepY);
+		for (unsigned int i = 0; i < values.size() - 1; i++) {
+			x = offsetX + (i * stepX);
+			y = (height - offsetY) - round(values[i].value * stepY);
+			x2 = offsetX + ((i + 1) * stepX);
+			y2 = (height - offsetY) - round(values[i + 1].value * stepY);
 
 			dc.DrawLine(x, y, x2, y2);
 			dc.DrawCircle(x, y, 3);
+
+			points.push_back(make_pair(x - (stepX / 2), x + (stepX / 2)));
 		}
 
 		dc.DrawCircle(x2, y2, 3);
+
+		points.push_back(make_pair(x2 - (stepX / 2), x2 + (stepX / 2)));
 	}
 	else {
-		int x = (width - offsetX) / 2;
-		int y = (height - offsetY) - round(_values[0].value * stepY);
+		int x = offsetX + (graphWidth / 2);
+		int y = (height - offsetY) - round(values[0].value * stepY);
 
 		dc.DrawCircle(x, y, 3);
+
+		points.push_back(make_pair(x - 20, x + 20));
 	}
 }
 
@@ -146,7 +166,7 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	int mouseX = event.GetX();
 	int mouseY = event.GetY();
 
-	if (mouseX < offsetX || mouseX > width - offsetX || mouseY < offsetY || mouseY > height - offsetY) {
+	if (mouseX < offsetX || mouseX > offsetX + graphWidth || mouseY < offsetY || mouseY > height - offsetY) {
 		if (OnHidePopup) {
 			OnHidePopup();
 		}
@@ -160,10 +180,11 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	
 	unsigned int index = 0;
 	
-	for (unsigned int i = 0; i < _values.size(); i++) {
-		int x = round(i * stepX) + offsetX;
+	for (unsigned int i = 0; i < points.size(); i++) {
+		int x = points[i].first;
+		int x2 = points[i].second;
 
-		if (mouseX > x - (stepX / 2) && mouseX < x + (stepX / 2)) {
+		if (mouseX > x && mouseX < x2) {
 			index = i;
 			break;
 		}
@@ -172,14 +193,14 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	if (index < 0) {
 		index = 0;
 	}
-	else if (index >= _values.size()) {
-		index = _values.size() - 1;
+	else if (index >= values.size()) {
+		index = values.size() - 1;
 	}
 
 	if (index != currentPopupIndex) {
 		currentPopupIndex = index;
-		int x = round(index * stepX) + offsetX;
-		int y = height - offsetY - round(_values[index].value * stepY);
+		int x = offsetX + (index * stepX);
+		int y = height - offsetY - round(values[index].value * stepY);
 
 		if (OnUpdatePopup) {
 			OnUpdatePopup(x, y, index);

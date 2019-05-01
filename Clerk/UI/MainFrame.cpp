@@ -381,6 +381,7 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 		delete copy;
 
 		tabsPanel->Update();
+		UpdateStatus();
 	}	
 }
 
@@ -474,6 +475,7 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 
 void MainFrame::OnTransactionClose() {
 	tabsPanel->Update();
+	UpdateStatus();
 }
 
 void MainFrame::AddAccount(AccountTypes type) {

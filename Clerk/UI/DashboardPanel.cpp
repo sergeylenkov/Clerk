@@ -68,12 +68,20 @@ void DashboardPanel::Update() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 	
-	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
-	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
-	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
-	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
+	std::vector<StringValue> expenses;
 
-	std::vector<StringValue> accounts;
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+
+		if (amount > 0) {
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+			expenses.push_back({ *account->name, amount });
+		}
+	}
+
+	std::vector<StringValue> accounts;	
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -87,10 +95,9 @@ void DashboardPanel::Update() {
 		accounts.push_back({ *account->name, amount });
 	}
 
-	accountsPanel->SetAccounts(accounts);
-
 	std::map<wxString, float> ownFounds;
 	std::map<wxString, float> creditFounds;
+	float totalBalance = 0;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -113,10 +120,10 @@ void DashboardPanel::Update() {
 			else {
 				ownFounds[*account->currency->shortName] = amount;
 			}
+
+			totalBalance = totalBalance + DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 		}
 	}
-
-	balancePanel->SetBalance(ownFounds, creditFounds);
 
 	std::vector<std::shared_ptr<Account>> credits;
 
@@ -131,8 +138,14 @@ void DashboardPanel::Update() {
 	{
 		credits.push_back(account);
 	}
-
+	
+	balancePanel->SetBalance(totalBalance, ownFounds, creditFounds);
+	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
+	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
+	expensesPanel->SetExpenses(expenses);
+	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
 	creditsPanel->SetCredits(credits);
+	accountsPanel->SetAccounts(accounts);
 
 	this->Layout();
 }

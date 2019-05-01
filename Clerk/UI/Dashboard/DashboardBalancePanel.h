@@ -9,12 +9,13 @@ class DashboardBalancePanel : public wxPanel
 public:
 	DashboardBalancePanel(wxWindow *parent, wxWindowID id);
 
-	void SetBalance(std::map<wxString, float> ownFunds, std::map<wxString, float> creditFunds);
+	void SetBalance(float balance, std::map<wxString, float> ownFunds, std::map<wxString, float> creditFunds);
 	void Update();
 
 private:
 	std::map<wxString, float> ownFunds;
 	std::map<wxString, float> creditFunds;
+	float totalBalance;
 
 	void Draw();
 	void OnPaint(wxPaintEvent& event);

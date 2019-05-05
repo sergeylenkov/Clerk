@@ -9,6 +9,7 @@ void Settings::Open(char *configName) {
 	windowWidth = 1000;
 	windowHeight = 800;
 	baseCurrencyId = 180;
+	convertCurrency = false;
 
 	RestoreDefaultColumns();	
 
@@ -40,6 +41,10 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
 			baseCurrencyId = json["BaseCurrency"].GetInt();
+		}
+
+		if (json.HasMember("ConvertCurrency") && json["ConvertCurrency"].IsBool()) {
+			convertCurrency = json["ConvertCurrency"].GetBool();
 		}
 
 		if (json["ExpandedMenu"].IsArray()) {
@@ -135,6 +140,7 @@ void Settings::Save() {
 	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
 	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
 	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
+	json.AddMember("ConvertCurrency", convertCurrency, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -336,6 +342,14 @@ int Settings::GetBaseCurrencyId() {
 
 void Settings::SetBaseCurrencyId(int id) {
 	baseCurrencyId = id;
+}
+
+bool Settings::IsConvertCurrency() {
+	return convertCurrency;
+}
+
+void Settings::SetConvertCurrency(bool convert) {
+	convertCurrency = convert;
 }
 
 void Settings::ClearTabs() {

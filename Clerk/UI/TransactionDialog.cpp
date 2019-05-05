@@ -374,14 +374,23 @@ void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());	
 	fromAmountField->SetValue(stringAmount);
 
+	double toValue;
+	double fromValue;
+
 	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
-	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
-	double val;
+	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;	
 
-	toAmountField->GetValue().ToDouble(&val);
+	fromAmountField->GetValue().ToDouble(&fromValue);
+	toAmountField->GetValue().ToDouble(&toValue);
 
-	if (val == 0 && fromCurrencyId == toCurrencyId) {
-		toAmountField->SetValue(fromAmountField->GetValue());
+	if (toValue == 0) {
+		if (fromCurrencyId == toCurrencyId) {
+			toAmountField->SetValue(stringAmount);
+		}
+		else if (Settings::GetInstance().IsConvertCurrency()) {
+			float amount = DataHelper::GetInstance().ConvertCurrency(fromCurrencyId, toCurrencyId, fromValue);
+			toAmountField->SetValue(wxString::Format("%.2f", amount));
+		}
 	}
 }
 

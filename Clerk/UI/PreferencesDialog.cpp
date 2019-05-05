@@ -15,7 +15,14 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	horizontalSizer->Add(currencyList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);	
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Convert currencies by exchange rate"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(convertCurrenciesCheckBox, 0, wxALL, 5);
+
+	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
 
 	mainSizer->Add(0, 0, 1, wxEXPAND, 5);
 
@@ -54,6 +61,8 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	currencyList->SetSelection(index);
 
+	convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
+
 	okButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnCancel, this);
 	Bind(wxEVT_CHAR_HOOK, &PreferencesDialog::OnKeyDown, this);
@@ -62,6 +71,8 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 void PreferencesDialog::OnOK(wxCommandEvent &event) {
 	auto currency = currencies[currencyList->GetSelection()];
 	Settings::GetInstance().SetBaseCurrencyId(currency->id);
+
+	Settings::GetInstance().SetConvertCurrency(convertCurrenciesCheckBox->IsChecked());
 
 	Close();
 }

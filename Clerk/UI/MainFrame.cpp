@@ -107,6 +107,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
+
+		UpdateExchangeRates();
 	}).detach();
 }
 
@@ -660,4 +662,9 @@ void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
 
 		CopyTransaction(transaction);
 	}
+}
+
+void MainFrame::UpdateExchangeRates() {
+	ExchangeRatesLoader loader(DataHelper::GetInstance().Connection());
+	loader.Load();
 }

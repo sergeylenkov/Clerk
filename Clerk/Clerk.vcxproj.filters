@@ -159,7 +159,10 @@
     <ClCompile Include="UI\AboutDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ExchangeRatesLoader.cpp">
+    <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -314,7 +317,10 @@
     <ClInclude Include="UI\AboutDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ExchangeRatesLoader.h">
+    <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,7 @@
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Data/Settings.h"
-#include "../Data/ExchangeRatesLoader.h"
+#include "../Data/ExchangeRates/CBRRatesLoader.h"
 #include "TreeMenu.h"
 #include "TransactionDialog.h"
 #include "AccountDialog.h"

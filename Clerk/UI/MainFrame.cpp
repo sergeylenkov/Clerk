@@ -665,6 +665,6 @@ void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
 }
 
 void MainFrame::UpdateExchangeRates() {
-	ExchangeRatesLoader loader(DataHelper::GetInstance().Connection());
+	CBRRatesLoader loader(DataHelper::GetInstance().Connection());
 	loader.Load();
 }

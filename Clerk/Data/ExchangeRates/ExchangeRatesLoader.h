@@ -1,9 +1,10 @@
 #pragma once
 
+#include <wx/wx.h>
 #include <string>
 #include <sqlite3.h>
-#include <curl/curl.h>
-#include <rapidxml.hpp>
+
+using namespace std;
 
 class ExchangeRatesLoader
 {
@@ -13,6 +14,7 @@ public:
 
 private:
 	sqlite3 *db;
-
-	void Parse(std::string data);
+	
+protected:
+	void UpdateValue(wxDateTime *date, string *from, string *to, float value);
 };

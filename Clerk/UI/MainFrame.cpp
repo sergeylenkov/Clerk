@@ -108,6 +108,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
 	}).detach();
+
+	std::thread([=]()
+	{
+		UpdateExchangeRates();
+		DataHelper::GetInstance().ReloadExchangeRate();
+	}).detach();
 }
 
 MainFrame::~MainFrame() 
@@ -345,8 +351,8 @@ void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 	else if (type == TreeMenuItemTypes::MenuExpenses) {
 		AddAccount(AccountTypes::Expens);
 	}
-	else if (type == TreeMenuItemTypes::MenuCredits) {
-		AddAccount(AccountTypes::Credit);
+	else if (type == TreeMenuItemTypes::MenuDebt) {
+		AddAccount(AccountTypes::Debt);
 	}
 	else {
 		AddAccount(AccountTypes::Deposit);
@@ -402,7 +408,7 @@ void MainFrame::AddTransaction(Account *account) {
 			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
 
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Credit) {
+		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			transaction->toAccountId = account->id;
 			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
@@ -660,4 +666,9 @@ void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
 
 		CopyTransaction(transaction);
 	}
+}
+
+void MainFrame::UpdateExchangeRates() {
+	CBRRatesLoader loader(DataHelper::GetInstance().Connection());
+	loader.Load();
 }

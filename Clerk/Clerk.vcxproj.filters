@@ -147,9 +147,6 @@
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Dashboard\DashboardCreditsPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Controls\Statusbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -157,6 +154,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\AboutDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardDebtsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -299,9 +305,6 @@
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Dashboard\DashboardCreditsPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Controls\Statusbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -309,6 +312,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\AboutDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardDebtsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

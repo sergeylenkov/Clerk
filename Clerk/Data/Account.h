@@ -13,8 +13,7 @@ enum class AccountTypes {
 	Deposit = 1,
 	Expens = 2,
 	Debt = 3,
-	Credit = 4,
-	Virtual = 5,
+	Virtual = 4,
 };
 
 class Account : public Model

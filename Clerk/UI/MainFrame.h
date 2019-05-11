@@ -9,6 +9,7 @@
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Data/Settings.h"
+#include "../Data/ExchangeRates/CBRRatesLoader.h"
 #include "TreeMenu.h"
 #include "TransactionDialog.h"
 #include "AccountDialog.h"
@@ -98,4 +99,5 @@ private:
 	void OnSchedulersConfirmClose();
 	void OnEmptyTrash();
 	void OnAddMenuTransaction(wxCommandEvent &event);
+	void UpdateExchangeRates();
 };

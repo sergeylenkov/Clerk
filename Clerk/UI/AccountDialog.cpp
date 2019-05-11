@@ -89,8 +89,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	typeList->AppendString("Receipt");
 	typeList->AppendString("Deposit");
 	typeList->AppendString("Expens");
-	typeList->AppendString("Debt");
-	typeList->AppendString("Credit");
+	typeList->AppendString("Debt");	
 	typeList->AppendString("Virtual");
 
 	typeList->SetSelection(0);
@@ -188,7 +187,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 	
 	if (amountValue > 0) {		
 		if (isNew) {
-			if (account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+			if (account->type == AccountTypes::Debt) {
 				Transaction *transaction = new Transaction();
 
 				transaction->fromAccountId = account->id;

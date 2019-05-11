@@ -47,13 +47,13 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Developer\rapidjson\include;D:\Developer\include\sqlite;D:\Developer\wxWidgets-3.1.0\lib\vc_lib\mswud\;D:\Developer\wxWidgets-3.1.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WINDOWS__;__WXMSW__;__WXDEBUG__;WXDEBUG=1;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Developer\curl-7.64.1\include;D:\Developer\rapidxml;D:\Developer\rapidjson\include;D:\Developer\include\sqlite;D:\Developer\wxWidgets-3.1.0\lib\vc_lib\mswud\;D:\Developer\wxWidgets-3.1.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WINDOWS__;__WXMSW__;__WXDEBUG__;WXDEBUG=1;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>D:\Developer\lib;D:\Developer\wxWidgets-3.1.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxmsw31ud_adv.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>D:\Developer\curl-7.64.1\build\Win32\VC15\LIB Debug;D:\Developer\lib;D:\Developer\wxWidgets-3.1.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxmsw31ud_adv.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;sqlite3.lib;libcurld.lib;Ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -75,12 +75,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp" />
+    <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp" />
     <ClCompile Include="UI\Controls\DropDownButton.cpp" />
     <ClCompile Include="UI\Controls\Statusbar.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardAccountsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBalancePanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardBudgetsPanel.cpp" />
-    <ClCompile Include="UI\Dashboard\DashboardCreditsPanel.cpp" />
+    <ClCompile Include="UI\Dashboard\DashboardDebtsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardExpensesPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardSchedulersPanel.cpp" />
@@ -125,12 +127,14 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h" />
+    <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h" />
     <ClInclude Include="UI\Controls\DropDownButton.h" />
     <ClInclude Include="UI\Controls\Statusbar.h" />
     <ClInclude Include="UI\Dashboard\DashboardAccountsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBalancePanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardBudgetsPanel.h" />
-    <ClInclude Include="UI\Dashboard\DashboardCreditsPanel.h" />
+    <ClInclude Include="UI\Dashboard\DashboardDebtsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardExpensesPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardSchedulersPanel.h" />

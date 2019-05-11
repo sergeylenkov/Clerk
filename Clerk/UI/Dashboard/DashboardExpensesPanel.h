@@ -8,7 +8,6 @@ class DashboardExpensesPanel : public wxPanel
 {
 public:
 	DashboardExpensesPanel(wxWindow *parent, wxWindowID id);
-	~DashboardExpensesPanel();
 
 	void SetExpenses(std::vector<StringValue> expenses);
 	void Update();

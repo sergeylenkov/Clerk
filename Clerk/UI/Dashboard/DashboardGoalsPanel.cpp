@@ -4,9 +4,6 @@ DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent, wxWindowID id) : wxPa
 	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
-DashboardGoalsPanel::~DashboardGoalsPanel() {
-}
-
 void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
 	this->goals = goals;
 	values.clear();

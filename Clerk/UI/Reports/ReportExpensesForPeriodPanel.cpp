@@ -64,7 +64,7 @@ void ReportExpensesForPeriodPanel::Update() {
 
 	std::vector<StringValue> chartValues;
 
-	for each (auto value in values)
+	for (auto value : values)
 	{
 		StringValue chartValue = { value.string, value.value };
 		chartValues.push_back(chartValue);

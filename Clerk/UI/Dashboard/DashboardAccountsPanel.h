@@ -7,8 +7,7 @@
 class DashboardAccountsPanel : public wxPanel
 {
 public:
-	DashboardAccountsPanel(wxWindow *parent, wxWindowID id);
-	~DashboardAccountsPanel();
+	DashboardAccountsPanel(wxWindow *parent, wxWindowID id);	
 
 	void SetAccounts(std::vector<StringValue> accounts);
 	void Update();

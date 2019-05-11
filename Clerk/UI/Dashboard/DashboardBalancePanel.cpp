@@ -4,19 +4,17 @@ DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent, wxWindowID id) : 
 	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
-DashboardBalancePanel::~DashboardBalancePanel() {
-}
-
-void DashboardBalancePanel::SetBalance(std::map<wxString, float> own, std::map<wxString, float> credit) {
+void DashboardBalancePanel::SetBalance(float balance, std::map<wxString, float> own, std::map<wxString, float> credit) {
 	ownFunds = own;
 	creditFunds = credit;
+	totalBalance = balance;
 
 	Update();
 }
 
 void DashboardBalancePanel::Update()
 {
-	int height = 100 + (ownFunds.size() * 30);	
+	int height = 140 + (ownFunds.size() * 30);	
 	this->SetMinSize(wxSize(-1, height));
 
 	Draw();
@@ -39,11 +37,21 @@ void DashboardBalancePanel::Draw() {
 	dc.SetFont(titleFont);
 	dc.DrawText("Balance", wxPoint(0, 0));
 
+	wxFont balanceFont = this->GetFont();
+	balanceFont.SetPointSize(12);
+
 	wxFont font = this->GetFont();
 	font.SetPointSize(10);
 
 	int columnWidth = 0;
 	int y = 40;
+
+	dc.SetFont(balanceFont);
+
+	wxString value = wxNumberFormatter::ToString(totalBalance, 2);
+	dc.DrawText(value, wxPoint(0, y));
+
+	y = 80;
 
 	dc.SetFont(font);
 
@@ -67,7 +75,7 @@ void DashboardBalancePanel::Draw() {
 		y = y + 30;
 	}
 
-	y = 40;
+	y = 80;
 	int x = columnWidth + 80;
 
 	dc.SetTextForeground(wxColor(127, 127, 127));

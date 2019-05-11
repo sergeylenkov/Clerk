@@ -15,8 +15,6 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	addTransactionButton = new DropDownButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34));
-
-	//addTransactionButton->SetBitmap(wxBitmap(wxT("../Clerk/Resources/AddForm_16x.png"), wxBITMAP_TYPE_ANY));
 	addTransactionButton->SetBackgroundColour(wxColour(255, 255, 255));
 
 	addTransactionButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddTransaction, this);
@@ -87,52 +85,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
-	statusbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20), wxTAB_TRAVERSAL);
-	statusbar->SetBackgroundColour(wxColour(245, 245, 245, 1));
-	statusbar->SetForegroundColour(wxColour(68, 68, 68, 1));
-	statusbar->SetMinSize(wxSize(-1, 20));
-
-	wxBoxSizer *statusbarSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	wxStaticBitmap *bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_CALENDAR"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
-	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
-	periodLabel = new wxStaticText(statusbar, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
-	periodLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_BTNTEXT));
-
-	statusbarSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-	statusbarSizer->Add(20, 0, 0, wxEXPAND, 5);
-
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_UP"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
-	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
-	receiptsLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
-	receiptsLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
-
-	statusbarSizer->Add(receiptsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
-	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
-	expensesLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
-	expensesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
-
-	statusbarSizer->Add(expensesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
-
-	bitmap = new wxStaticBitmap(statusbar, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_BALANCE"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
-	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
-	balanceLabel = new wxStaticText(statusbar, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
-	balanceLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
-
-	statusbarSizer->Add(balanceLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
-
-	statusbar->SetSizer(statusbarSizer);
-	statusbar->Layout();
-
+	statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20));	
 	mainSizer->Add(statusbar, 0, wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
@@ -154,6 +107,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
+	}).detach();
+
+	std::thread([=]()
+	{
+		UpdateExchangeRates();
+		DataHelper::GetInstance().ReloadExchangeRate();
 	}).detach();
 }
 
@@ -187,7 +146,7 @@ void MainFrame::CreateMainMenu() {
 		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
 		menuTransaction->AppendSeparator();
 
-		for each (auto transaction in transactions)
+		for (auto transaction : transactions)
 		{
 			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 		}
@@ -200,6 +159,8 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
+	menuFile->AppendSeparator();
+	menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...\tCtrl+P");
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
 
@@ -216,6 +177,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
 }
 
@@ -223,7 +185,7 @@ void MainFrame::CreateDropdownMenu() {
 	wxMenu *menu = addTransactionButton->GetMenu();
 	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
 
-	for each (auto transaction in transactions)
+	for (auto transaction : transactions)
 	{
 		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
 	}
@@ -238,24 +200,42 @@ void MainFrame::UpdateStatus() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 
-	float expenses = DataHelper::GetInstance().GetExpenses(&fromDate, &toDate);
-	float receipts = DataHelper::GetInstance().GetReceipts(&fromDate, &toDate);
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 
+	float receipts = 0;
+	float expenses = 0;
 	float balance = 0;
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		float amount = DataHelper::GetInstance().GetReceipts(account.get(), &fromDate, &toDate);
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
+		receipts = receipts + amount;
+	}
+
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);		
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+		
+		expenses = expenses + amount;
+	}
+	
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
 		if (account->creditLimit == 0) {
+			float amount = DataHelper::GetInstance().GetBalance(account.get());
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+
 			balance = balance + amount;
 		}
 	}
 
-	periodLabel->SetLabelText(wxDateTime::Now().Format("%B"));
-	receiptsLabel->SetLabelText(wxNumberFormatter::ToString(receipts, 2));
-	expensesLabel->SetLabelText(wxNumberFormatter::ToString(expenses, 2));
-	balanceLabel->SetLabelText(wxNumberFormatter::ToString(balance, 2));
+	statusbar->SetPeriod(wxDateTime::Now().Format("%B"));
+	statusbar->SetRecepipts(wxNumberFormatter::ToString(receipts, 2));
+	statusbar->SetExpenses(wxNumberFormatter::ToString(expenses, 2));
+	statusbar->SetBalance(wxNumberFormatter::ToString(balance, 2));
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -265,10 +245,18 @@ void MainFrame::OnQuit(wxCommandEvent &event)
 
 void MainFrame::OnAbout(wxCommandEvent &event)
 {
-	AboutFrame *aboutFrame = new AboutFrame(this, wxT("About"), 0, 0, 250, 340);
+	AboutDialog *aboutDialog = new AboutDialog(this, wxT("About"), 0, 0, 250, 340);
 
-	aboutFrame->Show(true);
-	aboutFrame->CenterOnParent();
+	aboutDialog->Show(true);
+	aboutDialog->CenterOnParent();
+}
+
+void MainFrame::OnPreferences(wxCommandEvent &event)
+{
+	PreferencesDialog *preferencesDialog = new PreferencesDialog(this, wxT("Preferences"), 0, 0, 400, 300);
+
+	preferencesDialog->Show(true);
+	preferencesDialog->CenterOnParent();
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
@@ -363,8 +351,8 @@ void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 	else if (type == TreeMenuItemTypes::MenuExpenses) {
 		AddAccount(AccountTypes::Expens);
 	}
-	else if (type == TreeMenuItemTypes::MenuCredits) {
-		AddAccount(AccountTypes::Credit);
+	else if (type == TreeMenuItemTypes::MenuDebt) {
+		AddAccount(AccountTypes::Debt);
 	}
 	else {
 		AddAccount(AccountTypes::Deposit);
@@ -399,6 +387,7 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 		delete copy;
 
 		tabsPanel->Update();
+		UpdateStatus();
 	}	
 }
 
@@ -419,7 +408,7 @@ void MainFrame::AddTransaction(Account *account) {
 			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
 
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Credit) {
+		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			transaction->toAccountId = account->id;
 			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
@@ -492,6 +481,7 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 
 void MainFrame::OnTransactionClose() {
 	tabsPanel->Update();
+	UpdateStatus();
 }
 
 void MainFrame::AddAccount(AccountTypes type) {
@@ -636,7 +626,7 @@ void MainFrame::CheckSchedulers() {
 
 	std::vector<shared_ptr<Scheduler>> schedulers;
 
-	for each (auto scheduler in DataHelper::GetInstance().GetSchedulers())
+	for (auto scheduler : DataHelper::GetInstance().GetSchedulers())
 	{
 		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);
@@ -676,4 +666,9 @@ void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
 
 		CopyTransaction(transaction);
 	}
+}
+
+void MainFrame::UpdateExchangeRates() {
+	CBRRatesLoader loader(DataHelper::GetInstance().Connection());
+	loader.Load();
 }

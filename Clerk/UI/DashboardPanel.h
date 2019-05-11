@@ -9,13 +9,12 @@
 #include "./Dashboard/DashboardAccountsPanel.h"
 #include "./Dashboard/DashboardBalancePanel.h"
 #include "./Dashboard/DashboardGoalsPanel.h"
-#include "./Dashboard/DashboardCreditsPanel.h"
+#include "./Dashboard/DashboardDebtsPanel.h"
 
 class DashboardPanel : public DataPanel
 {
 public:
-	DashboardPanel(wxWindow *parent, wxWindowID id);
-	~DashboardPanel();
+	DashboardPanel(wxWindow *parent, wxWindowID id);	
 
 	void Update();
 
@@ -29,6 +28,6 @@ private:
 	DashboardAccountsPanel *accountsPanel;
 	DashboardBalancePanel *balancePanel;
 	DashboardGoalsPanel *goalsPanel;
-	DashboardCreditsPanel *creditsPanel;
+	DashboardDebtsPanel *debtsPanel;
 };
 

@@ -1,13 +1,10 @@
-#include "DashboardCreditsPanel.h"
+#include "DashboardDebtsPanel.h"
 
-DashboardCreditsPanel::DashboardCreditsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Bind(wxEVT_PAINT, &DashboardCreditsPanel::OnPaint, this);
+DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+	this->Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
 }
 
-DashboardCreditsPanel::~DashboardCreditsPanel() {
-}
-
-void DashboardCreditsPanel::SetCredits(std::vector<std::shared_ptr<Account>> credits) {
+void DashboardDebtsPanel::SetCredits(std::vector<std::shared_ptr<Account>> credits) {
 	this->credits = credits;	
 	values.clear();
 
@@ -33,7 +30,7 @@ void DashboardCreditsPanel::SetCredits(std::vector<std::shared_ptr<Account>> cre
 	Update();
 }
 
-void DashboardCreditsPanel::Update()
+void DashboardDebtsPanel::Update()
 {
 	int height = 170 + (credits.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
@@ -41,7 +38,7 @@ void DashboardCreditsPanel::Update()
 	Draw();
 }
 
-void DashboardCreditsPanel::Draw() {
+void DashboardDebtsPanel::Draw() {
 	wxClientDC dc(this);
 
 	int width = 0;
@@ -56,7 +53,7 @@ void DashboardCreditsPanel::Draw() {
 	titleFont.SetPointSize(12);	
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Credits", wxPoint(0, 0));
+	dc.DrawText("Debts", wxPoint(0, 0));
 
 	wxFont font = this->GetFont();
 	font.SetPointSize(8);
@@ -163,6 +160,6 @@ void DashboardCreditsPanel::Draw() {
 	}
 }
 
-void DashboardCreditsPanel::OnPaint(wxPaintEvent& event) {
+void DashboardDebtsPanel::OnPaint(wxPaintEvent& event) {
 	Draw();
 }

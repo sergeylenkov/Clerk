@@ -60,11 +60,15 @@ public:
 	void Save();
 
 	int GetSelectedAccountId();
-	int GetWindowWidth();
-	int GetWindowHeight();	
 	void SetSelectedAccountId(int id);
+	int GetWindowWidth();
+	int GetWindowHeight();		
 	void SetWindowWidth(int width);
 	void SetWindowHeight(int height);
+	int GetBaseCurrencyId();
+	void SetBaseCurrencyId(int id);
+	bool IsConvertCurrency();
+	void SetConvertCurrency(bool convert);
 	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
@@ -84,7 +88,9 @@ private:
 	wxString fileName;
 	int selectedAccountId;
 	int windowWidth;
-	int windowHeight;	
+	int windowHeight;
+	int baseCurrencyId;
+	bool convertCurrency;
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;

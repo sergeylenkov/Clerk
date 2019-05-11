@@ -56,12 +56,12 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 
 	accounts.push_back(account);
 
-	for each (auto account in DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		accounts.push_back(account);
 	}
 
-	for each (auto account in accounts) {
+	for (auto account : accounts) {
 		int iconId = 0;
 
 		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -106,7 +106,7 @@ void ReportBalancePanel::Update() {
 
 	std::vector<StringValue> chartValues;
 
-	for each (auto value in values)
+	for (auto value : values)
 	{
 		StringValue chartValue = { value.date.Format("%B"), value.value };
 		chartValues.push_back(chartValue);

@@ -4,11 +4,10 @@
 #include <wx/numformatter.h>
 #include "../../Data/DataHelper.h"
 
-class DashboardCreditsPanel : public wxPanel
+class DashboardDebtsPanel : public wxPanel
 {
 public:
-	DashboardCreditsPanel(wxWindow *parent, wxWindowID id);
-	~DashboardCreditsPanel();
+	DashboardDebtsPanel(wxWindow *parent, wxWindowID id);
 
 	void SetCredits(std::vector<std::shared_ptr<Account>> credits);
 	void Update();

@@ -45,9 +45,6 @@
     <ClCompile Include="UI\TransactionsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\HomePanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\TreeMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -114,9 +111,6 @@
     <ClCompile Include="UI\Charts\GraphPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\AboutFrame.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Reports\ReportExpensesForPeriodPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -153,7 +147,22 @@
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Dashboard\DashboardCreditsPanel.cpp">
+    <ClCompile Include="UI\Controls\Statusbar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PreferencesDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\AboutDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardDebtsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -189,9 +198,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TransactionsListPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\HomePanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu.h">
@@ -263,9 +269,6 @@
     <ClInclude Include="UI\Charts\GraphPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\AboutFrame.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Reports\ReportExpensesForPeriodPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -302,7 +305,22 @@
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Dashboard\DashboardCreditsPanel.h">
+    <ClInclude Include="UI\Controls\Statusbar.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PreferencesDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\AboutDialog.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardDebtsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

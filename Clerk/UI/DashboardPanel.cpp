@@ -40,8 +40,8 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	goalsPanel = new DashboardGoalsPanel(rightPanel, wxID_ANY);
 	rightSizer->Add(goalsPanel, 0, wxEXPAND | wxALL, 5);
 
-	creditsPanel = new DashboardCreditsPanel(rightPanel, wxID_ANY);
-	rightSizer->Add(creditsPanel, 0, wxEXPAND | wxALL, 5);
+	debtsPanel = new DashboardDebtsPanel(rightPanel, wxID_ANY);
+	rightSizer->Add(debtsPanel, 0, wxEXPAND | wxALL, 5);
 
 	rightPanel->SetSizer(rightSizer);
 	rightPanel->Layout();
@@ -59,9 +59,6 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	this->Layout();
 }
 
-DashboardPanel::~DashboardPanel() {
-}
-
 void DashboardPanel::Update() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
@@ -71,12 +68,20 @@ void DashboardPanel::Update() {
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 	
-	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
-	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
-	expensesPanel->SetExpenses(DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate));
-	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
+	std::vector<StringValue> expenses;
 
-	std::vector<StringValue> accounts;
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+
+		if (amount > 0) {
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+			expenses.push_back({ *account->name, amount });
+		}
+	}
+
+	std::vector<StringValue> accounts;	
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -90,10 +95,9 @@ void DashboardPanel::Update() {
 		accounts.push_back({ *account->name, amount });
 	}
 
-	accountsPanel->SetAccounts(accounts);
-
 	std::map<wxString, float> ownFounds;
 	std::map<wxString, float> creditFounds;
+	float totalBalance = 0;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
@@ -116,26 +120,32 @@ void DashboardPanel::Update() {
 			else {
 				ownFounds[*account->currency->shortName] = amount;
 			}
+
+			totalBalance = totalBalance + DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 		}
 	}
 
-	balancePanel->SetBalance(ownFounds, creditFounds);
-
-	std::vector<std::shared_ptr<Account>> credits;
+	std::vector<std::shared_ptr<Account>> debts;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		if (account->creditLimit > 0) {
-			credits.push_back(account);
+			debts.push_back(account);
 		}
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
-		credits.push_back(account);
+		debts.push_back(account);
 	}
-
-	creditsPanel->SetCredits(credits);
+	
+	balancePanel->SetBalance(totalBalance, ownFounds, creditFounds);
+	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
+	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
+	expensesPanel->SetExpenses(expenses);
+	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
+	debtsPanel->SetCredits(debts);
+	accountsPanel->SetAccounts(accounts);
 
 	this->Layout();
 }

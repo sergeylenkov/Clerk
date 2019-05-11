@@ -9,6 +9,7 @@
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Data/Settings.h"
+#include "../Data/ExchangeRates/CBRRatesLoader.h"
 #include "TreeMenu.h"
 #include "TransactionDialog.h"
 #include "AccountDialog.h"
@@ -17,8 +18,10 @@
 #include "SchedulersConfirmDialog.h"
 #include "TabsPanel.h"
 #include "GoalDialog.h"
-#include "AboutFrame.h"
+#include "AboutDialog.h"
+#include "PreferencesDialog.h"
 #include "Controls/DropDownButton.h"
+#include "Controls/Statusbar.h"
 
 enum class MainMenuTypes {
 	About = 1,
@@ -28,6 +31,7 @@ enum class MainMenuTypes {
 	AddScheduler = 5,
 	Exit = 6,
 	AddGoal = 7,
+	Preferences = 8
 };
 
 class MainFrame : public wxFrame
@@ -38,23 +42,20 @@ public:
 
 private:
 	wxPanel *toolbar;
-	wxPanel *statusbar;
+	Statusbar *statusbar;
 	TreeMenu *treeMenu;
 	TransactionDialog *transactionFrame;
 	AccountDialog *accountFrame;
 	wxBoxSizer *rightPanelSizer;
 	TabsPanel *tabsPanel;
 	DropDownButton *addTransactionButton;
-	wxStaticText *periodLabel;
-	wxStaticText *receiptsLabel;
-	wxStaticText *expensesLabel;
-	wxStaticText *balanceLabel;
 
 	void CreateMainMenu();
 	void CreateDropdownMenu();
 	void UpdateStatus();
 	void OnQuit(wxCommandEvent &event);
 	void OnAbout(wxCommandEvent &event);
+	void OnPreferences(wxCommandEvent &event);
 	void OnAddTransaction(wxCommandEvent &event);
 	void OnDuplicateTransaction(wxCommandEvent &event);
 	void OnSplitTransaction(wxCommandEvent &event);
@@ -98,4 +99,5 @@ private:
 	void OnSchedulersConfirmClose();
 	void OnEmptyTrash();
 	void OnAddMenuTransaction(wxCommandEvent &event);
+	void UpdateExchangeRates();
 };

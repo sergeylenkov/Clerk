@@ -1,6 +1,6 @@
-#include "AboutFrame.h"
+#include "AboutDialog.h"
 
-AboutFrame::AboutFrame(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)) {
+AboutDialog::AboutDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	wxString version = wxString::Format("Version %s", APP_VERSION);
@@ -30,8 +30,4 @@ AboutFrame::AboutFrame(wxFrame *parent, const wxChar *title, int x, int y, int w
 	this->Layout();
 
 	this->Centre(wxBOTH);
-}
-
-AboutFrame::~AboutFrame()
-{
 }

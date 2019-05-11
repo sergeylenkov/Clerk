@@ -11,11 +11,9 @@
 class BudgetDialog : public wxFrame
 {
 public:
-	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
-	~BudgetDialog();
+	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);	
 
 	void SetBudget(std::shared_ptr<Budget> budget);
-
 	std::function<void()> OnClose;
 
 private:
@@ -37,5 +35,6 @@ private:
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
+	void OnKeyDown(wxKeyEvent &event);
 };
 

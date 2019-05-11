@@ -8,6 +8,7 @@
 #include <functional>
 #include "../Data/DataHelper.h"
 #include "TagsPopup.h"
+#include "../Data/Settings.h"
 
 using namespace std;
 

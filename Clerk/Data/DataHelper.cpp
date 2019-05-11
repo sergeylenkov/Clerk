@@ -79,6 +79,14 @@ void DataHelper::Init() {
 	}
 
 	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate FLOAT, count INTEGER, date TEXT)";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }
 
 void DataHelper::InitData() {
@@ -101,6 +109,7 @@ void DataHelper::InitData() {
 
 	sqlite3_finalize(statement);
 
+	ReloadExchangeRate();
 	ReloadAccounts();
 }
 
@@ -464,28 +473,6 @@ float DataHelper::GetAccountTotalReceipt(Account *account) {
 	return receipt;
 }
 
-float DataHelper::GetToAmountSum(Account *account, wxDateTime *from, wxDateTime *to)
-{
-	float total = 0;
-
-	char *sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id = ? AND paid_at >= ? AND paid_at <= ? AND deleted = 0";
-	sqlite3_stmt *statement;
-
-	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
-		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-
-		if (sqlite3_step(statement) == SQLITE_ROW) {
-			total = sqlite3_column_double(statement, 0);
-		}
-	}
-
-	sqlite3_reset(statement);
-
-	return total;
-}
-
 float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
@@ -506,6 +493,27 @@ float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
+float  DataHelper::GetExpenses(Account *account, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
+}
+
 float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
@@ -515,6 +523,27 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			total = sqlite3_column_double(statement, 0);
+		}
+	}
+
+	sqlite3_reset(statement);
+
+	return total;
+}
+
+float DataHelper::GetReceipts(Account *account, wxDateTime *from, wxDateTime *to) {
+	float total = 0;
+
+	char *sql = "SELECT TOTAL(t.from_account_amount) FROM transactions t, accounts a WHERE a.type_id = 0 AND t.from_account_id = ? AND t.from_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			total = sqlite3_column_double(statement, 0);
@@ -772,7 +801,7 @@ int DataHelper::GetPairAccountId(Account *account) {
 	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
 		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
-	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
@@ -793,7 +822,7 @@ int DataHelper::GetPairAccountId(Account *account) {
 		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
 			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
-		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
 
@@ -960,7 +989,7 @@ std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account
 }
 
 void DataHelper::EmptyTrash() {
-	for each (auto transaction in GetDeletedTransactions())
+	for (auto transaction : GetDeletedTransactions())
 	{
 		transaction->DeleteCompletely();
 	}
@@ -981,4 +1010,37 @@ void DataHelper::CreateAccountsImageList() {
 			delete bitmap;
 		}
 	}
+}
+
+float DataHelper::ConvertCurrency(int fromId, int toId, float amount) {
+	if (fromId == toId) {
+		return amount;
+	}
+
+	float rate = 1;
+
+	if (exchangeRates[std::make_pair(fromId, toId)]) {
+		rate = exchangeRates[std::make_pair(fromId, toId)];
+	}
+	
+	return amount * rate;
+}
+
+void DataHelper::ReloadExchangeRate() {
+	char *sql = "SELECT from_currency_id, to_currency_id, rate, count FROM exchange_rates";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int fromId = sqlite3_column_int(statement, 0);
+			int toId = sqlite3_column_int(statement, 1);
+			float rate = sqlite3_column_double(statement, 2);
+			int count = sqlite3_column_int(statement, 3);
+
+			exchangeRates[std::make_pair(fromId, toId)] = count * rate;
+			exchangeRates[std::make_pair(toId, fromId)] = count / rate;
+		}
+	}
+
+	sqlite3_finalize(statement);
 }

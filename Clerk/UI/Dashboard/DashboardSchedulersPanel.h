@@ -8,8 +8,7 @@
 class DashboardSchedulersPanel : public wxPanel
 {
 public:
-	DashboardSchedulersPanel(wxWindow *parent, wxWindowID id);
-	~DashboardSchedulersPanel();
+	DashboardSchedulersPanel(wxWindow *parent, wxWindowID id);	
 
 	void SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers);
 	void Update();

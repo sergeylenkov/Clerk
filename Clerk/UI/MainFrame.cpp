@@ -107,8 +107,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
+	}).detach();
 
+	std::thread([=]()
+	{
 		UpdateExchangeRates();
+		DataHelper::GetInstance().ReloadExchangeRate();
 	}).detach();
 }
 

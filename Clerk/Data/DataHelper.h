@@ -93,6 +93,7 @@ public:
 	wxImageList *accountsImageList;
 	void CreateAccountsImageList();
 	float ConvertCurrency(int fromId, int toId, float amount);
+	void ReloadExchangeRate();
 
 private:
 	DataHelper();                 

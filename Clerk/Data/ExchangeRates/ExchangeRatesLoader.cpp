@@ -8,7 +8,7 @@ void ExchangeRatesLoader::Load() {
 	
 }
 
-void ExchangeRatesLoader::UpdateValue(wxDateTime *date, string *from, string *to, float value) {	
+void ExchangeRatesLoader::UpdateValue(wxDateTime *date, string *from, string *to, float value, int count) {	
 	int fromId = -1;
 	int toId = -1;
 
@@ -51,13 +51,16 @@ void ExchangeRatesLoader::UpdateValue(wxDateTime *date, string *from, string *to
 		sqlite3_reset(statement);
 
 		if (newRate) {
-			sql = "INSERT INTO exchange_rates (from_currency_id, to_currency_id, rate, date) VALUES (?, ?, ?, ?)";
+			sql = "INSERT INTO exchange_rates (from_currency_id, to_currency_id, rate, count, date) VALUES (?, ?, ?, ?, ?)";
 
 			if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) == SQLITE_OK) {
 				sqlite3_bind_int(statement, 1, fromId);
 				sqlite3_bind_int(statement, 2, toId);
 				sqlite3_bind_double(statement, 3, value);
-				sqlite3_bind_text(statement, 4, date->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_int(statement, 4, count);
+				sqlite3_bind_text(statement, 5, date->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+				sqlite3_step(statement);
 			}
 
 			sqlite3_finalize(statement);

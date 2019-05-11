@@ -52,20 +52,23 @@ void CBRRatesLoader::Parse(string *data) {
 	for (xml_node<> *child = rootNode->first_node(); child; child = child->next_sibling())
 	{
 		xml_node<> *codeNode = child->first_node("CharCode");
-		xml_node<> *valueNode = child->first_node("Value");
+		xml_node<> *rateNode = child->first_node("Value");
+		xml_node<> *countNode = child->first_node("Nominal");
 
-		char *code = codeNode->value();
-		char *value = valueNode->value();
-		
-		string valueStr(value);
+		char *codeValue = codeNode->value();
+		char *rateValue = rateNode->value();
+		char *countValue = countNode->value();
+
+		string valueStr(rateValue);
 
 		std::replace(valueStr.begin(), valueStr.end(), ',', '.');
 
 		float rate = atof(valueStr.c_str());
+		int count = atoi(countValue);
 
 		string to("RUB");
-		string from(code);
+		string from(codeValue);
 
-		UpdateValue(&date, &from, &to, rate);
+		UpdateValue(&date, &from, &to, rate, count);
 	}
 }

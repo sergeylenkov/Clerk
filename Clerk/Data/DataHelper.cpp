@@ -80,7 +80,7 @@ void DataHelper::Init() {
 
 	sqlite3_finalize(statement);
 
-	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate FLOAT, date TEXT)";
+	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate FLOAT, count INTEGER, date TEXT)";
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);
@@ -109,11 +109,7 @@ void DataHelper::InitData() {
 
 	sqlite3_finalize(statement);
 
-	exchangeRates[std::make_pair(152, 180)] = 1 / 64.0;
-	exchangeRates[std::make_pair(180, 152)] = 64.0;
-	exchangeRates[std::make_pair(152, 62)] = 1 / 72.0;
-	exchangeRates[std::make_pair(62, 152)] = 72.0;
-
+	ReloadExchangeRate();
 	ReloadAccounts();
 }
 
@@ -1028,4 +1024,23 @@ float DataHelper::ConvertCurrency(int fromId, int toId, float amount) {
 	}
 	
 	return amount * rate;
+}
+
+void DataHelper::ReloadExchangeRate() {
+	char *sql = "SELECT from_currency_id, to_currency_id, rate, count FROM exchange_rates";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int fromId = sqlite3_column_int(statement, 0);
+			int toId = sqlite3_column_int(statement, 1);
+			float rate = sqlite3_column_double(statement, 2);
+			int count = sqlite3_column_int(statement, 3);
+
+			exchangeRates[std::make_pair(fromId, toId)] = count * rate;
+			exchangeRates[std::make_pair(toId, fromId)] = count / rate;
+		}
+	}
+
+	sqlite3_finalize(statement);
 }

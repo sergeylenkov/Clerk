@@ -142,11 +142,6 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 		accounts.push_back(account);
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
-	{
-		accounts.push_back(account);
-	}
-
 	UpdateFromList();
 	SelectFromAccount(0);
 
@@ -270,8 +265,8 @@ void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
 			}
 		}
 		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
-			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens || toAccount->type == AccountTypes::Debt 
-				|| toAccount->type == AccountTypes::Credit || toAccount->type == AccountTypes::Virtual) {
+			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens
+				|| toAccount->type == AccountTypes::Debt || toAccount->type == AccountTypes::Virtual) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {

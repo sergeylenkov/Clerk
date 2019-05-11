@@ -805,7 +805,7 @@ int DataHelper::GetPairAccountId(Account *account) {
 	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
 		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
-	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
@@ -826,7 +826,7 @@ int DataHelper::GetPairAccountId(Account *account) {
 		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
 			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
-		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt || account->type == AccountTypes::Credit) {
+		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
 

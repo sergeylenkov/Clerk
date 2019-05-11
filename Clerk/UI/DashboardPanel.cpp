@@ -40,8 +40,8 @@ DashboardPanel::DashboardPanel(wxWindow *parent, wxWindowID id) : DataPanel(pare
 	goalsPanel = new DashboardGoalsPanel(rightPanel, wxID_ANY);
 	rightSizer->Add(goalsPanel, 0, wxEXPAND | wxALL, 5);
 
-	creditsPanel = new DashboardCreditsPanel(rightPanel, wxID_ANY);
-	rightSizer->Add(creditsPanel, 0, wxEXPAND | wxALL, 5);
+	debtsPanel = new DashboardDebtsPanel(rightPanel, wxID_ANY);
+	rightSizer->Add(debtsPanel, 0, wxEXPAND | wxALL, 5);
 
 	rightPanel->SetSizer(rightSizer);
 	rightPanel->Layout();
@@ -125,18 +125,18 @@ void DashboardPanel::Update() {
 		}
 	}
 
-	std::vector<std::shared_ptr<Account>> credits;
+	std::vector<std::shared_ptr<Account>> debts;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		if (account->creditLimit > 0) {
-			credits.push_back(account);
+			debts.push_back(account);
 		}
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
-		credits.push_back(account);
+		debts.push_back(account);
 	}
 	
 	balancePanel->SetBalance(totalBalance, ownFounds, creditFounds);
@@ -144,7 +144,7 @@ void DashboardPanel::Update() {
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(expenses);
 	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
-	creditsPanel->SetCredits(credits);
+	debtsPanel->SetCredits(debts);
 	accountsPanel->SetAccounts(accounts);
 
 	this->Layout();

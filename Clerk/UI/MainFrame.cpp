@@ -347,8 +347,8 @@ void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 	else if (type == TreeMenuItemTypes::MenuExpenses) {
 		AddAccount(AccountTypes::Expens);
 	}
-	else if (type == TreeMenuItemTypes::MenuCredits) {
-		AddAccount(AccountTypes::Credit);
+	else if (type == TreeMenuItemTypes::MenuDebt) {
+		AddAccount(AccountTypes::Debt);
 	}
 	else {
 		AddAccount(AccountTypes::Deposit);
@@ -404,7 +404,7 @@ void MainFrame::AddTransaction(Account *account) {
 			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}
 
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Credit) {
+		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			transaction->toAccountId = account->id;
 			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
 		}

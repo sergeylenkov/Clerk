@@ -201,31 +201,9 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuDebt;
 
-	child = treeMenu->AppendItem(accountsItem, "Debt", menuImageIndex + 2, menuImageIndex + 2, itemData);
+	child = treeMenu->AppendItem(accountsItem, "Debts", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
-	{
-		int iconId = 28;
-
-		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-			iconId = account->iconId;
-		}
-
-		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
-		itemData->object = account;
-
-		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
-
-		accounts.push_back(account);
-	}
-
-	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuCredits;
-
-	child = treeMenu->AppendItem(accountsItem, "Credits", menuImageIndex + 2, menuImageIndex + 2, itemData);
-
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Credit))
 	{
 		int iconId = 28;
 

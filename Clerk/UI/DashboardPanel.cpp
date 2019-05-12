@@ -81,6 +81,16 @@ void DashboardPanel::Update() {
 		}
 	}
 
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+
+		if (amount > 0) {
+			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+			expenses.push_back({ *account->name, amount });
+		}
+	}
+
 	std::vector<StringValue> accounts;	
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
@@ -144,7 +154,7 @@ void DashboardPanel::Update() {
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(expenses);
 	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
-	debtsPanel->SetCredits(debts);
+	debtsPanel->SetDebts(debts);
 	accountsPanel->SetAccounts(accounts);
 
 	this->Layout();

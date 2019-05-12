@@ -222,6 +222,14 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 	
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+
+		expenses = expenses + amount;
+	}
+
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		if (account->creditLimit == 0) {

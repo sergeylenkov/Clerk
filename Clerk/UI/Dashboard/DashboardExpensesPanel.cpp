@@ -20,16 +20,16 @@ void DashboardExpensesPanel::SetExpenses(std::vector<StringValue> expenses) {
 		if (expense.value > maxValue) {
 			maxValue = expense.value;
 		}
-	}
-
-	int height = 50 + (expenses.size() * 30);
-	this->SetMinSize(wxSize(-1, height));
+	}	
 
 	Update();
 }
 
 void DashboardExpensesPanel::Update()
 {
+	int height = 50 + (expenses.size() * 30);
+	this->SetMinSize(wxSize(-1, height));
+
 	Draw();
 }
 
@@ -51,7 +51,7 @@ void DashboardExpensesPanel::Draw() {
 	dc.DrawText("Expenses", wxPoint(0, 0));
 
 	wxFont accountFont = this->GetFont();
-	wxFont amountFont = this->GetFont();	
+	wxFont amountFont = this->GetFont();
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));

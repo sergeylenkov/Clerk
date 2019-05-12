@@ -30,12 +30,10 @@ void DashboardExpensesPanel::Update()
 	int height = 50 + (expenses.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardExpensesPanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -93,5 +91,6 @@ void DashboardExpensesPanel::Draw() {
 }
 
 void DashboardExpensesPanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

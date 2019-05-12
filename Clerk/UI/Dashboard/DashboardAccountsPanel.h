@@ -15,6 +15,6 @@ public:
 private:
 	std::vector<StringValue> accounts;	
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

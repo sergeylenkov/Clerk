@@ -19,7 +19,7 @@ private:
 	int daysCount;
 	int currentDay;
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };
 

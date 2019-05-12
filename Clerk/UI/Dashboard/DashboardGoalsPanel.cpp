@@ -24,12 +24,10 @@ void DashboardGoalsPanel::Update()
 	int height = 170 + (goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardGoalsPanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -150,5 +148,6 @@ void DashboardGoalsPanel::Draw() {
 }
 
 void DashboardGoalsPanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

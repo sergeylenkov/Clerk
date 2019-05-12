@@ -16,6 +16,6 @@ private:
 	std::vector<std::shared_ptr<Goal>> goals;
 	std::vector<DahboardProgressValue> values;
 	
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

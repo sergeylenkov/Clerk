@@ -17,6 +17,6 @@ private:
 	float totalValue;
 	float maxValue;
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

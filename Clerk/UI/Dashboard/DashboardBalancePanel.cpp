@@ -17,12 +17,10 @@ void DashboardBalancePanel::Update()
 	int height = 140 + (ownFunds.size() * 30);	
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardBalancePanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -96,5 +94,6 @@ void DashboardBalancePanel::Draw() {
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

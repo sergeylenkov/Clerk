@@ -32,12 +32,10 @@ void DashboardSchedulersPanel::Update()
 	int height = 170 + (schedulers.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardSchedulersPanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardSchedulersPanel::Draw(wxPaintDC &dc) {
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
@@ -47,13 +45,11 @@ void DashboardSchedulersPanel::Draw() {
 	dc.SetFont(titleFont);
 	dc.DrawText("Schedulers", wxPoint(0, 0));
 
-	DrawCalendar();
-	DrawTable();
+	DrawCalendar(dc);
+	DrawTable(dc);
 }
 
-void DashboardSchedulersPanel::DrawCalendar() {
-	wxClientDC dc(this);
-
+void DashboardSchedulersPanel::DrawCalendar(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -128,9 +124,7 @@ void DashboardSchedulersPanel::DrawCalendar() {
 	}
 }
 
-void DashboardSchedulersPanel::DrawTable() {
-	wxClientDC dc(this);
-
+void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -181,5 +175,6 @@ void DashboardSchedulersPanel::DrawTable() {
 }
 
 void DashboardSchedulersPanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

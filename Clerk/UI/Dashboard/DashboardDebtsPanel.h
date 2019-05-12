@@ -17,6 +17,6 @@ private:
 	std::vector<DahboardProgressValue> values;
 	float totalValue;
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

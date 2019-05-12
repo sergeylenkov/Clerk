@@ -40,12 +40,10 @@ void DashboardBudgetsPanel::Update()
 	int height = 170 + (budgets.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardBudgetsPanel::Draw() {	
-	wxClientDC dc(this);
-
+void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -56,7 +54,6 @@ void DashboardBudgetsPanel::Draw() {
 
 	wxFont titleFont = this->GetFont();
 	titleFont.SetPointSize(12);
-	//titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);
 	dc.DrawText("Budgets", wxPoint(0, 0));
@@ -186,5 +183,6 @@ void DashboardBudgetsPanel::Draw() {
 }
 
 void DashboardBudgetsPanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

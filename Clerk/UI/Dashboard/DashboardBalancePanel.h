@@ -17,6 +17,6 @@ private:
 	std::map<wxString, float> creditFunds;
 	float totalBalance;
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

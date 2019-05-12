@@ -18,9 +18,9 @@ private:
 	std::map<wxString, float> values;
 	float maxValue;
 
-	void Draw();
-	void DrawCalendar();
-	void DrawTable();
+	void Draw(wxPaintDC &dc);
+	void DrawCalendar(wxPaintDC &dc);
+	void DrawTable(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };
 

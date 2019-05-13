@@ -139,6 +139,9 @@ void BudgetDialog::UpdateAccounts() {
 	accountsList->EnableCheckboxes(true);
 
 	accounts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens);
+	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt);
+
+	accounts.insert(accounts.end(), debts.begin(), debts.end());
 
 	wxListItem column;
 

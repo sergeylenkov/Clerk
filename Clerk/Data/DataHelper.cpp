@@ -1027,7 +1027,7 @@ float DataHelper::ConvertCurrency(int fromId, int toId, float amount) {
 }
 
 void DataHelper::ReloadExchangeRate() {
-	char *sql = "SELECT from_currency_id, to_currency_id, rate, count FROM exchange_rates";
+	char *sql = "SELECT from_currency_id, to_currency_id, rate, count, MAX(date) FROM exchange_rates GROUP BY from_currency_id, to_currency_id";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {

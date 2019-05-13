@@ -8,4 +8,4 @@ Personal finance application. Written on c++ and using wxWidgets.
 - [sqlite](https://www.sqlite.org/index.html)
 - [rapidJson](http://rapidjson.org/)
 - [rapidXML](http://rapidxml.sourceforge.net/)
-- [curl]()https://curl.haxx.se/
+- [curl](https://curl.haxx.se/)

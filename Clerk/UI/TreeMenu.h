@@ -49,12 +49,12 @@ class TreeMenu : public wxPanel
 {
 public:
 	TreeMenu(wxWindow *parent, wxWindowID id);
-	~TreeMenu();
 
 	void Update();
 	void RestoreState();
 	std::shared_ptr<Account> GetAccount();
 	vector<std::shared_ptr<Account>> GetAccounts();
+	void UpdateTrashItem();
 
 	std::function<void(std::shared_ptr<Account>)> OnAccountSelect;
 	std::function<void(std::shared_ptr<Report>)> OnReportSelect;
@@ -81,6 +81,7 @@ private:
 	wxImageList *imageList;
 	vector<std::shared_ptr<Account>> accounts;
 	vector<std::shared_ptr<Report>> reports;
+	wxTreeItemId trashItem;
 	wxTreeItemId contextMenuItem;
 	wxTreeItemId draggedMenuItem;
 	int menuImageIndex;

@@ -13,8 +13,10 @@ public:
 	void Load();
 
 private:
-	sqlite3 *db;
+
 	
 protected:
+	sqlite3 *db;
+
 	void UpdateValue(wxDateTime *date, string *from, string *to, float value, int count);
 };

@@ -25,11 +25,6 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 	treeMenu->Bind(wxEVT_TREE_END_DRAG, &TreeMenu::OnEndDrag, this);
 }
 
-TreeMenu::~TreeMenu()
-{	
-	
-}
-
 void TreeMenu::CreateImageList() {
 	wxImage image;
 
@@ -108,7 +103,7 @@ void TreeMenu::Update() {
 		trashIcon = menuImageIndex + 11;
 	}
 
-	wxTreeItemId trashItem = treeMenu->AppendItem(rootItem, "Trash", trashIcon, trashIcon, itemData);
+	trashItem = treeMenu->AppendItem(rootItem, "Trash", trashIcon, trashIcon, itemData);
 	
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::MenuReceipts;
@@ -593,4 +588,16 @@ void TreeMenu::ReorderAccounts(wxTreeItemId &item) {
 
 		child = treeMenu->GetNextChild(item, cookie);
 	}
+}
+
+void TreeMenu::UpdateTrashItem() {
+	int count = DataHelper::GetInstance().GetDeletedTransactionsCount();
+	int icon = menuImageIndex + 10;
+
+	if (count == 0) {
+		icon = menuImageIndex + 11;
+	}
+
+	treeMenu->SetItemImage(trashItem, icon, wxTreeItemIcon_Normal);
+	treeMenu->SetItemImage(trashItem, icon, wxTreeItemIcon_Selected);
 }

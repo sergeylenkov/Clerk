@@ -657,7 +657,8 @@ void MainFrame::OnSchedulersConfirmClose() {
 }
 
 void MainFrame::OnEmptyTrash() {
-
+	DataHelper::GetInstance().EmptyTrash();
+	treeMenu->UpdateTrashItem();
 }
 
 void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {

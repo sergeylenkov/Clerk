@@ -14,26 +14,42 @@ CBRRatesLoader::CBRRatesLoader(sqlite3 *db) : ExchangeRatesLoader(db) {
 }
 
 void CBRRatesLoader::Load() {
-	CURL *curl;
-	CURLcode result;
+	wxDateTime today = wxDateTime::Now();
+	wxDateTime lastDate = wxDateTime();
 
-	curl = curl_easy_init();
+	char *sql = "SELECT MAX(date) FROM exchange_rates";
+	sqlite3_stmt *statement;
 
-	if (curl) {
-		string buffer;
-
-		curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-		curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
-		curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
-		curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-
-		result = curl_easy_perform(curl);
-
-		if (result == CURLE_OK) {
-			Parse(&buffer);
+	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		if (sqlite3_step(statement) == SQLITE_ROW) {			
+			lastDate.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
 		}
+	}
 
-		curl_easy_cleanup(curl);
+	sqlite3_finalize(statement);
+
+	if (!today.IsSameDate(lastDate)) {
+		CURL *curl;
+		CURLcode result;
+
+		curl = curl_easy_init();
+
+		if (curl) {
+			string buffer;
+
+			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
+			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+
+			result = curl_easy_perform(curl);
+
+			if (result == CURLE_OK) {
+				Parse(&buffer);
+			}
+
+			curl_easy_cleanup(curl);
+		}
 	}
 }
 

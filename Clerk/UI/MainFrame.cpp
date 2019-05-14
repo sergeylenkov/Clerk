@@ -109,11 +109,13 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
 	}).detach();
 
-	std::thread([=]()
-	{
-		UpdateExchangeRates();
-		DataHelper::GetInstance().ReloadExchangeRate();
-	}).detach();
+	if (Settings::GetInstance().IsLoadExchangeRates()) {
+		std::thread([=]()
+		{
+			UpdateExchangeRates();
+			DataHelper::GetInstance().ReloadExchangeRate();
+		}).detach();
+	}
 }
 
 MainFrame::~MainFrame() 

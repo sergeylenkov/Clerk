@@ -69,6 +69,8 @@ public:
 	void SetBaseCurrencyId(int id);
 	bool IsConvertCurrency();
 	void SetConvertCurrency(bool convert);
+	bool IsLoadExchangeRates();
+	void SetLoadExchangeRates(bool load);
 	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
@@ -91,6 +93,7 @@ private:
 	int windowHeight;
 	int baseCurrencyId;
 	bool convertCurrency;
+	bool loadExchangeRates;
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;

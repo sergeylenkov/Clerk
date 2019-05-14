@@ -10,6 +10,7 @@ void Settings::Open(char *configName) {
 	windowHeight = 800;
 	baseCurrencyId = 180;
 	convertCurrency = false;
+	loadExchangeRates = true;
 
 	RestoreDefaultColumns();	
 
@@ -45,6 +46,10 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("ConvertCurrency") && json["ConvertCurrency"].IsBool()) {
 			convertCurrency = json["ConvertCurrency"].GetBool();
+		}
+
+		if (json.HasMember("LoadExchangeRates") && json["LoadExchangeRates"].IsBool()) {
+			loadExchangeRates = json["LoadExchangeRates"].GetBool();
 		}
 
 		if (json["ExpandedMenu"].IsArray()) {
@@ -141,6 +146,7 @@ void Settings::Save() {
 	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
 	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
 	json.AddMember("ConvertCurrency", convertCurrency, json.GetAllocator());
+	json.AddMember("LoadExchangeRates", loadExchangeRates, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -350,6 +356,14 @@ bool Settings::IsConvertCurrency() {
 
 void Settings::SetConvertCurrency(bool convert) {
 	convertCurrency = convert;
+}
+
+bool Settings::IsLoadExchangeRates() {
+	return loadExchangeRates;
+}
+
+void Settings::SetLoadExchangeRates(bool load) {
+	loadExchangeRates = load;
 }
 
 void Settings::ClearTabs() {

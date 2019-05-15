@@ -110,10 +110,16 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	}).detach();
 
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
+		statusbar->SetExchangeRates("Updating...");		
+
 		std::thread([=]()
 		{
 			UpdateExchangeRates();
 			DataHelper::GetInstance().ReloadExchangeRate();
+
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+
+			this->GetEventHandler()->CallAfter(&MainFrame::UpdateStatus);
 		}).detach();
 	}
 }
@@ -246,6 +252,22 @@ void MainFrame::UpdateStatus() {
 	statusbar->SetRecepipts(wxNumberFormatter::ToString(receipts, 2));
 	statusbar->SetExpenses(wxNumberFormatter::ToString(expenses, 2));
 	statusbar->SetBalance(wxNumberFormatter::ToString(balance, 2));
+
+	wxString rates("");
+
+	auto exchangeRates = DataHelper::GetInstance().GetExchangeRates();
+	auto settingsRates = Settings::GetInstance().GetSelectedExchangeRates();
+
+	for (int id : settingsRates) {
+		if (exchangeRates[std::make_pair(id, baseCurrencyId)]) {
+			float rate = exchangeRates[std::make_pair(id, baseCurrencyId)];
+			Currency currecy(id);
+
+			rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currecy.shortName.get() + wxT(" ");
+		}
+	}
+	
+	statusbar->SetExchangeRates(rates);
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)

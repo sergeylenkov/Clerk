@@ -94,6 +94,7 @@ public:
 	void CreateAccountsImageList();
 	float ConvertCurrency(int fromId, int toId, float amount);
 	void ReloadExchangeRate();
+	std::map<std::pair<int, int>, float> GetExchangeRates();
 
 private:
 	DataHelper();                 

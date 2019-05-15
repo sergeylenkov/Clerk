@@ -71,6 +71,7 @@ public:
 	void SetConvertCurrency(bool convert);
 	bool IsLoadExchangeRates();
 	void SetLoadExchangeRates(bool load);
+	std::vector<int> GetSelectedExchangeRates();
 	void ClearTabs();
 	void AddTab(int type, int accountId);
 	std::vector<TabSettings> GetTabs();
@@ -94,6 +95,7 @@ private:
 	int baseCurrencyId;
 	bool convertCurrency;
 	bool loadExchangeRates;
+	std::vector<int> selectedExchangeRates;
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;

@@ -12,6 +12,9 @@ void Settings::Open(char *configName) {
 	convertCurrency = false;
 	loadExchangeRates = true;
 
+	selectedExchangeRates.push_back(180);
+	selectedExchangeRates.push_back(62);
+
 	RestoreDefaultColumns();	
 
 	if (wxFile::Exists(fileName)) {
@@ -364,6 +367,10 @@ bool Settings::IsLoadExchangeRates() {
 
 void Settings::SetLoadExchangeRates(bool load) {
 	loadExchangeRates = load;
+}
+
+std::vector<int> Settings::GetSelectedExchangeRates() {
+	return selectedExchangeRates;
 }
 
 void Settings::ClearTabs() {

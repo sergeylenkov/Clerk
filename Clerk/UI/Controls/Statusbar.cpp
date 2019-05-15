@@ -27,11 +27,21 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 
 	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
+	
 	expensesLabel = new wxStaticText(this, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
 	expensesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
 
 	statusbarSizer->Add(expensesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+	
+	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
+
+	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_EXCHANGE_RATES"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	exchangeRatesLabel = new wxStaticText(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
+	exchangeRatesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+
+	statusbarSizer->Add(exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
 	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
 
@@ -61,4 +71,8 @@ void Statusbar::SetExpenses(wxString value) {
 
 void Statusbar::SetBalance(wxString value) {
 	balanceLabel->SetLabelText(value);
+}
+
+void Statusbar::SetExchangeRates(wxString value) {
+	exchangeRatesLabel->SetLabelText(value);
 }

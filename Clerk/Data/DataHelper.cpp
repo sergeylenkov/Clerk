@@ -1044,3 +1044,7 @@ void DataHelper::ReloadExchangeRate() {
 
 	sqlite3_finalize(statement);
 }
+
+std::map<std::pair<int, int>, float> DataHelper::GetExchangeRates() {
+	return exchangeRates;
+}

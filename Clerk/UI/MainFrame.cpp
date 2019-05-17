@@ -263,7 +263,7 @@ void MainFrame::UpdateStatus() {
 			float rate = exchangeRates[std::make_pair(id, baseCurrencyId)];
 			Currency currecy(id);
 
-			rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currecy.shortName.get() + wxT(" ");
+			rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currecy.shortName.get() + wxT("  ");
 		}
 	}
 	

@@ -329,16 +329,12 @@ void TransactionDialog::OnOK(wxCommandEvent &event) {
 
 	double amountValue;
 
-	wxString value = fromAmountField->GetValue();
-	value.Replace(" ", "");
-	value.Replace(",", ".");
+	wxString value = ClearAmountValue(fromAmountField->GetValue());	
 	value.ToDouble(&amountValue);
 	  
 	transaction->fromAmount = amountValue;
 	
-	value = toAmountField->GetValue();
-	value.Replace(" ", "");
-	value.Replace(",", ".");
+	value = ClearAmountValue(toAmountField->GetValue());	
 	value.ToDouble(&amountValue);
 
 	transaction->toAmount = amountValue;
@@ -366,7 +362,7 @@ void TransactionDialog::OnCancel(wxCommandEvent &event) {
 void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());	
+	wxString stringAmount = ClearAmountValue(fromAmountField->GetValue());	
 	fromAmountField->SetValue(stringAmount);
 
 	double toValue;
@@ -392,7 +388,7 @@ void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	wxString stringAmount = this->ClearAmountValue(toAmountField->GetValue());	
+	wxString stringAmount = ClearAmountValue(toAmountField->GetValue());	
 	toAmountField->SetValue(stringAmount);
 }
 

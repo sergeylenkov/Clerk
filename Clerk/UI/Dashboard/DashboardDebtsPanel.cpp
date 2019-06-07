@@ -146,12 +146,12 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
-		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
+		dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
+		dc.SetBrush(wxBrush(wxColor(242, 73, 101)));		
 
 		if (value.percent > 90) {
-			dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
-			dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
+			dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
+			dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
 		}
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);

@@ -105,8 +105,8 @@ void DashboardPanel::Update() {
 		accounts.push_back({ *account->name, amount });
 	}
 
-	std::map<wxString, float> ownFounds;
-	std::map<wxString, float> creditFounds;
+	std::map<int, float> ownFundsDict;
+	std::map<int, float> creditFoundsDict;
 	float totalBalance = 0;
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
@@ -116,23 +116,35 @@ void DashboardPanel::Update() {
 		if (account->creditLimit > 0) {
 			float currentAmount = account->creditLimit + amount;
 
-			if (creditFounds[*account->currency->shortName]) {
-				creditFounds[*account->currency->shortName] = creditFounds[*account->currency->shortName] + currentAmount;
+			if (creditFoundsDict[account->currency->id]) {
+				creditFoundsDict[account->currency->id] = creditFoundsDict[account->currency->id] + currentAmount;
 			}
 			else {
-				creditFounds[*account->currency->shortName] = currentAmount;
+				creditFoundsDict[account->currency->id] = currentAmount;
 			}
 		}
 		else {
-			if (ownFounds[*account->currency->shortName]) {
-				ownFounds[*account->currency->shortName] = ownFounds[*account->currency->shortName] + amount;
+			if (ownFundsDict[account->currency->id]) {
+				ownFundsDict[account->currency->id] = ownFundsDict[account->currency->id] + amount;
 			}
 			else {
-				ownFounds[*account->currency->shortName] = amount;
+				ownFundsDict[account->currency->id] = amount;
 			}
 
 			totalBalance = totalBalance + DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 		}
+	}
+
+	std::vector<CurrencyValue> ownFunds;
+
+	for (auto &fund : ownFundsDict) {
+		ownFunds.push_back({ Currency(fund.first), fund.second });
+	}
+
+	std::vector<CurrencyValue> creditFunds;
+
+	for (auto &fund : creditFoundsDict) {
+		creditFunds.push_back({ Currency(fund.first), fund.second });
 	}
 
 	std::vector<std::shared_ptr<Account>> debts;
@@ -149,7 +161,7 @@ void DashboardPanel::Update() {
 		debts.push_back(account);
 	}
 	
-	balancePanel->SetBalance(totalBalance, ownFounds, creditFounds);
+	balancePanel->SetBalance({ Currency(baseCurrencyId), totalBalance }, ownFunds, creditFunds);
 	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
 	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());
 	expensesPanel->SetExpenses(expenses);

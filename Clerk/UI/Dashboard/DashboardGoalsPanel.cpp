@@ -122,8 +122,8 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 
 		dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
 		dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
-
-		if (value.percent > 90) {
+		
+		if (value.percent > 90) {			
 			
 			dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
 			dc.SetBrush(wxBrush(wxColor(10, 199, 117)));

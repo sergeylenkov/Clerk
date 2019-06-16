@@ -16,6 +16,7 @@ public:
 	int id;
 	shared_ptr<wxString> name;
 	shared_ptr<wxString> shortName;
+	shared_ptr<wxString> sign;
 
 	void Load();
 	void Save();

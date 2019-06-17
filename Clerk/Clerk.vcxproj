@@ -125,6 +125,7 @@
     <ClCompile Include="UI\MainFrame.cpp" />
     <ClCompile Include="UI\TransactionDialog.cpp" />
     <ClCompile Include="UI\TransactionsListPanel.cpp" />
+    <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h" />
@@ -179,6 +180,7 @@
     <ClInclude Include="UI\MainFrame.h" />
     <ClInclude Include="UI\TransactionDialog.h" />
     <ClInclude Include="UI\TransactionsListPanel.h" />
+    <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Logo.ico" />

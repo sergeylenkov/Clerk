@@ -13,6 +13,7 @@ private:
 	wxStaticText *currencyLabel;
 	wxComboBox *currencyList;
 	wxCheckBox *convertCurrenciesCheckBox;
+	wxCheckBox *loadExchangeRatesCheckBox;
 	wxButton *okButton;
 	wxButton *cancelButton;
 	vector<std::shared_ptr<Currency>> currencies;

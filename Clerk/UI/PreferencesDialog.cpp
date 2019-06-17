@@ -24,6 +24,13 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
 
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Load exchange rates on start"), wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(loadExchangeRatesCheckBox, 0, wxALL, 5);
+
+	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
+
 	mainSizer->Add(0, 0, 1, wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -62,6 +69,7 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	currencyList->SetSelection(index);
 
 	convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
+	loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());
 
 	okButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnCancel, this);
@@ -73,6 +81,7 @@ void PreferencesDialog::OnOK(wxCommandEvent &event) {
 	Settings::GetInstance().SetBaseCurrencyId(currency->id);
 
 	Settings::GetInstance().SetConvertCurrency(convertCurrenciesCheckBox->IsChecked());
+	Settings::GetInstance().SetLoadExchangeRates(loadExchangeRatesCheckBox->IsChecked());
 
 	Close();
 }

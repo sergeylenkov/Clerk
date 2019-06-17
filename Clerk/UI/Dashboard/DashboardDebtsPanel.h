@@ -9,13 +9,14 @@ class DashboardDebtsPanel : public wxPanel
 public:
 	DashboardDebtsPanel(wxWindow *parent, wxWindowID id);
 
-	void SetCredits(std::vector<std::shared_ptr<Account>> credits);
+	void SetDebts(std::vector<std::shared_ptr<Account>> debts);
 	void Update();
 
 private:
-	std::vector<std::shared_ptr<Account>> credits;
+	std::vector<std::shared_ptr<Account>> debts;
 	std::vector<DahboardProgressValue> values;
+	float totalValue;
 
-	void Draw();
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

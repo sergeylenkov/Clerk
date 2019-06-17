@@ -4,7 +4,7 @@ DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent, wxWindowID id) : 
 	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
-void DashboardBalancePanel::SetBalance(float balance, std::map<wxString, float> own, std::map<wxString, float> credit) {
+void DashboardBalancePanel::SetBalance(CurrencyValue balance, std::vector<CurrencyValue> own, std::vector<CurrencyValue> credit) {
 	ownFunds = own;
 	creditFunds = credit;
 	totalBalance = balance;
@@ -17,12 +17,10 @@ void DashboardBalancePanel::Update()
 	int height = 140 + (ownFunds.size() * 30);	
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardBalancePanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -48,7 +46,7 @@ void DashboardBalancePanel::Draw() {
 
 	dc.SetFont(balanceFont);
 
-	wxString value = wxNumberFormatter::ToString(totalBalance, 2);
+	wxString value = Utils::FormatAmount(totalBalance.value, &totalBalance.currency);
 	dc.DrawText(value, wxPoint(0, y));
 
 	y = 80;
@@ -61,12 +59,11 @@ void DashboardBalancePanel::Draw() {
 	y = y + 40;
 
 	for (auto &fund : ownFunds) {
-		wxString value = wxNumberFormatter::ToString(fund.second, 2);
+		wxString value = Utils::FormatAmount(fund.value, &fund.currency);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(value, wxPoint(0, y));
-		dc.DrawText(fund.first, wxPoint(size.GetWidth() + 5, y));		
 
 		if (size.GetWidth() > columnWidth) {
 			columnWidth = size.GetWidth();
@@ -84,17 +81,17 @@ void DashboardBalancePanel::Draw() {
 	y = y + 40;	
 
 	for (auto &fund : creditFunds) {
-		wxString value = wxNumberFormatter::ToString(fund.second, 2);
+		wxString value = Utils::FormatAmount(fund.value, &fund.currency);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(value, wxPoint(x, y));		
-		dc.DrawText(fund.first, wxPoint(x + size.GetWidth() + 5, y));
+		dc.DrawText(value, wxPoint(x, y));
 
 		y = y + 30;
 	}
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

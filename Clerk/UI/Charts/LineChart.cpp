@@ -184,7 +184,7 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 		int x = points[i].first;
 		int x2 = points[i].second;
 
-		if (mouseX > x && mouseX < x2) {
+		if (mouseX >= x && mouseX <= x2) {
 			index = i;
 			break;
 		}

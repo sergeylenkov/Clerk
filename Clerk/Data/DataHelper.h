@@ -29,6 +29,18 @@ struct StringValue
 	float value;
 };
 
+struct CurrencyValue
+{
+	Currency currency;
+	float value;
+};
+
+struct AccountValue
+{
+	Account *account;
+	float value;
+};
+
 struct DahboardProgressValue
 {
 	wxString name;
@@ -53,6 +65,7 @@ public:
 	void Init();
 	void InitData();
 	void ReloadAccounts();
+	void UpdateAccountsBalance();
 	std::vector<std::shared_ptr<Account>> GetAccounts();
 	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountTypes type);
 	std::shared_ptr<Account> GetAccountById(int id);
@@ -94,6 +107,7 @@ public:
 	void CreateAccountsImageList();
 	float ConvertCurrency(int fromId, int toId, float amount);
 	void ReloadExchangeRate();
+	std::map<std::pair<int, int>, float> GetExchangeRates();
 
 private:
 	DataHelper();                 

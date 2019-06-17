@@ -28,6 +28,7 @@ public:
 	shared_ptr<Currency> currency;
 	float creditLimit;
 	boolean isActive;
+	float balance;
 
 	Account();
 	Account(int id);

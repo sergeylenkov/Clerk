@@ -111,6 +111,7 @@ void DataHelper::InitData() {
 
 	ReloadExchangeRate();
 	ReloadAccounts();
+	UpdateAccountsBalance();
 }
 
 void DataHelper::ReloadAccounts() {
@@ -129,6 +130,15 @@ void DataHelper::ReloadAccounts() {
 	}
 
 	sqlite3_finalize(statement);
+}
+
+void DataHelper::UpdateAccountsBalance() {
+	for (auto account : accounts)
+	{
+		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			account->balance = GetBalance(account.get());
+		}
+	}
 }
 
 std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts() {
@@ -476,7 +486,7 @@ float DataHelper::GetAccountTotalReceipt(Account *account) {
 float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
-	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -496,7 +506,7 @@ float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 float  DataHelper::GetExpenses(Account *account, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
-	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
+	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -1027,7 +1037,7 @@ float DataHelper::ConvertCurrency(int fromId, int toId, float amount) {
 }
 
 void DataHelper::ReloadExchangeRate() {
-	char *sql = "SELECT from_currency_id, to_currency_id, rate, count FROM exchange_rates";
+	char *sql = "SELECT from_currency_id, to_currency_id, rate, count, MAX(date) FROM exchange_rates GROUP BY from_currency_id, to_currency_id";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -1043,4 +1053,8 @@ void DataHelper::ReloadExchangeRate() {
 	}
 
 	sqlite3_finalize(statement);
+}
+
+std::map<std::pair<int, int>, float> DataHelper::GetExchangeRates() {
+	return exchangeRates;
 }

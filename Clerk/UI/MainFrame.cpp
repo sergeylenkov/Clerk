@@ -109,11 +109,19 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
 	}).detach();
 
-	std::thread([=]()
-	{
-		UpdateExchangeRates();
-		DataHelper::GetInstance().ReloadExchangeRate();
-	}).detach();
+	if (Settings::GetInstance().IsLoadExchangeRates()) {
+		statusbar->SetExchangeRates("Updating...");		
+
+		std::thread([=]()
+		{
+			UpdateExchangeRates();
+			DataHelper::GetInstance().ReloadExchangeRate();
+
+			std::this_thread::sleep_for(std::chrono::seconds(3));
+
+			this->GetEventHandler()->CallAfter(&MainFrame::UpdateStatus);
+		}).detach();
+	}
 }
 
 MainFrame::~MainFrame() 
@@ -222,12 +230,18 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 	
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	{
+		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+
+		expenses = expenses + amount;
+	}
+
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		if (account->creditLimit == 0) {
-			float amount = DataHelper::GetInstance().GetBalance(account.get());
-			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
-
+		if (account->creditLimit == 0) {			
+			float amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, account->balance);
 			balance = balance + amount;
 		}
 	}
@@ -236,6 +250,22 @@ void MainFrame::UpdateStatus() {
 	statusbar->SetRecepipts(wxNumberFormatter::ToString(receipts, 2));
 	statusbar->SetExpenses(wxNumberFormatter::ToString(expenses, 2));
 	statusbar->SetBalance(wxNumberFormatter::ToString(balance, 2));
+
+	wxString rates("");
+
+	auto exchangeRates = DataHelper::GetInstance().GetExchangeRates();
+	auto settingsRates = Settings::GetInstance().GetSelectedExchangeRates();
+
+	for (int id : settingsRates) {
+		if (exchangeRates[std::make_pair(id, baseCurrencyId)]) {
+			float rate = exchangeRates[std::make_pair(id, baseCurrencyId)];
+			Currency currecy(id);
+
+			rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currecy.shortName.get() + wxT("  ");
+		}
+	}
+	
+	statusbar->SetExchangeRates(rates);
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -480,8 +510,9 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 }
 
 void MainFrame::OnTransactionClose() {
+	DataHelper::GetInstance().UpdateAccountsBalance();
 	tabsPanel->Update();
-	UpdateStatus();
+	UpdateStatus();	
 }
 
 void MainFrame::AddAccount(AccountTypes type) {
@@ -649,7 +680,8 @@ void MainFrame::OnSchedulersConfirmClose() {
 }
 
 void MainFrame::OnEmptyTrash() {
-
+	DataHelper::GetInstance().EmptyTrash();
+	treeMenu->UpdateTrashItem();
 }
 
 void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {

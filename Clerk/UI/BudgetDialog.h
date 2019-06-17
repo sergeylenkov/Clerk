@@ -17,6 +17,7 @@ public:
 	std::function<void()> OnClose;
 
 private:
+	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;	
 	wxStaticText *periodLabel;

@@ -24,12 +24,10 @@ void DashboardGoalsPanel::Update()
 	int height = 170 + (goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
-	Draw();
+	Refresh();
 }
 
-void DashboardGoalsPanel::Draw() {
-	wxClientDC dc(this);
-
+void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -122,12 +120,13 @@ void DashboardGoalsPanel::Draw() {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
-		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
-
-		if (value.percent > 90) {
-			dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
-			dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
+		dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
+		dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
+		
+		if (value.percent > 90) {			
+			
+			dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
+			dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
 		}
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);
@@ -150,5 +149,6 @@ void DashboardGoalsPanel::Draw() {
 }
 
 void DashboardGoalsPanel::OnPaint(wxPaintEvent& event) {
-	Draw();
+	wxPaintDC dc(this);
+	Draw(dc);
 }

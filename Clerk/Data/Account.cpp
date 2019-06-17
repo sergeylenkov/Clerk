@@ -11,6 +11,7 @@ Account::Account()
 	this->currency = make_shared<Currency>(152);
 	this->creditLimit = 0;
 	this->isActive = true;
+	this->balance = 0;
 }
 
 Account::Account(int id) : Account()

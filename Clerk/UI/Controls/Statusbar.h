@@ -10,10 +10,12 @@ public:
 	void SetRecepipts(wxString value);
 	void SetExpenses(wxString value);
 	void SetBalance(wxString value);
+	void SetExchangeRates(wxString value);
 
 private:
 	wxStaticText *periodLabel;
 	wxStaticText *receiptsLabel;
 	wxStaticText *expensesLabel;
 	wxStaticText *balanceLabel;
+	wxStaticText *exchangeRatesLabel;
 };

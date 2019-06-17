@@ -59,6 +59,7 @@ public:
 	void Init();
 	void InitData();
 	void ReloadAccounts();
+	void UpdateAccountsBalance();
 	std::vector<std::shared_ptr<Account>> GetAccounts();
 	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountTypes type);
 	std::shared_ptr<Account> GetAccountById(int id);

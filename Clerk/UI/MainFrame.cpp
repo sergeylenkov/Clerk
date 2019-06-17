@@ -240,10 +240,8 @@ void MainFrame::UpdateStatus() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		if (account->creditLimit == 0) {
-			float amount = DataHelper::GetInstance().GetBalance(account.get());
-			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
-
+		if (account->creditLimit == 0) {			
+			float amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, account->balance);
 			balance = balance + amount;
 		}
 	}
@@ -512,8 +510,9 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 }
 
 void MainFrame::OnTransactionClose() {
+	DataHelper::GetInstance().UpdateAccountsBalance();
 	tabsPanel->Update();
-	UpdateStatus();
+	UpdateStatus();	
 }
 
 void MainFrame::AddAccount(AccountTypes type) {

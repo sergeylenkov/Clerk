@@ -111,6 +111,7 @@ void DataHelper::InitData() {
 
 	ReloadExchangeRate();
 	ReloadAccounts();
+	UpdateAccountsBalance();
 }
 
 void DataHelper::ReloadAccounts() {
@@ -129,6 +130,15 @@ void DataHelper::ReloadAccounts() {
 	}
 
 	sqlite3_finalize(statement);
+}
+
+void DataHelper::UpdateAccountsBalance() {
+	for (auto account : accounts)
+	{
+		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			account->balance = GetBalance(account.get());
+		}
+	}
 }
 
 std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts() {

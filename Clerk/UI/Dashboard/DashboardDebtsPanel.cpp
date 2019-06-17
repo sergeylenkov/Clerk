@@ -12,7 +12,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 
 	for (auto account : debts) {
 		if (account->creditLimit > 0) {
-			float amount = DataHelper::GetInstance().GetBalance(account.get());
+			float amount = account->balance;
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
@@ -23,7 +23,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 		else {			
 			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(account.get()));			
 			float currentAmount = DataHelper::GetInstance().GetAccountTotalReceipt(account.get());
-			float remainAmount = abs(DataHelper::GetInstance().GetBalance(account.get()));
+			float remainAmount = abs(account->balance);
 			float remainPercent = (currentAmount / amount) * 100.0;
 
 			values.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });

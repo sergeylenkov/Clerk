@@ -95,14 +95,12 @@ void DashboardPanel::Update() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
-		accounts.push_back({ *account->name, amount });
+		accounts.push_back({ *account->name, account->balance });
 	}
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
-		accounts.push_back({ *account->name, amount });
+		accounts.push_back({ *account->name, account->balance });
 	}
 
 	std::map<int, float> ownFundsDict;
@@ -111,7 +109,7 @@ void DashboardPanel::Update() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		float amount = DataHelper::GetInstance().GetBalance(account.get());
+		float amount = account->balance;
 
 		if (account->creditLimit > 0) {
 			float currentAmount = account->creditLimit + amount;

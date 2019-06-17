@@ -35,6 +35,12 @@ struct CurrencyValue
 	float value;
 };
 
+struct AccountValue
+{
+	Account *account;
+	float value;
+};
+
 struct DahboardProgressValue
 {
 	wxString name;

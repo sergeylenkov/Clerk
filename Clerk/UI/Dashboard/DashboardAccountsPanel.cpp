@@ -4,7 +4,7 @@ DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent, wxWindowID id) 
 	this->Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
-void DashboardAccountsPanel::SetAccounts(std::vector<StringValue> accounts) {
+void DashboardAccountsPanel::SetAccounts(std::vector<AccountValue> accounts) {
 	this->accounts = accounts;	
 	Update();
 }
@@ -40,15 +40,15 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	int y = 50;
 
-	for (auto account : accounts) {
+	for (auto &item : accounts) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(account.string, wxPoint(0, y));
+		dc.DrawText(*item.account->name, wxPoint(0, y));
 
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = wxNumberFormatter::ToString(account.value, 2);
+		wxString value = Utils::FormatAmount(item.value, item.account->currency.get());
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));

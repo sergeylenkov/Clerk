@@ -9,6 +9,7 @@ Account::Account()
 	this->iconId = 0;
 	this->orderId = 1000;
 	this->currency = make_shared<Currency>(152);
+	this->isCredit = false;
 	this->creditLimit = 0;
 	this->isActive = true;
 	this->balance = 0;
@@ -38,6 +39,10 @@ void Account::Load()
 			this->currency = make_shared<Currency>(sqlite3_column_int(statement, 6));
 			this->creditLimit = sqlite3_column_double(statement, 7);
 			this->isActive = sqlite3_column_int(statement, 8);
+
+			if (this->creditLimit > 0) {
+				this->isCredit = true;
+			}
 		}
 	}
 	

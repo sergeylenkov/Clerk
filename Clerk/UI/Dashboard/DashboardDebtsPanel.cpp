@@ -11,7 +11,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 	totalValue = 0;
 
 	for (auto account : debts) {
-		if (account->creditLimit > 0) {
+		if (account->isCredit) {
 			float amount = account->balance;
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;

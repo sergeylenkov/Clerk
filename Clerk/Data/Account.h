@@ -26,6 +26,7 @@ public:
 	int iconId;
 	int orderId;
 	shared_ptr<Currency> currency;
+	boolean isCredit;
 	float creditLimit;
 	boolean isActive;
 	float balance;

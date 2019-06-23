@@ -19,7 +19,7 @@ shared_ptr<Budget> BudgetsListDataModel::GetBudget(wxDataViewItem &item) {
 
 unsigned int BudgetsListDataModel::GetColumnCount() const
 {
-	return 5;
+	return 6;
 }
 
 wxString BudgetsListDataModel::GetColumnType(unsigned int column) const

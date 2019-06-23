@@ -13,7 +13,8 @@ public:
 		ColumnLimit,
 		ColumnCurrent,
 		ColumnRemain,
-		ColumnProgress
+		ColumnProgress,
+		ColumnLast
 	};
 
 	BudgetsListDataModel();

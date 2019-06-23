@@ -13,9 +13,10 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, 
 	wxDataViewColumn *column =	new wxDataViewColumn("Progress", render, BudgetsListDataModel::ColumnProgress, 200, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendColumn(column);
 
-	list->AppendTextColumn("Limit", BudgetsListDataModel::ColumnLimit, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Current", BudgetsListDataModel::ColumnCurrent, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Remain", BudgetsListDataModel::ColumnRemain, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Limit", BudgetsListDataModel::ColumnLimit, wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Current", BudgetsListDataModel::ColumnCurrent, wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Remain", BudgetsListDataModel::ColumnRemain, wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("", BudgetsListDataModel::ColumnLast, wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 
 	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
 	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &BudgetsPanel::OnRightClick, this);

@@ -101,9 +101,9 @@ void BudgetsPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 void BudgetsPanel::OnRightClick(wxDataViewEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Delete), wxT("Delete"));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), wxT("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), wxT("Edit..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), wxT("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -128,16 +128,16 @@ void BudgetsPanel::OnRightClick(wxDataViewEvent &event) {
 }
 
 void BudgetsPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<BudgetsPanelMenuTypes>(event.GetId())) {
-		case BudgetsPanelMenuTypes::Add:
+	switch (static_cast<ContextMenuTypes>(event.GetId())) {
+		case ContextMenuTypes::Add:
 			Add();
 			break;
 
-		case BudgetsPanelMenuTypes::Edit:
+		case ContextMenuTypes::Edit:
 			Edit();
 			break;
 
-		case BudgetsPanelMenuTypes::Delete:
+		case ContextMenuTypes::Delete:
 			Delete();
 			break;
 

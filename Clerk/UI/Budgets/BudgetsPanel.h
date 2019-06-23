@@ -8,15 +8,15 @@
 #include "BudgetsListDataModel.h"
 #include "BudgetsProgressRender.h"
 
-enum class BudgetsPanelMenuTypes {
-	Add = 1,
-	Edit = 2,
-	Delete = 3,
-};
-
 class BudgetsPanel : public DataPanel
 {
 public:
+	enum class ContextMenuTypes {
+		Add = 1,
+		Edit = 2,
+		Delete = 3,
+	};
+
 	BudgetsPanel(wxWindow *parent, wxWindowID id);
 
 	std::shared_ptr<Budget> GetBudget();

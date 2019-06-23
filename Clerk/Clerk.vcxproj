@@ -106,7 +106,7 @@
     <ClCompile Include="UI\TabsPanel.cpp" />
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu.cpp" />
-    <ClCompile Include="UI\BudgetsPanel.cpp" />
+    <ClCompile Include="UI\Budgets\BudgetsPanel.cpp" />
     <ClCompile Include="UI\BudgetDialog.cpp" />
     <ClCompile Include="Data\Account.cpp" />
     <ClCompile Include="UI\AccountDialog.cpp" />
@@ -162,7 +162,7 @@
     <ClInclude Include="UI\TabsPanel.h" />
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu.h" />
-    <ClInclude Include="UI\BudgetsPanel.h" />
+    <ClInclude Include="UI\Budgets\BudgetsPanel.h" />
     <ClInclude Include="UI\BudgetDialog.h" />
     <ClInclude Include="Data\Account.h" />
     <ClInclude Include="UI\AccountDialog.h" />

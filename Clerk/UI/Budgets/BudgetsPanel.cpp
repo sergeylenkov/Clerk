@@ -7,6 +7,7 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, 
 	list->AssociateModel(model.get());
 
 	list->AppendTextColumn("Name", BudgetsListDataModel::ColumnName, wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Period", BudgetsListDataModel::ColumnPeriod, wxDATAVIEW_CELL_INERT, 100, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 
 	BudgetsProgressRender *render = new BudgetsProgressRender();
 
@@ -48,7 +49,16 @@ void BudgetsPanel::Update() {
 
 	for (auto budget : budgets)
 	{
-		if (budget->period == BudgetPeriods::Month) {
+		if (budget->period == Budget::Period::Week) {
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+		}
+
+		if (budget->period == Budget::Period::Month) {
+			fromDate.SetDay(1);
+		}
+
+		if (budget->period == Budget::Period::Year) {
+			fromDate.SetMonth(wxDateTime::Month::Jan);
 			fromDate.SetDay(1);
 		}
 

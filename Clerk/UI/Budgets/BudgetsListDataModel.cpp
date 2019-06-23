@@ -37,7 +37,10 @@ void BudgetsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, u
 	switch (column)
 	{
 		case ColumnName:			
-			variant = wxString(*budget->name);
+			variant = *budget->name;
+			break;
+		case ColumnPeriod:
+			variant = *budget->periodName;
 			break;
 		case ColumnLimit:
 			variant = Utils::FormatAmount(budget->amount);

@@ -12,7 +12,16 @@ void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budg
 	wxDateTime fromDate = wxDateTime::Now();
 
 	for (auto budget : budgets) {
-		if (budget->period == BudgetPeriods::Month) {
+		if (budget->period == Budget::Period::Week) {
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+		}
+
+		if (budget->period == Budget::Period::Month) {
+			fromDate.SetDay(1);
+		}
+
+		if (budget->period == Budget::Period::Year) {
+			fromDate.SetMonth(wxDateTime::Month::Jan);
 			fromDate.SetDay(1);
 		}
 

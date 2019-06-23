@@ -10,6 +10,7 @@ public:
 	enum
 	{
 		ColumnName,
+		ColumnPeriod,
 		ColumnLimit,
 		ColumnCurrent,
 		ColumnRemain,

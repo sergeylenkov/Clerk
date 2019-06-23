@@ -90,7 +90,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	periodList->AppendString("Year");
 	periodList->AppendString("Custom");
 
-	periodList->SetSelection(static_cast<int>(BudgetPeriods::Month));
+	periodList->SetSelection(static_cast<int>(Budget::Period::Month));
 
 	UpdateAccounts();
 
@@ -111,7 +111,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 	datePicker->Disable();
 
-	if (budget->period == BudgetPeriods::Custom) {
+	if (budget->period == Budget::Period::Custom) {
 		datePicker->Enable();
 	}
 
@@ -179,7 +179,7 @@ void BudgetDialog::UpdateAccounts() {
 }
 
 void BudgetDialog::OnPeriodSelect(wxCommandEvent &event) {
-	if (periodList->GetSelection() == static_cast<int>(BudgetPeriods::Custom)) {
+	if (periodList->GetSelection() == static_cast<int>(Budget::Period::Custom)) {
 		datePicker->Enable();
 	}
 	else {
@@ -194,7 +194,7 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 	amountValue = val;
 
 	budget->name = make_shared<wxString>(nameField->GetValue());
-	budget->period = static_cast<BudgetPeriods>(periodList->GetSelection());
+	budget->period = static_cast<Budget::Period>(periodList->GetSelection());
 	budget->date = make_shared<wxDateTime>(datePicker->GetValue());
 	budget->amount = amountValue;
 	

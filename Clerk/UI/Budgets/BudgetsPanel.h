@@ -3,10 +3,10 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "wx/dataview.h"
-#include "../Data/DataHelper.h"
-#include "DataPanel.h"
-#include "./Budgets/BudgetsListDataModel.h"
-#include "./Budgets/BudgetsProgressRender.h"
+#include "../../Data/DataHelper.h"
+#include "../DataPanel.h"
+#include "BudgetsListDataModel.h"
+#include "BudgetsProgressRender.h"
 
 enum class BudgetsPanelMenuTypes {
 	Add = 1,

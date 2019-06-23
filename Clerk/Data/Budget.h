@@ -19,6 +19,7 @@ public:
 	int id;
 	shared_ptr<wxString> name;
 	float amount;
+	float balance;
 	BudgetPeriods period;
 	shared_ptr<wxDateTime> date;
 	shared_ptr<wxString> accountIds;

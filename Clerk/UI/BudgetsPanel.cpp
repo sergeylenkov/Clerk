@@ -1,10 +1,24 @@
 #include "BudgetsPanel.h"
 
 BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
-	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
-	
-	list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
-	list->Bind(wxEVT_CONTEXT_MENU, &BudgetsPanel::OnRightClick, this);
+	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
+
+	model = new BudgetsListDataModel();
+	list->AssociateModel(model.get());
+
+	list->AppendTextColumn("Name", BudgetsListDataModel::ColumnName, wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
+	BudgetsProgressRender *render = new BudgetsProgressRender();
+
+	wxDataViewColumn *column =	new wxDataViewColumn("Progress", render, BudgetsListDataModel::ColumnProgress, 200, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendColumn(column);
+
+	list->AppendTextColumn("Limit", BudgetsListDataModel::ColumnLimit, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Current", BudgetsListDataModel::ColumnCurrent, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Remain", BudgetsListDataModel::ColumnRemain, wxDATAVIEW_CELL_INERT, 200, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
+	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
+	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &BudgetsPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -14,93 +28,33 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, 
 	this->Layout();
 }
 
-shared_ptr<Budget> BudgetsPanel::GetBudget() {
-	long itemIndex = -1;
+shared_ptr<Budget> BudgetsPanel::GetBudget() {	
+	wxDataViewItem item = list->GetSelection();
 
-	for (;;) {
-		itemIndex = list->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+	if (item.IsOk()) {
+		int index = (int)item.GetID() - 1;		
+		return budgets[index];
+	}	
 
-		if (itemIndex == -1) {
-			break;
-		}
-
-		return budgets[itemIndex];
-	}
-
-	return NULL;
+	return nullptr;
 }
 
 void BudgetsPanel::Update() {
-	list->ClearAll();	
 	budgets = DataHelper::GetInstance().GetBudgets();
 
-	wxListItem column;
-
-	column.SetId(0);
-	column.SetText(_("Name"));
-	column.SetWidth(200);
-
-	list->InsertColumn(0, column);
-
-	wxListItem column1;
-
-	column1.SetId(1);
-	column1.SetText(_("Current"));
-	column1.SetWidth(200);
-
-	list->InsertColumn(1, column1);
-
-	wxListItem column2;
-
-	column2.SetId(2);
-	column2.SetText(_("Limit"));
-	column2.SetWidth(200);
-
-	list->InsertColumn(2, column2);
-
-	wxListItem column3;
-
-	column3.SetId(3);
-	column3.SetText(_("Remain"));
-	column3.SetWidth(200);
-
-	list->InsertColumn(3, column3);
-
-	int i = 0;
+	wxDateTime toDate = wxDateTime::Now();
+	wxDateTime fromDate = wxDateTime::Now();	
 
 	for (auto budget : budgets)
 	{
-		float currentAmount = 0.0;
-		wxDateTime toDate = wxDateTime::Now();
-		wxDateTime fromDate = wxDateTime::Now();
-
 		if (budget->period == BudgetPeriods::Month) {
 			fromDate.SetDay(1);
 		}
-		
-		currentAmount = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
 
-		float remainAmount = budget->amount - currentAmount;
-		float remainPercent = currentAmount / (budget->amount / 100.0);
-
-		wxListItem listItem;
-
-		listItem.SetId(i);
-		listItem.SetData(budget->id);
-
-		if (remainAmount < 0 || remainPercent < 10) {
-			listItem.SetMask(wxLIST_MASK_TEXT);
-			listItem.SetTextColour(wxColour(255, 0, 0));
-		}
-
-		list->InsertItem(listItem);
-		list->SetItem(i, 0, *budget->name);
-		list->SetItem(i, 1, wxString::Format("%.2f", currentAmount));
-		list->SetItem(i, 2, wxString::Format("%.2f", budget->amount));
-		list->SetItem(i, 3, wxString::Format("%.2f", budget->amount - currentAmount));
-		
-		i++;
+		budget->balance = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
 	}
+
+	model.get()->SetItems(budgets);
 }
 
 void BudgetsPanel::Add() {
@@ -126,14 +80,14 @@ void BudgetsPanel::Delete() {
 	}
 }
 
-void BudgetsPanel::OnListItemDoubleClick(wxListEvent &event) {
+void BudgetsPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	if (OnEdit) {
 		auto budget = GetBudget();
 		OnEdit(budget);
 	}
 }
 
-void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
+void BudgetsPanel::OnRightClick(wxDataViewEvent &event) {
 	wxMenu *menu = new wxMenu;
 
 	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(BudgetsPanelMenuTypes::Add), wxT("Add..."));
@@ -144,7 +98,7 @@ void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
 	editItem->Enable(true);
 	deleteItem->Enable(true);
 
-	if (list->GetSelectedItemCount() == 0) {
+	if (list->GetSelectedItemsCount() == 0) {
 		editItem->Enable(false);
 		editItem->SetTextColour(*wxLIGHT_GREY);
 
@@ -159,12 +113,7 @@ void BudgetsPanel::OnRightClick(wxContextMenuEvent &event) {
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &BudgetsPanel::OnMenuSelect, this);
 
-	wxPoint point = event.GetPosition();
-	point = list->ScreenToClient(point);
-
-	list->PopupMenu(menu, point);
-
-	delete menu;
+	list->PopupMenu(menu);
 }
 
 void BudgetsPanel::OnMenuSelect(wxCommandEvent &event) {

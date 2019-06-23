@@ -75,6 +75,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp" />
+    <ClCompile Include="UI\Budgets\BudgetsListDataModel.cpp" />
     <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp" />
     <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp" />
     <ClCompile Include="UI\Controls\DropDownButton.cpp" />
@@ -128,6 +130,8 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Budgets\BudgetsProgressRender.h" />
+    <ClInclude Include="UI\Budgets\BudgetsListDataModel.h" />
     <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h" />
     <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h" />
     <ClInclude Include="UI\Controls\DropDownButton.h" />

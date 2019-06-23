@@ -10,6 +10,7 @@ public:
 	Utils();
 	~Utils();
 
+	static wxString FormatAmount(float amount);
 	static wxString FormatAmount(float amount, Currency *currency);
 };
 

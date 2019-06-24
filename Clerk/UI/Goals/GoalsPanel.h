@@ -1,19 +1,21 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
-#include "../Data/DataHelper.h"
-#include "DataPanel.h"
-
-enum class GoalsPanelMenuTypes {
-	Add = 1,
-	Edit = 2,
-	Delete = 3,
-};
+#include "wx/dataview.h"
+#include "../../Data/DataHelper.h"
+#include "../DataPanel.h"
+#include "GoalsListDataModel.h"
+#include "GoalsProgressRender.h"
 
 class GoalsPanel : public DataPanel
 {
 public:
+	enum class ContextMenuTypes {
+		Add = 1,
+		Edit = 2,
+		Delete = 3,
+	};
+
 	GoalsPanel(wxWindow *parent, wxWindowID id);
 
 	std::shared_ptr<Goal> GetGoal();
@@ -23,13 +25,14 @@ public:
 	std::function<void()> OnAdd;
 
 private:
-	wxListCtrl *list;
+	wxDataViewCtrl *list;
+	wxObjectDataPtr<GoalsListDataModel> model;
 	std::vector<std::shared_ptr<Goal>> goals;
 
 	void Add();
 	void Edit();
 	void Delete();
-	void OnListItemDoubleClick(wxListEvent &event);
-	void OnRightClick(wxContextMenuEvent &event);
+	void OnListItemDoubleClick(wxDataViewEvent &event);
+	void OnRightClick(wxDataViewEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

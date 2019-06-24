@@ -145,13 +145,10 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
-		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
+		wxColor color = Utils::ColorForBudget(value.percent);
 
-		if (value.percent > 90) {
-			dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
-			dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
-		}
+		dc.SetPen(wxPen(color, 1));
+		dc.SetBrush(wxBrush(color));
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);
 

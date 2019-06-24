@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
 #include "wx/dataview.h"
 #include "../../Data/DataHelper.h"
 #include "../DataPanel.h"

@@ -12,6 +12,7 @@ public:
 	int id;
 	shared_ptr<wxString> name;
 	float amount;
+	float balance;
 	shared_ptr<wxDateTime> date;
 	shared_ptr<wxDateTime> createdDate;
 	shared_ptr<wxString> accountIds;

@@ -12,7 +12,7 @@
 #include "./Budgets/BudgetsPanel.h"
 #include "TrashPanel.h"
 #include "SchedulersPanel.h"
-#include "GoalsPanel.h"
+#include "./Goals/GoalsPanel.h"
 #include "TagsPanel.h"
 #include "TreeMenu.h"
 

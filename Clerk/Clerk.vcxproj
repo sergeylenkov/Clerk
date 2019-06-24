@@ -75,6 +75,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Goals\GoalsProgressRender.cpp" />
+    <ClCompile Include="UI\Goals\GoalsListDataModel.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsListDataModel.cpp" />
     <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp" />
@@ -96,7 +98,7 @@
     <ClCompile Include="Data\Goal.cpp" />
     <ClCompile Include="Data\Tag.cpp" />
     <ClCompile Include="UI\TagsPanel.cpp" />
-    <ClCompile Include="UI\GoalsPanel.cpp" />
+    <ClCompile Include="UI\Goals\GoalsPanel.cpp" />
     <ClCompile Include="UI\GoalDialog.cpp" />
     <ClCompile Include="UI\SchedulersConfirmDialog.cpp" />
     <ClCompile Include="UI\SchedulerDialog.cpp" />
@@ -130,6 +132,8 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Goals\GoalsProgressRender.h" />
+    <ClInclude Include="UI\Goals\GoalsListDataModel.h" />
     <ClInclude Include="UI\Budgets\BudgetsProgressRender.h" />
     <ClInclude Include="UI\Budgets\BudgetsListDataModel.h" />
     <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h" />
@@ -151,7 +155,7 @@
     <ClInclude Include="Data\Goal.h" />
     <ClInclude Include="Data\Tag.h" />
     <ClInclude Include="UI\TagsPanel.h" />
-    <ClInclude Include="UI\GoalsPanel.h" />
+    <ClInclude Include="UI\Goals\GoalsPanel.h" />
     <ClInclude Include="UI\GoalDialog.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\SchedulersConfirmDialog.h" />

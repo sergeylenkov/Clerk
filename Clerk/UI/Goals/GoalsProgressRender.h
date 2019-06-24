@@ -4,11 +4,11 @@
 #include "wx/dataview.h"
 #include "../../Utils/Utils.h"
 
-class BudgetsProgressRender : public wxDataViewCustomRenderer
+class GoalsProgressRender : public wxDataViewCustomRenderer
 {
 public:
-	BudgetsProgressRender();
-	~BudgetsProgressRender();
+	GoalsProgressRender();
+	~GoalsProgressRender();
 
 	virtual bool Render(wxRect rect, wxDC *dc, int state) wxOVERRIDE;
 	virtual wxSize GetSize() const wxOVERRIDE;
@@ -18,3 +18,4 @@ public:
 private:
 	float _value;
 };
+

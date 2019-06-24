@@ -13,10 +13,6 @@ void BudgetsListDataModel::SetItems(std::vector<std::shared_ptr<Budget>> budgets
 	Reset(_budgets.size());
 }
 
-shared_ptr<Budget> BudgetsListDataModel::GetBudget(wxDataViewItem &item) {
-	return nullptr;
-}
-
 unsigned int BudgetsListDataModel::GetColumnCount() const
 {
 	return 6;
@@ -34,24 +30,24 @@ void BudgetsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, u
 	float remainAmount = budget->amount - budget->balance;
 	float remainPercent = budget->balance / (budget->amount / 100.0);
 
-	switch (column)
+	switch (static_cast<Columns>(column))
 	{
-		case ColumnName:			
+		case Columns::Name:			
 			variant = *budget->name;
 			break;
-		case ColumnPeriod:
+		case Columns::Period:
 			variant = *budget->periodName;
 			break;
-		case ColumnLimit:
+		case Columns::Limit:
 			variant = Utils::FormatAmount(budget->amount);
 			break;
-		case ColumnCurrent:
+		case Columns::Current:
 			variant = Utils::FormatAmount(budget->balance);
 			break;
-		case ColumnRemain:
+		case Columns::Remain:
 			variant = Utils::FormatAmount(remainAmount);
 			break;
-		case ColumnProgress:
+		case Columns::Progress:
 			variant = wxString::Format("%f", remainPercent);
 			break;
 	}	
@@ -62,13 +58,11 @@ bool BudgetsListDataModel::GetAttrByRow(unsigned int row, unsigned int column,	w
 	auto budget = _budgets[row];
 	float percent = budget->balance / (budget->amount / 100.0);
 
-	switch (column)
+	switch (static_cast<Columns>(column))
 	{
-		case ColumnRemain:
-			if (percent > 90) {
-				attr.SetColour(wxColor(242, 73, 101));
-				return true;
-			}
+		case Columns::Remain:			
+			attr.SetColour(Utils::ColorForBudget(percent));
+			return true;			
 			break;
 	}
 

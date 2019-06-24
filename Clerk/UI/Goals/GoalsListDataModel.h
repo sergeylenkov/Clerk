@@ -4,25 +4,25 @@
 #include "../../Data/DataHelper.h"
 #include "../../Utils/Utils.h"
 
-class BudgetsListDataModel : public wxDataViewListStore
+class GoalsListDataModel : public wxDataViewListStore
 {
 public:
 	enum class Columns
 	{
 		Name,
-		Period,
-		Limit,
+		DueDate,
+		Goal,
 		Current,
 		Remain,
 		Progress,
 		Last
 	};
 
-	BudgetsListDataModel();
-	~BudgetsListDataModel();
+	GoalsListDataModel();
+	~GoalsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<Budget>> budgets);
-	
+	void SetItems(std::vector<std::shared_ptr<Goal>> goals);
+
 	virtual unsigned int GetColumnCount() const;
 	virtual wxString GetColumnType(unsigned int column) const;
 	virtual void GetValueByRow(wxVariant &variant, unsigned int row, unsigned int column) const;
@@ -30,6 +30,7 @@ public:
 	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
 
 private:
-	std::vector<std::shared_ptr<Budget>> _budgets;
+	std::vector<std::shared_ptr<Goal>> _goals;
+	wxString FormatDate(wxDateTime *date) const;
 };
 

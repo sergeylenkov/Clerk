@@ -12,5 +12,8 @@ public:
 
 	static wxString FormatAmount(float amount);
 	static wxString FormatAmount(float amount, Currency *currency);
+	static wxColor ColorForBudget(int percent);
+	static wxColor ColorForGoal(int percent);
+	static wxColor ColorForDebt(int percent);
 };
 

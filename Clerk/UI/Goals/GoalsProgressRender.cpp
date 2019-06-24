@@ -1,14 +1,14 @@
-#include "BudgetsProgressRender.h"
+#include "GoalsProgressRender.h"
 
-BudgetsProgressRender::BudgetsProgressRender() : wxDataViewCustomRenderer("string", wxDATAVIEW_CELL_INERT, wxDVR_DEFAULT_ALIGNMENT)
+GoalsProgressRender::GoalsProgressRender() : wxDataViewCustomRenderer("string", wxDATAVIEW_CELL_INERT, wxDVR_DEFAULT_ALIGNMENT)
 {
 }
 
-BudgetsProgressRender::~BudgetsProgressRender()
+GoalsProgressRender::~GoalsProgressRender()
 {
 }
 
-bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
+bool GoalsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 {
 	int percentWidth = (rect.GetWidth() / 100.0) * _value;
 	int y = (rect.GetHeight() - 4) / 2;
@@ -18,7 +18,7 @@ bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 
 	dc->DrawRectangle(rect.GetX(), rect.GetY() + y, rect.GetWidth(), 4);
 
-	wxColor color = Utils::ColorForBudget(_value);
+	wxColor color = Utils::ColorForGoal(_value);
 
 	dc->SetPen(wxPen(color, 1));
 	dc->SetBrush(wxBrush(color));
@@ -28,12 +28,12 @@ bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 	return true;
 }
 
-wxSize BudgetsProgressRender::GetSize() const
+wxSize GoalsProgressRender::GetSize() const
 {
 	return wxDefaultSize;
 }
 
-bool BudgetsProgressRender::SetValue(const wxVariant &value)
+bool GoalsProgressRender::SetValue(const wxVariant &value)
 {
 	_value = value.GetDouble();
 
@@ -47,7 +47,7 @@ bool BudgetsProgressRender::SetValue(const wxVariant &value)
 	return true;
 }
 
-bool BudgetsProgressRender::GetValue(wxVariant &WXUNUSED(value)) const
+bool GoalsProgressRender::GetValue(wxVariant &WXUNUSED(value)) const
 {
 	return true;
 }

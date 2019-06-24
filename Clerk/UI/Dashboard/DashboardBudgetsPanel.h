@@ -4,6 +4,7 @@
 #include <wx/numformatter.h>
 #include <map>
 #include "../../Data//DataHelper.h"
+#include "../../Utils/Utils.h"
 
 class DashboardBudgetsPanel : public wxPanel
 {

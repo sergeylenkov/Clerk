@@ -11,6 +11,7 @@ public:
 	{
 		Name,
 		DueDate,
+		DaysRemain,
 		Goal,
 		Current,
 		Remain,
@@ -32,5 +33,6 @@ public:
 private:
 	std::vector<std::shared_ptr<Goal>> _goals;
 	wxString FormatDate(wxDateTime *date) const;
+	wxString FormatDaysRemain(wxDateTime *date) const;
 };
 

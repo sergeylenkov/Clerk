@@ -15,7 +15,7 @@ void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<Goal>> goals) {
 
 unsigned int GoalsListDataModel::GetColumnCount() const
 {
-	return 7;
+	return 8;
 }
 
 wxString GoalsListDataModel::GetColumnType(unsigned int column) const
@@ -37,6 +37,9 @@ void GoalsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, uns
 			break;
 		case Columns::DueDate:			
 			variant = FormatDate(goal->date.get());
+			break;
+		case Columns::DaysRemain:
+			variant = FormatDaysRemain(goal->date.get());
 			break;
 		case Columns::Goal:
 			variant = Utils::FormatAmount(goal->amount);
@@ -64,6 +67,12 @@ bool GoalsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxD
 			attr.SetColour(Utils::ColorForGoal(percent));
 			return true;			
 			break;
+		case Columns::DaysRemain:
+			if (goal->date->DiffAsDateSpan(wxDateTime::Now()).GetTotalDays() < 0) {
+				attr.SetColour(wxColor(242, 73, 101));
+				return true;
+			}
+			break;
 	}
 
 	return false;
@@ -83,4 +92,17 @@ wxString GoalsListDataModel::FormatDate(wxDateTime *date) const
 	}
 
 	return dateFormat;
+}
+
+wxString GoalsListDataModel::FormatDaysRemain(wxDateTime *date) const {
+	wxDateSpan diff = date->DiffAsDateSpan(wxDateTime::Now());
+	
+	int days = diff.GetTotalDays();
+	int months = diff.GetTotalMonths();
+
+	if (months > 0) {
+		return wxString::Format("%d m", months);
+	}
+
+	return wxString::Format("%d days", days);
 }

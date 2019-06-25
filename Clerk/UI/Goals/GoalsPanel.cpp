@@ -8,6 +8,7 @@ GoalsPanel::GoalsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) 
 
 	list->AppendTextColumn("Name", static_cast<int>(GoalsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendTextColumn("Due Date", static_cast<int>(GoalsListDataModel::Columns::DueDate), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn("Days Remain", static_cast<int>(GoalsListDataModel::Columns::DaysRemain), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 
 	GoalsProgressRender *render = new GoalsProgressRender();
 

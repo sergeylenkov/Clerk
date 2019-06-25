@@ -60,9 +60,6 @@
     <ClCompile Include="UI\TrashPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\SchedulersPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\Scheduler.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -180,6 +177,12 @@
     <ClCompile Include="UI\Goals\GoalsProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -228,9 +231,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TrashPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\SchedulersPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Scheduler.h">
@@ -351,6 +351,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalsProgressRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulersPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

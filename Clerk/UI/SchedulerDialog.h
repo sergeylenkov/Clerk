@@ -63,7 +63,7 @@ private:
 	
 	float fromValue = 0.0;
 	float toValue = 0.0;
-	SchedulerTypes type;
+	Scheduler::Type type;
 	std::vector<std::shared_ptr<Account>> accounts;
 	std::vector<std::shared_ptr<Account>> fromAccounts;
 	std::vector<std::shared_ptr<Account>> toAccounts;
@@ -89,7 +89,7 @@ private:
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
-	void SelectPatternType(SchedulerTypes type);
+	void SelectPatternType(Scheduler::Type type);
 	void SelectWeekday(int day);
 	void OnKeyDown(wxKeyEvent &event);
 };

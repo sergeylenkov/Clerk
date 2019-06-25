@@ -41,16 +41,16 @@ void Budget::Load()
 
 			switch (period)
 			{
-				case Budget::Period::Week:
+				case Period::Week:
 					periodName = make_shared<wxString>("Week");
 					break;
-				case Budget::Period::Month:
+				case Period::Month:
 					periodName = make_shared<wxString>("Month");
 					break;
-				case Budget::Period::Year:
+				case Period::Year:
 					periodName = make_shared<wxString>("Year");
 					break;
-				case Budget::Period::Custom:
+				case Period::Custom:
 					periodName = make_shared<wxString>("Custom");
 					break;
 				default:

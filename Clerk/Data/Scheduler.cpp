@@ -4,7 +4,7 @@ Scheduler::Scheduler()
 {
 	this->id = -1;
 	this->name = make_shared<wxString>();	
-	this->type = SchedulerTypes::Daily;
+	this->type = Type::Daily;
 	this->day = 1;
 	this->week = 1;
 	this->month = 1;
@@ -35,7 +35,7 @@ void Scheduler::Load()
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
 			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			this->type = static_cast<SchedulerTypes>(sqlite3_column_int(statement, 2));
+			this->type = static_cast<Type>(sqlite3_column_int(statement, 2));
 			this->day = sqlite3_column_int(statement, 3);
 			this->week = sqlite3_column_int(statement, 4);
 			this->month = sqlite3_column_int(statement, 5);
@@ -64,6 +64,24 @@ void Scheduler::Load()
 
 			if (accountId != -1) {
 				this->toAccount = make_shared<Account>(accountId);
+			}
+
+			switch (type)
+			{
+				case Type::Daily:
+					typeName = make_shared<wxString>("Daily");
+					break;
+				case Type::Weekly:
+					typeName = make_shared<wxString>("Weekly");
+					break;
+				case Type::Monthly:
+					typeName = make_shared<wxString>("Monthly");
+					break;
+				case Type::Yearly:
+					typeName = make_shared<wxString>("Yearly");	
+					break;
+				default:
+					break;
 			}
 		}
 	}
@@ -158,21 +176,21 @@ void Scheduler::CalculateNextDate() {
 	
 	auto date = make_shared<wxDateTime>(*this->previousDate);
 
-	if (type == SchedulerTypes::Daily) {
+	if (type == Type::Daily) {
 		date->Add(wxDateSpan::Days(this->day));
 	}
 
-	if (type == SchedulerTypes::Weekly) {
+	if (type == Type::Weekly) {
 		date->Add(wxDateSpan::Weeks(week));
 		date->SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(this->day));
 	}
 
-	if (type == SchedulerTypes::Monthly) {
+	if (type == Type::Monthly) {
 		date->Add(wxDateSpan::Months(this->month));
 		date->SetDay(this->day);
 	}
 
-	if (type == SchedulerTypes::Yearly) {
+	if (type == Type::Yearly) {
 		date->SetDay(this->day);
 		date->SetMonth(static_cast<wxDateTime::Month>(this->month));
 

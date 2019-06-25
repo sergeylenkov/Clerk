@@ -1,21 +1,22 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
-#include "../Data/DataHelper.h"
-#include "DataPanel.h"
-
-enum class SchedulersPanelMenuTypes {
-	Add = 1,
-	Edit = 2,
-	Delete = 3,
-	Run = 4,
-	Pause = 5,
-};
+#include "wx/dataview.h"
+#include "../../Data/DataHelper.h"
+#include "../DataPanel.h"
+#include "SchedulersListDataModel.h"
 
 class SchedulersPanel : public DataPanel
 {
 public:
+	enum class ContextMenuTypes {
+		Add = 1,
+		Edit = 2,
+		Delete = 3,
+		Run = 4,
+		Pause = 5,
+	};
+
 	SchedulersPanel(wxWindow *parent, wxWindowID id);
 	
 	std::shared_ptr<Scheduler> GetScheduler();
@@ -25,7 +26,8 @@ public:
 	std::function<void()> OnAdd;
 
 private:
-	wxListCtrl *list;
+	wxDataViewCtrl *list;
+	wxObjectDataPtr<SchedulersListDataModel> model;
 	std::vector<std::shared_ptr<Scheduler>> schedulers;
 
 	void Add();
@@ -33,7 +35,7 @@ private:
 	void Delete();
 	void Run();
 	void Pause();
-	void OnListItemDoubleClick(wxListEvent &event);
-	void OnRightClick(wxContextMenuEvent &event);
+	void OnListItemDoubleClick(wxDataViewEvent &event);
+	void OnRightClick(wxDataViewEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

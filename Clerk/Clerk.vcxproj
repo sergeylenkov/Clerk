@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp" />
     <ClCompile Include="UI\Goals\GoalsProgressRender.cpp" />
     <ClCompile Include="UI\Goals\GoalsListDataModel.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp" />
@@ -102,7 +103,7 @@
     <ClCompile Include="UI\GoalDialog.cpp" />
     <ClCompile Include="UI\SchedulersConfirmDialog.cpp" />
     <ClCompile Include="UI\SchedulerDialog.cpp" />
-    <ClCompile Include="UI\SchedulersPanel.cpp" />
+    <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\DashboardPanel.cpp" />
     <ClCompile Include="UI\TabsPanel.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h" />
     <ClInclude Include="UI\Goals\GoalsProgressRender.h" />
     <ClInclude Include="UI\Goals\GoalsListDataModel.h" />
     <ClInclude Include="UI\Budgets\BudgetsProgressRender.h" />
@@ -160,7 +162,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\SchedulersConfirmDialog.h" />
     <ClInclude Include="UI\SchedulerDialog.h" />
-    <ClInclude Include="UI\SchedulersPanel.h" />
+    <ClInclude Include="UI\Schedulers\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\DashboardPanel.h" />
     <ClInclude Include="UI\TabsPanel.h" />

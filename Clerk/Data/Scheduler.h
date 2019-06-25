@@ -8,19 +8,20 @@
 
 using namespace std;
 
-enum class SchedulerTypes {
-	Daily = 0,
-	Weekly = 1,
-	Monthly = 2,
-	Yearly = 3
-};
-
 class Scheduler : public Model
 {
 public:
+	enum class Type {
+		Daily = 0,
+		Weekly = 1,
+		Monthly = 2,
+		Yearly = 3
+	};
+
 	int id;
 	shared_ptr<wxString> name;
-	SchedulerTypes type;
+	Type type;
+	shared_ptr<wxString> typeName;
 	int day;
 	int week;
 	int month;

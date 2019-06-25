@@ -11,7 +11,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 	totalValue = 0;
 
 	for (auto account : debts) {
-		if (account->creditLimit > 0) {
+		if (account->isCredit) {
 			float amount = account->balance;
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
@@ -146,13 +146,10 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
-		dc.SetBrush(wxBrush(wxColor(242, 73, 101)));		
+		wxColor color = Utils::ColorForDebt(value.percent);
 
-		if (value.percent > 90) {
-			dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
-			dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
-		}
+		dc.SetPen(wxPen(color, 1));
+		dc.SetBrush(wxBrush(color));
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);
 

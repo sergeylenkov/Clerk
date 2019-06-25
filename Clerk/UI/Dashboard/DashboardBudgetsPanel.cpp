@@ -12,7 +12,16 @@ void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budg
 	wxDateTime fromDate = wxDateTime::Now();
 
 	for (auto budget : budgets) {
-		if (budget->period == BudgetPeriods::Month) {
+		if (budget->period == Budget::Period::Week) {
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+		}
+
+		if (budget->period == Budget::Period::Month) {
+			fromDate.SetDay(1);
+		}
+
+		if (budget->period == Budget::Period::Year) {
+			fromDate.SetMonth(wxDateTime::Month::Jan);
 			fromDate.SetDay(1);
 		}
 
@@ -136,13 +145,10 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
-		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
+		wxColor color = Utils::ColorForBudget(value.percent);
 
-		if (value.percent > 90) {
-			dc.SetPen(wxPen(wxColor(242, 73, 101), 1));
-			dc.SetBrush(wxBrush(wxColor(242, 73, 101)));
-		}
+		dc.SetPen(wxPen(color, 1));
+		dc.SetBrush(wxBrush(color));
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);
 

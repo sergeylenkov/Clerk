@@ -135,7 +135,7 @@ void DataHelper::ReloadAccounts() {
 void DataHelper::UpdateAccountsBalance() {
 	for (auto account : accounts)
 	{
-		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual || account->type == AccountTypes::Debt) {
 			account->balance = GetBalance(account.get());
 		}
 	}
@@ -716,7 +716,7 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 
 			float amount = expenses - receipt;
 
-			if (account->creditLimit > 0) {
+			if (account->isCredit) {
 				amount = account->creditLimit + amount;
 			}
 
@@ -766,7 +766,7 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 			
 			float amount = expenses - receipt;
 
-			if (account->creditLimit > 0) {
+			if (account->isCredit) {
 				amount = account->creditLimit + amount;
 			}
 

@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "../../Data/DataHelper.h"
+#include "../../Utils/Utils.h"
 
 class DashboardGoalsPanel : public wxPanel
 {

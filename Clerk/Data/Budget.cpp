@@ -5,9 +5,11 @@ Budget::Budget()
 	this->id = -1;
 	this->name = make_shared<wxString>();
 	this->amount = 0;
-	this->period = BudgetPeriods::Month;
+	this->balance = 0;
+	this->period = Period::Month;
+	this->periodName = make_shared<wxString>("Month");
 	this->date = make_shared<wxDateTime>(wxDateTime::Now());
-	this->accountIds = make_shared<wxString>();
+	this->accountIds = make_shared<wxString>();	
 }
 
 Budget::Budget(int id) : Budget()
@@ -27,7 +29,7 @@ void Budget::Load()
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
 			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			this->period = static_cast<BudgetPeriods>(sqlite3_column_int(statement, 2));
+			this->period = static_cast<Period>(sqlite3_column_int(statement, 2));
 
 			auto date = make_shared<wxDateTime>();
 			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 3)));
@@ -36,6 +38,24 @@ void Budget::Load()
 
 			this->amount = sqlite3_column_double(statement, 4);
 			this->accountIds = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
+
+			switch (period)
+			{
+				case Budget::Period::Week:
+					periodName = make_shared<wxString>("Week");
+					break;
+				case Budget::Period::Month:
+					periodName = make_shared<wxString>("Month");
+					break;
+				case Budget::Period::Year:
+					periodName = make_shared<wxString>("Year");
+					break;
+				case Budget::Period::Custom:
+					periodName = make_shared<wxString>("Custom");
+					break;
+				default:
+					break;
+			}
 		}
 	}
 

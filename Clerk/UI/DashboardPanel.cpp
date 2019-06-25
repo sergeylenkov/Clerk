@@ -111,7 +111,7 @@ void DashboardPanel::Update() {
 	{
 		float amount = account->balance;
 
-		if (account->creditLimit > 0) {
+		if (account->isCredit) {
 			float currentAmount = account->creditLimit + amount;
 
 			if (creditFoundsDict[account->currency->id]) {
@@ -149,7 +149,7 @@ void DashboardPanel::Update() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		if (account->creditLimit > 0) {
+		if (account->isCredit) {
 			debts.push_back(account);
 		}
 	}

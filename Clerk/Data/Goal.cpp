@@ -5,6 +5,7 @@ Goal::Goal()
 	this->id = -1;
 	this->name = make_shared<wxString>();
 	this->amount = 0;
+	this->balance = 0;
 	this->date = make_shared<wxDateTime>(wxDateTime::Now());
 	this->accountIds = make_shared<wxString>();
 }

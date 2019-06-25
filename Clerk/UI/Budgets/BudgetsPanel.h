@@ -1,19 +1,21 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
-#include "../Data/DataHelper.h"
-#include "DataPanel.h"
-
-enum class BudgetsPanelMenuTypes {
-	Add = 1,
-	Edit = 2,
-	Delete = 3,
-};
+#include "wx/dataview.h"
+#include "../../Data/DataHelper.h"
+#include "../DataPanel.h"
+#include "BudgetsListDataModel.h"
+#include "BudgetsProgressRender.h"
 
 class BudgetsPanel : public DataPanel
 {
 public:
+	enum class ContextMenuTypes {
+		Add = 1,
+		Edit = 2,
+		Delete = 3,
+	};
+
 	BudgetsPanel(wxWindow *parent, wxWindowID id);
 
 	std::shared_ptr<Budget> GetBudget();
@@ -23,13 +25,14 @@ public:
 	std::function<void()> OnAdd;
 
 private:
-	wxListCtrl *list;
+	wxDataViewCtrl *list;
+	wxObjectDataPtr<BudgetsListDataModel> model;
 	std::vector<std::shared_ptr<Budget>> budgets;
 
 	void Add();
 	void Edit();
 	void Delete();
-	void OnListItemDoubleClick(wxListEvent &event);
-	void OnRightClick(wxContextMenuEvent &event);
+	void OnListItemDoubleClick(wxDataViewEvent &event);
+	void OnRightClick(wxDataViewEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 };

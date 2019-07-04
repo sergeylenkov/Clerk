@@ -54,9 +54,9 @@ private:
 
 	void SelectFromAccount(int index);
 	void SelectToAccount(int index);
-	void SelectToAccount(std::shared_ptr<Account> account);
+	void SelectToAccount(Account *account);
 	void UpdateFromList();
-	void UpdateToList(std::shared_ptr<Account> account);
+	void UpdateToList(Account *account);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);
@@ -69,5 +69,6 @@ private:
 	void OnSelectTag();
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);
+	float GetValueFromString(wxString &value);
 	void OnKeyDown(wxKeyEvent &event);
 };

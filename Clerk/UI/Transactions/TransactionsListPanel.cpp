@@ -291,7 +291,7 @@ void TransactionsListPanel::UpdateList() {
 				wxString dateFormat = transaction->paidAt->Format("%B %e");
 
 				if (date.GetYear() != transaction->paidAt->GetYear()) {
-					dateFormat = transaction->paidAt->Format("%B %e %Y");
+					dateFormat = transaction->paidAt->Format("%B %e, %Y");
 				}
 
 				transactionsList->SetItem(i, n, dateFormat);

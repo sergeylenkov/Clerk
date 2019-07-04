@@ -145,12 +145,22 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	UpdateFromList();
 	SelectFromAccount(0);
 
-	UpdateToList(fromAccount);
+	UpdateToList(fromAccount.get());
 	SelectToAccount(0);
 }
 
 TransactionDialog::~TransactionDialog() {
 	delete tagsPopup;	
+}
+
+void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
+	if ((int)event.GetKeyCode() == WXK_ESCAPE) {
+		event.StopPropagation();
+		Close();
+	}
+	else {
+		event.Skip();
+	}
 }
 
 void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction) {
@@ -165,7 +175,7 @@ void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction)
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
 		if (transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i]);
+			UpdateToList(fromAccounts[i].get());
 
 			break;
 		}
@@ -208,7 +218,7 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
 		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
 			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i]);
+			UpdateToList(fromAccounts[i].get());
 
 			break;
 		}
@@ -241,7 +251,7 @@ void TransactionDialog::UpdateFromList() {
 	}
 }
 
-void TransactionDialog::UpdateToList(std::shared_ptr<Account> account) {
+void TransactionDialog::UpdateToList(Account *account) {
 	toList->Clear();
 	toAccounts.clear();
 
@@ -298,7 +308,7 @@ void TransactionDialog::SelectToAccount(int id) {
 	toAccount = account;
 }
 
-void TransactionDialog::SelectToAccount(std::shared_ptr<Account> account) {
+void TransactionDialog::SelectToAccount(Account *account) {
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
 		if (toAccounts[i]->id == account->id) {
 			SelectToAccount(i);
@@ -312,12 +322,23 @@ void TransactionDialog::SelectToAccount(std::shared_ptr<Account> account) {
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {
 	SelectFromAccount(fromList->GetSelection());
 
-	UpdateToList(fromAccount);
-	SelectToAccount(toAccount);
+	UpdateToList(fromAccount.get());
+	SelectToAccount(toAccount.get());
 }
 
 void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 	SelectToAccount(toList->GetSelection());
+
+	Account *fromAccount = fromAccounts[fromList->GetSelection()].get();
+	Account *toAccount = toAccounts[toList->GetSelection()].get();
+
+	if (fromAccount->currency->id != toAccount->currency->id) {
+		float fromValue = GetValueFromString(fromAmountField->GetValue());
+		float toValue = GetValueFromString(toAmountField->GetValue());
+
+		float amount = DataHelper::GetInstance().ConvertCurrency(fromAccount->currency->id, toAccount->currency->id, fromValue);
+		toAmountField->SetValue(wxString::Format("%.2f", amount));
+	}
 }
 
 void TransactionDialog::OnOK(wxCommandEvent &event) {
@@ -325,19 +346,10 @@ void TransactionDialog::OnOK(wxCommandEvent &event) {
 	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
 	transaction->note = make_shared<wxString>(noteField->GetValue());
 	transaction->tags = make_shared<wxString>(tagsField->GetValue());
-	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());
-
-	double amountValue;
-
-	wxString value = ClearAmountValue(fromAmountField->GetValue());	
-	value.ToDouble(&amountValue);
-	  
-	transaction->fromAmount = amountValue;
-	
-	value = ClearAmountValue(toAmountField->GetValue());	
-	value.ToDouble(&amountValue);
-
-	transaction->toAmount = amountValue;
+	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());	
+		  
+	transaction->fromAmount = GetValueFromString(fromAmountField->GetValue());
+	transaction->toAmount = GetValueFromString(toAmountField->GetValue());
 
 	transaction->Save();
 
@@ -365,14 +377,11 @@ void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	wxString stringAmount = ClearAmountValue(fromAmountField->GetValue());	
 	fromAmountField->SetValue(stringAmount);
 
-	double toValue;
-	double fromValue;
-
 	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
 	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;	
 
-	fromAmountField->GetValue().ToDouble(&fromValue);
-	toAmountField->GetValue().ToDouble(&toValue);
+	float fromValue = GetValueFromString(fromAmountField->GetValue());
+	float toValue = GetValueFromString(toAmountField->GetValue());	
 
 	if (toValue == 0) {
 		if (fromCurrencyId == toCurrencyId) {
@@ -484,12 +493,15 @@ wxString TransactionDialog::ClearAmountValue(wxString &value) {
 	return value;
 }
 
-void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
-	if ((int)event.GetKeyCode() == WXK_ESCAPE) {
-		event.StopPropagation();
-		Close();
+float TransactionDialog::GetValueFromString(wxString &value) {
+	wxString clearValue = ClearAmountValue(value);
+	
+	if (clearValue.Length() > 0) {
+		double result = 0;
+		clearValue.ToDouble(&result);
+
+		return (float)result;
 	}
-	else {
-		event.Skip();
-	}
+
+	return 0.0;
 }

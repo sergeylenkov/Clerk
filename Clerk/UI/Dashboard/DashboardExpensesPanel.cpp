@@ -9,19 +9,21 @@ void DashboardExpensesPanel::SetExpenses(std::vector<AccountValue> expenses) {
 	
 	maxValue = 0;
 
-	std::sort(this->expenses.begin(), this->expenses.end(), [](AccountValue a, AccountValue b) {
-		return a.value > b.value;
-	});
+	if (expenses.size() > 0) {
+		std::sort(this->expenses.begin(), this->expenses.end(), [](AccountValue a, AccountValue b) {
+			return a.value > b.value;
+		});
 
-	totalValue = { *expenses[0].account->currency.get(), 0 };
+		totalValue = { *expenses[0].account->currency.get(), 0 };
 
-	for (auto &expense : expenses) {
-		totalValue.value = totalValue.value + expense.value;
+		for (auto &expense : expenses) {
+			totalValue.value = totalValue.value + expense.value;
 
-		if (expense.value > maxValue) {
-			maxValue = expense.value;
+			if (expense.value > maxValue) {
+				maxValue = expense.value;
+			}
 		}
-	}	
+	}		
 
 	Update();
 }

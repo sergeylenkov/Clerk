@@ -7,10 +7,10 @@
 #include <wx/numformatter.h>
 #include <functional>
 #include <thread>
-#include "DataPanel.h"
-#include "../Data/DataHelper.h"
-#include "../Data/Settings.h"
-#include "TreeMenu.h"
+#include "../DataPanel.h"
+#include "../../Data/DataHelper.h"
+#include "../../Data/Settings.h"
+#include "../TreeMenu.h"
 
 enum class TransactionsPanelMenuTypes {
 	Add = 1,

@@ -266,6 +266,8 @@ void MainFrame::UpdateStatus() {
 	}
 	
 	statusbar->SetExchangeRates(rates);
+
+	statusbar->Layout();
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -416,8 +418,7 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 
 		delete copy;
 
-		tabsPanel->Update();
-		UpdateStatus();
+		UpdateUIData();;
 	}	
 }
 
@@ -510,9 +511,7 @@ void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 }
 
 void MainFrame::OnTransactionClose() {
-	DataHelper::GetInstance().UpdateAccountsBalance();
-	tabsPanel->Update();
-	UpdateStatus();	
+	UpdateUIData();
 }
 
 void MainFrame::AddAccount(AccountTypes type) {
@@ -703,4 +702,10 @@ void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
 void MainFrame::UpdateExchangeRates() {
 	CBRRatesLoader loader(DataHelper::GetInstance().Connection());
 	loader.Load();
+}
+
+void MainFrame::UpdateUIData() {
+	DataHelper::GetInstance().UpdateAccountsBalance();
+	UpdateStatus();
+	tabsPanel->Update();	
 }

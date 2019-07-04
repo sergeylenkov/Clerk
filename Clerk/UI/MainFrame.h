@@ -100,4 +100,5 @@ private:
 	void OnEmptyTrash();
 	void OnAddMenuTransaction(wxCommandEvent &event);
 	void UpdateExchangeRates();
+	void UpdateUIData();
 };

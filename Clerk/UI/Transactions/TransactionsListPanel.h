@@ -7,10 +7,13 @@
 #include <wx/numformatter.h>
 #include <functional>
 #include <thread>
+#include <algorithm>
+#include <string> 
 #include "../DataPanel.h"
 #include "../../Data/DataHelper.h"
 #include "../../Data/Settings.h"
 #include "../TreeMenu.h"
+#include "TransactionsListDataModel.h"
 
 enum class TransactionsPanelMenuTypes {
 	Add = 1,
@@ -43,8 +46,9 @@ public:
 	std::function<void(std::shared_ptr<Transaction>)> OnCopy;
 	std::function<void()> OnPeriodChanged;	
 
-private:
-	wxListCtrl *transactionsList;
+private:	
+	wxDataViewCtrl *list;
+	wxObjectDataPtr<TransactionsListDataModel> model;
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
@@ -62,9 +66,10 @@ private:
 	bool sortDesc;
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
-
+	
 	void Sort();
 	void Filter();
+	void CreateListColumns();
 	void UpdateList();
 	void UpdateInfo();
 	void Add();
@@ -75,9 +80,9 @@ private:
 	void Split();
 	void Merge();	
 	void OnListColumnClick(wxListEvent &event);
-	void OnListItemDoubleClick(wxListEvent &event);
+	void OnListItemDoubleClick(wxDataViewEvent &event);
 	void OnColumnDragged(wxListEvent &event);
-	void OnRightClick(wxContextMenuEvent &event);
+	void OnRightClick(wxDataViewEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);

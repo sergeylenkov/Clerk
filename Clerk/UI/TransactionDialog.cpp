@@ -168,12 +168,12 @@ void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction)
 
 	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
 	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
-	tagsField->SetValue(*transaction->tags);
+	tagsField->SetValue(transaction->GetTagsString());
 	noteField->SetValue(*transaction->note);
 	datePicker->SetValue(*transaction->paidAt);
 
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->fromAccountId == fromAccounts[i]->id) {
+		if (transaction->fromAccount->id == fromAccounts[i]->id) {
 			SelectFromAccount(i);
 			UpdateToList(fromAccounts[i].get());
 
@@ -181,9 +181,9 @@ void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction)
 		}
 	}
 
-	if (transaction->toAccountId != -1) {
+	if (transaction->toAccount->id != -1) {
 		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (transaction->toAccountId == toAccounts[i]->id) {
+			if (transaction->toAccount->id == toAccounts[i]->id) {
 				SelectToAccount(i);
 				break;
 			}
@@ -200,8 +200,8 @@ void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction)
 void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
 	auto copy = make_shared<Transaction>();
 
-	copy->fromAccountId = transaction->fromAccountId;
-	copy->toAccountId = transaction->toAccountId;
+	copy->fromAccount = transaction->fromAccount;
+	copy->toAccount = transaction->toAccount;
 	copy->fromAmount = transaction->fromAmount;
 	copy->toAmount = 0.0;
 	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
@@ -216,7 +216,7 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 	datePicker->SetValue(*this->transaction->paidAt);
 
 	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (this->transaction->fromAccountId == fromAccounts[i]->id) {
+		if (this->transaction->fromAccount->id == fromAccounts[i]->id) {
 			SelectFromAccount(i);
 			UpdateToList(fromAccounts[i].get());
 
@@ -225,7 +225,7 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 	}
 
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (this->transaction->toAccountId == toAccounts[i]->id) {
+		if (this->transaction->toAccount->id == toAccounts[i]->id) {
 			SelectToAccount(i);
 			break;
 		}
@@ -342,10 +342,10 @@ void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 }
 
 void TransactionDialog::OnOK(wxCommandEvent &event) {
-	transaction->fromAccountId = fromAccounts[fromList->GetSelection()]->id;
-	transaction->toAccountId = toAccounts[toList->GetSelection()]->id;
+	transaction->fromAccount = fromAccounts[fromList->GetSelection()];
+	transaction->toAccount = toAccounts[toList->GetSelection()];
 	transaction->note = make_shared<wxString>(noteField->GetValue());
-	transaction->tags = make_shared<wxString>(tagsField->GetValue());
+	transaction->SetTagsString(tagsField->GetValue());
 	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());	
 		  
 	transaction->fromAmount = GetValueFromString(fromAmountField->GetValue());

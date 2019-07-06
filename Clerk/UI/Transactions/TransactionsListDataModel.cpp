@@ -33,13 +33,16 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 			variant = FormatDate(transaction->paidAt.get());
 			break;
 		case Columns::FromAccount:
-			variant = *transaction->fromAccountName;
+			variant = *transaction->fromAccount->name;
 			break;
 		case Columns::ToAccount:
-			variant = *transaction->toAccountName;
+			variant = *transaction->toAccount->name;
 			break;
 		case Columns::Amount:
 			variant = Utils::FormatAmount(transaction->fromAmount);
+			break;
+		case Columns::Tags:
+			variant = transaction->GetTagsString();
 			break;
 		case Columns::Note:
 			variant = *transaction->note;

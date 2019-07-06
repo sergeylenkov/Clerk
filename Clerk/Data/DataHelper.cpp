@@ -983,8 +983,8 @@ std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account
 			transaction->id = sqlite3_column_int(statement, 0);
 			transaction->fromAmount = sqlite3_column_double(statement, 3);
 			transaction->toAmount = sqlite3_column_double(statement, 4);
-			transaction->fromAccountId = sqlite3_column_int(statement, 1);
-			transaction->toAccountId = sqlite3_column_int(statement, 2);
+			transaction->fromAccount = make_shared<Account>(sqlite3_column_int(statement, 1));
+			transaction->toAccount = make_shared<Account>(sqlite3_column_int(statement, 2));
 
 			auto date = make_shared<wxDateTime>();
 			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));

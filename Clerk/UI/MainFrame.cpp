@@ -156,7 +156,7 @@ void MainFrame::CreateMainMenu() {
 
 		for (auto transaction : transactions)
 		{
-			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
 		}
 
 		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
@@ -195,7 +195,7 @@ void MainFrame::CreateDropdownMenu() {
 
 	for (auto transaction : transactions)
 	{
-		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
 	}
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
@@ -406,8 +406,8 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 	if (transaction) {
 		Transaction *copy = new Transaction();
 
-		copy->fromAccountId = transaction->fromAccountId;
-		copy->toAccountId = transaction->toAccountId;
+		copy->fromAccount = transaction->fromAccount;
+		copy->toAccount = transaction->toAccount;
 		copy->fromAmount = transaction->fromAmount;
 		copy->toAmount = transaction->toAmount;
 		copy->note = transaction->note;
@@ -435,13 +435,13 @@ void MainFrame::AddTransaction(Account *account) {
 
 	if (account) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
-			transaction->fromAccountId = account->id;
-			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
+			transaction->fromAccount = make_shared<Account>(account->id);
+			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(account));
 		}
 
 		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
-			transaction->toAccountId = account->id;
-			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
+			transaction->toAccount = make_shared<Account>(account->id);
+			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(account));
 		}
 	}
 
@@ -460,8 +460,8 @@ void MainFrame::AddTransactionFromContextMenu() {
 	if (transaction) {
 		auto copy = make_shared<Transaction>();
 
-		copy->fromAccountId = transaction->fromAccountId;
-		copy->toAccountId = transaction->toAccountId;		
+		copy->fromAccount = transaction->fromAccount;
+		copy->toAccount = transaction->toAccount;		
 
 		EditTransaction(copy);
 	}
@@ -473,8 +473,8 @@ void MainFrame::AddTransactionFromContextMenu() {
 void MainFrame::CopyTransaction(std::shared_ptr<Transaction> transaction) {
 	auto copy = make_shared<Transaction>();
 
-	copy->fromAccountId = transaction->fromAccountId;
-	copy->toAccountId = transaction->toAccountId;
+	copy->fromAccount = transaction->fromAccount;
+	copy->toAccount = transaction->toAccount;
 	copy->fromAmount = transaction->fromAmount;
 	copy->toAmount = transaction->toAmount;
 	copy->note = transaction->note;

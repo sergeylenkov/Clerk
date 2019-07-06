@@ -205,11 +205,11 @@ void Scheduler::CalculateNextDate() {
 void Scheduler::Execute() {
 	auto transaction = new Transaction();
 
-	transaction->fromAccountId = fromAccount->id;
-	transaction->toAccountId = toAccount->id;
+	transaction->fromAccount = fromAccount;
+	transaction->toAccount = toAccount;
 	transaction->fromAmount = fromAmount;
 	transaction->toAmount = toAmount;
-	transaction->tags = tags;
+	transaction->SetTagsString(*tags.get());
 	transaction->paidAt = nextDate;
 
 	transaction->Save();

@@ -3,12 +3,12 @@
 Transaction::Transaction()
 {
 	this->id = -1;
-	this->fromAccountId = -1;
-	this->toAccountId = -1;
+	this->fromAccount = make_shared<Account>(-1);
+	this->toAccount = make_shared<Account>(-1);
 	this->fromAmount = 0;
 	this->toAmount = 0;
 	this->note = make_shared<wxString>();
-	this->tags = make_shared<wxString>();
+	this->tags = vector<wxString>();
 	this->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 }
 
@@ -20,31 +20,27 @@ Transaction::Transaction(int id) : Transaction()
 
 void Transaction::Load()
 {
-	char *sql = "SELECT t.id, t.from_account_amount, t.to_account_amount, t.paid_at, fa.name, ta.name, fa.id, ta.id, t.note \
-								   FROM transactions t, accounts fa, accounts ta WHERE t.id = ? AND fa.id = t.from_account_id AND ta.id = t.to_account_id";
+	char *sql = "SELECT t.id, t.from_account_id, t.to_account_id, t.from_account_amount, t.to_account_amount, t.paid_at, t.note FROM transactions t WHERE t.id = ?";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, this->id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			this->id = sqlite3_column_int(statement, 0);
-			this->fromAmount = sqlite3_column_double(statement, 1);
-			this->toAmount = sqlite3_column_double(statement, 2);
+			this->id = sqlite3_column_int(statement, 0);			
+			this->fromAccount = make_shared<Account>(sqlite3_column_int(statement, 1));			
+			this->toAccount = make_shared<Account>(sqlite3_column_int(statement, 2));
+			this->fromAmount = sqlite3_column_double(statement, 3);
+			this->toAmount = sqlite3_column_double(statement, 4);
 
 			auto date = make_shared<wxDateTime>();
-			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 3)));
+			date->ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
 
 			this->paidAt = date;
+			
+			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 6)));
 
-			this->fromAccountName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 4)));
-			this->toAccountName = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 5)));
-
-			this->fromAccountId = sqlite3_column_int(statement, 6);
-			this->toAccountId = sqlite3_column_int(statement, 7);
-			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 8)));
-
-			wxString tags;
+			this->tags.clear();
 
 			char *sql = "SELECT t.id, t.name FROM tags t, transactions_tags tt WHERE tt.transaction_id = ? AND t.id = tt.tag_id";
 			sqlite3_stmt *statement;
@@ -52,14 +48,9 @@ void Transaction::Load()
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 				sqlite3_bind_int(statement, 1, this->id);
 
-				while (sqlite3_step(statement) == SQLITE_ROW) {
-					tags += wxString::FromUTF8((char *)sqlite3_column_text(statement, 1));
-					tags += ", ";
+				while (sqlite3_step(statement) == SQLITE_ROW) {					
+					tags.push_back(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
 				}
-
-				tags.RemoveLast(2);
-
-				this->tags = make_shared<wxString>(tags);
 			}
 		}
 	}
@@ -74,8 +65,8 @@ void Transaction::Save()
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {			
-			sqlite3_bind_int(statement, 1, this->fromAccountId);
-			sqlite3_bind_int(statement, 2, this->toAccountId);
+			sqlite3_bind_int(statement, 1, this->fromAccount->id);
+			sqlite3_bind_int(statement, 2, this->toAccount->id);
 			sqlite3_bind_double(statement, 3, this->fromAmount);
 			sqlite3_bind_double(statement, 4, this->toAmount);
 			sqlite3_bind_text(statement, 5, this->paidAt->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
@@ -93,8 +84,8 @@ void Transaction::Save()
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, this->fromAccountId);
-			sqlite3_bind_int(statement, 2, this->toAccountId);
+			sqlite3_bind_int(statement, 1, this->fromAccount->id);
+			sqlite3_bind_int(statement, 2, this->toAccount->id);
 			sqlite3_bind_double(statement, 3, this->fromAmount);
 			sqlite3_bind_double(statement, 4, this->toAmount);
 			sqlite3_bind_int(statement, 5, false);
@@ -165,16 +156,28 @@ void Transaction::Restore()
 	sqlite3_finalize(statement);
 }
 
-vector<wxString> Transaction::GetTags() {
-	wxStringTokenizer tokenizer(*this->tags, ",");
-	vector<wxString> result;
+wxString Transaction::GetTagsString() {
+	wxString tagsString = wxString();	
 
-	while (tokenizer.HasMoreTokens()) {
-		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
-		result.push_back(token);
+	for (auto tag : tags)
+	{
+		tagsString += tag;
+		tagsString += ", ";
 	}
 
-	return result;
+	tagsString.RemoveLast(2);
+
+	return tagsString;
+}
+
+void Transaction::SetTagsString(wxString tagsString) {
+	wxStringTokenizer tokenizer(tagsString, ",");
+
+	while (tokenizer.HasMoreTokens())
+	{
+		wxString tag = tokenizer.GetNextToken().Trim(true).Trim(false);
+		tags.push_back(tag);
+	}
 }
 
 void Transaction::UpdateTags()
@@ -189,31 +192,27 @@ void Transaction::UpdateTags()
 
 	sqlite3_finalize(statement);
 
-	wxStringTokenizer tokenizer(*this->tags, ",");
-
-	while (tokenizer.HasMoreTokens())
-	{
-		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
-		int tag_id = -1;
+	for (wxString tag : tags) {
+		int tagId = -1;
 
 		sql = "SELECT id FROM tags WHERE name = ?";
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, token.ToUTF8(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 1, tag.ToUTF8(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_ROW) {
-				tag_id = sqlite3_column_int(statement, 0);
+				tagId = sqlite3_column_int(statement, 0);
 			}
 		}
 
-		if (tag_id == -1) {
+		if (tagId == -1) {
 			sql = "INSERT INTO tags (name) VALUES (?)";
 
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-				sqlite3_bind_text(statement, 1, token.ToUTF8(), -1, SQLITE_TRANSIENT);
+				sqlite3_bind_text(statement, 1, tag.ToUTF8(), -1, SQLITE_TRANSIENT);
 
 				if (sqlite3_step(statement) == SQLITE_DONE) {
-					tag_id = sqlite3_last_insert_rowid(_db);
+					tagId = sqlite3_last_insert_rowid(_db);
 				}
 			}
 
@@ -223,7 +222,7 @@ void Transaction::UpdateTags()
 		sql = "INSERT INTO transactions_tags (tag_id, transaction_id) VALUES (?, ?)";
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, tag_id);
+			sqlite3_bind_int(statement, 1, tagId);
 			sqlite3_bind_int(statement, 2, this->id);
 
 			sqlite3_step(statement);

@@ -29,7 +29,7 @@ void DashboardSchedulersPanel::Update()
 		}
 	}
 
-	int height = 170 + (schedulers.size() * 40);
+	int height = 200 + (schedulers.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();

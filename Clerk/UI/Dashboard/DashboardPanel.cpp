@@ -160,12 +160,60 @@ void DashboardPanel::Update() {
 	}
 	
 	balancePanel->SetBalance({ Currency(baseCurrencyId), totalBalance }, ownFunds, creditFunds);
-	accountsPanel->SetAccounts(accounts);
-	expensesPanel->SetExpenses(expenses);
-	schedulersPanel->SetSchedulers(DataHelper::GetInstance().GetSchedulers(&today, &month));
-	budgetsPanel->SetBudgets(DataHelper::GetInstance().GetBudgets());	
-	goalsPanel->SetGoals(DataHelper::GetInstance().GetGoals());
-	debtsPanel->SetDebts(debts);	
+
+	if (accounts.size() > 0) {
+		accountsPanel->SetAccounts(accounts);
+		accountsPanel->Show();
+	}
+	else {
+		accountsPanel->Hide();
+	}
+
+	if (expenses.size() > 0) {
+		expensesPanel->SetExpenses(expenses);
+		expensesPanel->Show();
+	}
+	else {
+		expensesPanel->Hide();
+	}
+
+	auto schedulers = DataHelper::GetInstance().GetSchedulers(&today, &month);
+
+	if (schedulers.size() > 0) {
+		schedulersPanel->SetSchedulers(schedulers);
+		schedulersPanel->Show();
+	}
+	else {
+		schedulersPanel->Hide();
+	}
+
+	auto budgets = DataHelper::GetInstance().GetBudgets();
+
+	if (budgets.size() > 0) {
+		budgetsPanel->SetBudgets(budgets);
+		budgetsPanel->Show();
+	}
+	else {
+		budgetsPanel->Hide();
+	}
+
+	auto goals = DataHelper::GetInstance().GetGoals();
+
+	if (goals.size() > 0) {
+		goalsPanel->SetGoals(goals);
+		goalsPanel->Show();
+	}
+	else {
+		goalsPanel->Hide();
+	}
+
+	if (debts.size() > 0) {
+		debtsPanel->SetDebts(debts);
+		debtsPanel->Show();
+	}
+	else {
+		debtsPanel->Hide();
+	}
 
 	this->Layout();
 }

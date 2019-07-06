@@ -82,8 +82,8 @@ public:
 	bool IsMenuExpanded(int type);	
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
-	std::vector<ListColumnsSettings> GetColumns(ListColumnsTypes type);
-	void SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
+	std::vector<ListColumnsSettings> GetTransactionsListColumns(ListColumnsTypes type);
+	void SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
 	ReportFilterSettings GetReportFilterSettings(int id);
 	void SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate);
 
@@ -99,9 +99,9 @@ private:
 	std::vector<TabSettings> tabs;
 	std::map<int, bool> expandedMenu;
 	int selectedTab;
-	std::vector<ListFilterSettings> filterSettings;
-	std::map<int, std::vector<ListColumnsSettings>> columnsSettings;
-	std::vector<ReportFilterSettings> reportSettings;
+	std::vector<ListFilterSettings> transactionListFilterSettings;
+	std::map<int, std::vector<ListColumnsSettings>> transactionsListColumnsSettings;
+	std::vector<ReportFilterSettings> reportFilterSettings;
 
 	void RestoreDefaultColumns();
 };

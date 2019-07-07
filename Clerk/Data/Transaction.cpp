@@ -171,6 +171,8 @@ wxString Transaction::GetTagsString() {
 }
 
 void Transaction::SetTagsString(wxString tagsString) {
+	tags.clear();
+
 	wxStringTokenizer tokenizer(tagsString, ",");
 
 	while (tokenizer.HasMoreTokens())

@@ -39,7 +39,7 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 			variant = *transaction->toAccount->name;
 			break;
 		case Columns::Amount:
-			variant = Utils::FormatAmount(transaction->fromAmount);
+			variant = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
 			break;
 		case Columns::Tags:
 			variant = transaction->GetTagsString();

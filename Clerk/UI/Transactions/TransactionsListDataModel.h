@@ -32,5 +32,6 @@ public:
 private:
 	std::vector<std::shared_ptr<Transaction>> _transactions;
 	wxString FormatDate(wxDateTime *date) const;
+	wxString FormatAmount(Transaction *transaction) const;
 };
 

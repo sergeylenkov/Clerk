@@ -1,4 +1,4 @@
-#include "TransactionsListDataModel.h"
+﻿#include "TransactionsListDataModel.h"
 
 TransactionsListDataModel::TransactionsListDataModel()
 {
@@ -39,7 +39,7 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 			variant = *transaction->toAccount->name;
 			break;
 		case Columns::Amount:
-			variant = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
+			variant = FormatAmount(transaction.get());
 			break;
 		case Columns::Tags:
 			variant = transaction->GetTagsString();
@@ -69,4 +69,20 @@ wxString TransactionsListDataModel::FormatDate(wxDateTime *date) const
 	}
 
 	return dateFormat;
+}
+
+wxString TransactionsListDataModel::FormatAmount(Transaction *transaction) const {
+	wxString amount = "";
+
+	if (transaction->fromAmount != transaction->toAmount) {
+		wxString fromAmount = Utils::FormatAmount(transaction->fromAmount, transaction->fromAccount->currency.get());
+		wxString toAmount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
+
+		amount = wxString::Format("%s > %s", fromAmount, toAmount);
+	}
+	else {
+		amount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
+	}
+
+	return amount;
 }

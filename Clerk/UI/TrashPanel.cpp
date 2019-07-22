@@ -68,8 +68,8 @@ void TrashPanel::Update() {
 		listItem.SetData(transaction->id);
 
 		transactionsList->InsertItem(listItem);
-		transactionsList->SetItem(i, 0, *transaction->fromAccountName);
-		transactionsList->SetItem(i, 1, *transaction->toAccountName);
+		transactionsList->SetItem(i, 0, *transaction->fromAccount->name);
+		transactionsList->SetItem(i, 1, *transaction->toAccount->name);
 		transactionsList->SetItem(i, 2, wxString::Format("%.2f", transaction->fromAmount));
 		transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
 		transactionsList->SetItem(i, 4, transaction->paidAt->Format("%B %d, %Y"));

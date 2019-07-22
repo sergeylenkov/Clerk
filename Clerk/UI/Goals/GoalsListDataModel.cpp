@@ -88,7 +88,7 @@ wxString GoalsListDataModel::FormatDate(wxDateTime *date) const
 	wxString dateFormat = date->Format("%B %e");
 
 	if (wxDateTime::Now().GetYear() != date->GetYear()) {
-		dateFormat = date->Format("%B %e %Y");
+		dateFormat = date->Format("%B %e, %Y");
 	}
 
 	return dateFormat;
@@ -101,7 +101,7 @@ wxString GoalsListDataModel::FormatDaysRemain(wxDateTime *date) const {
 	int months = diff.GetTotalMonths();
 
 	if (months > 0) {
-		return wxString::Format("%d m", months);
+		return wxString::Format("%d months", months);
 	}
 
 	return wxString::Format("%d days", days);

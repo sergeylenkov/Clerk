@@ -145,7 +145,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 	noteField->SetValue(*account->note);
 	typeList->SetSelection(static_cast<int>(account->type));
 
-	if (account->iconId < iconList->GetCount()) {
+	if (account->iconId < (int)iconList->GetCount()) {
 		iconList->SetSelection(account->iconId);
 	} else {
 		iconList->SetSelection(0);
@@ -153,7 +153,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 
 	int i = 0;
 
-	for (auto currency : currencies)
+	for (auto &currency : currencies)
 	{
 		if (currency->id == account->currency->id) {
 			currencyList->SetSelection(i);
@@ -163,7 +163,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 		i++;
 	}
 
-	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(account.get());
+	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(*account);
 
 	if (initialTransaction) {
 		amountField->SetValue(wxString::Format("%.2f", initialTransaction->fromAmount));
@@ -200,8 +200,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 			if (account->type == AccountTypes::Debt) {
 				Transaction *transaction = new Transaction();
 
-				transaction->fromAccountId = account->id;
-				transaction->toAccountId = -1;
+				transaction->fromAccount = account;				
 				transaction->fromAmount = amountValue;
 				transaction->toAmount = amountValue;
 				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
@@ -211,8 +210,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 			else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 				Transaction *transaction = new Transaction();
 
-				transaction->fromAccountId = -1;
-				transaction->toAccountId = account->id;
+				transaction->toAccount = account;
 				transaction->fromAmount = amountValue;
 				transaction->toAmount = amountValue;
 				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());

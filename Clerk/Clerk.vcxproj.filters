@@ -42,9 +42,6 @@
     <ClCompile Include="UI\MainFrame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TransactionsListPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\TreeMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -54,13 +51,7 @@
     <ClCompile Include="UI\TabsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\DashboardPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\TrashPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\SchedulersPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Scheduler.cpp">
@@ -180,6 +171,24 @@
     <ClCompile Include="UI\Goals\GoalsProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Dashboard\DashboardPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Transactions\TransactionsListDataModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -212,9 +221,6 @@
     <ClInclude Include="UI\MainFrame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TransactionsListPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\TreeMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -224,13 +230,7 @@
     <ClInclude Include="UI\TabsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\DashboardPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\TrashPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\SchedulersPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Scheduler.h">
@@ -351,6 +351,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalsProgressRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulersPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\TransactionsListPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Dashboard\DashboardPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\TransactionsListDataModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\TransactionsTagsRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

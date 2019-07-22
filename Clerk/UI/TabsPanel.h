@@ -4,27 +4,27 @@
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Data/Settings.h"
-#include "TransactionsListPanel.h"
-#include "DashboardPanel.h"
+#include "./Transactions/TransactionsListPanel.h"
+#include "./Dashboard/DashboardPanel.h"
 #include "./Reports/ReportExpensesByMonthPanel.h"
 #include "./Reports/ReportBalanceByMonthPanel.h"
 #include "./Reports/ReportExpensesForPeriodPanel.h"
 #include "./Budgets/BudgetsPanel.h"
 #include "TrashPanel.h"
-#include "SchedulersPanel.h"
+#include "./Schedulers/SchedulersPanel.h"
 #include "./Goals/GoalsPanel.h"
 #include "TagsPanel.h"
 #include "TreeMenu.h"
 
-enum class TabsMenuTypes {
-	MoveLeft = 1,
-	MoveRight = 2,
-	Close = 3,
-};
-
 class TabsPanel : public wxPanel
 {
 public:
+	enum class ContextMenuTypes {
+		MoveLeft = 1,
+		MoveRight = 2,
+		Close = 3,
+	};
+
 	TabsPanel(wxWindow *parent, wxWindowID id);
 	~TabsPanel();
 

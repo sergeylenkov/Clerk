@@ -17,7 +17,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	addTransactionButton = new DropDownButton(toolbar, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34));
 	addTransactionButton->SetBackgroundColour(wxColour(255, 255, 255));
 
-	addTransactionButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddTransaction, this);
+	addTransactionButton->Bind(wxEVT_BUTTON, &MainFrame::OnAddQuickTransaction, this);
 
 	horizontalSizer->Add(addTransactionButton, 0, wxALL, 5);
 
@@ -69,7 +69,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 
 	tabsPanel = new TabsPanel(splitterRightPanel, wxID_ANY);
 
-	tabsPanel->OnAddTransaction = std::bind(&MainFrame::AddTransactionFromContextMenu, this);
+	tabsPanel->OnAddTransaction = std::bind(&MainFrame::OnAddTransactionFromList, this);
 	tabsPanel->OnCopyTransaction = std::bind(&MainFrame::CopyTransaction, this, std::placeholders::_1);
 	tabsPanel->OnEditTransaction = std::bind(&MainFrame::EditTransaction, this, std::placeholders::_1);
 	tabsPanel->OnSplitTransaction = std::bind(&MainFrame::SplitTransaction, this, std::placeholders::_1);
@@ -145,7 +145,7 @@ void MainFrame::CreateMainMenu() {
 
 	if (transactions.size() == 0) {
 		menuFile->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction...\tCtrl+T"));
-		menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
+		menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddQuickTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
 	}
 	else {
 		wxMenu *menuTransaction = new wxMenu();
@@ -154,12 +154,12 @@ void MainFrame::CreateMainMenu() {
 		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
 		menuTransaction->AppendSeparator();
 
-		for (auto transaction : transactions)
+		for (auto &transaction : transactions)
 		{
-			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
 		}
 
-		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
+		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransactionFromMainMenu, this);
 	}
 
 	menuFile->AppendSeparator();
@@ -195,10 +195,10 @@ void MainFrame::CreateDropdownMenu() {
 
 	for (auto transaction : transactions)
 	{
-		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccountName, *transaction->toAccountName));
+		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
 	}
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddMenuTransaction, this);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransactionFromMainMenu, this);
 }
 
 void MainFrame::UpdateStatus() {
@@ -214,9 +214,9 @@ void MainFrame::UpdateStatus() {
 	float expenses = 0;
 	float balance = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
-		float amount = DataHelper::GetInstance().GetReceipts(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetReceipts(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
 		receipts = receipts + amount;
@@ -224,7 +224,7 @@ void MainFrame::UpdateStatus() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);		
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);		
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 		
 		expenses = expenses + amount;
@@ -232,7 +232,7 @@ void MainFrame::UpdateStatus() {
 	
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
 		expenses = expenses + amount;
@@ -266,6 +266,8 @@ void MainFrame::UpdateStatus() {
 	}
 	
 	statusbar->SetExchangeRates(rates);
+
+	statusbar->Layout();
 }
 
 void MainFrame::OnQuit(wxCommandEvent &event)
@@ -390,12 +392,25 @@ void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 }
 
 void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
-	AddTransaction(account.get());
+	auto transaction = make_shared<Transaction>();
+
+	if (account) {
+		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			transaction->fromAccount = make_shared<Account>(account->id);
+			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
+		}
+
+		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
+			transaction->toAccount = make_shared<Account>(account->id);
+			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
+		}
+	}
+
+	EditTransaction(transaction);
 }
 
-void MainFrame::OnAddTransaction(wxCommandEvent &event) {
-	auto account = tabsPanel->GetSelectedAccount();
-	AddTransaction(account.get());
+void MainFrame::OnAddQuickTransaction(wxCommandEvent &even) {
+	AddTransaction();
 }
 
 void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
@@ -404,8 +419,8 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 	if (transaction) {
 		Transaction *copy = new Transaction();
 
-		copy->fromAccountId = transaction->fromAccountId;
-		copy->toAccountId = transaction->toAccountId;
+		copy->fromAccount = transaction->fromAccount;
+		copy->toAccount = transaction->toAccount;
 		copy->fromAmount = transaction->fromAmount;
 		copy->toAmount = transaction->toAmount;
 		copy->note = transaction->note;
@@ -416,9 +431,28 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 
 		delete copy;
 
-		tabsPanel->Update();
-		UpdateStatus();
+		UpdateUIData();
 	}	
+}
+
+void MainFrame::OnAddTransactionFromMainMenu(wxCommandEvent &event) {
+	int itemId = event.GetId();
+
+	if (itemId == 0) {
+		auto transaction = make_shared<Transaction>();
+		ShowTransactionDialog(transaction);
+	}
+	else {
+		auto transaction = make_shared<Transaction>(itemId);
+		transaction->fromAmount = 0;
+		transaction->toAmount = 0;
+
+		CopyTransaction(transaction);
+	}
+}
+
+void MainFrame::OnAddTransactionFromList() {
+	AddTransaction();
 }
 
 void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
@@ -429,113 +463,62 @@ void MainFrame::OnSplitTransaction(wxCommandEvent &event) {
 	}
 }
 
-void MainFrame::AddTransaction(Account *account) {
+void MainFrame::AddTransaction() {
 	auto transaction = make_shared<Transaction>();
-
-	if (account) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
-			transaction->fromAccountId = account->id;
-			transaction->toAccountId = DataHelper::GetInstance().GetPairAccountId(account);
-		}
-
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
-			transaction->toAccountId = account->id;
-			transaction->fromAccountId = DataHelper::GetInstance().GetPairAccountId(account);
-		}
-	}
-
-	transactionFrame = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
-
-	transactionFrame->SetTransaction(transaction);
-	transactionFrame->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
-
-	transactionFrame->Show(true);
-	transactionFrame->CenterOnParent();
-}
-
-void MainFrame::AddTransactionFromContextMenu() {
-	auto transaction = tabsPanel->GetSelectedTransaction();
-
-	if (transaction) {
-		auto copy = make_shared<Transaction>();
-
-		copy->fromAccountId = transaction->fromAccountId;
-		copy->toAccountId = transaction->toAccountId;		
-
-		EditTransaction(copy);
-	}
-	else {
-		AddTransaction(nullptr);
-	}
+	ShowTransactionDialog(transaction);
 }
 
 void MainFrame::CopyTransaction(std::shared_ptr<Transaction> transaction) {
 	auto copy = make_shared<Transaction>();
 
-	copy->fromAccountId = transaction->fromAccountId;
-	copy->toAccountId = transaction->toAccountId;
+	copy->fromAccount = transaction->fromAccount;
+	copy->toAccount = transaction->toAccount;
 	copy->fromAmount = transaction->fromAmount;
 	copy->toAmount = transaction->toAmount;
 	copy->note = transaction->note;
 	copy->tags = transaction->tags;
 	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
 
-	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
-
-	transactionDialog->SetTransaction(copy);
-	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
-
-	transactionDialog->Show(true);
-	transactionDialog->CenterOnParent();
+	ShowTransactionDialog(copy);
 }
 
 void MainFrame::EditTransaction(std::shared_ptr<Transaction> transaction) {
-	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
-	
-	transactionDialog->SetTransaction(transaction);
-	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
-
-	transactionDialog->Show(true);
-	transactionDialog->CenterOnParent();
+	ShowTransactionDialog(transaction);
 }
 
 void MainFrame::SplitTransaction(std::shared_ptr<Transaction> transaction) {
 	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
 	
 	transactionDialog->SetSplitTransaction(transaction);
-	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionClose, this);
+	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionDialogClose, this);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
 }
 
-void MainFrame::OnTransactionClose() {
-	DataHelper::GetInstance().UpdateAccountsBalance();
-	tabsPanel->Update();
-	UpdateStatus();	
+void MainFrame::ShowTransactionDialog(std::shared_ptr<Transaction> transaction) {
+	TransactionDialog *transactionDialog = new TransactionDialog(this, wxT("Transaction"), 0, 0, 450, 350);
+
+	transactionDialog->SetTransaction(transaction);
+	transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionDialogClose, this);
+
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
+}
+
+void MainFrame::OnTransactionDialogClose() {
+	UpdateUIData();
 }
 
 void MainFrame::AddAccount(AccountTypes type) {
 	std::shared_ptr<Account> account = make_shared<Account>();
 	account->type = type;
 
-	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
-
-	accountDialog->SetAccount(account);
-	accountDialog->OnClose = std::bind(&MainFrame::OnAccountClose, this);
-
-	accountDialog->Show(true);
-	accountDialog->CenterOnParent();
+	ShowAccountDialog(account);
 }
 
 void MainFrame::EditAccount(std::shared_ptr<Account> account) {
-	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
-		
-	accountDialog->SetAccount(account);
-	accountDialog->OnClose = std::bind(&MainFrame::OnAccountClose, this);
-
-	accountDialog->Show(true);
-	accountDialog->CenterOnParent();
+	ShowAccountDialog(account);
 }
 
 void MainFrame::DeleteAccount(std::shared_ptr<Account> account) {
@@ -552,7 +535,17 @@ void MainFrame::RestoreAccount(std::shared_ptr<Account> account) {
 	treeMenu->RestoreState();
 }
 
-void MainFrame::OnAccountClose() {
+void MainFrame::ShowAccountDialog(std::shared_ptr<Account> account) {
+	AccountDialog *accountDialog = new AccountDialog(this, wxT("Account"), 0, 0, 340, 400);
+
+	accountDialog->SetAccount(account);
+	accountDialog->OnClose = std::bind(&MainFrame::OnAccountDialogClose, this);
+
+	accountDialog->Show(true);
+	accountDialog->CenterOnParent();
+}
+
+void MainFrame::OnAccountDialogClose() {
 	treeMenu->Update();
 	treeMenu->RestoreState();
 }
@@ -564,26 +557,24 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 void MainFrame::AddBudget() {
 	std::shared_ptr<Budget> budget = make_shared<Budget>();
 	
-	BudgetDialog *budgetDialog = new BudgetDialog(this, wxT("Budget"), 0, 0, 340, 400);
-
-	budgetDialog->SetBudget(budget);
-	budgetDialog->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
-
-	budgetDialog->Show(true);
-	budgetDialog->CenterOnParent();
+	ShowBudgetDialog(budget);
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
+	ShowBudgetDialog(budget);
+}
+
+void MainFrame::ShowBudgetDialog(std::shared_ptr<Budget> budget) {
 	BudgetDialog *budgetDialog = new BudgetDialog(this, wxT("Budget"), 0, 0, 340, 400);
 
 	budgetDialog->SetBudget(budget);
-	budgetDialog->OnClose = std::bind(&MainFrame::OnBudgetClose, this);
+	budgetDialog->OnClose = std::bind(&MainFrame::OnBudgetDialogClose, this);
 
 	budgetDialog->Show(true);
 	budgetDialog->CenterOnParent();
 }
 
-void MainFrame::OnBudgetClose() {
+void MainFrame::OnBudgetDialogClose() {
 	tabsPanel->Update();
 }
 
@@ -684,23 +675,13 @@ void MainFrame::OnEmptyTrash() {
 	treeMenu->UpdateTrashItem();
 }
 
-void MainFrame::OnAddMenuTransaction(wxCommandEvent &event) {
-	int itemId = event.GetId();
-
-	if (itemId == 0) {
-		auto account = tabsPanel->GetSelectedAccount();
-		AddTransaction(account.get());
-	}
-	else {
-		auto transaction = make_shared<Transaction>(itemId);
-		transaction->fromAmount = 0;
-		transaction->toAmount = 0;
-
-		CopyTransaction(transaction);
-	}
-}
-
 void MainFrame::UpdateExchangeRates() {
 	CBRRatesLoader loader(DataHelper::GetInstance().Connection());
 	loader.Load();
+}
+
+void MainFrame::UpdateUIData() {
+	DataHelper::GetInstance().UpdateAccountsBalance();
+	UpdateStatus();
+	tabsPanel->Update();	
 }

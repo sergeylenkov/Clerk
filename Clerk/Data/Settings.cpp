@@ -55,7 +55,7 @@ void Settings::Open(char *configName) {
 			loadExchangeRates = json["LoadExchangeRates"].GetBool();
 		}
 
-		if (json["ExpandedMenu"].IsArray()) {
+		if (json.HasMember("ExpandedMenu") && json["ExpandedMenu"].IsArray()) {
 			const Value &array = json["ExpandedMenu"];
 			
 			for (SizeType i = 0; i < array.Size(); i++) {
@@ -63,7 +63,7 @@ void Settings::Open(char *configName) {
 			}
 		}
 
-		if (json["Tabs"].IsArray()) {
+		if (json.HasMember("Tabs") && json["Tabs"].IsArray()) {
 			const Value &values = json["Tabs"];
 
 			for (SizeType i = 0; i < values.Size(); i++) {
@@ -73,8 +73,8 @@ void Settings::Open(char *configName) {
 			}
 		}
 
-		if (json["Filters"].IsArray()) {
-			const Value &array = json["Filters"];
+		if (json.HasMember("TransactionsListFilters") && json["TransactionsListFilters"].IsArray()) {
+			const Value &array = json["TransactionsListFilters"];
 
 			for (SizeType i = 0; i < array.Size(); i++) {
 				const Value &filter = array[i];
@@ -90,12 +90,12 @@ void Settings::Open(char *configName) {
 				int period = filter["Period"].GetInt();
 
 				ListFilterSettings value = { type, id, period, fromDate, toDate };
-				filterSettings.push_back(value);
+				transactionListFilterSettings.push_back(value);
 			}
 		}
 
-		if (json["Columns"].IsArray()) {
-			const Value &types = json["Columns"];
+		if (json.HasMember("TransactionsListColumns") && json["TransactionsListColumns"].IsArray()) {
+			const Value &types = json["TransactionsListColumns"];
 
 			for (SizeType i = 0; i < types.Size(); i++) {
 				const Value &type = types[i];
@@ -111,11 +111,11 @@ void Settings::Open(char *configName) {
 					columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
 				}
 
-				columnsSettings[columnsType] = columns;
+				transactionsListColumnsSettings[columnsType] = columns;
 			}
 		}
 
-		if (json["ReportFilters"].IsArray()) {
+		if (json.HasMember("ReportFilters") && json["ReportFilters"].IsArray()) {
 			const Value &array = json["ReportFilters"];
 
 			for (SizeType i = 0; i < array.Size(); i++) {
@@ -131,7 +131,7 @@ void Settings::Open(char *configName) {
 				int accountId = filter["AccountId"].GetInt();
 
 				ReportFilterSettings value = { id, accountId, fromDate, toDate };
-				reportSettings.push_back(value);
+				reportFilterSettings.push_back(value);
 			}
 		}
 
@@ -177,10 +177,10 @@ void Settings::Save() {
 		json.AddMember("Tabs", tabsJson, json.GetAllocator());
 	}
 
-	if (filterSettings.size() > 0) {
+	if (transactionListFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto settings : filterSettings)
+		for (auto settings : transactionListFilterSettings)
 		{
 			Value filterJson(kObjectType);
 
@@ -201,14 +201,14 @@ void Settings::Save() {
 			settingsJson.PushBack(filterJson, json.GetAllocator());
 		}
 
-		json.AddMember("Filters", settingsJson, json.GetAllocator());
+		json.AddMember("TransactionsListFilters", settingsJson, json.GetAllocator());
 	}
 
 	Value settingsJson(kArrayType);
 
-	for (const auto &value : columnsSettings)
+	for (const auto &value : transactionsListColumnsSettings)
 	{
-		auto columns = columnsSettings[value.first];
+		auto columns = transactionsListColumnsSettings[value.first];
 
 		Value columnsTypeJson(kObjectType);
 		Value columnsJson(kArrayType);
@@ -234,12 +234,12 @@ void Settings::Save() {
 		settingsJson.PushBack(columnsTypeJson, json.GetAllocator());
 	}
 
-	json.AddMember("Columns", settingsJson, json.GetAllocator());
+	json.AddMember("TransactionsListColumns", settingsJson, json.GetAllocator());
 
-	if (reportSettings.size() > 0) {
+	if (reportFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto settings : reportSettings)
+		for (auto settings : reportFilterSettings)
 		{
 			Value filterJson(kObjectType);
 			
@@ -287,7 +287,7 @@ void Settings::RestoreDefaultColumns() {
 	columns.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	columnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
+	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
 
 	std::vector<ListColumnsSettings> columns2;
 
@@ -297,7 +297,7 @@ void Settings::RestoreDefaultColumns() {
 	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	columnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
+	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
 
 	std::vector<ListColumnsSettings> columns3;
 
@@ -307,7 +307,7 @@ void Settings::RestoreDefaultColumns() {
 	columns3.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns3.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	columnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
+	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
 
 	std::vector<ListColumnsSettings> columns4;
 
@@ -318,7 +318,7 @@ void Settings::RestoreDefaultColumns() {
 	columns4.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	columnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
+	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -413,7 +413,7 @@ bool Settings::IsMenuExpanded(int type) {
 void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
-	for (auto &settings : filterSettings)
+	for (auto &settings : transactionListFilterSettings)
 	{		
 		if (settings.type == type && settings.id == id) {
 			settings.period = period;
@@ -426,7 +426,7 @@ void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fr
 	}
 
 	if (!found) {
-		filterSettings.push_back({ type, id, period, fromDate, toDate });
+		transactionListFilterSettings.push_back({ type, id, period, fromDate, toDate });
 	}
 }
 
@@ -439,7 +439,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 
 	ListFilterSettings result = { 0, 0, 3, fromDate, toDate };
 
-	for (auto &settings : filterSettings)
+	for (auto &settings : transactionListFilterSettings)
 	{
 		if (settings.type == type && settings.id == id) {
 			return settings;
@@ -449,8 +449,8 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	return result;
 }
 
-std::vector<ListColumnsSettings> Settings::GetColumns(ListColumnsTypes type) {
-	auto columns = columnsSettings[static_cast<int>(type)];
+std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumnsTypes type) {
+	auto columns = transactionsListColumnsSettings[static_cast<int>(type)];
 
 	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;
@@ -459,8 +459,8 @@ std::vector<ListColumnsSettings> Settings::GetColumns(ListColumnsTypes type) {
 	return columns;
 }
 
-void Settings::SetColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
-	columnsSettings[static_cast<int>(type)] = columns;
+void Settings::SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
+	transactionsListColumnsSettings[static_cast<int>(type)] = columns;
 }
 
 ReportFilterSettings Settings::GetReportFilterSettings(int id) {
@@ -472,7 +472,7 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 
 	ReportFilterSettings result = { 0, -1, fromDate, toDate };
 
-	for (auto &settings : reportSettings)
+	for (auto &settings : reportFilterSettings)
 	{
 		if (settings.id == id) {
 			return settings;
@@ -485,7 +485,7 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 void Settings::SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
-	for (auto &settings : reportSettings)
+	for (auto &settings : reportFilterSettings)
 	{
 		if (settings.id == id) {
 			settings.accountId = accountId;
@@ -498,6 +498,6 @@ void Settings::SetReportFilterSettings(int id, int accountId, wxDateTime fromDat
 	}
 
 	if (!found) {
-		reportSettings.push_back({ id, accountId, fromDate, toDate });
+		reportFilterSettings.push_back({ id, accountId, fromDate, toDate });
 	}
 }

@@ -406,9 +406,9 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 
 	wxMenu *menu = new wxMenu();
 
-	wxMenuItem *leftItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::MoveLeft), wxT("Move to Left"));
-	wxMenuItem *rightItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::MoveRight), wxT("Move to Right"));
-	wxMenuItem *closeItem = new wxMenuItem(menu, static_cast<int>(TabsMenuTypes::Close), wxT("Close"));
+	wxMenuItem *leftItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::MoveLeft), wxT("Move to Left"));
+	wxMenuItem *rightItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::MoveRight), wxT("Move to Right"));
+	wxMenuItem *closeItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Close), wxT("Close"));
 
 	if (notebook->GetPageCount() == 1) {
 		leftItem->Enable(false);
@@ -436,7 +436,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	menu->AppendSeparator();
 	menu->Append(closeItem);
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(TabsMenuTypes::Close));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(ContextMenuTypes::Close));
 
 	notebook->PopupMenu(menu, point);
 

@@ -21,8 +21,8 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 			totalValue = totalValue + abs(amount);
 		}
 		else {			
-			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(account.get()));			
-			float currentAmount = DataHelper::GetInstance().GetAccountTotalReceipt(account.get());
+			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(*account));			
+			float currentAmount = DataHelper::GetInstance().GetAccountTotalReceipt(*account);
 			float remainAmount = abs(account->balance);
 			float remainPercent = (currentAmount / amount) * 100.0;
 

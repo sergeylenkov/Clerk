@@ -11,7 +11,7 @@ void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budg
 	wxDateTime toDate = wxDateTime::Now();
 	wxDateTime fromDate = wxDateTime::Now();
 
-	for (auto budget : budgets) {
+	for (auto &budget : budgets) {
 		if (budget->period == Budget::Period::Week) {
 			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 		}
@@ -25,7 +25,7 @@ void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budg
 			fromDate.SetDay(1);
 		}
 
-		float currentAmount = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
+		float currentAmount = DataHelper::GetInstance().GetExpensesForBudget(*budget, &fromDate, &toDate);
 		float remainAmount = budget->amount - currentAmount;
 		float remainPercent = (currentAmount / budget->amount) * 100.0;
 

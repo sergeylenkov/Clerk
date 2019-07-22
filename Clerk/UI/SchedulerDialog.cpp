@@ -325,7 +325,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
 	
-	SelectPatternType(SchedulerTypes::Daily);
+	SelectPatternType(Scheduler::Type::Daily);
 	SelectWeekday(1);
 
 	nameField->SetFocus();
@@ -374,21 +374,21 @@ void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 
 	SelectPatternType(scheduler->type);
 
-	if (scheduler->type == SchedulerTypes::Daily) {
+	if (scheduler->type == Scheduler::Type::Daily) {
 		dailyDayField->SetValue(wxString::Format("%d", scheduler->day));
 	}
 
-	if (scheduler->type == SchedulerTypes::Weekly) {
+	if (scheduler->type == Scheduler::Type::Weekly) {
 		weeklyWeekField->SetValue(wxString::Format("%d", scheduler->week));
 		SelectWeekday(scheduler->day);		
 	}
 
-	if (scheduler->type == SchedulerTypes::Monthly) {
+	if (scheduler->type == Scheduler::Type::Monthly) {
 		monthlyDayField->SetValue(wxString::Format("%d", scheduler->day));
 		monthlyMonthField->SetValue(wxString::Format("%d", scheduler->month));
 	}
 
-	if (scheduler->type == SchedulerTypes::Yearly) {
+	if (scheduler->type == Scheduler::Type::Yearly) {
 		yearlyDayField->SetValue(wxString::Format("%d", scheduler->day));
 		yearlyMonthChoice->SetSelection(scheduler->month);
 	}
@@ -516,12 +516,12 @@ void SchedulerDialog::OnOK(wxCommandEvent &event) {
 
 	unsigned long intValue;
 
-	if (type == SchedulerTypes::Daily) {
+	if (type == Scheduler::Type::Daily) {
 		dailyDayField->GetValue().ToULong(&intValue);
 		scheduler->day = intValue;
 	}
 
-	if (type == SchedulerTypes::Weekly) {
+	if (type == Scheduler::Type::Weekly) {
 		weeklyWeekField->GetValue().ToULong(&intValue);
 		scheduler->week = intValue;
 
@@ -556,7 +556,7 @@ void SchedulerDialog::OnOK(wxCommandEvent &event) {
 		}
 	}
 
-	if (type == SchedulerTypes::Monthly) {
+	if (type == Scheduler::Type::Monthly) {
 		monthlyDayField->GetValue().ToULong(&intValue);
 		scheduler->day = intValue;
 
@@ -564,7 +564,7 @@ void SchedulerDialog::OnOK(wxCommandEvent &event) {
 		scheduler->month = intValue;
 	}
 
-	if (type == SchedulerTypes::Yearly) {
+	if (type == Scheduler::Type::Yearly) {
 		yearlyDayField->GetValue().ToULong(&intValue);
 		scheduler->day = intValue;
 
@@ -697,23 +697,23 @@ wxString SchedulerDialog::ClearAmountValue(wxString &value) {
 
 void SchedulerDialog::OnPatternSelect(wxCommandEvent &event) {
 	if (dailyButton->GetValue()) {
-		SelectPatternType(SchedulerTypes::Daily);
+		SelectPatternType(Scheduler::Type::Daily);
 	}
 
 	if (weeklyButton->GetValue()) {
-		SelectPatternType(SchedulerTypes::Weekly);
+		SelectPatternType(Scheduler::Type::Weekly);
 	}
 
 	if (monthlyButton->GetValue()) {
-		SelectPatternType(SchedulerTypes::Monthly);
+		SelectPatternType(Scheduler::Type::Monthly);
 	}
 
 	if (yearlyButton->GetValue()) {
-		SelectPatternType(SchedulerTypes::Yearly);
+		SelectPatternType(Scheduler::Type::Yearly);
 	}
 }
 
-void SchedulerDialog::SelectPatternType(SchedulerTypes type) {
+void SchedulerDialog::SelectPatternType(Scheduler::Type type) {
 	this->type = type;
 
 	dailyPatternPanel->Hide();
@@ -721,22 +721,22 @@ void SchedulerDialog::SelectPatternType(SchedulerTypes type) {
 	monthlyPatternPanel->Hide();
 	yearlyPatternPanel->Hide();
 
-	if (type == SchedulerTypes::Daily) {
+	if (type == Scheduler::Type::Daily) {
 		dailyButton->SetValue(true);
 		dailyPatternPanel->Show();
 	}
 
-	if (type == SchedulerTypes::Weekly) {
+	if (type == Scheduler::Type::Weekly) {
 		weeklyButton->SetValue(true);
 		weeklyPatternPanel->Show();
 	}
 
-	if (type == SchedulerTypes::Monthly) {
+	if (type == Scheduler::Type::Monthly) {
 		monthlyButton->SetValue(true);
 		monthlyPatternPanel->Show();
 	}
 
-	if (type == SchedulerTypes::Yearly) {
+	if (type == Scheduler::Type::Yearly) {
 		yearlyButton->SetValue(true);
 		yearlyPatternPanel->Show();
 	}

@@ -8,8 +8,8 @@ void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
 	this->goals = goals;
 	values.clear();
 
-	for (auto goal : goals) {
-		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
+	for (auto &goal : goals) {
+		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(*goal);
 		float remainAmount = goal->amount - currentAmount;
 		float remainPercent = currentAmount / (goal->amount / 100.0);		
 

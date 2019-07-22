@@ -153,7 +153,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 
 	int i = 0;
 
-	for (auto currency : currencies)
+	for (auto &currency : currencies)
 	{
 		if (currency->id == account->currency->id) {
 			currencyList->SetSelection(i);
@@ -163,7 +163,7 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 		i++;
 	}
 
-	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(account.get());
+	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(*account);
 
 	if (initialTransaction) {
 		amountField->SetValue(wxString::Format("%.2f", initialTransaction->fromAmount));

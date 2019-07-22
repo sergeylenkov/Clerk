@@ -45,9 +45,9 @@ shared_ptr<Goal> GoalsPanel::GetGoal() {
 void GoalsPanel::Update() {
 	goals = DataHelper::GetInstance().GetGoals();	
 
-	for (auto goal : goals)
+	for (auto &goal : goals)
 	{
-		goal->balance = DataHelper::GetInstance().GetBalanceForGoal(goal.get());
+		goal->balance = DataHelper::GetInstance().GetBalanceForGoal(*goal);
 	}
 
 	model.get()->SetItems(goals);

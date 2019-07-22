@@ -71,9 +71,9 @@ void DashboardPanel::Update() {
 	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 	std::vector<AccountValue> expenses;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 
 		if (amount > 0) {
 			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -83,7 +83,7 @@ void DashboardPanel::Update() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 
 		if (amount > 0) {
 			amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);

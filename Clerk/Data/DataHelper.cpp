@@ -133,10 +133,10 @@ void DataHelper::ReloadAccounts() {
 }
 
 void DataHelper::UpdateAccountsBalance() {
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual || account->type == AccountTypes::Debt) {
-			account->balance = GetBalance(account.get());
+			account->balance = GetBalance(*account);
 		}
 	}
 }
@@ -164,7 +164,7 @@ std::shared_ptr<Account> DataHelper::GetAccountById(int id) {
 	return accountsHash[id];
 }
 
-std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *account, wxDateTime *from, wxDateTime *to)
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account &account, wxDateTime *from, wxDateTime *to)
 {
 	auto result = std::vector<std::shared_ptr<Transaction>>();
 
@@ -173,8 +173,8 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(Account *a
 	sqlite3_stmt *statement;
 	
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
-		sqlite3_bind_int(statement, 2, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
+		sqlite3_bind_int(statement, 2, account.id);
 		sqlite3_bind_text(statement, 3, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 4, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -403,7 +403,7 @@ std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
 	return tags;
 }
 
-float DataHelper::GetBalance(Account *account)
+float DataHelper::GetBalance(const Account &account)
 {
 	float receipt = 0.0;
 	float expense = 0.0;
@@ -412,7 +412,7 @@ float DataHelper::GetBalance(Account *account)
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			receipt = sqlite3_column_double(statement, 0);
@@ -424,7 +424,7 @@ float DataHelper::GetBalance(Account *account)
 	sql = "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id = ? AND deleted = 0";
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			expense = sqlite3_column_double(statement, 0);
@@ -435,7 +435,7 @@ float DataHelper::GetBalance(Account *account)
 
 	float total;
 
-	if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Expens) {
+	if (account.type == AccountTypes::Receipt || account.type == AccountTypes::Expens) {
 		total = expense - receipt;
 	}
 	else {
@@ -445,14 +445,14 @@ float DataHelper::GetBalance(Account *account)
 	return total;
 }
 
-float DataHelper::GetAccountTotalExpense(Account *account) {
+float DataHelper::GetAccountTotalExpense(Account &account) {
 	float expense = 0.0;
 
 	char *sql = "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id = ? AND deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			expense = sqlite3_column_double(statement, 0);
@@ -464,14 +464,14 @@ float DataHelper::GetAccountTotalExpense(Account *account) {
 	return expense;
 }
 
-float DataHelper::GetAccountTotalReceipt(Account *account) {
+float DataHelper::GetAccountTotalReceipt(Account &account) {
 	float receipt = 0;
 
 	char *sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id = ? AND deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			receipt = sqlite3_column_double(statement, 0);
@@ -503,14 +503,14 @@ float DataHelper::GetExpenses(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
-float  DataHelper::GetExpenses(Account *account, wxDateTime *from, wxDateTime *to) {
+float  DataHelper::GetExpenses(Account &account, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
 	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -544,14 +544,14 @@ float DataHelper::GetReceipts(wxDateTime *from, wxDateTime *to) {
 	return total;
 }
 
-float DataHelper::GetReceipts(Account *account, wxDateTime *from, wxDateTime *to) {
+float DataHelper::GetReceipts(Account &account, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
 	char *sql = "SELECT TOTAL(t.from_account_amount) FROM transactions t, accounts a WHERE a.type_id = 0 AND t.from_account_id = ? AND t.from_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -565,10 +565,10 @@ float DataHelper::GetReceipts(Account *account, wxDateTime *from, wxDateTime *to
 	return total;
 }
 
-vector<DateValue> DataHelper::GetExpensesByMonth(Account *account, wxDateTime *from, wxDateTime *to) {
+vector<DateValue> DataHelper::GetExpensesByMonth(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<DateValue> values;
 
-	if (account->id == -1) {
+	if (account.id == -1) {
 		char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
 		sqlite3_stmt *statement;
 
@@ -592,7 +592,7 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account *account, wxDateTime *f
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account->id);
+			sqlite3_bind_int(statement, 1, account.id);
 			sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -633,10 +633,10 @@ vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTim
 	return values;
 }
 
-vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTime *from, wxDateTime *to) {
+vector<StringValue> DataHelper::GetExpensesForAccount(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<StringValue> values;
 
-	if (account->id == -1) {
+	if (account.id == -1) {
 		char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
 		sqlite3_stmt *statement;
 
@@ -657,7 +657,7 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 		sqlite3_stmt *statement;
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account->id);
+			sqlite3_bind_int(statement, 1, account.id);
 			sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -673,10 +673,10 @@ vector<StringValue> DataHelper::GetExpensesForAccount(Account *account, wxDateTi
 	return values;
 }
 
-vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *from, wxDateTime *to) {
+vector<DateValue> DataHelper::GetBalanceByMonth(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<DateValue> values;
 
-	if (account->id == -1) {
+	if (account.id == -1) {
 		wxDateSpan diff = to->DiffAsDateSpan(*from);
 
 		for (int i = 0; i < diff.GetMonths(); i++) {
@@ -716,8 +716,8 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 
 			float amount = expenses - receipt;
 
-			if (account->isCredit) {
-				amount = account->creditLimit + amount;
+			if (account.isCredit) {
+				amount = account.creditLimit + amount;
 			}
 
 			DateValue value = { date, amount };
@@ -741,7 +741,7 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 			sqlite3_stmt *statement;
 			
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-				sqlite3_bind_int(statement, 1, account->id);
+				sqlite3_bind_int(statement, 1, account.id);
 				sqlite3_bind_text(statement, 2, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 				if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -754,7 +754,7 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 			sql = "SELECT TOTAL(t.from_account_amount) AS amount FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at <= ?";
 
 			if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-				sqlite3_bind_int(statement, 1, account->id);
+				sqlite3_bind_int(statement, 1, account.id);
 				sqlite3_bind_text(statement, 2, queryDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 				if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -766,8 +766,8 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 			
 			float amount = expenses - receipt;
 
-			if (account->isCredit) {
-				amount = account->creditLimit + amount;
+			if (account.isCredit) {
+				amount = account.creditLimit + amount;
 			}
 
 			DateValue value = { date, amount };
@@ -778,14 +778,14 @@ vector<DateValue> DataHelper::GetBalanceByMonth(Account *account, wxDateTime *fr
 	return values;
 }
 
-float DataHelper::GetExpensesSumForAccount(Account *account, wxDateTime *from, wxDateTime *to) {
+float DataHelper::GetExpensesSumForAccount(Account &account, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
 	char *sql = "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = ? AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
@@ -799,7 +799,7 @@ float DataHelper::GetExpensesSumForAccount(Account *account, wxDateTime *from, w
 	return total;
 }
 
-int DataHelper::GetPairAccountId(Account *account) {
+int DataHelper::GetPairAccountId(Account &account) {
 	int id = -1;
 	char *sql = "";
 	
@@ -808,17 +808,17 @@ int DataHelper::GetPairAccountId(Account *account) {
 	fromDate.Add(wxDateSpan::Months(-3));
 	fromDate.SetDay(1);
 
-	if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
+	if (account.type == AccountTypes::Deposit || account.type == AccountTypes::Receipt || account.type == AccountTypes::Virtual) {
 		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
-	else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
+	else if (account.type == AccountTypes::Expens || account.type == AccountTypes::Debt) {
 		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 		sqlite3_bind_text(statement, 2, fromDate.FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -829,15 +829,15 @@ int DataHelper::GetPairAccountId(Account *account) {
 	sqlite3_finalize(statement);
 
 	if (id == -1) {
-		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Receipt || account->type == AccountTypes::Virtual) {
+		if (account.type == AccountTypes::Deposit || account.type == AccountTypes::Receipt || account.type == AccountTypes::Virtual) {
 			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
-		else if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
+		else if (account.type == AccountTypes::Expens || account.type == AccountTypes::Debt) {
 			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
 
 		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account->id);
+			sqlite3_bind_int(statement, 1, account.id);
 
 			if (sqlite3_step(statement) == SQLITE_ROW) {
 				id = sqlite3_column_int(statement, 0);
@@ -900,13 +900,13 @@ std::vector<std::shared_ptr<Account>> DataHelper::GetArchiveAccounts() {
 	return result;
 }
 
-float DataHelper::GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateTime *to) {
+float DataHelper::GetExpensesForBudget(Budget &budget, wxDateTime *from, wxDateTime *to) {
 	float total = 0;
 
 	char sql[512];
 	sqlite3_stmt *statement;
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", static_cast<const char*>(budget->accountIds->c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", static_cast<const char*>(budget.accountIds->c_str()));
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
@@ -922,13 +922,13 @@ float DataHelper::GetExpensesForBudget(Budget *budget, wxDateTime *from, wxDateT
 	return total;
 }
 
-float DataHelper::GetBalanceForGoal(Goal *goal) {
+float DataHelper::GetBalanceForGoal(Goal &goal) {
 	float total = 0.0;
 	float receipt_sum = 0.0;
 	float expense_sum = 0.0;
 	char sql[512];
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal->accountIds->c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal.accountIds->c_str()));
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {		
@@ -939,7 +939,7 @@ float DataHelper::GetBalanceForGoal(Goal *goal) {
 
 	sqlite3_reset(statement);
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal->accountIds->c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", static_cast<const char*>(goal.accountIds->c_str()));
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {		
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -968,14 +968,14 @@ void DataHelper::ReplaceTag(int oldId, int newId) {
 	sqlite3_finalize(statement);
 }
 
-std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account *account) {
+std::shared_ptr<Transaction> DataHelper::GetInitialTransactionForAccount(Account &account) {
 	std::shared_ptr<Transaction> transaction = nullptr;
 
 	char *sql = "SELECT t.id, t.from_account_id, t.to_account_id, t.from_account_amount, t.to_account_amount, t.paid_at FROM transactions t WHERE t.from_account_id = ? AND t.to_account_id = -1";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, account->id);
+		sqlite3_bind_int(statement, 1, account.id);
 
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			transaction = std::make_shared<Transaction>();

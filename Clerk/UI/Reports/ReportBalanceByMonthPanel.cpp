@@ -100,9 +100,9 @@ void ReportBalancePanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	Account *account = accounts[accountList->GetSelection()].get();
+	auto account = accounts[accountList->GetSelection()];
 
-	values = DataHelper::GetInstance().GetBalanceByMonth(account, &fromDate, &toDate);
+	values = DataHelper::GetInstance().GetBalanceByMonth(*account, &fromDate, &toDate);
 
 	std::vector<StringValue> chartValues;
 

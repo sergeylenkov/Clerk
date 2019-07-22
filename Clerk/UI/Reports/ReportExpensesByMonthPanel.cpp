@@ -94,9 +94,9 @@ void ReportExpensesByMonthPanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	Account *account = accounts[accountList->GetSelection()].get();
+	auto account = accounts[accountList->GetSelection()];
 
-	values = DataHelper::GetInstance().GetExpensesByMonth(account, &fromDate, &toDate);
+	values = DataHelper::GetInstance().GetExpensesByMonth(*account, &fromDate, &toDate);
 
 	std::vector<StringValue> chartValues;
 
@@ -132,9 +132,9 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 	wxDateTime toDate = wxDateTime(date);
 	toDate.SetToLastMonthDay();
 
-	Account *account = accounts[accountList->GetSelection()].get();
+	auto account = accounts[accountList->GetSelection()];
 
-	vector<StringValue> popupValues = DataHelper::GetInstance().GetExpensesForAccount(account, &fromDate, &toDate);
+	vector<StringValue> popupValues = DataHelper::GetInstance().GetExpensesForAccount(*account, &fromDate, &toDate);
 
 	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
 	chartPopup->SetPosition(pos);

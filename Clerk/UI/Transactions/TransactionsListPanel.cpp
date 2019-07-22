@@ -139,7 +139,7 @@ void TransactionsListPanel::Update() {
 		RestoreFilterSettings();
 
 		if (this->type == TreeMenuItemTypes::MenuAccount) {
-			transactions = DataHelper::GetInstance().GetTransactions(account.get(), &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+			transactions = DataHelper::GetInstance().GetTransactions(*account, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 		else if (this->type == TreeMenuItemTypes::MenuExpenses) {
 			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Expens, &fromDatePicker->GetValue(), &toDatePicker->GetValue());

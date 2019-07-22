@@ -47,7 +47,7 @@ void BudgetsPanel::Update() {
 	wxDateTime toDate = wxDateTime::Now();
 	wxDateTime fromDate = wxDateTime::Now();	
 
-	for (auto budget : budgets)
+	for (auto &budget : budgets)
 	{
 		if (budget->period == Budget::Period::Week) {
 			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
@@ -62,7 +62,7 @@ void BudgetsPanel::Update() {
 			fromDate.SetDay(1);
 		}
 
-		budget->balance = DataHelper::GetInstance().GetExpensesForBudget(budget.get(), &fromDate, &toDate);
+		budget->balance = DataHelper::GetInstance().GetExpensesForBudget(*budget, &fromDate, &toDate);
 	}
 
 	model.get()->SetItems(budgets);

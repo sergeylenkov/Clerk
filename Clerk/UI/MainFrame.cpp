@@ -214,9 +214,9 @@ void MainFrame::UpdateStatus() {
 	float expenses = 0;
 	float balance = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
 	{
-		float amount = DataHelper::GetInstance().GetReceipts(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetReceipts(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
 		receipts = receipts + amount;
@@ -224,7 +224,7 @@ void MainFrame::UpdateStatus() {
 
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);		
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);		
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 		
 		expenses = expenses + amount;
@@ -232,7 +232,7 @@ void MainFrame::UpdateStatus() {
 	
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
-		float amount = DataHelper::GetInstance().GetExpenses(account.get(), &fromDate, &toDate);
+		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
 
 		expenses = expenses + amount;
@@ -436,12 +436,12 @@ void MainFrame::AddTransaction(Account *account) {
 	if (account) {
 		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
 			transaction->fromAccount = make_shared<Account>(account->id);
-			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(account));
+			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
 
 		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
 			transaction->toAccount = make_shared<Account>(account->id);
-			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(account));
+			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
 	}
 

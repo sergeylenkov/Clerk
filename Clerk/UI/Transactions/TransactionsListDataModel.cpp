@@ -78,7 +78,7 @@ wxString TransactionsListDataModel::FormatAmount(Transaction *transaction) const
 		wxString fromAmount = Utils::FormatAmount(transaction->fromAmount, transaction->fromAccount->currency.get());
 		wxString toAmount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
 
-		amount = wxString::Format("%s > %s", fromAmount, toAmount);
+		amount = wxString::Format("%s %s", fromAmount, toAmount);
 	}
 	else {
 		amount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());

@@ -12,13 +12,15 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 
 	for (auto account : debts) {
 		if (account->isCredit) {
-			float amount = account->balance;
-			float currentAmount = account->creditLimit + amount;
-			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
+			if (account->balance < 0) {
+				float amount = account->balance;
+				float currentAmount = account->creditLimit + amount;
+				float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-			values.push_back({ *account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(abs(amount), 2), remainPercent });
+				values.push_back({ *account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(abs(amount), 2), remainPercent });
 
-			totalValue = totalValue + abs(amount);
+				totalValue = totalValue + abs(amount);
+			}
 		}
 		else {			
 			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(*account));			

@@ -4,11 +4,11 @@
 #include "wx/dataview.h"
 #include "../../Utils/Utils.h"
 
-class TransactionsTagsRender : public wxDataViewCustomRenderer
+class TransactionsAmountRender : public wxDataViewCustomRenderer
 {
 public:
-	TransactionsTagsRender();
-	~TransactionsTagsRender();
+	TransactionsAmountRender();
+	~TransactionsAmountRender();
 
 	virtual bool Render(wxRect rect, wxDC *dc, int state) wxOVERRIDE;
 	virtual wxSize GetSize() const wxOVERRIDE;

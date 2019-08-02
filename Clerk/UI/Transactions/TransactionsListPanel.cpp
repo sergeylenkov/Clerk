@@ -250,14 +250,24 @@ void TransactionsListPanel::CreateListColumns() {
 			case TransactionsListDataModel::Columns::ToAccount:
 				list->AppendTextColumn("To Account", static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::Tags:
-				list->AppendTextColumn("Tags", static_cast<int>(TransactionsListDataModel::Columns::Tags), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListDataModel::Columns::Tags: {
+				TransactionsTagsRender *render = new TransactionsTagsRender();
+
+				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Tags", render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				list->AppendColumn(dataViewColumn);
+			}
+				//list->AppendTextColumn("Tags", static_cast<int>(TransactionsListDataModel::Columns::Tags), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::Note:
 				list->AppendTextColumn("Note", static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::Amount:
-				list->AppendTextColumn("Amount", static_cast<int>(TransactionsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListDataModel::Columns::Amount: {
+				TransactionsAmountRender *render = new TransactionsAmountRender();
+
+				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Amount", render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				list->AppendColumn(dataViewColumn);
+			}
+				//list->AppendTextColumn("Amount", static_cast<int>(TransactionsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 		}
 	}

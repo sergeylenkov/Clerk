@@ -14,6 +14,8 @@
 #include "../../Data/Settings.h"
 #include "../TreeMenu.h"
 #include "TransactionsListDataModel.h"
+#include "TransactionsTagsRender.h"
+#include "TransactionsAmountRender.h"
 
 enum class TransactionsPanelMenuTypes {
 	Add = 1,

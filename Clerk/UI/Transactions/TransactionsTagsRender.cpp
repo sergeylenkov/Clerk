@@ -31,7 +31,7 @@ bool TransactionsTagsRender::Render(wxRect rect, wxDC *dc, int state)
 		dc->SetTextForeground(wxColor(100, 100, 100));
 		dc->DrawText(text, wxPoint(x + 5, y + offset));
 
-		x = x + size.GetWidth() + 5;
+		x = x + size.GetWidth() + 15;
 	}
 
 	return true;

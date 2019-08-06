@@ -26,17 +26,24 @@ public:
 private:
 	LineChart *chart;
 	wxBitmapComboBox *accountList;
+	wxComboBox *periodList;	
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	vector<shared_ptr<Account>> accounts;
 	GraphPopup *chartPopup;
 	vector<DateValue> values = {};
+	wxDateTime periodFromDate;
+	wxDateTime periodToDate;
 
 	void OnAccountSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);
+	void OnPeriodSelect(wxCommandEvent &event);
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
+	void CalculatePeriod();
+	wxDateTime GetFromDate();
+	wxDateTime GetToDate();
 };

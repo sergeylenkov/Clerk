@@ -85,5 +85,5 @@ void ReportExpensesForPeriodPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesForPeriodPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(3, -1, fromDatePicker->GetValue(), toDatePicker->GetValue());
+	Settings::GetInstance().SetReportFilterSettings(3, -1, 0, fromDatePicker->GetValue(), toDatePicker->GetValue());
 }

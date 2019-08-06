@@ -129,8 +129,9 @@ void Settings::Open(char *configName) {
 
 				int id = filter["Id"].GetInt();
 				int accountId = filter["AccountId"].GetInt();
+				int period = filter["Period"].GetInt();
 
-				ReportFilterSettings value = { id, accountId, fromDate, toDate };
+				ReportFilterSettings value = { id, accountId, period, fromDate, toDate };
 				reportFilterSettings.push_back(value);
 			}
 		}
@@ -245,6 +246,7 @@ void Settings::Save() {
 			
 			filterJson.AddMember("Id", settings.id, json.GetAllocator());
 			filterJson.AddMember("AccountId", settings.accountId, json.GetAllocator());
+			filterJson.AddMember("Period", settings.period, json.GetAllocator());
 
 			wxString dateString = settings.fromDate.FormatISODate();
 			Value string(dateString.c_str(), json.GetAllocator());
@@ -467,10 +469,9 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDate.SetDay(1);
-	toDate.SetToLastMonthDay();
+	fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0)).SetDay(1);	
 
-	ReportFilterSettings result = { 0, -1, fromDate, toDate };
+	ReportFilterSettings result = { 0, -1, 0, fromDate, toDate };
 
 	for (auto &settings : reportFilterSettings)
 	{
@@ -482,13 +483,14 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	return result;
 }
 
-void Settings::SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate) {
+void Settings::SetReportFilterSettings(int id, int accountId, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
 	for (auto &settings : reportFilterSettings)
 	{
 		if (settings.id == id) {
 			settings.accountId = accountId;
+			settings.period = period;
 			settings.fromDate = fromDate;
 			settings.toDate = toDate;
 
@@ -498,6 +500,6 @@ void Settings::SetReportFilterSettings(int id, int accountId, wxDateTime fromDat
 	}
 
 	if (!found) {
-		reportFilterSettings.push_back({ id, accountId, fromDate, toDate });
+		reportFilterSettings.push_back({ id, accountId, period, fromDate, toDate });
 	}
 }

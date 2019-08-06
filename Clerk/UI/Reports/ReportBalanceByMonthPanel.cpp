@@ -160,5 +160,5 @@ void ReportBalancePanel::RestoreFilterSettings() {
 void ReportBalancePanel::SaveFilterSettings() {
 	Account *account = accounts[accountList->GetSelection()].get();
 
-	Settings::GetInstance().SetReportFilterSettings(2, account->id, fromDatePicker->GetValue(), toDatePicker->GetValue());
+	Settings::GetInstance().SetReportFilterSettings(2, account->id, 0, fromDatePicker->GetValue(), toDatePicker->GetValue());
 }

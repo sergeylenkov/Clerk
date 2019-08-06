@@ -9,7 +9,6 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	//transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
 	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
-	//transactionsList->Bind(wxEVT_LIST_COL_END_DRAG, &TransactionsListPanel::OnColumnDragged, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -255,8 +254,7 @@ void TransactionsListPanel::CreateListColumns() {
 
 				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Tags", render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				list->AppendColumn(dataViewColumn);
-			}
-				//list->AppendTextColumn("Tags", static_cast<int>(TransactionsListDataModel::Columns::Tags), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				}
 				break;
 			case TransactionsListDataModel::Columns::Note:
 				list->AppendTextColumn("Note", static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
@@ -266,8 +264,7 @@ void TransactionsListPanel::CreateListColumns() {
 
 				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Amount", render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				list->AppendColumn(dataViewColumn);
-			}
-				//list->AppendTextColumn("Amount", static_cast<int>(TransactionsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				}
 				break;
 		}
 	}
@@ -445,23 +442,16 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 	Update();
 }
 
-void TransactionsListPanel::OnColumnDragged(wxListEvent &event) {
-	wxListItem item = event.GetItem();
-	wxListItem column;
-
-	//transactionsList->GetColumn(event.GetColumn(), column);
-}
-
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Add), wxT("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Copy), wxT("Copy..."));
-	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Duplicate), wxT("Dublicate"));
-	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Split), wxT("Split..."));
-	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Merge), wxT("Merge"));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(TransactionsPanelMenuTypes::Delete), wxT("Delete"));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), wxT("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), wxT("Edit..."));
+	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Copy), wxT("Copy..."));
+	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Duplicate), wxT("Dublicate"));
+	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Split), wxT("Split..."));
+	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Merge), wxT("Merge"));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), wxT("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -517,32 +507,32 @@ void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
 }
 
 void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<TransactionsPanelMenuTypes>(event.GetId())) {
-		case TransactionsPanelMenuTypes::Add:
+	switch (static_cast<ContextMenuTypes>(event.GetId())) {
+		case ContextMenuTypes::Add:
 			Add();
 			break;
 
-		case TransactionsPanelMenuTypes::Edit:
+		case ContextMenuTypes::Edit:
 			Edit();
 			break;
 
-		case TransactionsPanelMenuTypes::Copy:
+		case ContextMenuTypes::Copy:
 			Copy();
 			break;
 
-		case TransactionsPanelMenuTypes::Duplicate:
+		case ContextMenuTypes::Duplicate:
 			Duplicate();
 			break;
 
-		case TransactionsPanelMenuTypes::Split:
+		case ContextMenuTypes::Split:
 			Split();
 			break;
 
-		case TransactionsPanelMenuTypes::Merge:
+		case ContextMenuTypes::Merge:
 			Merge();
 			break;
 
-		case TransactionsPanelMenuTypes::Delete:
+		case ContextMenuTypes::Delete:
 			Delete();
 			break;
 
@@ -563,8 +553,8 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
-	periodFromDate = GetFromDate();
-	periodToDate = GetToDate();
+	periodFromDate = fromDatePicker->GetValue();
+	periodToDate = toDatePicker->GetValue();
 
 	SaveFilterSettings();
 
@@ -580,14 +570,6 @@ void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
 	UpdateList();
 }
 
-wxDateTime TransactionsListPanel::GetFromDate() {
-	return fromDatePicker->GetValue();
-}
-
-wxDateTime TransactionsListPanel::GetToDate() {
-	return toDatePicker->GetValue();
-}
-
 void TransactionsListPanel::CalculatePeriod() {
 	int index = periodList->GetSelection();
 
@@ -599,43 +581,43 @@ void TransactionsListPanel::CalculatePeriod() {
 
 	switch (index)
 	{
-	case 0:
-		fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun).SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-		toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
-		break;
+		case 0:
+			fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun).SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+			toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+			break;
 
-	case 1:
-		fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-		toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
-		break;
+		case 1:
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+			toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+			break;
 
-	case 2:
-		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetDay(1);
-		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetToLastMonthDay();
-		break;
+		case 2:
+			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetDay(1);
+			toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetToLastMonthDay();
+			break;
 
-	case 3:
-		fromDate.SetDay(1);
-		toDate.SetToLastMonthDay();
-		break;
+		case 3:
+			fromDate.SetDay(1);
+			toDate.SetToLastMonthDay();
+			break;
 
-	case 4:
-		fromDate.SetMonth(wxDateTime::Month::Jan);
-		fromDate.SetDay(1);
-		toDate.SetMonth(wxDateTime::Month::Dec);
-		toDate.SetDay(31);
-		break;
+		case 4:
+			fromDate.SetMonth(wxDateTime::Month::Jan);
+			fromDate.SetDay(1);
+			toDate.SetMonth(wxDateTime::Month::Dec);
+			toDate.SetDay(31);
+			break;
 
-	case 5:
-		fromDate = periodFromDate;
-		toDate = periodToDate;
+		case 5:
+			fromDate = periodFromDate;
+			toDate = periodToDate;
 
-		fromDatePicker->Enable();
-		toDatePicker->Enable();
-		break;
+			fromDatePicker->Enable();
+			toDatePicker->Enable();
+			break;
 
-	default:
-		break;
+		default:
+			break;
 	}
 
 	fromDatePicker->SetValue(fromDate);
@@ -659,6 +641,7 @@ void TransactionsListPanel::RestoreFilterSettings() {
 	periodToDate = settings.toDate;
 
 	periodList->SetSelection(settings.period);
+
 	CalculatePeriod();
 }
 

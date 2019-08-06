@@ -42,6 +42,7 @@ enum class ListColumnsTypes {
 struct ReportFilterSettings {	
 	int id;
 	int accountId;
+	int period;
 	wxDateTime fromDate;
 	wxDateTime toDate;
 };
@@ -85,7 +86,7 @@ public:
 	std::vector<ListColumnsSettings> GetTransactionsListColumns(ListColumnsTypes type);
 	void SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
 	ReportFilterSettings GetReportFilterSettings(int id);
-	void SetReportFilterSettings(int id, int accountId, wxDateTime fromDate, wxDateTime toDate);
+	void SetReportFilterSettings(int id, int accountId, int period, wxDateTime fromDate, wxDateTime toDate);
 
 private:
 	wxString fileName;

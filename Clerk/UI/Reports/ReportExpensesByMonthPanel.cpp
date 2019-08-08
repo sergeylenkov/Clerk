@@ -6,9 +6,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
-
-	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
 
 	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Account:"));
 
@@ -20,7 +18,8 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	values->Add(wxT("3 Months"));
 	values->Add(wxT("6 Months"));
-	values->Add(wxT("Year"));
+	values->Add(wxT("This Year"));
+	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
@@ -28,19 +27,18 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
+
 	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
-	periodSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(accountList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT, 5);
+	filterSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(accountList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
@@ -88,9 +86,9 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	chartPopup = new GraphPopup(this);
 
 	accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnAccountSelect, this);
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
+	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
+	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
 
 	chart->OnShowPopup = std::bind(&ReportExpensesByMonthPanel::ShowPopup, this);
 	chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
@@ -138,6 +136,7 @@ void ReportExpensesByMonthPanel::OnDateChanged(wxDateEvent &event) {
 	periodToDate = toDatePicker->GetValue();
 
 	SaveFilterSettings();
+	Update();
 }
 
 void ReportExpensesByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
@@ -145,14 +144,6 @@ void ReportExpensesByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
 
 	CalculatePeriod();
 	Update();
-}
-
-wxDateTime ReportExpensesByMonthPanel::GetFromDate() {
-	return fromDatePicker->GetValue();
-}
-
-wxDateTime ReportExpensesByMonthPanel::GetToDate() {
-	return toDatePicker->GetValue();
 }
 
 void ReportExpensesByMonthPanel::ShowPopup() {
@@ -221,11 +212,13 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 	switch (index)
 	{
 		case 0:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0)).SetDay(1);
+			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));
+			fromDate.SetDay(1);
 			break;
 
 		case 1:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0)).SetDay(1);			
+			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0));
+			fromDate.SetDay(1);
 			break;
 
 		case 2:
@@ -234,6 +227,16 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 			break;
 
 		case 3:
+			fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+			fromDate.SetMonth(wxDateTime::Month::Jan);
+			fromDate.SetDay(1);
+
+			toDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+			toDate.SetMonth(wxDateTime::Month::Dec);
+			toDate.SetToLastMonthDay(wxDateTime::Month::Dec);
+			break;
+
+		case 4:
 			fromDate = periodFromDate;
 			toDate = periodToDate;
 

@@ -23,12 +23,17 @@ public:
 
 private:
 	BarChart *chart;
+	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	vector<DateValue> values = {};
+	wxDateTime periodFromDate;
+	wxDateTime periodToDate;
 
 	void OnDateChanged(wxDateEvent &event);
+	void OnPeriodSelect(wxCommandEvent &event);
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
+	void CalculatePeriod();
 };
 

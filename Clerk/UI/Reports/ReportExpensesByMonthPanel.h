@@ -26,7 +26,7 @@ public:
 private:
 	LineChart *chart;
 	wxBitmapComboBox *accountList;
-	wxComboBox *periodList;	
+	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	vector<shared_ptr<Account>> accounts;
@@ -44,6 +44,4 @@ private:
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
 	void CalculatePeriod();
-	wxDateTime GetFromDate();
-	wxDateTime GetToDate();
 };

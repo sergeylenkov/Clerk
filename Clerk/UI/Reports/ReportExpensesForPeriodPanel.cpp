@@ -13,7 +13,7 @@ ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, wxW
 
 	values->Add(wxT("3 Months"));
 	values->Add(wxT("6 Months"));
-	values->Add(wxT("This Year"));
+	values->Add(wxT("Current Year"));
 	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 

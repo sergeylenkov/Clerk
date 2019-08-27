@@ -49,7 +49,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 		if (item.account->isCredit) {
 			if (item.value == 0) {
-				wxString value = Utils::FormatAmount(item.account->creditLimit, item.account->currency.get());
+				wxString value = Utils::FormatAmount(item.account->creditLimit, *item.account->currency);
 				wxSize size = dc.GetTextExtent(value);
 		
 				dc.SetTextForeground(wxColor(60, 60, 60));
@@ -58,7 +58,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 			else {
 				float amount = item.account->creditLimit + item.account->balance;
 
-				wxString value = Utils::FormatAmount(item.value, item.account->currency.get());
+				wxString value = Utils::FormatAmount(item.value, *item.account->currency);
 				wxSize size = dc.GetTextExtent(value);				
 				int x = width - size.GetWidth();
 				
@@ -74,7 +74,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 			
 		}
 		else {
-			wxString value = Utils::FormatAmount(item.value, item.account->currency.get());
+			wxString value = Utils::FormatAmount(item.value, *item.account->currency);
 			wxSize size = dc.GetTextExtent(value);
 
 			dc.SetTextForeground(wxColor(60, 60, 60));

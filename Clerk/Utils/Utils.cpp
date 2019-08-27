@@ -13,9 +13,9 @@ wxString Utils::FormatAmount(float amount) {
 	return number;
 }
 
-wxString Utils::FormatAmount(float amount, Currency *currency) {
+wxString Utils::FormatAmount(float amount, Currency &currency) {
 	wxString number = wxNumberFormatter::ToString(amount, 2);
-	wxString sign = *currency->sign;
+	wxString sign = *currency.sign;
 
 	return wxString::Format("%s %s", number, sign);
 }
@@ -50,4 +50,54 @@ wxColor Utils::ColorForDebt(int percent) {
 	}
 
 	return wxColor(242, 73, 101);
+}
+
+void Utils::CalculatePeriod(PeriodTypes type, wxDateTime &fromDate, wxDateTime &toDate) {
+	switch (type)
+	{
+		case PeriodTypes::CurrentWeek:
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+			toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+		break;
+
+		case PeriodTypes::PreviousWeek:
+			fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+
+			toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+			break;		
+
+		case PeriodTypes::CurrentMonth:
+			fromDate.SetDay(1);
+			toDate.SetToLastMonthDay();
+			break;
+
+		case PeriodTypes::PreviousMonth:
+			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+			fromDate.SetDay(1);
+
+			toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+			toDate.SetToLastMonthDay();
+			break;
+
+		case PeriodTypes::CurrentYear:
+			fromDate.SetMonth(wxDateTime::Month::Jan);
+			fromDate.SetDay(1);
+			toDate.SetMonth(wxDateTime::Month::Dec);
+			toDate.SetDay(31);
+			break;
+
+		case PeriodTypes::PreviousYear:
+			fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+			fromDate.SetMonth(wxDateTime::Month::Jan);
+			fromDate.SetDay(1);
+
+			toDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+			toDate.SetMonth(wxDateTime::Month::Dec);
+			toDate.SetToLastMonthDay(wxDateTime::Month::Dec);
+			break;
+
+		default:
+			break;
+	}
 }

@@ -8,6 +8,7 @@
 #include "rapidjson/filewritestream.h"
 #include "rapidjson/filereadstream.h"
 #include <rapidjson/writer.h>
+#include "../Utils/Utils.h"
 
 using namespace rapidjson;
 

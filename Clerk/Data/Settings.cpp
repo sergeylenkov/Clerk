@@ -436,10 +436,9 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDate.SetDay(1);
-	toDate.SetToLastMonthDay();
+	Utils::CalculatePeriod(PeriodTypes::CurrentWeek, fromDate, toDate);
 
-	ListFilterSettings result = { 0, 0, 3, fromDate, toDate };
+	ListFilterSettings result = { 0, 0, 0, fromDate, toDate };
 
 	for (auto &settings : transactionListFilterSettings)
 	{
@@ -469,7 +468,8 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0)).SetDay(1);	
+	fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));	
+	fromDate.SetDay(1);
 
 	ReportFilterSettings result = { 0, -1, 0, fromDate, toDate };
 

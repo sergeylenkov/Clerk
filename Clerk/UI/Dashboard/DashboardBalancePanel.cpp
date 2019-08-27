@@ -46,7 +46,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	dc.SetFont(balanceFont);
 
-	wxString value = Utils::FormatAmount(totalBalance.value, &totalBalance.currency);
+	wxString value = Utils::FormatAmount(totalBalance.value, totalBalance.currency);
 	dc.DrawText(value, wxPoint(0, y));
 
 	y = 80;
@@ -59,7 +59,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	y = y + 40;
 
 	for (auto &fund : ownFunds) {
-		wxString value = Utils::FormatAmount(fund.value, &fund.currency);
+		wxString value = Utils::FormatAmount(fund.value, fund.currency);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));
@@ -81,7 +81,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	y = y + 40;	
 
 	for (auto &fund : creditFunds) {
-		wxString value = Utils::FormatAmount(fund.value, &fund.currency);
+		wxString value = Utils::FormatAmount(fund.value, fund.currency);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));

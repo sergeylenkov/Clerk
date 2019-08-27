@@ -21,11 +21,12 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 
 	wxArrayString *values = new wxArrayString();
 
+	values->Add(wxT("Current Week"));
 	values->Add(wxT("Previous Week"));
-	values->Add(wxT("This Week"));
-	values->Add(wxT("Previous Month"));
-	values->Add(wxT("This Month"));
-	values->Add(wxT("This Year"));
+	values->Add(wxT("Current Month"));
+	values->Add(wxT("Previous Month"));	
+	values->Add(wxT("Current Year"));
+	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
@@ -94,7 +95,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, wxWindowID id) : 
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
-	periodList->Select(3);
+	periodList->Select(0);
 
 	CalculatePeriod();
 	CreateListColumns();
@@ -582,33 +583,30 @@ void TransactionsListPanel::CalculatePeriod() {
 	switch (index)
 	{
 		case 0:
-			fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun).SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-			toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+			Utils::CalculatePeriod(PeriodTypes::CurrentWeek, fromDate, toDate);
 			break;
 
 		case 1:
-			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-			toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+			Utils::CalculatePeriod(PeriodTypes::CurrentWeek, fromDate, toDate);
 			break;
 
 		case 2:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetDay(1);
-			toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0)).SetToLastMonthDay();
+			Utils::CalculatePeriod(PeriodTypes::CurrentMonth, fromDate, toDate);
 			break;
 
 		case 3:
-			fromDate.SetDay(1);
-			toDate.SetToLastMonthDay();
+			Utils::CalculatePeriod(PeriodTypes::PreviousMonth, fromDate, toDate);
 			break;
 
 		case 4:
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
-			toDate.SetMonth(wxDateTime::Month::Dec);
-			toDate.SetDay(31);
+			Utils::CalculatePeriod(PeriodTypes::CurrentYear, fromDate, toDate);
 			break;
 
 		case 5:
+			Utils::CalculatePeriod(PeriodTypes::PreviousYear, fromDate, toDate);
+			break;
+
+		case 6:
 			fromDate = periodFromDate;
 			toDate = periodToDate;
 

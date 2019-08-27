@@ -125,7 +125,7 @@ long TagsPanel::GetSelectedIndex() {
 void TagsPanel::DeleteItemAtIndex(long index) {
 	auto tag = filteredTags[index];
 
-	for (int i = 0; i < tags.size(); i++) {
+	for (unsigned int i = 0; i < tags.size(); i++) {
 		if (tag->id == tags[i]->id) {
 			tags.erase(tags.begin() + i);
 			break;
@@ -192,7 +192,7 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 		if (newValue != *editedTag->name) {
 			bool isReplaced = false;
 
-			for (int i = 0; i < tags.size(); i++)
+			for (unsigned int i = 0; i < tags.size(); i++)
 			{
 				auto tag = tags[i];
 

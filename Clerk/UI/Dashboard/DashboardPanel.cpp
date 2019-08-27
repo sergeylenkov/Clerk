@@ -81,7 +81,7 @@ void DashboardPanel::Update() {
 		}
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
 	{
 		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 
@@ -93,7 +93,7 @@ void DashboardPanel::Update() {
 
 	std::vector<AccountValue> accounts;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		accounts.push_back({ account.get(), account->balance });
 	}
@@ -107,11 +107,15 @@ void DashboardPanel::Update() {
 	std::map<int, float> creditFoundsDict;
 	float totalBalance = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
-		float amount = account->balance;
-
 		if (account->isCredit) {
+			float amount = account->balance;
+
+			if (amount > 0) {
+				amount = 0;
+			}
+
 			float currentAmount = account->creditLimit + amount;
 
 			if (creditFoundsDict[account->currency->id]) {
@@ -121,15 +125,19 @@ void DashboardPanel::Update() {
 				creditFoundsDict[account->currency->id] = currentAmount;
 			}
 		}
-		else {
+	}
+
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	{
+		if (account->balance > 0) {			
 			if (ownFundsDict[account->currency->id]) {
-				ownFundsDict[account->currency->id] = ownFundsDict[account->currency->id] + amount;
+				ownFundsDict[account->currency->id] = ownFundsDict[account->currency->id] + account->balance;
 			}
 			else {
-				ownFundsDict[account->currency->id] = amount;
+				ownFundsDict[account->currency->id] = account->balance;
 			}
 
-			totalBalance = totalBalance + DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
+			totalBalance = totalBalance + DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, account->balance);
 		}
 	}
 
@@ -147,7 +155,7 @@ void DashboardPanel::Update() {
 
 	std::vector<std::shared_ptr<Account>> debts;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
 	{
 		if (account->isCredit) {
 			debts.push_back(account);

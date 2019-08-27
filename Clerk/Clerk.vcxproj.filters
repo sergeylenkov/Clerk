@@ -189,6 +189,9 @@
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -369,6 +372,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\TransactionsAmountRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

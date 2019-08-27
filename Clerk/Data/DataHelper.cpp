@@ -565,49 +565,53 @@ float DataHelper::GetReceipts(Account &account, wxDateTime *from, wxDateTime *to
 	return total;
 }
 
+vector<DateValue> DataHelper::GetExpensesByMonth(wxDateTime *from, wxDateTime *to) {
+	vector<DateValue> values;
+
+	char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND (a.type_id = 2 OR a.type_id = 3) GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			wxDateTime date = wxDateTime::Now();
+			date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
+			date.SetDay(1);
+
+			DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
+			values.push_back(value);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return values;
+}
+
 vector<DateValue> DataHelper::GetExpensesByMonth(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<DateValue> values;
 
-	if (account.id == -1) {
-		char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
-		sqlite3_stmt *statement;
+	char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
+	sqlite3_stmt *statement;
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account.id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				wxDateTime date = wxDateTime::Now();
-				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
-				date.SetDay(1);
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			wxDateTime date = wxDateTime::Now();
+			date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
+			date.SetDay(1);
 
-				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
-				values.push_back(value);
-			}
+			DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
+			values.push_back(value);
 		}
+	}
 
-		sqlite3_finalize(statement);
-	} else {
-		char *sql = "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%Y %m', t.paid_at) ORDER BY date";
-		sqlite3_stmt *statement;
-
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account.id);
-			sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				wxDateTime date = wxDateTime::Now();
-				date.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
-				date.SetDay(1);
-
-				DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
-				values.push_back(value);
-			}
-		}
-
-		sqlite3_finalize(statement);
-	}	
+	sqlite3_finalize(statement);
 
 	return values;
 }
@@ -615,7 +619,7 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account &account, wxDateTime *f
 vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTime *to) {
 	vector<StringValue> values;
 
-	char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
+	char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
 	sqlite3_stmt *statement;
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -636,39 +640,21 @@ vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTim
 vector<StringValue> DataHelper::GetExpensesForAccount(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<StringValue> values;
 
-	if (account.id == -1) {
-		char *sql = "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC";
-		sqlite3_stmt *statement;
+	char *sql = "SELECT tg.name AS name, SUM(t.from_account_amount) AS sum from transactions t, transactions_tags tt, tags tg WHERE t.to_account_id = ? AND t.deleted = 0 AND tt.transaction_id = t.id AND tg.id = tt.tag_id AND t.paid_at >= ? AND t.paid_at <= ? GROUP BY tg.name ORDER BY sum DESC";
+	sqlite3_stmt *statement;
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account.id);
+		sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
 
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
-				values.push_back(value);
-			}
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
+			values.push_back(value);
 		}
-
-		sqlite3_finalize(statement);
 	}
-	else {
-		char *sql = "SELECT tg.name AS name, SUM(t.from_account_amount) AS sum from transactions t, transactions_tags tt, tags tg WHERE t.to_account_id = ? AND t.deleted = 0 AND tt.transaction_id = t.id AND tg.id = tt.tag_id AND t.paid_at >= ? AND t.paid_at <= ? GROUP BY tg.name ORDER BY sum DESC";
-		sqlite3_stmt *statement;
 
-		if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, account.id);
-			sqlite3_bind_text(statement, 2, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 3, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
-
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				StringValue value = { wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
-				values.push_back(value);
-			}
-		}
-
-		sqlite3_finalize(statement);
-	}	
+	sqlite3_finalize(statement);
 
 	return values;
 }

@@ -14,20 +14,22 @@
 #include "../../Data/Settings.h"
 #include "../TreeMenu.h"
 #include "TransactionsListDataModel.h"
-
-enum class TransactionsPanelMenuTypes {
-	Add = 1,
-	Edit = 2,
-	Delete = 3,
-	Duplicate = 4,
-	Split = 5,
-	Merge = 6,
-	Copy = 7,
-};
+#include "TransactionsTagsRender.h"
+#include "TransactionsAmountRender.h"
 
 class TransactionsListPanel : public DataPanel
 {
 public:
+	enum class ContextMenuTypes {
+		Add = 1,
+		Edit = 2,
+		Delete = 3,
+		Duplicate = 4,
+		Split = 5,
+		Merge = 6,
+		Copy = 7,
+	};
+
 	TransactionsListPanel(wxWindow *parent, wxWindowID id);
 	~TransactionsListPanel();
 
@@ -35,9 +37,7 @@ public:
 	std::shared_ptr<Account> GetAccount();
 	void SetType(TreeMenuItemTypes type);
 	std::shared_ptr<Transaction> GetTransaction();
-	void Update();	
-	wxDateTime GetFromDate();
-	wxDateTime GetToDate();
+	void Update();
 	float GetBalance();
 
 	std::function<void()> OnAdd;
@@ -80,8 +80,7 @@ private:
 	void Split();
 	void Merge();	
 	void OnListColumnClick(wxListEvent &event);
-	void OnListItemDoubleClick(wxDataViewEvent &event);
-	void OnColumnDragged(wxListEvent &event);
+	void OnListItemDoubleClick(wxDataViewEvent &event);	
 	void OnRightClick(wxDataViewEvent &event);
 	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);

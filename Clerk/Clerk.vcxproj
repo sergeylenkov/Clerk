@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListDataModel.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Transactions\TransactionsAmountRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsListDataModel.h" />
     <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h" />

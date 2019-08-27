@@ -38,11 +38,31 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 		case Columns::ToAccount:
 			variant = *transaction->toAccount->name;
 			break;
-		case Columns::Amount:
-			variant = FormatAmount(transaction.get());
+		case Columns::Amount: {
+			wxArrayString values;
+
+			wxString fromValue = Utils::FormatAmount(transaction->fromAmount, *transaction->toAccount->currency);
+			wxString toValue = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
+
+			values.Add(toValue);
+
+			if (transaction->fromAmount != transaction->toAmount) {
+				values.Add(fromValue);
+			}
+
+			variant = values;
+		}
+			
 			break;
-		case Columns::Tags:
-			variant = transaction->GetTagsString();
+		case Columns::Tags: {
+			wxArrayString tags;
+
+			for (wxString tag : transaction->tags) {
+				tags.Add(tag);
+			}
+
+			variant = tags;
+		}
 			break;
 		case Columns::Note:
 			variant = *transaction->note;
@@ -75,13 +95,13 @@ wxString TransactionsListDataModel::FormatAmount(Transaction *transaction) const
 	wxString amount = "";
 
 	if (transaction->fromAmount != transaction->toAmount) {
-		wxString fromAmount = Utils::FormatAmount(transaction->fromAmount, transaction->fromAccount->currency.get());
-		wxString toAmount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
+		wxString fromAmount = Utils::FormatAmount(transaction->fromAmount, *transaction->fromAccount->currency);
+		wxString toAmount = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
 
-		amount = wxString::Format("%s > %s", fromAmount, toAmount);
+		amount = wxString::Format("%s %s", fromAmount, toAmount);
 	}
 	else {
-		amount = Utils::FormatAmount(transaction->toAmount, transaction->toAccount->currency.get());
+		amount = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
 	}
 
 	return amount;

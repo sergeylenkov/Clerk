@@ -20,7 +20,7 @@ public:
 	std::shared_ptr<Alert> GetAlert();
 	void Update();	
 
-	std::function<void(std::shared_ptr<Alert> budget)> OnEdit;
+	std::function<void(std::shared_ptr<Alert> alert)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:

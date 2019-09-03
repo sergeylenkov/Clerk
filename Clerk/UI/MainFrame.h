@@ -16,8 +16,9 @@
 #include "Budgets/BudgetDialog.h"
 #include "Schedulers/SchedulerDialog.h"
 #include "Schedulers/SchedulersConfirmDialog.h"
-#include "TabsPanel.h"
 #include "Goals/GoalDialog.h"
+#include "Alerts/AlertDialog.h"
+#include "TabsPanel.h"
 #include "AboutDialog.h"
 #include "PreferencesDialog.h"
 #include "Controls/DropDownButton.h"
@@ -31,7 +32,8 @@ enum class MainMenuTypes {
 	AddScheduler = 5,
 	Exit = 6,
 	AddGoal = 7,
-	Preferences = 8
+	Preferences = 8,
+	AddAlert = 9
 };
 
 class MainFrame : public wxFrame
@@ -64,6 +66,7 @@ private:
 	void OnTreeMenuSchedulersSelect();
 	void OnTreeMenuTrashSelect();
 	void OnTreeMenuTagsSelect();
+	void OnTreeMenuAlertsSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
 	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
 	void OnTreeMenuAddAccount(TreeMenuItemTypes type);
@@ -71,6 +74,7 @@ private:
 	void OnAddBudget(wxCommandEvent &event);
 	void OnAddScheduler(wxCommandEvent &event);
 	void OnAddGoal(wxCommandEvent &event);
+	void OnAddAlert(wxCommandEvent &event);
 	void OnAddTransactionFromList();
 	void OnAddTransactionFromMainMenu(wxCommandEvent &even);
 	void OnAddQuickTransaction(wxCommandEvent &even);
@@ -92,10 +96,16 @@ private:
 	void OnBudgetDialogClose();	
 	void AddScheduler();
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
+	void ShowSchedulerDialog(std::shared_ptr<Scheduler> scheduler);
 	void OnSchedulerClose();
 	void AddGoal();
 	void EditGoal(std::shared_ptr<Goal> goal);
+	void ShowGoalDialog(std::shared_ptr<Goal> goal);
 	void OnGoalClose();
+	void AddAlert();
+	void EditAlert(std::shared_ptr<Alert> alert);
+	void ShowAlertDialog(std::shared_ptr<Alert> alert);
+	void OnAlertClose();
 	void AddTab(TreeMenuItemTypes type, shared_ptr<void> object);
 	void CheckSchedulers();
 	void OnSchedulersConfirmClose();

@@ -148,6 +148,9 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<voi
 	else if (type == TreeMenuItemTypes::Tags) {
 		CreateTagsPanel(tabIndex);
 	}
+	else if (type == TreeMenuItemTypes::Alerts) {
+		CreateAlertsPanel(tabIndex);
+	}
 	else if (type == TreeMenuItemTypes::Report) {
 		auto report = std::static_pointer_cast<Report>(object);
 		CreateReportPanel(tabIndex, report);
@@ -396,6 +399,32 @@ void TabsPanel::CreateTagsPanel(int tabIndex) {
 	tagsPanel->Update();
 }
 
+void TabsPanel::CreateAlertsPanel(int tabIndex) {
+	wxPanel *panel = tabs[tabIndex];
+	wxBoxSizer *sizer = tabsSizer[tabIndex];
+	DataPanel *currentPanel = tabsPanels[tabIndex];
+
+	if (currentPanel) {
+		currentPanel->Destroy();
+	}
+
+	AlertsPanel *alertsPanel = new AlertsPanel(panel, wxID_ANY);
+
+	alertsPanel->OnAdd = std::bind(&TabsPanel::AddAlert, this);
+	alertsPanel->OnEdit = std::bind(&TabsPanel::EditAlert, this, std::placeholders::_1);
+
+	tabsPanels[tabIndex] = alertsPanel;
+	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Alerts;
+
+	sizer->Add(alertsPanel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	notebook->SetPageText(tabIndex, wxT("Alerts"));
+
+	alertsPanel->Update();
+}
+
+
 void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
 	//
 }
@@ -516,30 +545,6 @@ std::shared_ptr<Transaction> TabsPanel::GetSelectedTransaction() {
 	return nullptr;
 }
 
-std::shared_ptr<Budget> TabsPanel::GetSelectedBudget() {
-	int i = notebook->GetSelection();
-	DataPanel *currentPanel = tabsPanels[i];
-
-	if (currentPanel->type == TreeMenuItemTypes::Budgets) {
-		BudgetsPanel *budgetsList = (BudgetsPanel *)currentPanel;
-		return budgetsList->GetBudget();
-	}
-
-	return nullptr;
-}
-
-std::shared_ptr<Account> TabsPanel::GetSelectedAccount() {
-	int i = notebook->GetSelection();
-	DataPanel *currentPanel = tabsPanels[i];
-
-	if (currentPanel->type == TreeMenuItemTypes::Account) {
-		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-		return transactionList->GetAccount();
-	}
-
-	return nullptr;
-}
-
 void TabsPanel::RemoveTab(int index) {
 	DataPanel *currentPanel = tabsPanels[index];
 
@@ -585,5 +590,18 @@ void TabsPanel::AddGoal() {
 void TabsPanel::EditGoal(std::shared_ptr<Goal> goal) {
 	if (OnEditGoal) {
 		OnEditGoal(goal);
+	}
+}
+
+
+void TabsPanel::AddAlert() {
+	if (OnAddAlert) {
+		OnAddAlert();
+	}
+}
+
+void TabsPanel::EditAlert(std::shared_ptr<Alert> alert) {
+	if (OnEditAlert) {
+		OnEditAlert(alert);
 	}
 }

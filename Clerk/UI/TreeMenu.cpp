@@ -37,7 +37,7 @@ void TreeMenu::CreateImageList() {
 
 	menuImageIndex = DataHelper::GetInstance().accountsImageList->GetImageCount();
 
-	for (int i = 0; i <= 11; i++) {
+	for (int i = 0; i <= 12; i++) {
 		wxString path = wxString::Format("Resources\\Menu Icons\\%d.png", i);
 
 		if (image.LoadFile(path, wxBITMAP_TYPE_PNG))
@@ -91,7 +91,7 @@ void TreeMenu::Update() {
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::Alerts;
 
-	wxTreeItemId alertsItem = treeMenu->AppendItem(rootItem, "Alerts", menuImageIndex + 7, menuImageIndex + 7, itemData);
+	wxTreeItemId alertsItem = treeMenu->AppendItem(rootItem, "Alerts", menuImageIndex + 12, menuImageIndex + 12, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::Tags;

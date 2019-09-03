@@ -47,6 +47,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnSchedulersSelect = std::bind(&MainFrame::OnTreeMenuSchedulersSelect, this);
 	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnTagsSelect = std::bind(&MainFrame::OnTreeMenuTagsSelect, this);
+	treeMenu->OnAlertsSelect = std::bind(&MainFrame::OnTreeMenuAlertsSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
 	treeMenu->OnAddAccount = std::bind(&MainFrame::OnTreeMenuAddAccount, this, std::placeholders::_1);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
@@ -56,6 +57,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
 	treeMenu->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
 	treeMenu->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
+	treeMenu->OnAddAlert = std::bind(&MainFrame::AddAlert, this);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
 	treeMenu->OnEmptyTrash = std::bind(&MainFrame::OnEmptyTrash, this);
 
@@ -167,6 +169,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddAlert), wxT("New Alert..."));
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...\tCtrl+P");
 	menuFile->AppendSeparator();
@@ -187,6 +190,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAlert, this, static_cast<int>(MainMenuTypes::AddAlert));
 }
 
 void MainFrame::CreateDropdownMenu() {
@@ -364,6 +368,15 @@ void MainFrame::OnTreeMenuTagsSelect() {
 	}
 	else {
 		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Tags, nullptr);
+	}
+}
+
+void MainFrame::OnTreeMenuAlertsSelect() {
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Alerts)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Alerts);
+	}
+	else {
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Alerts, nullptr);
 	}
 }
 
@@ -555,9 +568,7 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 }
 
 void MainFrame::AddBudget() {
-	std::shared_ptr<Budget> budget = make_shared<Budget>();
-	
-	ShowBudgetDialog(budget);
+	ShowBudgetDialog(make_shared<Budget>());
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
@@ -583,18 +594,14 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 }
 
 void MainFrame::AddScheduler() {
-	std::shared_ptr<Scheduler> scheduler = make_shared<Scheduler>();
-
-	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
-	
-	schedulerDialog->SetScheduler(scheduler);
-	schedulerDialog->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
-
-	schedulerDialog->Show(true);
-	schedulerDialog->CenterOnParent();
+	ShowSchedulerDialog(make_shared<Scheduler>());
 }
 
 void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
+	ShowSchedulerDialog(scheduler);
+}
+
+void MainFrame::ShowSchedulerDialog(std::shared_ptr<Scheduler> scheduler) {
 	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
 
 	schedulerDialog->SetScheduler(scheduler);
@@ -613,18 +620,14 @@ void MainFrame::OnAddGoal(wxCommandEvent &event) {
 }
 
 void MainFrame::AddGoal() {
-	std::shared_ptr<Goal> goal = make_shared<Goal>();
-
-	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
-
-	goalDialog->SetGoal(goal);
-	goalDialog->OnClose = std::bind(&MainFrame::OnGoalClose, this);
-
-	goalDialog->Show(true);
-	goalDialog->CenterOnParent();
+	ShowGoalDialog(make_shared<Goal>());
 }
 
 void MainFrame::EditGoal(std::shared_ptr<Goal> goal) {
+	ShowGoalDialog(goal);
+}
+
+void MainFrame::ShowGoalDialog(std::shared_ptr<Goal> goal) {
 	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
 
 	goalDialog->SetGoal(goal);
@@ -635,6 +638,32 @@ void MainFrame::EditGoal(std::shared_ptr<Goal> goal) {
 }
 
 void MainFrame::OnGoalClose() {
+	tabsPanel->Update();
+}
+
+void MainFrame::OnAddAlert(wxCommandEvent &event) {
+	AddAlert();
+}
+
+void MainFrame::AddAlert() {
+	ShowAlertDialog(make_shared<Alert>());
+}
+
+void MainFrame::EditAlert(std::shared_ptr<Alert> alert) {
+	ShowAlertDialog(alert);
+}
+
+void MainFrame::ShowAlertDialog(std::shared_ptr<Alert> alert) {
+	AlertDialog *alertDialog = new AlertDialog(this, wxT("Alert"), 0, 0, 340, 400);
+
+	alertDialog->SetAlert(alert);
+	alertDialog->OnClose = std::bind(&MainFrame::OnAlertClose, this);
+
+	alertDialog->Show(true);
+	alertDialog->CenterOnParent();
+}
+
+void MainFrame::OnAlertClose() {
 	tabsPanel->Update();
 }
 

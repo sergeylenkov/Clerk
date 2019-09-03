@@ -296,74 +296,74 @@ void MainFrame::OnAddAccount(wxCommandEvent &event) {
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuAccount, account->id)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuAccount, account->id);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Account, account->id)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Account, account->id);
 	}
 	else {		
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuAccount, account);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Account, account);
 	}
 }
 
 void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuReport, report->id)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuReport, report->id);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Report, report->id)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Report, report->id);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuReport, report);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Report, report);
 	}
 }
 
 void MainFrame::OnTreeMenuDashboardSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuDashboard)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuDashboard);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Dashboard)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Dashboard);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuDashboard, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Dashboard, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuBudgetsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuBudgets)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuBudgets);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Budgets)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Budgets);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuBudgets, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Budgets, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuGoalsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuGoals)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuGoals);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Goals)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Goals);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuGoals, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Goals, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuSchedulersSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuSchedulers)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuSchedulers);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Schedulers)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Schedulers);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuSchedulers, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Schedulers, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuTrashSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuTrash)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuTrash);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Trash)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Trash);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuTrash, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Trash, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuTagsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuTags)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuTags);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Tags)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Tags);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuTags, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Tags, nullptr);
 	}
 }
 
@@ -377,13 +377,13 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 }
 
 void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
-	if (type == TreeMenuItemTypes::MenuReceipts) {
+	if (type == TreeMenuItemTypes::Receipts) {
 		AddAccount(AccountTypes::Receipt);
 	}
-	else if (type == TreeMenuItemTypes::MenuExpenses) {
+	else if (type == TreeMenuItemTypes::Expenses) {
 		AddAccount(AccountTypes::Expens);
 	}
-	else if (type == TreeMenuItemTypes::MenuDebt) {
+	else if (type == TreeMenuItemTypes::Debt) {
 		AddAccount(AccountTypes::Debt);
 	}
 	else {

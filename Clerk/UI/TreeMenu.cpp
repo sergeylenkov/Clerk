@@ -59,42 +59,47 @@ void TreeMenu::Update() {
 	treeMenu->DeleteChildren(rootItem);
 
 	TreeMenuItemData *itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuDashboard;
+	itemData->type = TreeMenuItemTypes::Dashboard;
 
 	wxTreeItemId homeItem = treeMenu->AppendItem(rootItem, "Dashboard", menuImageIndex, menuImageIndex, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuAccounts;
+	itemData->type = TreeMenuItemTypes::Accounts;
 
 	wxTreeItemId accountsItem = treeMenu->AppendItem(rootItem, "Accounts", menuImageIndex + 1, menuImageIndex + 1, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuReports;
+	itemData->type = TreeMenuItemTypes::Reports;
 
 	wxTreeItemId reportsItem = treeMenu->AppendItem(rootItem, "Reports", menuImageIndex + 4, menuImageIndex + 4, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuBudgets;
+	itemData->type = TreeMenuItemTypes::Budgets;
 
 	wxTreeItemId budgetsItem = treeMenu->AppendItem(rootItem, "Budgets", menuImageIndex + 6, menuImageIndex + 6, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuGoals;
+	itemData->type = TreeMenuItemTypes::Goals;
 
 	wxTreeItemId goalsItem = treeMenu->AppendItem(rootItem, "Goals", menuImageIndex + 8, menuImageIndex + 8, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuSchedulers;
+	itemData->type = TreeMenuItemTypes::Schedulers;
 
 	wxTreeItemId schedulersItem = treeMenu->AppendItem(rootItem, "Schedulers", menuImageIndex + 7, menuImageIndex + 7, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuTags;
+	itemData->type = TreeMenuItemTypes::Alerts;
+
+	wxTreeItemId alertsItem = treeMenu->AppendItem(rootItem, "Alerts", menuImageIndex + 7, menuImageIndex + 7, itemData);
+
+	itemData = new TreeMenuItemData();
+	itemData->type = TreeMenuItemTypes::Tags;
 
 	wxTreeItemId tagsItem = treeMenu->AppendItem(rootItem, "Tags", menuImageIndex + 9, menuImageIndex + 9, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuTrash;
+	itemData->type = TreeMenuItemTypes::Trash;
 
 	int count = DataHelper::GetInstance().GetDeletedTransactionsCount();
 	int trashIcon = menuImageIndex + 10;
@@ -106,7 +111,7 @@ void TreeMenu::Update() {
 	trashItem = treeMenu->AppendItem(rootItem, "Trash", trashIcon, trashIcon, itemData);
 	
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuReceipts;
+	itemData->type = TreeMenuItemTypes::Receipts;
 
 	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Receipts", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
@@ -119,7 +124,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
@@ -128,7 +133,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuDeposits;
+	itemData->type = TreeMenuItemTypes::Deposits;
 
 	child = treeMenu->AppendItem(accountsItem, "Deposits", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
@@ -141,7 +146,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
@@ -150,7 +155,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuVirtual;
+	itemData->type = TreeMenuItemTypes::Virtual;
 
 	child = treeMenu->AppendItem(accountsItem, "Virtual", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
@@ -163,7 +168,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
@@ -172,7 +177,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuExpenses;
+	itemData->type = TreeMenuItemTypes::Expenses;
 
 	child = treeMenu->AppendItem(accountsItem, "Expenes", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
@@ -185,7 +190,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
@@ -194,7 +199,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuDebt;
+	itemData->type = TreeMenuItemTypes::Debt;
 
 	child = treeMenu->AppendItem(accountsItem, "Debts", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
@@ -207,7 +212,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(child, *account->name, iconId, iconId, itemData);
@@ -216,7 +221,7 @@ void TreeMenu::Update() {
 	}
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemTypes::MenuArchive;
+	itemData->type = TreeMenuItemTypes::Archive;
 
 	wxTreeItemId archivehItem = treeMenu->AppendItem(accountsItem, "Archive", menuImageIndex + 3, menuImageIndex + 3, itemData);
 
@@ -229,7 +234,7 @@ void TreeMenu::Update() {
 		}
 
 		TreeMenuItemData *itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuAccount;
+		itemData->type = TreeMenuItemTypes::Account;
 		itemData->object = account;
 
 		wxTreeItemId itemId = treeMenu->AppendItem(archivehItem, *account->name, iconId, iconId, itemData);
@@ -240,7 +245,7 @@ void TreeMenu::Update() {
 	for (auto report : DataHelper::GetInstance().GetReports())
 	{
 		itemData = new TreeMenuItemData();
-		itemData->type = TreeMenuItemTypes::MenuReport;
+		itemData->type = TreeMenuItemTypes::Report;
 
 		itemData->object = report;
 
@@ -280,7 +285,7 @@ std::shared_ptr<Account> TreeMenu::GetAccount() {
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(itemId);
 
 	if (item != NULL) {
-		if (item->type == TreeMenuItemTypes::MenuAccount) {
+		if (item->type == TreeMenuItemTypes::Account) {
 			shared_ptr<Account> account = static_pointer_cast<Account>(item->object);
 			return account;
 		}
@@ -297,7 +302,7 @@ std::shared_ptr<Account> TreeMenu::GetContextMenuAccount() {
 	if (contextMenuItem != NULL) {
 		TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(contextMenuItem);
 
-		if (item->type == TreeMenuItemTypes::MenuAccount) {
+		if (item->type == TreeMenuItemTypes::Account) {
 			shared_ptr<Account> account = static_pointer_cast<Account>(item->object);
 			return account;
 		}
@@ -312,66 +317,72 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 	wxMenu *menu = new wxMenu();
 
-	menu->Append(static_cast<int>(TreeMenuTypes::NewTab), wxT("Open in New Tab"));
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnOpenNewTab, this, static_cast<int>(TreeMenuTypes::NewTab));
+	menu->Append(static_cast<int>(ContextMenuTypes::NewTab), wxT("Open in New Tab"));
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnOpenNewTab, this, static_cast<int>(ContextMenuTypes::NewTab));
 
-	if (item->type == TreeMenuItemTypes::MenuAccount) {
+	if (item->type == TreeMenuItemTypes::Account) {
 		wxTreeItemId parent = treeMenu->GetItemParent(contextMenuItem);
 		TreeMenuItemData *parentItem = (TreeMenuItemData *)treeMenu->GetItemData(parent);
 		
-		if (parentItem->type == TreeMenuItemTypes::MenuArchive) {
+		if (parentItem->type == TreeMenuItemTypes::Archive) {
 			menu->AppendSeparator();
-			menu->Append(static_cast<int>(TreeMenuTypes::EditAccount), wxT("Edit Account..."));
-			menu->Append(static_cast<int>(TreeMenuTypes::RestoreAccount), wxT("Restore from Archive"));
+			menu->Append(static_cast<int>(ContextMenuTypes::EditAccount), wxT("Edit Account..."));
+			menu->Append(static_cast<int>(ContextMenuTypes::RestoreAccount), wxT("Restore from Archive"));
 
-			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(TreeMenuTypes::EditAccount));
-			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuRestoreAccount, this, static_cast<int>(TreeMenuTypes::RestoreAccount));
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(ContextMenuTypes::EditAccount));
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuRestoreAccount, this, static_cast<int>(ContextMenuTypes::RestoreAccount));
 		}
 		else {
 			menu->AppendSeparator();
-			menu->Append(static_cast<int>(TreeMenuTypes::EditAccount), wxT("Edit Account..."));
-			menu->Append(static_cast<int>(TreeMenuTypes::DeleteAccount), wxT("Move to Archive"));
+			menu->Append(static_cast<int>(ContextMenuTypes::EditAccount), wxT("Edit Account..."));
+			menu->Append(static_cast<int>(ContextMenuTypes::DeleteAccount), wxT("Move to Archive"));
 			menu->AppendSeparator();
-			menu->Append(static_cast<int>(TreeMenuTypes::AddTransaction), wxT("Add Transaction..."));
+			menu->Append(static_cast<int>(ContextMenuTypes::AddTransaction), wxT("Add Transaction..."));
 
-			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(TreeMenuTypes::EditAccount));
-			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuDeleteAccount, this, static_cast<int>(TreeMenuTypes::DeleteAccount));
-			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, static_cast<int>(TreeMenuTypes::AddTransaction));
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEditAccount, this, static_cast<int>(ContextMenuTypes::EditAccount));
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuDeleteAccount, this, static_cast<int>(ContextMenuTypes::DeleteAccount));
+			menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, static_cast<int>(ContextMenuTypes::AddTransaction));
 		}
 	}
-	else if (item->type == TreeMenuItemTypes::MenuAccounts || item->type == TreeMenuItemTypes::MenuReceipts || item->type == TreeMenuItemTypes::MenuDeposits 
-		  || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuCredits || item->type == TreeMenuItemTypes::MenuDebt) {
+	else if (item->type == TreeMenuItemTypes::Accounts || item->type == TreeMenuItemTypes::Receipts || item->type == TreeMenuItemTypes::Deposits 
+		  || item->type == TreeMenuItemTypes::Expenses || item->type == TreeMenuItemTypes::Credits || item->type == TreeMenuItemTypes::Debt) {
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::AddAccount), wxT("Add Account..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddAccount), wxT("Add Account..."));
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::AddTransaction), wxT("Add Transaction..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddTransaction), wxT("Add Transaction..."));
 
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddAccount, this, static_cast<int>(TreeMenuTypes::AddAccount));
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, static_cast<int>(TreeMenuTypes::AddTransaction));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddAccount, this, static_cast<int>(ContextMenuTypes::AddAccount));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddTransaction, this, static_cast<int>(ContextMenuTypes::AddTransaction));
 	}
-	else if (item->type == TreeMenuItemTypes::MenuBudgets) {
+	else if (item->type == TreeMenuItemTypes::Budgets) {
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::AddBudget), wxT("Add Budget..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddBudget), wxT("Add Budget..."));
 
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddBudget, this, static_cast<int>(TreeMenuTypes::AddBudget));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddBudget, this, static_cast<int>(ContextMenuTypes::AddBudget));
 	}
-	else if (item->type == TreeMenuItemTypes::MenuSchedulers) {
+	else if (item->type == TreeMenuItemTypes::Schedulers) {
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::AddScheduler), wxT("Add Scheduler..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddScheduler), wxT("Add Scheduler..."));
 
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddScheduler, this, static_cast<int>(TreeMenuTypes::AddScheduler));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddScheduler, this, static_cast<int>(ContextMenuTypes::AddScheduler));
 	}
-	else if (item->type == TreeMenuItemTypes::MenuGoals) {
+	else if (item->type == TreeMenuItemTypes::Goals) {
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::AddGoal), wxT("Add Goal..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddGoal), wxT("Add Goal..."));
 
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddGoal, this, static_cast<int>(TreeMenuTypes::AddGoal));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddGoal, this, static_cast<int>(ContextMenuTypes::AddGoal));
 	}
-	else if (item->type == TreeMenuItemTypes::MenuTrash) {
+	else if (item->type == TreeMenuItemTypes::Alerts) {
 		menu->AppendSeparator();
-		menu->Append(static_cast<int>(TreeMenuTypes::EmptyTrash), wxT("Empty Trash..."));
+		menu->Append(static_cast<int>(ContextMenuTypes::AddAlert), wxT("Add Alert..."));
 
-		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEmptyTrash, this, static_cast<int>(TreeMenuTypes::EmptyTrash));
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuAddAlert, this, static_cast<int>(ContextMenuTypes::AddAlert));
+	}
+	else if (item->type == TreeMenuItemTypes::Trash) {
+		menu->AppendSeparator();
+		menu->Append(static_cast<int>(ContextMenuTypes::EmptyTrash), wxT("Empty Trash..."));
+
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnMenuEmptyTrash, this, static_cast<int>(ContextMenuTypes::EmptyTrash));
 	}
 
 	PopupMenu(menu, event.GetPoint());
@@ -385,51 +396,56 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 	wxTreeItemId oldItem = event.GetOldItem();
 	
 	if (item != NULL && oldItem != NULL) {
-		if (item->type == TreeMenuItemTypes::MenuAccount) {
+		if (item->type == TreeMenuItemTypes::Account) {
 			auto account = std::static_pointer_cast<Account>(item->object);
 
 			if (OnAccountSelect) {
 				OnAccountSelect(account);
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuDashboard) {
+		else if (item->type == TreeMenuItemTypes::Dashboard) {
 			if (OnDashboardSelect) {
 				OnDashboardSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuBudgets) {
+		else if (item->type == TreeMenuItemTypes::Budgets) {
 			if (OnBudgetsSelect) {
 				OnBudgetsSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuGoals) {
+		else if (item->type == TreeMenuItemTypes::Goals) {
 			if (OnGoalsSelect) {
 				OnGoalsSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuSchedulers) {
+		else if (item->type == TreeMenuItemTypes::Schedulers) {
 			if (OnSchedulersSelect) {
 				OnSchedulersSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuTrash) {
+		else if (item->type == TreeMenuItemTypes::Trash) {
 			if (OnTrashSelect) {
 				OnTrashSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuTags) {
+		else if (item->type == TreeMenuItemTypes::Tags) {
 			if (OnTagsSelect) {
 				OnTagsSelect();
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuReport) {
+		else if (item->type == TreeMenuItemTypes::Alerts) {
+			if (OnAlertsSelect) {
+				OnAlertsSelect();
+			}
+		}
+		else if (item->type == TreeMenuItemTypes::Report) {
 			auto report = std::static_pointer_cast<Report>(item->object);
 
 			if (OnReportSelect) {
 				OnReportSelect(report);
 			}
 		}
-		else if (item->type == TreeMenuItemTypes::MenuAccounts || item->type == TreeMenuItemTypes::MenuDeposits || item->type == TreeMenuItemTypes::MenuExpenses || item->type == TreeMenuItemTypes::MenuReceipts || item->type == TreeMenuItemTypes::MenuVirtual) {
+		else if (item->type == TreeMenuItemTypes::Accounts || item->type == TreeMenuItemTypes::Deposits || item->type == TreeMenuItemTypes::Expenses || item->type == TreeMenuItemTypes::Receipts || item->type == TreeMenuItemTypes::Virtual) {
 			if (OnAccountsSelect) {
 				OnAccountsSelect(item->type);
 			}
@@ -476,7 +492,7 @@ void TreeMenu::OnMenuAddTransaction(wxCommandEvent &event) {
 		TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(contextMenuItem);
 
 		if (item != NULL) {
-			if (item->type == TreeMenuItemTypes::MenuAccount) {
+			if (item->type == TreeMenuItemTypes::Account) {
 				auto account = std::static_pointer_cast<Account>(item->object);
 				OnAddTransaction(account);
 			}
@@ -502,6 +518,12 @@ void TreeMenu::OnMenuAddScheduler(wxCommandEvent &event) {
 void TreeMenu::OnMenuAddGoal(wxCommandEvent &event) {
 	if (OnAddGoal) {
 		OnAddGoal();
+	}
+}
+
+void TreeMenu::OnMenuAddAlert(wxCommandEvent &event) {
+	if (OnAddAlert) {
+		OnAddAlert();
 	}
 }
 
@@ -543,7 +565,7 @@ void TreeMenu::OnBeginDrag(wxTreeEvent &event) {
 	draggedMenuItem = event.GetItem();
 	TreeMenuItemData *item = (TreeMenuItemData *)treeMenu->GetItemData(draggedMenuItem);
 
-	if (item->type == TreeMenuItemTypes::MenuAccount) {
+	if (item->type == TreeMenuItemTypes::Account) {
 		event.Allow();
 	}
 }

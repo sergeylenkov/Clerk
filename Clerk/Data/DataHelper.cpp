@@ -87,6 +87,14 @@ void DataHelper::Init() {
 	}
 
 	sqlite3_finalize(statement);
+
+	sql = "CREATE TABLE IF NOT EXISTS alerts (id INTEGER PRIMARY KEY, name TEXT, type INTEGER, period INTEGER, condition INTEGER, amount FLOAT, account_ids TEXT, created_at TEXT)";
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_step(statement);
+	}
+
+	sqlite3_finalize(statement);
 }
 
 void DataHelper::InitData() {
@@ -401,6 +409,24 @@ std::shared_ptr<Report> DataHelper::GetReportById(int id) {
 
 std::vector<std::shared_ptr<Tag>> DataHelper::GetTags() {
 	return tags;
+}
+
+std::vector<std::shared_ptr<Alert>> DataHelper::GetAlerts() {
+	auto result = std::vector<std::shared_ptr<Alert>>();
+
+	char *sql = "SELECT id FROM alerts ORDER BY name";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			auto alert = make_shared<Alert>(sqlite3_column_int(statement, 0));
+			result.push_back(alert);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
 }
 
 float DataHelper::GetBalance(const Account &account)

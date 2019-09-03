@@ -13,6 +13,7 @@
 #include "Budget.h"
 #include "Scheduler.h"
 #include "Goal.h"
+#include "Alert.h"
 #include "Tag.h"
 
 using namespace std;
@@ -82,6 +83,7 @@ public:
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);
 	std::vector<std::shared_ptr<Tag>> GetTags();
+	std::vector<std::shared_ptr<Alert>> GetAlerts();
 	float GetBalance(const Account &account);
 	float GetAccountTotalExpense(Account &account);
 	float GetAccountTotalReceipt(Account &account);	

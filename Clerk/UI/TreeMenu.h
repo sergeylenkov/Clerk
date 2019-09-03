@@ -6,37 +6,25 @@
 #include "../Data/DataHelper.h"
 #include "../Data/Settings.h"
 
-enum class TreeMenuTypes {
-	NewTab = 1,	
-	AddAccount = 2,
-	EditAccount = 3,
-	DeleteAccount = 4,
-	AddTransaction = 5,
-	AddBudget = 6,
-	AddScheduler = 7,
-	RestoreAccount = 8,
-	EmptyTrash = 9,
-	AddGoal = 10,
-};
-
 enum class TreeMenuItemTypes {
-	MenuAccount = 0,
-	MenuReport = 1,
-	MenuDashboard = 2,
-	MenuCredits = 3,
-	MenuExpenses = 4,
-	MenuReceipts = 5,
-	MenuDeposits = 6,
-	MenuAccounts = 7,
-	MenuReports = 8,
-	MenuBudgets = 9,
-	MenuTrash = 10,
-	MenuArchive = 11,
-	MenuSchedulers = 12,
-	MenuDebt = 13,
-	MenuVirtual = 14,
-	MenuGoals = 15,
-	MenuTags = 16,
+	Account = 0,
+	Report = 1,
+	Dashboard = 2,
+	Credits = 3,
+	Expenses = 4,
+	Receipts = 5,
+	Deposits = 6,
+	Accounts = 7,
+	Reports = 8,
+	Budgets = 9,
+	Trash = 10,
+	Archive = 11,
+	Schedulers = 12,
+	Debt = 13,
+	Virtual = 14,
+	Goals = 15,
+	Tags = 16,
+	Alerts = 17
 };
 
 class TreeMenuItemData : public wxTreeItemData {
@@ -48,6 +36,20 @@ public:
 class TreeMenu : public wxPanel
 {
 public:
+	enum class ContextMenuTypes {
+		NewTab = 1,
+		AddAccount = 2,
+		EditAccount = 3,
+		DeleteAccount = 4,
+		AddTransaction = 5,
+		AddBudget = 6,
+		AddScheduler = 7,
+		RestoreAccount = 8,
+		EmptyTrash = 9,
+		AddGoal = 10,
+		AddAlert = 11
+	};
+
 	TreeMenu(wxWindow *parent, wxWindowID id);
 
 	void Update();
@@ -64,6 +66,7 @@ public:
 	std::function<void()> OnSchedulersSelect;
 	std::function<void()> OnTrashSelect;
 	std::function<void()> OnTagsSelect;
+	std::function<void()> OnAlertsSelect;
 	std::function<void(TreeMenuItemTypes type)> OnAccountsSelect;
 	std::function<void(TreeMenuItemTypes type)> OnAddAccount;
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
@@ -73,6 +76,7 @@ public:
 	std::function<void()> OnAddBudget;
 	std::function<void()> OnAddScheduler;
 	std::function<void()> OnAddGoal;
+	std::function<void()> OnAddAlert;
 	std::function<void(TreeMenuItemTypes type, shared_ptr<void> object)> OnNewTab;
 	std::function<void()> OnEmptyTrash;
 
@@ -99,6 +103,7 @@ private:
 	void OnMenuAddBudget(wxCommandEvent &event);
 	void OnMenuAddScheduler(wxCommandEvent &event);
 	void OnMenuAddGoal(wxCommandEvent &event);
+	void OnMenuAddAlert(wxCommandEvent &event);
 	void OnOpenNewTab(wxCommandEvent &event);
 	void OnMenuEmptyTrash(wxCommandEvent &event);
 	void OnTreeItemExpanded(wxTreeEvent &event);

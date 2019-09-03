@@ -6,21 +6,22 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
-#include "../Data/DataHelper.h"
+#include "../../Data/DataHelper.h"
 
-class GoalDialog : public wxFrame
+class AlertDialog : public wxFrame
 {
 public:
-	GoalDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	AlertDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 
-	void SetGoal(std::shared_ptr<Goal> goal);
+	void SetAlert(std::shared_ptr<Alert> alert);
 	std::function<void()> OnClose;
 
 private:
 	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
-	wxTextCtrl *nameField;
-	wxStaticText *periodLabel;	
+	wxTextCtrl *nameField;	
+	wxStaticText *periodLabel;
+	wxComboBox *periodList;
 	wxDatePickerCtrl *datePicker;
 	wxListCtrl *accountsList;
 	wxStaticText *amountLabel;
@@ -28,10 +29,11 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<Goal> goal;
+	std::shared_ptr<Alert> alert;	
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();
+	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnKeyDown(wxKeyEvent &event);

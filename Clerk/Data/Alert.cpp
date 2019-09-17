@@ -6,7 +6,9 @@ Alert::Alert()
 	this->name = make_shared<wxString>();
 	this->amount = 0;	
 	this->accountIds = make_shared<wxString>();
+	this->typeName = make_shared<wxString>("Type");
 	this->periodName = make_shared<wxString>("Month");
+	this->conditionName = make_shared<wxString>("Less");
 }
 
 Alert::Alert(int id) : Alert()
@@ -26,7 +28,7 @@ void Alert::Load()
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			this->id = sqlite3_column_int(statement, 0);
 			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
-			this->type = static_cast<Types>(sqlite3_column_int(statement, 2));
+			this->type = static_cast<Type>(sqlite3_column_int(statement, 2));
 			this->period = static_cast<Period>(sqlite3_column_int(statement, 3));
 			this->condition = static_cast<Condition>(sqlite3_column_int(statement, 4));
 			this->amount = sqlite3_column_double(statement, 5);
@@ -34,6 +36,21 @@ void Alert::Load()
 
 			this->createdDate = make_shared<wxDateTime>();
 			this->createdDate->ParseISOCombined(wxString::FromUTF8((char *)sqlite3_column_text(statement, 7)), ' ');
+
+			switch (type)
+			{
+				case Type::Expense:
+					typeName = make_shared<wxString>("Expense");
+					break;
+				case Type::Receipt:
+					typeName = make_shared<wxString>("Receipt");
+					break;
+				case Type::Balance:
+					typeName = make_shared<wxString>("Balance");
+					break;
+				default:
+					break;
+			}
 
 			switch (period)
 			{
@@ -45,6 +62,21 @@ void Alert::Load()
 					break;
 				case Period::Year:
 					periodName = make_shared<wxString>("Year");
+					break;
+				default:
+					break;
+			}
+
+			switch (condition)
+			{
+				case Condition::Less:
+					conditionName = make_shared<wxString>("Less");
+					break;
+				case Condition::More:
+					conditionName = make_shared<wxString>("More");
+					break;
+				case Condition::Equal:
+					conditionName = make_shared<wxString>("Equal");
 					break;
 				default:
 					break;

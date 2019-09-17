@@ -10,11 +10,10 @@ public:
 	enum class Columns
 	{
 		Name,
+		Type,
 		Period,
-		Limit,
-		Current,
-		Remain,
-		Progress,
+		Condition,
+		Amount,
 		Last
 	};
 

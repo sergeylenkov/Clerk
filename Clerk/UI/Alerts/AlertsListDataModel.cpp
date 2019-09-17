@@ -35,31 +35,23 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 		case Columns::Name:			
 			variant = *alert->name;
 			break;
+		case Columns::Type:
+			variant = *alert->typeName;
+			break;
 		case Columns::Period:
 			variant = *alert->periodName;
 			break;
-		case Columns::Limit:
-			variant = Utils::FormatAmount(alert->amount);
+		case Columns::Condition:
+			variant = *alert->conditionName;
 			break;
-		case Columns::Remain:
-			variant = Utils::FormatAmount(remainAmount);
+		case Columns::Amount:
+			variant = Utils::FormatAmount(alert->amount);
 			break;
 	}	
 }
 
 bool AlertsListDataModel::GetAttrByRow(unsigned int row, unsigned int column,	wxDataViewItemAttr &attr) const
 {
-	auto budget = _alerts[row];
-	float percent = 0;
-
-	switch (static_cast<Columns>(column))
-	{
-		case Columns::Remain:			
-			attr.SetColour(Utils::ColorForBudget(percent));
-			return true;			
-			break;
-	}
-
 	return false;
 }
 

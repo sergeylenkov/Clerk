@@ -26,14 +26,31 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *periodText = new wxStaticText(mainPanel, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
-	horizontalSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	typeLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Type:"), wxDefaultPosition, wxSize(50, -1), 0);
+	horizontalSizer->Add(typeLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	typeList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(typeList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	periodLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
+	horizontalSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	periodList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(periodList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-	horizontalSizer->Add(datePicker, 0, wxALL, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	conditionLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Condition:"), wxDefaultPosition, wxSize(50, -1), 0);
+	horizontalSizer->Add(conditionLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+
+	conditionList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(conditionList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
@@ -85,14 +102,27 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	this->Centre(wxBOTH);
 
+	typeList->AppendString("Receipt");
+	typeList->AppendString("Expense");
+	typeList->AppendString("Balance");
+
+	typeList->SetSelection(static_cast<int>(Alert::Type::Receipt));
+
 	periodList->AppendString("Week");
 	periodList->AppendString("Month");
 	periodList->AppendString("Year");
 
 	periodList->SetSelection(static_cast<int>(Alert::Period::Month));
 
+	conditionList->AppendString("Less");
+	conditionList->AppendString("More");
+	conditionList->AppendString("Equal");
+
+	conditionList->SetSelection(static_cast<int>(Alert::Condition::Less));
+
 	UpdateAccounts();
 
+	typeList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnTypeSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnPeriodSelect, this);
 
 	okButton->Bind(wxEVT_BUTTON, &AlertDialog::OnOK, this);
@@ -139,8 +169,8 @@ void AlertDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckboxes(true);
 
-	accounts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens);
-	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt);
+	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
+	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
 
 	accounts.insert(accounts.end(), debts.begin(), debts.end());
 
@@ -170,13 +200,12 @@ void AlertDialog::UpdateAccounts() {
 	}
 }
 
+void AlertDialog::OnTypeSelect(wxCommandEvent &event) {
+
+}
+
 void AlertDialog::OnPeriodSelect(wxCommandEvent &event) {
-	if (periodList->GetSelection() == static_cast<int>(Budget::Period::Custom)) {
-		datePicker->Enable();
-	}
-	else {
-		datePicker->Disable();
-	}
+	
 }
 
 void AlertDialog::OnOK(wxCommandEvent &event) {
@@ -186,7 +215,9 @@ void AlertDialog::OnOK(wxCommandEvent &event) {
 	amountValue = val;
 
 	alert->name = make_shared<wxString>(nameField->GetValue());
+	alert->type = static_cast<Alert::Type>(typeList->GetSelection());
 	alert->period = static_cast<Alert::Period>(periodList->GetSelection());	
+	alert->condition = static_cast<Alert::Condition>(conditionList->GetSelection());
 	alert->amount = amountValue;
 	
 	wxString accountIds("");

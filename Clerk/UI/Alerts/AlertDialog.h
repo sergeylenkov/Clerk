@@ -20,9 +20,12 @@ private:
 	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;	
+	wxStaticText *typeLabel;
+	wxComboBox *typeList;
 	wxStaticText *periodLabel;
 	wxComboBox *periodList;
-	wxDatePickerCtrl *datePicker;
+	wxStaticText *conditionLabel;
+	wxComboBox *conditionList;	
 	wxListCtrl *accountsList;
 	wxStaticText *amountLabel;
 	wxTextCtrl *amountField;
@@ -33,6 +36,7 @@ private:
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();
+	void OnTypeSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

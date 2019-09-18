@@ -68,11 +68,11 @@ public:
 	void ReloadAccounts();
 	void UpdateAccountsBalance();
 	std::vector<std::shared_ptr<Account>> GetAccounts();
-	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountTypes type);
+	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountType type);
 	std::shared_ptr<Account> GetAccountById(int id);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account &account, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(wxDateTime *from, wxDateTime *to);
-	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
+	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountType type, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
 	std::vector<std::shared_ptr<Transaction>> GetRecentTransactions();
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();

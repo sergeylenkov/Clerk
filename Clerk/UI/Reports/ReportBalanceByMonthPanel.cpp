@@ -68,7 +68,7 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 
 	accounts.push_back(account);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
 	{
 		accounts.push_back(account);
 	}

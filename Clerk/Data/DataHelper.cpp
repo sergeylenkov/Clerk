@@ -143,7 +143,7 @@ void DataHelper::ReloadAccounts() {
 void DataHelper::UpdateAccountsBalance() {
 	for (auto &account : accounts)
 	{
-		if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual || account->type == AccountTypes::Debt) {
+		if (account->type == AccountType::Deposit || account->type == AccountType::Virtual || account->type == AccountType::Debt) {
 			account->balance = GetBalance(*account);
 		}
 	}
@@ -153,7 +153,7 @@ std::vector<std::shared_ptr<Account>> DataHelper::GetAccounts() {
 	return accounts;
 }
 
-std::vector<std::shared_ptr<Account>> DataHelper::GetAccountsByType(AccountTypes type)
+std::vector<std::shared_ptr<Account>> DataHelper::GetAccountsByType(AccountType type)
 {
 	std::vector<std::shared_ptr<Account>> result;
 
@@ -221,7 +221,7 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactions(wxDateTime
 }
 
 
-std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to) {
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetTransactionsByType(AccountType type, wxDateTime *from, wxDateTime *to) {
 	auto result = std::vector<std::shared_ptr<Transaction>>();
 
 	char *sql = "SELECT t.id FROM transactions t, accounts a \
@@ -461,7 +461,7 @@ float DataHelper::GetBalance(const Account &account)
 
 	float total;
 
-	if (account.type == AccountTypes::Receipt || account.type == AccountTypes::Expens) {
+	if (account.type == AccountType::Receipt || account.type == AccountType::Expens) {
 		total = expense - receipt;
 	}
 	else {
@@ -820,10 +820,10 @@ int DataHelper::GetPairAccountId(Account &account) {
 	fromDate.Add(wxDateSpan::Months(-3));
 	fromDate.SetDay(1);
 
-	if (account.type == AccountTypes::Deposit || account.type == AccountTypes::Receipt || account.type == AccountTypes::Virtual) {
+	if (account.type == AccountType::Deposit || account.type == AccountType::Receipt || account.type == AccountType::Virtual) {
 		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
-	else if (account.type == AccountTypes::Expens || account.type == AccountTypes::Debt) {
+	else if (account.type == AccountType::Expens || account.type == AccountType::Debt) {
 		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
@@ -841,10 +841,10 @@ int DataHelper::GetPairAccountId(Account &account) {
 	sqlite3_finalize(statement);
 
 	if (id == -1) {
-		if (account.type == AccountTypes::Deposit || account.type == AccountTypes::Receipt || account.type == AccountTypes::Virtual) {
+		if (account.type == AccountType::Deposit || account.type == AccountType::Receipt || account.type == AccountType::Virtual) {
 			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
-		else if (account.type == AccountTypes::Expens || account.type == AccountTypes::Debt) {
+		else if (account.type == AccountType::Expens || account.type == AccountType::Debt) {
 			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
 

@@ -189,7 +189,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 
 	account->name = make_shared<wxString>(nameField->GetValue());
 	account->note = make_shared<wxString>(noteField->GetValue());
-	account->type = static_cast<AccountTypes>(typeList->GetSelection());
+	account->type = static_cast<AccountType>(typeList->GetSelection());
 	account->iconId = iconList->GetSelection();
 	account->currency = currencies[currencyList->GetSelection()];
 
@@ -197,7 +197,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 	
 	if (amountValue > 0) {		
 		if (isNew) {
-			if (account->type == AccountTypes::Debt) {
+			if (account->type == AccountType::Debt) {
 				Transaction *transaction = new Transaction();
 
 				transaction->fromAccount = account;				
@@ -207,7 +207,7 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 
 				transaction->Save();
 			}
-			else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+			else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 				Transaction *transaction = new Transaction();
 
 				transaction->toAccount = account;

@@ -218,7 +218,7 @@ void MainFrame::UpdateStatus() {
 	float expenses = 0;
 	float balance = 0;
 
-	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		float amount = DataHelper::GetInstance().GetReceipts(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -226,7 +226,7 @@ void MainFrame::UpdateStatus() {
 		receipts = receipts + amount;
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);		
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -234,7 +234,7 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 	
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -242,7 +242,7 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
 	{
 		if (account->creditLimit == 0) {			
 			float amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, account->balance);
@@ -296,7 +296,7 @@ void MainFrame::OnPreferences(wxCommandEvent &event)
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
-	AddAccount(AccountTypes::Deposit);
+	AddAccount(AccountType::Deposit);
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
@@ -391,16 +391,16 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 
 void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 	if (type == TreeMenuItemTypes::Receipts) {
-		AddAccount(AccountTypes::Receipt);
+		AddAccount(AccountType::Receipt);
 	}
 	else if (type == TreeMenuItemTypes::Expenses) {
-		AddAccount(AccountTypes::Expens);
+		AddAccount(AccountType::Expens);
 	}
 	else if (type == TreeMenuItemTypes::Debt) {
-		AddAccount(AccountTypes::Debt);
+		AddAccount(AccountType::Debt);
 	}
 	else {
-		AddAccount(AccountTypes::Deposit);
+		AddAccount(AccountType::Deposit);
 	}
 }
 
@@ -408,12 +408,12 @@ void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
 	auto transaction = make_shared<Transaction>();
 
 	if (account) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			transaction->fromAccount = make_shared<Account>(account->id);
 			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
 
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
+		if (account->type == AccountType::Expens || account->type == AccountType::Debt) {
 			transaction->toAccount = make_shared<Account>(account->id);
 			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
@@ -523,7 +523,7 @@ void MainFrame::OnTransactionDialogClose() {
 	UpdateUIData();
 }
 
-void MainFrame::AddAccount(AccountTypes type) {
+void MainFrame::AddAccount(AccountType type) {
 	std::shared_ptr<Account> account = make_shared<Account>();
 	account->type = type;
 

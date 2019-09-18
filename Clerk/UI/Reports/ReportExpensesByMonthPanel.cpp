@@ -68,7 +68,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	accounts.push_back(account);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		accounts.push_back(account);
 	}

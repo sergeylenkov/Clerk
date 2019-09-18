@@ -115,7 +115,7 @@ void TreeMenu::Update() {
 
 	wxTreeItemId child = treeMenu->AppendItem(accountsItem, "Receipts", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		int iconId = 27;
 
@@ -137,7 +137,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Deposits", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
 	{
 		int iconId = 26;
 
@@ -159,7 +159,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Virtual", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual))
 	{
 		int iconId = 26;
 
@@ -181,7 +181,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Expenes", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		int iconId = 28;
 
@@ -203,7 +203,7 @@ void TreeMenu::Update() {
 
 	child = treeMenu->AppendItem(accountsItem, "Debts", menuImageIndex + 2, menuImageIndex + 2, itemData);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		int iconId = 28;
 

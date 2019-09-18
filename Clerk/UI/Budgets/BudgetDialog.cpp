@@ -147,8 +147,8 @@ void BudgetDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckboxes(true);
 
-	accounts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens);
-	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt);
+	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
+	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
 
 	accounts.insert(accounts.end(), debts.begin(), debts.end());
 

@@ -142,13 +142,13 @@ void TransactionsListPanel::Update() {
 			transactions = DataHelper::GetInstance().GetTransactions(*account, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 		else if (this->type == TreeMenuItemTypes::Expenses) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Expens, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Expens, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 		else if (this->type == TreeMenuItemTypes::Receipts) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Receipt, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Receipt, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 		else if (this->type == TreeMenuItemTypes::Deposits) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountTypes::Deposit, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
+			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Deposit, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
 		}
 		else if (this->type == TreeMenuItemTypes::Accounts) {
 			transactions = DataHelper::GetInstance().GetTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue());
@@ -223,10 +223,10 @@ void TransactionsListPanel::CreateListColumns() {
 	ListColumnsTypes columnsType = ListColumnsTypes::All;
 
 	if (this->type == TreeMenuItemTypes::Account && this->account) {
-		if (account->type == AccountTypes::Receipt) {
+		if (account->type == AccountType::Receipt) {
 			columnsType = ListColumnsTypes::Receipts;
 		}
-		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			columnsType = ListColumnsTypes::Deposits;
 		}
 		else {
@@ -285,23 +285,23 @@ void TransactionsListPanel::UpdateInfo() {
 	for (auto transaction : filtered)
 	{
 		if (this->type == TreeMenuItemTypes::Account) {
-			if (account->type == AccountTypes::Deposit) {
+			if (account->type == AccountType::Deposit) {
 				income = income + transaction->toAmount;
 				outcome = outcome + transaction->fromAmount;
 			}
-			else if (account->type == AccountTypes::Receipt) {
+			else if (account->type == AccountType::Receipt) {
 				income = income + transaction->toAmount;
 			}
-			else if (account->type == AccountTypes::Expens) {
+			else if (account->type == AccountType::Expens) {
 				outcome = outcome + transaction->toAmount;
 			}
 		}
 		else if (type == TreeMenuItemTypes::Accounts) {
-			if (transaction->toAccount->type == AccountTypes::Expens) {
+			if (transaction->toAccount->type == AccountType::Expens) {
 				outcome = outcome + transaction->toAmount;
 			}			
 			
-			if (transaction->fromAccount->type == AccountTypes::Receipt) {
+			if (transaction->fromAccount->type == AccountType::Receipt) {
 				income = income + transaction->toAmount;
 			}
 		}
@@ -658,10 +658,10 @@ void TransactionsListPanel::SaveColumnsSettings() {
 	ListColumnsTypes columnsType = ListColumnsTypes::All;
 
 	if (this->type == TreeMenuItemTypes::Account) {
-		if (account->type == AccountTypes::Receipt) {
+		if (account->type == AccountType::Receipt) {
 			columnsType = ListColumnsTypes::Receipts;
 		}
-		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			columnsType = ListColumnsTypes::Deposits;
 		}
 		else {

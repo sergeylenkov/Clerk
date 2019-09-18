@@ -84,7 +84,7 @@ private:
 	void SplitTransaction(std::shared_ptr<Transaction> transaction);
 	void ShowTransactionDialog(std::shared_ptr<Transaction> transaction);
 	void OnTransactionDialogClose();
-	void AddAccount(AccountTypes type);
+	void AddAccount(AccountType type);
 	void EditAccount(std::shared_ptr<Account> account);
 	void DeleteAccount(std::shared_ptr<Account> account);
 	void RestoreAccount(std::shared_ptr<Account> account);

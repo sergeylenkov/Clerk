@@ -892,7 +892,7 @@ float DataHelper::GetExpensesForBudget(Budget &budget, wxDateTime *from, wxDateT
 	char sql[512];
 	sqlite3_stmt *statement;
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE a.type_id = 2 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", static_cast<const char*>(budget.accountIds->c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND a.active = 1 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", static_cast<const char*>(budget.accountIds->c_str()));
 
 	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);

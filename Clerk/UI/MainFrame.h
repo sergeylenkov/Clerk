@@ -112,4 +112,5 @@ private:
 	void OnEmptyTrash();	
 	void UpdateExchangeRates();
 	void UpdateUIData();
+	void CheckAlerts();
 };

@@ -677,7 +677,7 @@ void MainFrame::CheckSchedulers() {
 
 	std::vector<shared_ptr<Scheduler>> schedulers;
 
-	for (auto scheduler : DataHelper::GetInstance().GetSchedulers())
+	for (auto &scheduler : DataHelper::GetInstance().GetSchedulers())
 	{
 		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);
@@ -713,4 +713,15 @@ void MainFrame::UpdateUIData() {
 	DataHelper::GetInstance().UpdateAccountsBalance();
 	UpdateStatus();
 	tabsPanel->Update();	
+}
+
+void MainFrame::CheckAlerts() {
+	std::vector<shared_ptr<Alert>> alerts;
+
+	for (auto &alert : DataHelper::GetInstance().GetAlerts())
+	{
+		if (alert->type == Alert::Type::Balance) {
+			
+		}
+	}
 }

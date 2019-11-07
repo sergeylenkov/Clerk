@@ -37,8 +37,6 @@ public:
 	void SelectTab(TreeMenuItemTypes type, int id = 0);
 	void Update();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
-	std::shared_ptr<Budget> GetSelectedBudget();
-	std::shared_ptr<Account> GetSelectedAccount();
 
 	std::function<void(wxString text)> OnUpdateStatus;
 	std::function<void()> OnAddTransaction;

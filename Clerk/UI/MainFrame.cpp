@@ -81,6 +81,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel->OnEditScheduler = std::bind(&MainFrame::EditScheduler, this, std::placeholders::_1);
 	tabsPanel->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
 	tabsPanel->OnEditGoal = std::bind(&MainFrame::EditGoal, this, std::placeholders::_1);
+	tabsPanel->OnAddAlert = std::bind(&MainFrame::AddAlert, this);
+	tabsPanel->OnEditAlert = std::bind(&MainFrame::EditAlert, this, std::placeholders::_1);
 
 	rightPanelSizer->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
@@ -721,7 +723,39 @@ void MainFrame::CheckAlerts() {
 	for (auto &alert : DataHelper::GetInstance().GetAlerts())
 	{
 		if (alert->type == Alert::Type::Balance) {
-			
+			float total = 0;
+
+			wxStringTokenizer tokenizer(*alert->accountIds, ",");
+
+			while (tokenizer.HasMoreTokens())
+			{
+				wxString id = tokenizer.GetNextToken().Trim(true).Trim(false);
+				Account account(wxAtoi(id));
+
+				float balance = DataHelper::GetInstance().GetBalance(account);
+				total = total + balance;
+			}
+
+			if (alert->condition == Alert::Condition::Equal && total == alert->amount) {
+				alerts.push_back(alert);
+			}
+
+			if (alert->condition == Alert::Condition::Less && total < alert->amount) {
+				alerts.push_back(alert);
+			}
+
+			if (alert->condition == Alert::Condition::More && total > alert->amount) {
+				alerts.push_back(alert);
+			}
 		}
+	}
+
+	if (alerts.size() > 0) {
+		AlertsConfirmDialog *confirmDialog = new AlertsConfirmDialog(this, wxT("Alerts"), 0, 0, 450, 400);
+
+		confirmDialog->SetAlerts(alerts);
+
+		confirmDialog->Show(true);
+		confirmDialog->CenterOnParent();
 	}
 }

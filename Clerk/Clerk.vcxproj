@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Alerts\AlertsConfirmDialog.cpp" />
     <ClCompile Include="Data\Alert.cpp" />
     <ClCompile Include="UI\Alerts\AlertDialog.cpp" />
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h" />
     <ClInclude Include="Data\Alert.h" />
     <ClInclude Include="UI\Alerts\AlertDialog.h" />
     <ClInclude Include="UI\Alerts\AlertsListDataModel.h" />

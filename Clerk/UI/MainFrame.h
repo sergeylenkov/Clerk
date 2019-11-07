@@ -18,6 +18,7 @@
 #include "Schedulers/SchedulersConfirmDialog.h"
 #include "Goals/GoalDialog.h"
 #include "Alerts/AlertDialog.h"
+#include "Alerts/AlertsConfirmDialog.h"
 #include "TabsPanel.h"
 #include "AboutDialog.h"
 #include "PreferencesDialog.h"

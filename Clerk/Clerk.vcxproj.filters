@@ -204,6 +204,9 @@
     <ClCompile Include="UI\Alerts\AlertsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Alerts\AlertsConfirmDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -399,6 +402,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Alerts\AlertsPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -4,15 +4,16 @@
 #include "../Data/DataHelper.h"
 #include "../Defines.h"
 #include "../Data/Settings.h"
-#include "./Transactions/TransactionsListPanel.h"
-#include "./Dashboard/DashboardPanel.h"
-#include "./Reports/ReportExpensesByMonthPanel.h"
-#include "./Reports/ReportBalanceByMonthPanel.h"
-#include "./Reports/ReportExpensesForPeriodPanel.h"
-#include "./Budgets/BudgetsPanel.h"
+#include "Transactions/TransactionsListPanel.h"
+#include "Dashboard/DashboardPanel.h"
+#include "Reports/ReportExpensesByMonthPanel.h"
+#include "Reports/ReportBalanceByMonthPanel.h"
+#include "Reports/ReportExpensesForPeriodPanel.h"
+#include "Budgets/BudgetsPanel.h"
 #include "TrashPanel.h"
-#include "./Schedulers/SchedulersPanel.h"
-#include "./Goals/GoalsPanel.h"
+#include "Schedulers/SchedulersPanel.h"
+#include "Goals/GoalsPanel.h"
+#include "Alerts/AlertsPanel.h"
 #include "TagsPanel.h"
 #include "TreeMenu.h"
 
@@ -36,8 +37,6 @@ public:
 	void SelectTab(TreeMenuItemTypes type, int id = 0);
 	void Update();
 	std::shared_ptr<Transaction> GetSelectedTransaction();
-	std::shared_ptr<Budget> GetSelectedBudget();
-	std::shared_ptr<Account> GetSelectedAccount();
 
 	std::function<void(wxString text)> OnUpdateStatus;
 	std::function<void()> OnAddTransaction;
@@ -50,6 +49,8 @@ public:
 	std::function<void(std::shared_ptr<Scheduler>)> OnEditScheduler;
 	std::function<void()> OnAddGoal;
 	std::function<void(std::shared_ptr<Goal>)> OnEditGoal;
+	std::function<void()> OnAddAlert;
+	std::function<void(std::shared_ptr<Alert>)> OnEditAlert;
 
 private:
 	wxNotebook *notebook;
@@ -69,6 +70,7 @@ private:
 	void CreateReportPanel(int tabIndex, std::shared_ptr<Report> report);
 	void CreateTrashPanel(int tabIndex);
 	void CreateTagsPanel(int tabIndex);
+	void CreateAlertsPanel(int tabIndex);
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);
@@ -83,6 +85,8 @@ private:
 	void EditScheduler(std::shared_ptr<Scheduler> scheduler);
 	void AddGoal();
 	void EditGoal(std::shared_ptr<Goal> goal);
+	void AddAlert();
+	void EditAlert(std::shared_ptr<Alert> alert);
 	void RemoveTab(int index);
 };
 

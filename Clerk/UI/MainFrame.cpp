@@ -47,6 +47,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnSchedulersSelect = std::bind(&MainFrame::OnTreeMenuSchedulersSelect, this);
 	treeMenu->OnTrashSelect = std::bind(&MainFrame::OnTreeMenuTrashSelect, this);
 	treeMenu->OnTagsSelect = std::bind(&MainFrame::OnTreeMenuTagsSelect, this);
+	treeMenu->OnAlertsSelect = std::bind(&MainFrame::OnTreeMenuAlertsSelect, this);
 	treeMenu->OnAccountsSelect = std::bind(&MainFrame::OnTreeMenuAccountsSelect, this, std::placeholders::_1);
 	treeMenu->OnAddAccount = std::bind(&MainFrame::OnTreeMenuAddAccount, this, std::placeholders::_1);
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
@@ -56,6 +57,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
 	treeMenu->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
 	treeMenu->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
+	treeMenu->OnAddAlert = std::bind(&MainFrame::AddAlert, this);
 	treeMenu->OnNewTab = std::bind(&MainFrame::AddTab, this, std::placeholders::_1, std::placeholders::_2);
 	treeMenu->OnEmptyTrash = std::bind(&MainFrame::OnEmptyTrash, this);
 
@@ -79,6 +81,8 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	tabsPanel->OnEditScheduler = std::bind(&MainFrame::EditScheduler, this, std::placeholders::_1);
 	tabsPanel->OnAddGoal = std::bind(&MainFrame::AddGoal, this);
 	tabsPanel->OnEditGoal = std::bind(&MainFrame::EditGoal, this, std::placeholders::_1);
+	tabsPanel->OnAddAlert = std::bind(&MainFrame::AddAlert, this);
+	tabsPanel->OnEditAlert = std::bind(&MainFrame::EditAlert, this, std::placeholders::_1);
 
 	rightPanelSizer->Add(tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
@@ -107,6 +111,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(3));		
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
+	}).detach();
+
+	std::thread([=]()
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		this->GetEventHandler()->CallAfter(&MainFrame::CheckAlerts);
 	}).detach();
 
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
@@ -167,6 +177,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
 	menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
+	menuFile->Append(static_cast<int>(MainMenuTypes::AddAlert), wxT("New Alert..."));
 	menuFile->AppendSeparator();
 	menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...\tCtrl+P");
 	menuFile->AppendSeparator();
@@ -187,6 +198,7 @@ void MainFrame::CreateMainMenu() {
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
 	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
+	menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddAlert, this, static_cast<int>(MainMenuTypes::AddAlert));
 }
 
 void MainFrame::CreateDropdownMenu() {
@@ -214,7 +226,7 @@ void MainFrame::UpdateStatus() {
 	float expenses = 0;
 	float balance = 0;
 
-	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		float amount = DataHelper::GetInstance().GetReceipts(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -222,7 +234,7 @@ void MainFrame::UpdateStatus() {
 		receipts = receipts + amount;
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);		
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -230,7 +242,7 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 	
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		float amount = DataHelper::GetInstance().GetExpenses(*account, &fromDate, &toDate);
 		amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, amount);
@@ -238,7 +250,7 @@ void MainFrame::UpdateStatus() {
 		expenses = expenses + amount;
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
 	{
 		if (account->creditLimit == 0) {			
 			float amount = DataHelper::GetInstance().ConvertCurrency(account->currency->id, baseCurrencyId, account->balance);
@@ -292,78 +304,87 @@ void MainFrame::OnPreferences(wxCommandEvent &event)
 }
 
 void MainFrame::OnAddAccount(wxCommandEvent &event) {
-	AddAccount(AccountTypes::Deposit);
+	AddAccount(AccountType::Deposit);
 }
 
 void MainFrame::OnTreeMenuAccountSelect(std::shared_ptr<Account> account) {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuAccount, account->id)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuAccount, account->id);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Account, account->id)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Account, account->id);
 	}
 	else {		
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuAccount, account);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Account, account);
 	}
 }
 
 void MainFrame::OnTreeMenuReportSelect(std::shared_ptr<Report> report) {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuReport, report->id)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuReport, report->id);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Report, report->id)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Report, report->id);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuReport, report);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Report, report);
 	}
 }
 
 void MainFrame::OnTreeMenuDashboardSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuDashboard)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuDashboard);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Dashboard)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Dashboard);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuDashboard, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Dashboard, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuBudgetsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuBudgets)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuBudgets);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Budgets)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Budgets);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuBudgets, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Budgets, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuGoalsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuGoals)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuGoals);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Goals)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Goals);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuGoals, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Goals, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuSchedulersSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuSchedulers)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuSchedulers);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Schedulers)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Schedulers);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuSchedulers, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Schedulers, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuTrashSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuTrash)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuTrash);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Trash)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Trash);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuTrash, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Trash, nullptr);
 	}
 }
 
 void MainFrame::OnTreeMenuTagsSelect() {
-	if (tabsPanel->IsTabExists(TreeMenuItemTypes::MenuTags)) {
-		tabsPanel->SelectTab(TreeMenuItemTypes::MenuTags);
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Tags)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Tags);
 	}
 	else {
-		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::MenuTags, nullptr);
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Tags, nullptr);
+	}
+}
+
+void MainFrame::OnTreeMenuAlertsSelect() {
+	if (tabsPanel->IsTabExists(TreeMenuItemTypes::Alerts)) {
+		tabsPanel->SelectTab(TreeMenuItemTypes::Alerts);
+	}
+	else {
+		tabsPanel->UpdateCurrentTab(TreeMenuItemTypes::Alerts, nullptr);
 	}
 }
 
@@ -377,17 +398,17 @@ void MainFrame::OnTreeMenuAccountsSelect(TreeMenuItemTypes type) {
 }
 
 void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
-	if (type == TreeMenuItemTypes::MenuReceipts) {
-		AddAccount(AccountTypes::Receipt);
+	if (type == TreeMenuItemTypes::Receipts) {
+		AddAccount(AccountType::Receipt);
 	}
-	else if (type == TreeMenuItemTypes::MenuExpenses) {
-		AddAccount(AccountTypes::Expens);
+	else if (type == TreeMenuItemTypes::Expenses) {
+		AddAccount(AccountType::Expens);
 	}
-	else if (type == TreeMenuItemTypes::MenuDebt) {
-		AddAccount(AccountTypes::Debt);
+	else if (type == TreeMenuItemTypes::Debt) {
+		AddAccount(AccountType::Debt);
 	}
 	else {
-		AddAccount(AccountTypes::Deposit);
+		AddAccount(AccountType::Deposit);
 	}
 }
 
@@ -395,12 +416,12 @@ void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
 	auto transaction = make_shared<Transaction>();
 
 	if (account) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			transaction->fromAccount = make_shared<Account>(account->id);
 			transaction->toAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
 
-		if (account->type == AccountTypes::Expens || account->type == AccountTypes::Debt) {
+		if (account->type == AccountType::Expens || account->type == AccountType::Debt) {
 			transaction->toAccount = make_shared<Account>(account->id);
 			transaction->fromAccount = make_shared<Account>(DataHelper::GetInstance().GetPairAccountId(*account));
 		}
@@ -510,7 +531,7 @@ void MainFrame::OnTransactionDialogClose() {
 	UpdateUIData();
 }
 
-void MainFrame::AddAccount(AccountTypes type) {
+void MainFrame::AddAccount(AccountType type) {
 	std::shared_ptr<Account> account = make_shared<Account>();
 	account->type = type;
 
@@ -555,9 +576,7 @@ void MainFrame::OnAddBudget(wxCommandEvent &event) {
 }
 
 void MainFrame::AddBudget() {
-	std::shared_ptr<Budget> budget = make_shared<Budget>();
-	
-	ShowBudgetDialog(budget);
+	ShowBudgetDialog(make_shared<Budget>());
 }
 
 void MainFrame::EditBudget(std::shared_ptr<Budget> budget) {
@@ -583,18 +602,14 @@ void MainFrame::OnAddScheduler(wxCommandEvent &event) {
 }
 
 void MainFrame::AddScheduler() {
-	std::shared_ptr<Scheduler> scheduler = make_shared<Scheduler>();
-
-	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
-	
-	schedulerDialog->SetScheduler(scheduler);
-	schedulerDialog->OnClose = std::bind(&MainFrame::OnSchedulerClose, this);
-
-	schedulerDialog->Show(true);
-	schedulerDialog->CenterOnParent();
+	ShowSchedulerDialog(make_shared<Scheduler>());
 }
 
 void MainFrame::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
+	ShowSchedulerDialog(scheduler);
+}
+
+void MainFrame::ShowSchedulerDialog(std::shared_ptr<Scheduler> scheduler) {
 	SchedulerDialog *schedulerDialog = new SchedulerDialog(this, wxT("Scheduler"), 0, 0, 450, 480);
 
 	schedulerDialog->SetScheduler(scheduler);
@@ -613,18 +628,14 @@ void MainFrame::OnAddGoal(wxCommandEvent &event) {
 }
 
 void MainFrame::AddGoal() {
-	std::shared_ptr<Goal> goal = make_shared<Goal>();
-
-	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
-
-	goalDialog->SetGoal(goal);
-	goalDialog->OnClose = std::bind(&MainFrame::OnGoalClose, this);
-
-	goalDialog->Show(true);
-	goalDialog->CenterOnParent();
+	ShowGoalDialog(make_shared<Goal>());
 }
 
 void MainFrame::EditGoal(std::shared_ptr<Goal> goal) {
+	ShowGoalDialog(goal);
+}
+
+void MainFrame::ShowGoalDialog(std::shared_ptr<Goal> goal) {
 	GoalDialog *goalDialog = new GoalDialog(this, wxT("Goal"), 0, 0, 340, 400);
 
 	goalDialog->SetGoal(goal);
@@ -638,6 +649,32 @@ void MainFrame::OnGoalClose() {
 	tabsPanel->Update();
 }
 
+void MainFrame::OnAddAlert(wxCommandEvent &event) {
+	AddAlert();
+}
+
+void MainFrame::AddAlert() {
+	ShowAlertDialog(make_shared<Alert>());
+}
+
+void MainFrame::EditAlert(std::shared_ptr<Alert> alert) {
+	ShowAlertDialog(alert);
+}
+
+void MainFrame::ShowAlertDialog(std::shared_ptr<Alert> alert) {
+	AlertDialog *alertDialog = new AlertDialog(this, wxT("Alert"), 0, 0, 340, 400);
+
+	alertDialog->SetAlert(alert);
+	alertDialog->OnClose = std::bind(&MainFrame::OnAlertClose, this);
+
+	alertDialog->Show(true);
+	alertDialog->CenterOnParent();
+}
+
+void MainFrame::OnAlertClose() {
+	tabsPanel->Update();
+}
+
 void MainFrame::AddTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	tabsPanel->AddTab(type, object);
 }
@@ -648,7 +685,7 @@ void MainFrame::CheckSchedulers() {
 
 	std::vector<shared_ptr<Scheduler>> schedulers;
 
-	for (auto scheduler : DataHelper::GetInstance().GetSchedulers())
+	for (auto &scheduler : DataHelper::GetInstance().GetSchedulers())
 	{
 		if (scheduler->active && (today.IsEqualTo(*scheduler->nextDate) || today.IsLaterThan(*scheduler->nextDate))) {
 			schedulers.push_back(scheduler);
@@ -684,4 +721,47 @@ void MainFrame::UpdateUIData() {
 	DataHelper::GetInstance().UpdateAccountsBalance();
 	UpdateStatus();
 	tabsPanel->Update();	
+}
+
+void MainFrame::CheckAlerts() {
+	std::vector<shared_ptr<Alert>> alerts;
+
+	for (auto &alert : DataHelper::GetInstance().GetAlerts())
+	{
+		if (alert->type == Alert::Type::Balance) {
+			float total = 0;
+
+			wxStringTokenizer tokenizer(*alert->accountIds, ",");
+
+			while (tokenizer.HasMoreTokens())
+			{
+				wxString id = tokenizer.GetNextToken().Trim(true).Trim(false);
+				Account account(wxAtoi(id));
+
+				float balance = DataHelper::GetInstance().GetBalance(account);
+				total = total + balance;
+			}
+
+			if (alert->condition == Alert::Condition::Equal && total == alert->amount) {
+				alerts.push_back(alert);
+			}
+
+			if (alert->condition == Alert::Condition::Less && total < alert->amount) {
+				alerts.push_back(alert);
+			}
+
+			if (alert->condition == Alert::Condition::More && total > alert->amount) {
+				alerts.push_back(alert);
+			}
+		}
+	}
+
+	if (alerts.size() > 0) {
+		AlertsConfirmDialog *confirmDialog = new AlertsConfirmDialog(this, wxT("Alerts"), 0, 0, 350, 400);
+
+		confirmDialog->SetAlerts(alerts);
+
+		confirmDialog->Show(true);
+		confirmDialog->CenterOnParent();
+	}
 }

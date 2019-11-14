@@ -147,13 +147,7 @@ void ReportExpensesForPeriodPanel::CalculatePeriod() {
 		break;
 
 	case 3:
-		fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
-		fromDate.SetMonth(wxDateTime::Month::Jan);
-		fromDate.SetDay(1);
-
-		toDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
-		toDate.SetMonth(wxDateTime::Month::Dec);
-		toDate.SetToLastMonthDay(wxDateTime::Month::Dec);
+		Utils::CalculatePeriod(PeriodTypes::PreviousYear, fromDate, toDate);
 		break;
 
 	case 4:

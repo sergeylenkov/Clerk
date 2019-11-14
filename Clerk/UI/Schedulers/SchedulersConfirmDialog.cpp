@@ -77,7 +77,7 @@ void SchedulersConfirmDialog::UpdateList() {
 
 	int i = 0;
 
-	for (auto scheduler : schedulers)
+	for (auto &scheduler : schedulers)
 	{
 		wxListItem listItem;
 
@@ -109,7 +109,7 @@ int SchedulersConfirmDialog::SelectedItemIndex() {
 }
 
 void SchedulersConfirmDialog::OnSkipAll(wxCommandEvent &event) {
-	for (auto scheduler : schedulers)
+	for (auto &scheduler : schedulers)
 	{
 		scheduler->CalculateNextDate();
 		scheduler->Save();
@@ -132,7 +132,7 @@ void SchedulersConfirmDialog::OnSkip(wxCommandEvent &event) {
 }
 
 void SchedulersConfirmDialog::OnApplyAll(wxCommandEvent &event) {
-	for (auto scheduler : schedulers)
+	for (auto &scheduler : schedulers)
 	{
 		scheduler->Execute();
 		scheduler->CalculateNextDate();

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-enum class AccountTypes {
+enum class AccountType {
 	Receipt = 0,
 	Deposit = 1,
 	Expens = 2,
@@ -22,7 +22,7 @@ public:
 	int id;
 	shared_ptr<wxString> name;
 	shared_ptr<wxString> note;
-	AccountTypes type;
+	AccountType type;
 	int iconId;
 	int orderId;
 	shared_ptr<Currency> currency;

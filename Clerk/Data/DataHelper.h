@@ -13,6 +13,7 @@
 #include "Budget.h"
 #include "Scheduler.h"
 #include "Goal.h"
+#include "Alert.h"
 #include "Tag.h"
 
 using namespace std;
@@ -67,11 +68,11 @@ public:
 	void ReloadAccounts();
 	void UpdateAccountsBalance();
 	std::vector<std::shared_ptr<Account>> GetAccounts();
-	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountTypes type);
+	std::vector<std::shared_ptr<Account>> GetAccountsByType(AccountType type);
 	std::shared_ptr<Account> GetAccountById(int id);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(Account &account, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetTransactions(wxDateTime *from, wxDateTime *to);
-	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountTypes type, wxDateTime *from, wxDateTime *to);
+	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountType type, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
 	std::vector<std::shared_ptr<Transaction>> GetRecentTransactions();
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
@@ -82,6 +83,7 @@ public:
 	std::vector<std::shared_ptr<Report>> GetReports();
 	std::shared_ptr<Report> GetReportById(int id);
 	std::vector<std::shared_ptr<Tag>> GetTags();
+	std::vector<std::shared_ptr<Alert>> GetAlerts();
 	float GetBalance(const Account &account);
 	float GetAccountTotalExpense(Account &account);
 	float GetAccountTotalReceipt(Account &account);	

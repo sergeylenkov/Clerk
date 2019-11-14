@@ -6,9 +6,9 @@
 #include <wx/valnum.h>
 #include <wx/defs.h>
 #include <functional>
-#include "../Data/DataHelper.h"
-#include "TagsPopup.h"
-#include "../Data/Settings.h"
+#include "../../Data/DataHelper.h"
+#include "../../Data/Settings.h"
+#include "../TagsPopup.h"
 
 using namespace std;
 

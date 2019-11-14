@@ -75,6 +75,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="UI\Alerts\AlertsConfirmDialog.cpp" />
+    <ClCompile Include="Data\Alert.cpp" />
+    <ClCompile Include="UI\Alerts\AlertDialog.cpp" />
+    <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
+    <ClCompile Include="UI\Alerts\AlertsPanel.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListDataModel.cpp" />
@@ -103,9 +108,9 @@
     <ClCompile Include="Data\Tag.cpp" />
     <ClCompile Include="UI\TagsPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalsPanel.cpp" />
-    <ClCompile Include="UI\GoalDialog.cpp" />
-    <ClCompile Include="UI\SchedulersConfirmDialog.cpp" />
-    <ClCompile Include="UI\SchedulerDialog.cpp" />
+    <ClCompile Include="UI\Goals\GoalDialog.cpp" />
+    <ClCompile Include="UI\Schedulers\SchedulersConfirmDialog.cpp" />
+    <ClCompile Include="UI\Schedulers\SchedulerDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
@@ -113,7 +118,7 @@
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsPanel.cpp" />
-    <ClCompile Include="UI\BudgetDialog.cpp" />
+    <ClCompile Include="UI\Budgets\BudgetDialog.cpp" />
     <ClCompile Include="Data\Account.cpp" />
     <ClCompile Include="UI\AccountDialog.cpp" />
     <ClCompile Include="UI\Charts\BarChart.cpp" />
@@ -131,11 +136,16 @@
     <ClCompile Include="Clerk.cpp" />
     <ClCompile Include="Data\DataHelper.cpp" />
     <ClCompile Include="UI\MainFrame.cpp" />
-    <ClCompile Include="UI\TransactionDialog.cpp" />
+    <ClCompile Include="UI\Transactions\TransactionDialog.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h" />
+    <ClInclude Include="Data\Alert.h" />
+    <ClInclude Include="UI\Alerts\AlertDialog.h" />
+    <ClInclude Include="UI\Alerts\AlertsListDataModel.h" />
+    <ClInclude Include="UI\Alerts\AlertsPanel.h" />
     <ClInclude Include="UI\Transactions\TransactionsAmountRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsListDataModel.h" />
@@ -164,10 +174,10 @@
     <ClInclude Include="Data\Tag.h" />
     <ClInclude Include="UI\TagsPanel.h" />
     <ClInclude Include="UI\Goals\GoalsPanel.h" />
-    <ClInclude Include="UI\GoalDialog.h" />
+    <ClInclude Include="UI\Goals\GoalDialog.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UI\SchedulersConfirmDialog.h" />
-    <ClInclude Include="UI\SchedulerDialog.h" />
+    <ClInclude Include="UI\Schedulers\SchedulersConfirmDialog.h" />
+    <ClInclude Include="UI\Schedulers\SchedulerDialog.h" />
     <ClInclude Include="UI\Schedulers\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
@@ -175,7 +185,7 @@
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu.h" />
     <ClInclude Include="UI\Budgets\BudgetsPanel.h" />
-    <ClInclude Include="UI\BudgetDialog.h" />
+    <ClInclude Include="UI\Budgets\BudgetDialog.h" />
     <ClInclude Include="Data\Account.h" />
     <ClInclude Include="UI\AccountDialog.h" />
     <ClInclude Include="UI\Charts\BarChart.h" />
@@ -194,7 +204,7 @@
     <ClInclude Include="Clerk.h" />
     <ClInclude Include="Data\DataHelper.h" />
     <ClInclude Include="UI\MainFrame.h" />
-    <ClInclude Include="UI\TransactionDialog.h" />
+    <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>

@@ -294,27 +294,27 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	fromValue = 0;
 	toValue = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Receipt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		accounts.push_back(account);
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Deposit))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
 	{
 		accounts.push_back(account);
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Virtual))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual))
 	{
 		accounts.push_back(account);
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Expens))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		accounts.push_back(account);
 	}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountTypes::Debt))
+	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		accounts.push_back(account);
 	}
@@ -398,7 +398,7 @@ void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 
 void SchedulerDialog::UpdateFromList() {
 	for (auto account : accounts) {
-		if (account->type == AccountTypes::Receipt || account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
+		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			int iconId = 0;
 
 			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -422,8 +422,8 @@ void SchedulerDialog::UpdateToList(std::shared_ptr<Account> account) {
 			continue;
 		}
 
-		if (account->type == AccountTypes::Receipt) {
-			if (toAccount->type == AccountTypes::Deposit) {
+		if (account->type == AccountType::Receipt) {
+			if (toAccount->type == AccountType::Deposit) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
@@ -435,9 +435,9 @@ void SchedulerDialog::UpdateToList(std::shared_ptr<Account> account) {
 				toAccounts.push_back(toAccount);
 			}
 		}
-		else if (account->type == AccountTypes::Deposit || account->type == AccountTypes::Virtual) {
-			if (toAccount->type == AccountTypes::Deposit || toAccount->type == AccountTypes::Expens
-				|| toAccount->type == AccountTypes::Debt ||	toAccount->type == AccountTypes::Virtual) {
+		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
+			if (toAccount->type == AccountType::Deposit || toAccount->type == AccountType::Expens
+				|| toAccount->type == AccountType::Debt ||	toAccount->type == AccountType::Virtual) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {

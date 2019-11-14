@@ -5,7 +5,7 @@ Account::Account()
 	this->id = -1;
 	this->name = make_shared<wxString>();
 	this->note = make_shared<wxString>();
-	this->type = AccountTypes::Deposit;
+	this->type = AccountType::Deposit;
 	this->iconId = 0;
 	this->orderId = 1000;
 	this->currency = make_shared<Currency>(152);
@@ -34,7 +34,7 @@ void Account::Load()
 			this->name = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 1)));
 			this->note = make_shared<wxString>(wxString::FromUTF8((char *)sqlite3_column_text(statement, 2)));
 			this->iconId = sqlite3_column_int(statement, 3);
-			this->type = static_cast<AccountTypes>(sqlite3_column_int(statement, 4));
+			this->type = static_cast<AccountType>(sqlite3_column_int(statement, 4));
 			this->orderId = sqlite3_column_int(statement, 5);
 			this->currency = make_shared<Currency>(sqlite3_column_int(statement, 6));
 			this->creditLimit = sqlite3_column_double(statement, 7);

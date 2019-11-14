@@ -6,33 +6,37 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
-#include "../Data/DataHelper.h"
+#include "../../Data/DataHelper.h"
 
-class BudgetDialog : public wxFrame
+class AlertDialog : public wxFrame
 {
 public:
-	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);	
+	AlertDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 
-	void SetBudget(std::shared_ptr<Budget> budget);
+	void SetAlert(std::shared_ptr<Alert> alert);
 	std::function<void()> OnClose;
 
 private:
 	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;	
+	wxStaticText *typeLabel;
+	wxComboBox *typeList;
 	wxStaticText *periodLabel;
 	wxComboBox *periodList;
-	wxDatePickerCtrl *datePicker;
+	wxStaticText *conditionLabel;
+	wxComboBox *conditionList;	
 	wxListCtrl *accountsList;
 	wxStaticText *amountLabel;
 	wxTextCtrl *amountField;
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<Budget> budget;	
+	std::shared_ptr<Alert> alert;	
 	vector<shared_ptr<Account>> accounts;
 
 	void UpdateAccounts();
+	void OnTypeSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

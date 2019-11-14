@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include <wx/listctrl.h>
-#include "../Data/Scheduler.h"
+#include "../../Data/Scheduler.h"
 
 class SchedulersConfirmDialog : public wxFrame
 {

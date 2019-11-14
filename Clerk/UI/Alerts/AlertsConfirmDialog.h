@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "../../Data/Alert.h"
+#include "../../Utils/Utils.h"
 
 class AlertsConfirmDialog : public wxFrame
 {

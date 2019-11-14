@@ -16,7 +16,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(50, -1), 0);
+	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(nameText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
@@ -24,42 +24,34 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);	
 
-	typeLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Type:"), wxDefaultPosition, wxSize(50, -1), 0);
+	typeLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Type:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(typeLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	typeList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(typeList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	typeList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(typeList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	periodLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	periodList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(periodList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	periodList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	conditionLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Condition:"), wxDefaultPosition, wxSize(50, -1), 0);
+	conditionLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Condition:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(conditionLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	conditionList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(conditionList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	conditionList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(conditionList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	amountField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	amountField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), wxTE_RIGHT, amountValidator);
 	horizontalSizer->Add(amountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
@@ -120,8 +112,6 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	conditionList->SetSelection(static_cast<int>(Alert::Condition::Less));
 
-	UpdateAccounts();
-
 	typeList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnTypeSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnPeriodSelect, this);
 
@@ -133,9 +123,34 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 void AlertDialog::SetAlert(std::shared_ptr<Alert> alert) {
 	this->alert = alert;
 
-	nameField->SetValue(*this->alert->name);	
+	nameField->SetValue(*this->alert->name);
+	typeList->SetSelection(static_cast<int>(this->alert->type));
 	periodList->SetSelection(static_cast<int>(this->alert->period));
 	amountField->SetValue(wxString::Format("%.2f", this->alert->amount));	
+
+	UpdateAccounts();
+}
+
+void AlertDialog::UpdateAccounts() {
+	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Expense)) {
+		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
+		auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
+
+		accounts.insert(accounts.end(), debts.begin(), debts.end());
+	}
+	
+	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Receipt)) {
+		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt);
+	}
+
+	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Balance)) {
+		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit);
+		auto temp = DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual);
+		auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
+
+		accounts.insert(accounts.end(), temp.begin(), temp.end());
+		accounts.insert(accounts.end(), debts.begin(), debts.end());
+	}		
 
 	std::string str = alert->accountIds->mb_str();
 	std::vector<int> ids;
@@ -153,26 +168,8 @@ void AlertDialog::SetAlert(std::shared_ptr<Alert> alert) {
 		}
 	}
 
-	i = 0;
-
-	for (auto account : accounts)
-	{
-		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
-			accountsList->CheckItem(i, true);
-		}
-
-		i++;
-	}
-}
-
-void AlertDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckboxes(true);
-
-	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
-	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
-
-	accounts.insert(accounts.end(), debts.begin(), debts.end());
 
 	wxListItem column;
 
@@ -182,9 +179,9 @@ void AlertDialog::UpdateAccounts() {
 
 	accountsList->InsertColumn(0, column);	
 
-	int i = 0;
+	i = 0;
 
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		wxListItem listItem;
 
@@ -196,12 +193,16 @@ void AlertDialog::UpdateAccounts() {
 
 		accountsList->SetItemImage(listItem, account->iconId);
 
+		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
+			accountsList->CheckItem(i, true);
+		}
+
 		i++;
 	}
 }
 
 void AlertDialog::OnTypeSelect(wxCommandEvent &event) {
-
+	UpdateAccounts();
 }
 
 void AlertDialog::OnPeriodSelect(wxCommandEvent &event) {

@@ -11,21 +11,21 @@ AlertsConfirmDialog::AlertsConfirmDialog(wxFrame *parent, const wxChar *title, i
 	wxStaticText *titleLabel = new wxStaticText(this, wxID_ANY, wxT("Alerts:"), wxDefaultPosition, wxDefaultSize, 0);
 	mainSizer->Add(titleLabel, 0, wxALL, 10);
 
-	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
+	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
 	mainSizer->Add(list, 1, wxLEFT | wxRIGHT | wxEXPAND, 10);
 
 	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTAB_TRAVERSAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	okButton = new wxButton(buttonsPanel, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALL, 5);
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	buttonsPanel->SetSizer(horizontalSizer);
 	buttonsPanel->Layout();
 
 	horizontalSizer->Fit(buttonsPanel);
 
-	mainSizer->Add(buttonsPanel, 0, wxALL | wxEXPAND, 5);
+	mainSizer->Add(buttonsPanel, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -56,15 +56,6 @@ void AlertsConfirmDialog::UpdateList() {
 
 	list->InsertColumn(0, column);
 
-	wxListItem column1;
-
-	column1.SetId(1);
-	column1.SetText(_("Amount"));
-	column1.SetWidth(120);
-	column1.SetAlign(wxLIST_FORMAT_RIGHT);
-
-	list->InsertColumn(1, column1);
-
 	int i = 0;
 
 	for (auto &alert : alerts)
@@ -76,8 +67,44 @@ void AlertsConfirmDialog::UpdateList() {
 
 		list->InsertItem(listItem);
 
-		list->SetItem(i, 0, *alert->name);
-		list->SetItem(i, 1, wxString::Format("%.2f", alert->amount));
+		wxString type = "";
+		wxString condition = "";
+
+		switch (alert->type)
+		{
+			case Alert::Type::Balance:
+				type = "Balance";
+				break;
+
+			case Alert::Type::Expense:
+				type = "Expense";
+				break;
+
+			case Alert::Type::Receipt:
+				type = "Receipt";
+				break;
+		}
+
+		switch (alert->condition)
+		{
+			case Alert::Condition::Equal:
+				condition = "equal to";
+				break;
+
+			case Alert::Condition::Less:
+				condition = "less than";
+				break;
+
+			case Alert::Condition::More:
+				condition = "more than";
+				break;
+		}		
+
+		wxString amount = Utils::FormatAmount(alert->amount);
+
+		wxString title = wxString::Format("%s '%s' %s %s", type, *alert->name, condition, amount);
+
+		list->SetItem(i, 0, title);
 		i++;
 	}
 }

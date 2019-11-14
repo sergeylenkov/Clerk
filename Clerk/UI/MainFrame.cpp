@@ -113,6 +113,12 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
 	}).detach();
 
+	std::thread([=]()
+	{
+		std::this_thread::sleep_for(std::chrono::seconds(5));
+		this->GetEventHandler()->CallAfter(&MainFrame::CheckAlerts);
+	}).detach();
+
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
 		statusbar->SetExchangeRates("Updating...");		
 
@@ -751,7 +757,7 @@ void MainFrame::CheckAlerts() {
 	}
 
 	if (alerts.size() > 0) {
-		AlertsConfirmDialog *confirmDialog = new AlertsConfirmDialog(this, wxT("Alerts"), 0, 0, 450, 400);
+		AlertsConfirmDialog *confirmDialog = new AlertsConfirmDialog(this, wxT("Alerts"), 0, 0, 350, 400);
 
 		confirmDialog->SetAlerts(alerts);
 

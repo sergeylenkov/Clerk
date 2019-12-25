@@ -72,7 +72,8 @@ public:
 	std::function<void(std::shared_ptr<Account>)> OnEditAccount;
 	std::function<void(std::shared_ptr<Account>)> OnArchiveAccount;
 	std::function<void(std::shared_ptr<Account>)> OnRestoreAccount;
-	std::function<void(std::shared_ptr<Account>)> OnAddTransaction;
+	std::function<void(std::shared_ptr<Account>)> OnAddTransactionForAccount;
+	std::function<void(std::shared_ptr<Transaction>)> OnAddTransaction;
 	std::function<void()> OnAddBudget;
 	std::function<void()> OnAddScheduler;
 	std::function<void()> OnAddGoal;
@@ -100,6 +101,7 @@ private:
 	void OnMenuDeleteAccount(wxCommandEvent &event);
 	void OnMenuRestoreAccount(wxCommandEvent &event);
 	void OnMenuAddTransaction(wxCommandEvent &event);
+	void OnSubMenuAddTransaction(wxCommandEvent &event);
 	void OnMenuAddBudget(wxCommandEvent &event);
 	void OnMenuAddScheduler(wxCommandEvent &event);
 	void OnMenuAddGoal(wxCommandEvent &event);

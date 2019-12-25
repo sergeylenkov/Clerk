@@ -281,6 +281,28 @@ std::vector<std::shared_ptr<Transaction>> DataHelper::GetRecentTransactions() {
 	return result;
 }
 
+std::vector<std::shared_ptr<Transaction>> DataHelper::GetRecentTransactions(Account &account) {
+	auto result = std::vector<std::shared_ptr<Transaction>>();
+
+	char *sql = "SELECT MAX(t.paid_at), t.id FROM transactions t WHERE (t.from_account_id = ? OR t.to_account_id = ?) GROUP BY t.from_account_id, t.to_account_id ORDER BY paid_at DESC LIMIT 10";
+	sqlite3_stmt *statement;
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, account.id);
+		sqlite3_bind_int(statement, 2, account.id);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int id = sqlite3_column_int(statement, 1);
+			auto transaction = std::make_shared<Transaction>(id);
+			result.push_back(transaction);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}
+
 std::vector<std::shared_ptr<Currency>> DataHelper::GetCurrencies()
 {
 	auto result = std::vector<std::shared_ptr<Currency>>();

@@ -447,8 +447,8 @@ void MainFrame::OnDuplicateTransaction(wxCommandEvent &event) {
 
 		copy->fromAccount = transaction->fromAccount;
 		copy->toAccount = transaction->toAccount;
-		copy->fromAmount = transaction->fromAmount;
-		copy->toAmount = transaction->toAmount;
+		copy->fromAmount = 0;
+		copy->toAmount = 0;
 		copy->note = transaction->note;
 		copy->tags = transaction->tags;
 		copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());

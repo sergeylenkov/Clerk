@@ -349,7 +349,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 				for (auto &transaction : transactions)
 				{
-					menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
+					menuTransaction->Append(transaction->id, wxString::Format("%s - %s (%s)", *transaction->fromAccount->name, *transaction->toAccount->name, transaction->GetTagsString()));
 					menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnSubMenuAddTransaction, this, transaction->id);
 				}
 				
@@ -539,10 +539,18 @@ void TreeMenu::OnSubMenuAddTransaction(wxCommandEvent &event) {
 		}
 		else {
 			auto transaction = make_shared<Transaction>(itemId);
-			transaction->fromAmount = 0;
-			transaction->toAmount = 0;
 
-			OnAddTransaction(transaction);			
+			auto copy = make_shared<Transaction>();
+
+			copy->fromAccount = transaction->fromAccount;
+			copy->toAccount = transaction->toAccount;
+			copy->fromAmount = 0;
+			copy->toAmount = 0;
+			copy->note = transaction->note;
+			copy->tags = transaction->tags;
+			copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+
+			OnAddTransaction(copy);
 		}
 	}
 }

@@ -75,6 +75,7 @@ public:
 	std::vector<std::shared_ptr<Transaction>> GetTransactionsByType(AccountType type, wxDateTime *from, wxDateTime *to);
 	std::vector<std::shared_ptr<Transaction>> GetDeletedTransactions();
 	std::vector<std::shared_ptr<Transaction>> GetRecentTransactions();
+	std::vector<std::shared_ptr<Transaction>> GetRecentTransactions(Account &account);
 	std::vector<std::shared_ptr<Currency>> GetCurrencies();
 	std::vector<std::shared_ptr<Budget>> GetBudgets();
 	std::vector<std::shared_ptr<Scheduler>> GetSchedulers();

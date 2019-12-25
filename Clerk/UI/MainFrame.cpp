@@ -53,6 +53,7 @@ MainFrame::MainFrame(const wxString& title, const wxPoint& pos, const wxSize& si
 	treeMenu->OnEditAccount = std::bind(&MainFrame::EditAccount, this, std::placeholders::_1);
 	treeMenu->OnArchiveAccount = std::bind(&MainFrame::DeleteAccount, this, std::placeholders::_1);
 	treeMenu->OnRestoreAccount = std::bind(&MainFrame::RestoreAccount, this, std::placeholders::_1);
+	treeMenu->OnAddTransactionForAccount = std::bind(&MainFrame::OnTreeMenuAddTransactionForAccount, this, std::placeholders::_1);
 	treeMenu->OnAddTransaction = std::bind(&MainFrame::OnTreeMenuAddTransaction, this, std::placeholders::_1);
 	treeMenu->OnAddBudget = std::bind(&MainFrame::AddBudget, this);
 	treeMenu->OnAddScheduler = std::bind(&MainFrame::AddScheduler, this);
@@ -161,7 +162,7 @@ void MainFrame::CreateMainMenu() {
 		wxMenu *menuTransaction = new wxMenu();
 		menuFile->AppendSubMenu(menuTransaction, wxT("New Transaction"));
 
-		menuTransaction->Append(0, wxT("New Transaction...\tCtrl+T"));
+		menuTransaction->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction...\tCtrl+T"));
 		menuTransaction->AppendSeparator();
 
 		for (auto &transaction : transactions)
@@ -205,7 +206,7 @@ void MainFrame::CreateDropdownMenu() {
 	wxMenu *menu = addTransactionButton->GetMenu();
 	auto transactions = DataHelper::GetInstance().GetRecentTransactions();
 
-	for (auto transaction : transactions)
+	for (auto &transaction : transactions)
 	{
 		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
 	}
@@ -412,7 +413,7 @@ void MainFrame::OnTreeMenuAddAccount(TreeMenuItemTypes type) {
 	}
 }
 
-void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
+void MainFrame::OnTreeMenuAddTransactionForAccount(std::shared_ptr<Account> account) {
 	auto transaction = make_shared<Transaction>();
 
 	if (account) {
@@ -428,6 +429,10 @@ void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Account> account) {
 	}
 
 	EditTransaction(transaction);
+}
+
+void MainFrame::OnTreeMenuAddTransaction(std::shared_ptr<Transaction> transaction) {
+	EditTransaction(transaction);	
 }
 
 void MainFrame::OnAddQuickTransaction(wxCommandEvent &even) {

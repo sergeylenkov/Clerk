@@ -69,7 +69,8 @@ private:
 	void OnTreeMenuTagsSelect();
 	void OnTreeMenuAlertsSelect();
 	void OnTreeMenuAccountsSelect(TreeMenuItemTypes type);
-	void OnTreeMenuAddTransaction(std::shared_ptr<Account> account);
+	void OnTreeMenuAddTransactionForAccount(std::shared_ptr<Account> account);
+	void OnTreeMenuAddTransaction(std::shared_ptr<Transaction> trtansaction);
 	void OnTreeMenuAddAccount(TreeMenuItemTypes type);
 	void OnAddAccount(wxCommandEvent &event);
 	void OnAddBudget(wxCommandEvent &event);

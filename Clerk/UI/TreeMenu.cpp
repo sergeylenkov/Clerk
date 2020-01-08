@@ -349,7 +349,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 				for (auto &transaction : transactions)
 				{
-					menuTransaction->Append(transaction->id, wxString::Format("%s - %s (%s)", *transaction->fromAccount->name, *transaction->toAccount->name, transaction->GetTagsString()));
+					menuTransaction->Append(transaction->id, wxString::Format("%s › %s (%s)", *transaction->fromAccount->name, *transaction->toAccount->name, transaction->GetTagsString()));
 					menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeMenu::OnSubMenuAddTransaction, this, transaction->id);
 				}
 				

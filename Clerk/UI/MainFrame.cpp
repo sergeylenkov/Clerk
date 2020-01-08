@@ -167,7 +167,7 @@ void MainFrame::CreateMainMenu() {
 
 		for (auto &transaction : transactions)
 		{
-			menuTransaction->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
+			menuTransaction->Append(transaction->id, wxString::Format("%s › %s (%s)", *transaction->fromAccount->name, *transaction->toAccount->name, transaction->GetTagsString()));
 		}
 
 		menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransactionFromMainMenu, this);
@@ -208,7 +208,7 @@ void MainFrame::CreateDropdownMenu() {
 
 	for (auto &transaction : transactions)
 	{
-		menu->Append(transaction->id, wxString::Format("%s - %s", *transaction->fromAccount->name, *transaction->toAccount->name));
+		menu->Append(transaction->id, wxString::Format("%s › %s (%s)", *transaction->fromAccount->name, *transaction->toAccount->name, transaction->GetTagsString()));
 	}
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainFrame::OnAddTransactionFromMainMenu, this);

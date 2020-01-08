@@ -11,12 +11,16 @@ void LineChart::SetValues(std::vector<StringValue> values) {
 	currentPopupIndex = -1;
 	this->values = values;
 
-	auto ptr = max_element(values.begin(), values.end(),
-		[](const StringValue p1, const StringValue p2) {
-		return p1.value < p2.value;
-	});
+	maxValue = 0;
 
-	maxValue = ptr->value;
+	if (values.size() > 0) {
+		auto ptr = max_element(values.begin(), values.end(),
+			[](const StringValue p1, const StringValue p2) {
+			return p1.value < p2.value;
+		});
+
+		maxValue = ptr->value;
+	}
 
 	Draw();
 }

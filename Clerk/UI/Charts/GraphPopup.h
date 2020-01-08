@@ -19,7 +19,6 @@ public:
 
 	void Update(vector<StringValue> values);
 
-private:
-	wxScrolledWindow *panel;
+private:	
 	wxListCtrl *list;
 };

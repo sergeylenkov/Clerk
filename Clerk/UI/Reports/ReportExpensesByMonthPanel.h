@@ -10,7 +10,7 @@
 #include "../DataPanel.h"
 #include "../../Data/DataHelper.h"
 #include "../Charts/LineChart.h"
-#include "../Charts/GraphPopup.h"
+#include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
 
 using namespace std;
@@ -30,7 +30,7 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	vector<shared_ptr<Account>> accounts;
-	GraphPopup *chartPopup;
+	ExpensesTooltipPopup *chartPopup;
 	vector<DateValue> values = {};
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;

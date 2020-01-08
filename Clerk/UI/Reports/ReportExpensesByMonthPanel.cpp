@@ -83,7 +83,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 	}
 	
-	chartPopup = new GraphPopup(this);
+	chartPopup = new ExpensesTooltipPopup(this);
 
 	accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnAccountSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
@@ -174,7 +174,7 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
 	chartPopup->SetPosition(pos);
 
-	chartPopup->Update(popupValues);
+	chartPopup->Update(date.Format("%B"), popupValues);
 }
 
 void ReportExpensesByMonthPanel::RestoreFilterSettings() {

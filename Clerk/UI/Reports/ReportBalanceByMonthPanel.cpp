@@ -83,7 +83,7 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 	}
 
-	chartPopup = new GraphPopup(this);
+	chartPopup = new ExpensesTooltipPopup(this);
 
 	accountList->Bind(wxEVT_COMBOBOX, &ReportBalancePanel::OnAccountSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportBalancePanel::OnPeriodSelect, this);
@@ -153,14 +153,16 @@ void ReportBalancePanel::HidePopup() {
 void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
 	vector<StringValue> popupValues;
 
-	StringValue value = { values[index].date.Format("%B"), values[index].value };
+	wxDateTime date = values[index].date;
+
+	StringValue value = { date.Format("%B"), values[index].value };
 
 	popupValues.push_back(value);
 
 	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
 	chartPopup->SetPosition(pos);
 
-	chartPopup->Update(popupValues);
+	chartPopup->Update(date.Format("%B"), popupValues);
 }
 
 void ReportBalancePanel::RestoreFilterSettings() {

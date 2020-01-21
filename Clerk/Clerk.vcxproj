@@ -13,19 +13,19 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{930DA72E-D847-42E9-8315-F9F5FE257BED}</ProjectGuid>
     <RootNamespace>Clerk</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -47,7 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>D:\Developer\curl-7.64.1\include;D:\Developer\rapidxml;D:\Developer\rapidjson\include;D:\Developer\include\sqlite;D:\Developer\wxWidgets-3.1.0\lib\vc_lib\mswud\;D:\Developer\wxWidgets-3.1.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Developer\curl-7.64.1\include;D:\Developer\rapidxml;D:\Developer\rapidjson\include;D:\Developer\include\sqlite;D:\Developer\wxWidgets-3.1.3\lib\vc14x_dll\mswud;D:\Developer\wxWidgets-3.1.3\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;__WINDOWS__;__WXMSW__;__WXDEBUG__;WXDEBUG=1;__WIN95__;__WIN32__;WINVER=0x0400;STRICT;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -55,6 +55,7 @@
       <AdditionalLibraryDirectories>D:\Developer\curl-7.64.1\build\Win32\VC15\LIB Debug;D:\Developer\lib;D:\Developer\wxWidgets-3.1.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>wxmsw31ud_core.lib;wxbase31ud.lib;wxmsw31ud_adv.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;winmm.lib;comctl32.lib;rpcrt4.lib;wsock32.lib;wininet.lib;sqlite3.lib;libcurld.lib;Ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -139,6 +140,7 @@
     <ClCompile Include="UI\Transactions\TransactionDialog.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
+    <ClCompile Include="UI\Controls\wxListViewComboPopup.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h" />
@@ -207,6 +209,7 @@
     <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
     <ClInclude Include="Utils\Utils.h" />
+    <ClInclude Include="UI\Controls\wxListViewComboPopup.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Logo.ico" />

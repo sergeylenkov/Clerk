@@ -5,6 +5,7 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/bmpcbox.h>
+#include <wx/combo.h>
 #include <algorithm>
 #include <map>
 #include "../DataPanel.h"
@@ -12,6 +13,7 @@
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
+#include "../Controls//wxListViewComboPopup.h"
 
 using namespace std;
 

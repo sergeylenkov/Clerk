@@ -126,7 +126,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 void GoalDialog::UpdateAccounts() {
 	accountsList->ClearAll();
-	accountsList->EnableCheckboxes(true);
+	accountsList->EnableCheckBoxes(true);
 
 	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit);
 	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual);

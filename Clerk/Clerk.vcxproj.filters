@@ -207,6 +207,9 @@
     <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\wxListViewComboPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -405,6 +408,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\wxListViewComboPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

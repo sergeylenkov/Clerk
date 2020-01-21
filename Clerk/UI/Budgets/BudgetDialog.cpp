@@ -145,7 +145,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 void BudgetDialog::UpdateAccounts() {
 	accountsList->ClearAll();
-	accountsList->EnableCheckboxes(true);
+	accountsList->EnableCheckBoxes(true);
 
 	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
 	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);

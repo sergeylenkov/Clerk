@@ -25,6 +25,16 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
+	wxComboCtrl* comboCtrl = new wxComboCtrl(this, wxID_ANY, wxEmptyString);
+	wxListViewComboPopup* popupCtrl = new wxListViewComboPopup();
+	// It is important to call SetPopupControl() as soon as possible
+	comboCtrl->SetPopupControl(popupCtrl);
+
+	// Populate using wxListView methods
+	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "First Item");
+	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "Second Item");
+	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "Third Item");
+
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
@@ -32,7 +42,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
 	filterSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(accountList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(comboCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);

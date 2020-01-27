@@ -162,7 +162,7 @@ void BudgetDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		wxListItem listItem;
 

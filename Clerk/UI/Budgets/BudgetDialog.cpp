@@ -145,7 +145,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 void BudgetDialog::UpdateAccounts() {
 	accountsList->ClearAll();
-	accountsList->EnableCheckboxes(true);
+	accountsList->EnableCheckBoxes(true);
 
 	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
 	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
@@ -162,7 +162,7 @@ void BudgetDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		wxListItem listItem;
 

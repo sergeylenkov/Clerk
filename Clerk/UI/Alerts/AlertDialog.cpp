@@ -169,7 +169,7 @@ void AlertDialog::UpdateAccounts() {
 	}
 
 	accountsList->ClearAll();
-	accountsList->EnableCheckboxes(true);
+	accountsList->EnableCheckBoxes(true);
 
 	wxListItem column;
 

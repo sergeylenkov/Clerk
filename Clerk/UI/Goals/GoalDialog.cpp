@@ -114,7 +114,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 	i = 0;
 
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
 			accountsList->CheckItem(i, true);
@@ -126,7 +126,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 void GoalDialog::UpdateAccounts() {
 	accountsList->ClearAll();
-	accountsList->EnableCheckboxes(true);
+	accountsList->EnableCheckBoxes(true);
 
 	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit);
 	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual);
@@ -143,7 +143,7 @@ void GoalDialog::UpdateAccounts() {
 
 	int i = 0;
 
-	for (auto account : accounts)
+	for (auto &account : accounts)
 	{
 		wxListItem listItem;
 

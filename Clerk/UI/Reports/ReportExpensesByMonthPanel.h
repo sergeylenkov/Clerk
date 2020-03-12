@@ -8,6 +8,7 @@
 #include <wx/combo.h>
 #include <algorithm>
 #include <map>
+#include <set>
 #include "../DataPanel.h"
 #include "../../Data/DataHelper.h"
 #include "../Charts/LineChart.h"
@@ -38,7 +39,8 @@ private:
 	vector<DateValue> values = {};
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
-	wxString accountIds;
+	//wxString accountIds;
+	std::set<int> selectedIds;
 
 	void OnAccountSelect(int index);
 	void OnDateChanged(wxDateEvent &event);

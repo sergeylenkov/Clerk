@@ -92,10 +92,9 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
 	chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	//accountList->Select(0);
 	periodList->Select(3);
 
-	accountIds = "";
+	selectedIds = {};
 
 	UpdateAccountsList();
 	RestoreFilterSettings();
@@ -109,7 +108,18 @@ void ReportExpensesByMonthPanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	values = DataHelper::GetInstance().GetExpensesByMonth(accountIds, &fromDate, &toDate);//DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
+	wxString ids = "";
+
+	for (auto id : selectedIds) {
+		auto account = accounts[id];
+
+		ids = ids + wxString::Format("%i,", account->id);
+	}
+
+	ids.RemoveLast();
+
+	values = DataHelper::GetInstance().GetExpensesByMonth(ids, &fromDate, &toDate);
+	//values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
 	/*if (accountList->GetSelection() == 0) {
 		values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
 	}
@@ -130,7 +140,27 @@ void ReportExpensesByMonthPanel::Update() {
 }
 
 void ReportExpensesByMonthPanel::OnAccountSelect(int index) {
+	if (selectedIds.count(index) == 0) {
+		selectedIds.insert(index);
+	}
+	else {
+		selectedIds.erase(index);
+	}
+
 	wxString names = "";
+
+	for (auto id : selectedIds) {
+		auto account = accounts[id];
+
+		names = names + wxString::Format("%s, ", *account->name);
+	}
+
+	names.RemoveLast(2);
+
+	accountsComboBox->SetValue(names);
+	accountsList->SetStringValue(names);
+
+	/*wxString names = "";
 	accountIds = "";
 
 	long itemIndex = -1;
@@ -156,7 +186,7 @@ void ReportExpensesByMonthPanel::OnAccountSelect(int index) {
 	accountIds.RemoveLast();
 
 	accountsComboBox->SetValue(names);
-	accountsList->SetStringValue(names);
+	accountsList->SetStringValue(names);*/
 	
 	Update();
 }

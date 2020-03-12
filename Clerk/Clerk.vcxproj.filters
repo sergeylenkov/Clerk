@@ -207,7 +207,7 @@
     <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\wxListViewComboPopup.cpp">
+    <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -410,7 +410,7 @@
     <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\wxListViewComboPopup.h">
+    <ClInclude Include="UI\Controls\CheckboxComboPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

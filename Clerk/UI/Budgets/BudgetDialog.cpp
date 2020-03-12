@@ -213,7 +213,7 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 
 		if (checked) {
 			auto account = accounts[itemIndex];
-			accountIds = accountIds + wxString::Format(wxT("%i,"), account->id);
+			accountIds = accountIds + wxString::Format("%i,", account->id);
 		}
 	}
 

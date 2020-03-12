@@ -8,9 +8,16 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
 
-	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Account:"));
+	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Accounts:"));
 
-	accountList = new wxBitmapComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20), 0, NULL, wxCB_READONLY);
+	//accountList = new wxBitmapComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20), 0, NULL, wxCB_READONLY);
+	accountsComboBox = new wxComboCtrl(filterPanel, wxID_ANY, wxEmptyString, wxPoint(0, 0), wxSize(200, 20), wxCB_READONLY);
+	accountsList = new CheckboxComboPopup();
+
+	accountsComboBox->SetPopupControl(accountsList);
+
+	accountsList->EnableCheckBoxes(true);
+	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	wxStaticText *st4 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
@@ -25,16 +32,6 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
-	wxComboCtrl* comboCtrl = new wxComboCtrl(this, wxID_ANY, wxEmptyString);
-	wxListViewComboPopup* popupCtrl = new wxListViewComboPopup();
-	// It is important to call SetPopupControl() as soon as possible
-	comboCtrl->SetPopupControl(popupCtrl);
-
-	// Populate using wxListView methods
-	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "First Item");
-	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "Second Item");
-	popupCtrl->InsertItem(popupCtrl->GetItemCount(), "Third Item");
-
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
@@ -42,7 +39,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
 	filterSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(comboCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
@@ -78,24 +75,15 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	accounts.push_back(account);
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
+	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
 	{
 		accounts.push_back(account);
 	}
 
-	for (auto account : accounts) {
-		int iconId = 0;
-
-		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-			iconId = account->iconId;
-		}
-
-		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-	}
-	
 	chartPopup = new ExpensesTooltipPopup(this);
 
-	accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnAccountSelect, this);
+	accountsList->OnItemSelect = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
+	//accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnAccountSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
@@ -104,9 +92,12 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
 	chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	accountList->Select(0);
+	//accountList->Select(0);
 	periodList->Select(3);
 
+	accountIds = "";
+
+	UpdateAccountsList();
 	RestoreFilterSettings();
 }
 
@@ -118,13 +109,14 @@ void ReportExpensesByMonthPanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	if (accountList->GetSelection() == 0) {
+	values = DataHelper::GetInstance().GetExpensesByMonth(accountIds, &fromDate, &toDate);//DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
+	/*if (accountList->GetSelection() == 0) {
 		values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
 	}
 	else {
 		auto account = accounts[accountList->GetSelection()];
 		values = DataHelper::GetInstance().GetExpensesByMonth(*account, &fromDate, &toDate);
-	}	
+	}*/	
 
 	std::vector<StringValue> chartValues;
 
@@ -137,7 +129,35 @@ void ReportExpensesByMonthPanel::Update() {
 	chart->SetValues(chartValues);
 }
 
-void ReportExpensesByMonthPanel::OnAccountSelect(wxCommandEvent &event) {
+void ReportExpensesByMonthPanel::OnAccountSelect(int index) {
+	wxString names = "";
+	accountIds = "";
+
+	long itemIndex = -1;
+
+	for (;;) {
+		itemIndex = accountsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
+
+		if (itemIndex == -1) {
+			break;
+		}
+
+		bool checked = accountsList->IsItemChecked(itemIndex);
+
+		if (checked) {
+			auto account = accounts[itemIndex];
+
+			names = names + wxString::Format("%s, ", *account->name);
+			accountIds = accountIds + wxString::Format("%i,", account->id);
+		}
+	}
+
+	names.RemoveLast(2);
+	accountIds.RemoveLast();
+
+	accountsComboBox->SetValue(names);
+	accountsList->SetStringValue(names);
+	
 	Update();
 }
 
@@ -173,13 +193,14 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	vector<StringValue> popupValues;
 
-	if (accountList->GetSelection() == 0) {
+	popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
+	/*if (accountList->GetSelection() == 0) {
 		popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
 	}
 	else {
 		auto account = accounts[accountList->GetSelection()];
 		popupValues = DataHelper::GetInstance().GetExpensesForAccount(*account, &fromDate, &toDate);
-	}	
+	}*/	
 
 	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
 	chartPopup->SetPosition(pos);
@@ -190,11 +211,11 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
 
-	for (unsigned int i = 0; i < accounts.size(); i++) {
+	/*for (unsigned int i = 0; i < accounts.size(); i++) {
 		if (accounts[i]->id == settings.accountId) {
 			accountList->SetSelection(i);
 		}
-	}
+	}*/
 
 	periodList->SetSelection(settings.period);
 
@@ -205,9 +226,9 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
-	Account *account = accounts[accountList->GetSelection()].get();
+	/*Account *account = accounts[accountList->GetSelection()].get();
 
-	Settings::GetInstance().SetReportFilterSettings(1, account->id, periodList->GetSelection(), periodFromDate, periodToDate);
+	Settings::GetInstance().SetReportFilterSettings(1, account->id, periodList->GetSelection(), periodFromDate, periodToDate);*/
 }
 
 void ReportExpensesByMonthPanel::CalculatePeriod() {
@@ -254,4 +275,28 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 
 	fromDatePicker->SetValue(fromDate);
 	toDatePicker->SetValue(toDate);
+}
+
+void ReportExpensesByMonthPanel::UpdateAccountsList() {
+	wxListItem column;
+
+	column.SetId(0);
+	column.SetText(_("Name"));
+	column.SetWidth(180);
+
+	accountsList->InsertColumn(0, column);
+
+	int i = 0;
+
+	for (auto& account : accounts)
+	{
+		wxListItem listItem;
+
+		listItem.SetId(i);
+		listItem.SetData(account->id);
+
+		accountsList->InsertItem(i, *account->name, account->iconId);
+
+		i++;
+	}
 }

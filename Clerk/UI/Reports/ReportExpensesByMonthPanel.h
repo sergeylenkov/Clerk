@@ -13,7 +13,7 @@
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
-#include "../Controls//wxListViewComboPopup.h"
+#include "../Controls/CheckboxComboPopup.h"
 
 using namespace std;
 
@@ -27,7 +27,9 @@ public:
 
 private:
 	LineChart *chart;
-	wxBitmapComboBox *accountList;
+	//wxBitmapComboBox *accountList;
+	wxComboCtrl *accountsComboBox;
+	CheckboxComboPopup* accountsList;
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
@@ -36,8 +38,9 @@ private:
 	vector<DateValue> values = {};
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
+	wxString accountIds;
 
-	void OnAccountSelect(wxCommandEvent &event);
+	void OnAccountSelect(int index);
 	void OnDateChanged(wxDateEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void ShowPopup();
@@ -46,4 +49,5 @@ private:
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
 	void CalculatePeriod();
+	void UpdateAccountsList();
 };

@@ -664,6 +664,33 @@ vector<DateValue> DataHelper::GetExpensesByMonth(Account &account, wxDateTime *f
 	return values;
 }
 
+std::vector<DateValue> DataHelper::GetExpensesByMonth(wxString ids, wxDateTime* from, wxDateTime* to) {
+	vector<DateValue> values;
+
+	char sql[512];
+	sqlite3_stmt* statement;
+
+	snprintf(sql, sizeof(sql), "SELECT t.paid_at AS date, TOTAL(t.from_account_amount) AS sum FROM transactions t, accounts a WHERE t.to_account_id IN(%s) AND t.deleted = 0 AND t.paid_at >= ? AND t.paid_at <= ? AND t.to_account_id = a.id AND a.type_id = 2 GROUP BY strftime('%%Y %%m', t.paid_at) ORDER BY date", static_cast<const char*>(ids.c_str()));
+	
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {		
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			wxDateTime date = wxDateTime::Now();
+			date.ParseISODate(wxString::FromUTF8((char*)sqlite3_column_text(statement, 0)));
+			date.SetDay(1);
+
+			DateValue value = { date, static_cast<float>(sqlite3_column_double(statement, 1)) };
+ 			values.push_back(value);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return values;
+}
+
 vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTime *to) {
 	vector<StringValue> values;
 

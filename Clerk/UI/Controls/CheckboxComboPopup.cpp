@@ -2,6 +2,7 @@
 
 void CheckboxComboPopup::Init() {
     this->Bind(wxEVT_LIST_ITEM_CHECKED, &CheckboxComboPopup::OnCheck, this);
+    this->Bind(wxEVT_LIST_ITEM_UNCHECKED, &CheckboxComboPopup::OnCheck, this);
 }
 
 bool CheckboxComboPopup::Create(wxWindow *parent) {

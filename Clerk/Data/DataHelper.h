@@ -96,6 +96,7 @@ public:
 	std::vector<DateValue> GetExpensesByMonth(Account &account, wxDateTime *from, wxDateTime *to);
 	std::vector<DateValue> GetExpensesByMonth(wxString ids, wxDateTime* from, wxDateTime* to);
 	std::vector<StringValue> GetExpensesByAccount(wxDateTime *from, wxDateTime *to);	
+	std::vector<StringValue> GetExpensesByAccount(wxString ids, wxDateTime* from, wxDateTime* to);
 	std::vector<StringValue> GetExpensesForAccount(Account &account, wxDateTime *from, wxDateTime *to);
 	std::vector<DateValue> GetBalanceByMonth(Account &account, wxDateTime *from, wxDateTime *to);
 	float GetExpensesSumForAccount(Account &account, wxDateTime *from, wxDateTime *to);	

@@ -210,6 +210,9 @@
     <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\AccountsComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -411,6 +414,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\CheckboxComboPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\AccountsComboBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

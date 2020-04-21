@@ -9,15 +9,14 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
 
 	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Accounts:"));
+	
+	accountsComboBox = new AccountsComboBox(filterPanel, wxID_ANY, wxEmptyString, wxPoint(0, 0), wxSize(200, 20));
+	//accountsList = new CheckboxComboPopup();
 
-	//accountList = new wxBitmapComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20), 0, NULL, wxCB_READONLY);
-	accountsComboBox = new wxComboCtrl(filterPanel, wxID_ANY, wxEmptyString, wxPoint(0, 0), wxSize(200, 20), wxCB_READONLY);
-	accountsList = new CheckboxComboPopup();
+	//accountsComboBox->SetPopupControl(accountsList);
 
-	accountsComboBox->SetPopupControl(accountsList);
-
-	accountsList->EnableCheckBoxes(true);
-	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	//accountsList->EnableCheckBoxes(true);
+	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	wxStaticText *st4 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
@@ -82,8 +81,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	chartPopup = new ExpensesTooltipPopup(this);
 
-	accountsList->OnItemSelect = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
-	//accountList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnAccountSelect, this);
+	//accountsList->OnItemSelect = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
@@ -93,10 +91,11 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 	periodList->Select(3);
+	accountsComboBox->SetAccounts(accounts);
 
 	selectedIds = {};
 
-	UpdateAccountsList();
+	//UpdateAccountsList();
 	RestoreFilterSettings();
 }
 
@@ -158,35 +157,7 @@ void ReportExpensesByMonthPanel::OnAccountSelect(int index) {
 	names.RemoveLast(2);
 
 	accountsComboBox->SetValue(names);
-	accountsList->SetStringValue(names);
-
-	/*wxString names = "";
-	accountIds = "";
-
-	long itemIndex = -1;
-
-	for (;;) {
-		itemIndex = accountsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
-
-		if (itemIndex == -1) {
-			break;
-		}
-
-		bool checked = accountsList->IsItemChecked(itemIndex);
-
-		if (checked) {
-			auto account = accounts[itemIndex];
-
-			names = names + wxString::Format("%s, ", *account->name);
-			accountIds = accountIds + wxString::Format("%i,", account->id);
-		}
-	}
-
-	names.RemoveLast(2);
-	accountIds.RemoveLast();
-
-	accountsComboBox->SetValue(names);
-	accountsList->SetStringValue(names);*/
+	//accountsList->SetStringValue(names);
 	
 	Update();
 }
@@ -223,7 +194,17 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	vector<StringValue> popupValues;
 
-	popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
+	wxString ids = "";
+
+	for (auto id : selectedIds) {
+		auto account = accounts[id];
+
+		ids = ids + wxString::Format("%i,", account->id);
+	}
+
+	ids.RemoveLast();
+
+	popupValues = DataHelper::GetInstance().GetExpensesByAccount(ids, &fromDate, &toDate);
 	/*if (accountList->GetSelection() == 0) {
 		popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
 	}
@@ -232,8 +213,8 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 		popupValues = DataHelper::GetInstance().GetExpensesForAccount(*account, &fromDate, &toDate);
 	}*/	
 
-	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
-	chartPopup->SetPosition(pos);
+	wxPoint position = chart->ClientToScreen(wxPoint(x, y));
+	chartPopup->SetPosition(position);
 
 	chartPopup->Update(date.Format("%B"), popupValues);
 }
@@ -307,7 +288,7 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 	toDatePicker->SetValue(toDate);
 }
 
-void ReportExpensesByMonthPanel::UpdateAccountsList() {
+/*void ReportExpensesByMonthPanel::UpdateAccountsList() {
 	wxListItem column;
 
 	column.SetId(0);
@@ -329,4 +310,4 @@ void ReportExpensesByMonthPanel::UpdateAccountsList() {
 
 		i++;
 	}
-}
+}*/

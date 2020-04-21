@@ -712,6 +712,30 @@ vector<StringValue> DataHelper::GetExpensesByAccount(wxDateTime *from, wxDateTim
 	return values;
 }
 
+vector<StringValue> DataHelper::GetExpensesByAccount(wxString ids, wxDateTime* from, wxDateTime* to) {
+	vector<StringValue> values;
+
+	char sql[512];
+	sqlite3_stmt* statement;
+
+	snprintf(sql, sizeof(sql), "SELECT a.name, TOTAL(t.to_account_amount) as sum FROM transactions t, accounts a WHERE t.to_account_id IN(%s) AND (a.type_id = 2 OR a.type_id = 3) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0 GROUP BY a.name ORDER BY sum DESC", static_cast<const char*>(ids.c_str()));
+	
+
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, from->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+		sqlite3_bind_text(statement, 2, to->FormatISODate().ToUTF8(), -1, SQLITE_TRANSIENT);
+
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			StringValue value = { wxString::FromUTF8((char*)sqlite3_column_text(statement, 0)), static_cast<float>(sqlite3_column_double(statement, 1)) };
+			values.push_back(value);
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return values;
+}
+
 vector<StringValue> DataHelper::GetExpensesForAccount(Account &account, wxDateTime *from, wxDateTime *to) {
 	vector<StringValue> values;
 

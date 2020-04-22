@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
+#include <set>
 #include "../../Data/DataHelper.h"
 
 class BudgetDialog : public wxFrame

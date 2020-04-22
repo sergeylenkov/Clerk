@@ -116,7 +116,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 	}
 
 	std::string str = budget->accountIds->mb_str();
-	std::vector<int> ids;
+	std::set<int> ids;
 
 	std::stringstream ss(str);
 
@@ -124,7 +124,7 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 	while (ss >> i)
 	{
-		ids.push_back(i);
+		ids.insert(i);
 
 		if (ss.peek() == ',') {
 			ss.ignore();
@@ -133,11 +133,10 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 
 	i = 0;
 
-	for (auto account : accounts)
+	for (auto& account : accounts)
 	{
-		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
-			accountsList->CheckItem(i, true);
-		}
+		bool checked = ids.count(account->id) > 0;
+		accountsList->CheckItem(i, checked);
 
 		i++;
 	}

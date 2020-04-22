@@ -22,9 +22,11 @@ private:
 	CheckboxComboPopup *accountsList;
 	std::vector<std::shared_ptr<Account>> accounts;
 	std::set<int> selectedIds;
+	bool ignoreSelection;
 
 	void UpdateList();
 	void UpdateNames();
+	void UpdateSelection();
 	void OnAccountSelect(int index);
 };
 

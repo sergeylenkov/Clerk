@@ -97,7 +97,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 	datePicker->SetValue(*goal->date);
 
 	std::string str = goal->accountIds->mb_str();
-	std::vector<int> ids;
+	std::set<int> ids;
 
 	std::stringstream ss(str);
 
@@ -105,7 +105,7 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 	while (ss >> i)
 	{
-		ids.push_back(i);
+		ids.insert(i);
 
 		if (ss.peek() == ',') {
 			ss.ignore();
@@ -114,11 +114,10 @@ void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
 
 	i = 0;
 
-	for (auto &account : accounts)
+	for (auto& account : accounts)
 	{
-		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
-			accountsList->CheckItem(i, true);
-		}
+		bool checked = ids.count(account->id) > 0;
+		accountsList->CheckItem(i, checked);
 
 		i++;
 	}

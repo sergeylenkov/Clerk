@@ -11,6 +11,7 @@ AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxStri
 	accountsList->OnItemSelect = std::bind(&AccountsComboBox::OnAccountSelect, this, std::placeholders::_1);
 
 	selectedIds = {};
+	ignoreSelection = false;
 }
 
 AccountsComboBox::~AccountsComboBox() {
@@ -25,8 +26,8 @@ void AccountsComboBox::SetAccounts(vector<shared_ptr<Account>> accounts) {
 void AccountsComboBox::SetSelection(std::set<int> ids) {
 	this->selectedIds = ids;
 
-	accountsList->CheckItem(0, true);
 	UpdateNames();
+	UpdateSelection();
 }
 
 void AccountsComboBox::UpdateList() {
@@ -40,13 +41,13 @@ void AccountsComboBox::UpdateList() {
 
 	int i = 0;
 
-	for (auto &account : accounts)
+	for (auto& account : accounts)
 	{
 		wxListItem listItem;
 
 		listItem.SetId(i);
 		listItem.SetData(account->id);
-
+		
 		accountsList->InsertItem(i, *account->name, account->iconId);
 
 		i++;
@@ -56,29 +57,73 @@ void AccountsComboBox::UpdateList() {
 void AccountsComboBox::UpdateNames() {
 	wxString names = "";
 
-	for (auto &account : accounts) {
-		if (selectedIds.count(account->id) > 0) {
-			names = names + wxString::Format("%s, ", *account->name);
+	if (selectedIds.count(-1) > 0) {
+		names = "All";
+	} else {
+		for (auto& account : accounts) {
+			if (selectedIds.count(account->id) > 0) {
+				names = names + wxString::Format("%s, ", *account->name);
+			}
 		}
-	}
 
-	names.RemoveLast(2);
+		names.RemoveLast(2);
+	}
 
 	this->SetValue(names);
 	accountsList->SetStringValue(names);
 }
 
+void AccountsComboBox::UpdateSelection() {	
+	ignoreSelection = true;
+	int i = 0;
+
+	for (auto& account : accounts)
+	{
+		bool checked = selectedIds.count(account->id) > 0;
+
+		if (selectedIds.count(-1) > 0) {
+			checked = true;
+		}
+
+		accountsList->CheckItem(i, checked);
+
+		i++;
+	}
+
+	ignoreSelection = false;
+}
+
 void AccountsComboBox::OnAccountSelect(int index) {
+	if (ignoreSelection) {
+		return;
+	}
+
 	auto account = accounts[index];
 
-	if (selectedIds.count(account->id) == 0) {
-		selectedIds.insert(account->id);
+	if (account->id == -1) {
+		if (selectedIds.count(account->id) == 0) {
+			selectedIds.clear();
+
+			for (auto& account : accounts) {
+				selectedIds.insert(account->id);
+			}
+		} else {
+			selectedIds.clear();
+		}
 	}
 	else {
-		selectedIds.erase(account->id);
-	}
+		selectedIds.erase(-1);
+
+		if (selectedIds.count(account->id) == 0) {
+			selectedIds.insert(account->id);
+		}
+		else {
+			selectedIds.erase(account->id);
+		}
+	}	
 
 	UpdateNames();
+	UpdateSelection();
 
 	if (OnChange) {
 		OnChange(selectedIds);

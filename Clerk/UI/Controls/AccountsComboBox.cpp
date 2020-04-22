@@ -22,6 +22,13 @@ void AccountsComboBox::SetAccounts(vector<shared_ptr<Account>> accounts) {
 	UpdateList();
 }
 
+void AccountsComboBox::SetSelection(std::set<int> ids) {
+	this->selectedIds = ids;
+
+	accountsList->CheckItem(0, true);
+	UpdateNames();
+}
+
 void AccountsComboBox::UpdateList() {
 	wxListItem column;
 
@@ -33,7 +40,7 @@ void AccountsComboBox::UpdateList() {
 
 	int i = 0;
 
-	for (auto& account : accounts)
+	for (auto &account : accounts)
 	{
 		wxListItem listItem;
 
@@ -46,24 +53,34 @@ void AccountsComboBox::UpdateList() {
 	}
 }
 
-void AccountsComboBox::OnAccountSelect(int index) {
-	if (selectedIds.count(index) == 0) {
-		selectedIds.insert(index);
-	}
-	else {
-		selectedIds.erase(index);
-	}
-
+void AccountsComboBox::UpdateNames() {
 	wxString names = "";
 
-	for (auto id : selectedIds) {
-		auto account = accounts[id];
-
-		names = names + wxString::Format("%s, ", *account->name);
+	for (auto &account : accounts) {
+		if (selectedIds.count(account->id) > 0) {
+			names = names + wxString::Format("%s, ", *account->name);
+		}
 	}
 
 	names.RemoveLast(2);
 
 	this->SetValue(names);
 	accountsList->SetStringValue(names);
+}
+
+void AccountsComboBox::OnAccountSelect(int index) {
+	auto account = accounts[index];
+
+	if (selectedIds.count(account->id) == 0) {
+		selectedIds.insert(account->id);
+	}
+	else {
+		selectedIds.erase(account->id);
+	}
+
+	UpdateNames();
+
+	if (OnChange) {
+		OnChange(selectedIds);
+	}
 }

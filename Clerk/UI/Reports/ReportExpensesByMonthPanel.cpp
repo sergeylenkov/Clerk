@@ -11,13 +11,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Accounts:"));
 	
 	accountsComboBox = new AccountsComboBox(filterPanel, wxID_ANY, wxEmptyString, wxPoint(0, 0), wxSize(200, 20));
-	//accountsList = new CheckboxComboPopup();
-
-	//accountsComboBox->SetPopupControl(accountsList);
-
-	//accountsList->EnableCheckBoxes(true);
-	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
-
+	
 	wxStaticText *st4 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
 	wxArrayString *values = new wxArrayString();
@@ -81,7 +75,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	chartPopup = new ExpensesTooltipPopup(this);
 
-	//accountsList->OnItemSelect = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
+	accountsComboBox->OnChange = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
@@ -95,7 +89,6 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	selectedIds = {};
 
-	//UpdateAccountsList();
 	RestoreFilterSettings();
 }
 
@@ -106,26 +99,13 @@ ReportExpensesByMonthPanel::~ReportExpensesByMonthPanel() {
 void ReportExpensesByMonthPanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
-
-	wxString ids = "";
-
-	for (auto id : selectedIds) {
-		auto account = accounts[id];
-
-		ids = ids + wxString::Format("%i,", account->id);
-	}
-
-	ids.RemoveLast();
-
-	values = DataHelper::GetInstance().GetExpensesByMonth(ids, &fromDate, &toDate);
-	//values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
-	/*if (accountList->GetSelection() == 0) {
+	
+	if (selectedIds.count(-1) > 0) {
 		values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
 	}
 	else {
-		auto account = accounts[accountList->GetSelection()];
-		values = DataHelper::GetInstance().GetExpensesByMonth(*account, &fromDate, &toDate);
-	}*/	
+		values = DataHelper::GetInstance().GetExpensesByMonth(GetSelectedAccounsIds(), &fromDate, &toDate);
+	}	
 
 	std::vector<StringValue> chartValues;
 
@@ -138,27 +118,8 @@ void ReportExpensesByMonthPanel::Update() {
 	chart->SetValues(chartValues);
 }
 
-void ReportExpensesByMonthPanel::OnAccountSelect(int index) {
-	if (selectedIds.count(index) == 0) {
-		selectedIds.insert(index);
-	}
-	else {
-		selectedIds.erase(index);
-	}
-
-	wxString names = "";
-
-	for (auto id : selectedIds) {
-		auto account = accounts[id];
-
-		names = names + wxString::Format("%s, ", *account->name);
-	}
-
-	names.RemoveLast(2);
-
-	accountsComboBox->SetValue(names);
-	//accountsList->SetStringValue(names);
-	
+void ReportExpensesByMonthPanel::OnAccountSelect(std::set<int> ids) {
+	selectedIds = ids;
 	Update();
 }
 
@@ -194,24 +155,12 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	vector<StringValue> popupValues;
 
-	wxString ids = "";
-
-	for (auto id : selectedIds) {
-		auto account = accounts[id];
-
-		ids = ids + wxString::Format("%i,", account->id);
-	}
-
-	ids.RemoveLast();
-
-	popupValues = DataHelper::GetInstance().GetExpensesByAccount(ids, &fromDate, &toDate);
-	/*if (accountList->GetSelection() == 0) {
+	if (selectedIds.count(-1) > 0) {
 		popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
 	}
 	else {
-		auto account = accounts[accountList->GetSelection()];
-		popupValues = DataHelper::GetInstance().GetExpensesForAccount(*account, &fromDate, &toDate);
-	}*/	
+		popupValues = DataHelper::GetInstance().GetExpensesByAccount(GetSelectedAccounsIds(), &fromDate, &toDate);
+	}
 
 	wxPoint position = chart->ClientToScreen(wxPoint(x, y));
 	chartPopup->SetPosition(position);
@@ -222,24 +171,36 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
 
-	/*for (unsigned int i = 0; i < accounts.size(); i++) {
-		if (accounts[i]->id == settings.accountId) {
-			accountList->SetSelection(i);
+	this->selectedIds = {};
+
+	std::string str = settings.accountIds.mb_str();
+
+	std::stringstream ss(str);
+
+	int i;
+
+	while (ss >> i)
+	{
+		selectedIds.insert(i);
+
+		if (ss.peek() == ',') {
+			ss.ignore();
 		}
-	}*/
+	}
 
 	periodList->SetSelection(settings.period);
 
 	periodFromDate = settings.fromDate;
 	periodToDate = settings.toDate;
 
+	accountsComboBox->SetSelection(this->selectedIds);
+
 	CalculatePeriod();
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
-	/*Account *account = accounts[accountList->GetSelection()].get();
 
-	Settings::GetInstance().SetReportFilterSettings(1, account->id, periodList->GetSelection(), periodFromDate, periodToDate);*/
+	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), periodList->GetSelection(), periodFromDate, periodToDate);
 }
 
 void ReportExpensesByMonthPanel::CalculatePeriod() {
@@ -288,26 +249,16 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 	toDatePicker->SetValue(toDate);
 }
 
-/*void ReportExpensesByMonthPanel::UpdateAccountsList() {
-	wxListItem column;
+wxString ReportExpensesByMonthPanel::GetSelectedAccounsIds() {
+	wxString ids = "";
 
-	column.SetId(0);
-	column.SetText(_("Name"));
-	column.SetWidth(180);
-
-	accountsList->InsertColumn(0, column);
-
-	int i = 0;
-
-	for (auto& account : accounts)
-	{
-		wxListItem listItem;
-
-		listItem.SetId(i);
-		listItem.SetData(account->id);
-
-		accountsList->InsertItem(i, *account->name, account->iconId);
-
-		i++;
+	for (auto &account : accounts) {
+		if (selectedIds.count(account->id) > 0) {
+			ids = ids + wxString::Format("%i,", account->id);
+		}
 	}
-}*/
+
+	ids.RemoveLast();
+
+	return ids;
+}

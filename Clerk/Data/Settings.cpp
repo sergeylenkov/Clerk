@@ -127,11 +127,15 @@ void Settings::Open(char *configName) {
 				fromDate.ParseISODate(wxString::FromUTF8(filter["FromDate"].GetString()));
 				toDate.ParseISODate(wxString::FromUTF8(filter["ToDate"].GetString()));
 
-				int id = filter["Id"].GetInt();
-				int accountId = filter["AccountId"].GetInt();
+				int id = filter["Id"].GetInt();				
 				int period = filter["Period"].GetInt();
+				wxString accountIds = "-1";
 
-				ReportFilterSettings value = { id, accountId, period, fromDate, toDate };
+				if (filter.HasMember("AccountIds")) {
+					accountIds = wxString::FromUTF8(filter["AccountIds"].GetString());
+				}
+
+				ReportFilterSettings value = { id, accountIds, period, fromDate, toDate };
 				reportFilterSettings.push_back(value);
 			}
 		}
@@ -245,11 +249,14 @@ void Settings::Save() {
 			Value filterJson(kObjectType);
 			
 			filterJson.AddMember("Id", settings.id, json.GetAllocator());
-			filterJson.AddMember("AccountId", settings.accountId, json.GetAllocator());
+
+			Value string(settings.accountIds.c_str(), json.GetAllocator());
+			filterJson.AddMember("AccountIds", string, json.GetAllocator());
+
 			filterJson.AddMember("Period", settings.period, json.GetAllocator());
 
 			wxString dateString = settings.fromDate.FormatISODate();
-			Value string(dateString.c_str(), json.GetAllocator());
+			string.SetString(dateString.c_str(), json.GetAllocator());
 
 			filterJson.AddMember("FromDate", string, json.GetAllocator());
 
@@ -471,7 +478,7 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));	
 	fromDate.SetDay(1);
 
-	ReportFilterSettings result = { 0, -1, 0, fromDate, toDate };
+	ReportFilterSettings result = { 0, "-1", 0, fromDate, toDate };
 
 	for (auto &settings : reportFilterSettings)
 	{
@@ -483,13 +490,13 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	return result;
 }
 
-void Settings::SetReportFilterSettings(int id, int accountId, int period, wxDateTime fromDate, wxDateTime toDate) {
+void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
 	for (auto &settings : reportFilterSettings)
 	{
 		if (settings.id == id) {
-			settings.accountId = accountId;
+			settings.accountIds = accountIds;
 			settings.period = period;
 			settings.fromDate = fromDate;
 			settings.toDate = toDate;
@@ -500,6 +507,6 @@ void Settings::SetReportFilterSettings(int id, int accountId, int period, wxDate
 	}
 
 	if (!found) {
-		reportFilterSettings.push_back({ id, accountId, period, fromDate, toDate });
+		reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate });
 	}
 }

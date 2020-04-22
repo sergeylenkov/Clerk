@@ -168,11 +168,11 @@ void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
 void ReportBalancePanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(2);
 
-	for (unsigned int i = 0; i < accounts.size(); i++) {
+	/*for (unsigned int i = 0; i < accounts.size(); i++) {
 		if (accounts[i]->id == settings.accountId) {
 			accountList->SetSelection(i);
 		}
-	}
+	}*/
 
 	periodList->SetSelection(settings.period);
 
@@ -183,9 +183,9 @@ void ReportBalancePanel::RestoreFilterSettings() {
 }
 
 void ReportBalancePanel::SaveFilterSettings() {
-	Account *account = accounts[accountList->GetSelection()].get();
+	//Account *account = accounts[accountList->GetSelection()].get();
 
-	Settings::GetInstance().SetReportFilterSettings(2, account->id, periodList->GetSelection(), periodFromDate, periodToDate);
+	//Settings::GetInstance().SetReportFilterSettings(2, account->id, periodList->GetSelection(), periodFromDate, periodToDate);
 }
 
 void ReportBalancePanel::CalculatePeriod() {

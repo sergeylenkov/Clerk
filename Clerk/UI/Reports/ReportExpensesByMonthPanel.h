@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/bmpcbox.h>
@@ -15,7 +14,6 @@
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
-#include "../Controls/CheckboxComboPopup.h"
 #include "../Controls/AccountsComboBox.h"
 
 using namespace std;

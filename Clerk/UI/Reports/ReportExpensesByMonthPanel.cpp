@@ -8,11 +8,10 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
 
-	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Accounts:"));
-	
+	wxStaticText *accountsLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Accounts:"));	
 	accountsComboBox = new AccountsComboBox(filterPanel, wxID_ANY, wxEmptyString, wxPoint(0, 0), wxSize(200, 20));
 	
-	wxStaticText *st4 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
+	wxStaticText *periodLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
 	wxArrayString *values = new wxArrayString();
 
@@ -25,20 +24,24 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
-	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
+	wxStaticText *fromLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
-	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
+	wxStaticText *toLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
-	filterSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	averageCheckbox = new wxCheckBox(filterPanel, wxID_ANY, wxT("Show average"));
+
+	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(0, 0, 1, wxEXPAND, 5);
+	filterSizer->Add(averageCheckbox, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
@@ -79,6 +82,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
 	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
 	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
+	averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
 
 	chart->OnShowPopup = std::bind(&ReportExpensesByMonthPanel::ShowPopup, this);
 	chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
@@ -115,6 +119,7 @@ void ReportExpensesByMonthPanel::Update() {
 		chartValues.push_back(chartValue);
 	}
 
+	chart->SetDrawAverage(averageCheckbox->IsChecked());
 	chart->SetValues(chartValues);
 }
 
@@ -135,6 +140,10 @@ void ReportExpensesByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
 	SaveFilterSettings();
 
 	CalculatePeriod();
+	Update();
+}
+
+void ReportExpensesByMonthPanel::OnDrawAverageCheck(wxCommandEvent& event) {
 	Update();
 }
 

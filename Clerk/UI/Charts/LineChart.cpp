@@ -2,6 +2,7 @@
 
 LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	currentPopupIndex = -1;
+	drawAverage = false;
 
 	this->Bind(wxEVT_PAINT, &LineChart::OnPaint, this);
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
@@ -12,6 +13,7 @@ void LineChart::SetValues(std::vector<StringValue> values) {
 	this->values = values;
 
 	maxValue = 0;
+	totalValue = 0;
 
 	if (values.size() > 0) {
 		auto ptr = max_element(values.begin(), values.end(),
@@ -22,7 +24,15 @@ void LineChart::SetValues(std::vector<StringValue> values) {
 		maxValue = ptr->value;
 	}
 
+	totalValue = std::accumulate(values.begin(), values.end(), 0, [](float accumulator, StringValue b) {
+		return accumulator + b.value;
+	});
+
 	Draw();
+}
+
+void LineChart::SetDrawAverage(bool value) {
+	drawAverage = value;
 }
 
 void LineChart::Draw() {
@@ -84,6 +94,9 @@ void LineChart::Draw() {
 		stepX = graphWidth / (values.size() - 1);
 	}
 
+	dc.SetTextForeground(wxColor(0, 0, 0));
+	dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
+
 	for (int i = 0; i <= maxY; i += labelStepY) {
 		int y = (height - offsetY) - round(i * stepY);
 
@@ -91,11 +104,8 @@ void LineChart::Draw() {
 		wxSize size = dc.GetTextExtent(label);
 
 		int x = maxSize.GetWidth() - size.GetWidth();
-
-		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
-		dc.DrawText(label, wxPoint(x, y - 10));
-
-		dc.SetPen(wxPen(wxColor(240, 240, 240), 0));
+		
+		dc.DrawText(label, wxPoint(x, y - 10));		
 		dc.DrawLine(offsetX, y, offsetX + graphWidth, y);
 	}
 	
@@ -112,6 +122,23 @@ void LineChart::Draw() {
 
 		wxSize size = dc.GetTextExtent(values[0].string);
 		dc.DrawText(values[0].string, wxPoint(x - (size.GetWidth() / 2), height - 20));
+	}
+
+	if (drawAverage) {
+		float average = totalValue / values.size();
+
+		int y = (height - offsetY) - round(average * stepY);
+
+		wxString label = wxNumberFormatter::ToString(average, 0);
+		wxSize size = dc.GetTextExtent(label);
+
+		int x = maxSize.GetWidth() - size.GetWidth();
+
+		dc.SetTextForeground(wxColor(40, 167, 70));
+		dc.DrawText(label, wxPoint(x, y - 10));
+
+		dc.SetPen(wxPen(wxColor(40, 167, 70), 0));
+		dc.DrawLine(offsetX, y, offsetX + graphWidth, y);
 	}
 
 	DrawGraph();

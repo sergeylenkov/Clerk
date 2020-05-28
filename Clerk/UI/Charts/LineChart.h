@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <map>
 #include <functional>
+#include <numeric>
 #include "../../Data/DataHelper.h"
 
 using namespace std;
@@ -16,6 +17,7 @@ public:
 	LineChart(wxWindow *parent, wxWindowID id);
 
 	void SetValues(std::vector<StringValue> values);
+	void SetDrawAverage(bool value);
 	void Draw();
 
 	std::function<void()> OnShowPopup;
@@ -26,6 +28,7 @@ private:
 	std::vector<StringValue> values;
 	std::vector<std::pair<int, int>> points;
 	float maxValue;
+	float totalValue;
 	int width;
 	int height;
 	int graphWidth;
@@ -34,6 +37,7 @@ private:
 	int offsetX;
 	int offsetY;
 	int currentPopupIndex;
+	bool drawAverage;
 
 	void DrawGraph();
 	void OnPaint(wxPaintEvent& event);

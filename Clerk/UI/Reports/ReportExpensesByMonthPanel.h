@@ -32,6 +32,7 @@ private:
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
+	wxCheckBox *averageCheckbox;
 	vector<shared_ptr<Account>> accounts;
 	ExpensesTooltipPopup *chartPopup;
 	vector<DateValue> values = {};
@@ -42,6 +43,7 @@ private:
 	void OnAccountSelect(std::set<int> ids);
 	void OnDateChanged(wxDateEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
+	void OnDrawAverageCheck(wxCommandEvent& event);
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);

@@ -130,12 +130,18 @@ void Settings::Open(char *configName) {
 				int id = filter["Id"].GetInt();				
 				int period = filter["Period"].GetInt();
 				wxString accountIds = "-1";
+				bool average = false;
 
 				if (filter.HasMember("AccountIds")) {
 					accountIds = wxString::FromUTF8(filter["AccountIds"].GetString());
 				}
 
-				ReportFilterSettings value = { id, accountIds, period, fromDate, toDate };
+				if (filter.HasMember("Average")) {
+					average = filter["Average"].GetBool();
+				}
+
+				ReportFilterSettings value = { id, accountIds, period, fromDate, toDate, average };
+
 				reportFilterSettings.push_back(value);
 			}
 		}
@@ -264,6 +270,7 @@ void Settings::Save() {
 			string.SetString(dateString.c_str(), json.GetAllocator());
 
 			filterJson.AddMember("ToDate", string, json.GetAllocator());
+			filterJson.AddMember("Average", settings.average, json.GetAllocator());
 
 			settingsJson.PushBack(filterJson, json.GetAllocator());
 		}
@@ -478,7 +485,7 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 	fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));	
 	fromDate.SetDay(1);
 
-	ReportFilterSettings result = { 0, "-1", 0, fromDate, toDate };
+	ReportFilterSettings result = { 0, "-1", 0, fromDate, toDate, false };
 
 	for (auto &settings : reportFilterSettings)
 	{
@@ -491,6 +498,10 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 }
 
 void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate) {
+	SetReportFilterSettings(id, accountIds, period, fromDate, toDate, false);
+}
+
+void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average) {
 	bool found = false;
 
 	for (auto &settings : reportFilterSettings)
@@ -500,13 +511,15 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 			settings.period = period;
 			settings.fromDate = fromDate;
 			settings.toDate = toDate;
+			settings.average = average;
 
 			found = true;
+
 			break;
 		}
 	}
 
 	if (!found) {
-		reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate });
+		reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate, average });
 	}
 }

@@ -204,12 +204,14 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 
 	accountsComboBox->SetSelection(this->selectedIds);
 
+	averageCheckbox->SetValue(settings.average);
+
 	CalculatePeriod();
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
 
-	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), periodList->GetSelection(), periodFromDate, periodToDate);
+	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), periodList->GetSelection(), periodFromDate, periodToDate, averageCheckbox->IsChecked());
 }
 
 void ReportExpensesByMonthPanel::CalculatePeriod() {

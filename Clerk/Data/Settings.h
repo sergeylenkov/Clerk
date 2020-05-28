@@ -46,6 +46,7 @@ struct ReportFilterSettings {
 	int period;
 	wxDateTime fromDate;
 	wxDateTime toDate;
+	bool average;
 };
 
 class Settings
@@ -88,6 +89,7 @@ public:
 	void SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
 	ReportFilterSettings GetReportFilterSettings(int id);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate);
+	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);
 
 private:
 	wxString fileName;

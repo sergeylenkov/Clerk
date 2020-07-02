@@ -168,8 +168,7 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 		y = y + 40;
 	}
 
-	int dayPercent = (currentDay / (float)daysCount) * 100;
-	x = (progressWidth / 100.0) * dayPercent;
+	x = (progressWidth / daysCount) * (currentDay - 1);
 
 	dc.SetPen(wxPen(wxColor(204, 204, 204), 1));
 	dc.DrawLine(progressX + x, 100, progressX + x, y);

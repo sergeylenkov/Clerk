@@ -168,7 +168,8 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 		y = y + 40;
 	}
 
-	x = (progressWidth / daysCount) * (currentDay - 1);
+	float dayStep = (float)progressWidth / (daysCount - 1);
+	x = dayStep * (currentDay - 1);
 
 	dc.SetPen(wxPen(wxColor(204, 204, 204), 1));
 	dc.DrawLine(progressX + x, 100, progressX + x, y);

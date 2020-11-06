@@ -52,22 +52,38 @@ void ExpensesTooltipPanel::SetValues(std::vector<StringValue> values) {
 
 void ExpensesTooltipPanel::Update()
 {
-	int height = 30 + (values.size() * 18);
+	int height = 0;
 	int width = 0;
 	int maxName = title.Length();
-	int maxValue = 0;
+	int maxValue = total;
+
+	
+	wxFont titleFont = this->GetFont();
+	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
+
+	wxClientDC dc(this);
+	dc.SetFont(titleFont);
+
+	wxSize nameSize = dc.GetTextExtent(title);
+	wxSize valueSize = dc.GetTextExtent(Utils::FormatAmount(total));
+
+	width = nameSize.GetWidth() + valueSize.GetWidth() + 20;
+	height = height + nameSize.GetHeight() + 10;
+
+	dc.SetFont(this->GetFont());
 
 	for (auto value : values) {
-		if (value.string.Length() > maxName) {
-			maxName = value.string.Length();
+		nameSize = dc.GetTextExtent(value.string);
+		valueSize = dc.GetTextExtent(Utils::FormatAmount(value.value));
+
+		int lineWidth = nameSize.GetWidth() + valueSize.GetWidth() + 20;
+
+		if (lineWidth > width) {
+			width = lineWidth;
 		}
 
-		if (value.value > maxValue) {
-			maxValue = value.value;
-		}
+		height = height + nameSize.GetHeight() + 5;
 	}
-
-	width = (maxName * 7) + (Utils::FormatAmount(maxValue).Length() * 7);
 
 	this->SetMinSize(wxSize(width, height));
 
@@ -107,7 +123,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 	dc.SetTextForeground(wxColor(60, 60, 60));
 	dc.DrawText(amount, wxPoint(width - size.GetWidth() - 5, y));
 
-	y = 30;
+	y = size.GetHeight() + 10;
 
 	for (auto value : values) {
 		dc.SetFont(accountFont);
@@ -122,7 +138,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 		dc.SetTextForeground(wxColor(60, 60, 60));
 		dc.DrawText(amount, wxPoint(width - size.GetWidth() - 5, y));
 
-		y = y + 18;
+		y = y + size.GetHeight() + 5;
 	}
 }
 

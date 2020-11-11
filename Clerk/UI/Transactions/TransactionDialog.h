@@ -9,6 +9,7 @@
 #include "../../Data/DataHelper.h"
 #include "../../Data/Settings.h"
 #include "../TagsPopup.h"
+#include "../Controls/AmountField.h"
 
 using namespace std;
 
@@ -38,9 +39,9 @@ private:
 	wxStaticText *dateLabel;
 	wxDatePickerCtrl *datePicker;
 	wxStaticText *fromAmountLabel;
-	wxTextCtrl *fromAmountField;
+	AmountField *fromAmountField;
 	wxStaticText *toAmountLabel;
-	wxTextCtrl *toAmountField;
+	AmountField *toAmountField;
 	float fromValue = 0.0;
 	float toValue = 0.0;
 	std::vector<std::shared_ptr<Account>> accounts;
@@ -67,8 +68,6 @@ private:
 	void OnTagsKeyDown(wxKeyEvent &event);
 	void OnTagsKillFocus(wxFocusEvent& event);	
 	void OnSelectTag();
-	void AddTag();
-	wxString ClearAmountValue(wxString &value);
-	float GetValueFromString(wxString &value);
+	void AddTag();	
 	void OnKeyDown(wxKeyEvent &event);
 };

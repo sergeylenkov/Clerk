@@ -6,11 +6,6 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 	this->SetIcon(wxICON(APP_ICON));
 
-	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
-	wxArrayString chars(13, allowedChars);
-	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
-	amountValidator.SetIncludes(chars);
-
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
@@ -23,7 +18,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
 	horizontalSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	fromAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
@@ -39,7 +34,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	toAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
 	horizontalSizer->Add(toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	toAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
@@ -166,8 +161,8 @@ void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
 void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction) {
 	this->transaction = transaction;
 
-	fromAmountField->SetValue(wxString::Format("%.2f", transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", transaction->toAmount));
+	fromAmountField->SetValue(Utils::FormatAmount(transaction->fromAmount));
+	toAmountField->SetValue(Utils::FormatAmount(transaction->toAmount));
 	tagsField->SetValue(transaction->GetTagsString());
 	noteField->SetValue(*transaction->note);
 	datePicker->SetValue(*transaction->paidAt);
@@ -209,8 +204,8 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 	this->transaction = copy;
 	this->splitTransaction = transaction;
 
-	fromAmountField->SetValue(wxString::Format("%.2f", this->transaction->fromAmount));
-	toAmountField->SetValue(wxString::Format("%.2f", 0.0));
+	fromAmountField->SetValue(Utils::FormatAmount(this->transaction->fromAmount));
+	toAmountField->SetValue(Utils::FormatAmount(0.0));
 	tagsField->SetValue("");
 	noteField->SetValue("");
 	datePicker->SetValue(*this->transaction->paidAt);
@@ -333,11 +328,11 @@ void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 	Account *toAccount = toAccounts[toList->GetSelection()].get();
 
 	if (fromAccount->currency->id != toAccount->currency->id) {
-		float fromValue = GetValueFromString(fromAmountField->GetValue());
-		float toValue = GetValueFromString(toAmountField->GetValue());
+		float fromValue = fromAmountField->GetFloatValue();
+		float toValue = toAmountField->GetFloatValue();
 
 		float amount = DataHelper::GetInstance().ConvertCurrency(fromAccount->currency->id, toAccount->currency->id, fromValue);
-		toAmountField->SetValue(wxString::Format("%.2f", amount));
+		toAmountField->SetValue(Utils::FormatAmount(amount));
 	}
 }
 
@@ -348,8 +343,8 @@ void TransactionDialog::OnOK(wxCommandEvent &event) {
 	transaction->SetTagsString(tagsField->GetValue());
 	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());	
 		  
-	transaction->fromAmount = GetValueFromString(fromAmountField->GetValue());
-	transaction->toAmount = GetValueFromString(toAmountField->GetValue());
+	transaction->fromAmount = fromAmountField->GetFloatValue();
+	transaction->toAmount = toAmountField->GetFloatValue();
 
 	transaction->Save();
 
@@ -373,32 +368,27 @@ void TransactionDialog::OnCancel(wxCommandEvent &event) {
 
 void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
-
-	wxString stringAmount = ClearAmountValue(fromAmountField->GetValue());	
-	fromAmountField->SetValue(stringAmount);
-
+	
 	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
 	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;	
 
-	float fromValue = GetValueFromString(fromAmountField->GetValue());
-	float toValue = GetValueFromString(toAmountField->GetValue());	
+	float fromValue = fromAmountField->GetFloatValue();
+	float toValue = toAmountField->GetFloatValue();
 
 	if (toValue == 0) {
 		if (fromCurrencyId == toCurrencyId) {
-			toAmountField->SetValue(stringAmount);
+			toAmountField->SetValue(Utils::FormatAmount(fromAmountField->GetFloatValue()));
 		}
+
 		else if (Settings::GetInstance().IsConvertCurrency()) {
 			float amount = DataHelper::GetInstance().ConvertCurrency(fromCurrencyId, toCurrencyId, fromValue);
-			toAmountField->SetValue(wxString::Format("%.2f", amount));
+			toAmountField->SetValue(Utils::FormatAmount(amount));
 		}
 	}
 }
 
 void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
-
-	wxString stringAmount = ClearAmountValue(toAmountField->GetValue());	
-	toAmountField->SetValue(stringAmount);
 }
 
 void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
@@ -482,26 +472,4 @@ void TransactionDialog::AddTag() {
 
 	tagsField->SetValue(result);
 	tagsField->SetInsertionPointEnd();
-}
-
-wxString TransactionDialog::ClearAmountValue(wxString &value) {
-	value.Trim(true);
-	value.Trim(false);
-	value.Replace(",", ".", true);
-	value.Replace(" ", "", true);
-
-	return value;
-}
-
-float TransactionDialog::GetValueFromString(wxString &value) {
-	wxString clearValue = ClearAmountValue(value);
-	
-	if (clearValue.Length() > 0) {
-		double result = 0;
-		clearValue.ToDouble(&result);
-
-		return (float)result;
-	}
-
-	return 0.0;
 }

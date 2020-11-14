@@ -26,6 +26,7 @@ wxString AmountField::ClearAmountValue(wxString& value)
 	value.Trim(false);
 	value.Replace(",", ".", true);
 	value.Replace(" ", "", true);
+	value.Replace("\xA0", "", true);
 
 	return value;
 }

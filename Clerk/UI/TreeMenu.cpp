@@ -9,8 +9,7 @@ TreeMenu::TreeMenu(wxWindow *parent, wxWindowID id) : wxPanel(parent, id)
 	treeMenu = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT |  wxBORDER_NONE);
 	treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));	
 	treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));	
-	treeMenu->AssignImageList(imageList);
-	treeMenu->AddRoot("", -1, -1, 0);
+	treeMenu->AssignImageList(imageList);	
 
 	mainSizer->Add(treeMenu, 1, wxEXPAND | wxALL, 0);
 
@@ -51,12 +50,11 @@ void TreeMenu::CreateImageList() {
 }
 
 void TreeMenu::Update() {
-	wxTreeItemId rootItem = treeMenu->GetRootItem();
-
+	treeMenu->DeleteAllItems();
+	wxTreeItemId rootItem = treeMenu->AddRoot("", -1, -1, 0);
+	
 	accounts.clear();
 	reports.clear();
-
-	treeMenu->DeleteChildren(rootItem);
 
 	TreeMenuItemData *itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemTypes::Dashboard;

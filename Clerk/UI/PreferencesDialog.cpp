@@ -52,7 +52,8 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	int index = 0;
 	int i = 0;
 
-	for (auto currency : DataHelper::GetInstance().GetCurrencies())
+	//TODO
+	/*for (auto currency : DataHelper::GetInstance().GetCurrencies())
 	{
 		currencies.push_back(currency);
 
@@ -66,7 +67,7 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 		i++;
 	}
 
-	currencyList->SetSelection(index);
+	currencyList->SetSelection(index);*/
 
 	convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
 	loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());

@@ -1,6 +1,6 @@
 #include "AlertsPanel.h"
 
-AlertsPanel::AlertsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+AlertsPanel::AlertsPanel(wxWindow *parent, Data::DataContext& context) : DataPanel(parent, _context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	model = new AlertsListDataModel();
@@ -24,7 +24,7 @@ AlertsPanel::AlertsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id
 	this->Layout();
 }
 
-shared_ptr<Alert> AlertsPanel::GetAlert() {
+std::shared_ptr<AlertViewModel> AlertsPanel::GetAlert() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
@@ -36,7 +36,7 @@ shared_ptr<Alert> AlertsPanel::GetAlert() {
 }
 
 void AlertsPanel::Update() {
-	alerts = DataHelper::GetInstance().GetAlerts();
+	alerts = _context.GetAlertsService().GetAll();
 	model.get()->SetItems(alerts);
 }
 
@@ -57,7 +57,7 @@ void AlertsPanel::Delete() {
 	auto alert = GetAlert();
 
 	if (alert) {
-		alert->Delete();
+		//_context.GetAlertsRepository().Delete(*alert);
 		Update();
 	}
 }

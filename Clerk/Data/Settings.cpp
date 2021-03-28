@@ -450,7 +450,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	Utils::CalculatePeriod(PeriodTypes::CurrentWeek, fromDate, toDate);
+	Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
 
 	ListFilterSettings result = { 0, 0, 0, fromDate, toDate };
 

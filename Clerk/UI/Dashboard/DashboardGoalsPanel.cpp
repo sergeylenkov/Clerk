@@ -1,19 +1,18 @@
 #include "DashboardGoalsPanel.h"
 
-DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
-void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
-	this->goals = goals;
-	values.clear();
+void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<GoalViewModel>> goals) {
+	_goals = goals;
+	_values.clear();
 
 	for (auto &goal : goals) {
-		float currentAmount = DataHelper::GetInstance().GetBalanceForGoal(*goal);
-		float remainAmount = goal->amount - currentAmount;
-		float remainPercent = currentAmount / (goal->amount / 100.0);		
+		float remainAmount = goal->amount - goal->balance;
+		float remainPercent = goal->balance / (goal->amount / 100.0);
 
-		values.push_back({ *goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+		_values.push_back({ goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(goal->balance, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
 	Update();
@@ -21,7 +20,7 @@ void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<Goal>> goals) {
 
 void DashboardGoalsPanel::Update()
 {
-	int height = 170 + (goals.size() * 30);
+	int height = 170 + (_goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -51,7 +50,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 
-	for (auto value : values) {
+	for (auto &value : _values) {
 		wxSize size = dc.GetTextExtent(value.name);
 
 		if (size.GetWidth() > columnWidth0) {
@@ -94,7 +93,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int progressWidth = width - columnWidth0 - columnWidth1 - columnWidth2 - 60;
 	int progressX = columnWidth0 + 20;
 
-	for (auto value : values) {
+	for (auto &value : _values) {
 		dc.SetTextForeground(wxColor(0, 0, 0));
 
 		dc.SetFont(font);
@@ -120,7 +119,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Utils::ColorForGoal(value.percent);
+		wxColor color = Colors::ColorForGoal(value.percent);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));		

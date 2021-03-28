@@ -59,7 +59,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
 	verticalSizer->Add(accountsList, 1, wxALL | wxEXPAND, 5);
 
-	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	panelSizer->Add(verticalSizer, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
@@ -90,7 +90,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	periodList->AppendString("Year");
 	periodList->AppendString("Custom");
 
-	periodList->SetSelection(static_cast<int>(Budget::Period::Month));
+	periodList->SetSelection(static_cast<int>(BudgetPeriod::Month));
 
 	UpdateAccounts();
 
@@ -101,21 +101,21 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	Bind(wxEVT_CHAR_HOOK, &BudgetDialog::OnKeyDown, this);
 }
 
-void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
-	this->budget = budget;
+void BudgetDialog::SetBudget(std::shared_ptr<BudgetViewModel> budget) {
+	_budget = budget;
 
-	nameField->SetValue(*this->budget->name);	
-	periodList->SetSelection(static_cast<int>(this->budget->period));
-	amountField->SetValue(wxString::Format("%.2f", this->budget->amount));
-	datePicker->SetValue(*budget->date);
+	nameField->SetValue(budget->name);	
+	periodList->SetSelection(static_cast<int>(budget->period));
+	amountField->SetValue(wxString::Format("%.2f", budget->amount));
+	datePicker->SetValue(budget->date);
 
 	datePicker->Disable();
 
-	if (budget->period == Budget::Period::Custom) {
+	if (budget->period == BudgetPeriod::Custom) {
 		datePicker->Enable();
 	}
 
-	std::string str = budget->accountIds->mb_str();
+	/*std::string str = budget->accountIds->mb_str();
 	std::set<int> ids;
 
 	std::stringstream ss(str);
@@ -139,17 +139,17 @@ void BudgetDialog::SetBudget(std::shared_ptr<Budget> budget) {
 		accountsList->CheckItem(i, checked);
 
 		i++;
-	}
+	}*/
 }
 
 void BudgetDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckBoxes(true);
 
-	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
-	auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
+	//accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Expens);
+	//auto debts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Debt);
 
-	accounts.insert(accounts.end(), debts.begin(), debts.end());
+	//accounts.insert(accounts.end(), debts.begin(), debts.end());
 
 	wxListItem column;
 
@@ -169,16 +169,16 @@ void BudgetDialog::UpdateAccounts() {
 		listItem.SetData(account->id);
 
 		accountsList->InsertItem(listItem);
-		accountsList->SetItem(i, 0, *account->name);
+		/*accountsList->SetItem(i, 0, account->name);
 
-		accountsList->SetItemImage(listItem, account->iconId);
+		accountsList->SetItemImage(listItem, account->iconId);*/
 
 		i++;
 	}
 }
 
 void BudgetDialog::OnPeriodSelect(wxCommandEvent &event) {
-	if (periodList->GetSelection() == static_cast<int>(Budget::Period::Custom)) {
+	if (periodList->GetSelection() == static_cast<int>(BudgetPeriod::Custom)) {
 		datePicker->Enable();
 	}
 	else {
@@ -192,10 +192,10 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
-	budget->name = make_shared<wxString>(nameField->GetValue());
-	budget->period = static_cast<Budget::Period>(periodList->GetSelection());
-	budget->date = make_shared<wxDateTime>(datePicker->GetValue());
-	budget->amount = amountValue;
+	_budget->name = nameField->GetValue();
+	_budget->period = static_cast<BudgetPeriod>(periodList->GetSelection());
+	_budget->date = datePicker->GetValue();
+	_budget->amount = amountValue;
 	
 	wxString accountIds("");
 
@@ -218,9 +218,9 @@ void BudgetDialog::OnOK(wxCommandEvent &event) {
 
 	accountIds.RemoveLast();
 
-	budget->accountIds = make_shared<wxString>(accountIds);
+	//budget->accountIds = std::make_shared<wxString>(accountIds);
 
-	budget->Save();
+	//budget->Save();
 
 	Close();
 

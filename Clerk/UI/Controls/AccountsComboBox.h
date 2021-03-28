@@ -4,8 +4,9 @@
 #include <wx/wx.h>
 #include <wx/combo.h>
 #include "CheckboxComboPopup.h"
-#include "../../Data/DataHelper.h"
-#include "../../Data/Account.h"
+#include "../../Data/ViewModels/AccountViewModel.h"
+
+using namespace Clerk::Data;
 
 class AccountsComboBox : public wxComboCtrl
 {
@@ -15,12 +16,12 @@ public:
 
 	std::function<void(std::set<int> ids)> OnChange;
 
-	void SetAccounts(std::vector<std::shared_ptr<Account>> accounts);
+	void SetAccounts(std::vector<std::shared_ptr<AccountViewModel>> accounts);
 	void SetSelection(std::set<int> ids);
 
 private:
 	CheckboxComboPopup *accountsList;
-	std::vector<std::shared_ptr<Account>> accounts;
+	std::vector<std::shared_ptr<AccountViewModel>> accounts;
 	std::set<int> selectedIds;
 	bool ignoreSelection;
 

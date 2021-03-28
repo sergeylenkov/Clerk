@@ -68,7 +68,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
 	verticalSizer->Add(accountsList, 1, wxALL | wxEXPAND, 5);
 
-	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	panelSizer->Add(verticalSizer, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
@@ -98,19 +98,19 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	typeList->AppendString("Expense");
 	typeList->AppendString("Balance");
 
-	typeList->SetSelection(static_cast<int>(Alert::Type::Receipt));
+	typeList->SetSelection(static_cast<int>(AlertType::Receipt));
 
 	periodList->AppendString("Week");
 	periodList->AppendString("Month");
 	periodList->AppendString("Year");
 
-	periodList->SetSelection(static_cast<int>(Alert::Period::Month));
+	periodList->SetSelection(static_cast<int>(AlertPeriod::Month));
 
 	conditionList->AppendString("Less");
 	conditionList->AppendString("More");
 	conditionList->AppendString("Equal");
 
-	conditionList->SetSelection(static_cast<int>(Alert::Condition::Less));
+	conditionList->SetSelection(static_cast<int>(AlertCondition::Less));
 
 	typeList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnTypeSelect, this);
 	periodList->Bind(wxEVT_COMBOBOX, &AlertDialog::OnPeriodSelect, this);
@@ -120,10 +120,10 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	Bind(wxEVT_CHAR_HOOK, &AlertDialog::OnKeyDown, this);
 }
 
-void AlertDialog::SetAlert(std::shared_ptr<Alert> alert) {
+void AlertDialog::SetAlert(std::shared_ptr<AlertViewModel> alert) {
 	this->alert = alert;
 
-	nameField->SetValue(*this->alert->name);
+	nameField->SetValue(this->alert->name);
 	typeList->SetSelection(static_cast<int>(this->alert->type));
 	periodList->SetSelection(static_cast<int>(this->alert->period));
 	amountField->SetValue(wxString::Format("%.2f", this->alert->amount));	
@@ -132,41 +132,25 @@ void AlertDialog::SetAlert(std::shared_ptr<Alert> alert) {
 }
 
 void AlertDialog::UpdateAccounts() {
-	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Expense)) {
-		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Expens);
-		auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
+	/*if (typeList->GetSelection() == static_cast<int>(Alert::Type::Expense)) {
+		accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Expens);
+		auto debts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Debt);
 
 		accounts.insert(accounts.end(), debts.begin(), debts.end());
 	}
 	
 	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Receipt)) {
-		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt);
+		accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Receipt);
 	}
 
 	if (typeList->GetSelection() == static_cast<int>(Alert::Type::Balance)) {
-		accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit);
-		auto temp = DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual);
-		auto debts = DataHelper::GetInstance().GetAccountsByType(AccountType::Debt);
+		accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Deposit);
+		auto temp = DataHelper::GetInstance().GetAccountsByType(Account::Type::Virtual);
+		auto debts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Debt);
 
 		accounts.insert(accounts.end(), temp.begin(), temp.end());
 		accounts.insert(accounts.end(), debts.begin(), debts.end());
-	}		
-
-	std::string str = alert->accountIds->mb_str();
-	std::vector<int> ids;
-
-	std::stringstream ss(str);
-
-	int i;
-
-	while (ss >> i)
-	{
-		ids.push_back(i);
-
-		if (ss.peek() == ',') {
-			ss.ignore();
-		}
-	}
+	}*/
 
 	accountsList->ClearAll();
 	accountsList->EnableCheckBoxes(true);
@@ -179,7 +163,7 @@ void AlertDialog::UpdateAccounts() {
 
 	accountsList->InsertColumn(0, column);	
 
-	i = 0;
+	int i = 0;
 
 	for (auto &account : accounts)
 	{
@@ -189,11 +173,11 @@ void AlertDialog::UpdateAccounts() {
 		listItem.SetData(account->id);
 
 		accountsList->InsertItem(listItem);
-		accountsList->SetItem(i, 0, *account->name);
+		accountsList->SetItem(i, 0, account->name);
 
-		accountsList->SetItemImage(listItem, account->iconId);
+		accountsList->SetItemImage(listItem, account->icon);
 
-		if (std::find(ids.begin(), ids.end(), account->id) != ids.end()) {
+		if (std::find(alert->accountIds.begin(), alert->accountIds.end(), account->id) != alert->accountIds.end()) {
 			accountsList->CheckItem(i, true);
 		}
 
@@ -215,13 +199,13 @@ void AlertDialog::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
-	alert->name = make_shared<wxString>(nameField->GetValue());
-	alert->type = static_cast<Alert::Type>(typeList->GetSelection());
-	alert->period = static_cast<Alert::Period>(periodList->GetSelection());	
-	alert->condition = static_cast<Alert::Condition>(conditionList->GetSelection());
+	alert->name = nameField->GetValue();
+	alert->type = static_cast<AlertType>(typeList->GetSelection());
+	alert->period = static_cast<AlertPeriod>(periodList->GetSelection());	
+	alert->condition = static_cast<AlertCondition>(conditionList->GetSelection());
 	alert->amount = amountValue;
 	
-	wxString accountIds("");
+	alert->accountIds.clear();
 
 	long itemIndex = -1;
 
@@ -236,15 +220,12 @@ void AlertDialog::OnOK(wxCommandEvent &event) {
 
 		if (checked) {
 			auto account = accounts[itemIndex];
-			accountIds = accountIds + wxString::Format(wxT("%i,"), account->id);
+			alert->accountIds.push_back(account->id);
 		}
 	}
 
-	accountIds.RemoveLast();
-
-	alert->accountIds = make_shared<wxString>(accountIds);
-
-	alert->Save();
+	//TODO: save alert
+	//alert->Save();
 
 	Close();
 

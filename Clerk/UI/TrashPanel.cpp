@@ -1,6 +1,6 @@
 #include "TrashPanel.h"
 
-TrashPanel::TrashPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+TrashPanel::TrashPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, _context) {
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TrashPanel::OnListItemClick, this);
 
@@ -14,7 +14,7 @@ TrashPanel::TrashPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) 
 
 void TrashPanel::Update() {
 	transactionsList->ClearAll();
-	transactions = DataHelper::GetInstance().GetDeletedTransactions();
+	//transactions = _context.GetTransactionsRepository().GetDeleted();
 
 	wxListItem column;
 
@@ -60,7 +60,7 @@ void TrashPanel::Update() {
 
 	int i = 0;
 
-	for (auto transaction : transactions)
+	for (auto &transaction : _transactions)
 	{
 		wxListItem listItem;
 
@@ -68,17 +68,17 @@ void TrashPanel::Update() {
 		listItem.SetData(transaction->id);
 
 		transactionsList->InsertItem(listItem);
-		transactionsList->SetItem(i, 0, *transaction->fromAccount->name);
-		transactionsList->SetItem(i, 1, *transaction->toAccount->name);
+		transactionsList->SetItem(i, 0, transaction->fromAccount->name);
+		transactionsList->SetItem(i, 1, transaction->toAccount->name);
 		transactionsList->SetItem(i, 2, wxString::Format("%.2f", transaction->fromAmount));
 		transactionsList->SetItem(i, 3, wxString::Format("%.2f", transaction->toAmount));
-		transactionsList->SetItem(i, 4, transaction->paidAt->Format("%B %d, %Y"));
+		transactionsList->SetItem(i, 4, transaction->date.Format("%B %d, %Y"));
 
 		i++;
 	}
 }
 
-std::shared_ptr<Transaction> TrashPanel::GetTransaction() {
+std::shared_ptr<TransactionViewModel> TrashPanel::GetTransaction() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -88,10 +88,10 @@ std::shared_ptr<Transaction> TrashPanel::GetTransaction() {
 			break;
 		}
 
-		return transactions[itemIndex];
+		//return transactions[itemIndex];
 	}
 
-	return NULL;
+	return nullptr;
 }
 
 void TrashPanel::RestoreTransaction() {
@@ -104,7 +104,8 @@ void TrashPanel::RestoreTransaction() {
 			break;
 		}
 		else {
-			transactions[itemIndex]->Restore();
+			//TODO
+			//transactions[itemIndex]->Restore();
 		}
 	}
 
@@ -120,7 +121,10 @@ void TrashPanel::DeleteTransaction() {
 		if (itemIndex == -1) {		
 			break;
 		} else {
-			transactions[itemIndex]->DeleteCompletely();
+			//TODO
+			//transactions[itemIndex]->DeleteCompletely();
+			auto transaction = _transactions[itemIndex];
+			//_context.GetTransactionsRepository().Delete(*transaction);
 		}	
 	}
 
@@ -128,9 +132,10 @@ void TrashPanel::DeleteTransaction() {
 }
 
 void TrashPanel::ClearAll() {
-	for (auto transaction : transactions)
+	for (auto &transaction : _transactions)
 	{
-		transaction->DeleteCompletely();
+		//transaction->DeleteCompletely();
+		//_context.GetTransactionsRepository().Delete(*transaction);
 	}
 
 	Update();

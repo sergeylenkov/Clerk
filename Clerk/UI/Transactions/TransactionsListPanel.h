@@ -10,12 +10,15 @@
 #include <algorithm>
 #include <string> 
 #include "../DataPanel.h"
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/TransactionViewModel.h"
 #include "../../Data/Settings.h"
-#include "../TreeMenu.h"
+#include "../TreeMenu/Enums.h"
 #include "TransactionsListDataModel.h"
 #include "TransactionsTagsRender.h"
 #include "TransactionsAmountRender.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class TransactionsListPanel : public DataPanel
 {
@@ -30,20 +33,20 @@ public:
 		Copy = 7,
 	};
 
-	TransactionsListPanel(wxWindow *parent, wxWindowID id);
+	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
 
-	void SetAccount(std::shared_ptr<Account> account);
-	std::shared_ptr<Account> GetAccount();
-	void SetType(TreeMenuItemTypes type);
-	std::shared_ptr<Transaction> GetTransaction();
+	//void SetAccount(std::shared_ptr<AccountViewModel> account);
+	//std::shared_ptr<AccountModel> GetAccount();
+	//void SetType(TreeMenuItemTypes type);
+	//std::shared_ptr<TransactionViewModel> GetTransaction();	
 	void Update();
-	float GetBalance();
+	//float GetBalance();
 
 	std::function<void()> OnAdd;
-	std::function<void(std::shared_ptr<Transaction>)> OnEdit;
-	std::function<void(std::shared_ptr<Transaction>)> OnSplit;
-	std::function<void(std::shared_ptr<Transaction>)> OnCopy;
+	std::function<void(std::shared_ptr<TransactionViewModel>)> OnEdit;
+	std::function<void(std::shared_ptr<TransactionViewModel>)> OnSplit;
+	std::function<void(std::shared_ptr<TransactionViewModel>)> OnCopy;
 	std::function<void()> OnPeriodChanged;	
 
 private:	
@@ -57,10 +60,10 @@ private:
 	wxStaticText *incomeLabel;
 	wxStaticText *outcomeLabel;
 	wxPanel *infoPanel;
-	std::shared_ptr<Account> account;
-	TreeMenuItemTypes type;
-	std::vector<std::shared_ptr<Transaction>> transactions;
-	std::vector<std::shared_ptr<Transaction>> filtered;
+	std::shared_ptr<AccountModel> account;
+	TreeMenuItemType type;
+	std::vector<std::shared_ptr<TransactionViewModel>> _transactions;
+	std::vector<std::shared_ptr<TransactionViewModel>> _filtered;
 	float balance;
 	int sortBy;
 	bool sortDesc;

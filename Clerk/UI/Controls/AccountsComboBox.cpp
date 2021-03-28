@@ -6,7 +6,7 @@ AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxStri
 	this->SetPopupControl(accountsList);
 
 	accountsList->EnableCheckBoxes(true);
-	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	accountsList->OnItemSelect = std::bind(&AccountsComboBox::OnAccountSelect, this, std::placeholders::_1);
 
@@ -18,7 +18,7 @@ AccountsComboBox::~AccountsComboBox() {
 	
 }
 
-void AccountsComboBox::SetAccounts(vector<shared_ptr<Account>> accounts) {
+void AccountsComboBox::SetAccounts(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
 	this->accounts = accounts;
 	UpdateList();
 }
@@ -48,7 +48,7 @@ void AccountsComboBox::UpdateList() {
 		listItem.SetId(i);
 		listItem.SetData(account->id);
 		
-		accountsList->InsertItem(i, *account->name, account->iconId);
+		accountsList->InsertItem(i, account->name, account->icon);
 
 		i++;
 	}
@@ -62,7 +62,7 @@ void AccountsComboBox::UpdateNames() {
 	} else {
 		for (auto& account : accounts) {
 			if (selectedIds.count(account->id) > 0) {
-				names = names + wxString::Format("%s, ", *account->name);
+				names = names + wxString::Format("%s, ", account->name);
 			}
 		}
 

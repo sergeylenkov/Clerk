@@ -5,7 +5,9 @@
 #include <wx/statline.h>
 #include <wx/valnum.h>
 #include <wx/wrapsizer.h>
-#include "../../Data/DataHelper.h"
+#include <wx/tokenzr.h>
+#include "../../Data/Models/SchedulerModel.h"
+#include "../../Data/Models/AccountModel.h"
 #include "../TagsPopup.h"
 
 class SchedulerDialog : public wxFrame
@@ -14,7 +16,7 @@ public:
 	SchedulerDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 	~SchedulerDialog();
 
-	void SetScheduler(std::shared_ptr<Scheduler> scheduler);
+	void SetScheduler(std::shared_ptr<SchedulerModel> scheduler);
 
 	std::function<void()> OnClose;
 
@@ -63,20 +65,20 @@ private:
 	
 	float fromValue = 0.0;
 	float toValue = 0.0;
-	Scheduler::Type type;
-	std::vector<std::shared_ptr<Account>> accounts;
-	std::vector<std::shared_ptr<Account>> fromAccounts;
-	std::vector<std::shared_ptr<Account>> toAccounts;
-	std::shared_ptr<Scheduler> scheduler;
-	std::shared_ptr<Account> fromAccount;
-	std::shared_ptr<Account> toAccount;
+	SchedulerType type;
+	std::vector<std::shared_ptr<AccountModel>> accounts;
+	std::vector<std::shared_ptr<AccountModel>> fromAccounts;
+	std::vector<std::shared_ptr<AccountModel>> toAccounts;
+	std::shared_ptr<SchedulerModel> scheduler;
+	std::shared_ptr<AccountModel> fromAccount;
+	std::shared_ptr<AccountModel> toAccount;
 	TagsPopup *tagsPopup;
 
 	void SelectFromAccount(int index);
 	void SelectToAccount(int index);
-	void SelectToAccount(std::shared_ptr<Account> account);
+	void SelectToAccount(std::shared_ptr<AccountModel> account);
 	void UpdateFromList();
-	void UpdateToList(std::shared_ptr<Account> account);
+	void UpdateToList(std::shared_ptr<AccountModel> account);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);
@@ -89,7 +91,7 @@ private:
 	void AddTag();
 	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
-	void SelectPatternType(Scheduler::Type type);
+	void SelectPatternType(SchedulerType type);
 	void SelectWeekday(int day);
 	void OnKeyDown(wxKeyEvent &event);
 };

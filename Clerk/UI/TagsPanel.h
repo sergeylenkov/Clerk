@@ -5,6 +5,9 @@
 #include <thread>
 #include <memory>
 #include "DataPanel.h"
+#include "../Data/ViewModels/TagViewModel.h"
+
+using namespace Clerk::Data;
 
 enum class TagsPanelMenuTypes {
 	Show = 1,
@@ -15,17 +18,17 @@ enum class TagsPanelMenuTypes {
 class TagsPanel : public DataPanel
 {
 public:
-	TagsPanel(wxWindow *parent, wxWindowID id);
+	TagsPanel(wxWindow *parent, DataContext& context);
 	~TagsPanel();
 
 	void Update();
-	std::shared_ptr<Tag> GetTag();
+	std::shared_ptr<TagViewModel> GetTag();
 
 private:
 	wxTextCtrl *searchField;
 	wxListCtrl *list;
-	std::vector<std::shared_ptr<Tag>> tags;
-	std::vector<std::shared_ptr<Tag>> filteredTags;
+	std::vector<std::shared_ptr<TagViewModel>> tags;
+	std::vector<std::shared_ptr<TagViewModel>> filteredTags;
 	long editedIndex;
 
 	void Filter();

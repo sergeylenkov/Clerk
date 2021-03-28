@@ -11,10 +11,12 @@
 #include "./DashboardGoalsPanel.h"
 #include "./DashboardDebtsPanel.h"
 
+using namespace Clerk::Data;
+
 class DashboardPanel : public DataPanel
 {
 public:
-	DashboardPanel(wxWindow *parent, wxWindowID id);	
+	DashboardPanel(wxWindow *parent, DataContext& context);
 
 	void Update();
 

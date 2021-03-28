@@ -11,6 +11,7 @@
 #include "../Utils/Utils.h"
 
 using namespace rapidjson;
+using namespace Clerk::Utils;
 
 struct TabSettings {
 	int type;

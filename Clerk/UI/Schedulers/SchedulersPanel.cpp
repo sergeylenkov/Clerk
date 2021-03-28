@@ -1,6 +1,6 @@
 #include "SchedulersPanel.h"
 
-SchedulersPanel::SchedulersPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	list->AppendTextColumn("Name", static_cast<int>(SchedulersListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
@@ -25,7 +25,7 @@ SchedulersPanel::SchedulersPanel(wxWindow *parent, wxWindowID id) : DataPanel(pa
 	this->Layout();
 }
 
-shared_ptr<Scheduler> SchedulersPanel::GetScheduler() {
+std::shared_ptr<SchedulerViewModel> SchedulersPanel::GetScheduler() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
@@ -37,7 +37,7 @@ shared_ptr<Scheduler> SchedulersPanel::GetScheduler() {
 }
 
 void SchedulersPanel::Update() {
-	schedulers = DataHelper::GetInstance().GetSchedulers();
+	schedulers = _context.GetSchedulersService().GetAll();
 	model.get()->SetItems(schedulers);
 }
 
@@ -57,8 +57,8 @@ void SchedulersPanel::Edit() {
 void SchedulersPanel::Delete() {
 	auto scheduler = GetScheduler();
 
-	if (scheduler) {
-		scheduler->Delete();
+	if (scheduler) {		
+		//_context.GetSchedulersRepository().Delete(*scheduler);
 		Update();
 	}
 }
@@ -66,8 +66,9 @@ void SchedulersPanel::Delete() {
 void SchedulersPanel::Run() {
 	auto scheduler = GetScheduler();
 
-	scheduler->Run();
-	scheduler->Save();
+	//TODO moved method to interactor
+	//scheduler->Run();
+	//scheduler->Save();
 
 	Update();
 }
@@ -75,8 +76,9 @@ void SchedulersPanel::Run() {
 void SchedulersPanel::Pause() {
 	auto scheduler = GetScheduler();
 
-	scheduler->active = false;
-	scheduler->Save();
+	//TODO moved method to interactor
+	//scheduler->active = false;
+	//scheduler->Save();
 
 	Update();
 }
@@ -111,7 +113,7 @@ void SchedulersPanel::OnRightClick(wxDataViewEvent &event) {
 	if (list->GetSelectedItemsCount() > 0) {
 		auto scheduler = GetScheduler();
 
-		if (scheduler->active) {
+		if (scheduler->isActive) {
 			wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Pause), wxT("Pause"));
 			menu->Append(pauseItem);
 		}

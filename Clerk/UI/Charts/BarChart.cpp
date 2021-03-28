@@ -8,7 +8,7 @@ BarChart::~BarChart() {
 
 }
 
-void BarChart::SetValues(std::vector<StringValue> values) {
+void BarChart::SetValues(std::vector<StringValueViewModel> values) {
 	_values = values;
 	Draw();
 }
@@ -29,7 +29,7 @@ void BarChart::Draw() {
 	this->DoGetSize(&width, &height);
 
 	auto ptr = max_element(_values.begin(), _values.end(),
-		[](const StringValue p1, const StringValue p2) {
+		[](const StringValueViewModel p1, const StringValueViewModel p2) {
 		return p1.value < p2.value;
 	});
 

@@ -2,20 +2,25 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
-#include "../../Data/DataHelper.h"
 #include "../../Utils/Utils.h"
+#include "../../Data/ViewModels/AccountViewModel.h"
+#include "../../Data/ViewModels/CurrencyValueViewModel.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class DashboardExpensesPanel : public wxPanel
 {
 public:
-	DashboardExpensesPanel(wxWindow *parent, wxWindowID id);
+	DashboardExpensesPanel(wxWindow *parent);
 
-	void SetExpenses(std::vector<AccountValue> expenses);
+	void SetExpenses(std::vector<std::shared_ptr<AccountViewModel>> expenses);
+	void SetTotal(CurrencyValueViewModel value);
 	void Update();
 
 private:
-	std::vector<AccountValue> expenses;
-	CurrencyValue totalValue;
+	std::vector<std::shared_ptr<AccountViewModel>> _expenses;
+	CurrencyValueViewModel _total;
 	float maxValue;
 
 	void Draw(wxPaintDC &dc);

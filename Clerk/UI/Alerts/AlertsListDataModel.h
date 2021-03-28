@@ -1,8 +1,11 @@
 #pragma once
 
 #include <wx/dataview.h>
-#include "../../Data/DataHelper.h"
 #include "../../Utils/Utils.h"
+#include "../../Data/ViewModels/AlertViewModel.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class AlertsListDataModel : public wxDataViewListStore
 {
@@ -20,7 +23,7 @@ public:
 	AlertsListDataModel();
 	~AlertsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<Alert>> budgets);
+	void SetItems(std::vector<std::shared_ptr<AlertViewModel>> alerts);
 	
 	virtual unsigned int GetColumnCount() const;
 	virtual wxString GetColumnType(unsigned int column) const;
@@ -29,6 +32,6 @@ public:
 	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
 
 private:
-	std::vector<std::shared_ptr<Alert>> _alerts;
+	std::vector<std::shared_ptr<AlertViewModel>> _alerts;
 };
 

@@ -13,14 +13,14 @@ ExpensesTooltipPopup::ExpensesTooltipPopup(wxWindow *parent) : wxPopupWindow(par
 ExpensesTooltipPopup::~ExpensesTooltipPopup() {
 }
 
-void ExpensesTooltipPopup::Update(wxString title, vector<StringValue> values) {
+void ExpensesTooltipPopup::Update(wxString title, std::vector<StringValueViewModel> values) {
 	float total = 0;
 
 	for (unsigned int i = 0; i < values.size(); i++) {
 		total = total + values[i].value;
 	}
 
-	sort(values.begin(), values.end(), [](StringValue a, StringValue b) {
+	std::sort(values.begin(), values.end(), [](StringValueViewModel a, StringValueViewModel b) {
 		return a.value > b.value;
 	});
 
@@ -46,7 +46,7 @@ void ExpensesTooltipPanel::SetTotal(float total) {
 	this->total = total;
 }
 
-void ExpensesTooltipPanel::SetValues(std::vector<StringValue> values) {
+void ExpensesTooltipPanel::SetValues(std::vector<StringValueViewModel> values) {
 	this->values = values;	
 }
 
@@ -65,7 +65,7 @@ void ExpensesTooltipPanel::Update()
 	dc.SetFont(titleFont);
 
 	wxSize nameSize = dc.GetTextExtent(title);
-	wxSize valueSize = dc.GetTextExtent(Utils::FormatAmount(total));
+	wxSize valueSize = dc.GetTextExtent(Format::Amount(total));
 
 	width = nameSize.GetWidth() + valueSize.GetWidth() + 20;
 	height = height + nameSize.GetHeight() + 10;
@@ -74,7 +74,7 @@ void ExpensesTooltipPanel::Update()
 
 	for (auto value : values) {
 		nameSize = dc.GetTextExtent(value.string);
-		valueSize = dc.GetTextExtent(Utils::FormatAmount(value.value));
+		valueSize = dc.GetTextExtent(Format::Amount(value.value));
 
 		int lineWidth = nameSize.GetWidth() + valueSize.GetWidth() + 20;
 
@@ -117,7 +117,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 	dc.SetTextForeground(wxColor(0, 0, 0));
 	dc.DrawText(title, wxPoint(5, y));
 
-	wxString amount = Utils::FormatAmount(total);
+	wxString amount = Format::Amount(total);
 	wxSize size = dc.GetTextExtent(amount);
 
 	dc.SetTextForeground(wxColor(60, 60, 60));
@@ -132,7 +132,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 
 		dc.SetFont(amountFont);
 
-		amount = Utils::FormatAmount(value.value);
+		amount = Format::Amount(value.value);
 		size = dc.GetTextExtent(amount);
 
 		dc.SetTextForeground(wxColor(60, 60, 60));

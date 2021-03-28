@@ -1,6 +1,6 @@
 #include "BudgetsPanel.h"
 
-BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+BudgetsPanel::BudgetsPanel(wxWindow *parent, DataContext& context): DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	model = new BudgetsListDataModel();
@@ -30,42 +30,20 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, 
 	this->Layout();
 }
 
-shared_ptr<Budget> BudgetsPanel::GetBudget() {	
+std::shared_ptr<BudgetViewModel> BudgetsPanel::GetBudget() {	
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
 		int index = (int)item.GetID() - 1;		
-		return budgets[index];
+		return _budgets[index];
 	}	
 
 	return nullptr;
 }
 
 void BudgetsPanel::Update() {
-	budgets = DataHelper::GetInstance().GetBudgets();
-
-	wxDateTime toDate = wxDateTime::Now();
-	wxDateTime fromDate = wxDateTime::Now();	
-
-	for (auto &budget : budgets)
-	{
-		if (budget->period == Budget::Period::Week) {
-			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-		}
-
-		if (budget->period == Budget::Period::Month) {
-			fromDate.SetDay(1);
-		}
-
-		if (budget->period == Budget::Period::Year) {
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
-		}
-
-		budget->balance = DataHelper::GetInstance().GetExpensesForBudget(*budget, &fromDate, &toDate);
-	}
-
-	model.get()->SetItems(budgets);
+	_budgets = _context.GetBudgetsService().GetAll();
+	model.get()->SetItems(_budgets);
 }
 
 void BudgetsPanel::Add() {
@@ -85,8 +63,8 @@ void BudgetsPanel::Edit() {
 void BudgetsPanel::Delete() {
 	auto budget = GetBudget();
 
-	if (budget) {
-		budget->Delete();
+	if (budget) {		
+		//_context.GetBudgetsRepository().Delete(*budget);
 		Update();
 	}
 }

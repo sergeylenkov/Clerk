@@ -8,7 +8,7 @@ AlertsListDataModel::~AlertsListDataModel()
 {
 }
 
-void AlertsListDataModel::SetItems(std::vector<std::shared_ptr<Alert>> alerts) {
+void AlertsListDataModel::SetItems(std::vector<std::shared_ptr<AlertViewModel>> alerts) {
 	_alerts = alerts;
 	Reset(_alerts.size());
 }
@@ -33,19 +33,19 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Name:			
-			variant = *alert->name;
+			variant = alert->name;
 			break;
 		case Columns::Type:
-			variant = *alert->typeName;
+			variant = alert->typeName;
 			break;
 		case Columns::Period:
-			variant = *alert->periodName;
+			variant = alert->periodName;
 			break;
 		case Columns::Condition:
-			variant = *alert->conditionName;
+			variant = alert->conditionName;
 			break;
 		case Columns::Amount:
-			variant = Utils::FormatAmount(alert->amount);
+			variant = Format::Amount(alert->amount);
 			break;
 	}	
 }

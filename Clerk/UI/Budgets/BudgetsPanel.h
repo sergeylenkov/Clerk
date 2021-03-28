@@ -2,10 +2,12 @@
 
 #include <wx/wx.h>
 #include "wx/dataview.h"
-#include "../../Data/DataHelper.h"
 #include "../DataPanel.h"
 #include "BudgetsListDataModel.h"
 #include "BudgetsProgressRender.h"
+#include "../../Data/ViewModels/BudgetViewModel.h"
+
+using namespace Clerk::Data;
 
 class BudgetsPanel : public DataPanel
 {
@@ -16,18 +18,18 @@ public:
 		Delete = 3,
 	};
 
-	BudgetsPanel(wxWindow *parent, wxWindowID id);
+	BudgetsPanel(wxWindow *parent, DataContext& context);
 
-	std::shared_ptr<Budget> GetBudget();
+	std::shared_ptr<BudgetViewModel> GetBudget();
 	void Update();	
 
-	std::function<void(std::shared_ptr<Budget> budget)> OnEdit;
+	std::function<void(std::shared_ptr<BudgetViewModel> budget)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<BudgetsListDataModel> model;
-	std::vector<std::shared_ptr<Budget>> budgets;
+	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
 
 	void Add();
 	void Edit();

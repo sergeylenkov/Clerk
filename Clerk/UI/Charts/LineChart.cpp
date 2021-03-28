@@ -8,7 +8,7 @@ LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
 }
 
-void LineChart::SetValues(std::vector<StringValue> values) {
+void LineChart::SetValues(std::vector<StringValueViewModel> values) {
 	currentPopupIndex = -1;
 	this->values = values;
 
@@ -17,14 +17,14 @@ void LineChart::SetValues(std::vector<StringValue> values) {
 
 	if (values.size() > 0) {
 		auto ptr = max_element(values.begin(), values.end(),
-			[](const StringValue p1, const StringValue p2) {
+			[](const StringValueViewModel p1, const StringValueViewModel p2) {
 			return p1.value < p2.value;
 		});
 
 		maxValue = ptr->value;
 	}
 
-	totalValue = std::accumulate(values.begin(), values.end(), 0, [](float accumulator, StringValue b) {
+	totalValue = std::accumulate(values.begin(), values.end(), 0, [](float accumulator, StringValueViewModel b) {
 		return accumulator + b.value;
 	});
 
@@ -167,12 +167,12 @@ void LineChart::DrawGraph() {
 			dc.DrawLine(x, y, x2, y2);
 			dc.DrawCircle(x, y, 3);
 
-			points.push_back(make_pair(x - (stepX / 2), x + (stepX / 2)));
+			points.push_back(std::make_pair(x - (stepX / 2), x + (stepX / 2)));
 		}
 
 		dc.DrawCircle(x2, y2, 3);
 
-		points.push_back(make_pair(x2 - (stepX / 2), x2 + (stepX / 2)));
+		points.push_back(std::make_pair(x2 - (stepX / 2), x2 + (stepX / 2)));
 	}
 	else {
 		int x = offsetX + (graphWidth / 2);
@@ -180,7 +180,7 @@ void LineChart::DrawGraph() {
 
 		dc.DrawCircle(x, y, 3);
 
-		points.push_back(make_pair(x - 20, x + 20));
+		points.push_back(std::make_pair(x - 20, x + 20));
 	}
 }
 

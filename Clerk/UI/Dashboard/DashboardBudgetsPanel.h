@@ -2,23 +2,24 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
-#include <map>
-#include "../../Data//DataHelper.h"
 #include "../../Utils/Utils.h"
+#include "../../Data/ViewModels/BudgetViewModel.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class DashboardBudgetsPanel : public wxPanel
 {
 public:
-	DashboardBudgetsPanel(wxWindow *parent, wxWindowID id);
+	DashboardBudgetsPanel(wxWindow *parent);
 	
-	void SetBudgets(std::vector<std::shared_ptr<Budget>> budgets);
+	void SetBudgets(std::vector<std::shared_ptr<BudgetViewModel>> budgets);
 	void Update();
 
 private:
-	std::vector<std::shared_ptr<Budget>> budgets;
-	std::vector<DahboardProgressValue> values;
-	int daysCount;
-	int currentDay;
+	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
+	int _daysCount;
+	int _currentDay;
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);

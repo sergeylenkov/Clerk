@@ -7,14 +7,17 @@
 #include <iostream>
 #include <algorithm>
 #include <set>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/BudgetViewModel.h"
+#include "../../Data/Models/AccountModel.h"
+
+using namespace Clerk::Data;
 
 class BudgetDialog : public wxFrame
 {
 public:
 	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);	
 
-	void SetBudget(std::shared_ptr<Budget> budget);
+	void SetBudget(std::shared_ptr<BudgetViewModel> budget);
 	std::function<void()> OnClose;
 
 private:
@@ -30,8 +33,8 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<Budget> budget;	
-	vector<shared_ptr<Account>> accounts;
+	std::shared_ptr<BudgetViewModel> _budget;
+	std::vector<std::shared_ptr<AccountModel>> accounts;
 
 	void UpdateAccounts();
 	void OnPeriodSelect(wxCommandEvent &event);

@@ -1,0 +1,83 @@
+#pragma once
+
+#include "Repositories/AccountsRepository.h"
+#include "Repositories/ReportsRepository.h"
+#include "Repositories/BudgetsRepository.h"
+#include "Repositories/GoalsRepository.h"
+#include "Repositories/AlertsRepository.h"
+#include "Repositories/SchedulersRepository.h"
+#include "Repositories/TransactionsRepository.h"
+#include "Repositories/TagsRepository.h"
+#include "Repositories/CurrenciesRepository.h"
+#include "Repositories/ExchangeRatesRepository.h"
+#include "Repositories/ReportingRepository.h"
+#include "Services/AccountingService.h"
+#include "Services/AccountsService.h"
+#include "Services/SchedulersService.h"
+#include "Services/BudgetsService.h"
+#include "Services/TransactionsService.h"
+#include "Services/TagsService.h"
+#include "Services/ReportsService.h"
+#include "Services/AlertsService.h"
+#include "Services/GoalsService.h"
+#include "Services/ReportingService.h"
+
+namespace Clerk {
+	namespace Data {
+		class DataContext {
+		public:
+			DataContext(AccountsRepository& accountsRepository, ReportsRepository& reportsRepository, BudgetsRepository& budgetsRepository,
+				GoalsRepository& goalsRepository, AlertsRepository& alertsRepository, SchedulersRepository& schedulersRepository,
+				TransactionsRepository& transactionsRepository, TagsRepository& tagsRepository, CurrenciesRepository& currenciesRepository,
+				ExchangeRatesRepository& exchangeRatesRepository, ReportingRepository& reportingRepository, AccountingService& accountingService,
+				AccountsService& accountsService, SchedulersService& schedulersService, BudgetsService& budgetsService, TransactionsService& transactionsService,
+				TagsService& tagsService, ReportsService& reportsService, AlertsService& alertsService, GoalsService& goalsService, ReportingService& reportingService);
+			~DataContext();
+
+			AccountsRepository& GetAccountsRepository();
+			ReportsRepository& GetReportsRepository();
+			BudgetsRepository& GetBudgetsRepository();
+			GoalsRepository& GetGoalsRepository();
+			AlertsRepository& GetAlertsRepository();
+			SchedulersRepository& GetSchedulersRepository();
+			TransactionsRepository& GetTransactionsRepository();
+			TagsRepository& GetTagsRepository();
+			CurrenciesRepository& GetCurrenciesRepository();
+			ExchangeRatesRepository& GetExchangeRatesRepository();
+			ReportingRepository& GetReportingRepository();
+			AccountingService& GetAccountingService();
+			AccountsService& GetAccountsService();
+			SchedulersService& GetSchedulersService();
+			BudgetsService& GetBudgetsService();
+			TransactionsService& GetTransactionsService();
+			TagsService& GetTagsService();
+			ReportsService& GetReportsService();
+			AlertsService& GetAlertsService();
+			GoalsService& GetGoalsService();
+			ReportingService& GetReportingService();
+
+		private:
+			AccountsRepository& _accountsRepository;
+			ReportsRepository& _reportsRepository;
+			BudgetsRepository& _budgetsRepository;
+			GoalsRepository& _goalsRepository;
+			AlertsRepository& _alertsRepository;
+			SchedulersRepository& _schedulersRepository;
+			TransactionsRepository& _transactionsRepository;
+			TagsRepository& _tagsRepository;
+			CurrenciesRepository& _currenciesRepository;
+			ExchangeRatesRepository& _exchangeRatesRepository;
+			ReportingRepository& _reportingRepository;
+			AccountingService& _accountingService;
+			AccountsService& _accountsService;
+			SchedulersService& _schedulersService;
+			BudgetsService& _budgetsService;
+			TransactionsService& _transactionsService;
+			TagsService& _tagsService;
+			ReportsService& _reportsService;
+			AlertsService& _alertsService;
+			GoalsService& _goalsService;
+			ReportingService& _reportingService;
+		};
+	}
+}

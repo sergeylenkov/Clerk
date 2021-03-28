@@ -1,36 +1,34 @@
 #include "DashboardDebtsPanel.h"
 
-DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
 }
 
-void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) {
-	this->debts = debts;
-	values.clear();
+void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<AccountViewModel>> debts) {
+	_debts = debts;
+	_values.clear();
 
-	totalValue = 0;
+	_totalValue = 0;
 
-	for (auto account : debts) {
+	for (auto &account : debts) {
 		if (account->isCredit) {
-			if (account->balance < 0) {
-				float amount = account->balance;
-				float currentAmount = account->creditLimit + amount;
-				float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
+			float amount = account->balance;
+			float currentAmount = account->creditLimit + amount;
+			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-				values.push_back({ *account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(abs(amount), 2), remainPercent });
+			_values.push_back({ account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(abs(amount), 2), remainPercent });
 
-				totalValue = totalValue + abs(amount);
-			}
+			_totalValue = _totalValue + abs(amount);
 		}
 		else {			
-			float amount = abs(DataHelper::GetInstance().GetAccountTotalExpense(*account));			
-			float currentAmount = DataHelper::GetInstance().GetAccountTotalReceipt(*account);
+			float amount = account->expenses;			
+			float currentAmount = account->receipts;
 			float remainAmount = abs(account->balance);
 			float remainPercent = (currentAmount / amount) * 100.0;
 
-			values.push_back({ *account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+			_values.push_back({ account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 
-			totalValue = totalValue + remainAmount;
+			_totalValue = _totalValue + remainAmount;
 		}
 	}
 
@@ -39,7 +37,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<Account>> debts) 
 
 void DashboardDebtsPanel::Update()
 {
-	int height = 170 + (debts.size() * 30);
+	int height = 170 + (_debts.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -65,7 +63,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
-	wxString value = wxNumberFormatter::ToString(totalValue, 2);
+	wxString value = wxNumberFormatter::ToString(_totalValue, 2);
 	wxSize size = dc.GetTextExtent(value);
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
@@ -79,7 +77,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 
-	for (auto value : values) {
+	for (auto &value : _values) {
 		wxSize size = dc.GetTextExtent(value.name);
 
 		if (size.GetWidth() > columnWidth0) {
@@ -122,7 +120,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	int progressWidth = width - columnWidth0 - columnWidth1 - columnWidth2 - 60;
 	int progressX = columnWidth0 + 20;
 
-	for (auto value : values) {
+	for (auto &value : _values) {
 		dc.SetTextForeground(wxColor(0, 0, 0));
 
 		dc.SetFont(font);
@@ -148,7 +146,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Utils::ColorForDebt(value.percent);
+		wxColor color = Colors::ColorForDebt(value.percent);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));

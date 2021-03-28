@@ -6,17 +6,18 @@
 #include <algorithm>
 #include <map>
 #include "../DataPanel.h"
-#include "../../Data/DataHelper.h"
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
+#include "../../Data/ViewModels/DateValueViewModel.h"
 
-using namespace std;
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class ReportBalancePanel : public DataPanel
 {
 public:
-	ReportBalancePanel(wxWindow *parent, wxWindowID id);
+	ReportBalancePanel(wxWindow *parent, DataContext& context);
 	~ReportBalancePanel();
 
 	void Update();
@@ -27,9 +28,9 @@ private:
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
-	vector<shared_ptr<Account>> accounts;
+	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
 	ExpensesTooltipPopup *chartPopup;
-	vector<DateValue> values = {};
+	std::vector<DateValueViewModel> values;
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
 

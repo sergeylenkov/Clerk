@@ -1,37 +1,14 @@
 #include "DashboardBudgetsPanel.h"
 
-DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent) : wxPanel(parent) {
+	_daysCount = 0;
+	_currentDay = 0;
+
 	this->Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
 }
 
-void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<Budget>> budgets) {
-	this->budgets = budgets;
-	values.clear();
-
-	wxDateTime toDate = wxDateTime::Now();
-	wxDateTime fromDate = wxDateTime::Now();
-
-	for (auto &budget : budgets) {
-		if (budget->period == Budget::Period::Week) {
-			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-		}
-
-		if (budget->period == Budget::Period::Month) {
-			fromDate.SetDay(1);
-		}
-
-		if (budget->period == Budget::Period::Year) {
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
-		}
-
-		float currentAmount = DataHelper::GetInstance().GetExpensesForBudget(*budget, &fromDate, &toDate);
-		float remainAmount = budget->amount - currentAmount;
-		float remainPercent = (currentAmount / budget->amount) * 100.0;
-
-		values.push_back({ *budget->name, wxNumberFormatter::ToString(budget->amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
-	}
-
+void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<BudgetViewModel>> budgets) {
+	_budgets = budgets;
 	Update();
 }
 
@@ -43,10 +20,10 @@ void DashboardBudgetsPanel::Update()
 	fromDate.SetDay(1);
 	toDate.SetToLastMonthDay();
 
-	daysCount = toDate.GetDay();
-	currentDay = wxDateTime::Now().GetDay();
+	_daysCount = toDate.GetDay();
+	_currentDay = wxDateTime::Now().GetDay();
 
-	int height = 170 + (budgets.size() * 40);
+	int height = 170 + (_budgets.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -76,20 +53,22 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 	
-	for (auto value : values) {
-		wxSize size = dc.GetTextExtent(value.name);
+	for (auto &budget : _budgets) {
+		float remainAmount = budget->amount - budget->balance;
+
+		wxSize size = dc.GetTextExtent(budget->name);
 
 		if (size.GetWidth() > columnWidth0) {
 			columnWidth0 = size.GetWidth();
 		}
 
-		size = dc.GetTextExtent(value.amount);
+		size = dc.GetTextExtent(wxNumberFormatter::ToString(budget->amount, 2));
 
 		if (size.GetWidth() > columnWidth1) {
 			columnWidth1 = size.GetWidth();
 		}
 
-		size = dc.GetTextExtent(value.remainAmount);
+		size = dc.GetTextExtent(wxNumberFormatter::ToString(remainAmount, 2));
 
 		if (size.GetWidth() > columnWidth2) {
 			columnWidth2 = size.GetWidth();
@@ -119,22 +98,29 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int progressWidth = width - columnWidth0 - columnWidth1 - columnWidth2 - 60;
 	int progressX = columnWidth0 + 20;
 
-	for (auto value : values) {
+	for (auto &budget : _budgets) {
+		float remainPercent = (budget->balance / budget->amount) * 100.0;
+		float remainAmount = budget->amount - budget->balance;
+
+		wxString amount = wxNumberFormatter::ToString(budget->amount, 2);
+		wxString balance = wxNumberFormatter::ToString(budget->balance, 2);
+		wxString remain = wxNumberFormatter::ToString(remainAmount, 2);
+
 		dc.SetTextForeground(wxColor(0, 0, 0));
 
 		dc.SetFont(font);
-		dc.DrawText(value.name, wxPoint(0, y));
+		dc.DrawText(budget->name, wxPoint(0, y));
 
-		wxSize size = dc.GetTextExtent(value.amount);
+		wxSize size = dc.GetTextExtent(amount);
 		x = width - columnWidth2 - size.GetWidth() - 20;
 
-		dc.DrawText(value.amount, wxPoint(x, y));
+		dc.DrawText(amount, wxPoint(x, y));
 
-		size = dc.GetTextExtent(value.remainAmount);
-		dc.DrawText(value.remainAmount, wxPoint(width - size.GetWidth(), y));
+		size = dc.GetTextExtent(remain);
+		dc.DrawText(remain, wxPoint(width - size.GetWidth(), y));
 
 		int progressY = y + size.GetHeight() / 2;
-		int percentWidth = (progressWidth / 100.0) * value.percent;
+		int percentWidth = (progressWidth / 100.0) * remainPercent;
 
 		if (percentWidth > progressWidth) {
 			percentWidth = progressWidth;
@@ -145,14 +131,14 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Utils::ColorForBudget(value.percent);
+		wxColor color = Colors::ColorForBudget(remainPercent);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));
 
 		dc.DrawRectangle(progressX, progressY, percentWidth, 4);
 
-		size = dc.GetTextExtent(value.currentAmount);
+		size = dc.GetTextExtent(balance);
 
 		int amountX = percentWidth - (size.GetWidth() / 2);
 
@@ -163,13 +149,13 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 			amountX = progressWidth - size.GetWidth();
 		}
 
-		dc.DrawText(value.currentAmount, wxPoint(progressX + amountX, y + 14));
+		dc.DrawText(balance, wxPoint(progressX + amountX, y + 14));
 
 		y = y + 40;
 	}
 
-	float dayStep = (float)progressWidth / (daysCount - 1);
-	x = dayStep * (currentDay - 1);
+	float dayStep = (float)progressWidth / (_daysCount - 1);
+	x = dayStep * (_currentDay - 1);
 
 	dc.SetPen(wxPen(wxColor(204, 204, 204), 1));
 	dc.DrawLine(progressX + x, 100, progressX + x, y);

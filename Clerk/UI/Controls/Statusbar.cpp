@@ -57,20 +57,20 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 	this->Layout();
 }
 
-void Statusbar::SetPeriod(wxString value) {
-	periodLabel->SetLabelText(value);
+void Statusbar::SetPeriod(wxDateTime& value) {
+	periodLabel->SetLabelText(value.Format("%B"));
 }
 
-void Statusbar::SetRecepipts(wxString value) {
-	receiptsLabel->SetLabelText(value);
+void Statusbar::SetReceipts(float value) {
+	receiptsLabel->SetLabelText(wxNumberFormatter::ToString(value, 2));
 }
 
-void Statusbar::SetExpenses(wxString value) {
-	expensesLabel->SetLabelText(value);
+void Statusbar::SetExpenses(float value) {
+	expensesLabel->SetLabelText(wxNumberFormatter::ToString(value, 2));
 }
 
-void Statusbar::SetBalance(wxString value) {
-	balanceLabel->SetLabelText(value);
+void Statusbar::SetBalance(float value) {
+	balanceLabel->SetLabelText(wxNumberFormatter::ToString(value, 2));
 }
 
 void Statusbar::SetExchangeRates(wxString value) {

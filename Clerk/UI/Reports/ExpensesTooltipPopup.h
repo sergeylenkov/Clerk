@@ -7,10 +7,11 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/StringValueViewModel.h"
 #include "../../Utils/Utils.h"
 
-using namespace std;
+using namespace Clerk::Utils;
+using namespace Clerk::Data;
 
 class ExpensesTooltipPanel : public wxPanel
 {
@@ -19,13 +20,13 @@ public:
 
 	void SetTitle(wxString title);
 	void SetTotal(float total);
-	void SetValues(std::vector<StringValue> values);
+	void SetValues(std::vector<StringValueViewModel> values);
 	void Update();
 
 private:
 	wxString title;
 	float total;
-	std::vector<StringValue> values;
+	std::vector<StringValueViewModel> values;
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
@@ -37,7 +38,7 @@ public:
 	ExpensesTooltipPopup(wxWindow *parent);
 	~ExpensesTooltipPopup();
 
-	void Update(wxString title, std::vector<StringValue> values);
+	void Update(wxString title, std::vector<StringValueViewModel> values);
 
 private:	
 	ExpensesTooltipPanel *panel;

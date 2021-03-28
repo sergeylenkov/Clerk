@@ -294,7 +294,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	fromValue = 0;
 	toValue = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
+	/*for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		accounts.push_back(account);
 	}
@@ -317,7 +317,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		accounts.push_back(account);
-	}
+	}*/
 
 	UpdateFromList();
 	SelectFromAccount(0);
@@ -325,7 +325,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	UpdateToList(fromAccount);
 	SelectToAccount(0);
 	
-	SelectPatternType(Scheduler::Type::Daily);
+	SelectPatternType(SchedulerType::Daily);
 	SelectWeekday(1);
 
 	nameField->SetFocus();
@@ -335,10 +335,10 @@ SchedulerDialog::~SchedulerDialog() {
 	delete tagsPopup;
 }
 
-void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
+void SchedulerDialog::SetScheduler(std::shared_ptr<SchedulerModel> scheduler) {
 	this->scheduler = scheduler;
 
-	nameField->SetValue(*scheduler->name);
+	/*nameField->SetValue(*scheduler->name);
 	fromAmountField->SetValue(wxString::Format("%.2f", scheduler->fromAmount));
 	toAmountField->SetValue(wxString::Format("%.2f", scheduler->toAmount));
 	tagsField->SetValue(*scheduler->tags);
@@ -393,70 +393,70 @@ void SchedulerDialog::SetScheduler(std::shared_ptr<Scheduler> scheduler) {
 		yearlyMonthChoice->SetSelection(scheduler->month);
 	}
 
-	nameField->SetFocus();
+	nameField->SetFocus();*/
 }
 
 void SchedulerDialog::UpdateFromList() {
-	for (auto account : accounts) {
-		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
+	/*for (auto account : accounts) {
+		if (account->type == Account::Type::Receipt || account->type == Account::Type::Deposit || account->type == Account::Type::Virtual) {
 			int iconId = 0;
 
 			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 				iconId = account->iconId;
 			}
 
-			fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+			//fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 			fromAccounts.push_back(account);
 		}
-	}
+	}*/
 }
 
-void SchedulerDialog::UpdateToList(std::shared_ptr<Account> account) {
+void SchedulerDialog::UpdateToList(std::shared_ptr<AccountModel> account) {
 	toList->Clear();
 	toAccounts.clear();
 
-	for (auto toAccount : accounts)
+	/*for (auto toAccount : accounts)
 	{
 		if (account->id == toAccount->id) {
 			continue;
 		}
 
-		if (account->type == AccountType::Receipt) {
-			if (toAccount->type == AccountType::Deposit) {
+		if (account->type == Account::Type::Receipt) {
+			if (toAccount->type == Account::Type::Deposit) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 					iconId = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+				//toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 				toAccounts.push_back(toAccount);
 			}
 		}
-		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
-			if (toAccount->type == AccountType::Deposit || toAccount->type == AccountType::Expens
-				|| toAccount->type == AccountType::Debt ||	toAccount->type == AccountType::Virtual) {
+		else if (account->type == Account::Type::Deposit || account->type == Account::Type::Virtual) {
+			if (toAccount->type == Account::Type::Deposit || toAccount->type == Account::Type::Expens
+				|| toAccount->type == Account::Type::Debt ||	toAccount->type == Account::Type::Virtual) {
 				int iconId = 0;
 
 				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 					iconId = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+				toList->Append(toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
 				toAccounts.push_back(toAccount);
 			}
 		}
-	}
+	}*/
 }
 
 void SchedulerDialog::SelectFromAccount(int index) {
 	auto account = fromAccounts[index];
 
 	fromList->Select(index);
-	fromAmountLabel->SetLabel(*account->currency->shortName);
+	//fromAmountLabel->SetLabel(account->currency->shortName);
 	fromAccount = account;
 }
 
@@ -464,12 +464,12 @@ void SchedulerDialog::SelectToAccount(int id) {
 	auto account = toAccounts[id];
 
 	toList->Select(id);
-	toAmountLabel->SetLabel(*account->currency->shortName);
+	//toAmountLabel->SetLabel(*account->currency->shortName);
 
 	toAccount = account;
 }
 
-void SchedulerDialog::SelectToAccount(std::shared_ptr<Account> account) {
+void SchedulerDialog::SelectToAccount(std::shared_ptr<AccountModel> account) {
 	for (unsigned int i = 0; i < toAccounts.size(); i++) {
 		if (toAccounts[i]->id == account->id) {
 			SelectToAccount(i);
@@ -492,7 +492,7 @@ void SchedulerDialog::OnToAccountSelect(wxCommandEvent &event) {
 }
 
 void SchedulerDialog::OnOK(wxCommandEvent &event) {
-	scheduler->name = make_shared<wxString>(nameField->GetValue());
+	/*scheduler->name = make_shared<wxString>(nameField->GetValue());
 	scheduler->fromAccount = fromAccounts[fromList->GetSelection()];
 	scheduler->toAccount = toAccounts[toList->GetSelection()];
 	scheduler->tags = make_shared<wxString>(tagsField->GetValue());
@@ -571,13 +571,14 @@ void SchedulerDialog::OnOK(wxCommandEvent &event) {
 		scheduler->month = yearlyMonthChoice->GetSelection();
 	}
 
-	scheduler->Save();
+	//TODO moved method to interactor
+	//scheduler->Save();
 
 	Close();
 
 	if (OnClose) {
 		OnClose();
-	}
+	}*/
 }
 
 void SchedulerDialog::OnCancel(wxCommandEvent &event) {
@@ -587,7 +588,7 @@ void SchedulerDialog::OnCancel(wxCommandEvent &event) {
 void SchedulerDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());
+	/*wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());
 	fromAmountField->SetValue(stringAmount);
 
 	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
@@ -598,7 +599,7 @@ void SchedulerDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 
 	if (val == 0 && fromCurrencyId == toCurrencyId) {
 		toAmountField->SetValue(fromAmountField->GetValue());
-	}
+	}*/
 }
 
 void SchedulerDialog::OnToAmountKillFocus(wxFocusEvent &event) {
@@ -633,7 +634,8 @@ void SchedulerDialog::OnTextChanged(wxKeyEvent &event) {
 		}
 
 		if (!tokens.empty()) {
-			auto tags = DataHelper::GetInstance().GetTagsBySearch(tokens.back());
+			//TODO
+			auto tags = std::vector<std::shared_ptr<wxString>>(); //DataHelper::GetInstance().GetTagsBySearch(tokens.back());
 
 			if (!tokens.empty()) {
 				tagsPopup->Update(tags);
@@ -697,23 +699,23 @@ wxString SchedulerDialog::ClearAmountValue(wxString &value) {
 
 void SchedulerDialog::OnPatternSelect(wxCommandEvent &event) {
 	if (dailyButton->GetValue()) {
-		SelectPatternType(Scheduler::Type::Daily);
+		SelectPatternType(SchedulerType::Daily);
 	}
 
 	if (weeklyButton->GetValue()) {
-		SelectPatternType(Scheduler::Type::Weekly);
+		SelectPatternType(SchedulerType::Weekly);
 	}
 
 	if (monthlyButton->GetValue()) {
-		SelectPatternType(Scheduler::Type::Monthly);
+		SelectPatternType(SchedulerType::Monthly);
 	}
 
 	if (yearlyButton->GetValue()) {
-		SelectPatternType(Scheduler::Type::Yearly);
+		SelectPatternType(SchedulerType::Yearly);
 	}
 }
 
-void SchedulerDialog::SelectPatternType(Scheduler::Type type) {
+void SchedulerDialog::SelectPatternType(SchedulerType type) {
 	this->type = type;
 
 	dailyPatternPanel->Hide();
@@ -721,22 +723,22 @@ void SchedulerDialog::SelectPatternType(Scheduler::Type type) {
 	monthlyPatternPanel->Hide();
 	yearlyPatternPanel->Hide();
 
-	if (type == Scheduler::Type::Daily) {
+	if (type == SchedulerType::Daily) {
 		dailyButton->SetValue(true);
 		dailyPatternPanel->Show();
 	}
 
-	if (type == Scheduler::Type::Weekly) {
+	if (type == SchedulerType::Weekly) {
 		weeklyButton->SetValue(true);
 		weeklyPatternPanel->Show();
 	}
 
-	if (type == Scheduler::Type::Monthly) {
+	if (type == SchedulerType::Monthly) {
 		monthlyButton->SetValue(true);
 		monthlyPatternPanel->Show();
 	}
 
-	if (type == Scheduler::Type::Yearly) {
+	if (type == SchedulerType::Yearly) {
 		yearlyButton->SetValue(true);
 		yearlyPatternPanel->Show();
 	}

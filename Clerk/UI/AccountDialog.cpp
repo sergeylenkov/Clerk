@@ -108,7 +108,8 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	int index = 0;
 	int i = 0;
 
-	for (auto currency : DataHelper::GetInstance().GetCurrencies())
+	//TODO
+	/*for (auto currency : DataHelper::GetInstance().GetCurrencies())
 	{
 		currencies.push_back(currency);
 
@@ -122,13 +123,13 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 		i++;
 	}
 
-	currencyList->SetSelection(index);
+	currencyList->SetSelection(index);*/
 	
 	wxImage image;
 
-	for (int i = 0; i < DataHelper::GetInstance().accountsImageList->GetImageCount(); i++) {
+	/*for (int i = 0; i < DataHelper::GetInstance().accountsImageList->GetImageCount(); i++) {
 		iconList->Append("", DataHelper::GetInstance().accountsImageList->GetIcon(i));
-	}
+	}*/
 
 	iconList->SetSelection(0);
 
@@ -138,15 +139,15 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
-void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
+void AccountDialog::SetAccount(std::shared_ptr<AccountViewModel> account) {
 	this->account = account;
 
-	nameField->SetValue(*account->name);
-	noteField->SetValue(*account->note);
+	nameField->SetValue(account->name);
+	noteField->SetValue(account->note);
 	typeList->SetSelection(static_cast<int>(account->type));
 
-	if (account->iconId < (int)iconList->GetCount()) {
-		iconList->SetSelection(account->iconId);
+	if (account->icon < (int)iconList->GetCount()) {
+		iconList->SetSelection(account->icon);
 	} else {
 		iconList->SetSelection(0);
 	}
@@ -163,14 +164,14 @@ void AccountDialog::SetAccount(std::shared_ptr<Account> account) {
 		i++;
 	}
 
-	initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(*account);
+	/*initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(*account);
 
 	if (initialTransaction) {
 		amountField->SetValue(wxString::Format("%.2f", initialTransaction->fromAmount));
 	}
 	else {
 		amountField->SetValue("0.00");
-	}
+	}*/
 }
 
 void AccountDialog::OnOK(wxCommandEvent &event) {
@@ -187,47 +188,49 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 		isNew = true;
 	}
 
-	account->name = make_shared<wxString>(nameField->GetValue());
-	account->note = make_shared<wxString>(noteField->GetValue());
+	account->name = nameField->GetValue();
+	account->note = noteField->GetValue();
 	account->type = static_cast<AccountType>(typeList->GetSelection());
-	account->iconId = iconList->GetSelection();
+	account->icon = iconList->GetSelection();
 	account->currency = currencies[currencyList->GetSelection()];
 
-	account->Save();
+	//TODO moved method to interactor
+	//account->Save();
 	
 	if (amountValue > 0) {		
 		if (isNew) {
 			if (account->type == AccountType::Debt) {
-				Transaction *transaction = new Transaction();
+				/*TransactionViewModel* transaction = new TransactionViewModel();
 
 				transaction->fromAccount = account;				
 				transaction->fromAmount = amountValue;
 				transaction->toAmount = amountValue;
-				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+				transaction->date = make_shared<wxDateTime>(wxDateTime::Now());*/
 
-				transaction->Save();
+				//transaction->Save();
 			}
 			else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
-				Transaction *transaction = new Transaction();
+				/*Transaction *transaction = new Transaction();
 
 				transaction->toAccount = account;
 				transaction->fromAmount = amountValue;
 				transaction->toAmount = amountValue;
-				transaction->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
+				transaction->date = wxDateTime::Now();*/
 
-				transaction->Save();
+				//transaction->Save();
 			}
 		}
 		else if (initialTransaction) {
 			initialTransaction->fromAmount = amountValue;
 			initialTransaction->toAmount = amountValue;
 
-			initialTransaction->Save();
+			//initialTransaction->Save();
 		}		
 	}
 
+	//TODO
 	if (isNew) {
-		DataHelper::GetInstance().ReloadAccounts();
+		//DataHelper::GetInstance().ReloadAccounts();
 	}
 
 	Close();

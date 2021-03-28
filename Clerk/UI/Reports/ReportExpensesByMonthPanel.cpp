@@ -1,6 +1,6 @@
 #include "ReportExpensesByMonthPanel.h"
 
-ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -64,16 +64,16 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 
 	this->SetSizer(mainSizer);
 
-	auto account = make_shared<Account>();
-	account->name = make_shared<wxString>("All");
+	auto account = std::make_shared<AccountViewModel>();
+	account->name = wxString("All");
 	account->id = -1;
-	account->iconId = -1;
+	account->icon = -1;
 
-	accounts.push_back(account);
+	_accounts.push_back(account);
 
-	for (auto &account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
+	for (auto &account : _context.GetAccountsService().GetByType(AccountType::Expens))
 	{
-		accounts.push_back(account);
+		_accounts.push_back(account);
 	}
 
 	chartPopup = new ExpensesTooltipPopup(this);
@@ -89,7 +89,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, wxWindo
 	chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 	periodList->Select(3);
-	accountsComboBox->SetAccounts(accounts);
+	accountsComboBox->SetAccounts(_accounts);
 
 	selectedIds = {};
 
@@ -105,17 +105,17 @@ void ReportExpensesByMonthPanel::Update() {
 	wxDateTime toDate = toDatePicker->GetValue();
 	
 	if (selectedIds.count(-1) > 0) {
-		values = DataHelper::GetInstance().GetExpensesByMonth(&fromDate, &toDate);
+		values = _context.GetReportingService().GetExpensesByMonth(fromDate, toDate);
 	}
 	else {
-		values = DataHelper::GetInstance().GetExpensesByMonth(GetSelectedAccounsIds(), &fromDate, &toDate);
+		values = _context.GetReportingService().GetExpensesByMonth(selectedIds, fromDate, toDate);
 	}	
 
-	std::vector<StringValue> chartValues;
+	std::vector<StringValueViewModel> chartValues;
 
-	for (auto value : values)
+	for (auto &value : values)
 	{
-		StringValue chartValue = { value.date.Format("%B"), value.value };
+		StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
 		chartValues.push_back(chartValue);
 	}
 
@@ -162,13 +162,13 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 	wxDateTime toDate = wxDateTime(date);
 	toDate.SetToLastMonthDay();
 
-	vector<StringValue> popupValues;
+	std::vector<StringValueViewModel> popupValues;
 
 	if (selectedIds.count(-1) > 0) {
-		popupValues = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
+		popupValues = _context.GetReportingService().GetExpensesByAccount(fromDate, toDate);
 	}
 	else {
-		popupValues = DataHelper::GetInstance().GetExpensesByAccount(GetSelectedAccounsIds(), &fromDate, &toDate);
+		popupValues = _context.GetReportingService().GetExpensesByAccount(selectedIds, fromDate, toDate);
 	}
 
 	wxPoint position = chart->ClientToScreen(wxPoint(x, y));
@@ -241,7 +241,7 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 			break;
 
 		case 3:
-			Utils::CalculatePeriod(PeriodTypes::PreviousYear, fromDate, toDate);
+			Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
 			break;
 
 		case 4:
@@ -263,7 +263,7 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 wxString ReportExpensesByMonthPanel::GetSelectedAccounsIds() {
 	wxString ids = "";
 
-	for (auto &account : accounts) {
+	for (auto &account : _accounts) {
 		if (selectedIds.count(account->id) > 0) {
 			ids = ids + wxString::Format("%i,", account->id);
 		}

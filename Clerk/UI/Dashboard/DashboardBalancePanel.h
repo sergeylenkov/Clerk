@@ -2,21 +2,24 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
-#include "../../Data//DataHelper.h"
 #include "../../Utils/Utils.h"
+#include "../../Data/ViewModels/CurrencyValueViewModel.h"
+
+using namespace Clerk::Utils;
+using namespace Clerk::Data;
 
 class DashboardBalancePanel : public wxPanel
 {
 public:
-	DashboardBalancePanel(wxWindow *parent, wxWindowID id);
+	DashboardBalancePanel(wxWindow *parent);
 
-	void SetBalance(CurrencyValue balance, std::vector<CurrencyValue> own, std::vector<CurrencyValue> credit);
+	void SetBalance(CurrencyValueViewModel total, CurrencyValueViewModel own, CurrencyValueViewModel credit);
 	void Update();
 
 private:
-	std::vector<CurrencyValue> ownFunds;
-	std::vector<CurrencyValue> creditFunds;
-	CurrencyValue totalBalance;
+	CurrencyValueViewModel _own;
+	CurrencyValueViewModel _credit;
+	CurrencyValueViewModel _total;
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);

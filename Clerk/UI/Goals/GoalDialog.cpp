@@ -56,7 +56,7 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 	accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
 	verticalSizer->Add(accountsList, 1, wxALL | wxEXPAND, 5);
 
-	accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
 
 	panelSizer->Add(verticalSizer, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
 
@@ -89,34 +89,20 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 	Bind(wxEVT_CHAR_HOOK, &GoalDialog::OnKeyDown, this);
 }
 
-void GoalDialog::SetGoal(std::shared_ptr<Goal> goal) {
+void GoalDialog::SetGoal(std::shared_ptr<GoalViewModel> goal) {
 	this->goal = goal;
 
-	nameField->SetValue(*this->goal->name);	
+	nameField->SetValue(this->goal->name);	
 	amountField->SetValue(wxString::Format("%.2f", this->goal->amount));
-	datePicker->SetValue(*goal->date);
+	datePicker->SetValue(goal->date);
 
-	std::string str = goal->accountIds->mb_str();
-	std::set<int> ids;
-
-	std::stringstream ss(str);
-
-	int i;
-
-	while (ss >> i)
-	{
-		ids.insert(i);
-
-		if (ss.peek() == ',') {
-			ss.ignore();
-		}
-	}
-
-	i = 0;
+	int i = 0;
 
 	for (auto& account : accounts)
 	{
-		bool checked = ids.count(account->id) > 0;
+		auto it = std::find(goal->accountIds.begin(), goal->accountIds.end(), account->id);
+
+		bool checked = it != goal->accountIds.end();
 		accountsList->CheckItem(i, checked);
 
 		i++;
@@ -127,10 +113,10 @@ void GoalDialog::UpdateAccounts() {
 	accountsList->ClearAll();
 	accountsList->EnableCheckBoxes(true);
 
-	accounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit);
-	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual);
+	/*accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Deposit);
+	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Virtual);
 
-	accounts.insert(accounts.end(), virtualAccounts.begin(), virtualAccounts.end());
+	accounts.insert(accounts.end(), virtualAccounts.begin(), virtualAccounts.end());*/
 
 	wxListItem column;
 
@@ -150,9 +136,9 @@ void GoalDialog::UpdateAccounts() {
 		listItem.SetData(account->id);
 
 		accountsList->InsertItem(listItem);
-		accountsList->SetItem(i, 0, *account->name);
+		//accountsList->SetItem(i, 0, *account->name);
 
-		accountsList->SetItemImage(listItem, account->iconId);
+		//accountsList->SetItemImage(listItem, account->iconId);
 
 		i++;
 	}
@@ -164,12 +150,11 @@ void GoalDialog::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
-	goal->name = make_shared<wxString>(nameField->GetValue());	
-	goal->date = make_shared<wxDateTime>(datePicker->GetValue());
+	goal->name = nameField->GetValue();
+	goal->date = datePicker->GetValue();
 	goal->amount = amountValue;
-
-	wxString accountIds("");
-
+	goal->accountIds.clear();
+	
 	long itemIndex = -1;
 
 	for (;;) {
@@ -183,15 +168,12 @@ void GoalDialog::OnOK(wxCommandEvent &event) {
 
 		if (checked) {
 			auto account = accounts[itemIndex];
-			accountIds = accountIds + wxString::Format("%i,", account->id);
+			goal->accountIds.push_back(account->id);
 		}
 	}
 
-	accountIds.RemoveLast();
-
-	goal->accountIds = make_shared<wxString>(accountIds);
-
-	goal->Save();
+	//TODO: add data context
+	//goal->Save();
 
 	Close();
 

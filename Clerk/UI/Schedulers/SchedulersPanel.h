@@ -2,9 +2,11 @@
 
 #include <wx/wx.h>
 #include "wx/dataview.h"
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/SchedulerViewModel.h"
 #include "../DataPanel.h"
 #include "SchedulersListDataModel.h"
+
+using namespace Clerk::Data;
 
 class SchedulersPanel : public DataPanel
 {
@@ -17,18 +19,18 @@ public:
 		Pause = 5,
 	};
 
-	SchedulersPanel(wxWindow *parent, wxWindowID id);
+	SchedulersPanel(wxWindow *parent, DataContext& context);
 	
-	std::shared_ptr<Scheduler> GetScheduler();
+	std::shared_ptr<SchedulerViewModel> GetScheduler();
 	void Update();	
 
-	std::function<void(std::shared_ptr<Scheduler> scheduler)> OnEdit;
+	std::function<void(std::shared_ptr<SchedulerViewModel> scheduler)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<SchedulersListDataModel> model;
-	std::vector<std::shared_ptr<Scheduler>> schedulers;
+	std::vector<std::shared_ptr<SchedulerViewModel>> schedulers;
 
 	void Add();
 	void Edit();

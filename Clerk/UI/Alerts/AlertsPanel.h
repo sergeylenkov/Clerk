@@ -2,9 +2,11 @@
 
 #include <wx/wx.h>
 #include "wx/dataview.h"
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/AlertViewModel.h"
 #include "../DataPanel.h"
 #include "AlertsListDataModel.h"
+
+using namespace Clerk;
 
 class AlertsPanel : public DataPanel
 {
@@ -15,18 +17,18 @@ public:
 		Delete = 3,
 	};
 
-	AlertsPanel(wxWindow *parent, wxWindowID id);
+	AlertsPanel(wxWindow *parent, Data::DataContext& context);
 
-	std::shared_ptr<Alert> GetAlert();
+	std::shared_ptr<AlertViewModel> GetAlert();
 	void Update();	
 
-	std::function<void(std::shared_ptr<Alert> alert)> OnEdit;
+	std::function<void(std::shared_ptr<AlertViewModel> alert)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<AlertsListDataModel> model;
-	std::vector<std::shared_ptr<Alert>> alerts;
+	std::vector<std::shared_ptr<AlertViewModel>> alerts;
 
 	void Add();
 	void Edit();

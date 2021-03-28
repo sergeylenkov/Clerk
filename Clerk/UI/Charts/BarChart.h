@@ -2,18 +2,20 @@
 #include <wx/numformatter.h>
 #include <vector>
 #include <algorithm>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/StringValueViewModel.h"
+
+using namespace Clerk::Data;
 
 class BarChart : public wxPanel {
 public:
 	BarChart(wxWindow *parent, wxWindowID id);
 	~BarChart();
 
-	void SetValues(std::vector<StringValue> values);
+	void SetValues(std::vector<StringValueViewModel> values);
 	void Draw();
 
 private:
-	std::vector<StringValue> _values;	
+	std::vector<StringValueViewModel> _values;
 
 	void OnPaint(wxPaintEvent& event);
 };

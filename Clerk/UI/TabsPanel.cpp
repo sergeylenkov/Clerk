@@ -1,6 +1,6 @@
 #include "TabsPanel.h"
 
-TabsPanel::TabsPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+TabsPanel::TabsPanel(wxWindow *parent, DataContext& context) : wxPanel(parent), _context(context) {	
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
@@ -27,7 +27,7 @@ TabsPanel::~TabsPanel()
 	delete notebook;
 }
 
-void TabsPanel::CreateTab(TreeMenuItemTypes type, shared_ptr<void> object) {
+void TabsPanel::CreateTab(TreeMenuItemType type, std::shared_ptr<void> object) {
 	wxPanel *panel = new wxPanel(notebook);
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	panel->SetSizer(sizer);
@@ -43,28 +43,28 @@ void TabsPanel::CreateTab(TreeMenuItemTypes type, shared_ptr<void> object) {
 	CreatePanel(index, type, object);
 }
 
-void TabsPanel::AddTab(TreeMenuItemTypes type, shared_ptr<void> object) {
+void TabsPanel::AddTab(TreeMenuItemType type, std::shared_ptr<void> object) {
 	CreateTab(type, object);
 	notebook->ChangeSelection(tabs.size() - 1);
 }
 
-void TabsPanel::UpdateCurrentTab(TreeMenuItemTypes type, shared_ptr<void> object) {
+void TabsPanel::UpdateCurrentTab(TreeMenuItemType type, std::shared_ptr<void> object) {
 	int i = notebook->GetSelection();
 	CreatePanel(i, type, object);
 }
 
 void TabsPanel::RestoreTabs() {
 	for (auto tab : Settings::GetInstance().GetTabs()) {
-		TreeMenuItemTypes type = (TreeMenuItemTypes)tab.type;
+		TreeMenuItemType type = (TreeMenuItemType)tab.type;
 
-		if (type == TreeMenuItemTypes::Account) {
-			std::shared_ptr<Account> tabAccount = DataHelper::GetInstance().GetAccountById(tab.id);
+		if (type == TreeMenuItemType::Account) {
+			std::shared_ptr<AccountViewModel> tabAccount = _context.GetAccountsService().GetById(tab.id);
 
 			if (tabAccount) {
 				CreateTab(type, tabAccount);
 			}
-		} else if (type == TreeMenuItemTypes::Report) {
-			std::shared_ptr<Report> tabReport = DataHelper::GetInstance().GetReportById(tab.id);
+		} else if (type == TreeMenuItemType::Report) {
+			std::shared_ptr<ReportViewModel> tabReport = _context.GetReportsService().GetById(tab.id);
 
 			if (tabReport) {
 				CreateTab(type, tabReport);
@@ -79,16 +79,16 @@ void TabsPanel::RestoreTabs() {
 	notebook->ChangeSelection(index);
 }
 
-bool TabsPanel::IsTabExists(TreeMenuItemTypes type, int id) {
+bool TabsPanel::IsTabExists(TreeMenuItemType type, int id) {
 	bool found = false;
 
 	for (auto tabPanel : tabsPanels) {
-		if (type == TreeMenuItemTypes::Account) {
+		if (type == TreeMenuItemType::Account) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				return true;
 			}
 		}
-		else if (type == TreeMenuItemTypes::Reports) {
+		else if (type == TreeMenuItemType::Reports) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				return true;
 			}
@@ -101,16 +101,16 @@ bool TabsPanel::IsTabExists(TreeMenuItemTypes type, int id) {
 	return false;
 }
 
-void TabsPanel::SelectTab(TreeMenuItemTypes type, int id) {
+void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
 	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
 		DataPanel *tabPanel = tabsPanels[i];
 
-		if (type == TreeMenuItemTypes::Account) {
+		if (type == TreeMenuItemType::Account) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				notebook->ChangeSelection(i);
 			}
 		}
-		else if (type == TreeMenuItemTypes::Reports) {
+		else if (type == TreeMenuItemType::Reports) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				notebook->ChangeSelection(i);
 			}
@@ -121,43 +121,43 @@ void TabsPanel::SelectTab(TreeMenuItemTypes type, int id) {
 	}
 }
 
-void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemTypes type, shared_ptr<void> object) {
-	if (type == TreeMenuItemTypes::Account) {
-		auto account = std::static_pointer_cast<Account>(object);
+void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object) {
+	if (type == TreeMenuItemType::Account) {
+		auto account = std::static_pointer_cast<AccountViewModel>(object);
 		CreateAccountPanel(tabIndex, account);
 	}
-	else if (type == TreeMenuItemTypes::Accounts || type == TreeMenuItemTypes::Receipts 
-		|| type == TreeMenuItemTypes::Expenses || type == TreeMenuItemTypes::Deposits || type == TreeMenuItemTypes::Virtual) {
-		CreateAccountsPanel(tabIndex, (TreeMenuItemTypes)type);
+	else if (type == TreeMenuItemType::Accounts || type == TreeMenuItemType::Receipts
+		|| type == TreeMenuItemType::Expenses || type == TreeMenuItemType::Deposits || type == TreeMenuItemType::Virtual) {
+		CreateAccountsPanel(tabIndex, (TreeMenuItemType)type);
 	}
-	else if (type == TreeMenuItemTypes::Dashboard) {
+	else if (type == TreeMenuItemType::Dashboard) {
 		CreateDashboardPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Budgets) {
+	else if (type == TreeMenuItemType::Budgets) {
 		CreateBudgetsPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Schedulers) {
+	else if (type == TreeMenuItemType::Schedulers) {
 		CreateSchedulersPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Goals) {
+	else if (type == TreeMenuItemType::Goals) {
 		CreateGoalsPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Trash) {
+	else if (type == TreeMenuItemType::Trash) {
 		CreateTrashPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Tags) {
+	else if (type == TreeMenuItemType::Tags) {
 		CreateTagsPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Alerts) {
+	else if (type == TreeMenuItemType::Alerts) {
 		CreateAlertsPanel(tabIndex);
 	}
-	else if (type == TreeMenuItemTypes::Report) {
-		auto report = std::static_pointer_cast<Report>(object);
+	else if (type == TreeMenuItemType::Report) {
+		auto report = std::static_pointer_cast<ReportViewModel>(object);
 		CreateReportPanel(tabIndex, report);
 	}
 }
 
-void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<Account> account) {
+void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewModel> account) {
 	wxPanel *panel = tabs[tabIndex];
 	wxBoxSizer *sizer = tabsSizer[tabIndex];
 	DataPanel *currentPanel = tabsPanels[tabIndex];
@@ -166,7 +166,7 @@ void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<Account> accoun
 		currentPanel->Destroy();
 	}
 
-	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
+	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, _context);
 
 	transactionList->OnAdd = std::bind(&TabsPanel::AddTransaction, this);
 	transactionList->OnCopy = std::bind(&TabsPanel::CopyTransaction, this, std::placeholders::_1);
@@ -174,17 +174,17 @@ void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<Account> accoun
 	transactionList->OnSplit = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
 
 	tabsPanels[tabIndex] = transactionList;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Account;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Account;
 	tabsPanels[tabIndex]->id = account->id;
 
 	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, *account->name);
-	UpdateTransactionList(transactionList, TreeMenuItemTypes::Account, account);
+	notebook->SetPageText(tabIndex, account->name);
+	UpdateTransactionList(transactionList, TreeMenuItemType::Account, account);
 }
 
-void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
+void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemType type) {
 	wxPanel *panel = tabs[tabIndex];
 	wxBoxSizer *sizer = tabsSizer[tabIndex];
 	DataPanel *currentPanel = tabsPanels[tabIndex];
@@ -193,7 +193,7 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 		currentPanel->Destroy();
 	}
 
-	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, wxID_ANY);
+	TransactionsListPanel *transactionList = new TransactionsListPanel(panel, _context);
 
 	transactionList->OnAdd = std::bind(&TabsPanel::AddTransaction, this);
 	transactionList->OnCopy = std::bind(&TabsPanel::CopyTransaction, this, std::placeholders::_1);
@@ -208,16 +208,16 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemTypes type) {
 
 	wxString name = wxT("");
 
-	if (type == TreeMenuItemTypes::Deposits) {
+	if (type == TreeMenuItemType::Deposits) {
 		name = wxT("Deposits");
 	}
-	else if (type == TreeMenuItemTypes::Expenses) {
+	else if (type == TreeMenuItemType::Expenses) {
 		name = wxT("Expenses");
 	}
-	else if (type == TreeMenuItemTypes::Receipts) {
+	else if (type == TreeMenuItemType::Receipts) {
 		name = wxT("Receipts");
 	}
-	else if (type == TreeMenuItemTypes::Accounts) {
+	else if (type == TreeMenuItemType::Accounts) {
 		name = wxT("Transactions");
 	}
 
@@ -234,10 +234,10 @@ void TabsPanel::CreateDashboardPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	DashboardPanel *dashboardPanel = new DashboardPanel(panel, wxID_ANY);
+	DashboardPanel *dashboardPanel = new DashboardPanel(panel, _context);
 
 	tabsPanels[tabIndex] = dashboardPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Dashboard;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Dashboard;
 
 	sizer->Add(dashboardPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -256,13 +256,13 @@ void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	BudgetsPanel *budgetPanel = new BudgetsPanel(panel, wxID_ANY);
+	BudgetsPanel *budgetPanel = new BudgetsPanel(panel, _context);
 
-	budgetPanel->OnAdd = std::bind(&TabsPanel::AddBudget, this);
-	budgetPanel->OnEdit = std::bind(&TabsPanel::EditBudget, this, std::placeholders::_1);
+	//budgetPanel->OnAdd = std::bind(&TabsPanel::AddBudget, this);
+	//budgetPanel->OnEdit = std::bind(&TabsPanel::EditBudget, this, std::placeholders::_1);
 
 	tabsPanels[tabIndex] = budgetPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Budgets;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Budgets;
 
 	sizer->Add(budgetPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -281,13 +281,13 @@ void TabsPanel::CreateSchedulersPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	SchedulersPanel *schedulersPanel = new SchedulersPanel(panel, wxID_ANY);
+	SchedulersPanel *schedulersPanel = new SchedulersPanel(panel, _context);
 
 	schedulersPanel->OnAdd = std::bind(&TabsPanel::AddScheduler, this);
 	schedulersPanel->OnEdit = std::bind(&TabsPanel::EditScheduler, this, std::placeholders::_1);
 
 	tabsPanels[tabIndex] = schedulersPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Schedulers;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Schedulers;
 
 	sizer->Add(schedulersPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -306,13 +306,13 @@ void TabsPanel::CreateGoalsPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	GoalsPanel *goalsPanel = new GoalsPanel(panel, wxID_ANY);
+	GoalsPanel *goalsPanel = new GoalsPanel(panel, _context);
 
 	goalsPanel->OnAdd = std::bind(&TabsPanel::AddGoal, this);
 	goalsPanel->OnEdit = std::bind(&TabsPanel::EditGoal, this, std::placeholders::_1);
 
 	tabsPanels[tabIndex] = goalsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Goals;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Goals;
 
 	sizer->Add(goalsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -322,7 +322,7 @@ void TabsPanel::CreateGoalsPanel(int tabIndex) {
 	goalsPanel->Update();
 }
 
-void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) {
+void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<ReportViewModel> report) {
 	wxPanel *panel = tabs[tabIndex];
 	wxBoxSizer *sizer = tabsSizer[tabIndex];
 	DataPanel *currentPanel = tabsPanels[tabIndex];
@@ -334,23 +334,23 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<Report> report) 
 	DataPanel *reportPanel;
 
 	if (report->id == 1) {
-		reportPanel = new ReportExpensesByMonthPanel(panel, wxID_ANY);
+		reportPanel = new ReportExpensesByMonthPanel(panel, _context);
 	}
 	else if (report->id == 2) {
-		reportPanel = new ReportBalancePanel(panel, wxID_ANY);
+		reportPanel = new ReportBalancePanel(panel, _context);
 	}
 	else {
-		reportPanel = new ReportExpensesForPeriodPanel(panel, wxID_ANY);
+		reportPanel = new ReportExpensesForPeriodPanel(panel, _context);
 	}
 
 	tabsPanels[tabIndex] = reportPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Report;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Report;
 	tabsPanels[tabIndex]->id = report->id;
 
 	sizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, *report->name);
+	notebook->SetPageText(tabIndex, report->name);
 
 	reportPanel->Update();
 }
@@ -364,10 +364,10 @@ void TabsPanel::CreateTrashPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	TrashPanel *trashPanel = new TrashPanel(panel, wxID_ANY);
+	TrashPanel *trashPanel = new TrashPanel(panel, _context);
 
 	tabsPanels[tabIndex] = trashPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Trash;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Trash;
 
 	sizer->Add(trashPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -386,10 +386,10 @@ void TabsPanel::CreateTagsPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	TagsPanel *tagsPanel = new TagsPanel(panel, wxID_ANY);
+	TagsPanel *tagsPanel = new TagsPanel(panel, _context);
 
 	tabsPanels[tabIndex] = tagsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Tags;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Tags;
 
 	sizer->Add(tagsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -408,13 +408,13 @@ void TabsPanel::CreateAlertsPanel(int tabIndex) {
 		currentPanel->Destroy();
 	}
 
-	AlertsPanel *alertsPanel = new AlertsPanel(panel, wxID_ANY);
+	AlertsPanel *alertsPanel = new AlertsPanel(panel, _context);
 
 	alertsPanel->OnAdd = std::bind(&TabsPanel::AddAlert, this);
 	alertsPanel->OnEdit = std::bind(&TabsPanel::EditAlert, this, std::placeholders::_1);
 
 	tabsPanels[tabIndex] = alertsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemTypes::Alerts;
+	tabsPanels[tabIndex]->type = TreeMenuItemType::Alerts;
 
 	sizer->Add(alertsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -490,27 +490,29 @@ void TabsPanel::AddTransaction() {
 	}
 }
 
-void TabsPanel::CopyTransaction(std::shared_ptr<Transaction> transaction) {
+void TabsPanel::CopyTransaction(std::shared_ptr<TransactionViewModel> transaction) {
 	if (OnCopyTransaction) {
 		OnCopyTransaction(transaction);
 	}
 }
 
-void TabsPanel::EditTransaction(std::shared_ptr<Transaction> transaction) {
+void TabsPanel::EditTransaction(std::shared_ptr<TransactionViewModel> transaction) {
 	if (OnEditTransaction) {
 		OnEditTransaction(transaction);
 	}
 }
 
-void TabsPanel::SplitTransaction(std::shared_ptr<Transaction> transaction) {
+void TabsPanel::SplitTransaction(std::shared_ptr<TransactionViewModel> transaction) {
 	if (OnSplitTransaction) {
 		OnSplitTransaction(transaction);
 	}
 }
 
-void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemTypes type, std::shared_ptr<Account> account)
+void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, TreeMenuItemType type, std::shared_ptr<AccountViewModel> account)
 {
-	if (type == TreeMenuItemTypes::Account) {
+	transactionList->Update();
+
+	/*if (type == TreeMenuItemTypes::Account) {
 		transactionList->SetType(type);
 		transactionList->SetAccount(account);
 		transactionList->Update();
@@ -530,16 +532,16 @@ void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 	else if (type == TreeMenuItemTypes::Accounts) {
 		transactionList->SetType(type);
 		transactionList->Update();
-	}
+	}*/
 }
 
-std::shared_ptr<Transaction> TabsPanel::GetSelectedTransaction() {
+std::shared_ptr<TransactionViewModel> TabsPanel::GetSelectedTransaction() {
 	int i = notebook->GetSelection();
 	DataPanel *currentPanel = tabsPanels[i];	
 
-	if (currentPanel->type == TreeMenuItemTypes::Account) {
+	if (currentPanel->type == TreeMenuItemType::Account) {
 		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
-		return transactionList->GetTransaction();
+		//return transactionList->GetTransaction();
 	}
 
 	return nullptr;
@@ -563,7 +565,7 @@ void TabsPanel::AddBudget() {
 	}
 }
 
-void TabsPanel::EditBudget(std::shared_ptr<Budget> budget) {
+void TabsPanel::EditBudget(std::shared_ptr<BudgetViewModel> budget) {
 	if (OnEditBudget) {
 		OnEditBudget(budget);
 	}
@@ -575,7 +577,7 @@ void TabsPanel::AddScheduler() {
 	}
 }
 
-void TabsPanel::EditScheduler(std::shared_ptr<Scheduler> scheduler) {
+void TabsPanel::EditScheduler(std::shared_ptr<SchedulerViewModel> scheduler) {
 	if (OnEditScheduler) {
 		OnEditScheduler(scheduler);
 	}
@@ -587,7 +589,7 @@ void TabsPanel::AddGoal() {
 	}
 }
 
-void TabsPanel::EditGoal(std::shared_ptr<Goal> goal) {
+void TabsPanel::EditGoal(std::shared_ptr<GoalViewModel> goal) {
 	if (OnEditGoal) {
 		OnEditGoal(goal);
 	}
@@ -600,7 +602,7 @@ void TabsPanel::AddAlert() {
 	}
 }
 
-void TabsPanel::EditAlert(std::shared_ptr<Alert> alert) {
+void TabsPanel::EditAlert(std::shared_ptr<AlertViewModel> alert) {
 	if (OnEditAlert) {
 		OnEditAlert(alert);
 	}

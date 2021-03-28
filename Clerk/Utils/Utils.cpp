@@ -1,26 +1,19 @@
 #include "Utils.h"
 
-Utils::Utils()
-{
-}
+using namespace Clerk::Utils;
 
-Utils::~Utils()
-{
-}
-
-wxString Utils::FormatAmount(float amount) {
+wxString Format::Amount(float amount) {
 	wxString number = wxNumberFormatter::ToString(amount, 2);
 	return number;
 }
 
-wxString Utils::FormatAmount(float amount, Currency &currency) {
-	wxString number = wxNumberFormatter::ToString(amount, 2);
-	wxString sign = *currency.sign;
+wxString Format::Amount(float amount, wxString& sign) {
+	wxString number = wxNumberFormatter::ToString(amount, 2);	
 
 	return wxString::Format("%s %s", number, sign);
 }
 
-wxColor Utils::ColorForBudget(int percent) {
+wxColor Colors::ColorForBudget(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);
 	} else if (percent >= 90) {
@@ -30,7 +23,7 @@ wxColor Utils::ColorForBudget(int percent) {
 	return wxColor(10, 199, 117);
 }
 
-wxColor Utils::ColorForGoal(int percent) {
+wxColor Colors::ColorForGoal(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);
 	}
@@ -41,7 +34,7 @@ wxColor Utils::ColorForGoal(int percent) {
 	return wxColor(242, 73, 101);
 }
 
-wxColor Utils::ColorForDebt(int percent) {
+wxColor Colors::ColorForDebt(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);
 	}
@@ -52,27 +45,27 @@ wxColor Utils::ColorForDebt(int percent) {
 	return wxColor(242, 73, 101);
 }
 
-void Utils::CalculatePeriod(PeriodTypes type, wxDateTime &fromDate, wxDateTime &toDate) {
+void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &toDate) {
 	switch (type)
 	{
-		case PeriodTypes::CurrentWeek:
+	case Periods::Type::CurrentWeek:
 			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 			toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
 		break;
 
-		case PeriodTypes::PreviousWeek:
+	case Periods::Type::PreviousWeek:
 			fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
 			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 
 			toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
 			break;		
 
-		case PeriodTypes::CurrentMonth:
+	case Periods::Type::CurrentMonth:
 			fromDate.SetDay(1);
 			toDate.SetToLastMonthDay();
 			break;
 
-		case PeriodTypes::PreviousMonth:
+	case Periods::Type::PreviousMonth:
 			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
 			fromDate.SetDay(1);
 
@@ -80,14 +73,14 @@ void Utils::CalculatePeriod(PeriodTypes type, wxDateTime &fromDate, wxDateTime &
 			toDate.SetToLastMonthDay();
 			break;
 
-		case PeriodTypes::CurrentYear:
+	case Periods::Type::CurrentYear:
 			fromDate.SetMonth(wxDateTime::Month::Jan);
 			fromDate.SetDay(1);
 			toDate.SetMonth(wxDateTime::Month::Dec);
 			toDate.SetDay(31);
 			break;
 
-		case PeriodTypes::PreviousYear:
+	case Periods::Type::PreviousYear:
 			fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
 			fromDate.SetMonth(wxDateTime::Month::Jan);
 			fromDate.SetDay(1);

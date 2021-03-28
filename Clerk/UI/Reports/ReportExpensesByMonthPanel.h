@@ -10,18 +10,19 @@
 #include <set>
 #include <sstream>
 #include "../DataPanel.h"
-#include "../../Data/DataHelper.h"
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
 #include "../Controls/AccountsComboBox.h"
+#include "../../Data/ViewModels/DateValueViewModel.h"
 
-using namespace std;
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class ReportExpensesByMonthPanel : public DataPanel
 {
 public:
-	ReportExpensesByMonthPanel(wxWindow *parent, wxWindowID id);
+	ReportExpensesByMonthPanel(wxWindow *paren, DataContext& context);
 	~ReportExpensesByMonthPanel();
 
 	void Update();
@@ -33,9 +34,9 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	wxCheckBox *averageCheckbox;
-	vector<shared_ptr<Account>> accounts;
+	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
 	ExpensesTooltipPopup *chartPopup;
-	vector<DateValue> values = {};
+	std::vector<DateValueViewModel> values = {};
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
 	std::set<int> selectedIds;

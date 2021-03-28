@@ -7,16 +7,17 @@
 #include <algorithm>
 #include <map>
 #include "../DataPanel.h"
-#include "../../Data/DataHelper.h"
 #include "../Charts/BarChart.h"
 #include "../../Data/Settings.h"
+#include "../../Data/ViewModels/DateValueViewModel.h"
 
-using namespace std;
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class ReportExpensesForPeriodPanel : public DataPanel
 {
 public:
-	ReportExpensesForPeriodPanel(wxWindow *parent, wxWindowID id);
+	ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context);
 	~ReportExpensesForPeriodPanel();
 
 	void Update();
@@ -26,7 +27,7 @@ private:
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
-	vector<DateValue> values = {};
+	std::vector<DateValueViewModel> values = {};
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
 

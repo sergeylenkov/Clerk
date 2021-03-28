@@ -8,7 +8,7 @@ SchedulersListDataModel::~SchedulersListDataModel()
 {
 }
 
-void SchedulersListDataModel::SetItems(std::vector<std::shared_ptr<Scheduler>> schedulers) {
+void SchedulersListDataModel::SetItems(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers) {
 	_schedulers = schedulers;
 	Reset(_schedulers.size());
 }
@@ -30,22 +30,22 @@ void SchedulersListDataModel::GetValueByRow(wxVariant &variant, unsigned int row
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Name:
-			variant = *scheduler->name;
+			variant = scheduler->name;
 			break;
 		case Columns::Type:
-			variant = *scheduler->typeName;
+			variant = scheduler->typeName;
 			break;
 		case Columns::NextDate:
-			variant = FormatDate(scheduler->nextDate.get());
+			variant = FormatDate(scheduler->nextDate);
 			break;
 		case Columns::DaysLeft:
-			variant = FormatDaysLeft(scheduler->nextDate.get());
+			variant = FormatDaysLeft(scheduler->nextDate);
 			break;
 		case Columns::Amount:
-			variant = Utils::FormatAmount(scheduler->fromAmount);
+			variant = Format::Amount(scheduler->fromAmount);
 			break;
 		case Columns::Status:
-			if (scheduler->active) {
+			if (scheduler->isActive) {
 				variant = "Active";
 			}
 			else {
@@ -62,7 +62,7 @@ bool SchedulersListDataModel::GetAttrByRow(unsigned int row, unsigned int column
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Status:
-			if (!scheduler->active) {
+			if (!scheduler->isActive) {
 				attr.SetColour(wxColor(110, 110, 110));
 				return true;
 			}
@@ -78,19 +78,19 @@ bool SchedulersListDataModel::SetValueByRow(const wxVariant &variant, unsigned i
 }
 
 
-wxString SchedulersListDataModel::FormatDate(wxDateTime *date) const
+wxString SchedulersListDataModel::FormatDate(const wxDateTime& date) const
 {
-	wxString dateFormat = date->Format("%B %e");
+	wxString dateFormat = date.Format("%B %e");
 
-	if (wxDateTime::Now().GetYear() != date->GetYear()) {
-		dateFormat = date->Format("%B %e, %Y");
+	if (wxDateTime::Now().GetYear() != date.GetYear()) {
+		dateFormat = date.Format("%B %e, %Y");
 	}
 
 	return dateFormat;
 }
 
-wxString SchedulersListDataModel::FormatDaysLeft(wxDateTime *date) const {
-	wxDateSpan diff = date->DiffAsDateSpan(wxDateTime::Now());
+wxString SchedulersListDataModel::FormatDaysLeft(const wxDateTime& date) const {
+	wxDateSpan diff = date.DiffAsDateSpan(wxDateTime::Now());
 
 	int days = diff.GetTotalDays();
 	int months = diff.GetTotalMonths();

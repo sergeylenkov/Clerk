@@ -1,6 +1,6 @@
 #include "ReportExpensesForPeriodPanel.h"
 
-ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -77,17 +77,9 @@ void ReportExpensesForPeriodPanel::Update() {
 
 	fromDate.SetDay(1);
 
-	vector<StringValue> values = DataHelper::GetInstance().GetExpensesByAccount(&fromDate, &toDate);
+	std::vector<StringValueViewModel> values = _context.GetReportingService().GetExpensesByAccount(fromDate, toDate);
 
-	std::vector<StringValue> chartValues;
-
-	for (auto value : values)
-	{
-		StringValue chartValue = { value.string, value.value };
-		chartValues.push_back(chartValue);
-	}
-
-	chart->SetValues(chartValues);
+	chart->SetValues(values);
 }
 
 void ReportExpensesForPeriodPanel::OnDateChanged(wxDateEvent &event) {
@@ -147,7 +139,7 @@ void ReportExpensesForPeriodPanel::CalculatePeriod() {
 		break;
 
 	case 3:
-		Utils::CalculatePeriod(PeriodTypes::PreviousYear, fromDate, toDate);
+		Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
 		break;
 
 	case 4:

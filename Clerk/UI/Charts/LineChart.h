@@ -7,16 +7,16 @@
 #include <map>
 #include <functional>
 #include <numeric>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/StringValueViewModel.h"
 
-using namespace std;
+using namespace Clerk::Data;
 
 class LineChart : public wxPanel
 {
 public:
 	LineChart(wxWindow *parent, wxWindowID id);
 
-	void SetValues(std::vector<StringValue> values);
+	void SetValues(std::vector<StringValueViewModel> values);
 	void SetDrawAverage(bool value);
 	void Draw();
 
@@ -25,7 +25,7 @@ public:
 	std::function<void(int x, int y , int index)> OnUpdatePopup;
 
 private:
-	std::vector<StringValue> values;
+	std::vector<StringValueViewModel> values;
 	std::vector<std::pair<int, int>> points;
 	float maxValue;
 	float totalValue;

@@ -50,8 +50,8 @@ SchedulersConfirmDialog::~SchedulersConfirmDialog()
 {
 }
 
-void SchedulersConfirmDialog::SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers) {
-	this->schedulers = schedulers;
+void SchedulersConfirmDialog::SetSchedulers(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers) {
+	_schedulers = schedulers;
 	UpdateList();
 }
 
@@ -77,7 +77,7 @@ void SchedulersConfirmDialog::UpdateList() {
 
 	int i = 0;
 
-	for (auto &scheduler : schedulers)
+	for (auto &scheduler : _schedulers)
 	{
 		wxListItem listItem;
 
@@ -86,8 +86,9 @@ void SchedulersConfirmDialog::UpdateList() {
 
 		list->InsertItem(listItem);
 
-		list->SetItem(i, 0, *scheduler->name);
+		list->SetItem(i, 0, scheduler->name);
 		list->SetItem(i, 1, wxString::Format("%.2f", scheduler->fromAmount));
+
 		i++;
 	}
 }
@@ -109,10 +110,11 @@ int SchedulersConfirmDialog::SelectedItemIndex() {
 }
 
 void SchedulersConfirmDialog::OnSkipAll(wxCommandEvent &event) {
-	for (auto &scheduler : schedulers)
+	for (auto &scheduler : _schedulers)
 	{
-		scheduler->CalculateNextDate();
-		scheduler->Save();
+		//TODO moved method to interactor
+		//scheduler->CalculateNextDate();
+		//scheduler->Save();
 	}
 
 	Close();
@@ -122,21 +124,23 @@ void SchedulersConfirmDialog::OnSkip(wxCommandEvent &event) {
 	int index = SelectedItemIndex();
 
 	if (index != -1) {
-		schedulers[index]->CalculateNextDate();
-		schedulers[index]->Save();
+		//TODO moved method to interactor
+		//schedulers[index]->CalculateNextDate();
+		//schedulers[index]->Save();
 
-		schedulers.erase(schedulers.begin() + index);
+		_schedulers.erase(_schedulers.begin() + index);
 
 		list->DeleteItem(index);
 	}
 }
 
 void SchedulersConfirmDialog::OnApplyAll(wxCommandEvent &event) {
-	for (auto &scheduler : schedulers)
+	for (auto &scheduler : _schedulers)
 	{
-		scheduler->Execute();
-		scheduler->CalculateNextDate();
-		scheduler->Save();
+		//TODO moved method to interactor
+		//scheduler->Execute();
+		//scheduler->CalculateNextDate();
+		//scheduler->Save();
 	}
 
 	Close();

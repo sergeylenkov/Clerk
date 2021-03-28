@@ -1,8 +1,11 @@
 #pragma once
 
 #include <wx/dataview.h>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/SchedulerViewModel.h"
 #include "../../Utils/Utils.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class SchedulersListDataModel : public wxDataViewListStore
 {
@@ -21,7 +24,7 @@ public:
 	SchedulersListDataModel();
 	~SchedulersListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<Scheduler>> schedulers);
+	void SetItems(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers);
 
 	virtual unsigned int GetColumnCount() const;
 	virtual wxString GetColumnType(unsigned int column) const;
@@ -30,8 +33,8 @@ public:
 	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
 
 private:
-	std::vector<std::shared_ptr<Scheduler>> _schedulers;
-	wxString FormatDate(wxDateTime *date) const;
-	wxString FormatDaysLeft(wxDateTime *date) const;
+	std::vector<std::shared_ptr<SchedulerViewModel>> _schedulers;
+	wxString FormatDate(const wxDateTime& date) const;
+	wxString FormatDaysLeft(const wxDateTime& date) const;
 };
 

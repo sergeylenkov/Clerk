@@ -1,6 +1,6 @@
 #include "TagsPanel.h"
 
-TagsPanel::TagsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxPanel *topPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -40,7 +40,7 @@ TagsPanel::~TagsPanel() {
 void TagsPanel::Update() {
 	std::thread([=]()
 	{
-		tags = DataHelper::GetInstance().GetTags();
+		tags = _context.GetTagsService().GetAll();
 		Filter();
 
 		this->GetEventHandler()->CallAfter(&TagsPanel::UpdateList);
@@ -58,9 +58,9 @@ void TagsPanel::Filter() {
 		std::wstring searchW = search.ToStdWstring();
 		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
-		for (auto tag : tags)
+		for (auto &tag : tags)
 		{
-			wxString searchString = *tag->name;
+			wxString searchString = tag->name;
 			std::wstring searchStringW = searchString.ToStdWstring();
 			f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
 
@@ -83,14 +83,14 @@ void TagsPanel::UpdateList() {
 
 	int i = 0;
 
-	for (auto tag : filteredTags)
+	for (auto &tag : filteredTags)
 	{
-		list->InsertItem(i, wxString::Format("%s (%d)", *tag->name, tag->count));
+		list->InsertItem(i, wxString::Format("%s (%d)", tag->name, tag->count));
 		i++;
 	}
 }
 
-shared_ptr<Tag> TagsPanel::GetTag() {
+std::shared_ptr<TagViewModel> TagsPanel::GetTag() {
 	long itemIndex = -1;
 
 	for (;;) {
@@ -148,7 +148,7 @@ void TagsPanel::Rename() {
 
 		auto tag = filteredTags[index];
 
-		list->SetItemText(index, *tag->name);
+		list->SetItemText(index, tag->name);
 		list->EditLabel(index);
 	}
 }
@@ -157,10 +157,11 @@ void TagsPanel::Delete() {
 	auto tag = GetTag();
 
 	if (tag) {
-		wxMessageDialog *dialog = new wxMessageDialog(this, wxString::Format("You are sure want to delete tag '%s'?", *tag->name), wxT("Delete tag"), wxOK | wxCANCEL | wxCENTER);
+		wxMessageDialog *dialog = new wxMessageDialog(this, wxString::Format("You are sure want to delete tag '%s'?", tag->name), wxT("Delete tag"), wxOK | wxCANCEL | wxCENTER);
 
 		if (dialog->ShowModal() == wxID_OK) {
-			tag->Delete();
+			//TODO
+			//tag->Delete();
 
 			long index = GetSelectedIndex();
 
@@ -189,19 +190,20 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 
 		auto editedTag = filteredTags[editedIndex];
 
-		if (newValue != *editedTag->name) {
+		if (newValue != editedTag->name) {
 			bool isReplaced = false;
 
 			for (unsigned int i = 0; i < tags.size(); i++)
 			{
 				auto tag = tags[i];
 
-				if (newValue == *tag->name) {
-					DataHelper::GetInstance().ReplaceTag(editedTag->id, tag->id);
-					editedTag->Delete();
+				if (newValue == tag->name) {
+					//DataHelper::GetInstance().ReplaceTag(editedTag->id, tag->id);
+					//TODO
+					//editedTag->Delete();
 
 					tag->count = tag->count + editedTag->count;
-					list->SetItemText(i, wxString::Format("%s (%d)", *tag->name, tag->count));
+					list->SetItemText(i, wxString::Format("%s (%d)", tag->name, tag->count));
 
 					isReplaced = true;
 				}
@@ -210,14 +212,15 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 			if (isReplaced) {	
 				DeleteItemAtIndex(editedIndex);
 			} else {
-				editedTag->name = std::make_shared<wxString>(newValue);
-				editedTag->Save();
+				editedTag->name = wxString(newValue);
+				//TODO
+				//editedTag->Save();
 
-				list->SetItemText(editedIndex, wxString::Format("%s (%d)", *editedTag->name, editedTag->count));
+				list->SetItemText(editedIndex, wxString::Format("%s (%d)", editedTag->name, editedTag->count));
 			}
 		}
 		else {
-			list->SetItemText(editedIndex, wxString::Format("%s (%d)", *editedTag->name, editedTag->count));
+			list->SetItemText(editedIndex, wxString::Format("%s (%d)", editedTag->name, editedTag->count));
 		}
 
 		editedIndex = -1;

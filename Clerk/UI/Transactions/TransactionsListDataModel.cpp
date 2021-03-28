@@ -8,7 +8,7 @@ TransactionsListDataModel::~TransactionsListDataModel()
 {
 }
 
-void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<Transaction>> transactions) {
+void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<TransactionViewModel>> transactions) {
 	_transactions = transactions;
 	Reset(_transactions.size());
 }
@@ -30,19 +30,20 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Date:
-			variant = FormatDate(transaction->paidAt.get());
+			variant = FormatDate(transaction->date);
 			break;
 		case Columns::FromAccount:
-			variant = *transaction->fromAccount->name;
+			variant = transaction->fromAccount->name;
 			break;
 		case Columns::ToAccount:
-			variant = *transaction->toAccount->name;
+			variant = transaction->toAccount->name;
 			break;
 		case Columns::Amount: {
 			wxArrayString values;
 
-			wxString fromValue = Utils::FormatAmount(transaction->fromAmount, *transaction->toAccount->currency);
-			wxString toValue = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
+			//TODO
+			wxString fromValue = Format::Amount(transaction->fromAmount);
+			wxString toValue = Format::Amount(transaction->toAmount);
 
 			values.Add(toValue);
 
@@ -57,15 +58,15 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 		case Columns::Tags: {
 			wxArrayString tags;
 
-			for (wxString tag : transaction->tags) {
-				tags.Add(tag);
+			for (auto &tag : transaction->tags) {
+				tags.Add(tag->name);
 			}
 
 			variant = tags;
 		}
 			break;
 		case Columns::Note:
-			variant = *transaction->note;
+			variant = transaction->note;
 			break;
 	}
 }
@@ -80,28 +81,28 @@ bool TransactionsListDataModel::SetValueByRow(const wxVariant &variant, unsigned
 	return false;
 }
 
-wxString TransactionsListDataModel::FormatDate(wxDateTime *date) const
+wxString TransactionsListDataModel::FormatDate(const wxDateTime& date) const
 {
-	wxString dateFormat = date->Format("%B %e");
+	wxString dateFormat = date.Format("%B %e");
 
-	if (wxDateTime::Now().GetYear() != date->GetYear()) {
-		dateFormat = date->Format("%B %e, %Y");
+	if (wxDateTime::Now().GetYear() != date.GetYear()) {
+		dateFormat = date.Format("%B %e, %Y");
 	}
 
 	return dateFormat;
 }
 
-wxString TransactionsListDataModel::FormatAmount(Transaction *transaction) const {
+wxString TransactionsListDataModel::FormatAmount(const TransactionViewModel& transaction) const {
 	wxString amount = "";
-
-	if (transaction->fromAmount != transaction->toAmount) {
-		wxString fromAmount = Utils::FormatAmount(transaction->fromAmount, *transaction->fromAccount->currency);
-		wxString toAmount = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
+	// TODO
+	if (transaction.fromAmount != transaction.toAmount) {
+		wxString fromAmount = Format::Amount(transaction.fromAmount);
+		wxString toAmount = Format::Amount(transaction.toAmount);
 
 		amount = wxString::Format("%s %s", fromAmount, toAmount);
 	}
 	else {
-		amount = Utils::FormatAmount(transaction->toAmount, *transaction->toAccount->currency);
+		amount = Format::Amount(transaction.toAmount);
 	}
 
 	return amount;

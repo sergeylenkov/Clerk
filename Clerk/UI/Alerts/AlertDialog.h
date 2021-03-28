@@ -6,14 +6,17 @@
 #include <sstream>
 #include <iostream>
 #include <algorithm>
-#include "../../Data/DataHelper.h"
+#include "../../Data/ViewModels/AlertViewModel.h"
+#include "../../Data/ViewModels/AccountViewModel.h"
+
+using namespace Clerk::Data;
 
 class AlertDialog : public wxFrame
 {
 public:
 	AlertDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 
-	void SetAlert(std::shared_ptr<Alert> alert);
+	void SetAlert(std::shared_ptr<AlertViewModel> alert);
 	std::function<void()> OnClose;
 
 private:
@@ -32,8 +35,8 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<Alert> alert;	
-	vector<shared_ptr<Account>> accounts;
+	std::shared_ptr<AlertViewModel> alert;	
+	std::vector<std::shared_ptr<AccountViewModel>> accounts;
 
 	void UpdateAccounts();
 	void OnTypeSelect(wxCommandEvent &event);

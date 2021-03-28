@@ -1,6 +1,6 @@
 #include "GoalsPanel.h"
 
-GoalsPanel::GoalsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+GoalsPanel::GoalsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	model = new GoalsListDataModel();
@@ -31,7 +31,7 @@ GoalsPanel::GoalsPanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) 
 	this->Layout();
 }
 
-shared_ptr<Goal> GoalsPanel::GetGoal() {
+std::shared_ptr<GoalViewModel> GoalsPanel::GetGoal() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
@@ -43,12 +43,7 @@ shared_ptr<Goal> GoalsPanel::GetGoal() {
 }
 
 void GoalsPanel::Update() {
-	goals = DataHelper::GetInstance().GetGoals();	
-
-	for (auto &goal : goals)
-	{
-		goal->balance = DataHelper::GetInstance().GetBalanceForGoal(*goal);
-	}
+	goals = _context.GetGoalsService().GetAll();
 
 	model.get()->SetItems(goals);
 }
@@ -71,7 +66,7 @@ void GoalsPanel::Delete() {
 	auto goal = GetGoal();
 
 	if (goal) {
-		goal->Delete();
+		//_context.GetGoalsRepository().Delete(*goal);
 		Update();
 	}
 }

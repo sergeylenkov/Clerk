@@ -18,7 +18,7 @@ bool GoalsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 
 	dc->DrawRectangle(rect.GetX(), rect.GetY() + y, rect.GetWidth(), 4);
 
-	wxColor color = Utils::ColorForGoal(_value);
+	wxColor color = Colors::ColorForGoal(_value);
 
 	dc->SetPen(wxPen(color, 1));
 	dc->SetBrush(wxBrush(color));

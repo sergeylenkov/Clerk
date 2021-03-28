@@ -1,35 +1,35 @@
 #include "DashboardSchedulersPanel.h"
 
-DashboardSchedulersPanel::DashboardSchedulersPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardSchedulersPanel::DashboardSchedulersPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardSchedulersPanel::OnPaint, this);
 }
 
-void DashboardSchedulersPanel::SetSchedulers(std::vector<std::shared_ptr<Scheduler>> schedulers) {
-	this->schedulers = schedulers;
+void DashboardSchedulersPanel::SetSchedulers(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers) {
+	_schedulers = schedulers;
 	Update();
 }
 
 void DashboardSchedulersPanel::Update()
 {
-	values.clear();
-	maxValue = 0;
+	_values.clear();
+	_maxValue = 0;
 
-	for (auto scheduler : schedulers) {
-		wxString date = scheduler->nextDate->FormatISODate();
+	for (auto &scheduler : _schedulers) {
+		wxString date = scheduler->nextDate.FormatISODate();
 
-		if (values[date]) {
-			values[date] = values[date] + scheduler->toAmount;
+		if (_values[date]) {
+			_values[date] = _values[date] + scheduler->amount;
 		}
 		else {
-			values[date] = scheduler->toAmount;
+			_values[date] = scheduler->amount;
 		}
 
-		if (values[date] > maxValue) {
-			maxValue = values[date];
+		if (_values[date] > _maxValue) {
+			_maxValue = _values[date];
 		}
 	}
 
-	int height = 200 + (schedulers.size() * 40);
+	int height = 200 + (_schedulers.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -67,7 +67,7 @@ void DashboardSchedulersPanel::DrawCalendar(wxPaintDC &dc) {
 
 	int dayWidth = width / 30;
 	int lineWidth = dayWidth * 30;
-	float amountStep = 50 / maxValue;
+	float amountStep = 50 / _maxValue;
 	int lineY = y + 80;
 
 	dc.SetPen(wxPen(wxColor(213, 213, 213), 1));
@@ -109,8 +109,8 @@ void DashboardSchedulersPanel::DrawCalendar(wxPaintDC &dc) {
 			dc.DrawText(monthStr, wxPoint(x + offset, lineY + 20));
 		}
 
-		if (values[day.FormatISODate()]) {
-			int height = values[day.FormatISODate()] * amountStep;
+		if (_values[day.FormatISODate()]) {
+			int height = _values[day.FormatISODate()] * amountStep;
 
 			if (height < 10) {
 				height = 10;
@@ -141,8 +141,8 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 
 	int firstColumnWidth = 0;
 
-	for (auto scheduler : schedulers) {
-		wxString date = scheduler->nextDate->Format("%a, %b %d");
+	for (auto scheduler : _schedulers) {
+		wxString date = scheduler->nextDate.Format("%a, %b %d");
 		wxSize size = dc.GetTextExtent(date);
 
 		if (size.GetWidth() > firstColumnWidth) {
@@ -150,7 +150,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 		}
 	}
 
-	for (auto scheduler : schedulers) {
+	for (auto scheduler : _schedulers) {
 		dc.SetPen(wxPen(wxColor(203, 203, 203), 1));
 		dc.DrawLine(0, y, lineWidth, y);
 
@@ -158,14 +158,14 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 
 		y = y + padding;
 
-		wxString date = scheduler->nextDate->Format("%a, %b %d");
+		wxString date = scheduler->nextDate.Format("%a, %b %d");
 		wxString amount = wxNumberFormatter::ToString(scheduler->toAmount, 2);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.SetFont(font);
 		dc.DrawText(date, wxPoint(0, y));
 
-		dc.DrawText(*scheduler->name, wxPoint(firstColumnWidth + 30, y));
+		dc.DrawText(scheduler->name, wxPoint(firstColumnWidth + 30, y));
 
 		wxSize size = dc.GetTextExtent(amount);
 		dc.DrawText(amount, wxPoint(lineWidth - size.GetWidth(), y));

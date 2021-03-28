@@ -4,6 +4,8 @@
 #include "wx/dataview.h"
 #include "../../Utils/Utils.h"
 
+using namespace Clerk::Utils;
+
 class GoalsProgressRender : public wxDataViewCustomRenderer
 {
 public:

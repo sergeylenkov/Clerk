@@ -1,21 +1,20 @@
 #include "DashboardBalancePanel.h"
 
-DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
-void DashboardBalancePanel::SetBalance(CurrencyValue balance, std::vector<CurrencyValue> own, std::vector<CurrencyValue> credit) {
-	ownFunds = own;
-	creditFunds = credit;
-	totalBalance = balance;
+void DashboardBalancePanel::SetBalance(CurrencyValueViewModel total, CurrencyValueViewModel own, CurrencyValueViewModel credit) {
+	_total = total;
+	_own = own;
+	_credit = credit;	
 
 	Update();
 }
 
 void DashboardBalancePanel::Update()
 {
-	int height = 140 + (ownFunds.size() * 30);	
-	this->SetMinSize(wxSize(-1, height));
+	this->SetMinSize(wxSize(-1, 170));
 
 	Refresh();
 }
@@ -46,7 +45,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	dc.SetFont(balanceFont);
 
-	wxString value = Utils::FormatAmount(totalBalance.value, totalBalance.currency);
+	wxString value = Format::Amount(_total.value, *_total.currency.sign);
 	dc.DrawText(value, wxPoint(0, y));
 
 	y = 80;
@@ -58,18 +57,14 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	y = y + 40;
 
-	for (auto &fund : ownFunds) {
-		wxString value = Utils::FormatAmount(fund.value, fund.currency);
-		wxSize size = dc.GetTextExtent(value);
+	value = Format::Amount(_own.value, *_own.currency.sign);
+	wxSize size = dc.GetTextExtent(value);
 
-		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(value, wxPoint(0, y));
+	dc.SetTextForeground(wxColor(0, 0, 0));
+	dc.DrawText(value, wxPoint(0, y));
 
-		if (size.GetWidth() > columnWidth) {
-			columnWidth = size.GetWidth();
-		}
-
-		y = y + 30;
+	if (size.GetWidth() > columnWidth) {
+		columnWidth = size.GetWidth();
 	}
 
 	y = 80;
@@ -80,15 +75,11 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	y = y + 40;	
 
-	for (auto &fund : creditFunds) {
-		wxString value = Utils::FormatAmount(fund.value, fund.currency);
-		wxSize size = dc.GetTextExtent(value);
+	value = Format::Amount(_credit.value, *_credit.currency.sign);
+	size = dc.GetTextExtent(value);
 
-		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(value, wxPoint(x, y));
-
-		y = y + 30;
-	}
+	dc.SetTextForeground(wxColor(0, 0, 0));
+	dc.DrawText(value, wxPoint(x, y));
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {

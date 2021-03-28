@@ -8,7 +8,7 @@ GoalsListDataModel::~GoalsListDataModel()
 {
 }
 
-void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<Goal>> goals) {
+void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<GoalViewModel>> goals) {
 	_goals = goals;
 	Reset(_goals.size());
 }
@@ -33,22 +33,22 @@ void GoalsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, uns
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Name:
-			variant = *goal->name;
+			variant = goal->name;
 			break;
 		case Columns::DueDate:			
-			variant = FormatDate(goal->date.get());
+			variant = FormatDate(goal->date);
 			break;
 		case Columns::DaysRemain:
-			variant = FormatDaysRemain(goal->date.get());
+			variant = FormatDaysRemain(goal->date);
 			break;
 		case Columns::Goal:
-			variant = Utils::FormatAmount(goal->amount);
+			variant = Format::Amount(goal->amount);
 			break;
 		case Columns::Current:
-			variant = Utils::FormatAmount(goal->balance);
+			variant = Format::Amount(goal->balance);
 			break;
 		case Columns::Remain:
-			variant = Utils::FormatAmount(remainAmount);
+			variant = Format::Amount(remainAmount);
 			break;
 		case Columns::Progress:
 			variant = wxString::Format("%f", remainPercent);
@@ -64,11 +64,11 @@ bool GoalsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxD
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Remain:
-			attr.SetColour(Utils::ColorForGoal(percent));
+			attr.SetColour(Colors::ColorForGoal(percent));
 			return true;			
 			break;
 		case Columns::DaysRemain:
-			if (goal->date->DiffAsDateSpan(wxDateTime::Now()).GetTotalDays() < 0) {
+			if (goal->date.DiffAsDateSpan(wxDateTime::Now()).GetTotalDays() < 0) {
 				attr.SetColour(wxColor(242, 73, 101));
 				return true;
 			}
@@ -83,19 +83,19 @@ bool GoalsListDataModel::SetValueByRow(const wxVariant &variant, unsigned int ro
 	return false;
 }
 
-wxString GoalsListDataModel::FormatDate(wxDateTime *date) const
+wxString GoalsListDataModel::FormatDate(wxDateTime& date) const
 {
-	wxString dateFormat = date->Format("%B %e");
+	wxString dateFormat = date.Format("%B %e");
 
-	if (wxDateTime::Now().GetYear() != date->GetYear()) {
-		dateFormat = date->Format("%B %e, %Y");
+	if (wxDateTime::Now().GetYear() != date.GetYear()) {
+		dateFormat = date.Format("%B %e, %Y");
 	}
 
 	return dateFormat;
 }
 
-wxString GoalsListDataModel::FormatDaysRemain(wxDateTime *date) const {
-	wxDateSpan diff = date->DiffAsDateSpan(wxDateTime::Now());
+wxString GoalsListDataModel::FormatDaysRemain(wxDateTime& date) const {
+	wxDateSpan diff = date.DiffAsDateSpan(wxDateTime::Now());
 	
 	int days = diff.GetTotalDays();
 	int months = diff.GetTotalMonths();

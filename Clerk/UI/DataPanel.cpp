@@ -1,9 +1,8 @@
 #include "DataPanel.h"
 
-DataPanel::DataPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DataPanel::DataPanel(wxWindow *parent, DataContext& context) : wxPanel(parent), _context(context) {
 
 }
 
-void DataPanel::Update()
-{
+void DataPanel::Update() {
 }

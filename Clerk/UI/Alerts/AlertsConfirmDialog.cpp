@@ -40,7 +40,7 @@ AlertsConfirmDialog::~AlertsConfirmDialog()
 {
 }
 
-void AlertsConfirmDialog::SetAlerts(std::vector<std::shared_ptr<Alert>> alerts) {
+void AlertsConfirmDialog::SetAlerts(std::vector<std::shared_ptr<AlertViewModel>> alerts) {
 	this->alerts = alerts;
 	UpdateList();
 }
@@ -67,42 +67,7 @@ void AlertsConfirmDialog::UpdateList() {
 
 		list->InsertItem(listItem);
 
-		wxString type = "";
-		wxString condition = "";
-
-		switch (alert->type)
-		{
-			case Alert::Type::Balance:
-				type = "Balance";
-				break;
-
-			case Alert::Type::Expense:
-				type = "Expense";
-				break;
-
-			case Alert::Type::Receipt:
-				type = "Receipt";
-				break;
-		}
-
-		switch (alert->condition)
-		{
-			case Alert::Condition::Equal:
-				condition = "equal to";
-				break;
-
-			case Alert::Condition::Less:
-				condition = "less than";
-				break;
-
-			case Alert::Condition::More:
-				condition = "more than";
-				break;
-		}		
-
-		wxString amount = Utils::FormatAmount(alert->amount);
-
-		wxString title = wxString::Format("%s '%s' %s %s", type, *alert->name, condition, amount);
+		wxString title = wxString::Format("%s '%s' %s %s", alert->typeName, alert->name, alert->conditionName.Lower(), Format::Amount(alert->amount));
 
 		list->SetItem(i, 0, title);
 		i++;

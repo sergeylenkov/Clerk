@@ -1,26 +1,22 @@
 #include "DashboardExpensesPanel.h"
 
-DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardExpensesPanel::OnPaint, this);
 }
 
-void DashboardExpensesPanel::SetExpenses(std::vector<AccountValue> expenses) {
-	this->expenses = expenses;
+void DashboardExpensesPanel::SetExpenses(std::vector<std::shared_ptr<AccountViewModel>> expenses) {
+	_expenses = expenses;
 	
 	maxValue = 0;
 
-	if (expenses.size() > 0) {
-		std::sort(this->expenses.begin(), this->expenses.end(), [](AccountValue a, AccountValue b) {
-			return a.value > b.value;
+	if (_expenses.size() > 0) {
+		std::sort(_expenses.begin(),_expenses.end(), [](auto a, auto b) {
+			return a->balance > b->balance;
 		});
 
-		totalValue = { *expenses[0].account->currency.get(), 0 };
-
-		for (auto &expense : expenses) {
-			totalValue.value = totalValue.value + expense.value;
-
-			if (expense.value > maxValue) {
-				maxValue = expense.value;
+		for (auto &account : _expenses) {
+			if (account->balance > maxValue) {
+				maxValue = account->balance;
 			}
 		}
 	}		
@@ -28,9 +24,13 @@ void DashboardExpensesPanel::SetExpenses(std::vector<AccountValue> expenses) {
 	Update();
 }
 
+void DashboardExpensesPanel::SetTotal(CurrencyValueViewModel value) {
+	_total = value;
+}
+
 void DashboardExpensesPanel::Update()
 {
-	int height = 50 + (expenses.size() * 30);
+	int height = 50 + (_expenses.size() * 35);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -57,27 +57,27 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
-	wxString value = Utils::FormatAmount(totalValue.value, totalValue.currency);
+	wxString value = Format::Amount(_total.value, *_total.currency.sign);
 	wxSize size = dc.GetTextExtent(value);
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
 	int y = 50;
 	
-	for (auto &item : expenses) {
+	for (auto &account : _expenses) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
-		dc.DrawText(*item.account->name, wxPoint(0, y));
+		dc.DrawText(account->name, wxPoint(0, y));
 
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = Utils::FormatAmount(item.value, *item.account->currency);
+		wxString value = Format::Amount(account->balance, *account->currency->sign);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 
-		int percent = (item.value / maxValue) * 100;
+		int percent = (account->balance / maxValue) * 100;
 		int progressWidth = (width / 100.0) * percent;
 
 		if (progressWidth < 5) {
@@ -89,7 +89,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(0, y + 20, progressWidth, 2);
 
-		y = y + 30;
+		y = y + 35;
 	}
 }
 

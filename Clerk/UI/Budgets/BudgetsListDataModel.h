@@ -1,8 +1,11 @@
 #pragma once
 
 #include <wx/dataview.h>
-#include "../../Data/DataHelper.h"
 #include "../../Utils/Utils.h"
+#include "../../Data/ViewModels/BudgetViewModel.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class BudgetsListDataModel : public wxDataViewListStore
 {
@@ -21,7 +24,7 @@ public:
 	BudgetsListDataModel();
 	~BudgetsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<Budget>> budgets);
+	void SetItems(std::vector<std::shared_ptr<BudgetViewModel>> budgets);
 	
 	virtual unsigned int GetColumnCount() const;
 	virtual wxString GetColumnType(unsigned int column) const;
@@ -30,6 +33,6 @@ public:
 	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
 
 private:
-	std::vector<std::shared_ptr<Budget>> _budgets;
+	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
 };
 

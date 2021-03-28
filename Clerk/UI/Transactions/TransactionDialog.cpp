@@ -112,7 +112,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	fromValue = 0;
 	toValue = 0;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
+	/*for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
 	{
 		accounts.push_back(account);
 	}
@@ -135,12 +135,12 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
 	{
 		accounts.push_back(account);
-	}
+	}*/
 
 	UpdateFromList();
 	SelectFromAccount(0);
 
-	UpdateToList(fromAccount.get());
+	UpdateToList(*_fromAccount.get());
 	SelectToAccount(0);
 }
 
@@ -158,27 +158,28 @@ void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
 	}
 }
 
-void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction) {
-	this->transaction = transaction;
+void TransactionDialog::SetTransaction(std::shared_ptr<TransactionViewModel> transaction) {
+	_transaction = transaction;
 
-	fromAmountField->SetValue(Utils::FormatAmount(transaction->fromAmount));
-	toAmountField->SetValue(Utils::FormatAmount(transaction->toAmount));
-	tagsField->SetValue(transaction->GetTagsString());
-	noteField->SetValue(*transaction->note);
-	datePicker->SetValue(*transaction->paidAt);
+	fromAmountField->SetValue(Format::Amount(transaction->fromAmount));
+	toAmountField->SetValue(Format::Amount(transaction->toAmount));
+	//TODO
+	//tagsField->SetValue(transaction->GetTagsString());
+	noteField->SetValue(transaction->note);
+	datePicker->SetValue(transaction->date);
 
-	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (transaction->fromAccount->id == fromAccounts[i]->id) {
+	for (unsigned int i = 0; i < _fromAccounts.size(); i++) {
+		if (transaction->fromAccount->id == _fromAccounts[i]->id) {
 			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i].get());
+			UpdateToList(*_fromAccounts[i].get());
 
 			break;
 		}
 	}
 
 	if (transaction->toAccount->id != -1) {
-		for (unsigned int i = 0; i < toAccounts.size(); i++) {
-			if (transaction->toAccount->id == toAccounts[i]->id) {
+		for (unsigned int i = 0; i < _toAccounts.size(); i++) {
+			if (transaction->toAccount->id == _toAccounts[i]->id) {
 				SelectToAccount(i);
 				break;
 			}
@@ -192,8 +193,8 @@ void TransactionDialog::SetTransaction(std::shared_ptr<Transaction> transaction)
 	fromAmountField->SelectAll();
 }
 
-void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transaction) {
-	auto copy = make_shared<Transaction>();
+void TransactionDialog::SetSplitTransaction(std::shared_ptr<TransactionViewModel> transaction) {
+	/*auto copy = make_shared<Transaction>();
 
 	copy->fromAccount = transaction->fromAccount;
 	copy->toAccount = transaction->toAccount;
@@ -227,85 +228,85 @@ void TransactionDialog::SetSplitTransaction(std::shared_ptr<Transaction> transac
 	}
 
 	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
+	fromAmountField->SelectAll();*/
 }
 
 void TransactionDialog::UpdateFromList() {
-	for (auto account : accounts) {
+	for (auto account : _accounts) {
 		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
 			int iconId = 0;
 
-			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			/*if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 				iconId = account->iconId;
-			}
+			}*/
 
-			fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+			//fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
 
-			fromAccounts.push_back(account);
+			_fromAccounts.push_back(account);
 		}
 	}
 }
 
-void TransactionDialog::UpdateToList(Account *account) {
+void TransactionDialog::UpdateToList(AccountViewModel& account) {
 	toList->Clear();
-	toAccounts.clear();
+	_toAccounts.clear();
 
-	for (auto toAccount : accounts)
+	for (auto &toAccount : _accounts)
 	{
-		if (account->id == toAccount->id) {
+		if (account.id == toAccount->id) {
 			continue;
 		}
 
-		if (account->type == AccountType::Receipt) {
+		if (account.type == AccountType::Receipt) {
 			if (toAccount->type == AccountType::Deposit || toAccount->type == AccountType::Virtual) {
 				int iconId = 0;
 
-				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+				/*if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 					iconId = toAccount->iconId;
 				}
 
-				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));*/
 
-				toAccounts.push_back(toAccount);
+				_toAccounts.push_back(toAccount);
 			}
 		}
-		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
+		else if (account.type == AccountType::Deposit || account.type == AccountType::Virtual) {
 			if (toAccount->type == AccountType::Deposit || toAccount->type == AccountType::Expens
 				|| toAccount->type == AccountType::Debt || toAccount->type == AccountType::Virtual) {
 				int iconId = 0;
 
-				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+				/*if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
 					iconId = toAccount->iconId;
-				}
+				}*/
 
-				toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+				//toList->Append(toAccount->name, iconId);
 
-				toAccounts.push_back(toAccount);
+				_toAccounts.push_back(toAccount);
 			}
 		}
 	}
 }
 
 void TransactionDialog::SelectFromAccount(int index) {
-	auto account = fromAccounts[index];
+	auto account = _fromAccounts[index];
 
 	fromList->Select(index);
 	fromAmountLabel->SetLabel(*account->currency->shortName);
-	fromAccount = account;
+	_fromAccount = account;
 }
 
 void TransactionDialog::SelectToAccount(int id) {
-	auto account = toAccounts[id];
+	auto account = _toAccounts[id];
 
 	toList->Select(id);
 	toAmountLabel->SetLabel(*account->currency->shortName);
 
-	toAccount = account;
+	_toAccount = account;
 }
 
-void TransactionDialog::SelectToAccount(Account *account) {
-	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (toAccounts[i]->id == account->id) {
+void TransactionDialog::SelectToAccount(AccountViewModel& account) {
+	for (unsigned int i = 0; i < _toAccounts.size(); i++) {
+		if (_toAccounts[i]->id == account.id) {
 			SelectToAccount(i);
 			return;
 		}
@@ -317,42 +318,43 @@ void TransactionDialog::SelectToAccount(Account *account) {
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {
 	SelectFromAccount(fromList->GetSelection());
 
-	UpdateToList(fromAccount.get());
-	SelectToAccount(toAccount.get());
+	UpdateToList(*_fromAccount.get());
+	SelectToAccount(*_toAccount.get());
 }
 
 void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 	SelectToAccount(toList->GetSelection());
 
-	Account *fromAccount = fromAccounts[fromList->GetSelection()].get();
-	Account *toAccount = toAccounts[toList->GetSelection()].get();
+	auto fromAccount = _fromAccounts[fromList->GetSelection()].get();
+	auto toAccount = _toAccounts[toList->GetSelection()].get();
 
 	if (fromAccount->currency->id != toAccount->currency->id) {
 		float fromValue = fromAmountField->GetFloatValue();
 		float toValue = toAmountField->GetFloatValue();
 
-		float amount = DataHelper::GetInstance().ConvertCurrency(fromAccount->currency->id, toAccount->currency->id, fromValue);
-		toAmountField->SetValue(Utils::FormatAmount(amount));
+		float amount = fromValue; //TODO DataHelper::GetInstance().ConvertCurrency(fromAccount->currency->id, toAccount->currency->id, fromValue);
+		toAmountField->SetValue(Format::Amount(amount));
 	}
 }
 
 void TransactionDialog::OnOK(wxCommandEvent &event) {
-	transaction->fromAccount = fromAccounts[fromList->GetSelection()];
-	transaction->toAccount = toAccounts[toList->GetSelection()];
-	transaction->note = make_shared<wxString>(noteField->GetValue());
-	transaction->SetTagsString(tagsField->GetValue());
-	transaction->paidAt = make_shared<wxDateTime>(datePicker->GetValue());	
+	//TODO
+	_transaction->fromAccount = _fromAccounts[fromList->GetSelection()];
+	_transaction->toAccount = _toAccounts[toList->GetSelection()];
+	_transaction->note = noteField->GetValue();
+	//transaction->SetTagsString(tagsField->GetValue());
+	_transaction->date = datePicker->GetValue();	
 		  
-	transaction->fromAmount = fromAmountField->GetFloatValue();
-	transaction->toAmount = toAmountField->GetFloatValue();
+	_transaction->fromAmount = fromAmountField->GetFloatValue();
+	_transaction->toAmount = toAmountField->GetFloatValue();
 
-	transaction->Save();
+	//transaction->Save();
 
-	if (splitTransaction) {
-		splitTransaction->fromAmount = splitTransaction->fromAmount - transaction->fromAmount;
-		splitTransaction->toAmount = splitTransaction->toAmount - transaction->toAmount;
+	if (_splitTransaction) {
+		_splitTransaction->fromAmount = _splitTransaction->fromAmount - _transaction->fromAmount;
+		_splitTransaction->toAmount = _splitTransaction->toAmount - _transaction->toAmount;
 
-		splitTransaction->Save();
+		//splitTransaction->Save();
 	}
 
 	Close();
@@ -369,20 +371,20 @@ void TransactionDialog::OnCancel(wxCommandEvent &event) {
 void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 	
-	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
-	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;	
+	int fromCurrencyId = _fromAccounts[fromList->GetSelection()]->currency->id;
+	int toCurrencyId = _toAccounts[toList->GetSelection()]->currency->id;	
 
 	float fromValue = fromAmountField->GetFloatValue();
 	float toValue = toAmountField->GetFloatValue();
 
 	if (toValue == 0) {
 		if (fromCurrencyId == toCurrencyId) {
-			toAmountField->SetValue(Utils::FormatAmount(fromAmountField->GetFloatValue()));
+			toAmountField->SetValue(Format::Amount(fromAmountField->GetFloatValue()));
 		}
 
 		else if (Settings::GetInstance().IsConvertCurrency()) {
-			float amount = DataHelper::GetInstance().ConvertCurrency(fromCurrencyId, toCurrencyId, fromValue);
-			toAmountField->SetValue(Utils::FormatAmount(amount));
+			float amount = fromValue; //TODO  DataHelper::GetInstance().ConvertCurrency(fromCurrencyId, toCurrencyId, fromValue);
+			toAmountField->SetValue(Format::Amount(amount));
 		}
 	}
 }
@@ -412,7 +414,8 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 		}
 
 		if (!tokens.empty()) {
-			auto tags = DataHelper::GetInstance().GetTagsBySearch(tokens.back());
+			//TODO
+			auto tags = std::vector<std::shared_ptr<wxString>>();//_context.GetTagsRepository().GetBySearch(tokens.back());
 
 			if (!tokens.empty() && tags.size() > 0) {
 				tagsPopup->Update(tags);

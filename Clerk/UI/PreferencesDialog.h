@@ -1,8 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../Data/DataHelper.h"
+#include "../Data/Models/Currency.h"
 #include "../Data/Settings.h"
+
+using namespace Clerk::Data;
 
 class PreferencesDialog : public wxFrame
 {
@@ -16,7 +18,7 @@ private:
 	wxCheckBox *loadExchangeRatesCheckBox;
 	wxButton *okButton;
 	wxButton *cancelButton;
-	vector<std::shared_ptr<Currency>> currencies;
+	std::vector<std::shared_ptr<Currency>> currencies;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

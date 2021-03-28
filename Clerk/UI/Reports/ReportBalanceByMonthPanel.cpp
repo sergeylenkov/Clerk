@@ -1,6 +1,6 @@
 #include "ReportBalanceByMonthPanel.h"
 
-ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPanel(parent, id) {
+ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -61,27 +61,27 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, wxWindowID id) : DataPa
 
 	this->SetSizer(mainSizer);
 
-	auto account = make_shared<Account>();
-	account->name = make_shared<wxString>("All");
+	/*auto account = std::make_shared<AccountViewModel>();
+	account->name = wxString("All");
 	account->id = -1;
-	account->iconId = -1;
+	account->icon = -1;
 
-	accounts.push_back(account);
+	_accounts.push_back(account);*/
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
+	for (auto &account : _context.GetAccountsService().GetByType(AccountType::Deposit))
 	{
-		accounts.push_back(account);
+		_accounts.push_back(account);
 	}
 
-	for (auto account : accounts) {
+	/*for (auto &account : _accounts) {
 		int iconId = 0;
 
-		if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-			iconId = account->iconId;
+		if (account->icon < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
+			iconId = account->icon;
 		}
 
-		accountList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-	}
+		accountList->Append(account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
+	}*/
 
 	chartPopup = new ExpensesTooltipPopup(this);
 
@@ -108,15 +108,15 @@ void ReportBalancePanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	auto account = accounts[accountList->GetSelection()];
+	auto account = _accounts[accountList->GetSelection()];
 
-	values = DataHelper::GetInstance().GetBalanceByMonth(*account, &fromDate, &toDate);
+	values = _context.GetReportingService().GetBalanceByMonth(*account, fromDate, toDate);
 
-	std::vector<StringValue> chartValues;
+	std::vector<StringValueViewModel> chartValues;
 
-	for (auto value : values)
+	for (auto &value : values)
 	{
-		StringValue chartValue = { value.date.Format("%B"), value.value };
+		StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
 		chartValues.push_back(chartValue);
 	}
 
@@ -151,11 +151,11 @@ void ReportBalancePanel::HidePopup() {
 }
 
 void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
-	vector<StringValue> popupValues;
+	std::vector<StringValueViewModel> popupValues;
 
 	wxDateTime date = values[index].date;
 
-	StringValue value = { date.Format("%B"), values[index].value };
+	StringValueViewModel value = { date.Format("%B"), values[index].value };
 
 	popupValues.push_back(value);
 
@@ -171,7 +171,7 @@ void ReportBalancePanel::RestoreFilterSettings() {
 	long accountId = -1;
 	settings.accountIds.ToLong(&accountId);
 
-	for (unsigned int i = 0; i < accounts.size(); i++) {
+	/*for (unsigned int i = 0; i < _accounts.size(); i++) {
 		if (accounts[i]->id == accountId) {
 			accountList->SetSelection(i);
 		}
@@ -182,13 +182,13 @@ void ReportBalancePanel::RestoreFilterSettings() {
 	periodFromDate = settings.fromDate;
 	periodToDate = settings.toDate;
 
-	CalculatePeriod();
+	CalculatePeriod();*/
 }
 
 void ReportBalancePanel::SaveFilterSettings() {
-	Account *account = accounts[accountList->GetSelection()].get();
+	/*Account *account = _accounts[accountList->GetSelection()].get();
 
-	Settings::GetInstance().SetReportFilterSettings(2, wxString::Format("%d", account->id), periodList->GetSelection(), periodFromDate, periodToDate);
+	Settings::GetInstance().SetReportFilterSettings(2, wxString::Format("%d", account->id), periodList->GetSelection(), periodFromDate, periodToDate);*/
 }
 
 void ReportBalancePanel::CalculatePeriod() {
@@ -218,7 +218,7 @@ void ReportBalancePanel::CalculatePeriod() {
 		break;
 
 	case 3:
-		Utils::CalculatePeriod(PeriodTypes::PreviousYear, fromDate, toDate);
+		Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
 		break;
 
 	case 4:

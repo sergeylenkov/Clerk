@@ -8,7 +8,7 @@ BudgetsListDataModel::~BudgetsListDataModel()
 {
 }
 
-void BudgetsListDataModel::SetItems(std::vector<std::shared_ptr<Budget>> budgets) {
+void BudgetsListDataModel::SetItems(std::vector<std::shared_ptr<BudgetViewModel>> budgets) {
 	_budgets = budgets;
 	Reset(_budgets.size());
 }
@@ -33,19 +33,19 @@ void BudgetsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, u
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Name:			
-			variant = *budget->name;
+			variant = budget->name;
 			break;
 		case Columns::Period:
-			variant = *budget->periodName;
+			variant = budget->periodName;
 			break;
 		case Columns::Limit:
-			variant = Utils::FormatAmount(budget->amount);
+			variant = Format::Amount(budget->amount);
 			break;
 		case Columns::Current:
-			variant = Utils::FormatAmount(budget->balance);
+			variant = Format::Amount(budget->balance);
 			break;
 		case Columns::Remain:
-			variant = Utils::FormatAmount(remainAmount);
+			variant = Format::Amount(remainAmount);
 			break;
 		case Columns::Progress:
 			variant = wxString::Format("%f", remainPercent);
@@ -61,7 +61,7 @@ bool BudgetsListDataModel::GetAttrByRow(unsigned int row, unsigned int column,	w
 	switch (static_cast<Columns>(column))
 	{
 		case Columns::Remain:			
-			attr.SetColour(Utils::ColorForBudget(percent));
+			attr.SetColour(Colors::ColorForBudget(percent));
 			return true;			
 			break;
 	}

@@ -18,7 +18,7 @@ bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 
 	dc->DrawRectangle(rect.GetX(), rect.GetY() + y, rect.GetWidth(), 4);
 
-	wxColor color = Utils::ColorForBudget(_value);
+	wxColor color = Colors::ColorForBudget(_value);
 
 	dc->SetPen(wxPen(color, 1));
 	dc->SetBrush(wxBrush(color));

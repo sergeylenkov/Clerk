@@ -44,7 +44,7 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
-			receipt_sum = sqlite3_column_double(statement, 0);
+			receipt_sum = static_cast<float>(sqlite3_column_double(statement, 0));
 		}
 	}
 
@@ -54,7 +54,7 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
-			expense_sum = sqlite3_column_double(statement, 0);
+			expense_sum = static_cast<float>(sqlite3_column_double(statement, 0));
 		}
 	}
 
@@ -82,7 +82,7 @@ std::shared_ptr<AlertModel> AlertsRepository::Load(int id) {
 			alert->type = static_cast<AlertType>(sqlite3_column_int(statement, 2));
 			alert->period = static_cast<AlertPeriod>(sqlite3_column_int(statement, 3));
 			alert->condition = static_cast<AlertCondition>(sqlite3_column_int(statement, 4));
-			alert->amount = sqlite3_column_double(statement, 5);
+			alert->amount = static_cast<float>(sqlite3_column_double(statement, 5));
 			alert->accountIds = std::string((char*)sqlite3_column_text(statement, 6));
 			alert->created = std::string((char*)sqlite3_column_text(statement, 7));
 		}
@@ -104,7 +104,7 @@ void AlertsRepository::Save(AlertModel& alert)
 			sqlite3_bind_int(statement, 2, static_cast<int>(alert.type));
 			sqlite3_bind_int(statement, 3, static_cast<int>(alert.period));
 			sqlite3_bind_int(statement, 4, static_cast<int>(alert.condition));
-			sqlite3_bind_int(statement, 5, alert.amount);
+			sqlite3_bind_double(statement, 5, alert.amount);
 			sqlite3_bind_text(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 7, alert.created.c_str(), -1, SQLITE_TRANSIENT);
 
@@ -125,7 +125,7 @@ void AlertsRepository::Save(AlertModel& alert)
 			sqlite3_bind_int(statement, 2, static_cast<int>(alert.type));
 			sqlite3_bind_int(statement, 3, static_cast<int>(alert.period));
 			sqlite3_bind_int(statement, 4, static_cast<int>(alert.condition));
-			sqlite3_bind_int(statement, 5, alert.amount);
+			sqlite3_bind_double(statement, 5, alert.amount);
 			sqlite3_bind_text(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_bind_int(statement, 7, alert.id);

@@ -71,7 +71,7 @@ std::shared_ptr<BudgetModel> BudgetsRepository::Load(int id) {
 			budget->name = std::string((char*)sqlite3_column_text(statement, 1));
 			budget->period = static_cast<BudgetPeriod>(sqlite3_column_int(statement, 2));
 			budget->date = std::string((char*)sqlite3_column_text(statement, 3));
-			budget->amount = sqlite3_column_double(statement, 4);
+			budget->amount = static_cast<float>(sqlite3_column_double(statement, 4));
 			budget->accountIds = std::string((char*)sqlite3_column_text(statement, 5));
 		}
 	}
@@ -91,7 +91,7 @@ void BudgetsRepository::Save(BudgetModel& budget)
 			sqlite3_bind_text(statement, 1, budget.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(budget.period));
 			sqlite3_bind_text(statement, 3, budget.date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 4, budget.amount);
+			sqlite3_bind_double(statement, 4, budget.amount);
 			sqlite3_bind_text(statement, 5, budget.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text(statement, 6, budget.created.c_str(), -1, SQLITE_TRANSIENT);
 
@@ -110,7 +110,7 @@ void BudgetsRepository::Save(BudgetModel& budget)
 			sqlite3_bind_text(statement, 1, budget.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(budget.period));
 			sqlite3_bind_text(statement, 3, budget.date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 4, budget.amount);
+			sqlite3_bind_double(statement, 4, budget.amount);
 			sqlite3_bind_text(statement, 5, budget.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_bind_int(statement, 6, budget.id);

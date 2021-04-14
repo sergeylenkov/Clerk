@@ -27,7 +27,7 @@ sqlite3* DataConnection::GetConnection() {
 }
 
 void DataConnection::CreateDatabase() {
-	char* sql = "CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, name TEXT, note TEXT, type_id INTEGER, currency_id INTEGER, icon_id INTEGER, order_id INTEGER, active INTEGER, created_at TEXT, credit_limit NUMERIC)";
+	char* sql = "CREATE TABLE IF NOT EXISTS accounts (id INTEGER PRIMARY KEY, name TEXT, note TEXT, type_id INTEGER, currency_id INTEGER, icon_id INTEGER, order_id INTEGER, active INTEGER, created_at TEXT, credit_limit REAL)";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection, sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -36,7 +36,7 @@ void DataConnection::CreateDatabase() {
 
 	sqlite3_finalize(statement);
 
-	sql = "CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY, paid_at TEXT, from_account_id INTEGER, to_account_id INTEGER, from_account_amount NUMERIC, to_account_amount NUMERIC, deleted INTEGER, note TEXT, created_at TEXT";
+	sql = "CREATE TABLE IF NOT EXISTS transactions (id INTEGER PRIMARY KEY, paid_at TEXT, from_account_id INTEGER, to_account_id INTEGER, from_account_amount REAL, to_account_amount REAL, deleted INTEGER, note TEXT, created_at TEXT";
 
 	if (sqlite3_prepare_v2(_connection, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);
@@ -84,7 +84,7 @@ void DataConnection::CreateDatabase() {
 
 	sqlite3_finalize(statement);
 
-	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate FLOAT, count INTEGER, date TEXT)";
+	sql = "CREATE TABLE IF NOT EXISTS exchange_rates (id INTEGER PRIMARY KEY, from_currency_id INTEGER, to_currency_id INTEGER, rate REAL, count INTEGER, date TEXT)";
 
 	if (sqlite3_prepare_v2(_connection, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);
@@ -92,7 +92,7 @@ void DataConnection::CreateDatabase() {
 
 	sqlite3_finalize(statement);
 
-	sql = "CREATE TABLE IF NOT EXISTS alerts (id INTEGER PRIMARY KEY, name TEXT, type INTEGER, period INTEGER, condition INTEGER, amount FLOAT, account_ids TEXT, created_at TEXT)";
+	sql = "CREATE TABLE IF NOT EXISTS alerts (id INTEGER PRIMARY KEY, name TEXT, type INTEGER, period INTEGER, condition INTEGER, amount REAL, account_ids TEXT, created_at TEXT)";
 
 	if (sqlite3_prepare_v2(_connection, sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_step(statement);

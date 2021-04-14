@@ -4,6 +4,7 @@
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
 #include "../../Data/ViewModels/CurrencyValueViewModel.h"
+#include "../../Data/ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Utils;
 using namespace Clerk::Data;
@@ -12,15 +13,14 @@ class DashboardBalancePanel : public wxPanel
 {
 public:
 	DashboardBalancePanel(wxWindow *parent);
+	~DashboardBalancePanel();
 
-	void SetBalance(CurrencyValueViewModel total, CurrencyValueViewModel own, CurrencyValueViewModel credit);
-	void Update();
+	void SetViewModel(DashboardViewModel* viewModel);
 
 private:
-	CurrencyValueViewModel _own;
-	CurrencyValueViewModel _credit;
-	CurrencyValueViewModel _total;
+	DashboardViewModel* _viewModel;
 
+	void Update();
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

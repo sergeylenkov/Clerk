@@ -64,7 +64,11 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
+	StatusViewModel* viewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
+
 	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20));	
+	_statusbar->SetViewModel(viewModel);
+
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
@@ -89,8 +93,6 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	_treeMenu->RestoreState();
 
 	_tabsPanel->RestoreTabs();
-
-	UpdateStatus();
 
 	/*std::thread([this]()
 	{
@@ -132,35 +134,6 @@ MainFrame::~MainFrame()
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
-}
-
-void MainFrame::UpdateStatus() {
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
-
-	fromDate.SetDay(1);
-	toDate.SetToLastMonthDay();
-
-	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
-	
-	wxString rates("");
-
-	auto settingsRates = Settings::GetInstance().GetSelectedExchangeRates();
-
-	for (int id : settingsRates) {
-		float rate = _context.GetExchangeRatesRepository().GetExchangeRate(id, baseCurrencyId);
-		auto currency = _context.GetCurrenciesRepository().GetById(id);
-
-		rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currency->shortName + wxT("  ");
-	}
-
-	_statusbar->SetPeriod(wxDateTime::Now());
-	_statusbar->SetReceipts(_context.GetAccountingService().GetReceipts(fromDate, toDate));
-	_statusbar->SetExpenses(_context.GetAccountingService().GetExpenses(fromDate, toDate));
-	_statusbar->SetBalance(_context.GetAccountingService().GetBalance());
-	_statusbar->SetExchangeRates(rates);
-
-	_statusbar->Layout();
 }
 
 std::vector<std::shared_ptr<TransactionViewModel>> MainFrame::OnTreeMenuContextMenu(const AccountViewModel& account) {

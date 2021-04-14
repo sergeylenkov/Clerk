@@ -108,9 +108,11 @@
     <ClCompile Include="Data\ViewModels\AccountViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\AlertViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\BudgetViewModel.cpp" />
+    <ClCompile Include="Data\ViewModels\DashboardViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\GoalViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\ReportViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\SchedulerViewModel.cpp" />
+    <ClCompile Include="Data\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TagViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TransactionViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
@@ -223,10 +225,12 @@
     <ClInclude Include="Data\ViewModels\AlertViewModel.h" />
     <ClInclude Include="Data\ViewModels\BudgetViewModel.h" />
     <ClInclude Include="Data\ViewModels\CurrencyValueViewModel.h" />
+    <ClInclude Include="Data\ViewModels\DashboardViewModel.h" />
     <ClInclude Include="Data\ViewModels\DateValueViewModel.h" />
     <ClInclude Include="Data\ViewModels\GoalViewModel.h" />
     <ClInclude Include="Data\ViewModels\ReportViewModel.h" />
     <ClInclude Include="Data\ViewModels\SchedulerViewModel.h" />
+    <ClInclude Include="Data\ViewModels\StatusViewModel.h" />
     <ClInclude Include="Data\ViewModels\StringValueViewModel.h" />
     <ClInclude Include="Data\ViewModels\TagViewModel.h" />
     <ClInclude Include="Data\ViewModels\TransactionViewModel.h" />

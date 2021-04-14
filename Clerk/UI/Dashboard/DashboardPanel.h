@@ -10,6 +10,7 @@
 #include "./DashboardBalancePanel.h"
 #include "./DashboardGoalsPanel.h"
 #include "./DashboardDebtsPanel.h"
+#include "../../Data/ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 
@@ -21,15 +22,15 @@ public:
 	void Update();
 
 private:
-	wxScrolledWindow *scrolledWindow;
-	wxPanel *leftPanel;
-	wxPanel *rightPanel;
-	DashboardSchedulersPanel *schedulersPanel;
-	DashboardBudgetsPanel *budgetsPanel;
-	DashboardExpensesPanel *expensesPanel;
-	DashboardAccountsPanel *accountsPanel;
-	DashboardBalancePanel *balancePanel;
-	DashboardGoalsPanel *goalsPanel;
-	DashboardDebtsPanel *debtsPanel;
+	wxScrolledWindow *_scrolledWindow;
+	wxPanel *_leftPanel;
+	wxPanel *_rightPanel;
+	DashboardSchedulersPanel *_schedulersPanel;
+	DashboardBudgetsPanel *_budgetsPanel;
+	DashboardExpensesPanel *_expensesPanel;
+	DashboardAccountsPanel *_accountsPanel;
+	DashboardBalancePanel *_balancePanel;
+	DashboardGoalsPanel *_goalsPanel;
+	DashboardDebtsPanel *_debtsPanel;
 };
 

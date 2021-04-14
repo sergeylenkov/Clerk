@@ -1,4 +1,4 @@
-#include "AccountModel.h";
+#include "AccountModel.h"
 
 using namespace Clerk::Data;
 

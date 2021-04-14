@@ -2,21 +2,24 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
+#include "../../Data/ViewModels/StatusViewModel.h"
+
+using namespace Clerk::Data;
 
 class Statusbar : public wxPanel
 {
 public:
 	Statusbar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
-	void SetPeriod(wxDateTime& value);
-	void SetReceipts(float value);
-	void SetExpenses(float value);
-	void SetBalance(float value);
-	void SetExchangeRates(wxString value);
+	~Statusbar();
+	void SetViewModel(StatusViewModel* viewModel);
 
 private:
-	wxStaticText *periodLabel;
-	wxStaticText *receiptsLabel;
-	wxStaticText *expensesLabel;
-	wxStaticText *balanceLabel;
-	wxStaticText *exchangeRatesLabel;
+	wxStaticText* _periodLabel;
+	wxStaticText* _receiptsLabel;
+	wxStaticText* _expensesLabel;
+	wxStaticText* _balanceLabel;
+	wxStaticText* _exchangeRatesLabel;
+	StatusViewModel* _viewModel;
+
+	void Update();
 };

@@ -95,5 +95,5 @@ TEST_F(AccountsServiceTest, GetPairAccount) {
     auto pair = service->GetPairAccount(*account);
 
     ASSERT_TRUE(pair != nullptr);
-    EXPECT_EQ(pair->id, 18);
+    EXPECT_EQ(pair->id, 65);
 }

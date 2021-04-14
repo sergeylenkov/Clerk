@@ -30,6 +30,7 @@
 #include "../Commands/QuitCommand.h"
 #include "../Commands/PreferencesCommand.h"
 #include "Controllers/DialogsController.h"
+#include "../Data/ViewModels/StatusViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -55,6 +56,5 @@ private:
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
 
-	void UpdateStatus();
 	std::vector<std::shared_ptr<TransactionViewModel>> OnTreeMenuContextMenu(const AccountViewModel& account);
 };

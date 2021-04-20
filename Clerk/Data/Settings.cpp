@@ -19,7 +19,7 @@ void Settings::Open(char *configName) {
 
 	if (wxFile::Exists(fileName)) {
 		FILE *fp = fopen(fileName.char_str(), "rb");
-		char readBuffer[65536];
+		char readBuffer[65536]{0};
 		FileReadStream is(fp, readBuffer, sizeof(readBuffer));
 
 		Document json;
@@ -176,7 +176,7 @@ void Settings::Save() {
 	if (tabs.size() > 0) {
 		Value tabsJson(kArrayType);
 
-		for (auto tab : tabs) {
+		for (auto& tab : tabs) {
 			Value tabJson(kObjectType);
 
 			tabJson.AddMember("Type", tab.type, json.GetAllocator());
@@ -191,7 +191,7 @@ void Settings::Save() {
 	if (transactionListFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto settings : transactionListFilterSettings)
+		for (auto& settings : transactionListFilterSettings)
 		{
 			Value filterJson(kObjectType);
 
@@ -219,12 +219,12 @@ void Settings::Save() {
 
 	for (const auto &value : transactionsListColumnsSettings)
 	{
-		auto columns = transactionsListColumnsSettings[value.first];
+		auto& columns = transactionsListColumnsSettings[value.first];
 
 		Value columnsTypeJson(kObjectType);
 		Value columnsJson(kArrayType);
 
-		for (auto column : columns)
+		for (auto& column : columns)
 		{
 			Value columnJson(kObjectType);
 
@@ -250,7 +250,7 @@ void Settings::Save() {
 	if (reportFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto settings : reportFilterSettings)
+		for (auto& settings : reportFilterSettings)
 		{
 			Value filterJson(kObjectType);
 			
@@ -279,7 +279,7 @@ void Settings::Save() {
 	}
 
 	FILE *fp = fopen(fileName.char_str(), "wb"); 
-	char writeBuffer[65536];
+	char writeBuffer[65536]{0};
 
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
 	Writer<FileWriteStream> writer(os);
@@ -465,7 +465,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 }
 
 std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumnsTypes type) {
-	auto columns = transactionsListColumnsSettings[static_cast<int>(type)];
+	auto& columns = transactionsListColumnsSettings[static_cast<int>(type)];
 
 	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;

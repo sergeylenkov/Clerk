@@ -219,7 +219,7 @@ void AlertDialog::OnOK(wxCommandEvent &event) {
 		bool checked = accountsList->IsItemChecked(itemIndex);
 
 		if (checked) {
-			auto account = accounts[itemIndex];
+			auto &account = accounts[itemIndex];
 			alert->accountIds.push_back(account->id);
 		}
 	}

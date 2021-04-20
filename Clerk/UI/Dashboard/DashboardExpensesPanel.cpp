@@ -1,6 +1,7 @@
 #include "DashboardExpensesPanel.h"
 
 DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent) : wxPanel(parent) {
+	maxValue = 0;
 	this->Bind(wxEVT_PAINT, &DashboardExpensesPanel::OnPaint, this);
 }
 

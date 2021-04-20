@@ -18,5 +18,5 @@ public:
 	virtual bool GetValue(wxVariant &WXUNUSED(value)) const wxOVERRIDE;
 
 private:
-	float _value;
+	float _value{};
 };

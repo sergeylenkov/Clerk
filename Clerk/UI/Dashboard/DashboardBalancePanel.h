@@ -18,7 +18,7 @@ public:
 	void SetViewModel(DashboardViewModel* viewModel);
 
 private:
-	DashboardViewModel* _viewModel;
+	DashboardViewModel* _viewModel{};
 
 	void Update();
 	void Draw(wxPaintDC &dc);

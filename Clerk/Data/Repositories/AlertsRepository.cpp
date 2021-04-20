@@ -109,7 +109,7 @@ void AlertsRepository::Save(AlertModel& alert)
 			sqlite3_bind_text(statement, 7, alert.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				alert.id = sqlite3_last_insert_rowid(_connection.GetConnection());
+				alert.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 			}
 		}
 

@@ -1,6 +1,8 @@
 #include "TagsPanel.h"
 
 TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+	this->editedIndex = 0;
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxPanel *topPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -123,7 +125,7 @@ long TagsPanel::GetSelectedIndex() {
 }
 
 void TagsPanel::DeleteItemAtIndex(long index) {
-	auto tag = filteredTags[index];
+	auto &tag = filteredTags[index];
 
 	for (unsigned int i = 0; i < tags.size(); i++) {
 		if (tag->id == tags[i]->id) {
@@ -146,7 +148,7 @@ void TagsPanel::Rename() {
 	if (index != -1) {
 		editedIndex = index;
 
-		auto tag = filteredTags[index];
+		auto &tag = filteredTags[index];
 
 		list->SetItemText(index, tag->name);
 		list->EditLabel(index);
@@ -188,14 +190,14 @@ void TagsPanel::OnListItemEndEdit(wxListEvent &event) {
 		wxString newValue = event.GetItem().GetText();
 		newValue = newValue.Trim(true).Trim(false);
 
-		auto editedTag = filteredTags[editedIndex];
+		auto &editedTag = filteredTags[editedIndex];
 
 		if (newValue != editedTag->name) {
 			bool isReplaced = false;
 
 			for (unsigned int i = 0; i < tags.size(); i++)
 			{
-				auto tag = tags[i];
+				auto &tag = tags[i];
 
 				if (newValue == tag->name) {
 					//DataHelper::GetInstance().ReplaceTag(editedTag->id, tag->id);

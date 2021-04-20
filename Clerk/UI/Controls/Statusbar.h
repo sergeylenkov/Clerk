@@ -19,7 +19,7 @@ private:
 	wxStaticText* _expensesLabel;
 	wxStaticText* _balanceLabel;
 	wxStaticText* _exchangeRatesLabel;
-	StatusViewModel* _viewModel;
+	StatusViewModel* _viewModel{};
 
 	void Update();
 };

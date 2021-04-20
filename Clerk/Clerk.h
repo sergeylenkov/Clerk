@@ -14,5 +14,5 @@ class ClerkApp : public wxApp {
 private:
 	DataConnection* _connection{};
 	DataContext* _context{};
-	Icons* _icons;
+	Icons* _icons{};
 };

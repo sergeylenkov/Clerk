@@ -7,7 +7,7 @@ namespace Clerk {
 	namespace UI {
 		class TreeMenuItemData : public wxTreeItemData {
 		public:
-			TreeMenuItemType type;
+			TreeMenuItemType type{TreeMenuItemType::Account};
 			std::shared_ptr<void> object;
 		};
 	}

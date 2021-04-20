@@ -1,6 +1,8 @@
 #include "TabsPanel.h"
 
 TabsPanel::TabsPanel(wxWindow *parent, DataContext& context) : wxPanel(parent), _context(context) {	
+	contextMenuTab = 0;
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
@@ -17,7 +19,7 @@ TabsPanel::~TabsPanel()
 {
 	Settings::GetInstance().ClearTabs();
 
-	for (auto panel : tabsPanels)
+	for (auto &panel : tabsPanels)
 	{
 		Settings::GetInstance().AddTab(static_cast<int>(panel->type), panel->id);
 	}
@@ -54,7 +56,7 @@ void TabsPanel::UpdateCurrentTab(TreeMenuItemType type, std::shared_ptr<void> ob
 }
 
 void TabsPanel::RestoreTabs() {
-	for (auto tab : Settings::GetInstance().GetTabs()) {
+	for (auto &tab : Settings::GetInstance().GetTabs()) {
 		TreeMenuItemType type = (TreeMenuItemType)tab.type;
 
 		if (type == TreeMenuItemType::Account) {

@@ -35,6 +35,7 @@ void ExpensesTooltipPopup::Update(wxString title, std::vector<StringValueViewMod
 }
 
 ExpensesTooltipPanel::ExpensesTooltipPanel(wxWindow *parent) : wxPanel(parent) {
+	total = 0;
 	this->Bind(wxEVT_PAINT, &ExpensesTooltipPanel::OnPaint, this);
 }
 
@@ -72,7 +73,7 @@ void ExpensesTooltipPanel::Update()
 
 	dc.SetFont(this->GetFont());
 
-	for (auto value : values) {
+	for (auto &value : values) {
 		nameSize = dc.GetTextExtent(value.string);
 		valueSize = dc.GetTextExtent(Format::Amount(value.value));
 
@@ -125,7 +126,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 
 	y = size.GetHeight() + 10;
 
-	for (auto value : values) {
+	for (auto &value : values) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(value.string, wxPoint(5, y));

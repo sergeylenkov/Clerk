@@ -60,7 +60,6 @@ private:
 	std::vector<wxPanel *> tabs;
 	std::vector<wxBoxSizer *> tabsSizer;
 	std::vector<DataPanel *> tabsPanels;
-	wxPanel *currentTabPanel;
 	int contextMenuTab;
 
 	void CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object);

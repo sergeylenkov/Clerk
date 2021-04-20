@@ -18,8 +18,8 @@ namespace Clerk {
 			void OpenAboutDialog() override;
 
 		private:
-			wxFrame* _frame;
-			DialogsController* _dialogsController;
+			wxFrame* _frame{};
+			DialogsController* _dialogsController{};
 		};
 	}
 }

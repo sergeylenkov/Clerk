@@ -30,7 +30,6 @@ void CBRRatesLoader::Load() {
 
 	if (!today.IsSameDate(lastDate)) {
 		CURL *curl;
-		CURLcode result;
 
 		curl = curl_easy_init();
 
@@ -42,7 +41,7 @@ void CBRRatesLoader::Load() {
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
 
-			result = curl_easy_perform(curl);
+			CURLcode result = curl_easy_perform(curl);
 
 			if (result == CURLE_OK) {
 				Parse(&buffer);

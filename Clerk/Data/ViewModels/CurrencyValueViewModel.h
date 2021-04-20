@@ -6,7 +6,7 @@ namespace Clerk {
 	namespace Data {
 		struct CurrencyValueViewModel {
 			Currency currency;
-			float value;
+			float value {};
 		};
 	}
 }

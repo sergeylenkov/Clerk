@@ -21,7 +21,6 @@ public:
 
 private:
 	wxPanel *mainPanel;
-	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;	
 	wxStaticText *typeLabel;
 	wxComboBox *typeList;
@@ -30,7 +29,6 @@ private:
 	wxStaticText *conditionLabel;
 	wxComboBox *conditionList;	
 	wxListCtrl *accountsList;
-	wxStaticText *amountLabel;
 	wxTextCtrl *amountField;
 	wxButton *okButton;
 	wxButton *cancelButton;

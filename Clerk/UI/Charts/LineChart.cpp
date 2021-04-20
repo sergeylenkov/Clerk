@@ -3,6 +3,15 @@
 LineChart::LineChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
 	currentPopupIndex = -1;
 	drawAverage = false;
+	width = 0;
+	height = 0;
+	graphWidth = 0;
+	totalValue = 0.0f;
+	maxValue = 0;
+	stepX = 0;
+	stepY = 0;
+	offsetX = 0;
+	offsetY = 0;
 
 	this->Bind(wxEVT_PAINT, &LineChart::OnPaint, this);
 	this->Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
@@ -91,7 +100,7 @@ void LineChart::Draw() {
 	stepY = (height - offsetY - 10) / (float)maxY;
 	
 	if (values.size() > 1) {
-		stepX = graphWidth / (values.size() - 1);
+		stepX = (float)graphWidth / (values.size() - 1);
 	}
 
 	dc.SetTextForeground(wxColor(0, 0, 0));

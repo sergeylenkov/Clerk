@@ -3,21 +3,21 @@
 using namespace Clerk::Data;
 
 std::vector<std::shared_ptr<Currency>> CurrenciesRepository::GetAll() {
-	if (GetHashList().empty()) {
-		char* sql = "SELECT id FROM currencies ORDER BY name";
-		sqlite3_stmt* statement;
+	char* sql = "SELECT id FROM currencies ORDER BY name";
+	sqlite3_stmt* statement;
 
-		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				int id = sqlite3_column_int(statement, 0);
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int id = sqlite3_column_int(statement, 0);
+
+			if (!GetFromHash(id)) {
 				auto currency = Load(id);
-
 				AddToHash(id, currency);
-			}
+			}			
 		}
-
-		sqlite3_finalize(statement);
 	}
+
+	sqlite3_finalize(statement);
 
 	return GetHashList();
 }

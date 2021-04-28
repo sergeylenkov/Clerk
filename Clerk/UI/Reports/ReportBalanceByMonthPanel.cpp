@@ -108,19 +108,21 @@ void ReportBalancePanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
-	auto account = _accounts[accountList->GetSelection()];
+	if (accountList->GetSelection() < _accounts.size()) {
+		auto account = _accounts[accountList->GetSelection()];
 
-	values = _context.GetReportingService().GetBalanceByMonth(*account, fromDate, toDate);
+		values = _context.GetReportingService().GetBalanceByMonth(*account, fromDate, toDate);
 
-	std::vector<StringValueViewModel> chartValues;
+		std::vector<StringValueViewModel> chartValues;
 
-	for (auto &value : values)
-	{
-		StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
-		chartValues.push_back(chartValue);
+		for (auto& value : values)
+		{
+			StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
+			chartValues.push_back(chartValue);
+		}
+
+		chart->SetValues(chartValues);
 	}
-
-	chart->SetValues(chartValues);
 }
 
 void ReportBalancePanel::OnAccountSelect(wxCommandEvent &event) {

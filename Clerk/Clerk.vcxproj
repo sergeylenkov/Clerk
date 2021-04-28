@@ -115,6 +115,7 @@
     <ClCompile Include="Data\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TagViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TransactionViewModel.cpp" />
+    <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
     <ClCompile Include="UI\Controls\AddTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
@@ -234,6 +235,7 @@
     <ClInclude Include="Data\ViewModels\StringValueViewModel.h" />
     <ClInclude Include="Data\ViewModels\TagViewModel.h" />
     <ClInclude Include="Data\ViewModels\TransactionViewModel.h" />
+    <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h" />
     <ClInclude Include="Data\ViewModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
     <ClInclude Include="UI\Controls\AddTransactionButton.h" />

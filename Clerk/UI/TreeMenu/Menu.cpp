@@ -28,6 +28,16 @@ TreeMenu::TreeMenu(wxWindow* parent, Icons* icons) : wxPanel(parent)
 	CreateMenu();
 }
 
+TreeMenu::~TreeMenu() {
+	delete _viewModel;
+}
+
+void TreeMenu::SetViewModel(TreeMenuViewModel* viewModel) {
+	_viewModel = viewModel;
+
+	Update();
+}
+
 void TreeMenu::CreateMenu() {
 	wxTreeItemId rootItem = _treeMenu->AddRoot("", -1, -1, 0);
 
@@ -107,50 +117,38 @@ void TreeMenu::CreateMenu() {
 	_trashItem = _treeMenu->AppendItem(rootItem, "Trash", 0, 0, itemData);
 }
 
-void TreeMenu::SetReceipts(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+void TreeMenu::Update() {
+	for (auto& account : _viewModel->GetReceiptsAccounts())
 	{
 		AddAccountItem(_receiptsItem, account);
 	}
-}
 
-void TreeMenu::SetDeposits(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+	for (auto& account : _viewModel->GetDepositsAccounts())
 	{
 		AddAccountItem(_depositsItem, account);
 	}
-}
 
-void TreeMenu::SetExpenses(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+	for (auto& account : _viewModel->GetExpensesAccounts())
 	{
 		AddAccountItem(_expensesItem, account);;
 	}
-}
 
-void TreeMenu::SetDebts(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+	for (auto& account : _viewModel->GetDebtsAccounts())
 	{
 		AddAccountItem(_debtsItem, account);
 	}
-}
 
-void TreeMenu::SetVirtuals(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+	for (auto& account : _viewModel->GetVirtualsAccounts())
 	{
 		AddAccountItem(_virtualItem, account);
 	}
-}
 
-void TreeMenu::SetArchive(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	for (auto& account : accounts)
+	for (auto& account : _viewModel->GetArchiveAccounts())
 	{
 		AddAccountItem(_archiveItem, account);
 	}
-}
 
-void TreeMenu::SetReports(std::vector<std::shared_ptr<ReportViewModel>> reports) {
-	for (auto& report : reports)
+	for (auto& report : _viewModel->GetReports())
 	{
 		TreeMenuItemData* itemData = new TreeMenuItemData();
 
@@ -159,6 +157,8 @@ void TreeMenu::SetReports(std::vector<std::shared_ptr<ReportViewModel>> reports)
 
 		wxTreeItemId itemId = _treeMenu->AppendItem(_reportsItem, report->name, 5, 5, itemData);
 	}
+
+	SetIsTrashEmpty(_viewModel->IsTrashEmpty());
 }
 
 void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountViewModel> account) {
@@ -221,7 +221,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	auto account = GetContextMenuAccount();
 
 	if (account) {
-		transactions = OnContextMenu(*account);
+		transactions = _viewModel->GetRecentsTransactions(*account);
 	}
 
 	ContextMenu* menu = new ContextMenu(item->type, parentItem->type, transactions);

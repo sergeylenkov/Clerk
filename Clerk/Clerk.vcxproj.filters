@@ -345,6 +345,9 @@
     <ClCompile Include="Data\ViewModels\StatusViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -711,6 +714,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ViewModels\StatusViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

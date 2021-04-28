@@ -31,6 +31,7 @@
 #include "../Commands/PreferencesCommand.h"
 #include "Controllers/DialogsController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
+#include "../Data/ViewModels/TreeMenuViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -55,6 +56,4 @@ private:
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
-
-	std::vector<std::shared_ptr<TransactionViewModel>> OnTreeMenuContextMenu(const AccountViewModel& account);
 };

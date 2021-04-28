@@ -46,8 +46,10 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	
 	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
 
+	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
+
 	_treeMenu = new TreeMenu(splitterLeftPanel, &_icons);
-	_treeMenu->OnContextMenu = std::bind(&MainFrame::OnTreeMenuContextMenu, this, std::placeholders::_1);
+	_treeMenu->SetViewModel(treeViewModel);
 
 	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);
 	splitterLeftPanel->SetSizer(boxSizer);		
@@ -64,10 +66,10 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
 
-	StatusViewModel* viewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
+	StatusViewModel* statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
 
 	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20));	
-	_statusbar->SetViewModel(viewModel);
+	_statusbar->SetViewModel(statusViewModel);
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 
@@ -79,19 +81,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	_mainMenu->SetTransactions(_context.GetTransactionsService().GetRecents(10));
 	_addTransactionButton->SetTransactions(_context.GetTransactionsService().GetRecents(10));
 
-	_treeMenu->SetReceipts(_context.GetAccountsService().GetByType(AccountType::Receipt));
-	_treeMenu->SetDeposits(_context.GetAccountsService().GetByType(AccountType::Deposit));
-	_treeMenu->SetExpenses(_context.GetAccountsService().GetByType(AccountType::Expens));
-	_treeMenu->SetDebts(_context.GetAccountsService().GetByType(AccountType::Debt));
-	_treeMenu->SetVirtuals(_context.GetAccountsService().GetByType(AccountType::Virtual));
-	_treeMenu->SetArchive(_context.GetAccountsService().GetArchive());
-	_treeMenu->SetReports(_context.GetReportsService().GetAll());
-
-	bool isEmpty = _context.GetTransactionsService().GetDeleted().size() == 0;
-
-	_treeMenu->SetIsTrashEmpty(isEmpty);
 	_treeMenu->RestoreState();
-
 	_tabsPanel->RestoreTabs();
 
 	/*std::thread([this]()
@@ -134,8 +124,4 @@ MainFrame::~MainFrame()
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
-}
-
-std::vector<std::shared_ptr<TransactionViewModel>> MainFrame::OnTreeMenuContextMenu(const AccountViewModel& account) {
-	return _context.GetTransactionsService().GetRecents(account, 10);
 }

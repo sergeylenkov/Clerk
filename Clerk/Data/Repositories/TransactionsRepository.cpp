@@ -80,7 +80,7 @@ std::vector<std::shared_ptr<TransactionModel>> TransactionsRepository::GetRecent
 std::vector<std::shared_ptr<TransactionModel>> TransactionsRepository::GetRecents(int accountId, int count) {
 	auto result = std::vector<std::shared_ptr<TransactionModel>>();
 
-	char* sql = "SELECT MAX(paid_at), id FROM transactions WHERE (from_account_id = ? OR to_account_id = ?) GROUP BY from_account_id, to_account_id ORDER BY paid_at DESC LIMIT ?";
+	char* sql = "SELECT MAX(t.paid_at), t.id, tt.tag_id FROM transactions t, transactions_tags tt WHERE(t.from_account_id = ? OR t.to_account_id = ?) AND t.id = tt.transaction_id GROUP BY t.from_account_id, t.to_account_id, tt.tag_id ORDER BY t.paid_at DESC LIMIT ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {

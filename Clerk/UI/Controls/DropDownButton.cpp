@@ -80,10 +80,9 @@ void DropDownButton::OnLeftButtonUp(wxMouseEvent& event)
 
 	if (x < (GetSize().GetWidth() - arrowButtonWidth))
 	{
-		wxEvtHandler *pEventHandler = GetEventHandler();
-		wxASSERT(pEventHandler);
+		wxEvtHandler *eventHandler = GetEventHandler();
 
-		pEventHandler->CallAfter([=]()
+		eventHandler->CallAfter([=]()
 		{
 			wxCommandEvent evt(wxEVT_BUTTON, this->GetId());
 			evt.SetEventObject(this);
@@ -193,8 +192,6 @@ bool DropDownButton::Enable(bool enable)
 		state = wxCONTROL_DISABLED;
 	}
 
-	wxPaintEvent event;
-	ProcessEvent(event);
 
 	Refresh();
 

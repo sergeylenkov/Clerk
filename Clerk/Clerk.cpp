@@ -7,7 +7,9 @@ IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
-	wxLocale locale(wxLANGUAGE_DEFAULT);
+	wxLocale locale;
+
+	locale.Init(wxLANGUAGE_RUSSIAN, wxLOCALE_LOAD_DEFAULT);
 
 	Settings::GetInstance().Open("Config.json");
 

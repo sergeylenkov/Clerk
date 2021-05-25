@@ -16,6 +16,7 @@ namespace Clerk {
 			void Quit() override;
 			void OpenPreferencesDialog() override;
 			void OpenAboutDialog() override;
+			void OpenTransactionDialog() override;
 
 		private:
 			wxFrame* _frame{};

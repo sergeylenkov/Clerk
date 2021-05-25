@@ -276,10 +276,10 @@
     <ClCompile Include="Data\Models\SchedulerModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TreeMenu\Menu.cpp">
+    <ClCompile Include="UI\TreeMenu\TreeMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TreeMenu\ContextMenu.cpp">
+    <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\ViewModels\TagViewModel.cpp">
@@ -346,6 +346,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\AddTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -626,13 +629,13 @@
     <ClInclude Include="Data\Models\SchedulerModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TreeMenu\Menu.h">
+    <ClInclude Include="UI\TreeMenu\TreeMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TreeMenu\ContextMenu.h">
+    <ClInclude Include="UI\TreeMenu\TreeContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TreeMenu\MenuItemData.h">
+    <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\Enums.h">
@@ -717,6 +720,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\AddTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

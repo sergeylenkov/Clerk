@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include "../AboutDialog.h"
 #include "../PreferencesDialog.h"
+#include "../Transactions/TransactionDialog.h"
 
 namespace Clerk {
 	namespace UI {
@@ -12,6 +13,7 @@ namespace Clerk {
 
 			void ShowAboutDialog();
 			void ShowPreferencesDialog();
+			void ShowTransactionDialog();
 
 		private:
 			wxFrame* _parent;

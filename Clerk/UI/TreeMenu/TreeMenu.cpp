@@ -1,4 +1,4 @@
-#include "Menu.h"
+#include "TreeMenu.h"
 
 using namespace Clerk::UI;
 
@@ -224,7 +224,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 		transactions = _viewModel->GetRecentsTransactions(*account);
 	}
 
-	ContextMenu* menu = new ContextMenu(item->type, parentItem->type, transactions);
+	TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, transactions);
 
 	PopupMenu(menu, event.GetPoint());
 

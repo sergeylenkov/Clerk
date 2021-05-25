@@ -22,3 +22,7 @@ void CommandsReceiver::OpenPreferencesDialog() {
 void CommandsReceiver::OpenAboutDialog() {
 	_dialogsController->ShowAboutDialog();
 }
+
+void CommandsReceiver::OpenTransactionDialog() {
+	_dialogsController->ShowTransactionDialog();
+}

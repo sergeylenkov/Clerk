@@ -137,11 +137,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 		accounts.push_back(account);
 	}*/
 
-	UpdateFromList();
-	SelectFromAccount(0);
+	//UpdateFromList();
+	//SelectFromAccount(0);
 
-	UpdateToList(*_fromAccount.get());
-	SelectToAccount(0);
+	//UpdateToList(*_fromAccount.get());
+	//SelectToAccount(0);
 }
 
 TransactionDialog::~TransactionDialog() {
@@ -159,6 +159,7 @@ void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
 }
 
 void TransactionDialog::SetTransaction(std::shared_ptr<TransactionViewModel> transaction) {
+	return;
 	_transaction = transaction;
 
 	fromAmountField->SetValue(Format::Amount(transaction->fromAmount));

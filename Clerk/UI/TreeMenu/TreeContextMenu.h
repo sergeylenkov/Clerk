@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "Menu.h"
+#include "TreeMenu.h"
 #include "Enums.h"
 #include "../../Data/ViewModels/TransactionViewModel.h"
 
@@ -9,9 +9,9 @@ using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace UI {
-		class ContextMenu : public wxMenu {
+		class TreeContextMenu : public wxMenu {
 		public:
-			ContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
+			TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
 
 		private:
 			void OnMenuAddAccount(wxCommandEvent& event);

@@ -77,6 +77,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
+    <ClCompile Include="Commands\AddTransactionCommand.cpp" />
     <ClCompile Include="Commands\CommandsInvoker.cpp" />
     <ClCompile Include="Commands\CommandsReceiver.cpp" />
     <ClCompile Include="Commands\PreferencesCommand.cpp" />
@@ -163,8 +164,8 @@
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
     <ClCompile Include="UI\TabsPanel.cpp" />
     <ClCompile Include="UI\DataPanel.cpp" />
-    <ClCompile Include="UI\TreeMenu\ContextMenu.cpp" />
-    <ClCompile Include="UI\TreeMenu\Menu.cpp" />
+    <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp" />
+    <ClCompile Include="UI\TreeMenu\TreeMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsPanel.cpp" />
     <ClCompile Include="UI\Budgets\BudgetDialog.cpp" />
     <ClCompile Include="Data\Models\AccountModel.cpp" />
@@ -190,6 +191,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
+    <ClInclude Include="Commands\AddTransactionCommand.h" />
     <ClInclude Include="Commands\Command.h" />
     <ClInclude Include="Commands\CommandsInvoker.h" />
     <ClInclude Include="Commands\CommandsReceiver.h" />
@@ -285,9 +287,9 @@
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
     <ClInclude Include="UI\TabsPanel.h" />
     <ClInclude Include="UI\DataPanel.h" />
-    <ClInclude Include="UI\TreeMenu\ContextMenu.h" />
+    <ClInclude Include="UI\TreeMenu\TreeContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\Enums.h" />
-    <ClInclude Include="UI\TreeMenu\Menu.h" />
+    <ClInclude Include="UI\TreeMenu\TreeMenu.h" />
     <ClInclude Include="UI\Budgets\BudgetsPanel.h" />
     <ClInclude Include="UI\Budgets\BudgetDialog.h" />
     <ClInclude Include="Data\Models\AccountModel.h" />
@@ -309,7 +311,7 @@
     <ClInclude Include="UI\MainFrame.h" />
     <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
-    <ClInclude Include="UI\TreeMenu\MenuItemData.h" />
+    <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h" />
     <ClInclude Include="Utils\Icons.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>

@@ -13,8 +13,9 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
 	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
+	AddTransactionCommand* addTransactionCommand = new AddTransactionCommand(_commandsReceiver);
 
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand);
+	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *addTransactionCommand);
 
 	_mainMenu = new MainMenu(*_commandsInvoker);
 
@@ -27,7 +28,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_addTransactionButton = new AddTransactionButton(_toolbar);
+	_addTransactionButton = new AddTransactionButton(_toolbar, *_commandsInvoker);
 	horizontalSizer->Add(_addTransactionButton, 0, wxALL, 5);
 
 	_toolbar->SetSizer(horizontalSizer);

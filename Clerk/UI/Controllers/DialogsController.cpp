@@ -21,3 +21,12 @@ void DialogsController::ShowPreferencesDialog()
 	preferencesDialog->Show(true);
 	preferencesDialog->CenterOnParent();
 }
+
+void DialogsController::ShowTransactionDialog() {
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350);
+
+	//transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionDialogClose, this);
+
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
+}

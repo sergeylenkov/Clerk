@@ -5,6 +5,7 @@
 #include "../Clerk/Commands/QuitCommand.h"
 #include "../Clerk/Commands/PreferencesCommand.h"
 #include "../Clerk/Commands/AboutCommand.h"
+#include "../Clerk/Commands/AddTransactionCommand.h"
 
 using namespace Clerk::Commands;
 
@@ -21,6 +22,10 @@ public:
     void OpenAboutDialog() override {
         ASSERT_TRUE(1);
     }
+
+    void OpenTransactionDialog() override {
+        ASSERT_TRUE(1);
+    }
 };
 
 class CommandsTest : public ::testing::Test {
@@ -31,8 +36,9 @@ public:
         QuitCommand* quitCommand = new QuitCommand(commandsReceiver);
         PreferencesCommand* preferencesCommand = new PreferencesCommand(commandsReceiver);
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
+        AddTransactionCommand* addTransactionCommand = new AddTransactionCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *addTransactionCommand);
     }
 
     ~CommandsTest() {
@@ -63,4 +69,8 @@ TEST_F(CommandsTest, PreferencesCommand) {
 
 TEST_F(CommandsTest, AboutCommand) {
     commandsInvoker->OnAbout();
+}
+
+TEST_F(CommandsTest, AddTransactionCommand) {
+    commandsInvoker->OnAddTransaction();
 }

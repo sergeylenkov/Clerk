@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 #include "../Clerk/Data/Repositories/TagsRepository.h"
 #include "../Clerk/Data/Services/TagsService.h"
@@ -50,4 +50,10 @@ TEST_F(TagsServiceTest, GetByIdNotExists) {
     auto tag = service->GetById(10000);
 
     EXPECT_TRUE(tag == nullptr);
+}
+
+TEST_F(TagsServiceTest, GetByIdNotExists) {
+    auto tags = service->GetBySearch("Разное");
+
+    EXPECT_EQ(tags.size(), 1);
 }

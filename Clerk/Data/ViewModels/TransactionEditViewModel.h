@@ -1,5 +1,6 @@
 #pragma once
 
+#include <wx/tokenzr.h>
 #include "./AccountViewModel.h"
 #include "../Services/AccountsService.h"
 #include "../Repositories/ExchangeRatesRepository.h"
@@ -28,6 +29,7 @@ namespace Clerk {
 			wxDateTime GetDate();
 			std::vector<std::shared_ptr<TagViewModel>> GetTags();
 			wxString GetTagsString();
+			void SetTagsString(wxString tags);
 			void AddTag(std::shared_ptr<TagViewModel> tag);
 
 			void Save();

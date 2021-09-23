@@ -33,21 +33,20 @@ std::shared_ptr<TagModel> TagsRepository::GetById(int id) {
 	return tag;
 }
 
-std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::string search) {
+std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::wstring search) {
 	auto result = std::vector<std::shared_ptr<TagModel>>();
 
 	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
 	using convert_typeX = std::codecvt_utf8<wchar_t>;
 	std::wstring_convert<convert_typeX, wchar_t> converterX;
 
-	std::wstring searchW = converterX.from_bytes(search);
-	f.tolower(&searchW[0], &searchW[0] + searchW.size());
+	f.tolower(&search[0], &search[0] + search.size());
 
 	for (auto& tag : GetAll()) {		
 		std::wstring searchStringW = converterX.from_bytes(tag->name);
 		f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
 
-		std::size_t found = searchStringW.find(searchW);
+		std::size_t found = searchStringW.find(search);
 
 		if (found != std::string::npos) {
 			result.push_back(tag);

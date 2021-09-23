@@ -33,17 +33,13 @@ std::shared_ptr<TagViewModel> TagsService::GetById(int id) {
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<TagViewModel>> TagsService::GetBySearch(wxString search) {
-	auto tags = _tagsRepository.GetBySearch(std::string(search.c_str()));
+std::vector<std::shared_ptr<TagViewModel>> TagsService::GetBySearch(wxString search) {	
+	auto tags = _tagsRepository.GetBySearch(search.ToStdWstring());
 	
 	std::vector<std::shared_ptr<TagViewModel>> result;
 
 	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [=](const std::shared_ptr<TagModel>& tag) {
-		auto model = std::make_shared<TagViewModel>(*tag);
-
-		model->count = _tagsRepository.GetCount(tag->id);
-
-		return model;
+		return std::make_shared<TagViewModel>(*tag);
 	});
 
 	return result;

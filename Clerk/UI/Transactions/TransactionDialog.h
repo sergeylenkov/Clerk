@@ -47,16 +47,9 @@ private:
 	AmountField *fromAmountField;
 	wxStaticText *toAmountLabel;
 	AmountField *toAmountField;
-	float fromValue = 0.0;
-	float toValue = 0.0;
-	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
-	std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;
-	std::vector<std::shared_ptr<AccountViewModel>> _toAccounts;
 	std::shared_ptr<TransactionViewModel> _transaction;
 	std::shared_ptr<TransactionViewModel> _splitTransaction;
-	std::shared_ptr<AccountViewModel> _fromAccount;
-	std::shared_ptr<AccountViewModel> _toAccount;
-	TagsPopup *tagsPopup;
+	TagsPopup *_tagsPopup;
 
 	void Update();
 	void SelectFromAccount(int index);

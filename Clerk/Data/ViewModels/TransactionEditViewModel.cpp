@@ -153,6 +153,30 @@ wxString TransactionEditViewModel::GetTagsString() {
 	return result;
 }
 
+void TransactionEditViewModel::SetTagsString(wxString tags) {
+	wxStringTokenizer tokenizer(tags, ",");
+	std::vector<wxString> tokens;
+
+	while (tokenizer.HasMoreTokens()) {
+		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
+
+		if (!token.empty()) {
+			auto result = std::find_if(begin(_tags), end(_tags), [token](auto tag) {
+				return tag->name == token;
+			});
+
+			if (result == end(_tags)) {
+				auto newTag = std::make_shared<TagViewModel>();
+				newTag->name = token;
+
+				_tags.push_back(newTag);
+			}
+		}
+	}
+
+	Update();
+}
+
 void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 	_tags.push_back(tag);
 	Update();

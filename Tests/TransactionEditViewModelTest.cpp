@@ -86,3 +86,13 @@ TEST_F(TransactionEditViewModelTest, AddTag) {
     EXPECT_EQ(tags.size(), 1);
     EXPECT_TRUE(str == "Test");
 }
+
+TEST_F(TransactionEditViewModelTest, SetTagsString) {
+    viewModel->SetTagsString("Tag 1, Tag 2, ");
+
+    auto tags = viewModel->GetTags();
+    wxString str = viewModel->GetTagsString();
+
+    EXPECT_EQ(tags.size(), 2);
+    EXPECT_TRUE(str == "Tag 1, Tag 2");
+}

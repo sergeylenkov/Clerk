@@ -17,7 +17,7 @@ namespace Clerk {
 
 			std::vector<std::shared_ptr<TagModel>> GetAll();
 			std::shared_ptr<TagModel> GetById(int id);
-			std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::string search);
+			std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::wstring search);
 			int GetCount(int id);
 			void Save(TagModel& tag);
 			void Delete(const TagModel& tag);

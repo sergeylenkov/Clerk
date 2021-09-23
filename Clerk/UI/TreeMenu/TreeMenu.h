@@ -11,16 +11,18 @@
 #include "TreeMenuItemData.h"
 #include "TreeContextMenu.h"
 #include "Enums.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::Commands;
 
 namespace Clerk {
 	namespace UI {
 		class TreeMenu : public wxPanel
 		{
 		public:
-			TreeMenu(wxWindow* parent, Icons* icons);
+			TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvoker);
 			~TreeMenu();
 
 			void RestoreState();
@@ -28,7 +30,8 @@ namespace Clerk {
 
 		private:
 			TreeMenuViewModel* _viewModel;
-			Icons* _icons;
+			Icons& _icons;
+			CommandsInvoker& _commandsInvoker;
 			wxTreeCtrl* _treeMenu;
 			wxTreeItemId _receiptsItem;
 			wxTreeItemId _depositsItem;

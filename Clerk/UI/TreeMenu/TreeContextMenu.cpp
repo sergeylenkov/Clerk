@@ -2,7 +2,7 @@
 
 using namespace Clerk::UI;
 
-TreeContextMenu::TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions) {
+TreeContextMenu::TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker): _commandsInvoker(commandsInvoker) {
 	this->Append(static_cast<int>(ContextMenuType::NewTab), wxT("Open in New Tab"));
 
 	if (type == TreeMenuItemType::Account) {
@@ -103,9 +103,11 @@ void TreeContextMenu::OnMenuRestoreAccount(wxCommandEvent& event) {
 }
 
 void TreeContextMenu::OnMenuAddTransaction(wxCommandEvent& event) {
+	_commandsInvoker.OnAddTransaction();
 }
 
 void TreeContextMenu::OnSubMenuAddTransaction(wxCommandEvent& event) {
+	_commandsInvoker.OnAddTransaction();
 }
 
 void TreeContextMenu::OnMenuAddBudget(wxCommandEvent& event) {

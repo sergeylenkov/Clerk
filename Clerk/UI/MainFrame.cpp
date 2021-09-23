@@ -49,7 +49,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
 
-	_treeMenu = new TreeMenu(splitterLeftPanel, &_icons);
+	_treeMenu = new TreeMenu(splitterLeftPanel, _icons, *_commandsInvoker);
 	_treeMenu->SetViewModel(treeViewModel);
 
 	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);

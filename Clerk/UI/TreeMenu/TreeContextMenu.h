@@ -4,16 +4,20 @@
 #include "TreeMenu.h"
 #include "Enums.h"
 #include "../../Data/ViewModels/TransactionViewModel.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 namespace Clerk {
 	namespace UI {
 		class TreeContextMenu : public wxMenu {
 		public:
-			TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
-
+			TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker);
+			
 		private:
+			CommandsInvoker& _commandsInvoker;
+
 			void OnMenuAddAccount(wxCommandEvent& event);
 			void OnMenuEditAccount(wxCommandEvent& event);
 			void OnMenuDeleteAccount(wxCommandEvent& event);

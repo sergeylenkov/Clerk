@@ -2,16 +2,14 @@
 
 using namespace Clerk::UI;
 
-TreeMenu::TreeMenu(wxWindow* parent, Icons* icons) : wxPanel(parent)
+TreeMenu::TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvoker) : wxPanel(parent), _icons(icons), _commandsInvoker(commandsInvoker)
 {
-	_icons = icons;
-
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	_treeMenu = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTR_DEFAULT_STYLE | wxTR_HIDE_ROOT | wxTR_TWIST_BUTTONS | wxTR_NO_LINES | wxTR_FULL_ROW_HIGHLIGHT |  wxBORDER_NONE);
 	_treeMenu->SetBackgroundColour(wxColour(245, 245, 245, 1));	
 	_treeMenu->SetForegroundColour(wxColour(68, 68, 68, 1));	
-	_treeMenu->AssignImageList(_icons->GetImageList());
+	_treeMenu->AssignImageList(_icons.GetImageList());
 
 	mainSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);
 
@@ -162,7 +160,7 @@ void TreeMenu::Update() {
 }
 
 void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountViewModel> account) {
-	int iconId = _icons->GetIconForAccount(account->icon);
+	int iconId = _icons.GetIconForAccount(account->icon);
 
 	TreeMenuItemData* itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Account;
@@ -224,7 +222,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 		transactions = _viewModel->GetRecentsTransactions(*account);
 	}
 
-	TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, transactions);
+	TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, transactions, _commandsInvoker);
 
 	PopupMenu(menu, event.GetPoint());
 

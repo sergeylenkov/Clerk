@@ -626,7 +626,7 @@ void SchedulerDialog::OnTextChanged(wxKeyEvent &event) {
 	}
 	else {
 		wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
-		vector<wxString> tokens;
+		std::vector<wxString> tokens;
 
 		while (tokenizer.HasMoreTokens()) {
 			wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
@@ -638,7 +638,7 @@ void SchedulerDialog::OnTextChanged(wxKeyEvent &event) {
 			auto tags = std::vector<std::shared_ptr<wxString>>(); //DataHelper::GetInstance().GetTagsBySearch(tokens.back());
 
 			if (!tokens.empty()) {
-				tagsPopup->Update(tags);
+				//tagsPopup->Update(tags);
 
 				wxPoint pos = tagsField->GetScreenPosition();
 				wxSize size = tagsField->GetSize();
@@ -666,7 +666,7 @@ void SchedulerDialog::OnSelectTag() {
 }
 
 void SchedulerDialog::AddTag() {
-	wxString tag = tagsPopup->GetSelectedTag();
+	/*wxString tag = tagsPopup->GetSelectedTag();
 	wxString result = "";
 
 	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
@@ -685,7 +685,7 @@ void SchedulerDialog::AddTag() {
 	result.Append(tag);
 
 	tagsField->SetValue(result);
-	tagsField->SetInsertionPointEnd();
+	tagsField->SetInsertionPointEnd();*/
 }
 
 wxString SchedulerDialog::ClearAmountValue(wxString &value) {

@@ -23,9 +23,9 @@ void DialogsController::ShowPreferencesDialog()
 }
 
 void DialogsController::ShowTransactionDialog() {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
 
-	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService());
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetExchangeRatesRepository());
 	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);

@@ -1,7 +1,7 @@
 #include "TransactionDialog.h"
 
-TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons):
-	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
+TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons), _context(context) {
 	SetBackgroundColour(wxColor(* wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -149,6 +149,11 @@ void TransactionDialog::Update() {
 
 	SelectFromAccount(_viewModel->GetFromAccountIndex());
 	SelectToAccount(_viewModel->GetToAccountIndex());
+
+	fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+	toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+	tagsField->SetValue(_viewModel->GetTagsString());
+	datePicker->SetValue(_viewModel->GetDate());
 }
 
 void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
@@ -253,47 +258,34 @@ void TransactionDialog::SelectToAccount(int index) {
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {
 	int index = fromList->GetSelection();
 	_viewModel->SetFromAccount(index);
-	//SelectFromAccount(fromList->GetSelection());
-
-	//UpdateToList(*_fromAccount.get());
-	//SelectToAccount(*_toAccount.get());
 }
 
 void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 	int index = fromList->GetSelection();
 	_viewModel->SetToAccount(index);
-
-	/*auto fromAccount = _fromAccounts[fromList->GetSelection()].get();
-	auto toAccount = _toAccounts[toList->GetSelection()].get();
-
-	if (fromAccount->currency->id != toAccount->currency->id) {
-		float fromValue = fromAmountField->GetFloatValue();
-		float toValue = toAmountField->GetFloatValue();
-
-		float amount = fromValue; //TODO DataHelper::GetInstance().ConvertCurrency(fromAccount->currency->id, toAccount->currency->id, fromValue);
-		toAmountField->SetValue(Format::Amount(amount));
-	}*/
 }
 
 void TransactionDialog::OnOK(wxCommandEvent &event) {
+	_viewModel->Save();
+
 	//TODO
-	_transaction->fromAccount = _fromAccounts[fromList->GetSelection()];
-	_transaction->toAccount = _toAccounts[toList->GetSelection()];
-	_transaction->note = noteField->GetValue();
+	//_transaction->fromAccount = _fromAccounts[fromList->GetSelection()];
+	//_transaction->toAccount = _toAccounts[toList->GetSelection()];
+	//_transaction->note = noteField->GetValue();
 	//transaction->SetTagsString(tagsField->GetValue());
-	_transaction->date = datePicker->GetValue();	
+	//_transaction->date = datePicker->GetValue();	
 		  
-	_transaction->fromAmount = fromAmountField->GetFloatValue();
-	_transaction->toAmount = toAmountField->GetFloatValue();
+	//_transaction->fromAmount = fromAmountField->GetFloatValue();
+	//_transaction->toAmount = toAmountField->GetFloatValue();
 
 	//transaction->Save();
 
-	if (_splitTransaction) {
+	/*if (_splitTransaction) {
 		_splitTransaction->fromAmount = _splitTransaction->fromAmount - _transaction->fromAmount;
 		_splitTransaction->toAmount = _splitTransaction->toAmount - _transaction->toAmount;
 
 		//splitTransaction->Save();
-	}
+	}*/
 
 	Close();
 }
@@ -305,26 +297,13 @@ void TransactionDialog::OnCancel(wxCommandEvent &event) {
 void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 	
-	int fromCurrencyId = _fromAccounts[fromList->GetSelection()]->currency->id;
-	int toCurrencyId = _toAccounts[toList->GetSelection()]->currency->id;	
-
-	float fromValue = fromAmountField->GetFloatValue();
-	float toValue = toAmountField->GetFloatValue();
-
-	if (toValue == 0) {
-		if (fromCurrencyId == toCurrencyId) {
-			toAmountField->SetValue(Format::Amount(fromAmountField->GetFloatValue()));
-		}
-
-		else if (Settings::GetInstance().IsConvertCurrency()) {
-			float amount = fromValue; //TODO  DataHelper::GetInstance().ConvertCurrency(fromCurrencyId, toCurrencyId, fromValue);
-			toAmountField->SetValue(Format::Amount(amount));
-		}
-	}
+	_viewModel->SetFromAmount(fromAmountField->GetFloatValue());
 }
 
 void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
+
+	_viewModel->SetToAmount(toAmountField->GetFloatValue());
 }
 
 void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
@@ -340,16 +319,15 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 		tagsPopup->Hide();
 	} else {
 		wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
-		vector<wxString> tokens;
+		std::vector<wxString> tokens;
 
 		while (tokenizer.HasMoreTokens()) {
 			wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
 			tokens.push_back(token);
 		}
 
-		if (!tokens.empty()) {
-			//TODO
-			auto tags = std::vector<std::shared_ptr<wxString>>();//_context.GetTagsRepository().GetBySearch(tokens.back());
+		if (!tokens.empty()) {			
+			auto tags = _context.GetTagsService().GetBySearch(tokens.back());
 
 			if (!tokens.empty() && tags.size() > 0) {
 				tagsPopup->Update(tags);
@@ -389,11 +367,12 @@ void TransactionDialog::OnSelectTag() {
 }
 
 void TransactionDialog::AddTag() {
-	wxString tag = tagsPopup->GetSelectedTag();
-	wxString result = "";
+	auto tag = tagsPopup->GetSelectedTag();
+	_viewModel->AddTag(tag);
+	/*wxString result = "";
 
 	wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
-	vector<wxString> tokens;
+	std::vector<wxString> tokens;
 
 	while (tokenizer.HasMoreTokens()) {
 		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
@@ -405,8 +384,8 @@ void TransactionDialog::AddTag() {
 		result.Append(", ");
 	}
 
-	result.Append(tag);
+	result.Append(tag->name);
 
-	tagsField->SetValue(result);
+	tagsField->SetValue(result);*/
 	tagsField->SetInsertionPointEnd();
 }

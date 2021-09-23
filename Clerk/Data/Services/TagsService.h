@@ -13,6 +13,7 @@ namespace Clerk {
 
 			std::vector<std::shared_ptr<TagViewModel>> GetAll();
 			std::shared_ptr<TagViewModel> GetById(int id);
+			std::vector<std::shared_ptr<TagViewModel>> GetBySearch(wxString search);
 
 		private:
 			TagsRepository& _tagsRepository;

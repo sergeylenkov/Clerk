@@ -2,7 +2,13 @@
 
 using namespace Clerk::Data;
 
-TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService): _accountsService(accountsService) {
+TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository):
+	_accountsService(accountsService),
+	_exchangeRatesRepository(exchangeRatesRepository) {
+	_fromAmount = 0;
+	_toAmount = 0;
+	_date = wxDateTime::Now();
+
 	Update();
 }
 
@@ -41,6 +47,16 @@ void TransactionEditViewModel::Update() {
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
 	}
+
+	if (_toAmount == 0) {
+		float rate = 1;
+		
+		if (Settings::GetInstance().IsConvertCurrency()) {
+			rate = _exchangeRatesRepository.GetExchangeRate(_fromAccount->currency->id, _toAccount->currency->id);
+		}
+
+		_toAmount = _fromAmount * rate;	
+	}	
 
 	if (OnUpdate) {
 		OnUpdate();
@@ -83,4 +99,65 @@ int TransactionEditViewModel::GetToAccountIndex() {
 void TransactionEditViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
 	Update();
+}
+
+float TransactionEditViewModel::GetFromAmount() {
+	return _fromAmount;
+}
+
+void TransactionEditViewModel::SetFromAmount(float amount) {
+	_fromAmount = amount;
+	Update();
+}
+
+float TransactionEditViewModel::GetToAmount() {
+	return _toAmount;
+}
+
+void TransactionEditViewModel::SetToAmount(float amount) {
+	_toAmount = amount;
+}
+
+void TransactionEditViewModel::SetNote(wxString note) {
+	_note = note;
+}
+
+wxString TransactionEditViewModel::GetNote() {
+	return _note;
+}
+
+void TransactionEditViewModel::SetDate(wxDateTime date) {
+	_date = date;
+}
+
+wxDateTime TransactionEditViewModel::GetDate() {
+	return _date;
+}
+
+std::vector<std::shared_ptr<TagViewModel>> TransactionEditViewModel::GetTags() {
+	return _tags;
+}
+
+wxString TransactionEditViewModel::GetTagsString() {
+	wxString result = "";
+
+	if (_tags.size() > 0) {
+		for (unsigned int i = 0; i < _tags.size() - 1; i++) {
+			result.Append(_tags[i]->name);
+			result.Append(", ");
+		}
+
+		result.Append(_tags[_tags.size() - 1]->name);
+	}
+
+	return result;
+}
+
+void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
+	_tags.push_back(tag);
+	Update();
+}
+
+void TransactionEditViewModel::Save() {
+
 }

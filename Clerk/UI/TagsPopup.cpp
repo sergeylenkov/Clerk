@@ -22,8 +22,8 @@ TagsPopup::~TagsPopup() {
 	//
 }
 
-void TagsPopup::Update(vector<shared_ptr<wxString>> tags) {
-	this->tags = tags;
+void TagsPopup::Update(std::vector<std::shared_ptr<TagViewModel>> tags) {
+	_tags = tags;
 	list->ClearAll();
 
 	wxListItem col;
@@ -41,7 +41,7 @@ void TagsPopup::Update(vector<shared_ptr<wxString>> tags) {
 
 		list->InsertItem(listItem);
 
-		list->SetItem(i, 0, *tags[i].get());
+		list->SetItem(i, 0, tags[i]->name);
 	}
 
 	list->SetItemState(0, wxLIST_STATE_SELECTED, wxLIST_STATE_SELECTED);	
@@ -69,14 +69,14 @@ void TagsPopup::SelectPrev() {
 	}
 }
 
-wxString TagsPopup::GetSelectedTag() {
+std::shared_ptr<TagViewModel> TagsPopup::GetSelectedTag() {
 	long index = list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
 	if (index != -1) {	
-		return *tags[index].get();
+		return _tags[index];
 	}
 
-	return wxString("");
+	return nullptr;
 }
 
 void TagsPopup::OnListItemDoubleClick(wxListEvent &event) {

@@ -1,13 +1,12 @@
-#ifndef TagsPopup_h
-#define TagsPopup_h
-
+#pragma once
 #include <wx/wx.h>
 #include <wx/popupwin.h>
 #include <wx/listctrl.h>
 #include <vector>
 #include <memory>
+#include "../Data/ViewModels/TagViewModel.h"
 
-using namespace std;
+using namespace Clerk::Data;
 
 class TagsPopup : public wxPopupWindow
 {
@@ -15,18 +14,16 @@ public:
 	TagsPopup(wxWindow *parent);
 	~TagsPopup();
 
-	void Update(vector<shared_ptr<wxString>> tags);	
+	void Update(std::vector<std::shared_ptr<TagViewModel>> tags);
 	void SelectNext();
 	void SelectPrev();
-	wxString GetSelectedTag();
+	std::shared_ptr<TagViewModel> GetSelectedTag();
 	std::function<void()> OnSelectTag;
 
 private:
 	wxScrolledWindow *panel;
 	wxListCtrl *list;
-	vector<shared_ptr<wxString>> tags;
+	std::vector<std::shared_ptr<TagViewModel>> _tags;
 
 	void OnListItemDoubleClick(wxListEvent &event);
 };
-
-#endif

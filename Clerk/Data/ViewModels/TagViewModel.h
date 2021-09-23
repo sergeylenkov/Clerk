@@ -7,6 +7,7 @@ namespace Clerk {
 	namespace Data {
 		class TagViewModel {
 		public:
+			TagViewModel();
 			TagViewModel(TagModel& tag);
 
 			int id;

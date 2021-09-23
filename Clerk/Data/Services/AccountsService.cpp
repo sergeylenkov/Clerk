@@ -87,7 +87,7 @@ std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetExpenses(wxDa
 
 	std::vector<std::shared_ptr<AccountViewModel>> result;
 
-	for (auto &account : accounts) {
+	for (auto& account : accounts) {
 		auto model = std::make_shared<AccountViewModel>(*account);
 		model->currency = _currenciesRepository.GetById(account->currencyId);
 

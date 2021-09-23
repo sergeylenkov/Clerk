@@ -10,6 +10,7 @@ namespace Clerk {
 
 			wxImageList* GetImageList();
 			int GetIconForAccount(int index);
+			wxBitmap GetBitmapForIcon(int index);
 
 		private:
 			wxImageList* _imageList;

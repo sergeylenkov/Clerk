@@ -17,6 +17,7 @@ namespace Clerk {
 			wxString note;
 			AccountType type;
 			int icon;
+			int order;
 			float creditLimit;
 			bool isCredit = false;
 			std::shared_ptr<Currency> currency;

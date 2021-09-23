@@ -6,7 +6,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
 	this->SetIcon(wxICON(APP_ICON));
 	
-	_dialogsController = new DialogsController(this);
+	_dialogsController = new DialogsController(this, _context, _icons);
 
 	_commandsReceiver = new CommandsReceiver(this, _dialogsController);
 

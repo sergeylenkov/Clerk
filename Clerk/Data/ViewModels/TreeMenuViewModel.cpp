@@ -11,23 +11,53 @@ TreeMenuViewModel::TreeMenuViewModel(AccountsService& accountsService, ReportsSe
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetReceiptsAccounts() {
-	return _accountsService.GetByType(AccountType::Receipt);
+	auto accounts = _accountsService.GetByType(AccountType::Receipt);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	return accounts;
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetDepositsAccounts() {
-	return _accountsService.GetByType(AccountType::Deposit);
+	auto accounts = _accountsService.GetByType(AccountType::Deposit);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	return accounts;
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetExpensesAccounts() {
-	return _accountsService.GetByType(AccountType::Expens);
+	auto accounts = _accountsService.GetByType(AccountType::Expens);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetDebtsAccounts() {
-	return _accountsService.GetByType(AccountType::Debt);
+std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetDebtsAccounts() {	 
+	auto accounts = _accountsService.GetByType(AccountType::Debt);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	return accounts;
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetVirtualsAccounts() {
-	return _accountsService.GetByType(AccountType::Virtual);
+	auto accounts = _accountsService.GetByType(AccountType::Virtual);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	return accounts;
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TreeMenuViewModel::GetArchiveAccounts() {

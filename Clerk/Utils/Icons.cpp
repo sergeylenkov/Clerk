@@ -26,6 +26,10 @@ int Icons::GetIconForAccount(int index) {
 	return _defaultAccountIcon;
 }
 
+wxBitmap Icons::GetBitmapForIcon(int index) {
+	return _imageList->GetBitmap(index);
+}
+
 void Icons::LoadMenuIcons() {
 	for (int i = 0; i < _menuIconsCount; i++) {
 		wxString path = wxString::Format("Resources\\Menu Icons\\%d.png", i);

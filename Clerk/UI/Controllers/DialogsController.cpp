@@ -2,7 +2,7 @@
 
 using namespace Clerk::UI;
 
-DialogsController::DialogsController(wxFrame* frame) {
+DialogsController::DialogsController(wxFrame* frame, DataContext& context, Icons& icons): _context(context), _icons(icons) {
 	_parent = frame;
 }
 
@@ -23,9 +23,10 @@ void DialogsController::ShowPreferencesDialog()
 }
 
 void DialogsController::ShowTransactionDialog() {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
 
-	//transactionDialog->OnClose = std::bind(&MainFrame::OnTransactionDialogClose, this);
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService());
+	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();

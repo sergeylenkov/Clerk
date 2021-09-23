@@ -11,6 +11,8 @@
 #include "../Controls/AmountField.h"
 #include "../../Data/ViewModels/AccountViewModel.h"
 #include "../../Data/ViewModels/TransactionViewModel.h"
+#include "../../Data/ViewModels/TransactionEditViewModel.h"
+#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -18,15 +20,14 @@ using namespace Clerk::Utils;
 class TransactionDialog : public wxFrame
 {
 public:
-	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
 	~TransactionDialog();
 		
-	void SetTransaction(std::shared_ptr<TransactionViewModel> transaction);
-	void SetSplitTransaction(std::shared_ptr<TransactionViewModel> transaction);
-
-	function<void()> OnClose;
+	void SetViewModel(TransactionEditViewModel* viewModel);
 
 private:
+	TransactionEditViewModel* _viewModel;
+	Icons& _icons;
 	wxPanel *mainPanel;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;
@@ -55,11 +56,9 @@ private:
 	std::shared_ptr<AccountViewModel> _toAccount;
 	TagsPopup *tagsPopup;
 
+	void Update();
 	void SelectFromAccount(int index);
-	void SelectToAccount(int index);
-	void SelectToAccount(AccountViewModel& account);
-	void UpdateFromList();
-	void UpdateToList(AccountViewModel& account);
+	void SelectToAccount(int index);	
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);

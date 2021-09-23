@@ -351,6 +351,9 @@
     <ClCompile Include="Commands\AddTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Data\ViewModels\TransactionEditViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -723,6 +726,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\AddTransactionCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ViewModels\TransactionEditViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

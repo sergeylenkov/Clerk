@@ -8,6 +8,7 @@ AccountViewModel::AccountViewModel() {
 	this->note = wxString("");
 	this->type = AccountType::Deposit;
 	this->icon = -1;
+	this->order = 0;
 	this->creditLimit = 0;
 	this->isCredit = false;
 	this->balance = 0;
@@ -21,6 +22,7 @@ AccountViewModel::AccountViewModel(AccountModel& account) {
 	this->note = wxString::FromUTF8(account.note.c_str());
 	this->type = account.type;
 	this->icon = account.iconId;
+	this->order = account.orderId;
 	this->creditLimit = account.creditLimit;
 	this->isCredit = account.creditLimit > 0;
 	this->balance = 0;

@@ -51,7 +51,7 @@ TEST_F(AccountsServiceTest, GetByIdNotExists) {
 TEST_F(AccountsServiceTest, GetActive) {
     auto accounts = service->GetActive();
 
-    EXPECT_EQ(accounts.size(), 30);
+    EXPECT_EQ(accounts.size(), 31);
 }
 
 TEST_F(AccountsServiceTest, GetByTypeDebt) {
@@ -81,7 +81,7 @@ TEST_F(AccountsServiceTest, GetByTypeDeposit) {
 TEST_F(AccountsServiceTest, GetArchives) {
     auto accounts = service->GetArchive();
 
-    EXPECT_EQ(accounts.size(), 48);
+    EXPECT_EQ(accounts.size(), 47);
 }
 
 TEST_F(AccountsServiceTest, GetDebts) {

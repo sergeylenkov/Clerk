@@ -118,7 +118,7 @@ TEST_F(AccountsRepositoryTest, GetExpensesFroPeriod) {
 TEST_F(AccountsRepositoryTest, GetActive) {
     auto accounts = repository->GetActive();
 
-    EXPECT_EQ(accounts.size(), 30);
+    EXPECT_EQ(accounts.size(), 31);
 }
 
 TEST_F(AccountsRepositoryTest, GetByTypeDebt) {
@@ -148,7 +148,7 @@ TEST_F(AccountsRepositoryTest, GetByTypeDeposit) {
 TEST_F(AccountsRepositoryTest, GetArchives) {
     auto accounts = repository->GetArchive();
 
-    EXPECT_EQ(accounts.size(), 48);
+    EXPECT_EQ(accounts.size(), 47);
 }
 
 TEST_F(AccountsRepositoryTest, CreateAndDelete) {

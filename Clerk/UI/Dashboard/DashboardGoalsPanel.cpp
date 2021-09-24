@@ -4,23 +4,30 @@ DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
-void DashboardGoalsPanel::SetGoals(std::vector<std::shared_ptr<GoalViewModel>> goals) {
-	_goals = goals;
-	_values.clear();
+void DashboardGoalsPanel::SetViewModel(DashboardViewModel* viewModel) {
+	_viewModel = viewModel;
 
-	for (auto &goal : goals) {
-		float remainAmount = goal->amount - goal->balance;
-		float remainPercent = goal->balance / (goal->amount / 100.0);
-
-		_values.push_back({ goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(goal->balance, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
-	}
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
 
 	Update();
 }
 
 void DashboardGoalsPanel::Update()
 {
-	int height = 170 + (_goals.size() * 30);
+	auto goals = _viewModel->GetGoals();
+
+	_values.clear();
+
+	for (auto& goal : goals) {
+		float remainAmount = goal->amount - goal->balance;
+		float remainPercent = goal->balance / (goal->amount / 100.0);
+
+		_values.push_back({ goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(goal->balance, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+	}
+
+	int height = 170 + (goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();

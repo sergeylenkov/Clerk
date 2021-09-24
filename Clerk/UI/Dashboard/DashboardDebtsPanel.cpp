@@ -4,13 +4,24 @@ DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent) : wxPanel(parent) {
 	this->Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
 }
 
-void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<AccountViewModel>> debts) {
-	_debts = debts;
-	_values.clear();
+void DashboardDebtsPanel::SetViewModel(DashboardViewModel* viewModel) {
+	_viewModel = viewModel;
 
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
+
+	Update();
+}
+
+void DashboardDebtsPanel::Update()
+{
+	auto debts = _viewModel->GetDepts();
+
+	_values.clear();
 	_totalValue = 0;
 
-	for (auto &account : debts) {
+	for (auto& account : debts) {
 		if (account->isCredit) {
 			float amount = account->balance;
 			float currentAmount = account->creditLimit + amount;
@@ -20,8 +31,8 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<AccountViewModel>
 
 			_totalValue = _totalValue + abs(amount);
 		}
-		else {			
-			float amount = account->expenses;			
+		else {
+			float amount = account->expenses;
 			float currentAmount = account->receipts;
 			float remainAmount = abs(account->balance);
 			float remainPercent = (currentAmount / amount) * 100.0;
@@ -32,12 +43,7 @@ void DashboardDebtsPanel::SetDebts(std::vector<std::shared_ptr<AccountViewModel>
 		}
 	}
 
-	Update();
-}
-
-void DashboardDebtsPanel::Update()
-{
-	int height = 170 + (_debts.size() * 30);
+	int height = 170 + (debts.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();

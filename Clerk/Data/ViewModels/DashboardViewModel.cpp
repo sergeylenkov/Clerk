@@ -2,10 +2,14 @@
 
 using namespace Clerk::Data;
 
-DashboardViewModel::DashboardViewModel(AccountingService& accountingService, TransactionsService& transactionsService, AccountsService& accountsService, Currency& currency) :
+DashboardViewModel::DashboardViewModel(AccountingService& accountingService, TransactionsService& transactionsService, AccountsService& accountsService,
+	BudgetsService& budgetsService, SchedulersService& schedulersService, GoalsService& goalsService, Currency& currency) :
 	_accountingService(accountingService),
 	_transactionsService(transactionsService),
 	_accountsService(accountsService),
+	_budgetsService(budgetsService),
+	_schedulersService(schedulersService),
+	_goalsService(goalsService),
 	_currency(currency)
 {
 	_transactionsService.OnUpdate = [=]() {
@@ -64,4 +68,23 @@ float DashboardViewModel::GetTotalExpensesForMonth() {
 	toDate.SetToLastMonthDay();
 
 	return _accountingService.GetExpenses(fromDate, toDate);
+}
+
+std::vector<std::shared_ptr<BudgetViewModel>> DashboardViewModel::GetBudgets() {
+	return _budgetsService.GetAll();
+}
+
+std::vector<std::shared_ptr<SchedulerViewModel>> DashboardViewModel::GetSchedulersForMonth() {
+	wxDateTime today = wxDateTime::Now();
+	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
+
+	return _schedulersService.GetByPeriod(today, month);
+}
+
+std::vector<std::shared_ptr<AccountViewModel>> DashboardViewModel::GetDepts() {
+	return _accountsService.GetDebts();
+}
+
+std::vector<std::shared_ptr<GoalViewModel>> DashboardViewModel::GetGoals() {
+	return _goalsService.GetAll();
 }

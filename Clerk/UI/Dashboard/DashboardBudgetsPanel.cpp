@@ -1,14 +1,16 @@
 #include "DashboardBudgetsPanel.h"
 
-DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent) : wxPanel(parent) {
-	_daysCount = 0;
-	_currentDay = 0;
-
+DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent) : wxPanel(parent), _daysCount(0), _currentDay(0) {
 	this->Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
 }
 
-void DashboardBudgetsPanel::SetBudgets(std::vector<std::shared_ptr<BudgetViewModel>> budgets) {
-	_budgets = budgets;
+void DashboardBudgetsPanel::SetViewModel(DashboardViewModel* viewModel) {
+	_viewModel = viewModel;
+
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
+
 	Update();
 }
 
@@ -23,13 +25,15 @@ void DashboardBudgetsPanel::Update()
 	_daysCount = toDate.GetDay();
 	_currentDay = wxDateTime::Now().GetDay();
 
-	int height = 170 + (_budgets.size() * 40);
+	int height = 170 + (_viewModel->GetBudgets().size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
 }
 
 void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
+	auto budgets = _viewModel->GetBudgets();
+
 	int width = 0;
 	int height = 0;
 
@@ -53,7 +57,7 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 	
-	for (auto &budget : _budgets) {
+	for (auto &budget : budgets) {
 		float remainAmount = budget->amount - budget->balance;
 
 		wxSize size = dc.GetTextExtent(budget->name);
@@ -98,7 +102,7 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int progressWidth = width - columnWidth0 - columnWidth1 - columnWidth2 - 60;
 	int progressX = columnWidth0 + 20;
 
-	for (auto &budget : _budgets) {
+	for (auto &budget : budgets) {
 		float remainPercent = (budget->balance / budget->amount) * 100.0;
 		float remainAmount = budget->amount - budget->balance;
 

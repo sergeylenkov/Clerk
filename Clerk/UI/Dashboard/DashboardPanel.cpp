@@ -11,7 +11,8 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	_leftPanel = new wxPanel(_scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
-	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(), *_context.GetCurrenciesRepository().GetBaseCurrency());
+	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(),
+		_context.GetBudgetsService(), _context.GetSchedulersService(), _context.GetGoalsService(), *_context.GetCurrenciesRepository().GetBaseCurrency());
 
 	_balancePanel = new DashboardBalancePanel(_leftPanel);
 	_balancePanel->SetViewModel(_viewModel);
@@ -40,15 +41,23 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	wxBoxSizer *rightSizer = new wxBoxSizer(wxVERTICAL);
 
 	_schedulersPanel = new DashboardSchedulersPanel(_rightPanel);
+	_schedulersPanel->SetViewModel(_viewModel);
+
 	rightSizer->Add(_schedulersPanel, 0, wxEXPAND | wxALL, 5);
 
 	_budgetsPanel = new DashboardBudgetsPanel(_rightPanel);
+	_budgetsPanel->SetViewModel(_viewModel);
+
 	rightSizer->Add(_budgetsPanel, 0, wxEXPAND | wxALL, 5);
 
 	_goalsPanel = new DashboardGoalsPanel(_rightPanel);
+	_goalsPanel->SetViewModel(_viewModel);
+
 	rightSizer->Add(_goalsPanel, 0, wxEXPAND | wxALL, 5);
 
 	_debtsPanel = new DashboardDebtsPanel(_rightPanel);
+	_debtsPanel->SetViewModel(_viewModel);
+
 	rightSizer->Add(_debtsPanel, 0, wxEXPAND | wxALL, 5);
 
 	_rightPanel->SetSizer(rightSizer);
@@ -71,69 +80,6 @@ DashboardPanel::~DashboardPanel() {
 	delete _viewModel;
 }
 
-void DashboardPanel::Update() {
-	//wxDateTime fromDate = wxDateTime::Now();
-	//wxDateTime toDate = wxDateTime::Now();
-	wxDateTime today = wxDateTime::Now();
-	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
-
-	//fromDate.SetDay(1);
-	//toDate.SetToLastMonthDay();
-
-	auto currency = _context.GetCurrenciesRepository().GetBaseCurrency();
-
-	/*auto expenses = _context.GetAccountsService().GetExpenses(fromDate, toDate);
-
-	if (expenses.size() > 0) {
-		float totalExpenses = _context.GetAccountingService().GetExpenses(fromDate, toDate);
-
-		_expensesPanel->SetTotal({ *currency, totalExpenses });
-		_expensesPanel->SetExpenses(expenses);
-		_expensesPanel->Show();
-	}
-	else {
-		_expensesPanel->Hide();
-	}*/
-	
-	auto schedulers = _context.GetSchedulersService().GetByPeriod(today, month);	
-
-	if (schedulers.size() > 0) {
-		_schedulersPanel->SetSchedulers(schedulers);
-		_schedulersPanel->Show();
-	}
-	else {
-		_schedulersPanel->Hide();
-	}
-
-	auto budgets = _context.GetBudgetsService().GetAll();
-
-	if (budgets.size() > 0) {
-		_budgetsPanel->SetBudgets(budgets);
-		_budgetsPanel->Show();
-	}
-	else {
-		_budgetsPanel->Hide();
-	}
-
-	auto goals = _context.GetGoalsService().GetAll();
-
-	if (goals.size() > 0) {
-		_goalsPanel->SetGoals(goals);
-		_goalsPanel->Show();
-	}
-	else {
-		_goalsPanel->Hide();
-	}
-
-	auto debts = _context.GetAccountsService().GetDebts();
-
-	if (debts.size() > 0) {
-		_debtsPanel->SetDebts(debts);
-		_debtsPanel->Show();
-	}
-	else {
-		_debtsPanel->Hide();
-	}
-
+void DashboardPanel::Update() {	
 	this->Layout();
 }

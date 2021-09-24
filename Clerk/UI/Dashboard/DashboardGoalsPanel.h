@@ -4,6 +4,7 @@
 #include <wx/numformatter.h>
 #include "../../Data/ViewModels/Types.h"
 #include "../../Data/ViewModels/GoalViewModel.h"
+#include "../../Data/ViewModels/DashboardViewModel.h"
 #include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
@@ -14,13 +15,14 @@ class DashboardGoalsPanel : public wxPanel
 public:
 	DashboardGoalsPanel(wxWindow *parent);
 
-	void SetGoals(std::vector<std::shared_ptr<GoalViewModel>> goals);
-	void Update();
+	void SetViewModel(DashboardViewModel* viewModel);
+	
 
 private:
-	std::vector<std::shared_ptr<GoalViewModel>> _goals;
+	DashboardViewModel* _viewModel{};
 	std::vector<DashboardProgressValue> _values;
 	
+	void Update();
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

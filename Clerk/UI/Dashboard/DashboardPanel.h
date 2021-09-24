@@ -23,16 +23,16 @@ public:
 	void Update();
 
 private:
-	wxScrolledWindow *_scrolledWindow;
-	wxPanel *_leftPanel;
-	wxPanel *_rightPanel;
-	DashboardSchedulersPanel *_schedulersPanel;
-	DashboardBudgetsPanel *_budgetsPanel;
-	DashboardExpensesPanel *_expensesPanel;
-	DashboardAccountsPanel *_accountsPanel;
-	DashboardBalancePanel *_balancePanel;
-	DashboardGoalsPanel *_goalsPanel;
-	DashboardDebtsPanel *_debtsPanel;
+	wxScrolledWindow*_scrolledWindow;
+	wxPanel* _leftPanel;
+	wxPanel* _rightPanel;
+	DashboardSchedulersPanel* _schedulersPanel;
+	DashboardBudgetsPanel* _budgetsPanel;
+	DashboardExpensesPanel* _expensesPanel;
+	DashboardAccountsPanel* _accountsPanel;
+	DashboardBalancePanel* _balancePanel;
+	DashboardGoalsPanel* _goalsPanel;
+	DashboardDebtsPanel* _debtsPanel;
 	DashboardViewModel* _viewModel;
 };
 

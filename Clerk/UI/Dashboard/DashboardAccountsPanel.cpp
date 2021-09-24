@@ -4,14 +4,19 @@ DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent) : wxPanel(paren
 	this->Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
-void DashboardAccountsPanel::SetAccounts(std::vector<std::shared_ptr<AccountViewModel>> accounts) {
-	_accounts = accounts;	
+void DashboardAccountsPanel::SetViewModel(DashboardViewModel* viewModel) {
+	_viewModel = viewModel;
+
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
+
 	Update();
 }
 
 void DashboardAccountsPanel::Update()
 {
-	int height = 70 + (_accounts.size() * 30);
+	int height = 70 + (_viewModel->GetAccounts().size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -40,7 +45,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	int y = 50;
 
-	for (auto &account : _accounts) {
+	for (auto& account : _viewModel->GetAccounts()) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(account->name, wxPoint(0, y));

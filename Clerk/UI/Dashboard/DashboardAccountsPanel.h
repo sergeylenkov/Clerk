@@ -4,6 +4,7 @@
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
 #include "../../Data//ViewModels/AccountViewModel.h"
+#include "../../Data/ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -13,11 +14,12 @@ class DashboardAccountsPanel : public wxPanel
 public:
 	DashboardAccountsPanel(wxWindow *parent);	
 
-	void SetAccounts(std::vector<std::shared_ptr<AccountViewModel>> accounts);
-	void Update();
+	void SetViewModel(DashboardViewModel* viewModel);
 
 private:
-	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
+	DashboardViewModel* _viewModel{};
+
+	void Update();
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);

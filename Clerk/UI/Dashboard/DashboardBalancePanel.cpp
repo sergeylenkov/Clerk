@@ -5,7 +5,6 @@ DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent) : wxPanel(parent)
 }
 
 DashboardBalancePanel::~DashboardBalancePanel() {
-	delete _viewModel;
 }
 
 void DashboardBalancePanel::SetViewModel(DashboardViewModel* viewModel) {

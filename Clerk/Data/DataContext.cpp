@@ -46,7 +46,7 @@ DataContext::DataContext(
 	_alertsService(alertsService),
 	_goalsService(goalsService),
 	_reportingService(reportingService)
-{
+{	
 }
 
 DataContext::~DataContext() {

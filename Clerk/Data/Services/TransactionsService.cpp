@@ -92,6 +92,10 @@ void TransactionsService::Save(TransactionViewModel& viewModel) {
 	_transactionsRepository.Save(model);
 
 	delete& model;
+
+	if (OnUpdate) {
+		OnUpdate();
+	}
 }
 
 void TransactionsService::LoadDetails(TransactionViewModel& model, TransactionModel& transaction) {

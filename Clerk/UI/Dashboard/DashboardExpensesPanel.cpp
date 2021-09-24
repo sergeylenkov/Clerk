@@ -5,33 +5,29 @@ DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent) : wxPanel(paren
 	this->Bind(wxEVT_PAINT, &DashboardExpensesPanel::OnPaint, this);
 }
 
-void DashboardExpensesPanel::SetExpenses(std::vector<std::shared_ptr<AccountViewModel>> expenses) {
-	_expenses = expenses;
-	
-	maxValue = 0;
+void DashboardExpensesPanel::SetViewModel(DashboardViewModel* viewModel) {
+	_viewModel = viewModel;
 
-	if (_expenses.size() > 0) {
-		std::sort(_expenses.begin(),_expenses.end(), [](auto a, auto b) {
-			return a->balance > b->balance;
-		});
-
-		for (auto &account : _expenses) {
-			if (account->balance > maxValue) {
-				maxValue = account->balance;
-			}
-		}
-	}		
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
 
 	Update();
 }
 
-void DashboardExpensesPanel::SetTotal(CurrencyValueViewModel value) {
-	_total = value;
-}
-
 void DashboardExpensesPanel::Update()
 {
-	int height = 50 + (_expenses.size() * 35);
+	auto expenses = _viewModel->GetExpensesForMonth();
+
+	maxValue = 0;
+
+	for (auto& account : expenses) {
+		if (account->balance > maxValue) {
+			maxValue = account->balance;
+		}
+	}
+
+	int height = 50 + (expenses.size() * 35);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -58,14 +54,14 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
-	wxString value = Format::Amount(_total.value, *_total.currency.sign);
+	wxString value = Format::Amount(_viewModel->GetTotalExpensesForMonth(), *_viewModel->GetCurrency().sign);
 	wxSize size = dc.GetTextExtent(value);
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
 	int y = 50;
 	
-	for (auto &account : _expenses) {
+	for (auto &account : _viewModel->GetExpensesForMonth()) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(account->name, wxPoint(0, y));

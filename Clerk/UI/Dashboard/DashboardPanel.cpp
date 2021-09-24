@@ -11,17 +11,21 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	_leftPanel = new wxPanel(_scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
-	DashboardViewModel* viewModel = new DashboardViewModel(_context.GetAccountingService(), *_context.GetCurrenciesRepository().GetBaseCurrency());
+	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(), *_context.GetCurrenciesRepository().GetBaseCurrency());
 
 	_balancePanel = new DashboardBalancePanel(_leftPanel);
-	_balancePanel->SetViewModel(viewModel);
+	_balancePanel->SetViewModel(_viewModel);
 
 	leftSizer->Add(_balancePanel, 0, wxEXPAND | wxALL, 5);
 
 	_accountsPanel = new DashboardAccountsPanel(_leftPanel);
+	_accountsPanel->SetViewModel(_viewModel);
+
 	leftSizer->Add(_accountsPanel, 0, wxEXPAND | wxALL, 5);
 
 	_expensesPanel = new DashboardExpensesPanel(_leftPanel);
+	_expensesPanel->SetViewModel(_viewModel);
+
 	leftSizer->Add(_expensesPanel, 0, wxEXPAND | wxALL, 5);
 
 	_leftPanel->SetSizer(leftSizer);
@@ -63,28 +67,22 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	this->Layout();
 }
 
+DashboardPanel::~DashboardPanel() {
+	delete _viewModel;
+}
+
 void DashboardPanel::Update() {
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
+	//wxDateTime fromDate = wxDateTime::Now();
+	//wxDateTime toDate = wxDateTime::Now();
 	wxDateTime today = wxDateTime::Now();
 	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
 
-	fromDate.SetDay(1);
-	toDate.SetToLastMonthDay();
+	//fromDate.SetDay(1);
+	//toDate.SetToLastMonthDay();
 
 	auto currency = _context.GetCurrenciesRepository().GetBaseCurrency();
 
-	auto accounts = _context.GetAccountsService().GetByType(AccountType::Deposit);
-
-	if (accounts.size() > 0) {
-		_accountsPanel->SetAccounts(accounts);
-		_accountsPanel->Show();
-	}
-	else {
-		_accountsPanel->Hide();
-	}
-
-	auto expenses = _context.GetAccountsService().GetExpenses(fromDate, toDate);
+	/*auto expenses = _context.GetAccountsService().GetExpenses(fromDate, toDate);
 
 	if (expenses.size() > 0) {
 		float totalExpenses = _context.GetAccountingService().GetExpenses(fromDate, toDate);
@@ -95,7 +93,7 @@ void DashboardPanel::Update() {
 	}
 	else {
 		_expensesPanel->Hide();
-	}
+	}*/
 	
 	auto schedulers = _context.GetSchedulersService().GetByPeriod(today, month);	
 

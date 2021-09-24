@@ -18,6 +18,7 @@ class DashboardPanel : public DataPanel
 {
 public:
 	DashboardPanel(wxWindow *parent, DataContext& context);
+	~DashboardPanel();
 
 	void Update();
 
@@ -32,5 +33,6 @@ private:
 	DashboardBalancePanel *_balancePanel;
 	DashboardGoalsPanel *_goalsPanel;
 	DashboardDebtsPanel *_debtsPanel;
+	DashboardViewModel* _viewModel;
 };
 

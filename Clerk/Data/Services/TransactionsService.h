@@ -21,6 +21,7 @@ namespace Clerk {
 
 			void Save(TransactionViewModel& viewModel);
 
+			std::function<void()> OnUpdate;
 		private:			
 			TransactionsRepository& _transactionsRepository;
 			AccountsService& _accountsService;

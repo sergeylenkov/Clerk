@@ -9,6 +9,7 @@ namespace Clerk {
 	namespace Data {
 		class TransactionViewModel {
 		public:
+			TransactionViewModel();
 			TransactionViewModel(TransactionModel& transaction);
 
 			int id;
@@ -20,6 +21,11 @@ namespace Clerk {
 			wxDateTime date;
 			std::vector<std::shared_ptr<TagViewModel>> tags;
 			wxString tagsString;
+			
+			operator TransactionModel& ();
+
+		private:
+			TransactionModel* GetModel();
 		};
 	}
 }

@@ -19,6 +19,8 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TransactionViewModel>> GetRecents(const AccountViewModel& account, int count);
 			std::vector<std::shared_ptr<TransactionViewModel>> GetDeleted();
 
+			void Save(TransactionViewModel& viewModel);
+
 		private:			
 			TransactionsRepository& _transactionsRepository;
 			AccountsService& _accountsService;

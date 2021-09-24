@@ -10,6 +10,11 @@ DashboardBalancePanel::~DashboardBalancePanel() {
 
 void DashboardBalancePanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
+
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
+
 	Update();
 }
 

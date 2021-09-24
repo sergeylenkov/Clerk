@@ -199,5 +199,17 @@ void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 }
 
 void TransactionEditViewModel::Save() {
+	auto transaction = new TransactionViewModel();
 
+	transaction->fromAccount = _fromAccount;
+	transaction->toAccount = _toAccount;
+	transaction->fromAmount = _fromAmount;
+	transaction->toAmount = _toAmount;
+	transaction->note = _note;
+	transaction->tags = _tags;
+	transaction->date = _date;
+	
+	_transactionsService.Save(*transaction);
+
+	delete& transaction;
 }

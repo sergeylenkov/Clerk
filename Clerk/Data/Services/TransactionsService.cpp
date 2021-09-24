@@ -86,6 +86,14 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetDelet
 	return result;
 }
 
+void TransactionsService::Save(TransactionViewModel& viewModel) {
+	TransactionModel& model = viewModel;
+
+	_transactionsRepository.Save(model);
+
+	delete& model;
+}
+
 void TransactionsService::LoadDetails(TransactionViewModel& model, TransactionModel& transaction) {
 	model.fromAccount = _accountsService.GetById(transaction.fromAccountId);
 	model.toAccount = _accountsService.GetById(transaction.toAccountId);

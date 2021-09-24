@@ -233,25 +233,6 @@ void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
 void TransactionDialog::OnOK(wxCommandEvent &event) {
 	_viewModel->Save();
 
-	//TODO
-	//_transaction->fromAccount = _fromAccounts[fromList->GetSelection()];
-	//_transaction->toAccount = _toAccounts[toList->GetSelection()];
-	//_transaction->note = noteField->GetValue();
-	//transaction->SetTagsString(tagsField->GetValue());
-	//_transaction->date = datePicker->GetValue();	
-		  
-	//_transaction->fromAmount = fromAmountField->GetFloatValue();
-	//_transaction->toAmount = toAmountField->GetFloatValue();
-
-	//transaction->Save();
-
-	/*if (_splitTransaction) {
-		_splitTransaction->fromAmount = _splitTransaction->fromAmount - _transaction->fromAmount;
-		_splitTransaction->toAmount = _splitTransaction->toAmount - _transaction->toAmount;
-
-		//splitTransaction->Save();
-	}*/
-
 	Close();
 }
 

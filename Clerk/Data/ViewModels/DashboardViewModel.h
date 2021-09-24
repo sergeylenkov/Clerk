@@ -14,6 +14,8 @@ namespace Clerk {
 			float GetCreditFunds();
 			Currency& GetCurrency();
 
+			std::function<void()> OnUpdate;
+
 		private:
 			AccountingService& _accountingService;
 			Currency& _currency;

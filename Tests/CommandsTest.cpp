@@ -5,7 +5,7 @@
 #include "../Clerk/Commands/QuitCommand.h"
 #include "../Clerk/Commands/PreferencesCommand.h"
 #include "../Clerk/Commands/AboutCommand.h"
-#include "../Clerk/Commands/AddTransactionCommand.h"
+#include "../Clerk/Commands/NewTransactionCommand.h"
 
 using namespace Clerk::Commands;
 
@@ -23,8 +23,8 @@ public:
         ASSERT_TRUE(1);
     }
 
-    void OpenTransactionDialog() override {
-        ASSERT_TRUE(1);
+    void OpenTransactionDialog(int id, bool isSplit) override {
+        ASSERT_EQ(id, 100);
     }
 };
 
@@ -36,9 +36,9 @@ public:
         QuitCommand* quitCommand = new QuitCommand(commandsReceiver);
         PreferencesCommand* preferencesCommand = new PreferencesCommand(commandsReceiver);
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
-        AddTransactionCommand* addTransactionCommand = new AddTransactionCommand(commandsReceiver);
+        NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *addTransactionCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand);
     }
 
     ~CommandsTest() {
@@ -71,6 +71,6 @@ TEST_F(CommandsTest, AboutCommand) {
     commandsInvoker->OnAbout();
 }
 
-TEST_F(CommandsTest, AddTransactionCommand) {
-    commandsInvoker->OnAddTransaction();
+TEST_F(CommandsTest, NewTransactionCommand) {
+    commandsInvoker->OnNewTransaction(100);
 }

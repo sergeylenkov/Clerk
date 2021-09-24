@@ -103,11 +103,11 @@ void TreeContextMenu::OnMenuRestoreAccount(wxCommandEvent& event) {
 }
 
 void TreeContextMenu::OnMenuAddTransaction(wxCommandEvent& event) {
-	_commandsInvoker.OnAddTransaction();
+	_commandsInvoker.OnNewTransaction(-1);
 }
 
 void TreeContextMenu::OnSubMenuAddTransaction(wxCommandEvent& event) {
-	_commandsInvoker.OnAddTransaction();
+	_commandsInvoker.OnNewTransaction(event.GetId());
 }
 
 void TreeContextMenu::OnMenuAddBudget(wxCommandEvent& event) {

@@ -13,9 +13,9 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
 	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
-	AddTransactionCommand* addTransactionCommand = new AddTransactionCommand(_commandsReceiver);
+	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
 
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *addTransactionCommand);
+	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand);
 
 	_mainMenu = new MainMenu(*_commandsInvoker);
 

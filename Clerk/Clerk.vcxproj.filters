@@ -348,7 +348,7 @@
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\AddTransactionCommand.cpp">
+    <ClCompile Include="Commands\NewTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\ViewModels\TransactionEditViewModel.cpp">
@@ -725,7 +725,7 @@
     <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\AddTransactionCommand.h">
+    <ClInclude Include="Commands\NewTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ViewModels\TransactionEditViewModel.h">

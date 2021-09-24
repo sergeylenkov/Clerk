@@ -18,7 +18,7 @@ namespace Clerk {
 
 			void ShowAboutDialog();
 			void ShowPreferencesDialog();
-			void ShowTransactionDialog();
+			void ShowTransactionDialog(int id, bool isSplit);
 
 		private:
 			wxFrame* _parent;

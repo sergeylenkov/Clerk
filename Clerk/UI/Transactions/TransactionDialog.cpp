@@ -123,6 +123,9 @@ void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
 	};
 
 	Update();
+
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionDialog::Update() {
@@ -163,42 +166,7 @@ void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
 	}
 }
 
-/*void TransactionDialog::SetTransaction(std::shared_ptr<TransactionViewModel> transaction) {
-	return;
-	_transaction = transaction;
-
-	fromAmountField->SetValue(Format::Amount(transaction->fromAmount));
-	toAmountField->SetValue(Format::Amount(transaction->toAmount));
-	//TODO
-	//tagsField->SetValue(transaction->GetTagsString());
-	noteField->SetValue(transaction->note);
-	datePicker->SetValue(transaction->date);
-
-	for (unsigned int i = 0; i < _fromAccounts.size(); i++) {
-		if (transaction->fromAccount->id == _fromAccounts[i]->id) {
-			SelectFromAccount(i);
-			UpdateToList(*_fromAccounts[i].get());
-
-			break;
-		}
-	}
-
-	if (transaction->toAccount->id != -1) {
-		for (unsigned int i = 0; i < _toAccounts.size(); i++) {
-			if (transaction->toAccount->id == _toAccounts[i]->id) {
-				SelectToAccount(i);
-				break;
-			}
-		}
-	}
-	else {
-		SelectToAccount(0);
-	}
-
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
-}
-
+/*
 void TransactionDialog::SetSplitTransaction(std::shared_ptr<TransactionViewModel> transaction) {
 	auto copy = make_shared<Transaction>();
 

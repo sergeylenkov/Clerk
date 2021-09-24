@@ -28,9 +28,9 @@ void AddTransactionButton::SetTransactions(std::vector<std::shared_ptr<Transacti
 }
 
 void AddTransactionButton::OnAddTransaction(wxCommandEvent& event) {
-	_commandsInvoker.OnAddTransaction();
+	_commandsInvoker.OnNewTransaction(-1);
 }
 
 void AddTransactionButton::OnMenuAddTransaction(wxCommandEvent& event) {
-	_commandsInvoker.OnAddTransaction();
+	_commandsInvoker.OnNewTransaction(event.GetId());
 }

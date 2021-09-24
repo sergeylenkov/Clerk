@@ -3,6 +3,7 @@
 #include <wx/tokenzr.h>
 #include "./AccountViewModel.h"
 #include "../Services/AccountsService.h"
+#include "../Services/TransactionsService.h"
 #include "../Repositories/ExchangeRatesRepository.h"
 #include "../Settings.h"
 #include "./TagViewModel.h"
@@ -11,8 +12,9 @@ namespace Clerk {
 	namespace Data {
 		class TransactionEditViewModel {
 		public:
-			TransactionEditViewModel(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository);
+			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository);
 			
+			void SetTransactionId(int id);
 			std::vector<std::shared_ptr<AccountViewModel>> GetFromAccounts();
 			std::vector<std::shared_ptr<AccountViewModel>> GetToAccounts();
 			int GetFromAccountIndex();
@@ -38,6 +40,7 @@ namespace Clerk {
 		private:
 			AccountsService& _accountsService;
 			ExchangeRatesRepository& _exchangeRatesRepository;
+			TransactionsService& _transactionsService;
 			std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;
 			std::vector<std::shared_ptr<AccountViewModel>> _toAccounts;
 			std::shared_ptr<AccountViewModel> _fromAccount;

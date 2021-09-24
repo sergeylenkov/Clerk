@@ -3,25 +3,25 @@
 #include "QuitCommand.h"
 #include "PreferencesCommand.h"
 #include "AboutCommand.h"
-#include "AddTransactionCommand.h"
+#include "NewTransactionCommand.h"
 
 namespace Clerk {
 	namespace Commands {
 		class CommandsInvoker {
 		public:
-			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, AddTransactionCommand& addTransactionCommand);
+			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, NewTransactionCommand& newTransactionCommand);
 			~CommandsInvoker();
-
+			
 			void OnQuit();
 			void OnPreferences();
 			void OnAbout();
-			void OnAddTransaction();
+			void OnNewTransaction(int id);
 
 		private:
 			QuitCommand& _quitCommand;
 			PreferencesCommand& _preferencesCommand;
 			AboutCommand& _aboutCommand;
-			AddTransactionCommand& _addTransactionCommand;
+			NewTransactionCommand& _newTransactionCommand;
 		};
 	}
 }

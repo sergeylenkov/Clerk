@@ -2,14 +2,30 @@
 
 using namespace Clerk::Data;
 
-TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository):
+TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository):
 	_accountsService(accountsService),
+	_transactionsService(transactionsService),
 	_exchangeRatesRepository(exchangeRatesRepository) {
 	_fromAmount = 0;
 	_toAmount = 0;
 	_date = wxDateTime::Now();
 
 	Update();
+}
+
+void TransactionEditViewModel::SetTransactionId(int id) {
+	auto transaction = _transactionsService.GetById(id);
+
+	if (transaction) {
+		_fromAccount = transaction->fromAccount;
+		_toAccount = transaction->toAccount;
+		_fromAmount = 0;
+		_toAmount = 0;
+		_note = transaction->note;
+		_tags = transaction->tags;
+
+		Update();
+	}
 }
 
 void TransactionEditViewModel::Update() {

@@ -29,7 +29,7 @@
 #include "../Commands/CommandsReceiver.h"
 #include "../Commands/QuitCommand.h"
 #include "../Commands/PreferencesCommand.h"
-#include "../Commands/AddTransactionCommand.h"
+#include "../Commands/NewTransactionCommand.h"
 #include "Controllers/DialogsController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"

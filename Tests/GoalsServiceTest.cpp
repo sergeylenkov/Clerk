@@ -1,35 +1,20 @@
 #include "pch.h"
 
-#include "../Clerk/Data/Repositories/GoalsRepository.h"
 #include "../Clerk/Data/Services/GoalsService.h"
+#include "Environment.cpp"
 
 class GoalsServiceTest : public ::testing::Test {
 public:
     GoalsServiceTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        repository = new Clerk::Data::GoalsRepository(*connection);
-        service = new Clerk::Data::GoalsService(*repository);
+        auto context = Environment::Instance().GetContext();
+        service = new GoalsService(context->GetGoalsRepository());
     }
 
     ~GoalsServiceTest() {
-        delete connection;
-        delete repository;
         delete service;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::GoalsRepository* repository;
     Clerk::Data::GoalsService* service;
 };
 

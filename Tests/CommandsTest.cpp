@@ -46,14 +46,6 @@ public:
         delete commandsInvoker;
     }
 
-    void SetUp() {
-        
-    }
-
-    void TearDown() {
-        
-    }
-
 protected:
     MockCommandsReceiver* commandsReceiver;
     CommandsInvoker* commandsInvoker;

@@ -1,42 +1,21 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/SchedulersService.h"
+#include "Environment.cpp"
 
 class SchedulersServiceTest : public ::testing::Test {
 public:
     SchedulersServiceTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        schedulersRepository = new SchedulersRepository(*connection);
-        accountsRepository = new Clerk::Data::AccountsRepository(*connection);
-        exchangeRatesRepository = new Clerk::Data::ExchangeRatesRepository(*connection);
-
-        service = new SchedulersService(*schedulersRepository, *accountsRepository, *exchangeRatesRepository);
+        auto context = Environment::Instance().GetContext();
+        service = new SchedulersService(context->GetSchedulersRepository(), context->GetAccountsRepository(), context->GetExchangeRatesRepository());
     }
 
     ~SchedulersServiceTest() {
-        delete connection;
-        delete schedulersRepository;
-        delete accountsRepository;
-        delete exchangeRatesRepository;
         delete service;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::SchedulersRepository* schedulersRepository;
-    Clerk::Data::AccountsRepository* accountsRepository;
-    Clerk::Data::ExchangeRatesRepository* exchangeRatesRepository;
-    Clerk::Data::SchedulersService* service;
+    SchedulersService* service;
 };
 
 TEST_F(SchedulersServiceTest, GetAll) {

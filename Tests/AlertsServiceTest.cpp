@@ -1,35 +1,21 @@
 #include "pch.h"
 
-#include "../Clerk/Data/Repositories/AlertsRepository.h"
 #include "../Clerk/Data/Services/AlertsService.h"
+#include "Environment.cpp"
 
 class AlertsServiceTest : public ::testing::Test {
 public:
     AlertsServiceTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        repository = new Clerk::Data::AlertsRepository(*connection);
-        service = new Clerk::Data::AlertsService(*repository);
+        auto context = Environment::Instance().GetContext();
+        service = new AlertsService(context->GetAlertsRepository());
     }
 
     ~AlertsServiceTest() {
-        delete connection;
-        delete repository;
-    }
-
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
+        delete service;
     }
 
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::AlertsRepository* repository;
-    Clerk::Data::AlertsService* service;
+    AlertsService* service;
 };
 
 TEST_F(AlertsServiceTest, GetAll) {

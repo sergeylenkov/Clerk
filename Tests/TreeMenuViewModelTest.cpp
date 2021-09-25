@@ -1,68 +1,22 @@
 #include "pch.h"
 
 #include "../Clerk/Data/ViewModels/TreeMenuViewModel.h"
-#include "../Clerk/Data/Repositories/TransactionsRepository.h"
-#include "../Clerk/Data/Repositories/AccountsRepository.h"
-#include "../Clerk/Data/Repositories/CurrenciesRepository.h"
-#include "../Clerk/Data/Services/AccountsService.h"
-#include "../Clerk/Data/Services/ReportingService.h"
-#include "../Clerk/Data/Services/TransactionsService.h"
-#include "../Clerk/Data/Services/TagsService.h"
+#include "Environment.cpp"
 
 class TreeMenuViewModelTest : public ::testing::Test {
 public:
     TreeMenuViewModelTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
+        auto context = Environment::Instance().GetContext();        
 
-        accountsRepository = new Clerk::Data::AccountsRepository(*connection);
-        reportsRepository = new  Clerk::Data::ReportsRepository(*connection);
-        currenciesRepository = new Clerk::Data::CurrenciesRepository(*connection);
-        transactionsRepository = new Clerk::Data::TransactionsRepository(*connection);
-        tagsRepository = new Clerk::Data::TagsRepository(*connection);
-
-        accountsService = new Clerk::Data::AccountsService(*accountsRepository, *currenciesRepository);
-        reportsService = new Clerk::Data::ReportsService(*reportsRepository);
-        tagsService = new Clerk::Data::TagsService(*tagsRepository);
-        transactionsService = new Clerk::Data::TransactionsService(*transactionsRepository, *accountsService, *tagsService);
-
-        viewModel = new Clerk::Data::TreeMenuViewModel(*accountsService, *reportsService, *transactionsService);
+        viewModel = new Clerk::Data::TreeMenuViewModel(context->GetAccountsService(), context->GetReportsService(), context->GetTransactionsService());
     }
 
     ~TreeMenuViewModelTest() {
-        delete connection;
-        delete accountsRepository;
-        delete reportsRepository;
-        delete transactionsRepository;        
-        delete currenciesRepository;
-        delete tagsRepository;
-        delete accountsService;
-        delete reportsService;
-        delete transactionsService;
-        delete tagsService;
         delete viewModel;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
 protected:
-    Clerk::Data::DataConnection* connection;
     Clerk::Data::TreeMenuViewModel* viewModel;
-    Clerk::Data::AccountsRepository* accountsRepository;
-    Clerk::Data::ReportsRepository* reportsRepository;
-    Clerk::Data::TransactionsRepository* transactionsRepository;
-    Clerk::Data::CurrenciesRepository* currenciesRepository;
-    Clerk::Data::TagsRepository* tagsRepository;
-    Clerk::Data::AccountsService* accountsService;
-    Clerk::Data::ReportsService *reportsService;
-    Clerk::Data::TransactionsService *transactionsService;
-    Clerk::Data::TagsService* tagsService;
 };
 
 TEST_F(TreeMenuViewModelTest, GetReceiptsAccounts) {

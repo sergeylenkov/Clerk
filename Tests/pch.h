@@ -7,3 +7,4 @@
 
 #include "gtest/gtest.h"
 #include <wx/wx.h>
+#include <string>

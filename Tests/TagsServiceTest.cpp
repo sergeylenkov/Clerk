@@ -1,36 +1,21 @@
 ﻿#include "pch.h"
-
-#include "../Clerk/Data/Repositories/TagsRepository.h"
-#include "../Clerk/Data/Services/TagsService.h"
+#include "Environment.cpp"
 
 class TagsServiceTest : public ::testing::Test {
 public:
     TagsServiceTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
+        auto context = Environment::Instance().GetContext();
 
-        repository = new Clerk::Data::TagsRepository(*connection);
-        service = new Clerk::Data::TagsService(*repository);
+        service = new TagsService(context->GetTagsRepository());
     }
 
     ~TagsServiceTest() {
-        delete connection;
-        delete repository;
         delete service;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
 
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::TagsRepository* repository;
-    Clerk::Data::TagsService* service;
+    TagsService* service;
 };
 
 TEST_F(TagsServiceTest, GetAll) {
@@ -52,8 +37,10 @@ TEST_F(TagsServiceTest, GetByIdNotExists) {
     EXPECT_TRUE(tag == nullptr);
 }
 
-TEST_F(TagsServiceTest, GetByIdNotExists) {
-    auto tags = service->GetBySearch("Разное");
+TEST_F(TagsServiceTest, GetBySearch) {
+    wxString search = "Разное";
+
+    auto tags = service->GetBySearch(search);
 
     EXPECT_EQ(tags.size(), 1);
 }

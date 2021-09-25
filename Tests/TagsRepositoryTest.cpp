@@ -49,7 +49,9 @@ TEST_F(TagsRepositoryTest, GetByIdNotExists) {
 }
 
 TEST_F(TagsRepositoryTest, GetBySearch) {
-    auto tags = repository->GetBySearch("Yamaha HS8");
+    wxString search = "Yamaha HS8";
+
+    auto tags = repository->GetBySearch(std::wstring(search.ToStdWstring()));
 
     EXPECT_EQ(tags.size(), 1);
 }

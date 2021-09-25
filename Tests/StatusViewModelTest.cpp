@@ -1,53 +1,23 @@
 #include "pch.h"
 
 #include "../Clerk/Data/ViewModels/StatusViewModel.h"
-#include "../Clerk/Data/Services/AccountingService.h"
-#include "../Clerk/Data/Repositories/ExchangeRatesRepository.h"
-#include "../Clerk/Data/Repositories/CurrenciesRepository.h"
+#include "Environment.cpp"
 
 class StatusViewModelTest : public ::testing::Test {
 public:
     StatusViewModelTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        accountsRepository = new Clerk::Data::AccountsRepository(*connection);
-        exchangeRatesRepository = new Clerk::Data::ExchangeRatesRepository(*connection);
-        currenciesRepository = new Clerk::Data::CurrenciesRepository(*connection);
-        currenciesRepository->SetBaseCurrency(152);
-
-        service = new AccountingService(*accountsRepository, *exchangeRatesRepository);
-        service->SetBaseCurrency(152);
-
+        auto context = Environment::Instance().GetContext();
         std::vector<int> ratesIds{ 180 };
 
-        viewModel = new StatusViewModel(*service, *exchangeRatesRepository, *currenciesRepository, ratesIds);
+        viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesRepository(), ratesIds);
     }
 
     ~StatusViewModelTest() {
-        delete connection;
-        delete accountsRepository;
-        delete exchangeRatesRepository;
-        delete currenciesRepository;
-        delete service;
         delete viewModel;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
-protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::StatusViewModel* viewModel;
-    Clerk::Data::AccountsRepository* accountsRepository;
-    Clerk::Data::ExchangeRatesRepository* exchangeRatesRepository;
-    Clerk::Data::CurrenciesRepository* currenciesRepository;
-    Clerk::Data::AccountingService* service;
+protected:    
+    StatusViewModel* viewModel;
 };
 
 TEST_F(StatusViewModelTest, GetBalance) {

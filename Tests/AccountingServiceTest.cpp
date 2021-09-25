@@ -1,40 +1,23 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/AccountingService.h"
+#include "Environment.cpp"
 
 class AccountingServiceTest : public ::testing::Test {
 public:
     AccountingServiceTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
+        auto context = Environment::Instance().GetContext();
 
-        accountsRepository = new Clerk::Data::AccountsRepository(*connection);        
-        exchangeRatesRepository = new Clerk::Data::ExchangeRatesRepository(*connection);
-
-        service = new AccountingService(*accountsRepository, *exchangeRatesRepository);
+        service = new AccountingService(context->GetAccountsRepository(), context->GetExchangeRatesRepository());
         service->SetBaseCurrency(152);
     }
 
     ~AccountingServiceTest() {
-        delete connection;
-        delete accountsRepository;
-        delete exchangeRatesRepository;
         delete service;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::AccountsRepository* accountsRepository;
-    Clerk::Data::ExchangeRatesRepository* exchangeRatesRepository;
-    Clerk::Data::AccountingService* service;
+    AccountingService* service;
 };
 
 TEST_F(AccountingServiceTest, GetBalance) {

@@ -2,51 +2,24 @@
 
 #include "../Clerk/Data/ViewModels/TransactionEditViewModel.h"
 #include "../Clerk/Data/ViewModels/TagViewModel.h"
-#include "../Clerk/Data/Services/AccountsService.h"
-#include "../Clerk/Data/Repositories/ExchangeRatesRepository.h"
-#include "../Clerk/Data//Settings.h"
+#include "../Clerk/Data/Settings.h"
+#include "Environment.cpp"
 
 class TransactionEditViewModelTest : public ::testing::Test {
 public:
     TransactionEditViewModelTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        accountsRepository = new Clerk::Data::AccountsRepository(*connection);
-        exchangeRatesRepository = new Clerk::Data::ExchangeRatesRepository(*connection);
-        currenciesRepository = new Clerk::Data::CurrenciesRepository(*connection);
-
-        service = new AccountsService(*accountsRepository, *currenciesRepository);
-
-        viewModel = new TransactionEditViewModel(*service, *exchangeRatesRepository);
-
         Settings::GetInstance().SetConvertCurrency(true);
+        auto context = Environment::Instance().GetContext();
+
+        viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository());
     }
 
     ~TransactionEditViewModelTest() {
-        delete connection;
-        delete accountsRepository;
-        delete exchangeRatesRepository;
-        delete service;
         delete viewModel;
-        delete currenciesRepository;
     }
 
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
-    }
-
-protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::TransactionEditViewModel* viewModel;
-    Clerk::Data::AccountsRepository* accountsRepository;
-    Clerk::Data::ExchangeRatesRepository* exchangeRatesRepository;
-    Clerk::Data::AccountsService* service;
-    Clerk::Data::CurrenciesRepository* currenciesRepository;
+protected:    
+    TransactionEditViewModel* viewModel;
 };
 
 TEST_F(TransactionEditViewModelTest, GetFromAccounts) {

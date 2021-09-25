@@ -73,3 +73,32 @@ TEST_F(TransactionsServiceTest, GetDeleted) {
 
     EXPECT_EQ(transactions.size(), 4);
 }
+
+TEST_F(TransactionsServiceTest, Update) {
+    auto transaction = service->GetById(14670);
+    transaction->note = "Test";
+
+    service->Save(*transaction);
+
+    transaction = service->GetById(14670);
+
+    EXPECT_TRUE(transaction->note == "Test");
+}
+
+TEST_F(TransactionsServiceTest, New) {
+    auto transaction = service->GetById(14670);
+
+    transaction->id = -1;    
+
+    service->Save(*transaction);
+
+    wxDateTime fromDate = wxDateTime::Now();
+    fromDate.SetHour(0);
+
+    wxDateTime toDate = wxDateTime::Now();
+    toDate.SetHour(24);
+
+    auto transactions = service->GetForPeriod(fromDate, toDate);
+
+    EXPECT_EQ(transactions.size(), 1);
+}

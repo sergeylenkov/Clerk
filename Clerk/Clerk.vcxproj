@@ -187,6 +187,7 @@
     <ClCompile Include="UI\MainFrame.cpp" />
     <ClCompile Include="UI\Transactions\TransactionDialog.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp" />
+    <ClCompile Include="Utils\EventEmitter.cpp" />
     <ClCompile Include="Utils\Icons.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
@@ -314,6 +315,7 @@
     <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h" />
+    <ClInclude Include="Utils\EventEmitter.h" />
     <ClInclude Include="Utils\Icons.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>

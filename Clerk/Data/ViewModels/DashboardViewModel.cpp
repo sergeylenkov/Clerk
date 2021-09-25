@@ -12,11 +12,19 @@ DashboardViewModel::DashboardViewModel(AccountingService& accountingService, Tra
 	_goalsService(goalsService),
 	_currency(currency)
 {
+	_eventEmitter = new EventEmitter();
+
 	_transactionsService.OnUpdate = [=]() {
-		if (OnUpdate) {
-			OnUpdate();
-		}
+		_eventEmitter->Emit();
 	};
+}
+
+DashboardViewModel::~DashboardViewModel() {
+	delete _eventEmitter;
+}
+
+void DashboardViewModel::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 float DashboardViewModel::GetTotalFunds() {

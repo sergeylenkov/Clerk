@@ -354,6 +354,9 @@
     <ClCompile Include="Data\ViewModels\TransactionEditViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\EventEmitter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -729,6 +732,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ViewModels\TransactionEditViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\EventEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

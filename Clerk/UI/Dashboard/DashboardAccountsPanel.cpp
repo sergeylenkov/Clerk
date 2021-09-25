@@ -7,9 +7,9 @@ DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent) : wxPanel(paren
 void DashboardAccountsPanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
 
-	_viewModel->OnUpdate = [=]() {
+	_viewModel->OnUpdate([=]() {
 		Update();
-	};
+	});
 
 	Update();
 }

@@ -7,9 +7,9 @@ DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent) : wxPanel(parent) {
 void DashboardDebtsPanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
 
-	_viewModel->OnUpdate = [=]() {
+	_viewModel->OnUpdate([=]() {
 		Update();
-	};
+	});
 
 	Update();
 }

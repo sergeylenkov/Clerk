@@ -7,9 +7,9 @@ DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent) : wxPanel(parent) {
 void DashboardGoalsPanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
 
-	_viewModel->OnUpdate = [=]() {
+	_viewModel->OnUpdate([=]() {
 		Update();
-	};
+	});
 
 	Update();
 }

@@ -48,19 +48,19 @@ TEST_F(DashboardViewModelTest, GetCurrency) {
 TEST_F(DashboardViewModelTest, GetAccounts) {
     auto accounts = viewModel->GetAccounts();
 
-    EXPECT_EQ(accounts.size(), 10);
+    EXPECT_EQ(accounts.size(), 5);
 }
 
 TEST_F(DashboardViewModelTest, GetBudgets) {
     auto budgets = viewModel->GetBudgets();
 
-    EXPECT_EQ(budgets.size(), 2);
+    EXPECT_EQ(budgets.size(), 3);
 }
 
 TEST_F(DashboardViewModelTest, GetDepts) {
     auto depts = viewModel->GetDepts();
 
-    EXPECT_EQ(depts.size(), 2);
+    EXPECT_EQ(depts.size(), 1);
 }
 
 TEST_F(DashboardViewModelTest, GetGoals) {

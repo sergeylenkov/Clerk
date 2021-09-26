@@ -3,18 +3,18 @@
 #include "../Clerk/Data/ViewModels/TransactionEditViewModel.h"
 #include "../Clerk/Data/ViewModels/TagViewModel.h"
 #include "../Clerk/Data/Settings.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class TransactionEditViewModelTest : public ::testing::Test {
+class TransactionEditViewModelTest : public Fixture {
 public:
-    TransactionEditViewModelTest() {
-        Settings::GetInstance().SetConvertCurrency(true);
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
 
         viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository());
     }
 
-    ~TransactionEditViewModelTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete viewModel;
     }
 

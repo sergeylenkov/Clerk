@@ -1,21 +1,23 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/GoalsService.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class GoalsServiceTest : public ::testing::Test {
+class GoalsServiceTest : public Fixture {
 public:
-    GoalsServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
+
         service = new GoalsService(context->GetGoalsRepository());
     }
 
-    ~GoalsServiceTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete service;
     }
 
 protected:
-    Clerk::Data::GoalsService* service;
+    GoalsService* service;
 };
 
 TEST_F(GoalsServiceTest, GetAll) {

@@ -98,6 +98,18 @@ void TransactionsService::Save(TransactionViewModel& viewModel) {
 	}
 }
 
+void TransactionsService::Delete(TransactionViewModel& viewModel) {
+	TransactionModel& model = viewModel;
+
+	_transactionsRepository.Delete(model);
+
+	delete& model;
+
+	if (OnUpdate) {
+		OnUpdate();
+	}
+}
+
 void TransactionsService::LoadDetails(TransactionViewModel& model, TransactionModel& transaction) {
 	model.fromAccount = _accountsService.GetById(transaction.fromAccountId);
 	model.toAccount = _accountsService.GetById(transaction.toAccountId);

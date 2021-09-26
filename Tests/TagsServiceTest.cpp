@@ -1,18 +1,18 @@
 ﻿#include "pch.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class TagsServiceTest : public ::testing::Test {
+class TagsServiceTest : public Fixture {
 public:
-    TagsServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
 
         service = new TagsService(context->GetTagsRepository());
     }
 
-    ~TagsServiceTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete service;
     }
-
 
 protected:
     TagsService* service;

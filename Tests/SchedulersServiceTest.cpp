@@ -1,16 +1,18 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/SchedulersService.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class SchedulersServiceTest : public ::testing::Test {
+class SchedulersServiceTest : public Fixture {
 public:
-    SchedulersServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
+
         service = new SchedulersService(context->GetSchedulersRepository(), context->GetAccountsRepository(), context->GetExchangeRatesRepository());
     }
 
-    ~SchedulersServiceTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete service;
     }
 

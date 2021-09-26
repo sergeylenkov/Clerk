@@ -1,32 +1,21 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Repositories/ReportsRepository.h"
+#include "Fixture.cpp"
 
-class ReportsRepositoryTest : public ::testing::Test {
+class ReportsRepositoryTest : public Fixture {
 public:
-    ReportsRepositoryTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
+    void SetUp() override {
+        SetUpConnection();
         repository = new Clerk::Data::ReportsRepository(*connection);
     }
 
-    ~ReportsRepositoryTest() {
-        delete connection;
-        delete repository;
-    }
-
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
+    void TearDown() override {
+        Fixture::TearDown();
     }
 
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::ReportsRepository* repository;
+    ReportsRepository* repository;
 };
 
 TEST_F(ReportsRepositoryTest, GetAll) {

@@ -20,6 +20,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TransactionViewModel>> GetDeleted();
 
 			void Save(TransactionViewModel& viewModel);
+			void Delete(TransactionViewModel& viewModel);
 
 			std::function<void()> OnUpdate;
 		private:			

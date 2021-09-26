@@ -1,32 +1,21 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Repositories/ExchangeRatesRepository.h"
+#include "Fixture.cpp"
 
-class ExchangeRatesRepositoryTest : public ::testing::Test {
+class ExchangeRatesRepositoryTest : public Fixture {
 public:
-    ExchangeRatesRepositoryTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
-        repository = new Clerk::Data::ExchangeRatesRepository(*connection);
+    void SetUp() override {
+        SetUpConnection();
+        repository = new ExchangeRatesRepository(*connection);
     }
 
-    ~ExchangeRatesRepositoryTest() {
-        delete connection;
-        delete repository;
-    }
-
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
+    void TearDown() override {
+        Fixture::TearDown();
     }
 
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::ExchangeRatesRepository* repository;
+    ExchangeRatesRepository* repository;
 };
 
 TEST_F(ExchangeRatesRepositoryTest, GetRateRubToUsd) {

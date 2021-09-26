@@ -1,18 +1,19 @@
 #include "pch.h"
 
 #include "../Clerk/Data/ViewModels/DashboardViewModel.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class DashboardViewModelTest : public ::testing::Test {
+class DashboardViewModelTest : public Fixture {
 public:
-    DashboardViewModelTest() {
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
 
         viewModel = new DashboardViewModel(context->GetAccountingService(), context->GetTransactionsService(), context->GetAccountsService(),
             context->GetBudgetsService(), context->GetSchedulersService(), context->GetGoalsService(), *context->GetCurrenciesRepository().GetBaseCurrency());
     }
 
-    ~DashboardViewModelTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete viewModel;
     }
 

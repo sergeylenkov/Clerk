@@ -1,32 +1,21 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Repositories/CurrenciesRepository.h"
+#include "Fixture.cpp"
 
-class CurrenciesRepositoryTest : public ::testing::Test {
+class CurrenciesRepositoryTest : public Fixture {
 public:
-    CurrenciesRepositoryTest() {
-        std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
-        connection = new Clerk::Data::DataConnection(std::move(path));
-
+    void SetUp() override {
+        SetUpConnection();
         repository = new Clerk::Data::CurrenciesRepository(*connection);
     }
 
-    ~CurrenciesRepositoryTest() {
-        delete connection;
-        delete repository;
-    }
-
-    void SetUp() {
-        connection->Open();
-    }
-
-    void TearDown() {
-        connection->Close();
+    void TearDown() override {
+        Fixture::TearDown();
     }
 
 protected:
-    Clerk::Data::DataConnection* connection;
-    Clerk::Data::CurrenciesRepository* repository;
+    CurrenciesRepository* repository;
 };
 
 TEST_F(CurrenciesRepositoryTest, GetAll) {

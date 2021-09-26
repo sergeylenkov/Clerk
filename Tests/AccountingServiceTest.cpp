@@ -1,19 +1,17 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/AccountingService.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class AccountingServiceTest : public ::testing::Test {
+class AccountingServiceTest : public Fixture {
 public:
-    AccountingServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
-
+    void SetUp() {
         service = new AccountingService(context->GetAccountsRepository(), context->GetExchangeRatesRepository());
         service->SetBaseCurrency(152);
     }
 
-    ~AccountingServiceTest() {
-        delete service;
+    void TearDown() {
+        delete service;     
     }
 
 protected:

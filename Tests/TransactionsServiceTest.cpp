@@ -1,17 +1,19 @@
+#pragma once
+
 #include "pch.h"
 
 #include "../Clerk/Data/Services/TransactionsService.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class TransactionsServiceTest : public ::testing::Test {
+class TransactionsServiceTest : public Fixture {
 public:
-    TransactionsServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
-
+    void SetUp() override {
+        Fixture::SetUp();
+        
         service = new TransactionsService(context->GetTransactionsRepository(), context->GetAccountsService(), context->GetTagsService());
     }
 
-    ~TransactionsServiceTest() {
+    void TearDown() override {
         delete service;
     }
 
@@ -55,7 +57,7 @@ TEST_F(TransactionsServiceTest, GetRecents) {
 }
 
 TEST_F(TransactionsServiceTest, GetRecentsForAccount) {
-    auto context = Environment::GetInstance().GetContext();
+    auto context = Fixture::context;
     auto model = context->GetAccountsRepository().GetById(2);
 
     AccountViewModel* account = new AccountViewModel(*model);
@@ -89,16 +91,20 @@ TEST_F(TransactionsServiceTest, New) {
     auto transaction = service->GetById(14670);
 
     transaction->id = -1;    
-
+    transaction->date = wxDateTime::Today();
     service->Save(*transaction);
 
-    wxDateTime fromDate = wxDateTime::Now();
-    fromDate.SetHour(0);
+    wxDateTime fromDate = wxDateTime::Today();    
 
-    wxDateTime toDate = wxDateTime::Now();
-    toDate.SetHour(24);
+    wxDateTime toDate = wxDateTime::Today();
+    toDate.SetHour(23);
 
-    auto transactions = service->GetForPeriod(fromDate, toDate);
+    auto transactions = service->GetRecents(1);
 
     EXPECT_EQ(transactions.size(), 1);
+
+    if (transactions.size() > 0) {
+        auto transaction = transactions[0];
+        service->Delete(*transaction);
+    }
 }

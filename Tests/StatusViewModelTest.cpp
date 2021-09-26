@@ -1,18 +1,19 @@
 #include "pch.h"
 
 #include "../Clerk/Data/ViewModels/StatusViewModel.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class StatusViewModelTest : public ::testing::Test {
+class StatusViewModelTest : public Fixture {
 public:
-    StatusViewModelTest() {
-        auto context = Environment::GetInstance().GetContext();
-        std::vector<int> ratesIds{ 180 };
+    void SetUp() override {
+        Fixture::SetUp();
 
+        std::vector<int> ratesIds{ 180 };
         viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesRepository(), ratesIds);
     }
 
-    ~StatusViewModelTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete viewModel;
     }
 

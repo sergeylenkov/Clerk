@@ -18,8 +18,10 @@ void DataConnection::Open() {
 }
 
 void DataConnection::Close() {
-	sqlite3_close(_connection);
-	_connection = NULL;
+	if (_connection) {
+		sqlite3_close(_connection);
+		_connection = nullptr;
+	}
 }
 
 sqlite3* DataConnection::GetConnection() {

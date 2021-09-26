@@ -47,6 +47,7 @@
     <ClCompile Include="CurrenciesRepositoryTest.cpp" />
     <ClCompile Include="DashboardViewModelTest.cpp" />
     <ClCompile Include="DataConnectionTest.cpp" />
+    <ClCompile Include="Fixture.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Environment.cpp" />
     <ClCompile Include="ExchangeRatesRepositoryTest.cpp" />

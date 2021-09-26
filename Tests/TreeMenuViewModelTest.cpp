@@ -1,22 +1,23 @@
 #include "pch.h"
 
 #include "../Clerk/Data/ViewModels/TreeMenuViewModel.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class TreeMenuViewModelTest : public ::testing::Test {
+class TreeMenuViewModelTest : public Fixture {
 public:
-    TreeMenuViewModelTest() {
-        auto context = Environment::GetInstance().GetContext();        
+    void SetUp() override {
+        Fixture::SetUp();
 
-        viewModel = new Clerk::Data::TreeMenuViewModel(context->GetAccountsService(), context->GetReportsService(), context->GetTransactionsService());
+        viewModel = new TreeMenuViewModel(context->GetAccountsService(), context->GetReportsService(), context->GetTransactionsService());
     }
 
-    ~TreeMenuViewModelTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete viewModel;
     }
 
 protected:
-    Clerk::Data::TreeMenuViewModel* viewModel;
+    TreeMenuViewModel* viewModel;
 };
 
 TEST_F(TreeMenuViewModelTest, GetReceiptsAccounts) {

@@ -63,9 +63,9 @@ bool ClerkApp::OnInit()
 }
 
 int ClerkApp::OnExit()
-{
-	delete _connection;
+{	
 	delete _context;
+	delete _connection;
 	delete _icons;
 
 	return 0;

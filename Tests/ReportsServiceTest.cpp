@@ -1,16 +1,18 @@
 #include "pch.h"
 
 #include "../Clerk/Data/Services/ReportsService.h"
-#include "Environment.cpp"
+#include "Fixture.cpp"
 
-class ReportsServiceTest : public ::testing::Test {
+class ReportsServiceTest : public Fixture {
 public:
-    ReportsServiceTest() {
-        auto context = Environment::GetInstance().GetContext();
+    void SetUp() override {
+        Fixture::SetUp();
+
         service = new Clerk::Data::ReportsService(context->GetReportsRepository());
     }
 
-    ~ReportsServiceTest() {
+    void TearDown() override {
+        Fixture::TearDown();
         delete service;
     }
 

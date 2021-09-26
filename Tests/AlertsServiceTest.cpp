@@ -6,7 +6,7 @@
 class AlertsServiceTest : public ::testing::Test {
 public:
     AlertsServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
         service = new AlertsService(context->GetAlertsRepository());
     }
 

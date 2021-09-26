@@ -6,7 +6,7 @@
 class AccountingServiceTest : public ::testing::Test {
 public:
     AccountingServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
 
         service = new AccountingService(context->GetAccountsRepository(), context->GetExchangeRatesRepository());
         service->SetBaseCurrency(152);

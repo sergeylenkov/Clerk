@@ -6,7 +6,7 @@
 class TransactionsServiceTest : public ::testing::Test {
 public:
     TransactionsServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
 
         service = new TransactionsService(context->GetTransactionsRepository(), context->GetAccountsService(), context->GetTagsService());
     }
@@ -55,7 +55,7 @@ TEST_F(TransactionsServiceTest, GetRecents) {
 }
 
 TEST_F(TransactionsServiceTest, GetRecentsForAccount) {
-    auto context = Environment::Instance().GetContext();
+    auto context = Environment::GetInstance().GetContext();
     auto model = context->GetAccountsRepository().GetById(2);
 
     AccountViewModel* account = new AccountViewModel(*model);

@@ -6,7 +6,7 @@
 class ReportsServiceTest : public ::testing::Test {
 public:
     ReportsServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
         service = new Clerk::Data::ReportsService(context->GetReportsRepository());
     }
 

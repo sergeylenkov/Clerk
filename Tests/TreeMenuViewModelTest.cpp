@@ -6,7 +6,7 @@
 class TreeMenuViewModelTest : public ::testing::Test {
 public:
     TreeMenuViewModelTest() {
-        auto context = Environment::Instance().GetContext();        
+        auto context = Environment::GetInstance().GetContext();        
 
         viewModel = new Clerk::Data::TreeMenuViewModel(context->GetAccountsService(), context->GetReportsService(), context->GetTransactionsService());
     }

@@ -6,7 +6,7 @@
 class SchedulersServiceTest : public ::testing::Test {
 public:
     SchedulersServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
         service = new SchedulersService(context->GetSchedulersRepository(), context->GetAccountsRepository(), context->GetExchangeRatesRepository());
     }
 

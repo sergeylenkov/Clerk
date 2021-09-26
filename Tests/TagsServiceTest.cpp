@@ -4,7 +4,7 @@
 class TagsServiceTest : public ::testing::Test {
 public:
     TagsServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
 
         service = new TagsService(context->GetTagsRepository());
     }

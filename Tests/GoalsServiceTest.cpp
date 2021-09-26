@@ -6,7 +6,7 @@
 class GoalsServiceTest : public ::testing::Test {
 public:
     GoalsServiceTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
         service = new GoalsService(context->GetGoalsRepository());
     }
 

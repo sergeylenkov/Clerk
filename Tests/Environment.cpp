@@ -5,15 +5,11 @@
 
 class Environment : public ::testing::Environment {
 public:
-	static Environment& Instance() {
-		static Environment* instance = new Environment;
-		return *instance;
+	static Environment& GetInstance() {
+		static Environment instance;
+		return instance;
 	}
 
-	~Environment() override {
-		
-	}
-	
 	void SetUp() override {
 		std::string path("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
 

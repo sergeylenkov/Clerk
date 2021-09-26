@@ -9,7 +9,7 @@ class TransactionEditViewModelTest : public ::testing::Test {
 public:
     TransactionEditViewModelTest() {
         Settings::GetInstance().SetConvertCurrency(true);
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
 
         viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository());
     }

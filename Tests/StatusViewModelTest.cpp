@@ -6,7 +6,7 @@
 class StatusViewModelTest : public ::testing::Test {
 public:
     StatusViewModelTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
         std::vector<int> ratesIds{ 180 };
 
         viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesRepository(), ratesIds);

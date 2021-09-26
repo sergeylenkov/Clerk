@@ -3,7 +3,7 @@
 
 int main(int argc, char* argv[]) {
 	::testing::InitGoogleTest(&argc, argv);
-	::testing::AddGlobalTestEnvironment(&Environment::Instance());
+	::testing::AddGlobalTestEnvironment(&Environment::GetInstance());
 
 	return RUN_ALL_TESTS();
 }

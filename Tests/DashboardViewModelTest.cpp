@@ -6,7 +6,7 @@
 class DashboardViewModelTest : public ::testing::Test {
 public:
     DashboardViewModelTest() {
-        auto context = Environment::Instance().GetContext();
+        auto context = Environment::GetInstance().GetContext();
 
         viewModel = new DashboardViewModel(context->GetAccountingService(), context->GetTransactionsService(), context->GetAccountsService(),
             context->GetBudgetsService(), context->GetSchedulersService(), context->GetGoalsService(), *context->GetCurrenciesRepository().GetBaseCurrency());
@@ -65,5 +65,5 @@ TEST_F(DashboardViewModelTest, GetDepts) {
 TEST_F(DashboardViewModelTest, GetGoals) {
     auto goals = viewModel->GetGoals();
 
-    EXPECT_EQ(goals.size(), 0);
+    EXPECT_EQ(goals.size(), 1);
 }

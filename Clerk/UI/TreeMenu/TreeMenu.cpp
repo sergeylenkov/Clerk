@@ -194,12 +194,12 @@ void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	}
 }
 
-std::shared_ptr<AccountModel> TreeMenu::GetContextMenuAccount() {
+std::shared_ptr<AccountViewModel> TreeMenu::GetContextMenuAccount() {
 	if (_contextMenuItem != NULL) {
 		TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
 		if (item->type == TreeMenuItemType::Account) {
-			std::shared_ptr<AccountModel> account = std::static_pointer_cast<AccountModel>(item->object);
+			std::shared_ptr<AccountViewModel> account = std::static_pointer_cast<AccountViewModel>(item->object);
 			return account;
 		}
 	}
@@ -220,13 +220,12 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 	if (account) {
 		transactions = _viewModel->GetRecentsTransactions(*account);
+		TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, *account, transactions, _commandsInvoker);
+
+		PopupMenu(menu, event.GetPoint());
+
+		delete menu;
 	}
-
-	TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, transactions, _commandsInvoker);
-
-	PopupMenu(menu, event.GetPoint());
-
-	delete menu;
 }
 
 void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {

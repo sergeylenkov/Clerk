@@ -47,7 +47,7 @@ namespace Clerk {
 			void CreateMenu();
 			void Update();
 			void SetIsTrashEmpty(bool isEmpty);
-			std::shared_ptr<AccountModel> GetContextMenuAccount();
+			std::shared_ptr<AccountViewModel> GetContextMenuAccount();
 			void ExpandItem(wxTreeItemId& item);
 			void OnTreeSpecItemMenu(wxTreeEvent& event);
 			void OnTreeItemSelect(wxTreeEvent& event);			

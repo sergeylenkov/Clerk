@@ -4,6 +4,7 @@
 #include "../ViewModels/TransactionViewModel.h"
 #include "../Services/AccountsService.h"
 #include "../Services/TagsService.h"
+#include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::Data;
 
@@ -12,6 +13,7 @@ namespace Clerk {
 		class TransactionsService {
 		public:
 			TransactionsService(TransactionsRepository& transactionsRepository, AccountsService& accountsService, TagsService& tagsService);
+			~TransactionsService();
 
 			std::shared_ptr<TransactionViewModel> GetById(int id);
 			std::vector<std::shared_ptr<TransactionViewModel>> GetForPeriod(wxDateTime& fromDate, wxDateTime& toDate);
@@ -22,11 +24,13 @@ namespace Clerk {
 			void Save(TransactionViewModel& viewModel);
 			void Delete(TransactionViewModel& viewModel);
 
-			std::function<void()> OnUpdate;
+			void OnUpdate(std::function<void()> fn);
+
 		private:			
 			TransactionsRepository& _transactionsRepository;
 			AccountsService& _accountsService;
 			TagsService& _tagsService;
+			EventEmitter* _eventEmitter;
 
 			void LoadDetails(TransactionViewModel& model, TransactionModel& transaction);
 		};

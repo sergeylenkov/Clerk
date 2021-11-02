@@ -5,6 +5,15 @@ TransactionsService::TransactionsService(TransactionsRepository& transactionsRep
 	_accountsService(accountsService),
 	_tagsService(tagsService)
 {
+	_eventEmitter = new EventEmitter();
+}
+
+TransactionsService::~TransactionsService() {
+	delete _eventEmitter;
+}
+
+void TransactionsService::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 std::shared_ptr<TransactionViewModel> TransactionsService::GetById(int id) {
@@ -93,9 +102,7 @@ void TransactionsService::Save(TransactionViewModel& viewModel) {
 
 	delete& model;
 
-	if (OnUpdate) {
-		OnUpdate();
-	}
+	_eventEmitter->Emit();
 }
 
 void TransactionsService::Delete(TransactionViewModel& viewModel) {
@@ -105,9 +112,7 @@ void TransactionsService::Delete(TransactionViewModel& viewModel) {
 
 	delete& model;
 
-	if (OnUpdate) {
-		OnUpdate();
-	}
+	_eventEmitter->Emit();
 }
 
 void TransactionsService::LoadDetails(TransactionViewModel& model, TransactionModel& transaction) {

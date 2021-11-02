@@ -41,6 +41,7 @@ namespace Clerk {
 			AccountsService& _accountsService;
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			TransactionsService& _transactionsService;
+			int _id;
 			std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;
 			std::vector<std::shared_ptr<AccountViewModel>> _toAccounts;
 			std::shared_ptr<AccountViewModel> _fromAccount;

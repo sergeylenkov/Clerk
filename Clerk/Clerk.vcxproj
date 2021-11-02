@@ -200,6 +200,7 @@
     <ClInclude Include="Commands\ICommandsReceiver.h" />
     <ClInclude Include="Commands\PreferencesCommand.h" />
     <ClInclude Include="Commands\QuitCommand.h" />
+    <ClInclude Include="Commands\TransactionForAccount.h" />
     <ClInclude Include="Data\DataConnection.h" />
     <ClInclude Include="Data\DataContext.h" />
     <ClInclude Include="Data\Enums.h" />

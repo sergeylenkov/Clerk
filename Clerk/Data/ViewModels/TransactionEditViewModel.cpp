@@ -17,6 +17,7 @@ void TransactionEditViewModel::SetTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 
 	if (transaction) {
+		_id = id;
 		_fromAccount = transaction->fromAccount;
 		_toAccount = transaction->toAccount;
 		_fromAmount = 0;
@@ -25,6 +26,9 @@ void TransactionEditViewModel::SetTransactionId(int id) {
 		_tags = transaction->tags;
 
 		Update();
+	}
+	else {
+		//_accountsService.GetPairAccount();
 	}
 }
 
@@ -199,7 +203,11 @@ void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 }
 
 void TransactionEditViewModel::Save() {
-	auto transaction = new TransactionViewModel();
+	auto transaction = _transactionsService.GetById(_id);
+
+	if (!transaction) {
+		transaction = std::make_shared<TransactionViewModel>();
+	}
 
 	transaction->fromAccount = _fromAccount;
 	transaction->toAccount = _toAccount;

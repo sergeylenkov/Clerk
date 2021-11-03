@@ -186,3 +186,14 @@ TEST_F(AccountsRepositoryTest, GetPairAccountId) {
 
     EXPECT_EQ(id, 65);
 }
+
+TEST_F(AccountsRepositoryTest, GetLastUsedAccountId) {
+    wxDateTime fromDate = wxDateTime::Now();
+    fromDate.SetYear(2021);
+    fromDate.SetMonth(wxDateTime::Jan);
+    fromDate.SetDay(31);
+
+    int id = repository->GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8()));
+
+    EXPECT_EQ(id, 69);
+}

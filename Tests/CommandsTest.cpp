@@ -6,6 +6,7 @@
 #include "../Clerk/Commands/PreferencesCommand.h"
 #include "../Clerk/Commands/AboutCommand.h"
 #include "../Clerk/Commands/NewTransactionCommand.h"
+#include "../Clerk/Commands/CopyTransactionCommand.h"
 
 using namespace Clerk::Commands;
 
@@ -23,9 +24,15 @@ public:
         ASSERT_TRUE(1);
     }
 
-    void OpenTransactionDialog(int id, bool isSplit) override {
-        ASSERT_EQ(id, 100);
+    void OpenNewTransactionDialog(int id) override {        
+        testId = id;
     }
+
+    void OpenCopyTransactionDialog(int id) override {
+        testId = id;
+    }
+
+    int testId;
 };
 
 class CommandsTest : public ::testing::Test {
@@ -37,8 +44,9 @@ public:
         PreferencesCommand* preferencesCommand = new PreferencesCommand(commandsReceiver);
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
         NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
+        CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand);
     }
 
     ~CommandsTest() {
@@ -64,5 +72,11 @@ TEST_F(CommandsTest, AboutCommand) {
 }
 
 TEST_F(CommandsTest, NewTransactionCommand) {
-    commandsInvoker->OnNewTransaction(100);
+    commandsInvoker->OnNewTransaction(1);
+    ASSERT_EQ(commandsReceiver->testId, 1);
+}
+
+TEST_F(CommandsTest, CopyTransactionCommand) {
+    commandsInvoker->OnCopyTransaction(2);
+    ASSERT_EQ(commandsReceiver->testId, 2);
 }

@@ -14,6 +14,7 @@ AccountViewModel::AccountViewModel() {
 	this->balance = 0;
 	this->expenses = 0;
 	this->receipts = 0;
+	this->isActive = false;
 }
 
 AccountViewModel::AccountViewModel(AccountModel& account) {
@@ -28,4 +29,5 @@ AccountViewModel::AccountViewModel(AccountModel& account) {
 	this->balance = 0;
 	this->expenses = 0;
 	this->receipts = 0;
+	this->isActive = account.isActive;
 }

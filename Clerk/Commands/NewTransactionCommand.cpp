@@ -2,18 +2,14 @@
 
 using namespace Clerk::Commands;
 
-NewTransactionCommand::NewTransactionCommand(ICommandsReceiver* receiver): _transactionId(-1), _isSplit(false) {
+NewTransactionCommand::NewTransactionCommand(ICommandsReceiver* receiver): _accountId(-1) {
 	_receiver = receiver;
 }
 
-void NewTransactionCommand::SetTransactionId(int id) {
-	_transactionId = id;
-}
-
-void NewTransactionCommand::SetIsSplit(bool isSplit) {
-	_isSplit = isSplit;
+void NewTransactionCommand::SetAccountId(int id) {
+	_accountId = id;
 }
 
 void NewTransactionCommand::Execute() {
-	_receiver->OpenTransactionDialog(_transactionId, _isSplit);
+	_receiver->OpenNewTransactionDialog(_accountId);
 }

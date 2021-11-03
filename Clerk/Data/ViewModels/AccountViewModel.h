@@ -24,6 +24,7 @@ namespace Clerk {
 			float balance;
 			float expenses;
 			float receipts;
+			boolean isActive = false;
 		};
 	}
 }

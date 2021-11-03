@@ -357,6 +357,12 @@
     <ClCompile Include="Utils\EventEmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\CopyTransactionCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TreeMenu\TransactionContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -738,6 +744,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\TransactionForAccount.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\CopyTransactionCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TreeMenu\TransactionContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

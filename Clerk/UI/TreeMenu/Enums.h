@@ -28,7 +28,7 @@ namespace Clerk {
 			AddAccount = 2,
 			EditAccount = 3,
 			DeleteAccount = 4,
-			AddTransaction = 5,
+			NewTransaction = 5,
 			AddBudget = 6,
 			AddScheduler = 7,
 			RestoreAccount = 8,

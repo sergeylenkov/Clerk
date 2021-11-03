@@ -215,12 +215,11 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	wxTreeItemId parent = _treeMenu->GetItemParent(_contextMenuItem);
 	TreeMenuItemData* parentItem = (TreeMenuItemData*)_treeMenu->GetItemData(parent);
 
-	std::vector<std::shared_ptr<TransactionViewModel>> transactions;
 	auto account = GetContextMenuAccount();
 
 	if (account) {
-		transactions = _viewModel->GetRecentsTransactions(*account);
-		TreeContextMenu* menu = new TreeContextMenu(item->type, parentItem->type, *account, transactions, _commandsInvoker);
+		auto transactions = _viewModel->GetRecentsTransactions(*account);
+		TransactionContextMenu* menu = new TransactionContextMenu(item->type, parentItem->type, *account, transactions, _commandsInvoker);
 
 		PopupMenu(menu, event.GetPoint());
 

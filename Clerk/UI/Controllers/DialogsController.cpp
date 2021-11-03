@@ -22,10 +22,22 @@ void DialogsController::ShowPreferencesDialog()
 	preferencesDialog->CenterOnParent();
 }
 
-void DialogsController::ShowTransactionDialog(int id, bool isSplit) {
+void DialogsController::ShowNewTransactionDialog(int id) {
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
 
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository());
+	viewModel->SetTransactionId(id);
+
+	transactionDialog->SetViewModel(viewModel);
+
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
+}
+
+void DialogsController::ShowCopyTransactionDialog(int id) {
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
+
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository());
 	viewModel->SetTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);

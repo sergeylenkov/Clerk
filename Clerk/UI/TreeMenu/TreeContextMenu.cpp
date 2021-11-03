@@ -33,7 +33,7 @@ TreeContextMenu::TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentT
 				//this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeContextMenu::OnSubMenuAddTransaction, this);
 			}
 			else {
-				this->Append(static_cast<int>(ContextMenuType::AddTransaction), wxT("New Transaction..."));
+				this->Append(static_cast<int>(ContextMenuType::NewTransaction), wxT("New Transaction..."));
 				//this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeContextMenu::OnMenuAddTransaction, this);
 			}
 
@@ -46,7 +46,7 @@ TreeContextMenu::TreeContextMenu(TreeMenuItemType type, TreeMenuItemType parentT
 		this->AppendSeparator();
 		this->Append(static_cast<int>(ContextMenuType::AddAccount), wxT("New Account..."));
 		this->AppendSeparator();
-		this->Append(static_cast<int>(ContextMenuType::AddTransaction), wxT("New Transaction..."));
+		this->Append(static_cast<int>(ContextMenuType::NewTransaction), wxT("New Transaction..."));
 
 		//this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeContextMenu::OnMenuAddAccount, this);
 		//this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TreeContextMenu::OnMenuAddTransaction, this);

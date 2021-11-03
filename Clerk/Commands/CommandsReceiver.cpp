@@ -23,6 +23,10 @@ void CommandsReceiver::OpenAboutDialog() {
 	_dialogsController->ShowAboutDialog();
 }
 
-void CommandsReceiver::OpenTransactionDialog(int id, bool isSplit) {
-	_dialogsController->ShowTransactionDialog(id, isSplit);
+void CommandsReceiver::OpenNewTransactionDialog(int id) {
+	_dialogsController->ShowNewTransactionDialog(id);
+}
+
+void CommandsReceiver::OpenCopyTransactionDialog(int id) {
+	_dialogsController->ShowCopyTransactionDialog(id);
 }

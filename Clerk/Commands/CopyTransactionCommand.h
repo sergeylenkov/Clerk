@@ -5,15 +5,15 @@
 
 namespace Clerk {
 	namespace Commands {
-		class NewTransactionCommand : public Command {
+		class CopyTransactionCommand : public Command {
 		public:
-			NewTransactionCommand(ICommandsReceiver* _receiver);
-			void SetAccountId(int id);
+			CopyTransactionCommand(ICommandsReceiver* _receiver);
+			void SetTransactionId(int id);
 			void Execute() override;
 
 		private:
 			ICommandsReceiver* _receiver;
-			int _accountId;
+			int _transactionId;
 		};
 	}
 }

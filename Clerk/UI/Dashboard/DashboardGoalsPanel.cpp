@@ -18,6 +18,11 @@ void DashboardGoalsPanel::Update()
 {
 	auto goals = _viewModel->GetGoals();
 
+	if (goals.empty()) {
+		this->SetMinSize(wxSize(-1, -1));
+		return;
+	}
+
 	_values.clear();
 
 	for (auto& goal : goals) {
@@ -57,6 +62,12 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 
+	wxSize size = dc.GetTextExtent("Goal");
+	columnWidth1 = size.GetWidth();
+
+	size = dc.GetTextExtent("Remain");
+	columnWidth2 = size.GetWidth();
+
 	for (auto &value : _values) {
 		wxSize size = dc.GetTextExtent(value.name);
 
@@ -83,7 +94,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
-	wxSize size = dc.GetTextExtent("Goal");
+	size = dc.GetTextExtent("Goal");
 	dc.DrawText("Goal", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
 
 	size = dc.GetTextExtent("Remain");

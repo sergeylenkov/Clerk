@@ -14,7 +14,8 @@ namespace Clerk {
 		public:
 			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository);
 			
-			void SetTransactionId(int id);
+			void SetCopyTransactionId(int id);
+			void SetAccountId(int id);
 			std::vector<std::shared_ptr<AccountViewModel>> GetFromAccounts();
 			std::vector<std::shared_ptr<AccountViewModel>> GetToAccounts();
 			int GetFromAccountIndex();

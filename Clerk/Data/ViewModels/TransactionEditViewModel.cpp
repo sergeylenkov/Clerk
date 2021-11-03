@@ -13,11 +13,11 @@ TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsServ
 	Update();
 }
 
-void TransactionEditViewModel::SetTransactionId(int id) {
+void TransactionEditViewModel::SetCopyTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 
 	if (transaction) {
-		_id = id;
+		_id = -1;
 		_fromAccount = transaction->fromAccount;
 		_toAccount = transaction->toAccount;
 		_fromAmount = 0;
@@ -27,8 +27,22 @@ void TransactionEditViewModel::SetTransactionId(int id) {
 
 		Update();
 	}
-	else {
-		//_accountsService.GetPairAccount();
+}
+
+void TransactionEditViewModel::SetAccountId(int id) {
+	auto fromAccount = _accountsService.GetById(id);
+
+	if (fromAccount) {
+		auto toAccount = _accountsService.GetPairAccount(*fromAccount);
+
+		_id = -1;
+		_fromAccount = fromAccount;
+		_toAccount = toAccount;
+		_fromAmount = 0;
+		_toAmount = 0;
+		_note = "";
+
+		Update();
 	}
 }
 

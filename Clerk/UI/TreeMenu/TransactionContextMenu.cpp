@@ -41,7 +41,7 @@ void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
-		_commandsInvoker.OnCopyTransaction(id);		
+		_commandsInvoker.OnCopyTransaction(id - transactionsOffset);
 	} else if (id == static_cast<int>(ContextMenuType::NewTransaction)) {
 		_commandsInvoker.OnNewTransaction(_account.id);
 	}

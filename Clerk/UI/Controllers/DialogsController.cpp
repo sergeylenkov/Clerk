@@ -26,7 +26,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
 
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository());
-	viewModel->SetTransactionId(id);
+	viewModel->SetAccountId(id);
 
 	transactionDialog->SetViewModel(viewModel);
 
@@ -38,7 +38,7 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
 
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository());
-	viewModel->SetTransactionId(id);
+	viewModel->SetCopyTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
 

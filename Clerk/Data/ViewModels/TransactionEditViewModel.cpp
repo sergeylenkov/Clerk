@@ -232,6 +232,4 @@ void TransactionEditViewModel::Save() {
 	transaction->date = _date;
 	
 	_transactionsService.Save(*transaction);
-
-	delete& transaction;
 }

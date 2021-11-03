@@ -209,8 +209,7 @@ void TransactionsRepository::Save(TransactionModel& transaction) {
 
 		sqlite3_finalize(statement);	
 	}
-	else {
-		
+	else {		
 		char* sql = "UPDATE transactions SET from_account_id = ?, to_account_id = ?, from_account_amount = ?, to_account_amount = ?, paid_at = ?, note = ? WHERE id = ?";
 		sqlite3_stmt* statement;
 

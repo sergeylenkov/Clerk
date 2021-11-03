@@ -4,6 +4,14 @@ using namespace Clerk::Data;
 
 Clerk::Data::TransactionViewModel::TransactionViewModel()
 {
+	this->id = -1;
+	this->fromAccount = nullptr;
+	this->toAccount = nullptr;
+	this->fromAmount = 0;
+	this->toAmount = 0;
+	this->note = wxString("");
+	this->date = wxDateTime::Today();
+	this->tagsString = wxString("");
 }
 
 TransactionViewModel::TransactionViewModel(TransactionModel& transaction) {
@@ -26,7 +34,9 @@ TransactionModel* TransactionViewModel::GetModel() {
 
 	model->id = id;
 	model->fromAccountId = fromAccount->id;
-	model->toAccountId = fromAccount->id;
+	model->toAccountId = toAccount->id;
+	model->fromAmount = fromAmount;
+	model->toAmount = toAmount;
 	model->note = note;
 	model->date = date.FormatISODate();
 

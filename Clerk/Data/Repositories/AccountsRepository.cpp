@@ -277,6 +277,25 @@ int AccountsRepository::GetPairAccountId(int accountId, AccountType type, std::s
 	return id;
 }
 
+int AccountsRepository::GetLastUsedAccountId(std::string& fromDate) {
+	int id = -1;
+	char* sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.deleted = 0 AND t.paid_at >= ? GROUP BY t.from_account_id ORDER BY COUNT(*) DESC LIMIT 1";	
+
+	sqlite3_stmt* statement;
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_text(statement, 1, fromDate.c_str(), -1, SQLITE_TRANSIENT);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			id = static_cast<int>(sqlite3_column_int(statement, 0));
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return id;
+}
+
 std::shared_ptr<AccountModel> AccountsRepository::Load(int id) {
 	std::shared_ptr<AccountModel> account = nullptr;
 

@@ -136,3 +136,12 @@ std::shared_ptr<AccountViewModel> AccountsService::GetPairAccount(const AccountV
 
 	return GetById(_accountsRepository.GetPairAccountId(account.id, account.type, std::string(fromDate.FormatISODate().ToUTF8())));
 }
+
+std::shared_ptr<AccountViewModel> AccountsService::GetLastUsedAccount() {
+	wxDateTime fromDate = wxDateTime::Now();
+
+	fromDate.Add(wxDateSpan::Months(-3));
+	fromDate.SetDay(1);
+
+	return GetById(_accountsRepository.GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8())));
+}

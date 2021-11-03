@@ -2,7 +2,8 @@
 
 using namespace Clerk::Data;
 
-Clerk::Data::TransactionViewModel::TransactionViewModel()
+Clerk::Data::TransactionViewModel::TransactionViewModel():
+	id(-1), fromAmount(0), toAmount(0)
 {
 	this->id = -1;
 	this->fromAccount = nullptr;

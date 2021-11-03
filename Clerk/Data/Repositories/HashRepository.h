@@ -18,8 +18,10 @@ namespace Clerk {
 			}
 
 			void AddToHash(int id, std::shared_ptr<T> t) {
-				_hash[id] = t;
-				_list.push_back(t);
+				if (t) {
+					_hash[id] = t;
+					_list.push_back(t);
+				}
 			}
 
 			std::shared_ptr<T> GetFromHash(int id) {

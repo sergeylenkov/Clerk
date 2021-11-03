@@ -15,7 +15,7 @@ namespace Clerk {
 	namespace UI {
 		class TransactionContextMenu : public wxMenu {
 		public:
-			TransactionContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker);
+			TransactionContextMenu(AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker);
 
 		private:
 			CommandsInvoker& _commandsInvoker;

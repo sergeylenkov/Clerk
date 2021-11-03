@@ -19,6 +19,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<AccountViewModel>> GetExpenses(wxDateTime& fromDate, wxDateTime& toDate);
 			std::vector<std::shared_ptr<AccountViewModel>> GetDebts();
 			std::shared_ptr<AccountViewModel> GetPairAccount(const AccountViewModel& account);
+			std::shared_ptr<AccountViewModel> GetLastUsedAccount();
 
 		private:
 			AccountsRepository& _accountsRepository;

@@ -45,7 +45,16 @@ Currency& DashboardViewModel::GetCurrency() {
 
 std::vector<std::shared_ptr<AccountViewModel>> DashboardViewModel::GetAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Deposit);
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
 	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
+
+	std::sort(virtuals.begin(), virtuals.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 
 	accounts.insert(accounts.end(), virtuals.begin(), virtuals.end());
 

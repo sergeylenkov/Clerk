@@ -2,7 +2,7 @@
 
 const int transactionsOffset = 1000;
 
-TransactionContextMenu::TransactionContextMenu(TreeMenuItemType type, TreeMenuItemType parentType, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker):
+TransactionContextMenu::TransactionContextMenu(AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions, CommandsInvoker& commandsInvoker):
 	_commandsInvoker(commandsInvoker),
 	_account(account) {
 

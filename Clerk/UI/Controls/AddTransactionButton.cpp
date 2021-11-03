@@ -32,5 +32,5 @@ void AddTransactionButton::OnAddTransaction(wxCommandEvent& event) {
 }
 
 void AddTransactionButton::OnMenuAddTransaction(wxCommandEvent& event) {
-	_commandsInvoker.OnNewTransaction(event.GetId());
+	_commandsInvoker.OnCopyTransaction(event.GetId());
 }

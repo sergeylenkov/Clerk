@@ -19,10 +19,11 @@ TransactionViewModel::TransactionViewModel(TransactionModel& transaction) {
 	this->id = transaction.id;
 	this->fromAccount = nullptr;
 	this->toAccount = nullptr;
-	this->fromAmount = 0;
-	this->toAmount = 0;
+	this->fromAmount = transaction.fromAmount;
+	this->toAmount = transaction.toAmount;
 	this->note = wxString(transaction.note);
-	this->date = wxDateTime().ParseFormat(transaction.date);
+	this->date = wxDateTime::Today(); 
+	this->date.ParseISODate(transaction.date);
 	this->tagsString = wxString("");
 }
 

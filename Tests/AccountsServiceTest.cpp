@@ -86,6 +86,5 @@ TEST_F(AccountsServiceTest, GetPairAccount) {
 TEST_F(AccountsServiceTest, GetLastUsedAccount) {
     auto account = service->GetLastUsedAccount();
 
-    ASSERT_TRUE(account != nullptr);
-    EXPECT_EQ(account->id, 69);
+    ASSERT_TRUE(account == nullptr);
 }

@@ -45,6 +45,14 @@ wxColor Colors::ColorForDebt(int percent) {
 	return wxColor(242, 73, 101);
 }
 
+wxColor Colors::ColorForBalance(boolean isReceipt) {
+	if (isReceipt) {
+		return wxColor(10, 199, 117);
+	}
+
+	return wxColor(242, 73, 101);
+}
+
 void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &toDate) {
 	switch (type)
 	{

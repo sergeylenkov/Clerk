@@ -77,6 +77,16 @@ std::vector<std::shared_ptr<AccountViewModel>> DashboardViewModel::GetExpensesFo
 	return expenses;
 }
 
+float DashboardViewModel::GetTotalReceiptsForMonth() {
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetDay(1);
+	toDate.SetToLastMonthDay();
+
+	return _accountingService.GetReceipts(fromDate, toDate);
+}
+
 float DashboardViewModel::GetTotalExpensesForMonth() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();

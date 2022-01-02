@@ -23,6 +23,7 @@ namespace Clerk {
 			Currency& GetCurrency();
 			std::vector<std::shared_ptr<AccountViewModel>> GetAccounts();
 			std::vector<std::shared_ptr<AccountViewModel>> GetExpensesForMonth();
+			float GetTotalReceiptsForMonth();
 			float GetTotalExpensesForMonth();
 			std::vector<std::shared_ptr<BudgetViewModel>> GetBudgets();
 			std::vector<std::shared_ptr<SchedulerViewModel>> GetSchedulersForMonth();

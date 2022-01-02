@@ -84,6 +84,23 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	dc.SetTextForeground(wxColor(0, 0, 0));
 	dc.DrawText(value, wxPoint(x, y));
+
+	float receipts = _viewModel->GetTotalReceiptsForMonth();
+	float expenses = _viewModel->GetTotalExpensesForMonth();
+	int degrees = (expenses / (receipts / 100)) * 3.6;
+
+	int radius = (height - 20) / 2;
+	int centerX = width - radius - 20;
+	int centerY = height / 2;
+
+	dc.SetPen(wxPen(Colors::ColorForBalance(true), 10));
+	dc.DrawCircle(wxPoint(centerX, centerY), radius);
+
+	wxPen pen = wxPen(Colors::ColorForBalance(false), 10);
+	pen.SetCap(wxCAP_PROJECTING);
+
+	dc.SetPen(pen);
+	dc.DrawEllipticArc(wxPoint(centerX - radius, 10), wxSize(radius * 2, radius * 2), 90 - degrees, 90);
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {

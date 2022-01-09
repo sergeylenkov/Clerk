@@ -61,7 +61,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	wxBoxSizer* rightPanelSizer = new wxBoxSizer(wxVERTICAL);
 	splitterRightPanel->SetSizer(rightPanelSizer);
 
-	_tabsPanel = new TabsPanel(splitterRightPanel, _context);
+	_tabsPanel = new TabsPanel(splitterRightPanel, _context, * _commandsInvoker);
 
 	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();

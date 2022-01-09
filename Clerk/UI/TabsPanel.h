@@ -16,8 +16,10 @@
 #include "Alerts/AlertsPanel.h"
 #include "TagsPanel.h"
 #include "TreeMenu/Enums.h"
+#include "../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 class TabsPanel : public wxPanel
 {
@@ -28,7 +30,7 @@ public:
 		Close = 3,
 	};
 
-	TabsPanel(wxWindow *parent, DataContext& context);
+	TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 	~TabsPanel();
 
 	void CreateTab(TreeMenuItemType type, std::shared_ptr<void> object);
@@ -55,12 +57,13 @@ public:
 	std::function<void(std::shared_ptr<AlertViewModel>)> OnEditAlert;
 
 private:
-	Data::DataContext& _context;
-	wxNotebook *notebook;
-	std::vector<wxPanel *> tabs;
-	std::vector<wxBoxSizer *> tabsSizer;
-	std::vector<DataPanel *> tabsPanels;
-	int contextMenuTab;
+	DataContext& _context;
+	CommandsInvoker& _commandsInvoker;
+	wxNotebook *_notebook;
+	std::vector<wxPanel *> _tabs;
+	std::vector<wxBoxSizer *> _tabsSizer;
+	std::vector<DataPanel *> _tabsPanels;
+	int _contextMenuTab;
 
 	void CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewModel> account);

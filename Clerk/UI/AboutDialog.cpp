@@ -23,7 +23,7 @@ AboutDialog::AboutDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	mainSizer->Add(0, 0, 1, wxEXPAND, 5);
 
-	wxStaticText *copyrightLabel = new wxStaticText(this, wxID_ANY, wxT("Copyright © 2019 Sergey Lenkov"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *copyrightLabel = new wxStaticText(this, wxID_ANY, wxT("Copyright © 2022 Sergey Lenkov"), wxDefaultPosition, wxDefaultSize, 0);
 	mainSizer->Add(copyrightLabel, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 10);
 
 	this->SetSizer(mainSizer);

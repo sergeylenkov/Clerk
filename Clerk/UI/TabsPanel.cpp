@@ -1,57 +1,57 @@
 #include "TabsPanel.h"
 
-TabsPanel::TabsPanel(wxWindow *parent, DataContext& context) : wxPanel(parent), _context(context) {	
-	contextMenuTab = 0;
+TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker) {
+	_contextMenuTab = 0;
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
-	mainSizer->Add(notebook, 1, wxEXPAND | wxALL, 0);	
+	_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+	mainSizer->Add(_notebook, 1, wxEXPAND | wxALL, 0);	
 
 	this->SetSizer(mainSizer);
 	this->Layout();
 
-	notebook->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &TabsPanel::OnTabChanged, this);
-	notebook->Bind(wxEVT_RIGHT_DOWN, &TabsPanel::OnTabClick, this);
+	_notebook->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &TabsPanel::OnTabChanged, this);
+	_notebook->Bind(wxEVT_RIGHT_DOWN, &TabsPanel::OnTabClick, this);
 }
 
 TabsPanel::~TabsPanel()
 {
 	Settings::GetInstance().ClearTabs();
 
-	for (auto &panel : tabsPanels)
+	for (auto &panel : _tabsPanels)
 	{
 		Settings::GetInstance().AddTab(static_cast<int>(panel->type), panel->id);
 	}
 
-	Settings::GetInstance().SetSelectedTab(notebook->GetSelection());
+	Settings::GetInstance().SetSelectedTab(_notebook->GetSelection());
 
-	delete notebook;
+	delete _notebook;
 }
 
 void TabsPanel::CreateTab(TreeMenuItemType type, std::shared_ptr<void> object) {
-	wxPanel *panel = new wxPanel(notebook);
+	wxPanel *panel = new wxPanel(_notebook);
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 	panel->SetSizer(sizer);
 
-	tabs.push_back(panel);
-	tabsSizer.push_back(sizer);
-	tabsPanels.push_back(nullptr);
+	_tabs.push_back(panel);
+	_tabsSizer.push_back(sizer);
+	_tabsPanels.push_back(nullptr);
 
-	notebook->AddPage(panel, "");
+	_notebook->AddPage(panel, "");
 
-	int index = tabs.size() - 1;
+	int index = _tabs.size() - 1;
 
 	CreatePanel(index, type, object);
 }
 
 void TabsPanel::AddTab(TreeMenuItemType type, std::shared_ptr<void> object) {
 	CreateTab(type, object);
-	notebook->ChangeSelection(tabs.size() - 1);
+	_notebook->ChangeSelection(_tabs.size() - 1);
 }
 
 void TabsPanel::UpdateCurrentTab(TreeMenuItemType type, std::shared_ptr<void> object) {
-	int i = notebook->GetSelection();
+	int i = _notebook->GetSelection();
 	CreatePanel(i, type, object);
 }
 
@@ -78,13 +78,13 @@ void TabsPanel::RestoreTabs() {
 	}
 
 	int index = Settings::GetInstance().GetSelectedTab();
-	notebook->ChangeSelection(index);
+	_notebook->ChangeSelection(index);
 }
 
 bool TabsPanel::IsTabExists(TreeMenuItemType type, int id) {
 	bool found = false;
 
-	for (auto tabPanel : tabsPanels) {
+	for (auto &tabPanel : _tabsPanels) {
 		if (type == TreeMenuItemType::Account) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				return true;
@@ -104,21 +104,21 @@ bool TabsPanel::IsTabExists(TreeMenuItemType type, int id) {
 }
 
 void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
-	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
-		DataPanel *tabPanel = tabsPanels[i];
+	for (unsigned int i = 0; i < _tabsPanels.size(); i++) {
+		DataPanel *tabPanel = _tabsPanels[i];
 
 		if (type == TreeMenuItemType::Account) {
 			if (tabPanel->type == type && tabPanel->id == id) {
-				notebook->ChangeSelection(i);
+				_notebook->ChangeSelection(i);
 			}
 		}
 		else if (type == TreeMenuItemType::Reports) {
 			if (tabPanel->type == type && tabPanel->id == id) {
-				notebook->ChangeSelection(i);
+				_notebook->ChangeSelection(i);
 			}
 		}
 		else if (tabPanel->type == type) {
-			notebook->ChangeSelection(i);
+			_notebook->ChangeSelection(i);
 		}
 	}
 }
@@ -160,9 +160,9 @@ void TabsPanel::CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr
 }
 
 void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewModel> account) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -175,21 +175,21 @@ void TabsPanel::CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewMode
 	transactionList->OnEdit = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
 	transactionList->OnSplit = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = transactionList;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Account;
-	tabsPanels[tabIndex]->id = account->id;
+	_tabsPanels[tabIndex] = transactionList;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Account;
+	_tabsPanels[tabIndex]->id = account->id;
 
 	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, account->name);
+	_notebook->SetPageText(tabIndex, account->name);
 	UpdateTransactionList(transactionList, TreeMenuItemType::Account, account);
 }
 
 void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemType type) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -202,8 +202,8 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemType type) {
 	transactionList->OnEdit = std::bind(&TabsPanel::EditTransaction, this, std::placeholders::_1);
 	transactionList->OnSplit = std::bind(&TabsPanel::SplitTransaction, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = transactionList;
-	tabsPanels[tabIndex]->type = type;
+	_tabsPanels[tabIndex] = transactionList;
+	_tabsPanels[tabIndex]->type = type;
 
 	sizer->Add(transactionList, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
@@ -223,14 +223,14 @@ void TabsPanel::CreateAccountsPanel(int tabIndex, TreeMenuItemType type) {
 		name = wxT("Transactions");
 	}
 
-	notebook->SetPageText(tabIndex, name);
+	_notebook->SetPageText(tabIndex, name);
 	UpdateTransactionList(transactionList, type, nullptr);
 }
 
 void TabsPanel::CreateDashboardPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -238,21 +238,21 @@ void TabsPanel::CreateDashboardPanel(int tabIndex) {
 
 	DashboardPanel *dashboardPanel = new DashboardPanel(panel, _context);
 
-	tabsPanels[tabIndex] = dashboardPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Dashboard;
+	_tabsPanels[tabIndex] = dashboardPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Dashboard;
 
 	sizer->Add(dashboardPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Dashboard"));
+	_notebook->SetPageText(tabIndex, wxT("Dashboard"));
 
 	dashboardPanel->Update();
 }
 
 void TabsPanel::CreateBudgetsPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -263,21 +263,21 @@ void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 	//budgetPanel->OnAdd = std::bind(&TabsPanel::AddBudget, this);
 	//budgetPanel->OnEdit = std::bind(&TabsPanel::EditBudget, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = budgetPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Budgets;
+	_tabsPanels[tabIndex] = budgetPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Budgets;
 
 	sizer->Add(budgetPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Budgets"));
+	_notebook->SetPageText(tabIndex, wxT("Budgets"));
 
 	budgetPanel->Update();
 }
 
 void TabsPanel::CreateSchedulersPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -288,21 +288,21 @@ void TabsPanel::CreateSchedulersPanel(int tabIndex) {
 	schedulersPanel->OnAdd = std::bind(&TabsPanel::AddScheduler, this);
 	schedulersPanel->OnEdit = std::bind(&TabsPanel::EditScheduler, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = schedulersPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Schedulers;
+	_tabsPanels[tabIndex] = schedulersPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Schedulers;
 
 	sizer->Add(schedulersPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Schedulers"));
+	_notebook->SetPageText(tabIndex, wxT("Schedulers"));
 
 	schedulersPanel->Update();
 }
 
 void TabsPanel::CreateGoalsPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -313,21 +313,21 @@ void TabsPanel::CreateGoalsPanel(int tabIndex) {
 	goalsPanel->OnAdd = std::bind(&TabsPanel::AddGoal, this);
 	goalsPanel->OnEdit = std::bind(&TabsPanel::EditGoal, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = goalsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Goals;
+	_tabsPanels[tabIndex] = goalsPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Goals;
 
 	sizer->Add(goalsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Goals"));
+	_notebook->SetPageText(tabIndex, wxT("Goals"));
 
 	goalsPanel->Update();
 }
 
 void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<ReportViewModel> report) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -345,22 +345,22 @@ void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<ReportViewModel>
 		reportPanel = new ReportExpensesForPeriodPanel(panel, _context);
 	}
 
-	tabsPanels[tabIndex] = reportPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Report;
-	tabsPanels[tabIndex]->id = report->id;
+	_tabsPanels[tabIndex] = reportPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Report;
+	_tabsPanels[tabIndex]->id = report->id;
 
 	sizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, report->name);
+	_notebook->SetPageText(tabIndex, report->name);
 
 	reportPanel->Update();
 }
 
 void TabsPanel::CreateTrashPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -368,21 +368,21 @@ void TabsPanel::CreateTrashPanel(int tabIndex) {
 
 	TrashPanel *trashPanel = new TrashPanel(panel, _context);
 
-	tabsPanels[tabIndex] = trashPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Trash;
+	_tabsPanels[tabIndex] = trashPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Trash;
 
 	sizer->Add(trashPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Trash"));
+	_notebook->SetPageText(tabIndex, wxT("Trash"));
 
 	trashPanel->Update();
 }
 
 void TabsPanel::CreateTagsPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -390,21 +390,21 @@ void TabsPanel::CreateTagsPanel(int tabIndex) {
 
 	TagsPanel *tagsPanel = new TagsPanel(panel, _context);
 
-	tabsPanels[tabIndex] = tagsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Tags;
+	_tabsPanels[tabIndex] = tagsPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Tags;
 
 	sizer->Add(tagsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Tags"));
+	_notebook->SetPageText(tabIndex, wxT("Tags"));
 
 	tagsPanel->Update();
 }
 
 void TabsPanel::CreateAlertsPanel(int tabIndex) {
-	wxPanel *panel = tabs[tabIndex];
-	wxBoxSizer *sizer = tabsSizer[tabIndex];
-	DataPanel *currentPanel = tabsPanels[tabIndex];
+	wxPanel *panel = _tabs[tabIndex];
+	wxBoxSizer *sizer = _tabsSizer[tabIndex];
+	DataPanel *currentPanel = _tabsPanels[tabIndex];
 
 	if (currentPanel) {
 		currentPanel->Destroy();
@@ -415,13 +415,13 @@ void TabsPanel::CreateAlertsPanel(int tabIndex) {
 	alertsPanel->OnAdd = std::bind(&TabsPanel::AddAlert, this);
 	alertsPanel->OnEdit = std::bind(&TabsPanel::EditAlert, this, std::placeholders::_1);
 
-	tabsPanels[tabIndex] = alertsPanel;
-	tabsPanels[tabIndex]->type = TreeMenuItemType::Alerts;
+	_tabsPanels[tabIndex] = alertsPanel;
+	_tabsPanels[tabIndex]->type = TreeMenuItemType::Alerts;
 
 	sizer->Add(alertsPanel, 1, wxEXPAND | wxALL, 0);
 	sizer->Layout();
 
-	notebook->SetPageText(tabIndex, wxT("Alerts"));
+	_notebook->SetPageText(tabIndex, wxT("Alerts"));
 
 	alertsPanel->Update();
 }
@@ -432,7 +432,7 @@ void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
 }
 
 void TabsPanel::OnTabClick(wxMouseEvent &event) {
-	contextMenuTab = notebook->HitTest(event.GetPosition());
+	_contextMenuTab = _notebook->HitTest(event.GetPosition());
 	wxPoint point = event.GetPosition();
 
 	wxMenu *menu = new wxMenu();
@@ -441,7 +441,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	wxMenuItem *rightItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::MoveRight), wxT("Move to Right"));
 	wxMenuItem *closeItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Close), wxT("Close"));
 
-	if (notebook->GetPageCount() == 1) {
+	if (_notebook->GetPageCount() == 1) {
 		leftItem->Enable(false);
 		leftItem->SetTextColour(*wxLIGHT_GREY);
 
@@ -452,12 +452,12 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 		closeItem->SetTextColour(*wxLIGHT_GREY);
 	}
 
-	if (contextMenuTab == 0) {
+	if (_contextMenuTab == 0) {
 		leftItem->Enable(false);
 		leftItem->SetTextColour(*wxLIGHT_GREY);
 	}
 
-	if (contextMenuTab == notebook->GetPageCount() - 1) {
+	if (_contextMenuTab == _notebook->GetPageCount() - 1) {
 		rightItem->Enable(false);
 		rightItem->SetTextColour(*wxLIGHT_GREY);
 	}
@@ -469,7 +469,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(ContextMenuTypes::Close));
 
-	notebook->PopupMenu(menu, point);
+	_notebook->PopupMenu(menu, point);
 
 	delete menu;
 
@@ -477,12 +477,12 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 }
 
 void TabsPanel::OnTabMenuClose(wxCommandEvent &event) {	
-	RemoveTab(contextMenuTab);
+	RemoveTab(_contextMenuTab);
 }
 
 void TabsPanel::Update() {
-	for (unsigned int i = 0; i < tabsPanels.size(); i++) {
-		tabsPanels[i]->Update();
+	for (unsigned int i = 0; i < _tabsPanels.size(); i++) {
+		_tabsPanels[i]->Update();
 	}
 }
 
@@ -538,8 +538,8 @@ void TabsPanel::UpdateTransactionList(TransactionsListPanel *transactionList, Tr
 }
 
 std::shared_ptr<TransactionViewModel> TabsPanel::GetSelectedTransaction() {
-	int i = notebook->GetSelection();
-	DataPanel *currentPanel = tabsPanels[i];	
+	int i = _notebook->GetSelection();
+	DataPanel *currentPanel = _tabsPanels[i];	
 
 	if (currentPanel->type == TreeMenuItemType::Account) {
 		TransactionsListPanel *transactionList = (TransactionsListPanel *)currentPanel;
@@ -550,13 +550,13 @@ std::shared_ptr<TransactionViewModel> TabsPanel::GetSelectedTransaction() {
 }
 
 void TabsPanel::RemoveTab(int index) {
-	DataPanel *currentPanel = tabsPanels[index];
+	DataPanel *currentPanel = _tabsPanels[index];
 
-	notebook->RemovePage(index);
+	_notebook->RemovePage(index);
 
-	tabs.erase(tabs.begin() + index);
-	tabsSizer.erase(tabsSizer.begin() + index);
-	tabsPanels.erase(tabsPanels.begin() + index);
+	_tabs.erase(_tabs.begin() + index);
+	_tabsSizer.erase(_tabsSizer.begin() + index);
+	_tabsPanels.erase(_tabsPanels.begin() + index);
 	
 	delete currentPanel;
 }

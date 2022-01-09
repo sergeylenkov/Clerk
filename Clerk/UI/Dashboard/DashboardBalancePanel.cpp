@@ -23,7 +23,7 @@ void DashboardBalancePanel::Update()
 	Refresh();
 }
 
-void DashboardBalancePanel::Draw(wxPaintDC &dc) {
+void DashboardBalancePanel::Draw(wxPaintDC &dc, wxGraphicsContext* gc) {
 	int width = 0;
 	int height = 0;
 
@@ -91,19 +91,30 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	int radius = (height - 20) / 2;
 	int centerX = width - radius - 20;
-	int centerY = height / 2;
+	int centerY = height / 2;	
+	
+	wxGraphicsPath path = gc->CreatePath();
+	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(0), wxDegToRad(360), true);
 
-	dc.SetPen(wxPen(Colors::ColorForBalance(true), 10));
-	dc.DrawCircle(wxPoint(centerX, centerY), radius);
+	gc->SetPen(wxPen(Colors::ColorForBalance(true), 10));
+	gc->StrokePath(path);
+
+	path = gc->CreatePath();
+	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(270), wxDegToRad(270 + degrees), true);
 
 	wxPen pen = wxPen(Colors::ColorForBalance(false), 10);
 	pen.SetCap(wxCAP_PROJECTING);
 
-	dc.SetPen(pen);
-	dc.DrawEllipticArc(wxPoint(centerX - radius, 10), wxSize(radius * 2, radius * 2), 90 - degrees, 90);
+	gc->SetPen(pen);
+	gc->StrokePath(path);
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {
 	wxPaintDC dc(this);
-	Draw(dc);
+	wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
+	gc->SetAntialiasMode(wxAntialiasMode::wxANTIALIAS_DEFAULT);
+
+	Draw(dc, gc);
+
+	delete gc;
 }

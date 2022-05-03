@@ -8,18 +8,24 @@
 #include "../Data/Models/Currency.h"
 #include "../Data/ViewModels/AccountViewModel.h"
 #include "../Data/ViewModels/TransactionViewModel.h"
+#include "../Data/ViewModels/AccountEditViewModel.h"
+#include "../Utils/Icons.h"
+#include "./Controls/AmountField.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 class AccountDialog : public wxFrame
 {
 public:
-	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
+	~AccountDialog();
 
-	void SetAccount(std::shared_ptr<AccountViewModel> account);
-	std::function<void()> OnClose;
+	void SetViewModel(AccountEditViewModel* viewModel);
 
 private:
+	AccountEditViewModel* _viewModel;
+	Icons& _icons;
 	wxPanel *mainPanel;
 	wxStaticText *nameLabel;
 	wxTextCtrl *nameField;
@@ -30,19 +36,15 @@ private:
 	wxStaticText *iconLabel;
 	wxBitmapComboBox *iconList;
 	wxStaticText *amountLabel;
-	wxTextCtrl *amountField;
+	AmountField *amountField;
 	wxStaticText *noteLabel;
 	wxTextCtrl *noteField;
 	wxButton *okButton;
 	wxButton *cancelButton;
-	float amountValue = 0.0;
-	std::shared_ptr<AccountViewModel> account;
-	std::vector<std::shared_ptr<Currency>> currencies;
-	std::shared_ptr<TransactionViewModel> initialTransaction;
 
+	void Update();
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnAmountKillFocus(wxFocusEvent &event);
 	void OnKeyDown(wxKeyEvent &event);
-	wxString ClearAmountValue(wxString &value);
 };

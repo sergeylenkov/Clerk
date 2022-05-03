@@ -1,6 +1,8 @@
 #include "AccountDialog.h"
 
-AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y, int width, int height, Icons& icons) :
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
+	SetBackgroundColour(wxColor(*wxWHITE));
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetIcon(wxICON(APP_ICON));
@@ -95,14 +97,7 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	this->Layout();
 
 	this->Centre(wxBOTH);
-
-	typeList->AppendString("Receipt");
-	typeList->AppendString("Deposit");
-	typeList->AppendString("Expens");
-	typeList->AppendString("Debt");	
-	typeList->AppendString("Virtual");
-
-	typeList->SetSelection(0);
+	
 
 	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 	int index = 0;
@@ -139,49 +134,50 @@ AccountDialog::AccountDialog(wxFrame *parent, const wxChar *title, int x, int y,
 	Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
-void AccountDialog::SetAccount(std::shared_ptr<AccountViewModel> account) {
-	this->account = account;
-
-	nameField->SetValue(account->name);
-	noteField->SetValue(account->note);
-	typeList->SetSelection(static_cast<int>(account->type));
-
-	if (account->icon < (int)iconList->GetCount()) {
-		iconList->SetSelection(account->icon);
-	} else {
-		iconList->SetSelection(0);
-	}
-
-	int i = 0;
-
-	for (auto &currency : currencies)
-	{
-		if (currency->id == account->currency->id) {
-			currencyList->SetSelection(i);
-			break;
-		}
-
-		i++;
-	}
-
-	/*initialTransaction = DataHelper::GetInstance().GetInitialTransactionForAccount(*account);
-
-	if (initialTransaction) {
-		amountField->SetValue(wxString::Format("%.2f", initialTransaction->fromAmount));
-	}
-	else {
-		amountField->SetValue("0.00");
-	}*/
+AccountDialog::~AccountDialog() {
+	delete _viewModel;
 }
+
+void AccountDialog::SetViewModel(AccountEditViewModel* viewModel) {
+	_viewModel = viewModel;
+	_viewModel->OnUpdate = [=]() {
+		Update();
+	};
+
+	Update();
+
+	nameField->SetFocus();
+}
+
+void AccountDialog::Update() {
+	auto types = _viewModel->GetTypes();	
+
+	typeList->Clear();
+
+	for (auto& type : types) {
+		typeList->AppendString(type);
+	}
+
+	typeList->SetSelection(static_cast<int>(_viewModel->GetType()));
+
+	currencyList->Clear();
+
+	auto currencies = _viewModel->GetCurrencies();
+
+	for (auto& currency : currencies) {
+		wxString name = wxString::Format("%s (%s)", currency->shortName->c_str(), currency->name->c_str());
+		currencyList->AppendString(name);
+	}
+
+	currencyList->SetSelection(_viewModel->GetCurrencyIndex());
+
+	nameField->SetValue(_viewModel->GetName());
+	noteField->SetValue(_viewModel->GetNote());
+}
+
 
 void AccountDialog::OnOK(wxCommandEvent &event) {
 	double amountValue;
-
-	wxString value = amountField->GetValue();
-	value.Replace(" ", "");
-	value.Replace(",", ".");
-	value.ToDouble(&amountValue);
-
 	bool isNew = false;
 
 	if (account->id == -1) {
@@ -234,10 +230,6 @@ void AccountDialog::OnOK(wxCommandEvent &event) {
 	}
 
 	Close();
-
-	if (OnClose) {
-		OnClose();
-	}
 }
 
 void AccountDialog::OnCancel(wxCommandEvent &event) {
@@ -247,8 +239,7 @@ void AccountDialog::OnCancel(wxCommandEvent &event) {
 void AccountDialog::OnAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	wxString stringAmount = this->ClearAmountValue(amountField->GetValue());
-	amountField->SetValue(stringAmount);
+	_viewModel->SetAmount(amountField->GetFloatValue());
 }
 
 void AccountDialog::OnKeyDown(wxKeyEvent &event) {
@@ -259,13 +250,4 @@ void AccountDialog::OnKeyDown(wxKeyEvent &event) {
 	else {
 		event.Skip();
 	}
-}
-
-wxString AccountDialog::ClearAmountValue(wxString &value) {
-	value.Trim(true);
-	value.Trim(false);
-	value.Replace(",", ".", true);
-	value.Replace(" ", "", true);
-
-	return value;
 }

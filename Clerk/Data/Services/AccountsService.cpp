@@ -4,6 +4,15 @@ AccountsService::AccountsService(AccountsRepository& accountsRepository, Currenc
 	_accountsRepository(accountsRepository),
 	_currenciesRepository(currenciesRepository)
 {
+	_eventEmitter = new EventEmitter();
+}
+
+AccountsService::~AccountsService() {
+	delete _eventEmitter;
+}
+
+void AccountsService::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 std::shared_ptr<AccountViewModel> AccountsService::GetById(int id) {
@@ -144,4 +153,8 @@ std::shared_ptr<AccountViewModel> AccountsService::GetLastUsedAccount() {
 	fromDate.SetDay(1);
 
 	return GetById(_accountsRepository.GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8())));
+}
+
+void AccountsService::Save(AccountViewModel& viewModel) {
+	_eventEmitter->Emit();
 }

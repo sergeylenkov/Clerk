@@ -6,6 +6,7 @@
 #include "../Transactions/TransactionDialog.h"
 #include "../AccountDialog.h"
 #include "../../Data/ViewModels/TransactionEditViewModel.h"
+#include "../../Data/ViewModels/AccountEditViewModel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 

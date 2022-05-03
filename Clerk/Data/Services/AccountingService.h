@@ -21,6 +21,7 @@ namespace Clerk {
 		private:
 			AccountsRepository& _accountsRepository;
 			ExchangeRatesRepository& _exchangeRatesRepository;
+			EventEmitter* _eventEmitter;
 
 			int _baseCurrencyId = 0;
 		};

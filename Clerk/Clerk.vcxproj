@@ -78,6 +78,7 @@
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
     <ClCompile Include="Commands\CopyTransactionCommand.cpp" />
+    <ClCompile Include="Commands\EditAccountCommand.cpp" />
     <ClCompile Include="Commands\NewTransactionCommand.cpp" />
     <ClCompile Include="Commands\CommandsInvoker.cpp" />
     <ClCompile Include="Commands\CommandsReceiver.cpp" />
@@ -166,7 +167,7 @@
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
     <ClCompile Include="UI\TabsPanel.cpp" />
     <ClCompile Include="UI\DataPanel.cpp" />
-    <ClCompile Include="UI\TreeMenu\TransactionContextMenu.cpp" />
+    <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsPanel.cpp" />
@@ -196,6 +197,7 @@
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
     <ClInclude Include="Commands\CopyTransactionCommand.h" />
+    <ClInclude Include="Commands\EditAccountCommand.h" />
     <ClInclude Include="Commands\NewTransactionCommand.h" />
     <ClInclude Include="Commands\Command.h" />
     <ClInclude Include="Commands\CommandsInvoker.h" />
@@ -294,7 +296,7 @@
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
     <ClInclude Include="UI\TabsPanel.h" />
     <ClInclude Include="UI\DataPanel.h" />
-    <ClInclude Include="UI\TreeMenu\TransactionContextMenu.h" />
+    <ClInclude Include="UI\TreeMenu\AccountContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\TreeContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\Enums.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenu.h" />

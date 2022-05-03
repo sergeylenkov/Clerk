@@ -31,6 +31,7 @@
 #include "../Commands/PreferencesCommand.h"
 #include "../Commands/NewTransactionCommand.h"
 #include "../Commands/CopyTransactionCommand.h"
+#include "../Commands/EditAccountCommand.h"
 #include "Controllers/DialogsController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"

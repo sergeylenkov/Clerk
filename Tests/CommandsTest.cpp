@@ -7,6 +7,7 @@
 #include "../Clerk/Commands/AboutCommand.h"
 #include "../Clerk/Commands/NewTransactionCommand.h"
 #include "../Clerk/Commands/CopyTransactionCommand.h"
+#include "../Clerk/Commands/EditAccountCommand.h"
 
 using namespace Clerk::Commands;
 
@@ -32,6 +33,10 @@ public:
         testId = id;
     }
 
+    void OpenEditAccountDialog(int id) override {
+        testId = id;
+    }
+
     int testId;
 };
 
@@ -45,8 +50,9 @@ public:
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
         NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
         CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
+        EditAccountCommand* editAccountCommand = new EditAccountCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *editAccountCommand);
     }
 
     ~CommandsTest() {
@@ -79,4 +85,9 @@ TEST_F(CommandsTest, NewTransactionCommand) {
 TEST_F(CommandsTest, CopyTransactionCommand) {
     commandsInvoker->OnCopyTransaction(2);
     ASSERT_EQ(commandsReceiver->testId, 2);
+}
+
+TEST_F(CommandsTest, EditAccountCommand) {
+    commandsInvoker->OnEditAccount(1);
+    ASSERT_EQ(commandsReceiver->testId, 1);
 }

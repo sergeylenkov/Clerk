@@ -1,8 +1,8 @@
-#include "TransactionContextMenu.h"
+#include "AccountContextMenu.h"
 
 const int transactionsOffset = 1000;
 
-TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions): TreeContextMenu(commandsInvoker),
+AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions): TreeContextMenu(commandsInvoker),
 	_account(account) {
 
 	this->Append(static_cast<int>(ContextMenuType::NewTab), wxT("Open in New Tab"));
@@ -33,15 +33,18 @@ TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker,
 		}
 	}
 
-	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionContextMenu::OnMenuSelect, this);
+	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &AccountContextMenu::OnMenuSelect, this);
 }
 
-void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {
+void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
 		_commandsInvoker.OnCopyTransaction(id - transactionsOffset);
 	} else if (id == static_cast<int>(ContextMenuType::NewTransaction)) {
 		_commandsInvoker.OnNewTransaction(_account.id);
+	}
+	else if (id == static_cast<int>(ContextMenuType::EditAccount)) {
+		_commandsInvoker.OnEditAccount(_account.id);
 	}
 }

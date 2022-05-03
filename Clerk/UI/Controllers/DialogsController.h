@@ -4,6 +4,7 @@
 #include "../AboutDialog.h"
 #include "../PreferencesDialog.h"
 #include "../Transactions/TransactionDialog.h"
+#include "../AccountDialog.h"
 #include "../../Data/ViewModels/TransactionEditViewModel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
@@ -20,6 +21,7 @@ namespace Clerk {
 			void ShowPreferencesDialog();
 			void ShowNewTransactionDialog(int id);
 			void ShowCopyTransactionDialog(int id);
+			void ShowEditAccountDialog(int id);
 
 		private:
 			wxFrame* _parent;

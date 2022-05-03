@@ -18,6 +18,7 @@ namespace Clerk {
 			void OpenAboutDialog() override;
 			void OpenNewTransactionDialog(int id) override;
 			void OpenCopyTransactionDialog(int id) override;
+			void OpenEditAccountDialog(int id) override;
 
 		private:
 			wxFrame* _frame{};

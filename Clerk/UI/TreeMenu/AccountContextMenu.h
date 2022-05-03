@@ -13,9 +13,9 @@ using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace UI {
-		class TransactionContextMenu : public TreeContextMenu {
+		class AccountContextMenu : public TreeContextMenu {
 		public:
-			TransactionContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
+			AccountContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
 
 		private:
 			AccountViewModel& _account;

@@ -9,6 +9,7 @@ namespace Clerk {
 			virtual void OpenAboutDialog() = 0;
 			virtual void OpenNewTransactionDialog(int id) = 0;
 			virtual void OpenCopyTransactionDialog(int id) = 0;
+			virtual void OpenEditAccountDialog(int id) = 0;
 		};
 	}
 }

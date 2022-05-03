@@ -13,7 +13,6 @@
 #include "../../Data/ViewModels/TransactionViewModel.h"
 #include "../../Data/ViewModels/TransactionEditViewModel.h"
 #include "../../Utils/Icons.h"
-#include "../../Data/DataContext.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -21,7 +20,7 @@ using namespace Clerk::Utils;
 class TransactionDialog : public wxFrame
 {
 public:
-	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons, DataContext& context);
+	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
 	~TransactionDialog();
 		
 	void SetViewModel(TransactionEditViewModel* viewModel);
@@ -29,7 +28,6 @@ public:
 private:
 	TransactionEditViewModel* _viewModel;
 	Icons& _icons;
-	DataContext& _context;
 	wxPanel *mainPanel;
 	wxStaticText *fromLabel;
 	wxStaticText *toLabel;

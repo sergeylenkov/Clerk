@@ -4,6 +4,7 @@
 #include "./AccountViewModel.h"
 #include "../Services/AccountsService.h"
 #include "../Services/TransactionsService.h"
+#include "../Services/TagsService.h"
 #include "../Repositories/ExchangeRatesRepository.h"
 #include "../Settings.h"
 #include "./TagViewModel.h"
@@ -12,7 +13,7 @@ namespace Clerk {
 	namespace Data {
 		class TransactionEditViewModel {
 		public:
-			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository);
+			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
 			
 			void SetCopyTransactionId(int id);
 			void SetAccountId(int id);
@@ -34,6 +35,7 @@ namespace Clerk {
 			wxString GetTagsString();
 			void SetTagsString(wxString tags);
 			void AddTag(std::shared_ptr<TagViewModel> tag);
+			std::vector<std::shared_ptr<TagViewModel>> SearchTagsByString(wxString search);
 
 			void Save();
 			std::function<void()> OnUpdate;
@@ -42,6 +44,7 @@ namespace Clerk {
 			AccountsService& _accountsService;
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			TransactionsService& _transactionsService;
+			TagsService& _tagsService;
 			int _id;
 			std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;
 			std::vector<std::shared_ptr<AccountViewModel>> _toAccounts;

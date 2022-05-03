@@ -219,7 +219,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 	if (account) {
 		auto transactions = _viewModel->GetRecentsTransactions(*account);
-		TransactionContextMenu* menu = new TransactionContextMenu(_commandsInvoker , *account, transactions);
+		AccountContextMenu* menu = new AccountContextMenu(_commandsInvoker , *account, transactions);
 
 		PopupMenu(menu, event.GetPoint());
 

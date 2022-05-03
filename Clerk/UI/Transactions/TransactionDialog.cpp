@@ -1,7 +1,7 @@
 #include "TransactionDialog.h"
 
-TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
-	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons), _context(context) {
+TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons):
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
 	SetBackgroundColour(wxColor(* wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -166,46 +166,6 @@ void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
 	}
 }
 
-/*
-void TransactionDialog::SetSplitTransaction(std::shared_ptr<TransactionViewModel> transaction) {
-	auto copy = make_shared<Transaction>();
-
-	copy->fromAccount = transaction->fromAccount;
-	copy->toAccount = transaction->toAccount;
-	copy->fromAmount = transaction->fromAmount;
-	copy->toAmount = 0.0;
-	copy->paidAt = make_shared<wxDateTime>(wxDateTime::Now());
-
-	this->transaction = copy;
-	this->splitTransaction = transaction;
-
-	fromAmountField->SetValue(Utils::FormatAmount(this->transaction->fromAmount));
-	toAmountField->SetValue(Utils::FormatAmount(0.0));
-	tagsField->SetValue("");
-	noteField->SetValue("");
-	datePicker->SetValue(*this->transaction->paidAt);
-
-	for (unsigned int i = 0; i < fromAccounts.size(); i++) {
-		if (this->transaction->fromAccount->id == fromAccounts[i]->id) {
-			SelectFromAccount(i);
-			UpdateToList(fromAccounts[i].get());
-
-			break;
-		}
-	}
-
-	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (this->transaction->toAccount->id == toAccounts[i]->id) {
-			SelectToAccount(i);
-			break;
-		}
-	}
-
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
-}*/
-
-
 void TransactionDialog::SelectFromAccount(int index) {
 	auto account = _viewModel->GetFromAccounts()[index];
 
@@ -274,7 +234,7 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 		}
 
 		if (!tokens.empty()) {			
-			auto tags = _context.GetTagsService().GetBySearch(tokens.back());
+			auto tags = _viewModel->SearchTagsByString(tokens.back());
 
 			if (tags.size() > 0) {
 				_tagsPopup->Update(tags);

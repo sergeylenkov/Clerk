@@ -30,3 +30,7 @@ void CommandsReceiver::OpenNewTransactionDialog(int id) {
 void CommandsReceiver::OpenCopyTransactionDialog(int id) {
 	_dialogsController->ShowCopyTransactionDialog(id);
 }
+
+void CommandsReceiver::OpenEditAccountDialog(int id) {
+	_dialogsController->ShowEditAccountDialog(id);
+}

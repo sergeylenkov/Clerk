@@ -2,10 +2,11 @@
 
 using namespace Clerk::Data;
 
-TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository):
+TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService):
 	_accountsService(accountsService),
 	_transactionsService(transactionsService),
-	_exchangeRatesRepository(exchangeRatesRepository) {
+	_exchangeRatesRepository(exchangeRatesRepository),
+	_tagsService(tagsService) {
 	_fromAmount = 0;
 	_toAmount = 0;
 	_date = wxDateTime::Now();
@@ -216,6 +217,10 @@ void TransactionEditViewModel::SetTagsString(wxString tags) {
 void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 	_tags.push_back(tag);
 	Update();
+}
+
+std::vector<std::shared_ptr<TagViewModel>> TransactionEditViewModel::SearchTagsByString(wxString search) {
+	return _tagsService.GetBySearch(search);
 }
 
 void TransactionEditViewModel::Save() {

@@ -23,9 +23,9 @@ void DialogsController::ShowPreferencesDialog()
 }
 
 void DialogsController::ShowNewTransactionDialog(int id) {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
 
-	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository());
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -35,13 +35,20 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 }
 
 void DialogsController::ShowCopyTransactionDialog(int id) {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
 
-	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository());
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
+}
+
+void DialogsController::ShowEditAccountDialog(int id) {
+	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 340, 400);
+
+	accountDialog->Show(true);
+	accountDialog->CenterOnParent();
 }

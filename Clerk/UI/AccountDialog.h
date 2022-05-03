@@ -1,3 +1,5 @@
+#pragma once
+
 #include <wx/wx.h>
 #include <wx/valnum.h>
 #include <wx/bmpcbox.h>

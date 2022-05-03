@@ -360,7 +360,10 @@
     <ClCompile Include="Commands\CopyTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TreeMenu\TransactionContextMenu.cpp">
+    <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\EditAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -749,7 +752,10 @@
     <ClInclude Include="Commands\CopyTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TreeMenu\TransactionContextMenu.h">
+    <ClInclude Include="UI\TreeMenu\AccountContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\EditAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -158,3 +158,13 @@ std::shared_ptr<AccountViewModel> AccountsService::GetLastUsedAccount() {
 void AccountsService::Save(AccountViewModel& viewModel) {
 	_eventEmitter->Emit();
 }
+
+void AccountsService::Delete(AccountViewModel& viewModel) {
+	AccountModel& model = viewModel;
+
+	_accountsRepository.Delete(model);
+
+	delete& model;
+
+	_eventEmitter->Emit();
+}

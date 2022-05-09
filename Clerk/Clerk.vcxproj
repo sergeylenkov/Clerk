@@ -108,6 +108,7 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
+    <ClCompile Include="Data\ViewModels\AccountEditViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\AccountViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\AlertViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\BudgetViewModel.cpp" />
@@ -232,6 +233,7 @@
     <ClInclude Include="Data\Services\SchedulersService.h" />
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
+    <ClInclude Include="Data\ViewModels\AccountEditViewModel.h" />
     <ClInclude Include="Data\ViewModels\AccountViewModel.h" />
     <ClInclude Include="Data\ViewModels\AlertViewModel.h" />
     <ClInclude Include="Data\ViewModels\BudgetViewModel.h" />

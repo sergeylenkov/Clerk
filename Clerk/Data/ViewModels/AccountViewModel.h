@@ -25,6 +25,12 @@ namespace Clerk {
 			float expenses;
 			float receipts;
 			boolean isActive = false;
+			wxDateTime date;
+
+			operator AccountModel& ();
+
+		private:
+			AccountModel* GetModel();
 		};
 	}
 }

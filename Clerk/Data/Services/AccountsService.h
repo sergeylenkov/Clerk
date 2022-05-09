@@ -24,6 +24,7 @@ namespace Clerk {
 			std::shared_ptr<AccountViewModel> GetLastUsedAccount();
 
 			void Save(AccountViewModel& viewModel);
+			void Delete(AccountViewModel& viewModel);
 
 			void OnUpdate(std::function<void()> fn);
 

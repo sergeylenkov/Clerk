@@ -50,6 +50,15 @@ std::vector<wxString> AccountEditViewModel::GetTypes() {
 	return _types;
 }
 
+void AccountEditViewModel::SetName(wxString name) {
+	_name = name;
+	Update();
+}
+
+wxString AccountEditViewModel::GetName() {
+	return _name;
+}
+
 void AccountEditViewModel::SetType(AccountType type) {
 	_type = type;
 	Update();
@@ -70,10 +79,20 @@ float AccountEditViewModel::GetAmount() {
 
 void AccountEditViewModel::SetNote(wxString note) {
 	_note = note;
+	Update();
 }
 
 wxString AccountEditViewModel::GetNote() {
 	return _note;
+}
+
+void AccountEditViewModel::SetCurrency(std::shared_ptr<Currency> currency) {
+	_currency = currency;
+	Update();
+}
+
+std::shared_ptr<Currency> AccountEditViewModel::GetCurrency() {
+	return _currency;
 }
 
 int AccountEditViewModel::GetCurrencyIndex() {
@@ -84,6 +103,15 @@ int AccountEditViewModel::GetCurrencyIndex() {
 	}
 
 	return 0;
+}
+
+void AccountEditViewModel::SetIconIndex(int index) {
+	_iconId = index;
+	Update();
+}
+
+int AccountEditViewModel::GetIconIndex() {
+	return _iconId;
 }
 
 void AccountEditViewModel::Save() {

@@ -20,8 +20,11 @@ namespace Clerk {
 			void SetAmount(float amount);
 			float GetAmount();			
 			std::shared_ptr<Currency> GetCurrency();
+			void SetCurrency(std::shared_ptr<Currency> currency);
 			void SetNote(wxString note);
-			wxString GetNote();			
+			wxString GetNote();
+			void SetIconIndex(int index);
+			int GetIconIndex();
 			int GetCurrencyIndex();
 
 			void Save();

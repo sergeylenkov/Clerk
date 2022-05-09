@@ -88,3 +88,21 @@ TEST_F(AccountsServiceTest, GetLastUsedAccount) {
 
     ASSERT_TRUE(account == nullptr);
 }
+
+TEST_F(AccountsServiceTest, Save) {
+    auto account = service->GetById(2);
+
+    account->id = -1;
+    account->type = AccountType::Deposit;
+
+    service->Save(*account);
+
+    auto accounts = service->GetByType(AccountType::Deposit);
+
+    EXPECT_EQ(accounts.size(), 5);
+
+    if (accounts.size() > 0) {
+        auto account = accounts.back();
+        service->Delete(*account);
+    }
+}

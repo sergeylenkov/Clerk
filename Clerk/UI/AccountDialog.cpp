@@ -3,14 +3,8 @@
 AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y, int width, int height, Icons& icons) :
 	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
 	SetBackgroundColour(wxColor(*wxWHITE));
-	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetIcon(wxICON(APP_ICON));
-
-	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
-	wxArrayString chars(13, allowedChars);
-	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
-	amountValidator.SetIncludes(chars);
 	
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -61,7 +55,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	amountLabel = new wxStaticText(mainPanel, wxID_ANY, "Amount:", wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
-	amountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
+	amountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
 	horizontalSizer->Add(amountField, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
@@ -96,42 +90,12 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	this->SetSizer(mainSizer);
 	this->Layout();
 
-	this->Centre(wxBOTH);
-	
-
-	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
-	int index = 0;
-	int i = 0;
-
-	//TODO
-	/*for (auto currency : DataHelper::GetInstance().GetCurrencies())
-	{
-		currencies.push_back(currency);
-
-		wxString name = wxString::Format("%s (%s)", currency->shortName->c_str(), currency->name->c_str());
-		currencyList->AppendString(name);
-
-		if (baseCurrencyId == currency->id) {
-			index = i;
-		}
-
-		i++;
-	}
-
-	currencyList->SetSelection(index);*/
-	
-	wxImage image;
-
-	/*for (int i = 0; i < DataHelper::GetInstance().accountsImageList->GetImageCount(); i++) {
-		iconList->Append("", DataHelper::GetInstance().accountsImageList->GetIcon(i));
-	}*/
-
-	iconList->SetSelection(0);
+	this->Centre(wxBOTH);	
 
 	amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
-	Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
+	this->Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
 AccountDialog::~AccountDialog() {
@@ -171,63 +135,19 @@ void AccountDialog::Update() {
 
 	currencyList->SetSelection(_viewModel->GetCurrencyIndex());
 
+	for (int i = 0; i < _icons.GetImageList()->GetImageCount(); i++) {
+		iconList->Append("", _icons.GetBitmapForIcon(i));
+	}
+
+	iconList->SetSelection(_viewModel->GetIconIndex());
+
 	nameField->SetValue(_viewModel->GetName());
 	noteField->SetValue(_viewModel->GetNote());
 }
 
 
 void AccountDialog::OnOK(wxCommandEvent &event) {
-	double amountValue;
-	bool isNew = false;
-
-	if (account->id == -1) {
-		isNew = true;
-	}
-
-	account->name = nameField->GetValue();
-	account->note = noteField->GetValue();
-	account->type = static_cast<AccountType>(typeList->GetSelection());
-	account->icon = iconList->GetSelection();
-	account->currency = currencies[currencyList->GetSelection()];
-
-	//TODO moved method to interactor
-	//account->Save();
-	
-	if (amountValue > 0) {		
-		if (isNew) {
-			if (account->type == AccountType::Debt) {
-				/*TransactionViewModel* transaction = new TransactionViewModel();
-
-				transaction->fromAccount = account;				
-				transaction->fromAmount = amountValue;
-				transaction->toAmount = amountValue;
-				transaction->date = make_shared<wxDateTime>(wxDateTime::Now());*/
-
-				//transaction->Save();
-			}
-			else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
-				/*Transaction *transaction = new Transaction();
-
-				transaction->toAccount = account;
-				transaction->fromAmount = amountValue;
-				transaction->toAmount = amountValue;
-				transaction->date = wxDateTime::Now();*/
-
-				//transaction->Save();
-			}
-		}
-		else if (initialTransaction) {
-			initialTransaction->fromAmount = amountValue;
-			initialTransaction->toAmount = amountValue;
-
-			//initialTransaction->Save();
-		}		
-	}
-
-	//TODO
-	if (isNew) {
-		//DataHelper::GetInstance().ReloadAccounts();
-	}
+	_viewModel->Save();
 
 	Close();
 }

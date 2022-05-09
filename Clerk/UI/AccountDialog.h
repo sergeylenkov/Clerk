@@ -18,7 +18,7 @@ using namespace Clerk::Utils;
 class AccountDialog : public wxFrame
 {
 public:
-	AccountDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
+	AccountDialog(wxFrame* parent, const wxChar* title, int xpos, int ypos, int width, int height, Icons& icons);
 	~AccountDialog();
 
 	void SetViewModel(AccountEditViewModel* viewModel);

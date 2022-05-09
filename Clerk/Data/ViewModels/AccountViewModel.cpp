@@ -15,6 +15,7 @@ AccountViewModel::AccountViewModel() {
 	this->expenses = 0;
 	this->receipts = 0;
 	this->isActive = false;
+	this->date = wxDateTime::Today();
 }
 
 AccountViewModel::AccountViewModel(AccountModel& account) {
@@ -30,4 +31,27 @@ AccountViewModel::AccountViewModel(AccountModel& account) {
 	this->expenses = 0;
 	this->receipts = 0;
 	this->isActive = account.isActive;
+	this->date = wxDateTime::Today();
+	this->date.ParseISODate(account.created);
+}
+
+AccountViewModel::operator AccountModel& () {
+	return *GetModel();
+}
+
+AccountModel* AccountViewModel::GetModel() {
+	auto model = new AccountModel();
+
+	model->id = id;
+	model->name = name;
+	model->note = note;
+	model->type = type;
+	model->iconId = icon;
+	model->orderId = order;	
+	model->creditLimit = creditLimit;
+	model->isActive = isActive;
+	model->currencyId = currency->id;
+	model->created = date.FormatISODate();
+
+	return model;
 }

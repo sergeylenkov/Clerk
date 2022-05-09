@@ -3,6 +3,7 @@
 #include <wx/datetime.h>
 #include "../Repositories/AccountsRepository.h"
 #include "../Repositories/ExchangeRatesRepository.h"
+#include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::Data;
 

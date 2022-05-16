@@ -88,7 +88,7 @@ std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetArchive() {
 	return result;
 }
 
-std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetExpenses(wxDateTime& fromDate, wxDateTime& toDate) {
+std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	auto accounts = _accountsRepository.GetByType(AccountType::Expens);
 	auto debts = _accountsRepository.GetByType(AccountType::Debt);
 

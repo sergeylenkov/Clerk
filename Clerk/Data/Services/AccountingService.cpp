@@ -10,7 +10,7 @@ void AccountingService::SetBaseCurrency(int id) {
 	_baseCurrencyId = id;
 }
 
-float AccountingService::GetReceipts(wxDateTime& fromDate, wxDateTime& toDate) {
+float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
 
 	for (auto& account : _accountsRepository.GetByType(AccountType::Receipt)) {
@@ -23,7 +23,7 @@ float AccountingService::GetReceipts(wxDateTime& fromDate, wxDateTime& toDate) {
 	return result;
 }
 
-float AccountingService::GetExpenses(wxDateTime& fromDate, wxDateTime& toDate) {
+float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
 
 	for (auto& account : _accountsRepository.GetByType(AccountType::Expens)) {

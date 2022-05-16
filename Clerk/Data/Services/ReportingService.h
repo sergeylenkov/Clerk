@@ -17,11 +17,11 @@ namespace Clerk {
 			ReportingService(ReportingRepository& reportingRepository, ExchangeRatesRepository& exchangeRatesRepository);
 
 			void SetBaseCurrency(int id);
-			std::vector<StringValueViewModel> GetExpensesByAccount(wxDateTime& fromDate, wxDateTime& toDate);
-			std::vector<StringValueViewModel> GetExpensesByAccount(std::set<int> accountsIds, wxDateTime& fromDate, wxDateTime& toDate);
-			std::vector<DateValueViewModel> GetExpensesByMonth(wxDateTime& fromDate, wxDateTime& toDate);
-			std::vector<DateValueViewModel> GetExpensesByMonth(std::set<int> accountsIds, wxDateTime& fromDate, wxDateTime& toDate);
-			std::vector<DateValueViewModel> GetBalanceByMonth(const AccountViewModel& account, wxDateTime& fromDate, wxDateTime& toDate);
+			std::vector<StringValueViewModel> GetExpensesByAccount(const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<StringValueViewModel> GetExpensesByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<DateValueViewModel> GetExpensesByMonth(const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<DateValueViewModel> GetExpensesByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<DateValueViewModel> GetBalanceByMonth(const AccountViewModel& account, const wxDateTime& fromDate, const wxDateTime& toDate);
 
 		private:
 			ReportingRepository& _reportingRepository;

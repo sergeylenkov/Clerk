@@ -14,8 +14,8 @@ namespace Clerk {
 			AccountingService(AccountsRepository& accountsRepository, ExchangeRatesRepository& exchangeRatesRepository);
 
 			void SetBaseCurrency(int id);
-			float GetReceipts(wxDateTime& fromDate, wxDateTime& toDate);
-			float GetExpenses(wxDateTime& fromDate, wxDateTime& toDate);
+			float GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate);
+			float GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
 			float GetBalance();
 			float GetCredit();			
 

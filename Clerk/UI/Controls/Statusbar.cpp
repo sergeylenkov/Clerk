@@ -69,11 +69,15 @@ void Statusbar::SetViewModel(StatusViewModel* viewModel) {
 
 void Statusbar::Update() {
 	wxString sign = *_viewModel->GetBaseCurrency()->sign;
+	wxString receiptsValue = Format::Amount(_viewModel->GetReceipts(), sign);
+	wxString expensesValue = Format::Amount(_viewModel->GetExpenses(), sign);
+	wxString balanceValue = Format::Amount(_viewModel->GetBalance(), sign);
 
 	_periodLabel->SetLabelText(wxDateTime::Now().Format("%B"));
-	_receiptsLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetReceipts(), 2), sign));
-	_expensesLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetExpenses(), 2), sign));
-	_balanceLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetBalance(), 2), sign));
+	_receiptsLabel->SetLabelText(receiptsValue);
+	_expensesLabel->SetLabelText(expensesValue);
+	_balanceLabel->SetLabelText(balanceValue);
+
 	_exchangeRatesLabel->SetLabelText(_viewModel->GetExchangeRates());
 
 	Layout();

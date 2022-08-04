@@ -94,6 +94,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->Layout();
 
 	this->Centre(wxBOTH);
+	this->SetDoubleBuffered(true);
 
 	_tagsPopup = new TagsPopup(this);	
 	_tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);
@@ -129,6 +130,19 @@ void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
 }
 
 void TransactionDialog::Update() {
+	UpdateFromList();
+	UpdateToList();
+
+	SelectFromAccount(_viewModel->GetFromAccountIndex());
+	SelectToAccount(_viewModel->GetToAccountIndex());
+
+	fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+	toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+	tagsField->SetValue(_viewModel->GetTagsString());
+	datePicker->SetValue(_viewModel->GetDate());
+}
+
+void TransactionDialog::UpdateToList() {
 	auto accounts = _viewModel->GetFromAccounts();
 
 	fromList->Clear();
@@ -139,6 +153,10 @@ void TransactionDialog::Update() {
 	}
 
 	accounts = _viewModel->GetToAccounts();
+}
+
+void TransactionDialog::UpdateFromList() {
+	auto accounts = _viewModel->GetToAccounts();
 
 	toList->Clear();
 
@@ -146,14 +164,6 @@ void TransactionDialog::Update() {
 		int iconIndex = _icons.GetIconForAccount(account->icon);
 		toList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
 	}
-
-	SelectFromAccount(_viewModel->GetFromAccountIndex());
-	SelectToAccount(_viewModel->GetToAccountIndex());
-
-	fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
-	toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
-	tagsField->SetValue(_viewModel->GetTagsString());
-	datePicker->SetValue(_viewModel->GetDate());
 }
 
 void TransactionDialog::OnKeyDown(wxKeyEvent &event) {

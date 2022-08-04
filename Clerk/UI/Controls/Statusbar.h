@@ -2,8 +2,10 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
+#include "../../Utils/Utils.h"
 #include "../../Data/ViewModels/StatusViewModel.h"
 
+using namespace Clerk::Utils;
 using namespace Clerk::Data;
 
 class Statusbar : public wxPanel

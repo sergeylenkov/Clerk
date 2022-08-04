@@ -100,7 +100,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc, wxGraphicsContext* gc) {
 	gc->StrokePath(path);
 
 	path = gc->CreatePath();
-	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(270), wxDegToRad(270 + degrees), true);
+	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(270), wxDegToRad(270.0 + degrees), true);
 
 	wxPen pen = wxPen(Colors::ColorForBalance(false), 10);
 	pen.SetCap(wxCAP_PROJECTING);

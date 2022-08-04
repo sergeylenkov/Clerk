@@ -50,6 +50,8 @@ private:
 	TagsPopup *_tagsPopup;
 
 	void Update();
+	void UpdateToList();
+	void UpdateFromList();
 	void SelectFromAccount(int index);
 	void SelectToAccount(int index);	
 	void OnOK(wxCommandEvent &event);

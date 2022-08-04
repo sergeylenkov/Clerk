@@ -91,6 +91,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	this->Layout();
 
 	this->Centre(wxBOTH);	
+	this->SetDoubleBuffered(true);
 
 	amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);

@@ -43,8 +43,12 @@ wxString StatusViewModel::GetExchangeRates() {
 		float rate = _exchangeRatesRepository.GetExchangeRate(id, baseCurrency->id);
 		auto currency = _currenciesRepository.GetById(id);
 
-		rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currency->shortName + wxT("  ");
+		rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + *currency->sign + wxT("  ");
 	}
 
 	return rates.Trim();
+}
+
+std::shared_ptr<Currency> StatusViewModel::GetBaseCurrency() {
+	return _currenciesRepository.GetBaseCurrency();
 }

@@ -16,6 +16,7 @@ namespace Clerk {
 			float GetReceipts();
 			float GetExpenses();
 			wxString GetExchangeRates();
+			std::shared_ptr<Currency> GetBaseCurrency();
 
 		private:
 			AccountingService& _accountingService;

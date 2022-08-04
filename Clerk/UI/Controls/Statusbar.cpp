@@ -17,7 +17,7 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 
 	statusbarSizer->Add(20, 0, 0, wxEXPAND, 5);
 
-	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_UP"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
 	_receiptsLabel = new wxStaticText(this, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
@@ -25,7 +25,7 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 
 	statusbarSizer->Add(_receiptsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
-	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_DOWN"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_UP"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 	
 	_expensesLabel = new wxStaticText(this, wxID_ANY, wxT("0,00"), wxDefaultPosition, wxDefaultSize, 0);
@@ -34,24 +34,25 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 	statusbarSizer->Add(_expensesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
 	
 	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
-
-	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_EXCHANGE_RATES"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
-	statusbarSizer->Add(bitmap, 0, wxALL, 5);
-
-	_exchangeRatesLabel = new wxStaticText(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
-	_exchangeRatesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
-
-	statusbarSizer->Add(_exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
-
-	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_BALANCE"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxDefaultSize, 0);
+	
+	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_BALANCE"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxSize(16, 16), 0);
 	statusbarSizer->Add(bitmap, 0, wxALL, 5);
 
 	_balanceLabel = new wxStaticText(this, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
 	_balanceLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
 
-	statusbarSizer->Add(_balanceLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	statusbarSizer->Add(_balanceLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+	statusbarSizer->Add(0, 0, 1, wxEXPAND, 0);
+
+	bitmap = new wxStaticBitmap(this, wxID_ANY, wxBitmap(wxT("ICON_STATUSBAR_EXCHANGE_RATES"), wxBITMAP_TYPE_PNG_RESOURCE), wxDefaultPosition, wxSize(18, 18), 0);
+	statusbarSizer->Add(bitmap, 0, wxALL, 5);
+
+	_exchangeRatesLabel = new wxStaticText(this, wxID_ANY, wxT(""), wxDefaultPosition, wxDefaultSize, 0);
+	_exchangeRatesLabel->SetForegroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_CAPTIONTEXT));
+
+	statusbarSizer->Add(_exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
+	
 
 	this->SetSizer(statusbarSizer);
 	this->Layout();
@@ -67,10 +68,12 @@ void Statusbar::SetViewModel(StatusViewModel* viewModel) {
 }
 
 void Statusbar::Update() {
+	wxString sign = *_viewModel->GetBaseCurrency()->sign;
+
 	_periodLabel->SetLabelText(wxDateTime::Now().Format("%B"));
-	_receiptsLabel->SetLabelText(wxNumberFormatter::ToString(_viewModel->GetReceipts(), 2));
-	_expensesLabel->SetLabelText(wxNumberFormatter::ToString(_viewModel->GetExpenses(), 2));
-	_balanceLabel->SetLabelText(wxNumberFormatter::ToString(_viewModel->GetBalance(), 2));
+	_receiptsLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetReceipts(), 2), sign));
+	_expensesLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetExpenses(), 2), sign));
+	_balanceLabel->SetLabelText(wxString::Format("%s %s", wxNumberFormatter::ToString(_viewModel->GetBalance(), 2), sign));
 	_exchangeRatesLabel->SetLabelText(_viewModel->GetExchangeRates());
 
 	Layout();

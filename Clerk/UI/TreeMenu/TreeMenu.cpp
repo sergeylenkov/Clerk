@@ -70,7 +70,7 @@ void TreeMenu::CreateMenu() {
 	_expensesItem = _treeMenu->AppendItem(accountsItem, "Expenses", 2, 2, itemData);
 
 	itemData = new TreeMenuItemData();
-	itemData->type = TreeMenuItemType::Debt;
+	itemData->type = TreeMenuItemType::Debts;
 
 	_debtsItem = _treeMenu->AppendItem(accountsItem, "Debts", 2, 2, itemData);
 
@@ -128,7 +128,7 @@ void TreeMenu::Update() {
 
 	for (auto& account : _viewModel->GetExpensesAccounts())
 	{
-		AddAccountItem(_expensesItem, account);;
+		AddAccountItem(_expensesItem, account);
 	}
 
 	for (auto& account : _viewModel->GetDebtsAccounts())
@@ -210,19 +210,24 @@ std::shared_ptr<AccountViewModel> TreeMenu::GetContextMenuAccount() {
 void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	_contextMenuItem = event.GetItem();
 
+	wxMenu* menu = nullptr;
+
 	TreeMenuItemData* item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
-	wxTreeItemId parent = _treeMenu->GetItemParent(_contextMenuItem);
-	TreeMenuItemData* parentItem = (TreeMenuItemData*)_treeMenu->GetItemData(parent);
+	if (item->type == TreeMenuItemType::Account) {
+		auto account = GetContextMenuAccount();
 
-	auto account = GetContextMenuAccount();
+		if (account) {
+			auto transactions = _viewModel->GetRecentsTransactions(*account);
+			menu = new AccountContextMenu(_commandsInvoker, *account, transactions);
+		}
+	} else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
+		      || item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
+		menu = new AccountsContextMenu(_commandsInvoker, item->type);
+	}	
 
-	if (account) {
-		auto transactions = _viewModel->GetRecentsTransactions(*account);
-		AccountContextMenu* menu = new AccountContextMenu(_commandsInvoker , *account, transactions);
-
+	if (menu != nullptr) {
 		PopupMenu(menu, event.GetPoint());
-
 		delete menu;
 	}
 }

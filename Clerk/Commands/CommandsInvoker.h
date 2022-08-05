@@ -5,14 +5,18 @@
 #include "AboutCommand.h"
 #include "NewTransactionCommand.h"
 #include "CopyTransactionCommand.h"
+#include "NewAccountCommand.h"
 #include "EditAccountCommand.h"
+#include "../Data/Enums.h"
+
+using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace Commands {
 		class CommandsInvoker {
 		public:
 			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, NewTransactionCommand& newTransactionCommand,
-				            CopyTransactionCommand& copyTransactionCommand, EditAccountCommand& editAccountCommand);
+				            CopyTransactionCommand& copyTransactionCommand, NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand);
 			~CommandsInvoker();
 			
 			void OnQuit();
@@ -20,6 +24,7 @@ namespace Clerk {
 			void OnAbout();
 			void OnNewTransaction(int id);
 			void OnCopyTransaction(int id);
+			void OnNewAccount(AccountType type);
 			void OnEditAccount(int id);
 
 		private:
@@ -28,7 +33,8 @@ namespace Clerk {
 			AboutCommand& _aboutCommand;
 			NewTransactionCommand& _newTransactionCommand;
 			CopyTransactionCommand& _copyTransactionCommand;
-			EditAccountCommand& _editAccountCommand;
+			NewAccountCommand& _newAccountCommand;
+			EditAccountCommand& _editAccountCommand;			
 		};
 	}
 }

@@ -7,9 +7,11 @@
 #include "../Clerk/Commands/AboutCommand.h"
 #include "../Clerk/Commands/NewTransactionCommand.h"
 #include "../Clerk/Commands/CopyTransactionCommand.h"
+#include "../Clerk/Commands/NewAccountCommand.h"
 #include "../Clerk/Commands/EditAccountCommand.h"
 
 using namespace Clerk::Commands;
+using namespace Clerk::Data;
 
 class MockCommandsReceiver : public ICommandsReceiver {
 public:
@@ -33,11 +35,16 @@ public:
         testId = id;
     }
 
+    void OpenNewAccountDialog(AccountType type) override {
+        testAccountType = type;
+    }
+
     void OpenEditAccountDialog(int id) override {
         testId = id;
     }
 
     int testId;
+    AccountType testAccountType;
 };
 
 class CommandsTest : public ::testing::Test {
@@ -50,9 +57,10 @@ public:
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
         NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
         CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
+        NewAccountCommand* newAccountCommand = new NewAccountCommand(commandsReceiver);
         EditAccountCommand* editAccountCommand = new EditAccountCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *editAccountCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand, *editAccountCommand);
     }
 
     ~CommandsTest() {
@@ -85,6 +93,11 @@ TEST_F(CommandsTest, NewTransactionCommand) {
 TEST_F(CommandsTest, CopyTransactionCommand) {
     commandsInvoker->OnCopyTransaction(2);
     ASSERT_EQ(commandsReceiver->testId, 2);
+}
+
+TEST_F(CommandsTest, NewAccountCommand) {
+    commandsInvoker->OnNewAccount(AccountType::Deposit);
+    ASSERT_EQ(commandsReceiver->testAccountType, AccountType::Deposit);
 }
 
 TEST_F(CommandsTest, EditAccountCommand) {

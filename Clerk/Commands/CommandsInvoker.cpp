@@ -3,12 +3,13 @@
 using namespace Clerk::Commands;
 
 CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, NewTransactionCommand& newTransactionCommand,
-	CopyTransactionCommand& copyTransactionCommand, EditAccountCommand& editAccountCommand) :
+	CopyTransactionCommand& copyTransactionCommand, NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand) :
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
 	_newTransactionCommand(newTransactionCommand),
 	_copyTransactionCommand(copyTransactionCommand),
+	_newAccountCommand(newAccountCommand),
 	_editAccountCommand(editAccountCommand)
 {
 	
@@ -20,6 +21,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _aboutCommand;
 	delete& _newTransactionCommand;
 	delete& _copyTransactionCommand;
+	delete& _newAccountCommand;
 	delete& _editAccountCommand;
 }
 
@@ -43,6 +45,11 @@ void CommandsInvoker::OnNewTransaction(int id) {
 void CommandsInvoker::OnCopyTransaction(int id) {
 	_copyTransactionCommand.SetTransactionId(id);
 	_copyTransactionCommand.Execute();
+}
+
+void CommandsInvoker::OnNewAccount(AccountType type) {
+	_newAccountCommand.SetAccountType(type);
+	_newAccountCommand.Execute();
 }
 
 void CommandsInvoker::OnEditAccount(int id) {

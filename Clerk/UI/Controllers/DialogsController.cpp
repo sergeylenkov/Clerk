@@ -46,6 +46,18 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 	transactionDialog->CenterOnParent();
 }
 
+void DialogsController::ShowNewAccountDialog(AccountType type) {
+	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 340, 400, _icons);
+
+	AccountEditViewModel* viewModel = new AccountEditViewModel(_context.GetAccountsService(), _context.GetCurrenciesRepository());
+	viewModel->SetType(type);
+
+	accountDialog->SetViewModel(viewModel);
+
+	accountDialog->Show(true);
+	accountDialog->CenterOnParent();
+
+}
 void DialogsController::ShowEditAccountDialog(int id) {
 	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 340, 400, _icons);
 

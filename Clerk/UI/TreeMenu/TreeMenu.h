@@ -10,6 +10,7 @@
 #include "../../Utils/Icons.h"
 #include "TreeMenuItemData.h"
 #include "AccountContextMenu.h"
+#include "AccountsContextMenu.h"
 #include "Enums.h"
 #include "../../Commands/CommandsInvoker.h"
 

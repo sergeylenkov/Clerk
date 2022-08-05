@@ -85,7 +85,7 @@ bool TabsPanel::IsTabExists(TreeMenuItemType type, int id) {
 	bool found = false;
 
 	for (auto &tabPanel : _tabsPanels) {
-		if (type == TreeMenuItemType::Account) {
+		if (type == TreeMenuItemType::Accounts) {
 			if (tabPanel->type == type && tabPanel->id == id) {
 				return true;
 			}

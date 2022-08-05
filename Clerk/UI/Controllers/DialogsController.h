@@ -22,6 +22,7 @@ namespace Clerk {
 			void ShowPreferencesDialog();
 			void ShowNewTransactionDialog(int id);
 			void ShowCopyTransactionDialog(int id);
+			void ShowNewAccountDialog(AccountType type);
 			void ShowEditAccountDialog(int id);
 
 		private:

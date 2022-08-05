@@ -15,9 +15,10 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
 	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
 	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
+	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
 
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *editAccountCommand);
+	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand, *editAccountCommand);
 
 	_mainMenu = new MainMenu(*_commandsInvoker);
 

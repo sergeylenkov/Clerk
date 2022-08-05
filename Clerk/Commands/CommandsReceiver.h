@@ -5,6 +5,7 @@
 #include "../UI/Controllers/DialogsController.h"
 
 using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace Commands {
@@ -18,6 +19,7 @@ namespace Clerk {
 			void OpenAboutDialog() override;
 			void OpenNewTransactionDialog(int id) override;
 			void OpenCopyTransactionDialog(int id) override;
+			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;
 
 		private:

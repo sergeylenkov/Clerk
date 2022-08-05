@@ -10,7 +10,7 @@ public:
     void SetUp() override {
         Fixture::SetUp();
 
-        viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository());
+        viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository(), context->GetTagsService());
     }
 
     void TearDown() override {

@@ -33,7 +33,9 @@
 #include "../Commands/CopyTransactionCommand.h"
 #include "../Commands/NewAccountCommand.h"
 #include "../Commands/EditAccountCommand.h"
+#include "../Commands/NewTabCommand.h"
 #include "Controllers/DialogsController.h"
+#include "Controllers/TabsController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"
 
@@ -60,4 +62,7 @@ private:
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
+	TabsController* _tabsController;
+
+	void SetupCommands();
 };

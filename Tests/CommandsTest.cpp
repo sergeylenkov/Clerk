@@ -9,9 +9,11 @@
 #include "../Clerk/Commands/CopyTransactionCommand.h"
 #include "../Clerk/Commands/NewAccountCommand.h"
 #include "../Clerk/Commands/EditAccountCommand.h"
+#include "../Clerk/Commands/NewTabCommand.h"
 
 using namespace Clerk::Commands;
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class MockCommandsReceiver : public ICommandsReceiver {
 public:
@@ -43,8 +45,13 @@ public:
         testId = id;
     }
 
+    void OpenNewTab(TabType type) override {
+        testTabType = type;
+    }
+
     int testId;
     AccountType testAccountType;
+    TabType testTabType;
 };
 
 class CommandsTest : public ::testing::Test {
@@ -59,8 +66,10 @@ public:
         CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
         NewAccountCommand* newAccountCommand = new NewAccountCommand(commandsReceiver);
         EditAccountCommand* editAccountCommand = new EditAccountCommand(commandsReceiver);
+        NewTabCommand* newTabCommand = new NewTabCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand, *editAccountCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand,
+                                              *editAccountCommand, *newTabCommand);
     }
 
     ~CommandsTest() {
@@ -103,4 +112,9 @@ TEST_F(CommandsTest, NewAccountCommand) {
 TEST_F(CommandsTest, EditAccountCommand) {
     commandsInvoker->OnEditAccount(1);
     ASSERT_EQ(commandsReceiver->testId, 1);
+}
+
+TEST_F(CommandsTest, NewTabCommand) {
+    commandsInvoker->OnNewTab(TabType::Dashboard);
+    ASSERT_EQ(commandsReceiver->testTabType, TabType::Dashboard);
 }

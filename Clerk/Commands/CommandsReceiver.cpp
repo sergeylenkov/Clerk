@@ -6,9 +6,10 @@ CommandsReceiver::CommandsReceiver() {
 
 }
 
-CommandsReceiver::CommandsReceiver(wxFrame* frame, DialogsController* dialogsController) {
+CommandsReceiver::CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController) {
 	_frame = frame;
 	_dialogsController = dialogsController;
+	_tabsController = tabsController;
 }
 
 void CommandsReceiver::Quit() {
@@ -37,4 +38,8 @@ void CommandsReceiver::OpenNewAccountDialog(AccountType type) {
 
 void CommandsReceiver::OpenEditAccountDialog(int id) {
 	_dialogsController->ShowEditAccountDialog(id);
+}
+
+void CommandsReceiver::OpenNewTab(TabType type) {
+	_tabsController->OpenNewTab(type);
 }

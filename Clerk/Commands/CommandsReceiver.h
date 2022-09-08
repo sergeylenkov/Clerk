@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include "ICommandsReceiver.h"
 #include "../UI/Controllers/DialogsController.h"
+#include "../UI/Controllers/tabsController.h"
 
 using namespace Clerk::UI;
 using namespace Clerk::Data;
@@ -12,7 +13,7 @@ namespace Clerk {
 		class CommandsReceiver: public ICommandsReceiver {
 		public:
 			CommandsReceiver();
-			CommandsReceiver(wxFrame* frame, DialogsController* dialogsController);
+			CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController);
 
 			void Quit() override;
 			void OpenPreferencesDialog() override;
@@ -21,10 +22,12 @@ namespace Clerk {
 			void OpenCopyTransactionDialog(int id) override;
 			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;
+			void OpenNewTab(TabType type) override;
 
 		private:
 			wxFrame* _frame{};
-			DialogsController* _dialogsController{};
+			DialogsController* _dialogsController;
+			TabsController* _tabsController;
 		};
 	}
 }

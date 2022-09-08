@@ -1,0 +1,21 @@
+[2022-09-08 14:19:00] [info] Start Program:
+Path:"D:\\Projects\\Clerk\\Debug\\Clerk.exe"
+Arguments:
+Working directory: "D:\\Projects\\Clerk\\Clerk\\"
+Modules: Selected: D:\Projects\Clerk\Debug\Clerk.exe D:\Projects\Clerk\Debug\Tests.exe Excluded: 
+Sources: Selected: D:\Projects\Clerk\Clerk D:\Projects\Clerk\Tests Excluded: 
+Log Level: Normal
+Cover Children: 0
+Aggregate by file: 1
+Continue after C++ exception: 0
+Optimized build support: 0
+Export: binary C:\Users\Sergey\AppData\Local\Temp\a5ieeqjl.tac 
+Input coverage: 
+Unified diff: 
+Excluded line regular expressions: 
+Substitute pdb source paths: 
+
+[2022-09-08 14:19:00] [info] Module: D:\Projects\Clerk\Debug\Clerk.exe is selected because it matches selected pattern: 
+[2022-09-08 14:19:22] [info] ----------------------------------------------------
+[2022-09-08 14:19:22] [info] Coverage binary generated in file: C:\Users\Sergey\AppData\Local\Temp\a5ieeqjl.tac
+[2022-09-08 14:19:22] [info] ----------------------------------------------------

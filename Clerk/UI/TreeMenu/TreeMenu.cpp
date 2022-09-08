@@ -224,7 +224,10 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 	} else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
 		      || item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
 		menu = new AccountsContextMenu(_commandsInvoker, item->type);
-	}	
+	}
+	else if (item->type != TreeMenuItemType::Reports) {
+		menu = new DefaultContextMenu(_commandsInvoker, item->type);
+	}
 
 	if (menu != nullptr) {
 		PopupMenu(menu, event.GetPoint());
@@ -233,11 +236,11 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 }
 
 void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
-	/*wxTreeItemId itemId = event.GetItem();
+	wxTreeItemId itemId = event.GetItem();
 	TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(itemId);
 	wxTreeItemId oldItem = event.GetOldItem();
 	
-	if (item != NULL && oldItem != NULL) {
+	/*if (item != NULL && oldItem != NULL) {
 		if (item->type == TreeMenuItemType::Account) {
 			auto account = std::static_pointer_cast<AccountModel>(item->object);
 

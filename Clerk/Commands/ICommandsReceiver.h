@@ -1,7 +1,10 @@
 #pragma once
+
 #include "../Data/Enums.h"
+#include "../UI/Enums.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Commands {
@@ -14,6 +17,7 @@ namespace Clerk {
 			virtual void OpenCopyTransactionDialog(int id) = 0;
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;
+			virtual void OpenNewTab(TabType type) = 0;
 		};
 	}
 }

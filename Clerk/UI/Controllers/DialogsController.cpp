@@ -2,20 +2,22 @@
 
 using namespace Clerk::UI;
 
-DialogsController::DialogsController(wxFrame* frame, DataContext& context, Icons& icons): _context(context), _icons(icons) {
+DialogsController::DialogsController(DataContext& context, Icons& icons): _context(context), _icons(icons) {
+	
+}
+
+void DialogsController::SetMainWindow(wxFrame* frame) {
 	_parent = frame;
 }
 
-void DialogsController::ShowAboutDialog()
-{
+void DialogsController::ShowAboutDialog() {
 	AboutDialog* aboutDialog = new AboutDialog(_parent, wxT("About"), 0, 0, 250, 340);
 
 	aboutDialog->Show(true);
 	aboutDialog->CenterOnParent();
 }
 
-void DialogsController::ShowPreferencesDialog()
-{
+void DialogsController::ShowPreferencesDialog() {
 	PreferencesDialog* preferencesDialog = new PreferencesDialog(_parent, wxT("Preferences"), 0, 0, 400, 300);
 
 	preferencesDialog->Show(true);

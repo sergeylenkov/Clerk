@@ -80,6 +80,7 @@
     <ClCompile Include="Commands\CopyTransactionCommand.cpp" />
     <ClCompile Include="Commands\EditAccountCommand.cpp" />
     <ClCompile Include="Commands\NewAccountCommand.cpp" />
+    <ClCompile Include="Commands\NewTabCommand.cpp" />
     <ClCompile Include="Commands\NewTransactionCommand.cpp" />
     <ClCompile Include="Commands\CommandsInvoker.cpp" />
     <ClCompile Include="Commands\CommandsReceiver.cpp" />
@@ -123,6 +124,7 @@
     <ClCompile Include="Data\ViewModels\TransactionViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
+    <ClCompile Include="UI\Controllers\TabsController.cpp" />
     <ClCompile Include="UI\Controls\AddTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
@@ -171,6 +173,7 @@
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp" />
+    <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsPanel.cpp" />
@@ -202,6 +205,7 @@
     <ClInclude Include="Commands\CopyTransactionCommand.h" />
     <ClInclude Include="Commands\EditAccountCommand.h" />
     <ClInclude Include="Commands\NewAccountCommand.h" />
+    <ClInclude Include="Commands\NewTabCommand.h" />
     <ClInclude Include="Commands\NewTransactionCommand.h" />
     <ClInclude Include="Commands\Command.h" />
     <ClInclude Include="Commands\CommandsInvoker.h" />
@@ -254,6 +258,7 @@
     <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h" />
     <ClInclude Include="Data\ViewModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
+    <ClInclude Include="UI\Controllers\TabsController.h" />
     <ClInclude Include="UI\Controls\AddTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />
@@ -264,6 +269,7 @@
     <ClInclude Include="UI\Alerts\AlertsListDataModel.h" />
     <ClInclude Include="UI\Alerts\AlertsPanel.h" />
     <ClInclude Include="UI\Controls\MainMenu.h" />
+    <ClInclude Include="UI\Enums.h" />
     <ClInclude Include="UI\Transactions\TransactionsAmountRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsListDataModel.h" />
@@ -303,6 +309,7 @@
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu\AccountContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h" />
+    <ClInclude Include="UI\TreeMenu\DefaultContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\TreeContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\Enums.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenu.h" />

@@ -6,19 +6,10 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
 	this->SetIcon(wxICON(APP_ICON));
 	
-	_dialogsController = new DialogsController(this, _context, _icons);
+	SetupCommands();
 
-	_commandsReceiver = new CommandsReceiver(this, _dialogsController);
-
-	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
-	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
-	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
-	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
-	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
-	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
-	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
-
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand, *editAccountCommand);
+	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
+	StatusViewModel* statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
 
 	_mainMenu = new MainMenu(*_commandsInvoker);
 
@@ -48,9 +39,7 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	wxPanel* splitterLeftPanel = new wxPanel(splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	splitterLeftPanel->SetBackgroundColour(wxColour(245, 245, 245, 1));
 	
-	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
-
-	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
+	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);	
 
 	_treeMenu = new TreeMenu(splitterLeftPanel, _icons, *_commandsInvoker);
 	_treeMenu->SetViewModel(treeViewModel);
@@ -63,14 +52,12 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	wxBoxSizer* rightPanelSizer = new wxBoxSizer(wxVERTICAL);
 	splitterRightPanel->SetSizer(rightPanelSizer);
 
-	_tabsPanel = new TabsPanel(splitterRightPanel, _context, * _commandsInvoker);
+	_tabsPanel = new TabsPanel(splitterRightPanel, _context, *_commandsInvoker);
 
 	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
 
-	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);
-
-	StatusViewModel* statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
+	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
 	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20));	
 	_statusbar->SetViewModel(statusViewModel);
@@ -86,7 +73,11 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	_addTransactionButton->SetTransactions(_context.GetTransactionsService().GetRecents(10));
 
 	_treeMenu->RestoreState();
-	_tabsPanel->RestoreTabs();
+
+	_dialogsController->SetMainWindow(this);
+	_tabsController->SetTabsPanel(_tabsPanel);
+
+	//_tabsPanel->RestoreTabs();
 
 	/*std::thread([this]()
 	{
@@ -123,9 +114,29 @@ MainFrame::~MainFrame()
 	delete _commandsInvoker;
 	delete _commandsReceiver;
 	delete _dialogsController;
+	delete _tabsController;
 
 	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 
 	Settings::GetInstance().Save();
+}
+
+void MainFrame::SetupCommands() {
+	_dialogsController = new DialogsController(_context, _icons);
+	_tabsController = new TabsController(_context, _icons);
+
+	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController);
+
+	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
+	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
+	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
+	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
+	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
+	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
+	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
+	NewTabCommand* newTabCommand = new NewTabCommand(_commandsReceiver);
+
+	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand,
+		*newAccountCommand, *editAccountCommand, *newTabCommand);
 }

@@ -11,6 +11,7 @@
 #include "TreeMenuItemData.h"
 #include "AccountContextMenu.h"
 #include "AccountsContextMenu.h"
+#include "DefaultContextMenu.h"
 #include "Enums.h"
 #include "../../Commands/CommandsInvoker.h"
 

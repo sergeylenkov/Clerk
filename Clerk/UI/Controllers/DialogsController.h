@@ -16,8 +16,9 @@ namespace Clerk {
 	namespace UI {
 		class DialogsController {
 		public:
-			DialogsController(wxFrame* frame, DataContext& context, Icons& icons);
+			DialogsController(DataContext& context, Icons& icons);
 
+			void SetMainWindow(wxFrame* frame);
 			void ShowAboutDialog();
 			void ShowPreferencesDialog();
 			void ShowNewTransactionDialog(int id);

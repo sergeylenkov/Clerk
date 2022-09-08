@@ -18,8 +18,10 @@ public:
 	void SetViewModel(DashboardViewModel* viewModel);
 
 private:
-	DashboardViewModel* _viewModel;
-	float maxValue;
+	DashboardViewModel* _viewModel{};
+	float _maxValue;
+	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
+	float _total = 0.0;
 
 	void Update();
 	void Draw(wxPaintDC &dc);

@@ -18,6 +18,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
+	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
 
 	void Update();
 

@@ -18,8 +18,9 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
-	int _daysCount;
-	int _currentDay;
+	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
+	int _daysCount = 0;
+	int _currentDay = 0;
 
 	void Update();
 	void Draw(wxPaintDC &dc);

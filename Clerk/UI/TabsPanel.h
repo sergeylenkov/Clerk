@@ -42,6 +42,7 @@ public:
 	bool IsTabExists(TreeMenuItemType type, int id = 0);
 	void SelectTab(TreeMenuItemType type, int id = 0);
 	void Update();
+	void AddPanel(DataPanel* panel, wxString title);
 	std::shared_ptr<TransactionViewModel> GetSelectedTransaction();
 
 	std::function<void(wxString text)> OnUpdateStatus;

@@ -29,6 +29,27 @@ TabsPanel::~TabsPanel()
 	delete _notebook;
 }
 
+void TabsPanel::AddPanel(DataPanel* panel, wxString title) {
+	wxPanel* tabPanel = new wxPanel(_notebook);
+	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
+	tabPanel->SetSizer(sizer);
+
+	_tabs.push_back(tabPanel);
+	_tabsSizer.push_back(sizer);
+	_tabsPanels.push_back(panel);
+
+	_notebook->AddPage(tabPanel, title);
+
+	panel->Reparent(tabPanel);
+	
+	//DashboardPanel* paneld = new DashboardPanel(tabPanel, _context);
+	
+	sizer->Add(panel, 1, wxEXPAND | wxALL, 0);
+	sizer->Layout();
+
+	panel->Update();
+}
+
 void TabsPanel::CreateTab(TreeMenuItemType type, std::shared_ptr<void> object) {
 	wxPanel *panel = new wxPanel(_notebook);
 	wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);

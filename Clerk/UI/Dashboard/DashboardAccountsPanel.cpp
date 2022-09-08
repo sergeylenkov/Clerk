@@ -1,6 +1,9 @@
 #include "DashboardAccountsPanel.h"
 
 DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent) : wxPanel(parent) {
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+
 	this->Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
@@ -16,6 +19,8 @@ void DashboardAccountsPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardAccountsPanel::Update()
 {
+	_accounts = _viewModel->GetAccounts();
+
 	int height = 70 + (_viewModel->GetAccounts().size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
@@ -45,7 +50,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	int y = 50;
 
-	for (auto& account : _viewModel->GetAccounts()) {
+	for (auto& account : _accounts) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(account->name, wxPoint(0, y));

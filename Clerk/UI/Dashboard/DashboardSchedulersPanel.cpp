@@ -1,6 +1,8 @@
 #include "DashboardSchedulersPanel.h"
 
 DashboardSchedulersPanel::DashboardSchedulersPanel(wxWindow *parent) : wxPanel(parent) {
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 	this->Bind(wxEVT_PAINT, &DashboardSchedulersPanel::OnPaint, this);
 }
 
@@ -20,9 +22,9 @@ void DashboardSchedulersPanel::Update()
 	_values.clear();
 	_maxValue = 0;
 
-	auto schedulers = _viewModel->GetSchedulersForMonth();
+	_schedulers = _viewModel->GetSchedulersForMonth();
 
-	for (auto &scheduler : schedulers) {
+	for (auto &scheduler : _schedulers) {
 		wxString date = scheduler->nextDate.FormatISODate();
 
 		if (_values[date]) {
@@ -37,7 +39,7 @@ void DashboardSchedulersPanel::Update()
 		}
 	}
 
-	int height = 200 + (schedulers.size() * 40);
+	int height = 200 + (_schedulers.size() * 40);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -133,8 +135,6 @@ void DashboardSchedulersPanel::DrawCalendar(wxPaintDC &dc) {
 }
 
 void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
-	auto schedulers = _viewModel->GetSchedulersForMonth();
-
 	int width = 0;
 	int height = 0;
 
@@ -151,7 +151,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 
 	int firstColumnWidth = 0;
 
-	for (auto scheduler : schedulers) {
+	for (auto& scheduler : _schedulers) {
 		wxString date = scheduler->nextDate.Format("%a, %b %d");
 		wxSize size = dc.GetTextExtent(date);
 
@@ -160,7 +160,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 		}
 	}
 
-	for (auto scheduler : schedulers) {
+	for (auto& scheduler : _schedulers) {
 		dc.SetPen(wxPen(wxColor(203, 203, 203), 1));
 		dc.DrawLine(0, y, lineWidth, y);
 

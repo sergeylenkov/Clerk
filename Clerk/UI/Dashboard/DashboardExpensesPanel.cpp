@@ -1,7 +1,8 @@
 #include "DashboardExpensesPanel.h"
 
 DashboardExpensesPanel::DashboardExpensesPanel(wxWindow *parent) : wxPanel(parent) {
-	maxValue = 0;
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 	this->Bind(wxEVT_PAINT, &DashboardExpensesPanel::OnPaint, this);
 }
 
@@ -17,17 +18,18 @@ void DashboardExpensesPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardExpensesPanel::Update()
 {
-	auto expenses = _viewModel->GetExpensesForMonth();
+	_accounts = _viewModel->GetExpensesForMonth();
+	_total = _viewModel->GetTotalExpensesForMonth();
 
-	maxValue = 0;
+	_maxValue = 0;
 
-	for (auto& account : expenses) {
-		if (account->balance > maxValue) {
-			maxValue = account->balance;
+	for (auto& account : _accounts) {
+		if (account->balance > _maxValue) {
+			_maxValue = account->balance;
 		}
 	}
 
-	int height = 50 + (expenses.size() * 35);
+	int height = 50 + (_accounts.size() * 35);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -54,14 +56,14 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
-	wxString value = Format::Amount(_viewModel->GetTotalExpensesForMonth(), *_viewModel->GetCurrency().sign);
+	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
 	wxSize size = dc.GetTextExtent(value);
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
 	int y = 50;
 	
-	for (auto &account : _viewModel->GetExpensesForMonth()) {
+	for (auto &account : _accounts) {
 		dc.SetFont(accountFont);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(account->name, wxPoint(0, y));
@@ -74,7 +76,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 
-		int percent = (account->balance / maxValue) * 100;
+		int percent = (account->balance / _maxValue) * 100;
 		int progressWidth = (width / 100.0) * percent;
 
 		if (progressWidth < 5) {

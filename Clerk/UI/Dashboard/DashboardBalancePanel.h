@@ -20,8 +20,11 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
+	float _total = 0.0;
+	float _ownFunds = 0.0;
+	float _creditFunds = 0.0;
 
 	void Update();
-	void Draw(wxPaintDC &dc, wxGraphicsContext* gc);
+	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
 };

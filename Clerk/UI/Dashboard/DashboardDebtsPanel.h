@@ -20,6 +20,7 @@ public:
 private:	
 	DashboardViewModel* _viewModel{};
 	std::vector<DashboardProgressValue> _values;
+	std::vector<std::shared_ptr<AccountViewModel>> _debts;
 	float _totalValue = 0.0;
 
 	void Update();

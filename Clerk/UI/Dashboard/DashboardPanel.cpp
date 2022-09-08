@@ -74,6 +74,9 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 
 	this->SetSizer(mainSizer);
 	this->Layout();
+
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 }
 
 DashboardPanel::~DashboardPanel() {

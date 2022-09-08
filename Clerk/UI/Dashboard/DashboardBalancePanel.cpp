@@ -1,6 +1,9 @@
 #include "DashboardBalancePanel.h"
 
 DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent) : wxPanel(parent) {
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+
 	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
@@ -19,11 +22,15 @@ void DashboardBalancePanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardBalancePanel::Update()
 {
+	_total = _viewModel->GetTotalFunds();
+	_ownFunds = _viewModel->GetOwnFunds();
+	_creditFunds = _viewModel->GetCreditFunds();
+
 	SetMinSize(wxSize(-1, 170));
 	Refresh();
 }
 
-void DashboardBalancePanel::Draw(wxPaintDC &dc, wxGraphicsContext* gc) {
+void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -48,25 +55,25 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc, wxGraphicsContext* gc) {
 	int y = 40;
 
 	dc.SetFont(balanceFont);
-
-	wxString value = Format::Amount(_viewModel->GetTotalFunds(), *_viewModel->GetCurrency().sign);
+	
+	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
 	dc.DrawText(value, wxPoint(0, y));
-
+	return;
 	y = 80;
 
 	dc.SetFont(font);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText("Own funds", wxPoint(0, y));
-
+	
 	y = y + 40;
 
-	value = Format::Amount(_viewModel->GetOwnFunds(), *_viewModel->GetCurrency().sign);
+	value = Format::Amount(_ownFunds, *_viewModel->GetCurrency().sign);
 	wxSize size = dc.GetTextExtent(value);
-
+	
 	dc.SetTextForeground(wxColor(0, 0, 0));
 	dc.DrawText(value, wxPoint(0, y));
-
+	
 	if (size.GetWidth() > columnWidth) {
 		columnWidth = size.GetWidth();
 	}
@@ -79,42 +86,14 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc, wxGraphicsContext* gc) {
 
 	y = y + 40;	
 
-	value = Format::Amount(_viewModel->GetCreditFunds(), *_viewModel->GetCurrency().sign);
+	value = Format::Amount(_creditFunds, *_viewModel->GetCurrency().sign);
 	size = dc.GetTextExtent(value);
 
 	dc.SetTextForeground(wxColor(0, 0, 0));
 	dc.DrawText(value, wxPoint(x, y));
-
-	float receipts = _viewModel->GetTotalReceiptsForMonth();
-	float expenses = _viewModel->GetTotalExpensesForMonth();
-	int degrees = (expenses / (receipts / 100)) * 3.6;
-
-	int radius = (height - 20) / 2;
-	int centerX = width - radius - 20;
-	int centerY = height / 2;	
-	
-	wxGraphicsPath path = gc->CreatePath();
-	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(0), wxDegToRad(360), true);
-
-	gc->SetPen(wxPen(Colors::ColorForBalance(true), 10));
-	gc->StrokePath(path);
-
-	path = gc->CreatePath();
-	path.AddArc(wxPoint2DDouble(centerX, centerY), radius, wxDegToRad(270), wxDegToRad(270.0 + degrees), true);
-
-	wxPen pen = wxPen(Colors::ColorForBalance(false), 10);
-	pen.SetCap(wxCAP_PROJECTING);
-
-	gc->SetPen(pen);
-	gc->StrokePath(path);
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {
 	wxPaintDC dc(this);
-	wxGraphicsContext* gc = wxGraphicsContext::Create(dc);
-	gc->SetAntialiasMode(wxAntialiasMode::wxANTIALIAS_DEFAULT);
-
-	Draw(dc, gc);
-
-	delete gc;
+	Draw(dc);
 }

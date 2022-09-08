@@ -1,6 +1,8 @@
 #include "DashboardGoalsPanel.h"
 
 DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent) : wxPanel(parent) {
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
@@ -16,23 +18,23 @@ void DashboardGoalsPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardGoalsPanel::Update()
 {
-	auto goals = _viewModel->GetGoals();
+	_goals = _viewModel->GetGoals();
 
-	if (goals.empty()) {
+	if (_goals.empty()) {
 		this->SetMinSize(wxSize(-1, -1));
 		return;
 	}
 
 	_values.clear();
 
-	for (auto& goal : goals) {
+	for (auto& goal : _goals) {
 		float remainAmount = goal->amount - goal->balance;
 		float remainPercent = goal->balance / (goal->amount / 100.0);
 
 		_values.push_back({ goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(goal->balance, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
 	}
 
-	int height = 170 + (goals.size() * 30);
+	int height = 170 + (_goals.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();

@@ -4,6 +4,7 @@
 #include "../TabsPanel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
+#include "../Dashboard/DashboardPanel.h"
 
 using namespace Clerk::Data;
 

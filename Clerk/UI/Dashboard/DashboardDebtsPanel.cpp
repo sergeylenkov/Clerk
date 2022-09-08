@@ -1,6 +1,8 @@
 #include "DashboardDebtsPanel.h"
 
 DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent) : wxPanel(parent) {
+	this->SetDoubleBuffered(true);
+	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 	this->Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
 }
 
@@ -16,12 +18,12 @@ void DashboardDebtsPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardDebtsPanel::Update()
 {
-	auto debts = _viewModel->GetDepts();
+	_debts = _viewModel->GetDepts();
 
 	_values.clear();
 	_totalValue = 0;
 
-	for (auto& account : debts) {
+	for (auto& account : _debts) {
 		if (account->isCredit) {
 			float amount = account->balance;
 			float currentAmount = account->creditLimit + amount;
@@ -43,7 +45,7 @@ void DashboardDebtsPanel::Update()
 		}
 	}
 
-	int height = 170 + (debts.size() * 30);
+	int height = 170 + (_debts.size() * 30);
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();

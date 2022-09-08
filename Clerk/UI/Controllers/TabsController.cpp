@@ -13,5 +13,7 @@ void TabsController::SetTabsPanel(TabsPanel* panel) {
 void TabsController::OpenNewTab(TabType type) {
 	if (_panel) {
 		//TODO
+		DashboardPanel* panel = new DashboardPanel(_panel, _context);
+		_panel->AddPanel(panel, wxT("Dashboard"));
 	}
 }

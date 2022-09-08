@@ -17,6 +17,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
+	std::vector<std::shared_ptr<SchedulerViewModel>> _schedulers;
 	std::map<wxString, float> _values;
 	float _maxValue = 0;
 

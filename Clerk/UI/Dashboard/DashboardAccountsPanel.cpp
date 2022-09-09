@@ -20,6 +20,7 @@ void DashboardAccountsPanel::SetViewModel(DashboardViewModel* viewModel) {
 void DashboardAccountsPanel::Update()
 {
 	_accounts = _viewModel->GetAccounts();
+	_total = _viewModel->GetOwnFunds();
 
 	int height = 70 + (_viewModel->GetAccounts().size() * 30);
 	this->SetMinSize(wxSize(-1, height));
@@ -47,6 +48,11 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
+
+	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
+	wxSize size = dc.GetTextExtent(value);
+
+	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
 	int y = 50;
 

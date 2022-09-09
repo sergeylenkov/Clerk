@@ -246,27 +246,6 @@ void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
 //	UpdateTransactionList(transactionList, type, nullptr);
 //}
 //
-//void TabsPanel::CreateDashboardPanel(int tabIndex) {
-//	wxPanel *panel = _tabs[tabIndex];
-//	wxBoxSizer *sizer = _tabsSizer[tabIndex];
-//	DataPanel *currentPanel = _tabsPanels[tabIndex];
-//
-//	if (currentPanel) {
-//		currentPanel->Destroy();
-//	}
-//
-//	DashboardPanel *dashboardPanel = new DashboardPanel(panel, _context);
-//
-//	_tabsPanels[tabIndex] = dashboardPanel;
-//	_tabsPanels[tabIndex]->type = TreeMenuItemType::Dashboard;
-//
-//	sizer->Add(dashboardPanel, 1, wxEXPAND | wxALL, 0);
-//	sizer->Layout();
-//
-//	_notebook->SetPageText(tabIndex, wxT("Dashboard"));
-//
-//	dashboardPanel->Update();
-//}
 //
 //void TabsPanel::CreateBudgetsPanel(int tabIndex) {
 //	wxPanel *panel = _tabs[tabIndex];
@@ -293,54 +272,7 @@ void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
 //	budgetPanel->Update();
 //}
 //
-//void TabsPanel::CreateSchedulersPanel(int tabIndex) {
-//	wxPanel *panel = _tabs[tabIndex];
-//	wxBoxSizer *sizer = _tabsSizer[tabIndex];
-//	DataPanel *currentPanel = _tabsPanels[tabIndex];
 //
-//	if (currentPanel) {
-//		currentPanel->Destroy();
-//	}
-//
-//	SchedulersPanel *schedulersPanel = new SchedulersPanel(panel, _context);
-//
-//	schedulersPanel->OnAdd = std::bind(&TabsPanel::AddScheduler, this);
-//	schedulersPanel->OnEdit = std::bind(&TabsPanel::EditScheduler, this, std::placeholders::_1);
-//
-//	_tabsPanels[tabIndex] = schedulersPanel;
-//	_tabsPanels[tabIndex]->type = TreeMenuItemType::Schedulers;
-//
-//	sizer->Add(schedulersPanel, 1, wxEXPAND | wxALL, 0);
-//	sizer->Layout();
-//
-//	_notebook->SetPageText(tabIndex, wxT("Schedulers"));
-//
-//	schedulersPanel->Update();
-//}
-//
-//void TabsPanel::CreateGoalsPanel(int tabIndex) {
-//	wxPanel *panel = _tabs[tabIndex];
-//	wxBoxSizer *sizer = _tabsSizer[tabIndex];
-//	DataPanel *currentPanel = _tabsPanels[tabIndex];
-//
-//	if (currentPanel) {
-//		currentPanel->Destroy();
-//	}
-//
-//	GoalsPanel *goalsPanel = new GoalsPanel(panel, _context);
-//
-//	goalsPanel->OnAdd = std::bind(&TabsPanel::AddGoal, this);
-//	goalsPanel->OnEdit = std::bind(&TabsPanel::EditGoal, this, std::placeholders::_1);
-//
-//	_tabsPanels[tabIndex] = goalsPanel;
-//	_tabsPanels[tabIndex]->type = TreeMenuItemType::Goals;
-//
-//	sizer->Add(goalsPanel, 1, wxEXPAND | wxALL, 0);
-//	sizer->Layout();
-//
-//	_notebook->SetPageText(tabIndex, wxT("Goals"));
-//
-//	goalsPanel->Update();
 //}
 //
 //void TabsPanel::CreateReportPanel(int tabIndex, std::shared_ptr<ReportViewModel> report) {
@@ -376,27 +308,6 @@ void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
 //	reportPanel->Update();
 //}
 //
-//void TabsPanel::CreateTrashPanel(int tabIndex) {
-//	wxPanel *panel = _tabs[tabIndex];
-//	wxBoxSizer *sizer = _tabsSizer[tabIndex];
-//	DataPanel *currentPanel = _tabsPanels[tabIndex];
-//
-//	if (currentPanel) {
-//		currentPanel->Destroy();
-//	}
-//
-//	TrashPanel *trashPanel = new TrashPanel(panel, _context);
-//
-//	_tabsPanels[tabIndex] = trashPanel;
-//	_tabsPanels[tabIndex]->type = TreeMenuItemType::Trash;
-//
-//	sizer->Add(trashPanel, 1, wxEXPAND | wxALL, 0);
-//	sizer->Layout();
-//
-//	_notebook->SetPageText(tabIndex, wxT("Trash"));
-//
-//	trashPanel->Update();
-//}
 //
 //void TabsPanel::CreateTagsPanel(int tabIndex) {
 //	wxPanel *panel = _tabs[tabIndex];
@@ -418,31 +329,6 @@ void TabsPanel::SelectTab(TreeMenuItemType type, int id) {
 //	_notebook->SetPageText(tabIndex, wxT("Tags"));
 //
 //	tagsPanel->Update();
-//}
-//
-//void TabsPanel::CreateAlertsPanel(int tabIndex) {
-//	wxPanel *panel = _tabs[tabIndex];
-//	wxBoxSizer *sizer = _tabsSizer[tabIndex];
-//	DataPanel *currentPanel = _tabsPanels[tabIndex];
-//
-//	if (currentPanel) {
-//		currentPanel->Destroy();
-//	}
-//
-//	AlertsPanel *alertsPanel = new AlertsPanel(panel, _context);
-//
-//	alertsPanel->OnAdd = std::bind(&TabsPanel::AddAlert, this);
-//	alertsPanel->OnEdit = std::bind(&TabsPanel::EditAlert, this, std::placeholders::_1);
-//
-//	_tabsPanels[tabIndex] = alertsPanel;
-//	_tabsPanels[tabIndex]->type = TreeMenuItemType::Alerts;
-//
-//	sizer->Add(alertsPanel, 1, wxEXPAND | wxALL, 0);
-//	sizer->Layout();
-//
-//	_notebook->SetPageText(tabIndex, wxT("Alerts"));
-//
-//	alertsPanel->Update();
 //}
 
 
@@ -486,6 +372,10 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	menu->AppendSeparator();
 	menu->Append(closeItem);
 
+	closeItem->SetBitmap(wxBitmap(wxT("ICON_CLOSE_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
+	rightItem->SetBitmap(wxBitmap(wxT("ICON_ARROW_RIGHT"), wxBITMAP_TYPE_PNG_RESOURCE));
+	leftItem->SetBitmap(wxBitmap(wxT("ICON_ARROW_LEFT"), wxBITMAP_TYPE_PNG_RESOURCE));	
+
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(ContextMenuTypes::Close));
 
 	_notebook->PopupMenu(menu, point);
@@ -505,21 +395,10 @@ void TabsPanel::OnTabMenuClose(wxCommandEvent &event) {
 	}
 }*/
 
-/*void TabsPanel::AddTransaction() {
-	if (OnAddTransaction) {
-		OnAddTransaction();
-	}
-}
-
+/*
 void TabsPanel::CopyTransaction(std::shared_ptr<TransactionViewModel> transaction) {
 	if (OnCopyTransaction) {
 		OnCopyTransaction(transaction);
-	}
-}
-
-void TabsPanel::EditTransaction(std::shared_ptr<TransactionViewModel> transaction) {
-	if (OnEditTransaction) {
-		OnEditTransaction(transaction);
 	}
 }
 

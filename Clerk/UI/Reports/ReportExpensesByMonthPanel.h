@@ -15,14 +15,16 @@
 #include "../../Data/Settings.h"
 #include "../Controls/AccountsComboBox.h"
 #include "../../Data/ViewModels/DateValueViewModel.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::Commands;
 
 class ReportExpensesByMonthPanel : public DataPanel
 {
 public:
-	ReportExpensesByMonthPanel(wxWindow *paren, DataContext& context);
+	ReportExpensesByMonthPanel(wxWindow *paren, DataContext& context, CommandsInvoker& commandsInvoker);
 	~ReportExpensesByMonthPanel();
 
 	void Update();

@@ -1,8 +1,8 @@
 #include "DataPanel.h"
 
-DataPanel::DataPanel(wxWindow *parent, DataContext& context) : wxPanel(parent), _context(context) {
+DataPanel::DataPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker) {
 	id = 0;
-	type = TreeMenuItemType::Account;
+	type = TabType::Dashboard;
 }
 
 void DataPanel::Update() {

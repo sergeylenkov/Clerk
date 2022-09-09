@@ -61,9 +61,6 @@ void DefaultContextMenu::OnMenuSelect(wxCommandEvent& event) {
 		case Clerk::UI::TreeMenuItemType::Trash:
 			tabType = TabType::Trash;
 			break;
-		case Clerk::UI::TreeMenuItemType::Archive:
-			tabType = TabType::Archive;
-			break;
 		default:
 			break;
 	}

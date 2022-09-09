@@ -4,6 +4,15 @@ AccountingService::AccountingService(AccountsRepository& accountsRepository, Exc
 	_accountsRepository(accountsRepository),
 	_exchangeRatesRepository(exchangeRatesRepository)
 {
+	_eventEmitter = new EventEmitter();
+}
+
+AccountingService::~AccountingService() {
+	delete _eventEmitter;
+}
+
+void AccountingService::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 void AccountingService::SetBaseCurrency(int id) {

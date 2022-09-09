@@ -1,6 +1,6 @@
 #include "ReportBalanceByMonthPanel.h"
 
-ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);

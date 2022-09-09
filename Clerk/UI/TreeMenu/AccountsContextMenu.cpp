@@ -15,7 +15,9 @@ AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, TreeM
 void AccountsContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
-	if (id == static_cast<int>(ContextMenuType::NewTransaction)) {
+	if (id == static_cast<int>(ContextMenuType::NewTab)) {
+		_commandsInvoker.OnNewTab(TabType::Transactions);
+	} else if (id == static_cast<int>(ContextMenuType::NewTransaction)) {
 		_commandsInvoker.OnNewTransaction(-1);
 	} else if (id == static_cast<int>(ContextMenuType::NewAccount)) {
 		AccountType accountType = AccountType::Deposit;

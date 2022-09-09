@@ -30,8 +30,8 @@ void DashboardBudgetsPanel::Update()
 	_currentDay = wxDateTime::Now().GetDay();
 
 	int height = 170 + (_viewModel->GetBudgets().size() * 40);
-	this->SetMinSize(wxSize(-1, height));
 
+	SetMinSize(wxSize(-1, height));
 	Refresh();
 }
 

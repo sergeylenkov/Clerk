@@ -18,7 +18,7 @@ void DashboardGoalsPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardGoalsPanel::Update()
 {
-	_goals = _viewModel->GetGoals();
+	auto _goals = _viewModel->GetGoals();
 
 	if (_goals.empty()) {
 		this->SetMinSize(wxSize(-1, -1));

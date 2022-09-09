@@ -8,7 +8,7 @@ wxString Format::Amount(float amount) {
 }
 
 wxString Format::Amount(float amount, wxString& sign) {
-	wxString number = wxNumberFormatter::ToString(amount, 2);	
+	wxString number = wxNumberFormatter::ToString(amount, 2);
 
 	return wxString::Format("%s %s", number, sign);
 }

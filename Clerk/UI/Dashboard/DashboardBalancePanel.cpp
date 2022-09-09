@@ -58,7 +58,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	
 	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
 	dc.DrawText(value, wxPoint(0, y));
-	return;
+
 	y = 80;
 
 	dc.SetFont(font);

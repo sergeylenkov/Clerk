@@ -11,13 +11,15 @@
 #include "./DashboardGoalsPanel.h"
 #include "./DashboardDebtsPanel.h"
 #include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 class DashboardPanel : public DataPanel
 {
 public:
-	DashboardPanel(wxWindow *parent, DataContext& context);
+	DashboardPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 	~DashboardPanel();
 
 	void Update();

@@ -18,7 +18,7 @@ void DashboardDebtsPanel::SetViewModel(DashboardViewModel* viewModel) {
 
 void DashboardDebtsPanel::Update()
 {
-	_debts = _viewModel->GetDepts();
+	auto _debts = _viewModel->GetDepts();
 
 	_values.clear();
 	_totalValue = 0;
@@ -46,8 +46,8 @@ void DashboardDebtsPanel::Update()
 	}
 
 	int height = 170 + (_debts.size() * 30);
-	this->SetMinSize(wxSize(-1, height));
 
+	SetMinSize(wxSize(-1, height));
 	Refresh();
 }
 

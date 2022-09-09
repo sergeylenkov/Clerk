@@ -12,12 +12,15 @@ namespace Clerk {
 		class AccountingService {
 		public:
 			AccountingService(AccountsRepository& accountsRepository, ExchangeRatesRepository& exchangeRatesRepository);
+			~AccountingService();
 
 			void SetBaseCurrency(int id);
 			float GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate);
 			float GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
 			float GetBalance();
 			float GetCredit();			
+
+			void OnUpdate(std::function<void()> fn);
 
 		private:
 			AccountsRepository& _accountsRepository;

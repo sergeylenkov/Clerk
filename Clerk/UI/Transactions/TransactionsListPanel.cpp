@@ -1,6 +1,6 @@
 ﻿#include "TransactionsListPanel.h"
 
-TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxBORDER_NONE);
 
 	model = new TransactionsListDataModel();
@@ -513,7 +513,7 @@ void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
 void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
 	switch (static_cast<ContextMenuTypes>(event.GetId())) {
 		case ContextMenuTypes::Add:
-			Add();
+			_commandsInvoker.OnNewTransaction(-1);
 			break;
 
 		case ContextMenuTypes::Edit:

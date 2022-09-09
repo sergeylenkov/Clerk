@@ -76,8 +76,9 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	_dialogsController->SetMainWindow(this);
 	_tabsController->SetTabsPanel(_tabsPanel);
+	_tabsController->SetCommandsInvoker(_commandsInvoker);
 
-	//_tabsPanel->RestoreTabs();
+	_tabsController->RestoreLastTabs();
 
 	/*std::thread([this]()
 	{

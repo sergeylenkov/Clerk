@@ -15,12 +15,18 @@ namespace Clerk {
 			TabsController(DataContext& context, Icons& icons);
 
 			void SetTabsPanel(TabsPanel* panel);
+			void SetCommandsInvoker(CommandsInvoker* commandsInvoker);
 			void OpenNewTab(TabType type);
+			void RestoreLastTabs();
 
 		private:
 			TabsPanel* _panel;
 			DataContext& _context;
 			Icons& _icons;
+			CommandsInvoker* _commandsInvoker;
+
+			DataPanel* CreatePanel(TabType type);
+			wxString GetTabTitle(TabType type);
 		};
 	}
 }

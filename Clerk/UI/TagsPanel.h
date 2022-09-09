@@ -6,8 +6,10 @@
 #include <memory>
 #include "DataPanel.h"
 #include "../Data/ViewModels/TagViewModel.h"
+#include "../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 enum class TagsPanelMenuTypes {
 	Show = 1,
@@ -18,7 +20,7 @@ enum class TagsPanelMenuTypes {
 class TagsPanel : public DataPanel
 {
 public:
-	TagsPanel(wxWindow *parent, DataContext& context);
+	TagsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 	~TagsPanel();
 
 	void Update();

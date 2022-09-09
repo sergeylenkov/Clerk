@@ -11,8 +11,7 @@ namespace Clerk {
 			Goals = 6,
 			Tags = 7,
 			Alerts = 8,
-			Trash = 9,
-			Archive = 10
+			Trash = 9
 		};
 	}
 }

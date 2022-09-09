@@ -37,15 +37,14 @@ public:
 
 	void CreateTab(TreeMenuItemType type, std::shared_ptr<void> object);
 	void AddTab(TreeMenuItemType type, std::shared_ptr<void> object);
-	void UpdateCurrentTab(TreeMenuItemType type, std::shared_ptr<void> object);
-	void RestoreTabs();
+	void UpdateCurrentTab(TreeMenuItemType type, std::shared_ptr<void> object);	
 	bool IsTabExists(TreeMenuItemType type, int id = 0);
 	void SelectTab(TreeMenuItemType type, int id = 0);
-	void Update();
+	//void Update();
 	void AddPanel(DataPanel* panel, wxString title);
-	std::shared_ptr<TransactionViewModel> GetSelectedTransaction();
+	//std::shared_ptr<TransactionViewModel> GetSelectedTransaction();
 
-	std::function<void(wxString text)> OnUpdateStatus;
+	/*std::function<void(wxString text)> OnUpdateStatus;
 	std::function<void()> OnAddTransaction;
 	std::function<void(std::shared_ptr<TransactionViewModel>)> OnCopyTransaction;
 	std::function<void(std::shared_ptr<TransactionViewModel>)> OnEditTransaction;
@@ -57,7 +56,7 @@ public:
 	std::function<void()> OnAddGoal;
 	std::function<void(std::shared_ptr<GoalViewModel>)> OnEditGoal;
 	std::function<void()> OnAddAlert;
-	std::function<void(std::shared_ptr<AlertViewModel>)> OnEditAlert;
+	std::function<void(std::shared_ptr<AlertViewModel>)> OnEditAlert;*/
 
 private:
 	DataContext& _context;
@@ -68,7 +67,7 @@ private:
 	std::vector<DataPanel *> _tabsPanels;
 	int _contextMenuTab;
 
-	void CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object);
+	/*void CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewModel> account);
 	void CreateAccountsPanel(int tabIndex, TreeMenuItemType type);
 	void CreateDashboardPanel(int tabIndex);
@@ -78,11 +77,11 @@ private:
 	void CreateReportPanel(int tabIndex, std::shared_ptr<ReportViewModel> report);
 	void CreateTrashPanel(int tabIndex);
 	void CreateTagsPanel(int tabIndex);
-	void CreateAlertsPanel(int tabIndex);
+	void CreateAlertsPanel(int tabIndex);*/
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
 	void OnTabMenuClose(wxCommandEvent &event);
-	void AddTransaction();
+	/*void AddTransaction();
 	void CopyTransaction(std::shared_ptr<TransactionViewModel> transaction);
 	void EditTransaction(std::shared_ptr<TransactionViewModel> transaction);
 	void SplitTransaction(std::shared_ptr<TransactionViewModel> ransaction);
@@ -94,7 +93,7 @@ private:
 	void AddGoal();
 	void EditGoal(std::shared_ptr<GoalViewModel> goal);
 	void AddAlert();
-	void EditAlert(std::shared_ptr<AlertViewModel> alert);
+	void EditAlert(std::shared_ptr<AlertViewModel> alert);*/
 	void RemoveTab(int index);
 };
 

@@ -33,7 +33,7 @@ public:
 		Copy = 7,
 	};
 
-	TransactionsListPanel(wxWindow *parent, DataContext& context);
+	TransactionsListPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 	~TransactionsListPanel();
 
 	//void SetAccount(std::shared_ptr<AccountViewModel> account);

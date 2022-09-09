@@ -21,7 +21,6 @@ public:
 private:
 	DashboardViewModel* _viewModel{};
 	std::vector<DashboardProgressValue> _values;
-	std::vector<std::shared_ptr<GoalViewModel>> _goals;
 
 	void Update();
 	void Draw(wxPaintDC &dc);

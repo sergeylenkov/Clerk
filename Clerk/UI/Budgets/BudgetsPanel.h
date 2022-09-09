@@ -6,8 +6,10 @@
 #include "BudgetsListDataModel.h"
 #include "BudgetsProgressRender.h"
 #include "../../Data/ViewModels/BudgetViewModel.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 class BudgetsPanel : public DataPanel
 {
@@ -18,7 +20,7 @@ public:
 		Delete = 3,
 	};
 
-	BudgetsPanel(wxWindow *parent, DataContext& context);
+	BudgetsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 
 	std::shared_ptr<BudgetViewModel> GetBudget();
 	void Update();	

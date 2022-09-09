@@ -1,6 +1,6 @@
 #include "DashboardPanel.h"
 
-DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
 	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
 	_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
@@ -76,7 +76,6 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	this->Layout();
 
 	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 }
 
 DashboardPanel::~DashboardPanel() {

@@ -6,8 +6,10 @@
 #include "GoalsListDataModel.h"
 #include "GoalsProgressRender.h"
 #include "../../Data/ViewModels/GoalViewModel.h"
+#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Commands;
 
 class GoalsPanel : public DataPanel
 {
@@ -18,7 +20,7 @@ public:
 		Delete = 3,
 	};
 
-	GoalsPanel(wxWindow *parent, DataContext& context);
+	GoalsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 
 	std::shared_ptr<GoalViewModel> GetGoal();
 	void Update();

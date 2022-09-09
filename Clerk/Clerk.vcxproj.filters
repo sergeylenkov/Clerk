@@ -18,7 +18,7 @@
     <ClCompile Include="Clerk.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\MainFrame.cpp">
+    <ClCompile Include="UI\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\DataPanel.cpp">
@@ -384,6 +384,9 @@
     <ClCompile Include="UI\Controllers\TabsController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -392,7 +395,7 @@
     <ClInclude Include="Defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\MainFrame.h">
+    <ClInclude Include="UI\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\DataPanel.h">
@@ -795,6 +798,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controllers\TabsController.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\TransactionContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Transactions\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

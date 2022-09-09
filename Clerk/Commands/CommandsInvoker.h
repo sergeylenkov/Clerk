@@ -22,7 +22,7 @@ namespace Clerk {
 				            CopyTransactionCommand& copyTransactionCommand, NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand,
 							NewTabCommand& newTabCommand);
 			~CommandsInvoker();
-			
+
 			void OnQuit();
 			void OnPreferences();
 			void OnAbout();
@@ -31,7 +31,7 @@ namespace Clerk {
 			void OnNewAccount(AccountType type);
 			void OnEditAccount(int id);
 			void OnNewTab(TabType id);
-
+			
 		private:
 			QuitCommand& _quitCommand;
 			PreferencesCommand& _preferencesCommand;

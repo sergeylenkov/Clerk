@@ -12,6 +12,7 @@ Clerk::Data::TransactionViewModel::TransactionViewModel():
 	this->toAmount = 0;
 	this->note = wxString("");
 	this->date = wxDateTime::Today();
+	this->created = wxDateTime::Now();
 	this->tagsString = wxString("");
 }
 
@@ -24,6 +25,8 @@ TransactionViewModel::TransactionViewModel(TransactionModel& transaction) {
 	this->note = wxString(transaction.note);
 	this->date = wxDateTime::Today(); 
 	this->date.ParseISODate(transaction.date);
+	this->created = wxDateTime::Now();
+	this->created.ParseISODate(transaction.created);
 	this->tagsString = wxString("");
 }
 
@@ -41,6 +44,7 @@ TransactionModel* TransactionViewModel::GetModel() {
 	model->toAmount = toAmount;
 	model->note = note;
 	model->date = date.FormatISODate();
+	model->created = created.FormatISODate();
 
 	std::transform(tags.begin(), tags.end(), std::back_inserter(model->tagsIds), [this](const std::shared_ptr<TagViewModel>& tag) {
 		return tag->id;

@@ -4,11 +4,9 @@
 #include "wx/dataview.h"
 #include "../../Data/ViewModels/SchedulerViewModel.h"
 #include "../DataPanel.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "SchedulersListDataModel.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::Commands;
 
 class SchedulersPanel : public DataPanel
 {
@@ -21,7 +19,7 @@ public:
 		Pause = 5,
 	};
 
-	SchedulersPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	SchedulersPanel(wxWindow *parent, DataContext& context);
 	
 	std::shared_ptr<SchedulerViewModel> GetScheduler();
 	void Update();	

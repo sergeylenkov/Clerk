@@ -7,9 +7,8 @@ IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
-	wxLocale locale;
-
-	locale.Init(wxLANGUAGE_RUSSIAN, wxLOCALE_LOAD_DEFAULT);
+	_locale = new wxLocale();
+	_locale->Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
 
 	Settings::GetInstance().Open("Config.json");
 
@@ -53,7 +52,7 @@ bool ClerkApp::OnInit()
 
 	_icons = new Icons();
 
-	MainFrame *frame = new MainFrame(*_context, *_icons);
+	MainWindow *frame = new MainWindow(*_context, *_icons);
 	frame->Show(TRUE);
 	frame->Center();
 
@@ -67,6 +66,7 @@ int ClerkApp::OnExit()
 	delete _context;
 	delete _connection;
 	delete _icons;
+	delete _locale;
 
 	return 0;
 }

@@ -32,7 +32,8 @@ namespace Clerk {
 			void Delete(const AccountModel& account);
 
 		private:
-			std::shared_ptr<AccountModel> Load(int id);			
+			std::shared_ptr<AccountModel> Load(int id);		
+			bool _isAllLoaded = false;
 		};
 	}
 }

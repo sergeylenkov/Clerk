@@ -10,16 +10,14 @@
 #include "../Charts/BarChart.h"
 #include "../../Data/Settings.h"
 #include "../../Data/ViewModels/DateValueViewModel.h"
-#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
-using namespace Clerk::Commands;
 
 class ReportExpensesForPeriodPanel : public DataPanel
 {
 public:
-	ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context);
 	~ReportExpensesForPeriodPanel();
 
 	void Update();

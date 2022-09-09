@@ -1,6 +1,6 @@
-﻿#include "MainFrame.h"
+﻿#include "MainWindow.h"
 
-MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, ""), _context(context), _icons(icons)
+MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, ""), _context(context), _icons(icons)
 {
 	this->SetTitle("Clerk");
 	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
@@ -76,7 +76,6 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 
 	_dialogsController->SetMainWindow(this);
 	_tabsController->SetTabsPanel(_tabsPanel);
-	_tabsController->SetCommandsInvoker(_commandsInvoker);
 
 	_tabsController->RestoreLastTabs();
 
@@ -108,11 +107,10 @@ MainFrame::MainFrame(DataContext& context, Icons& icons): wxFrame((wxFrame *)NUL
 	}*/
 }
 
-MainFrame::~MainFrame() 
+MainWindow::~MainWindow() 
 {
 	delete _treeMenu;
 	delete _tabsPanel;
-	delete _commandsInvoker;
 	delete _commandsReceiver;
 	delete _dialogsController;
 	delete _tabsController;
@@ -123,7 +121,7 @@ MainFrame::~MainFrame()
 	Settings::GetInstance().Save();
 }
 
-void MainFrame::SetupCommands() {
+void MainWindow::SetupCommands() {
 	_dialogsController = new DialogsController(_context, _icons);
 	_tabsController = new TabsController(_context, _icons);
 
@@ -140,4 +138,6 @@ void MainFrame::SetupCommands() {
 
 	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand,
 		*newAccountCommand, *editAccountCommand, *newTabCommand);
+
+	_context.SetCommandsInvoker(_commandsInvoker);
 }

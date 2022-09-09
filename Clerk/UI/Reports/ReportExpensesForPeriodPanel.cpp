@@ -1,6 +1,6 @@
 #include "ReportExpensesForPeriodPanel.h"
 
-ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
+ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);

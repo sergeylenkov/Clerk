@@ -12,7 +12,7 @@ using namespace Clerk::Commands;
 class DataPanel : public wxPanel
 {
 public:
-	DataPanel(wxWindow* parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	DataPanel(wxWindow* parent, DataContext& context);
 	virtual void Update();
 
 	TabType type;
@@ -20,5 +20,4 @@ public:
 
 protected:
 	DataContext& _context;
-	CommandsInvoker& _commandsInvoker;
 };

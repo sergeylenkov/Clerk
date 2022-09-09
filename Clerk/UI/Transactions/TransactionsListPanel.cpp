@@ -1,14 +1,14 @@
 ﻿#include "TransactionsListPanel.h"
 
-TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
-	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxBORDER_NONE);
+TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxBORDER_NONE);
 
 	model = new TransactionsListDataModel();
-	list->AssociateModel(model.get());
+	_list->AssociateModel(model.get());
 
 	//transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
-	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
-	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
+	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
+	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -86,7 +86,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	mainSizer->Add(filterPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
 	mainSizer->Add(infoPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
-	mainSizer->Add(list, 1, wxALL | wxEXPAND, 0);
+	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -120,10 +120,10 @@ std::shared_ptr<AccountModel> TransactionsListPanel::GetAccount() {
 
 void TransactionsListPanel::SetType(TreeMenuItemTypes type) {
 	this->type = type;
-}
+}*/
 
 std::shared_ptr<TransactionViewModel> TransactionsListPanel::GetTransaction() {
-	wxDataViewItem item = list->GetSelection();
+	wxDataViewItem item = _list->GetSelection();
 
 	if (item.IsOk()) {
 		int index = (int)item.GetID() - 1;
@@ -131,7 +131,7 @@ std::shared_ptr<TransactionViewModel> TransactionsListPanel::GetTransaction() {
 	}
 
 	return nullptr;
-}*/
+}
 
 void TransactionsListPanel::Update() {
 	std::thread([=]()
@@ -236,7 +236,7 @@ void TransactionsListPanel::CreateListColumns() {
 		}
 	}
 
-	list->ClearColumns();
+	_list->ClearColumns();
 
 	auto &columns = Settings::GetInstance().GetTransactionsListColumns(columnsType);
 
@@ -244,35 +244,35 @@ void TransactionsListPanel::CreateListColumns() {
 		switch (static_cast<TransactionsListDataModel::Columns>(column.index))
 		{
 			case TransactionsListDataModel::Columns::Date:
-				list->AppendTextColumn("Date", static_cast<int>(TransactionsListDataModel::Columns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn("Date", static_cast<int>(TransactionsListDataModel::Columns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::FromAccount:
-				list->AppendTextColumn("From Account", static_cast<int>(TransactionsListDataModel::Columns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn("From Account", static_cast<int>(TransactionsListDataModel::Columns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::ToAccount:
-				list->AppendTextColumn("To Account", static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn("To Account", static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::Tags: {
 				TransactionsTagsRender *render = new TransactionsTagsRender();
 
 				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Tags", render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				list->AppendColumn(dataViewColumn);
+				_list->AppendColumn(dataViewColumn);
 				}
 				break;
 			case TransactionsListDataModel::Columns::Note:
-				list->AppendTextColumn("Note", static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn("Note", static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::Amount: {
 				TransactionsAmountRender *render = new TransactionsAmountRender();
 
 				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Amount", render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				list->AppendColumn(dataViewColumn);
+				_list->AppendColumn(dataViewColumn);
 				}
 				break;
 		}
 	}
 	
-	list->AppendTextColumn("", static_cast<int>(TransactionsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+	_list->AppendTextColumn("", static_cast<int>(TransactionsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 }
 
 void TransactionsListPanel::UpdateList() {
@@ -432,8 +432,12 @@ void TransactionsListPanel::Merge() {
 }
 
 void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
-	if (OnEdit) {
-		//OnEdit(GetTransaction());
+	auto transaction = GetTransaction();
+
+	if (transaction) {
+		_context.GetCommandsInvoker().OnNewTransaction(transaction.get()->id);
+	} else {
+		_context.GetCommandsInvoker().OnNewTransaction(-1);
 	}
 }
 
@@ -447,102 +451,11 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu *menu = new wxMenu;
+	wxMenu *menu = new TransactionContextMenu(_context.GetCommandsInvoker(), GetTransaction());	
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), wxT("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *copyItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Copy), wxT("Copy..."));
-	wxMenuItem *duplicateItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Duplicate), wxT("Dublicate"));
-	wxMenuItem *splitItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Split), wxT("Split..."));
-	wxMenuItem *mergeItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Merge), wxT("Merge"));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), wxT("Delete"));
-
-	addItem->Enable(true);
-	editItem->Enable(true);
-	copyItem->Enable(true);
-	duplicateItem->Enable(true);
-	splitItem->Enable(true);
-	mergeItem->Enable(true);
-	deleteItem->Enable(true);
-
-	if (list->GetSelectedItemsCount() == 0) {
-		editItem->Enable(false);
-		editItem->SetTextColour(*wxLIGHT_GREY);
-
-		copyItem->Enable(false);
-		copyItem->SetTextColour(*wxLIGHT_GREY);
-
-		copyItem->Enable(false);
-		copyItem->SetTextColour(*wxLIGHT_GREY);
-
-		duplicateItem->Enable(false);
-		duplicateItem->SetTextColour(*wxLIGHT_GREY);
-
-		splitItem->Enable(false);
-		splitItem->SetTextColour(*wxLIGHT_GREY);
-
-		mergeItem->Enable(false);
-		mergeItem->SetTextColour(*wxLIGHT_GREY);
-
-		deleteItem->Enable(false);
-		deleteItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	if (list->GetSelectedItemsCount() < 2) {
-		mergeItem->Enable(false);
-		mergeItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	menu->Append(addItem);
-	menu->Append(editItem);
-	menu->Append(copyItem);
-	menu->Append(duplicateItem);
-	menu->AppendSeparator();
-	menu->Append(splitItem);
-	menu->Append(mergeItem);
-	menu->AppendSeparator();
-	menu->Append(deleteItem);
-
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionsListPanel::OnMenuSelect, this);
-
-	list->PopupMenu(menu);
+	_list->PopupMenu(menu);
 
 	delete menu;
-}
-
-void TransactionsListPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<ContextMenuTypes>(event.GetId())) {
-		case ContextMenuTypes::Add:
-			_commandsInvoker.OnNewTransaction(-1);
-			break;
-
-		case ContextMenuTypes::Edit:
-			Edit();
-			break;
-
-		case ContextMenuTypes::Copy:
-			Copy();
-			break;
-
-		case ContextMenuTypes::Duplicate:
-			Duplicate();
-			break;
-
-		case ContextMenuTypes::Split:
-			Split();
-			break;
-
-		case ContextMenuTypes::Merge:
-			Merge();
-			break;
-
-		case ContextMenuTypes::Delete:
-			Delete();
-			break;
-
-		default:
-			break;
-	}
 }
 
 void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {

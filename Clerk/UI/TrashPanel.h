@@ -4,10 +4,8 @@
 #include <wx/listctrl.h>
 #include "DataPanel.h"
 #include "../Data/ViewModels/TransactionViewModel.h"
-#include "../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::Commands;
 
 enum class TrashPanelMenuTypes {
 	Restore = 1,
@@ -18,7 +16,7 @@ enum class TrashPanelMenuTypes {
 class TrashPanel : public DataPanel
 {
 public:
-	TrashPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	TrashPanel(wxWindow *parent, DataContext& context);
 
 	std::shared_ptr<TransactionViewModel> GetTransaction();
 	void Update();

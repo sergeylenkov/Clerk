@@ -10,10 +10,6 @@ void TabsController::SetTabsPanel(TabsPanel* panel) {
 	_panel = panel;
 }
 
-void TabsController::SetCommandsInvoker(CommandsInvoker* commandsInvoker) {
-	_commandsInvoker = commandsInvoker;
-}
-
 void TabsController::RestoreLastTabs() {
 	for (auto& tab : Settings::GetInstance().GetTabs()) {
 		TabType type = static_cast<TabType>(tab.type);
@@ -37,31 +33,31 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 	switch (type)
 	{
 		case TabType::Dashboard:
-			return new DashboardPanel(_panel, _context, *_commandsInvoker);
+			return new DashboardPanel(_panel, _context);
 			break;
 		case TabType::Transactions:
-			return new TransactionsListPanel(_panel, _context, *_commandsInvoker);
+			return new TransactionsListPanel(_panel, _context);
 			break;
 		case TabType::Reports:
-			return new DashboardPanel(_panel, _context, *_commandsInvoker);
+			return new DashboardPanel(_panel, _context);
 			break;
 		case TabType::Budgets:
-			return new BudgetsPanel(_panel, _context, *_commandsInvoker);
+			return new BudgetsPanel(_panel, _context);
 			break;
 		case TabType::Schedulers:
-			return new SchedulersPanel(_panel, _context, *_commandsInvoker);
+			return new SchedulersPanel(_panel, _context);
 			break;
 		case TabType::Goals:
-			return new GoalsPanel(_panel, _context, *_commandsInvoker);
+			return new GoalsPanel(_panel, _context);
 			break;
 		case TabType::Tags:
-			return new TagsPanel(_panel, _context, *_commandsInvoker);
+			return new TagsPanel(_panel, _context);
 			break;
 		case TabType::Alerts:
-			return new AlertsPanel(_panel, _context, *_commandsInvoker);
+			return new AlertsPanel(_panel, _context);
 			break;
 		case TabType::Trash:
-			return new TrashPanel(_panel, _context, *_commandsInvoker);
+			return new TrashPanel(_panel, _context);
 			break;
 		default:
 			break;

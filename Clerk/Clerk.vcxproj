@@ -135,6 +135,7 @@
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
     <ClCompile Include="UI\Alerts\AlertsPanel.cpp" />
     <ClCompile Include="UI\Controls\MainMenu.cpp" />
+    <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListDataModel.cpp" />
@@ -193,7 +194,7 @@
     <ClCompile Include="UI\TagsPopup.cpp" />
     <ClCompile Include="Data\Models\TransactionModel.cpp" />
     <ClCompile Include="Clerk.cpp" />
-    <ClCompile Include="UI\MainFrame.cpp" />
+    <ClCompile Include="UI\MainWindow.cpp" />
     <ClCompile Include="UI\Transactions\TransactionDialog.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp" />
     <ClCompile Include="Utils\EventEmitter.cpp" />
@@ -270,6 +271,8 @@
     <ClInclude Include="UI\Alerts\AlertsPanel.h" />
     <ClInclude Include="UI\Controls\MainMenu.h" />
     <ClInclude Include="UI\Enums.h" />
+    <ClInclude Include="UI\Transactions\Enums.h" />
+    <ClInclude Include="UI\Transactions\TransactionContextMenu.h" />
     <ClInclude Include="UI\Transactions\TransactionsAmountRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsListDataModel.h" />
@@ -331,7 +334,7 @@
     <ClInclude Include="UI\TagsPopup.h" />
     <ClInclude Include="Data\Models\TransactionModel.h" />
     <ClInclude Include="Clerk.h" />
-    <ClInclude Include="UI\MainFrame.h" />
+    <ClInclude Include="UI\MainWindow.h" />
     <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h" />

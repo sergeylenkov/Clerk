@@ -21,6 +21,9 @@
 #include "Services/AlertsService.h"
 #include "Services/GoalsService.h"
 #include "Services/ReportingService.h"
+#include "../Commands/CommandsInvoker.h"
+
+using namespace Clerk::Commands;
 
 namespace Clerk {
 	namespace Data {
@@ -56,6 +59,9 @@ namespace Clerk {
 			GoalsService& GetGoalsService();
 			ReportingService& GetReportingService();
 
+			void SetCommandsInvoker(CommandsInvoker* commandsInvoker);
+			CommandsInvoker& GetCommandsInvoker();
+
 		private:
 			AccountsRepository& _accountsRepository;
 			ReportsRepository& _reportsRepository;
@@ -78,6 +84,7 @@ namespace Clerk {
 			AlertsService& _alertsService;
 			GoalsService& _goalsService;
 			ReportingService& _reportingService;
+			CommandsInvoker* _commandsInvoker;
 		};
 	}
 }

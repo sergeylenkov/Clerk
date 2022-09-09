@@ -3,23 +3,25 @@
 AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type) : TreeContextMenu(commandsInvoker) {
 	_type = type;
 
-	this->Append(static_cast<int>(ContextMenuType::NewTab), wxT("Open in New Tab"));
+	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), wxT("Open in New Tab"));
+	item->SetBitmap(wxBitmap(wxT("ICON_NEW_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
+
 	this->AppendSeparator();
 
-	this->Append(static_cast<int>(ContextMenuType::NewAccount), wxT("New Account..."));
-	this->Append(static_cast<int>(ContextMenuType::NewTransaction), wxT("New Transaction..."));
+	this->Append(static_cast<int>(TreeContextMenuType::NewAccount), wxT("New Account..."));
+	this->Append(static_cast<int>(TreeContextMenuType::NewTransaction), wxT("New Transaction..."));
 
 	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &AccountsContextMenu::OnMenuSelect, this);
 }
 
 void AccountsContextMenu::OnMenuSelect(wxCommandEvent& event) {
-	int id = event.GetId();
+	TreeContextMenuType type = static_cast<TreeContextMenuType>(event.GetId());
 
-	if (id == static_cast<int>(ContextMenuType::NewTab)) {
+	if (type == TreeContextMenuType::NewTab) {
 		_commandsInvoker.OnNewTab(TabType::Transactions);
-	} else if (id == static_cast<int>(ContextMenuType::NewTransaction)) {
+	} else if (type == TreeContextMenuType::NewTransaction) {
 		_commandsInvoker.OnNewTransaction(-1);
-	} else if (id == static_cast<int>(ContextMenuType::NewAccount)) {
+	} else if (type == TreeContextMenuType::NewAccount) {
 		AccountType accountType = AccountType::Deposit;
 
 		switch (_type)

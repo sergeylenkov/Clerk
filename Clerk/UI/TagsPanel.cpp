@@ -1,6 +1,6 @@
 #include "TagsPanel.h"
 
-TagsPanel::TagsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
+TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	this->editedIndex = 0;
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);

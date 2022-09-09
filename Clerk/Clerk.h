@@ -1,5 +1,5 @@
 #include "wx/wx.h" 
-#include "UI/MainFrame.h"
+#include "UI/MainWindow.h"
 #include "Data/DataConnection.h"
 #include "Data/DataContext.h"
 #include "Utils/Icons.h"
@@ -15,4 +15,5 @@ private:
 	DataConnection* _connection{};
 	DataContext* _context{};
 	Icons* _icons{};
+	wxLocale* _locale;
 };

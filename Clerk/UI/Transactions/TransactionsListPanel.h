@@ -16,6 +16,7 @@
 #include "TransactionsListDataModel.h"
 #include "TransactionsTagsRender.h"
 #include "TransactionsAmountRender.h"
+#include "TransactionContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -23,23 +24,13 @@ using namespace Clerk::Utils;
 class TransactionsListPanel : public DataPanel
 {
 public:
-	enum class ContextMenuTypes {
-		Add = 1,
-		Edit = 2,
-		Delete = 3,
-		Duplicate = 4,
-		Split = 5,
-		Merge = 6,
-		Copy = 7,
-	};
-
-	TransactionsListPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
 
 	//void SetAccount(std::shared_ptr<AccountViewModel> account);
 	//std::shared_ptr<AccountModel> GetAccount();
 	//void SetType(TreeMenuItemTypes type);
-	//std::shared_ptr<TransactionViewModel> GetTransaction();	
+	
 	void Update();
 	//float GetBalance();
 
@@ -50,7 +41,7 @@ public:
 	std::function<void()> OnPeriodChanged;	
 
 private:	
-	wxDataViewCtrl *list;
+	wxDataViewCtrl *_list;
 	wxObjectDataPtr<TransactionsListDataModel> model;
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
@@ -70,6 +61,7 @@ private:
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
 	
+	std::shared_ptr<TransactionViewModel> GetTransaction();
 	void Sort();
 	void Filter();
 	void CreateListColumns();
@@ -85,7 +77,6 @@ private:
 	void OnListColumnClick(wxListEvent &event);
 	void OnListItemDoubleClick(wxDataViewEvent &event);	
 	void OnRightClick(wxDataViewEvent &event);
-	void OnMenuSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);
 	void OnSearchChanged(wxCommandEvent &event);	

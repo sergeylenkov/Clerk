@@ -1,6 +1,6 @@
 #include "DashboardPanel.h"
 
-DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
+DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
 	_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);

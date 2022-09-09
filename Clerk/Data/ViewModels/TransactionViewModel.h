@@ -19,6 +19,7 @@ namespace Clerk {
 			float toAmount;
 			wxString note;
 			wxDateTime date;
+			wxDateTime created;
 			std::vector<std::shared_ptr<TagViewModel>> tags;
 			wxString tagsString;
 			

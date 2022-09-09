@@ -12,16 +12,14 @@
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
 #include "../../Data/ViewModels/DateValueViewModel.h"
-#include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
-using namespace Clerk::Commands;
 
 class ReportBalancePanel : public DataPanel
 {
 public:
-	ReportBalancePanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	ReportBalancePanel(wxWindow *parent, DataContext& context);
 	~ReportBalancePanel();
 
 	void Update();

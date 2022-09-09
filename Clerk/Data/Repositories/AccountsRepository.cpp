@@ -3,6 +3,10 @@
 using namespace Clerk::Data;
 
 std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetAll() {
+	if (_isAllLoaded) {
+		return GetHashList();
+	}
+
 	char* sql = "SELECT id FROM accounts a";
 	sqlite3_stmt* statement;
 
@@ -18,6 +22,8 @@ std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetAll() {
 	}
 
 	sqlite3_finalize(statement);
+
+	_isAllLoaded = true;
 
 	return GetHashList();
 }
@@ -347,6 +353,11 @@ void AccountsRepository::Save(AccountModel& account) {
 		}
 
 		sqlite3_finalize(statement);
+
+		if (account.id != -1) {			
+			auto newAccount = Load(account.id);
+			AddToHash(account.id, newAccount);
+		}
 	}
 	else {
 		char* sql = "UPDATE accounts SET name = ?, note = ?, type_id = ?, icon_id = ?, order_id = ?, currency_id = ?, active = ? WHERE id = ?";

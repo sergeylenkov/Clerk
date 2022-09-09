@@ -44,11 +44,11 @@ using namespace Clerk::Utils;
 using namespace Clerk::UI;
 using namespace Clerk::Commands;
 
-class MainFrame : public wxFrame
+class MainWindow : public wxFrame
 {
 public:
-	MainFrame(DataContext& context, Icons& icons);
-	~MainFrame();
+	MainWindow(DataContext& context, Icons& icons);
+	~MainWindow();
 
 private:
 	DataContext& _context;

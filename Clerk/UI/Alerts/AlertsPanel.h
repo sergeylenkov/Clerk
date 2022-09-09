@@ -4,11 +4,9 @@
 #include "wx/dataview.h"
 #include "../../Data/ViewModels/AlertViewModel.h"
 #include "../DataPanel.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "AlertsListDataModel.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::Commands;
 
 class AlertsPanel : public DataPanel
 {
@@ -19,7 +17,7 @@ public:
 		Delete = 3,
 	};
 
-	AlertsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	AlertsPanel(wxWindow *parent, DataContext& context);
 
 	std::shared_ptr<AlertViewModel> GetAlert();
 	void Update();	

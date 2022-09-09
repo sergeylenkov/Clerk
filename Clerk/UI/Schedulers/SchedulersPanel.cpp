@@ -1,6 +1,6 @@
 #include "SchedulersPanel.h"
 
-SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : DataPanel(parent, context, commandsInvoker) {
+SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	list->AppendTextColumn("Name", static_cast<int>(SchedulersListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);

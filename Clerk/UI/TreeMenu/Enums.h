@@ -3,26 +3,26 @@
 namespace Clerk {
 	namespace UI {
 		enum class TreeMenuItemType {			
-			Dashboard = 0,
-			Accounts = 1,
-			Account = 2,
-			Expenses = 3,
-			Receipts = 4,
-			Deposits = 5,
-			Debts = 6,
-			Virtual = 7,
-			Reports = 8,
-			Report = 9,
-			Budgets = 10,			
-			Schedulers = 11,
-			Goals = 12,
-			Tags = 13,
-			Alerts = 14,
-			Trash = 15,			
-			Archive = 16
+			Dashboard = 1,
+			Accounts = 2,
+			Account = 3,
+			Expenses = 4,
+			Receipts = 5,
+			Deposits = 6,
+			Debts = 7,
+			Virtual = 8,
+			Reports = 9,
+			Report = 10,
+			Budgets = 11,			
+			Schedulers = 12,
+			Goals = 13,
+			Tags = 14,
+			Alerts = 15,
+			Trash = 16,			
+			Archive = 17
 		};
 
-		enum class ContextMenuType {
+		enum class TreeContextMenuType {
 			NewTab = 1,
 			NewAccount = 2,
 			EditAccount = 3,

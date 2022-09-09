@@ -71,6 +71,7 @@ DataContext::~DataContext() {
 	delete& _alertsService;
 	delete& _goalsService;
 	delete& _reportingService;
+	delete _commandsInvoker;
 }
 
 AccountsRepository& DataContext::GetAccountsRepository() {
@@ -154,4 +155,12 @@ GoalsService& DataContext::GetGoalsService() {
 
 ReportingService& DataContext::GetReportingService() {
 	return _reportingService;
+}
+
+void DataContext::SetCommandsInvoker(CommandsInvoker* commandsInvoker) {
+	_commandsInvoker = commandsInvoker;
+}
+
+CommandsInvoker& DataContext::GetCommandsInvoker() {
+	return *_commandsInvoker;
 }

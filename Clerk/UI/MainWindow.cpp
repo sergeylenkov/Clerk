@@ -75,6 +75,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_treeMenu->RestoreState();
 
 	_dialogsController->SetMainWindow(this);
+	_transactionController->SetMainWindow(this);
 	_tabsController->SetTabsPanel(_tabsPanel);
 
 	_tabsController->RestoreLastTabs();
@@ -114,6 +115,7 @@ MainWindow::~MainWindow()
 	delete _commandsReceiver;
 	delete _dialogsController;
 	delete _tabsController;
+	delete _transactionController;
 
 	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
@@ -124,20 +126,26 @@ MainWindow::~MainWindow()
 void MainWindow::SetupCommands() {
 	_dialogsController = new DialogsController(_context, _icons);
 	_tabsController = new TabsController(_context, _icons);
+	_transactionController = new TransactionController(_context, _icons);
 
-	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController);
+	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController, _transactionController);
 
 	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
 	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
 	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
 	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
+	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(_commandsReceiver);
+	EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(_commandsReceiver);
+	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_commandsReceiver);
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
 	NewTabCommand* newTabCommand = new NewTabCommand(_commandsReceiver);
 
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand,
-		*newAccountCommand, *editAccountCommand, *newTabCommand);
+	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
+		                                   *newTransactionCommand, *copyTransactionCommand,
+										   *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
+		                                   *newAccountCommand, *editAccountCommand, *newTabCommand);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
 }

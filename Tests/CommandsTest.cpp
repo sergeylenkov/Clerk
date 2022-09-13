@@ -7,6 +7,9 @@
 #include "../Clerk/Commands/AboutCommand.h"
 #include "../Clerk/Commands/NewTransactionCommand.h"
 #include "../Clerk/Commands/CopyTransactionCommand.h"
+#include "../Clerk/Commands/SplitTransactionCommand.h"
+#include "../Clerk/Commands/EditTransactionCommand.h"
+#include "../Clerk/Commands/DeleteTransactionCommand.h"
 #include "../Clerk/Commands/NewAccountCommand.h"
 #include "../Clerk/Commands/EditAccountCommand.h"
 #include "../Clerk/Commands/NewTabCommand.h"
@@ -37,6 +40,18 @@ public:
         testId = id;
     }
 
+    void OpenSplitTransactionDialog(int id) override {
+        testId = id;
+    }
+
+    void OpenEditTransactionDialog(int id) override {
+        testId = id;
+    }
+
+    void DeleteTransaction(int id) override {
+        testId = id;
+    }
+
     void OpenNewAccountDialog(AccountType type) override {
         testAccountType = type;
     }
@@ -64,12 +79,17 @@ public:
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
         NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
         CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
+        SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(commandsReceiver);
+        EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(commandsReceiver);
+        DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(commandsReceiver);
         NewAccountCommand* newAccountCommand = new NewAccountCommand(commandsReceiver);
         EditAccountCommand* editAccountCommand = new EditAccountCommand(commandsReceiver);
         NewTabCommand* newTabCommand = new NewTabCommand(commandsReceiver);
 
-        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand, *newTransactionCommand, *copyTransactionCommand, *newAccountCommand,
-                                              *editAccountCommand, *newTabCommand);
+        commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
+                                              *newTransactionCommand, *copyTransactionCommand,
+                                              *splitTransactionCommand, *editTransactionCommand, deleteTransactionCommand,
+                                              *newAccountCommand, *editAccountCommand, *newTabCommand);
     }
 
     ~CommandsTest() {
@@ -101,6 +121,21 @@ TEST_F(CommandsTest, NewTransactionCommand) {
 
 TEST_F(CommandsTest, CopyTransactionCommand) {
     commandsInvoker->OnCopyTransaction(2);
+    ASSERT_EQ(commandsReceiver->testId, 2);
+}
+
+TEST_F(CommandsTest, SplitTransactionCommand) {
+    commandsInvoker->OnSplitTransaction(2);
+    ASSERT_EQ(commandsReceiver->testId, 2);
+}
+
+TEST_F(CommandsTest, EditTransactionCommand) {
+    commandsInvoker->OnEditTransaction(2);
+    ASSERT_EQ(commandsReceiver->testId, 2);
+}
+
+TEST_F(CommandsTest, DeleteTransactionCommand) {
+    commandsInvoker->OnDeleteTransaction(2);
     ASSERT_EQ(commandsReceiver->testId, 2);
 }
 

@@ -13,11 +13,12 @@ namespace Clerk {
 	namespace UI {
 		class TransactionContextMenu : public wxMenu {
 		public:
-			TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction);
+			TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction, std::vector<int> selectedIds);
 
 		private:
 			CommandsInvoker& _commandsInvoker;
 			std::shared_ptr<TransactionViewModel> _transaction;
+			std::vector<int> _selectedIds;
 			void OnMenuSelect(wxCommandEvent& event);
 		};
 	}

@@ -117,13 +117,8 @@ TransactionDialog::~TransactionDialog() {
 	delete _tagsPopup;	
 }
 
-void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
-	_viewModel = viewModel;
-	_viewModel->OnUpdate = [=]() {
-		Update();
-	};
-
-	Update();
+void TransactionDialog::SetTransaction(std::shared_ptr<TransactionViewModel> transaction)  {
+	_transaction = transaction;
 
 	fromAmountField->SetFocus();
 	fromAmountField->SelectAll();

@@ -12,15 +12,6 @@
 #include "../Data/Settings.h"
 #include "../Data/ExchangeRates/CBRRatesLoader.h"
 #include "TreeMenu/TreeMenu.h"
-#include "Transactions/TransactionDialog.h"
-#include "AccountDialog.h"
-#include "Budgets/BudgetDialog.h"
-#include "Schedulers/SchedulerDialog.h"
-#include "Schedulers/SchedulersConfirmDialog.h"
-#include "Goals/GoalDialog.h"
-#include "Alerts/AlertDialog.h"
-#include "Alerts/AlertsConfirmDialog.h"
-#include "TabsPanel.h"
 #include "Controls/AddTransactionButton.h"
 #include "Controls/Statusbar.h"
 #include "Controls/MainMenu.h"
@@ -36,6 +27,7 @@
 #include "../Commands/NewTabCommand.h"
 #include "Controllers/DialogsController.h"
 #include "Controllers/TabsController.h"
+#include "Controllers/TransactionController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"
 
@@ -63,6 +55,7 @@ private:
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
 	TabsController* _tabsController;
+	TransactionController* _transactionController;
 
 	void SetupCommands();
 };

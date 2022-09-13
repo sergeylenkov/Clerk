@@ -11,5 +11,5 @@ void NewTransactionCommand::SetAccountId(int id) {
 }
 
 void NewTransactionCommand::Execute() {
-	_receiver->OpenNewTransactionDialog(_accountId);
+	_receiver->NewTransaction(_accountId);
 }

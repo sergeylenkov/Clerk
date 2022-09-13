@@ -7,11 +7,45 @@ TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsServ
 	_transactionsService(transactionsService),
 	_exchangeRatesRepository(exchangeRatesRepository),
 	_tagsService(tagsService) {
+	_splitId = -1;
+	_id = -1;
 	_fromAmount = 0;
 	_toAmount = 0;
 	_date = wxDateTime::Now();
-
+	
 	Update();
+}
+
+void TransactionEditViewModel::SetTransactionId(int id) {
+	auto transaction = _transactionsService.GetById(id);
+
+	if (transaction) {
+		_id = transaction->id;
+		_fromAccount = transaction->fromAccount;
+		_toAccount = transaction->toAccount;
+		_fromAmount = transaction->fromAmount;
+		_toAmount = transaction->toAmount;
+		_note = transaction->note;
+		_tags = transaction->tags;
+
+		Update();
+	}
+}
+void TransactionEditViewModel::SetSplitTransactionId(int id) {
+	auto transaction = _transactionsService.GetById(id);
+
+	if (transaction) {
+		_splitId = transaction->id;
+		_id = -1;
+		_fromAccount = transaction->fromAccount;
+		_toAccount = transaction->toAccount;
+		_fromAmount = transaction->fromAmount;
+		_toAmount = 0;
+		_note = transaction->note;
+		_date = transaction->date;
+
+		Update();
+	}
 }
 
 void TransactionEditViewModel::SetCopyTransactionId(int id) {
@@ -239,4 +273,13 @@ void TransactionEditViewModel::Save() {
 	transaction->date = _date;
 	
 	_transactionsService.Save(*transaction);
+
+	auto splitTransaction = _transactionsService.GetById(_splitId);
+
+	if (splitTransaction) {
+		splitTransaction->fromAmount = splitTransaction->fromAmount - transaction->fromAmount;
+		splitTransaction->toAmount = splitTransaction->toAmount - transaction->toAmount;
+
+		_transactionsService.Split(*splitTransaction, *transaction);
+	}
 }

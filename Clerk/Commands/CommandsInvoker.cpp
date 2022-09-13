@@ -2,13 +2,18 @@
 
 using namespace Clerk::Commands;
 
-CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, NewTransactionCommand& newTransactionCommand,
-	CopyTransactionCommand& copyTransactionCommand, NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand) :
+CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
+	NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
+	SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
+	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand) :
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
 	_newTransactionCommand(newTransactionCommand),
 	_copyTransactionCommand(copyTransactionCommand),
+	_splitTransactionCommand(splitTransactionCommand),
+	_editTransactionCommand(editTransactionCommand),
+	_deleteTransactionCommand(deleteTransactionCommand),
 	_newAccountCommand(newAccountCommand),
 	_editAccountCommand(editAccountCommand),
 	_newTabCommand(newTabCommand)
@@ -22,6 +27,9 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _aboutCommand;
 	delete& _newTransactionCommand;
 	delete& _copyTransactionCommand;
+	delete& _splitTransactionCommand;
+	delete& _editTransactionCommand;
+	delete& _deleteTransactionCommand;
 	delete& _newAccountCommand;
 	delete& _editAccountCommand;
 	delete& _newTabCommand;
@@ -47,6 +55,21 @@ void CommandsInvoker::OnNewTransaction(int id) {
 void CommandsInvoker::OnCopyTransaction(int id) {
 	_copyTransactionCommand.SetTransactionId(id);
 	_copyTransactionCommand.Execute();
+}
+
+void CommandsInvoker::OnSplitTransaction(int id) {
+	_splitTransactionCommand.SetTransactionId(id);
+	_splitTransactionCommand.Execute();
+}
+
+void CommandsInvoker::OnEditTransaction(int id) {
+	_editTransactionCommand.SetTransactionId(id);
+	_editTransactionCommand.Execute();
+}
+
+void CommandsInvoker::OnDeleteTransaction(int id) {
+	_deleteTransactionCommand.SetTransactionId(id);
+	_deleteTransactionCommand.Execute();
 }
 
 void CommandsInvoker::OnNewAccount(AccountType type) {

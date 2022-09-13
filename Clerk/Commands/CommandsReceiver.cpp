@@ -6,10 +6,11 @@ CommandsReceiver::CommandsReceiver() {
 
 }
 
-CommandsReceiver::CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController) {
+CommandsReceiver::CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController, TransactionController* transactionController) {
 	_frame = frame;
 	_dialogsController = dialogsController;
 	_tabsController = tabsController;
+	_transactionController = transactionController;
 }
 
 void CommandsReceiver::Quit() {
@@ -24,12 +25,24 @@ void CommandsReceiver::OpenAboutDialog() {
 	_dialogsController->ShowAboutDialog();
 }
 
-void CommandsReceiver::OpenNewTransactionDialog(int id) {
-	_dialogsController->ShowNewTransactionDialog(id);
+void CommandsReceiver::NewTransaction(int id) {
+	_transactionController->New(id);
 }
 
-void CommandsReceiver::OpenCopyTransactionDialog(int id) {
-	_dialogsController->ShowCopyTransactionDialog(id);
+void CommandsReceiver::CopyTransaction(int id) {
+	_transactionController->Copy(id);
+}
+
+void CommandsReceiver::SplitTransaction(int id) {
+	_transactionController->Split(id);
+}
+
+void CommandsReceiver::EditTransaction(int id) {
+	_transactionController->Edit(id);
+}
+
+void CommandsReceiver::DeleteTransaction(int id) {
+	_transactionController->Delete(id);
 }
 
 void CommandsReceiver::OpenNewAccountDialog(AccountType type) {

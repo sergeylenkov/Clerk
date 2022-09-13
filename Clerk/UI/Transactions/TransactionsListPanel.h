@@ -26,18 +26,9 @@ class TransactionsListPanel : public DataPanel
 public:
 	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
-
-	//void SetAccount(std::shared_ptr<AccountViewModel> account);
-	//std::shared_ptr<AccountModel> GetAccount();
-	//void SetType(TreeMenuItemTypes type);
 	
 	void Update();
-	//float GetBalance();
 
-	std::function<void()> OnAdd;
-	std::function<void(std::shared_ptr<TransactionViewModel>)> OnEdit;
-	std::function<void(std::shared_ptr<TransactionViewModel>)> OnSplit;
-	std::function<void(std::shared_ptr<TransactionViewModel>)> OnCopy;
 	std::function<void()> OnPeriodChanged;	
 
 private:	
@@ -62,18 +53,12 @@ private:
 	wxDateTime periodToDate;
 	
 	std::shared_ptr<TransactionViewModel> GetTransaction();
+	std::vector<int> GetSelectedIds();
 	void Sort();
 	void Filter();
 	void CreateListColumns();
 	void UpdateList();
 	void UpdateInfo();
-	void Add();
-	void Edit();
-	void Copy();
-	void Delete();
-	void Duplicate();
-	void Split();
-	void Merge();	
 	void OnListColumnClick(wxListEvent &event);
 	void OnListItemDoubleClick(wxDataViewEvent &event);	
 	void OnRightClick(wxDataViewEvent &event);

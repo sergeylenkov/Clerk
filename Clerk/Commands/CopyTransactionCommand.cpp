@@ -11,5 +11,5 @@ void CopyTransactionCommand::SetTransactionId(int id) {
 }
 
 void CopyTransactionCommand::Execute() {
-	_receiver->OpenCopyTransactionDialog(_transactionId);
+	_receiver->CopyTransaction(_transactionId);
 }

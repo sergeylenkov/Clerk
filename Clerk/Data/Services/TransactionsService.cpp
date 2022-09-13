@@ -95,8 +95,32 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetDelet
 	return result;
 }
 
-void TransactionsService::Save(TransactionViewModel& viewModel) {
-	TransactionModel& model = viewModel;
+void TransactionsService::Split(TransactionViewModel& splitTransaction, TransactionViewModel& newTransaction) {
+	splitTransaction.fromAmount = splitTransaction.fromAmount - newTransaction.fromAmount;
+	splitTransaction.toAmount = splitTransaction.toAmount - newTransaction.toAmount;
+
+	Save(splitTransaction);
+}
+
+void TransactionsService::Duplicate(TransactionViewModel& transaction) {
+	TransactionViewModel* copy = new TransactionViewModel();
+
+	copy->id = -1;
+	copy->fromAccount = transaction.fromAccount;
+	copy->toAccount = transaction.toAccount;
+	copy->fromAmount = transaction.fromAmount;
+	copy->toAmount = transaction.toAmount;
+	copy->note = transaction.note;
+	copy->tags = transaction.tags;
+	copy->date = transaction.date;
+
+	Save(*copy);
+
+	delete copy;
+}
+
+void TransactionsService::Save(TransactionViewModel& transaction) {
+	TransactionModel& model = transaction;
 
 	_transactionsRepository.Save(model);
 
@@ -105,8 +129,8 @@ void TransactionsService::Save(TransactionViewModel& viewModel) {
 	_eventEmitter->Emit();
 }
 
-void TransactionsService::Delete(TransactionViewModel& viewModel) {
-	TransactionModel& model = viewModel;
+void TransactionsService::Delete(TransactionViewModel& transaction) {
+	TransactionModel& model = transaction;
 
 	_transactionsRepository.Delete(model);
 

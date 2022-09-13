@@ -103,24 +103,16 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	balance = 0.0;
 	sortBy = 2;
 	sortDesc = false;
+
+	_context.GetTransactionsService().OnUpdate([this]() {
+		Update();
+	});
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
 	SaveFilterSettings();
 	SaveColumnsSettings();	
 }
-
-/*void TransactionsListPanel::SetAccount(std::shared_ptr<AccountModel> account) {
-	this->account = account;
-}
-
-std::shared_ptr<AccountModel> TransactionsListPanel::GetAccount() {
-	return this->account;
-}
-
-void TransactionsListPanel::SetType(TreeMenuItemTypes type) {
-	this->type = type;
-}*/
 
 std::shared_ptr<TransactionViewModel> TransactionsListPanel::GetTransaction() {
 	wxDataViewItem item = _list->GetSelection();
@@ -131,6 +123,25 @@ std::shared_ptr<TransactionViewModel> TransactionsListPanel::GetTransaction() {
 	}
 
 	return nullptr;
+}
+
+std::vector<int> TransactionsListPanel::GetSelectedIds() {
+	std::vector<int> result;
+
+	wxDataViewItemArray selections;
+
+	_list->GetSelections(selections);
+
+	for (unsigned int i = 0; i < selections.GetCount(); i++) {
+		wxDataViewItem item = selections[i];
+
+		if (item.IsOk()) {
+			int index = (int)item.GetID() - 1;
+			result.push_back(_filtered[index]->id);
+		}
+	}
+
+	return result;
 }
 
 void TransactionsListPanel::Update() {
@@ -326,64 +337,8 @@ void TransactionsListPanel::UpdateInfo() {
 	infoPanel->Layout();
 }
 
-void TransactionsListPanel::Add() {
-	if (OnAdd) {
-		OnAdd();
-	}
-}
-
-void TransactionsListPanel::Edit() {
-	if (OnEdit) {
-		//OnEdit(GetTransaction());
-	}
-}
-
-void TransactionsListPanel::Copy() {
-	if (OnCopy) {
-		//OnCopy(GetTransaction());
-	}
-}
-
-void TransactionsListPanel::Delete() {
-	/*auto transaction = GetTransaction();
-
-	if (transaction) {
-		///TODO mark as deleted
-		//transaction->Delete();
-		Update();
-	}*/
-}
-
-void TransactionsListPanel::Duplicate() {
-	/*auto transaction = GetTransaction();
-
-	if (transaction) {
-		Transaction *copy = new Transaction();
-
-		copy->fromAccount = transaction->fromAccount;
-		copy->toAccount = transaction->toAccount;
-		copy->fromAmount = transaction->fromAmount;
-		copy->toAmount = transaction->toAmount;
-		copy->note = transaction->note;
-		copy->tags = transaction->tags;
-		copy->paidAt = transaction->paidAt;
-
-		_context.GetTransactionsRepository().Save(*copy);
-
-		delete copy;
-
-		Update();
-	}*/
-}
-
-void TransactionsListPanel::Split() {
-	if (OnSplit) {
-		//OnSplit(GetTransaction());
-	}
-}
-
-void TransactionsListPanel::Merge() {	
-	/*vector<shared_ptr<Transaction>> _transactions;
+/*void TransactionsListPanel::Merge() {
+	vector<shared_ptr<Transaction>> _transactions;
 
 	wxDataViewItemArray selections;
 
@@ -428,14 +383,14 @@ void TransactionsListPanel::Merge() {
 		//firstTransaction->Save();
 
 		Update();
-	}	*/
-}
+	}
+}*/
 
 void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
-		_context.GetCommandsInvoker().OnNewTransaction(transaction.get()->id);
+		_context.GetCommandsInvoker().OnNewTransaction(transaction->id);
 	} else {
 		_context.GetCommandsInvoker().OnNewTransaction(-1);
 	}
@@ -451,7 +406,7 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu *menu = new TransactionContextMenu(_context.GetCommandsInvoker(), GetTransaction());	
+	wxMenu *menu = new TransactionContextMenu(_context.GetCommandsInvoker(), GetTransaction(), GetSelectedIds());	
 
 	_list->PopupMenu(menu);
 

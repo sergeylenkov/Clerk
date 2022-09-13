@@ -5,6 +5,9 @@
 #include "AboutCommand.h"
 #include "NewTransactionCommand.h"
 #include "CopyTransactionCommand.h"
+#include "SplitTransactionCommand.h"
+#include "EditTransactionCommand.h"
+#include "DeleteTransactionCommand.h"
 #include "NewAccountCommand.h"
 #include "EditAccountCommand.h"
 #include "NewTabCommand.h"
@@ -18,16 +21,20 @@ namespace Clerk {
 	namespace Commands {
 		class CommandsInvoker {
 		public:
-			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand, NewTransactionCommand& newTransactionCommand,
-				            CopyTransactionCommand& copyTransactionCommand, NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand,
-							NewTabCommand& newTabCommand);
+			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
+				           NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
+						   SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
+				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand);
 			~CommandsInvoker();
 
 			void OnQuit();
 			void OnPreferences();
 			void OnAbout();
-			void OnNewTransaction(int id);
+			void OnNewTransaction(int id);			
 			void OnCopyTransaction(int id);
+			void OnSplitTransaction(int id);
+			void OnEditTransaction(int id);
+			void OnDeleteTransaction(int id);
 			void OnNewAccount(AccountType type);
 			void OnEditAccount(int id);
 			void OnNewTab(TabType id);
@@ -38,6 +45,9 @@ namespace Clerk {
 			AboutCommand& _aboutCommand;
 			NewTransactionCommand& _newTransactionCommand;
 			CopyTransactionCommand& _copyTransactionCommand;
+			SplitTransactionCommand& _splitTransactionCommand;
+			EditTransactionCommand& _editTransactionCommand;
+			DeleteTransactionCommand& _deleteTransactionCommand;
 			NewAccountCommand& _newAccountCommand;
 			EditAccountCommand& _editAccountCommand;			
 			NewTabCommand& _newTabCommand;

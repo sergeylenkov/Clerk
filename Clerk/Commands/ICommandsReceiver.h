@@ -13,8 +13,11 @@ namespace Clerk {
 			virtual void Quit() = 0;			
 			virtual void OpenPreferencesDialog() = 0;
 			virtual void OpenAboutDialog() = 0;
-			virtual void OpenNewTransactionDialog(int id) = 0;
-			virtual void OpenCopyTransactionDialog(int id) = 0;
+			virtual void NewTransaction(int id) = 0;
+			virtual void CopyTransaction(int id) = 0;
+			virtual void SplitTransaction(int id) = 0;
+			virtual void EditTransaction(int id) = 0;
+			virtual void DeleteTransaction(int id) = 0;
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;
 			virtual void OpenNewTab(TabType type) = 0;

@@ -78,7 +78,9 @@
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
     <ClCompile Include="Commands\CopyTransactionCommand.cpp" />
+    <ClCompile Include="Commands\DeleteTransactionCommand.cpp" />
     <ClCompile Include="Commands\EditAccountCommand.cpp" />
+    <ClCompile Include="Commands\EditTransactionCommand.cpp" />
     <ClCompile Include="Commands\NewAccountCommand.cpp" />
     <ClCompile Include="Commands\NewTabCommand.cpp" />
     <ClCompile Include="Commands\NewTransactionCommand.cpp" />
@@ -86,6 +88,7 @@
     <ClCompile Include="Commands\CommandsReceiver.cpp" />
     <ClCompile Include="Commands\PreferencesCommand.cpp" />
     <ClCompile Include="Commands\QuitCommand.cpp" />
+    <ClCompile Include="Commands\SplitTransactionCommand.cpp" />
     <ClCompile Include="Data\DataConnection.cpp" />
     <ClCompile Include="Data\DataContext.cpp" />
     <ClCompile Include="Data\Repositories\AlertsRepository.cpp" />
@@ -125,6 +128,7 @@
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
     <ClCompile Include="UI\Controllers\TabsController.cpp" />
+    <ClCompile Include="UI\Controllers\TransactionController.cpp" />
     <ClCompile Include="UI\Controls\AddTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
@@ -204,7 +208,9 @@
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
     <ClInclude Include="Commands\CopyTransactionCommand.h" />
+    <ClInclude Include="Commands\DeleteTransactionCommand.h" />
     <ClInclude Include="Commands\EditAccountCommand.h" />
+    <ClInclude Include="Commands\EditTransactionCommand.h" />
     <ClInclude Include="Commands\NewAccountCommand.h" />
     <ClInclude Include="Commands\NewTabCommand.h" />
     <ClInclude Include="Commands\NewTransactionCommand.h" />
@@ -214,6 +220,7 @@
     <ClInclude Include="Commands\ICommandsReceiver.h" />
     <ClInclude Include="Commands\PreferencesCommand.h" />
     <ClInclude Include="Commands\QuitCommand.h" />
+    <ClInclude Include="Commands\SplitTransactionCommand.h" />
     <ClInclude Include="Commands\TransactionForAccount.h" />
     <ClInclude Include="Data\DataConnection.h" />
     <ClInclude Include="Data\DataContext.h" />
@@ -260,6 +267,7 @@
     <ClInclude Include="Data\ViewModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
     <ClInclude Include="UI\Controllers\TabsController.h" />
+    <ClInclude Include="UI\Controllers\TransactionController.h" />
     <ClInclude Include="UI\Controls\AddTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />

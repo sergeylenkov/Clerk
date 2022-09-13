@@ -1,6 +1,7 @@
 #include "TransactionContextMenu.h"
 
-TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction) : _commandsInvoker(commandsInvoker), _transaction(transaction) {
+TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction, std::vector<int> selectedIds):
+	_commandsInvoker(commandsInvoker), _transaction(transaction), _selectedIds(selectedIds) {
 	if (transaction) {
 		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), wxT("Add..."));
 		item->SetBitmap(wxBitmap(wxT("ICON_ADD"), wxBITMAP_TYPE_PNG_RESOURCE));
@@ -17,15 +18,18 @@ TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker,
 		item = this->Append(static_cast<int>(TransactionContextMenuType::Split), wxT("Split..."));
 		item->SetBitmap(wxBitmap(wxT("ICON_SPLIT"), wxBITMAP_TYPE_PNG_RESOURCE));
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Merge), wxT("Merge"));
-		item->SetBitmap(wxBitmap(wxT("ICON_MERGE"), wxBITMAP_TYPE_PNG_RESOURCE));
-
 		this->AppendSeparator();
 
 		item = this->Append(static_cast<int>(TransactionContextMenuType::Delete), wxT("Delete"));
 		item->SetBitmap(wxBitmap(wxT("ICON_DELETE"), wxBITMAP_TYPE_PNG_RESOURCE));
 	}
-	else {
+	else if (_selectedIds.size() > 0) {
+		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), wxT("Add..."));
+		item->SetBitmap(wxBitmap(wxT("ICON_ADD"), wxBITMAP_TYPE_PNG_RESOURCE));
+
+		item = this->Append(static_cast<int>(TransactionContextMenuType::Merge), wxT("Merge"));
+		item->SetBitmap(wxBitmap(wxT("ICON_MERGE"), wxBITMAP_TYPE_PNG_RESOURCE));
+	} else {
 		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), wxT("Add..."));
 		item->SetBitmap(wxBitmap(wxT("ICON_ADD"), wxBITMAP_TYPE_PNG_RESOURCE));
 	}
@@ -38,7 +42,7 @@ void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = -1;
 
 	if (_transaction) {
-		id = _transaction.get()->id;
+		id = _transaction->id;
 	}
 
 	switch (type)
@@ -47,7 +51,16 @@ void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {
 			_commandsInvoker.OnNewTransaction(id);
 			break;
 		case TransactionContextMenuType::Edit:
+			_commandsInvoker.OnEditTransaction(id);
+			break;
+		case TransactionContextMenuType::Copy:
 			_commandsInvoker.OnCopyTransaction(id);
+			break;
+		case TransactionContextMenuType::Split:
+			_commandsInvoker.OnSplitTransaction(id);
+			break;
+		case TransactionContextMenuType::Delete:
+			_commandsInvoker.OnDeleteTransaction(id);
 			break;
 		default:
 			break;

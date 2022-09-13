@@ -15,7 +15,9 @@ namespace Clerk {
 		public:
 			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
 			
+			void SetTransactionId(int id);
 			void SetCopyTransactionId(int id);
+			void SetSplitTransactionId(int id);
 			void SetAccountId(int id);
 			std::vector<std::shared_ptr<AccountViewModel>> GetFromAccounts();
 			std::vector<std::shared_ptr<AccountViewModel>> GetToAccounts();
@@ -45,13 +47,14 @@ namespace Clerk {
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			TransactionsService& _transactionsService;
 			TagsService& _tagsService;
-			int _id;
+			int _splitId = -1;
+			int _id = -1;
 			std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;
 			std::vector<std::shared_ptr<AccountViewModel>> _toAccounts;
 			std::shared_ptr<AccountViewModel> _fromAccount;
 			std::shared_ptr<AccountViewModel> _toAccount;
-			float _fromAmount;
-			float _toAmount;
+			float _fromAmount =- 0.0;
+			float _toAmount = 0.0;
 			wxString _note;
 			wxDateTime _date;
 			std::vector<std::shared_ptr<TagViewModel>> _tags;

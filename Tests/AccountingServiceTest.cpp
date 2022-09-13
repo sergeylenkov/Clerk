@@ -21,7 +21,7 @@ protected:
 TEST_F(AccountingServiceTest, GetBalance) {
     float amount = service->GetBalance();
 
-    EXPECT_EQ(static_cast<int>(amount), 672233);
+    EXPECT_EQ(static_cast<int>(amount), 1102434);
 }
 
 TEST_F(AccountingServiceTest, GetReceipts) {
@@ -53,7 +53,7 @@ TEST_F(AccountingServiceTest, GetExpenses) {
 
     float amount = service->GetExpenses(fromDate, toDate);
 
-    EXPECT_EQ(static_cast<int>(amount), 161789);
+    EXPECT_EQ(static_cast<int>(amount), 98322);
 }
 
 TEST_F(AccountingServiceTest, GetCredit) {

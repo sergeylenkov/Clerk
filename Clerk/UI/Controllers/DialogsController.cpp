@@ -30,7 +30,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
 
-	transactionDialog->SetViewModel(viewModel);
+	//transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
@@ -42,10 +42,42 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
 
-	transactionDialog->SetViewModel(viewModel);
+	//transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
+}
+
+void DialogsController::ShowSplitTransactionDialog(int id) {
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	viewModel->SetSplitTransactionId(id);
+
+	//transactionDialog->SetViewModel(viewModel);
+
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
+}
+
+void DialogsController::ShowEditTransactionDialog(int id) {
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+
+	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	viewModel->SetTransactionId(id);
+
+	//transactionDialog->SetViewModel(viewModel);
+
+	transactionDialog->Show(true);
+	transactionDialog->CenterOnParent();
+}
+
+void DialogsController::DeleteTransaction(int id) {
+	auto transaction = _context.GetTransactionsService().GetById(id);
+
+	if (transaction) {
+		_context.GetTransactionsService().Delete(*transaction);
+	}
 }
 
 void DialogsController::ShowNewAccountDialog(AccountType type) {

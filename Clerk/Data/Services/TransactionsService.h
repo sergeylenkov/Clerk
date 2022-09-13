@@ -20,7 +20,8 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TransactionViewModel>> GetRecents(int count);
 			std::vector<std::shared_ptr<TransactionViewModel>> GetRecents(const AccountViewModel& account, int count);
 			std::vector<std::shared_ptr<TransactionViewModel>> GetDeleted();
-
+			void Duplicate(TransactionViewModel& viewModel);
+			void Split(TransactionViewModel& splitTransaction, TransactionViewModel& newTransaction);
 			void Save(TransactionViewModel& viewModel);
 			void Delete(TransactionViewModel& viewModel);
 

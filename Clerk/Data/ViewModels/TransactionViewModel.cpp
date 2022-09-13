@@ -2,9 +2,7 @@
 
 using namespace Clerk::Data;
 
-Clerk::Data::TransactionViewModel::TransactionViewModel():
-	id(-1), fromAmount(0), toAmount(0)
-{
+Clerk::Data::TransactionViewModel::TransactionViewModel() {
 	this->id = -1;
 	this->fromAccount = nullptr;
 	this->toAccount = nullptr;
@@ -44,7 +42,7 @@ TransactionModel* TransactionViewModel::GetModel() {
 	model->toAmount = toAmount;
 	model->note = note;
 	model->date = date.FormatISODate();
-	model->created = created.FormatISODate();
+	model->created = created.FormatISOCombined(' ');
 
 	std::transform(tags.begin(), tags.end(), std::back_inserter(model->tagsIds), [this](const std::shared_ptr<TagViewModel>& tag) {
 		return tag->id;

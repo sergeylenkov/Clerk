@@ -1,8 +1,6 @@
 #include "TabsPanel.h"
 
 TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker) {
-	_contextMenuTab = 0;
-
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
@@ -337,56 +335,24 @@ void TabsPanel::OnTabChanged(wxBookCtrlEvent &event) {
 }
 
 void TabsPanel::OnTabClick(wxMouseEvent &event) {
-	_contextMenuTab = _notebook->HitTest(event.GetPosition());
+	int tabId = _notebook->HitTest(event.GetPosition());
 	wxPoint point = event.GetPosition();
 
-	wxMenu *menu = new wxMenu();
+	bool isCloseEnable = _notebook->GetPageCount() > 1;
+	bool isLeftEnable = isCloseEnable && tabId > 0;
+	bool isRightEnable = isCloseEnable && tabId < _notebook->GetPageCount() - 1;
 
-	wxMenuItem *leftItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::MoveLeft), wxT("Move to Left"));
-	wxMenuItem *rightItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::MoveRight), wxT("Move to Right"));
-	wxMenuItem *closeItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Close), wxT("Close"));
+	TabsContextMenu* menu = new TabsContextMenu(tabId, isLeftEnable, isRightEnable, isCloseEnable);
 
-	if (_notebook->GetPageCount() == 1) {
-		leftItem->Enable(false);
-		leftItem->SetTextColour(*wxLIGHT_GREY);
-
-		rightItem->Enable(false);
-		rightItem->SetTextColour(*wxLIGHT_GREY);
-
-		closeItem->Enable(false);
-		closeItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	if (_contextMenuTab == 0) {
-		leftItem->Enable(false);
-		leftItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	if (_contextMenuTab == _notebook->GetPageCount() - 1) {
-		rightItem->Enable(false);
-		rightItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	menu->Append(leftItem);
-	menu->Append(rightItem);
-	menu->AppendSeparator();
-	menu->Append(closeItem);
-
-	closeItem->SetBitmap(wxBitmap(wxT("ICON_CLOSE_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
-	rightItem->SetBitmap(wxBitmap(wxT("ICON_ARROW_RIGHT"), wxBITMAP_TYPE_PNG_RESOURCE));
-	leftItem->SetBitmap(wxBitmap(wxT("ICON_ARROW_LEFT"), wxBITMAP_TYPE_PNG_RESOURCE));	
-
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsPanel::OnTabMenuClose, this, static_cast<int>(ContextMenuTypes::Close));
+	menu->OnClose = [=](int tabId) {
+		RemoveTab(tabId);
+	};
 
 	_notebook->PopupMenu(menu, point);
 
 	delete menu;
 
 	event.Skip();
-}
-
-void TabsPanel::OnTabMenuClose(wxCommandEvent &event) {	
-	RemoveTab(_contextMenuTab);
 }
 
 /*void TabsPanel::Update() {

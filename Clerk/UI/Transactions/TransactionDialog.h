@@ -23,7 +23,7 @@ public:
 	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
 	~TransactionDialog();
 		
-	void SetTransaction(std::shared_ptr<TransactionViewModel> transaction);
+	void SetViewModel(TransactionEditViewModel* viewModel);
 
 private:
 	TransactionEditViewModel* _viewModel;

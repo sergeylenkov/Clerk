@@ -30,7 +30,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
 
-	//transactionDialog->SetViewModel(viewModel);
+	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
@@ -42,7 +42,7 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
 
-	//transactionDialog->SetViewModel(viewModel);
+	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
@@ -54,7 +54,7 @@ void DialogsController::ShowSplitTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetSplitTransactionId(id);
 
-	//transactionDialog->SetViewModel(viewModel);
+	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();
@@ -66,7 +66,7 @@ void DialogsController::ShowEditTransactionDialog(int id) {
 	TransactionEditViewModel* viewModel = new TransactionEditViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetTransactionId(id);
 
-	//transactionDialog->SetViewModel(viewModel);
+	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);
 	transactionDialog->CenterOnParent();

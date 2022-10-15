@@ -24,7 +24,7 @@
     <ClCompile Include="UI\DataPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TabsPanel.cpp">
+    <ClCompile Include="UI\Tabs\TabsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TrashPanel.cpp">
@@ -396,7 +396,7 @@
     <ClCompile Include="Commands\DeleteTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controllers\TransactionController.cpp">
+    <ClCompile Include="UI\Tabs\TabsContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -413,7 +413,7 @@
     <ClInclude Include="UI\DataPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TabsPanel.h">
+    <ClInclude Include="UI\Tabs\TabsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TrashPanel.h">
@@ -827,7 +827,10 @@
     <ClInclude Include="Commands\DeleteTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controllers\TransactionController.h">
+    <ClInclude Include="UI\Tabs\TabsContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Tabs\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

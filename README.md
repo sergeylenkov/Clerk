@@ -1,5 +1,6 @@
 # Clerk
 Personal finance application. Written on c++ and using wxWidgets.
+[wxWidgets](https://www.wxwidgets.org/downloads/logos/powered-by-wxwidgets-80x15.png)
 
 ![Clerk](Screenshot.png)
 

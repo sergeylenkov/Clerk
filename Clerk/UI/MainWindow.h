@@ -27,7 +27,6 @@
 #include "../Commands/NewTabCommand.h"
 #include "Controllers/DialogsController.h"
 #include "Controllers/TabsController.h"
-#include "Controllers/TransactionController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"
 
@@ -55,7 +54,6 @@ private:
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
 	TabsController* _tabsController;
-	TransactionController* _transactionController;
 
 	void SetupCommands();
 };

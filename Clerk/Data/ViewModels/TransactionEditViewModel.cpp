@@ -13,6 +13,10 @@ TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsServ
 	_toAmount = 0;
 	_date = wxDateTime::Now();
 	
+	_accountsService.OnUpdate([=]() {
+		Update();
+	});
+
 	Update();
 }
 
@@ -118,20 +122,6 @@ void TransactionEditViewModel::Update() {
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
 	}
-
-	if (_toAmount == 0) {
-		float rate = 1;
-		
-		if (Settings::GetInstance().IsConvertCurrency()) {
-			rate = _exchangeRatesRepository.GetExchangeRate(_fromAccount->currency->id, _toAccount->currency->id);
-		}
-
-		_toAmount = _fromAmount * rate;	
-	}	
-
-	if (OnUpdate) {
-		OnUpdate();
-	}
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TransactionEditViewModel::GetFromAccounts() {	
@@ -154,7 +144,7 @@ int TransactionEditViewModel::GetFromAccountIndex() {
 
 void TransactionEditViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
-	Update();
+	//OnUpdate("fromAccount");
 }
 
 int TransactionEditViewModel::GetToAccountIndex() {
@@ -169,7 +159,8 @@ int TransactionEditViewModel::GetToAccountIndex() {
 
 void TransactionEditViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
-	Update();
+	//Update();
+	//OnUpdate("toAccount");
 }
 
 float TransactionEditViewModel::GetFromAmount() {
@@ -178,7 +169,18 @@ float TransactionEditViewModel::GetFromAmount() {
 
 void TransactionEditViewModel::SetFromAmount(float amount) {
 	_fromAmount = amount;
-	Update();
+
+	if (_toAmount == 0) {
+		float rate = 1;
+
+		if (Settings::GetInstance().IsConvertCurrency()) {
+			rate = _exchangeRatesRepository.GetExchangeRate(_fromAccount->currency->id, _toAccount->currency->id);
+		}
+
+		_toAmount = _fromAmount * rate;
+
+		OnUpdate(0);
+	}
 }
 
 float TransactionEditViewModel::GetToAmount() {

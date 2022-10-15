@@ -40,7 +40,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagViewModel>> SearchTagsByString(wxString search);
 
 			void Save();
-			std::function<void()> OnUpdate;
+			std::function<void(int fieldName)> OnUpdate;
 
 		private:
 			AccountsService& _accountsService;

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../TabsPanel.h"
+#include "../Tabs/TabsPanel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 #include "../Dashboard/DashboardPanel.h"

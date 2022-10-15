@@ -4,7 +4,6 @@
 #include "ICommandsReceiver.h"
 #include "../UI/Controllers/DialogsController.h"
 #include "../UI/Controllers/TabsController.h"
-#include "../UI/Controllers/TransactionController.h"
 
 using namespace Clerk::UI;
 using namespace Clerk::Data;
@@ -14,7 +13,7 @@ namespace Clerk {
 		class CommandsReceiver: public ICommandsReceiver {
 		public:
 			CommandsReceiver();
-			CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController, TransactionController* transactionController);
+			CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController);
 
 			void Quit() override;
 			void OpenPreferencesDialog() override;
@@ -32,7 +31,6 @@ namespace Clerk {
 			wxFrame* _frame{};
 			DialogsController* _dialogsController;
 			TabsController* _tabsController;
-			TransactionController* _transactionController;
 		};
 	}
 }

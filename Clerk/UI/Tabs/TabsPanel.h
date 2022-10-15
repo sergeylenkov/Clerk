@@ -3,22 +3,23 @@
 #include <wx/wx.h>
 #include <wx/notebook.h>
 #include <memory>
-#include "../Defines.h"
-#include "../Data/Settings.h"
-#include "../Data/DataContext.h"
-#include "Transactions/TransactionsListPanel.h"
-#include "Dashboard/DashboardPanel.h"
-#include "Reports/ReportExpensesByMonthPanel.h"
-#include "Reports/ReportBalanceByMonthPanel.h"
-#include "Reports/ReportExpensesForPeriodPanel.h"
-#include "Budgets/BudgetsPanel.h"
-#include "TrashPanel.h"
-#include "Schedulers/SchedulersPanel.h"
-#include "Goals/GoalsPanel.h"
-#include "Alerts/AlertsPanel.h"
-#include "TagsPanel.h"
-#include "TreeMenu/Enums.h"
-#include "../Commands/CommandsInvoker.h"
+#include "../../Defines.h"
+#include "../../Data/Settings.h"
+#include "../../Data/DataContext.h"
+#include "../Transactions/TransactionsListPanel.h"
+#include "../Dashboard/DashboardPanel.h"
+#include "../Reports/ReportExpensesByMonthPanel.h"
+#include "../Reports/ReportBalanceByMonthPanel.h"
+#include "../Reports/ReportExpensesForPeriodPanel.h"
+#include "../Budgets/BudgetsPanel.h"
+#include "../TrashPanel.h"
+#include "../Schedulers/SchedulersPanel.h"
+#include "../Goals/GoalsPanel.h"
+#include "../Alerts/AlertsPanel.h"
+#include "../TagsPanel.h"
+#include "../TreeMenu/Enums.h"
+#include "../../Commands/CommandsInvoker.h"
+#include "TabsContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
@@ -26,12 +27,6 @@ using namespace Clerk::Commands;
 class TabsPanel : public wxPanel
 {
 public:
-	enum class ContextMenuTypes {
-		MoveLeft = 1,
-		MoveRight = 2,
-		Close = 3,
-	};
-
 	TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
 	~TabsPanel();
 
@@ -65,7 +60,6 @@ private:
 	std::vector<wxPanel *> _tabs;
 	std::vector<wxBoxSizer *> _tabsSizer;
 	std::vector<DataPanel *> _tabsPanels;
-	int _contextMenuTab;
 
 	/*void CreatePanel(int tabIndex, TreeMenuItemType type, std::shared_ptr<void> object);
 	void CreateAccountPanel(int tabIndex, std::shared_ptr<AccountViewModel> account);
@@ -80,7 +74,6 @@ private:
 	void CreateAlertsPanel(int tabIndex);*/
 	void OnTabChanged(wxBookCtrlEvent &event);	
 	void OnTabClick(wxMouseEvent &event);
-	void OnTabMenuClose(wxCommandEvent &event);
 	/*void AddTransaction();
 	void CopyTransaction(std::shared_ptr<TransactionViewModel> transaction);
 	void EditTransaction(std::shared_ptr<TransactionViewModel> transaction);

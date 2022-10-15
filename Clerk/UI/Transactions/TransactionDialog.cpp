@@ -117,11 +117,16 @@ TransactionDialog::~TransactionDialog() {
 	delete _tagsPopup;	
 }
 
-void TransactionDialog::SetTransaction(std::shared_ptr<TransactionViewModel> transaction)  {
-	_transaction = transaction;
+void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
+	_viewModel = viewModel;
+	_viewModel->OnUpdate = [=](int fieldName) {
+		Update();
+		if (fieldName == 0) {
+			//toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+		}
+	};
 
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
+	Update();
 }
 
 void TransactionDialog::Update() {

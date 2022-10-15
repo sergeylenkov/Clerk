@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -128,7 +128,6 @@
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
     <ClCompile Include="UI\Controllers\TabsController.cpp" />
-    <ClCompile Include="UI\Controllers\TransactionController.cpp" />
     <ClCompile Include="UI\Controls\AddTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
@@ -139,6 +138,7 @@
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
     <ClCompile Include="UI\Alerts\AlertsPanel.cpp" />
     <ClCompile Include="UI\Controls\MainMenu.cpp" />
+    <ClCompile Include="UI\Tabs\TabsContextMenu.cpp" />
     <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp" />
@@ -174,7 +174,7 @@
     <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
-    <ClCompile Include="UI\TabsPanel.cpp" />
+    <ClCompile Include="UI\Tabs\TabsPanel.cpp" />
     <ClCompile Include="UI\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp" />
@@ -267,7 +267,6 @@
     <ClInclude Include="Data\ViewModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
     <ClInclude Include="UI\Controllers\TabsController.h" />
-    <ClInclude Include="UI\Controllers\TransactionController.h" />
     <ClInclude Include="UI\Controls\AddTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />
@@ -279,6 +278,8 @@
     <ClInclude Include="UI\Alerts\AlertsPanel.h" />
     <ClInclude Include="UI\Controls\MainMenu.h" />
     <ClInclude Include="UI\Enums.h" />
+    <ClInclude Include="UI\Tabs\Enums.h" />
+    <ClInclude Include="UI\Tabs\TabsContextMenu.h" />
     <ClInclude Include="UI\Transactions\Enums.h" />
     <ClInclude Include="UI\Transactions\TransactionContextMenu.h" />
     <ClInclude Include="UI\Transactions\TransactionsAmountRender.h" />
@@ -316,7 +317,7 @@
     <ClInclude Include="UI\Schedulers\SchedulersPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
-    <ClInclude Include="UI\TabsPanel.h" />
+    <ClInclude Include="UI\Tabs\TabsPanel.h" />
     <ClInclude Include="UI\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu\AccountContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h" />

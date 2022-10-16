@@ -344,7 +344,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 
 	TabsContextMenu* menu = new TabsContextMenu(tabId, isLeftEnable, isRightEnable, isCloseEnable);
 
-	menu->OnClose = [=](int tabId) {
+	menu->OnClose = [this](int tabId) {
 		RemoveTab(tabId);
 	};
 

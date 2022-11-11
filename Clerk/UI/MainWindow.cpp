@@ -10,8 +10,11 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
 	StatusViewModel* statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesRepository(), Settings::GetInstance().GetSelectedExchangeRates());
+	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
+	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 
 	_mainMenu = new MainMenu(*_commandsInvoker);
+	_mainMenu->SetViewModel(mainMenuViewModel);
 
 	this->SetMenuBar(_mainMenu);
 
@@ -22,7 +25,9 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_addTransactionButton = new AddTransactionButton(_toolbar, *_commandsInvoker);
+	_addTransactionButton = new AddTransactionButton(_toolbar, *_commandsInvoker);	
+	_addTransactionButton->SetViewModel(addButtonViewModel);
+
 	horizontalSizer->Add(_addTransactionButton, 0, wxALL, 5);
 
 	_toolbar->SetSizer(horizontalSizer);
@@ -67,10 +72,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	this->SetSizer(mainSizer);
 	this->Layout();
 
-	this->Centre(wxBOTH);
-	
-	_mainMenu->SetTransactions(_context.GetTransactionsService().GetRecents(10));
-	_addTransactionButton->SetTransactions(_context.GetTransactionsService().GetRecents(10));
+	this->Centre(wxBOTH);	
 
 	_treeMenu->RestoreState();
 

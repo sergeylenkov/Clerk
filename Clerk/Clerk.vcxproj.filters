@@ -399,6 +399,9 @@
     <ClCompile Include="UI\Tabs\TabsContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Data\ViewModels\TransactionsMenuViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -831,6 +834,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Tabs\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ViewModels\TransactionsMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

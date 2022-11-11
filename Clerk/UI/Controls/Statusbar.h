@@ -13,6 +13,7 @@ class Statusbar : public wxPanel
 public:
 	Statusbar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
 	~Statusbar();
+
 	void SetViewModel(StatusViewModel* viewModel);
 
 private:

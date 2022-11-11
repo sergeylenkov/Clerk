@@ -64,6 +64,11 @@ Statusbar::~Statusbar() {
 
 void Statusbar::SetViewModel(StatusViewModel* viewModel) {
 	_viewModel = viewModel;
+
+	_viewModel->OnUpdate([=]() {
+		Update();
+	});
+
 	Update();
 }
 

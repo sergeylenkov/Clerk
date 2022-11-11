@@ -8,6 +8,20 @@ StatusViewModel::StatusViewModel(AccountingService& accountingService, ExchangeR
 	_currenciesRepository(currenciesRepository)
 {
 	_selectedRates = selectedRates;
+
+	_eventEmitter = new EventEmitter();
+
+	_accountingService.OnUpdate([=]() {
+		_eventEmitter->Emit();
+	});
+}
+
+StatusViewModel::~StatusViewModel() {
+	delete _eventEmitter;
+}
+
+void StatusViewModel::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 float StatusViewModel::GetBalance() {

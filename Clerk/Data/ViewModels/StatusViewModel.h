@@ -11,6 +11,7 @@ namespace Clerk {
 		class StatusViewModel {
 		public:
 			StatusViewModel(AccountingService& accountingService, ExchangeRatesRepository& exchangeRatesRepository, CurrenciesRepository& currenciesRepository, std::vector<int> selectedRates);
+			~StatusViewModel();
 
 			float GetBalance();
 			float GetReceipts();
@@ -18,11 +19,14 @@ namespace Clerk {
 			wxString GetExchangeRates();
 			std::shared_ptr<Currency> GetBaseCurrency();
 
+			void OnUpdate(std::function<void()> fn);
+
 		private:
 			AccountingService& _accountingService;
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			CurrenciesRepository& _currenciesRepository;
 			std::vector<int> _selectedRates;
+			EventEmitter* _eventEmitter;
 		};
 	}
 }

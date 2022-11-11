@@ -144,7 +144,6 @@ int TransactionEditViewModel::GetFromAccountIndex() {
 
 void TransactionEditViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
-	//OnUpdate("fromAccount");
 }
 
 int TransactionEditViewModel::GetToAccountIndex() {
@@ -159,8 +158,6 @@ int TransactionEditViewModel::GetToAccountIndex() {
 
 void TransactionEditViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
-	//Update();
-	//OnUpdate("toAccount");
 }
 
 float TransactionEditViewModel::GetFromAmount() {
@@ -179,7 +176,7 @@ void TransactionEditViewModel::SetFromAmount(float amount) {
 
 		_toAmount = _fromAmount * rate;
 
-		OnUpdate(0);
+		OnUpdate(1);
 	}
 }
 
@@ -189,6 +186,7 @@ float TransactionEditViewModel::GetToAmount() {
 
 void TransactionEditViewModel::SetToAmount(float amount) {
 	_toAmount = amount;
+	OnUpdate(1);
 }
 
 void TransactionEditViewModel::SetNote(wxString note) {
@@ -247,12 +245,12 @@ void TransactionEditViewModel::SetTagsString(wxString tags) {
 		}
 	}
 
-	Update();
+	OnUpdate(2);
 }
 
 void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 	_tags.push_back(tag);
-	Update();
+	OnUpdate(2);
 }
 
 std::vector<std::shared_ptr<TagViewModel>> TransactionEditViewModel::SearchTagsByString(wxString search) {

@@ -124,6 +124,7 @@
     <ClCompile Include="Data\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TagViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TransactionEditViewModel.cpp" />
+    <ClCompile Include="Data\ViewModels\TransactionsMenuViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TransactionViewModel.cpp" />
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
@@ -262,6 +263,7 @@
     <ClInclude Include="Data\ViewModels\StringValueViewModel.h" />
     <ClInclude Include="Data\ViewModels\TagViewModel.h" />
     <ClInclude Include="Data\ViewModels\TransactionEditViewModel.h" />
+    <ClInclude Include="Data\ViewModels\TransactionsMenuViewModel.h" />
     <ClInclude Include="Data\ViewModels\TransactionViewModel.h" />
     <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h" />
     <ClInclude Include="Data\ViewModels\Types.h" />

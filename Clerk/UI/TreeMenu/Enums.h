@@ -32,8 +32,8 @@ namespace Clerk {
 			NewScheduler = 7,
 			RestoreAccount = 8,
 			EmptyTrash = 9,
-			AddGoal = 10,
-			AddAlert = 11
+			NewGoal = 10,
+			NewAlert = 11
 		};
 	}
 }

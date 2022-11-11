@@ -2,6 +2,7 @@
 
 #include "DropDownButton.h"
 #include "../../Data/ViewModels/TransactionViewModel.h"
+#include "../../Data/ViewModels/TransactionsMenuViewModel.h"
 #include "../../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Data;
@@ -13,14 +14,17 @@ namespace Clerk {
 		{
 		public:
 			AddTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker);
+			~AddTransactionButton();
 
-			void SetTransactions(std::vector<std::shared_ptr<TransactionViewModel>> transactions);
+			void SetViewModel(TransactionsMenuViewModel* viewModel);
 
 		private:
 			CommandsInvoker& _commandsInvoker;
+			TransactionsMenuViewModel* _viewModel{};
 
+			void Update();
 			void OnAddTransaction(wxCommandEvent& event);
-			void OnMenuAddTransaction(wxCommandEvent& event);
+			void OnMenuSelect(wxCommandEvent& event);
 
 		};
 	}

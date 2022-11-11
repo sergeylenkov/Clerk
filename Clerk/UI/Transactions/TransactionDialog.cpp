@@ -120,13 +120,21 @@ TransactionDialog::~TransactionDialog() {
 void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
 	_viewModel = viewModel;
 	_viewModel->OnUpdate = [=](int fieldName) {
-		Update();
-		if (fieldName == 0) {
-			//toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+		//Update();
+		if (fieldName == 1) {
+			fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+			toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+		}
+
+		if (fieldName == 2) {
+			tagsField->SetValue(_viewModel->GetTagsString());
 		}
 	};
 
 	Update();
+	
+	fromAmountField->SetFocus();
+	fromAmountField->SelectAll();
 }
 
 void TransactionDialog::Update() {

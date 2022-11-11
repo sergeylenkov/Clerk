@@ -8,7 +8,20 @@ AddTransactionButton::AddTransactionButton(wxWindow* parent, CommandsInvoker& co
 	this->Bind(wxEVT_BUTTON, &AddTransactionButton::OnAddTransaction, this);
 }
 
-void AddTransactionButton::SetTransactions(std::vector<std::shared_ptr<TransactionViewModel>> transactions) {
+AddTransactionButton::~AddTransactionButton() {
+	delete _viewModel;
+}
+
+void AddTransactionButton::SetViewModel(TransactionsMenuViewModel* viewModel) {
+	_viewModel = viewModel;
+	_viewModel->OnUpdate([=]() {
+		Update();
+		});
+
+	Update();
+}
+
+void AddTransactionButton::Update() {
 	wxMenu* menu = this->GetMenu();
 	
 	wxMenuItem* item = (wxMenuItem*)menu->GetMenuItems().GetLast();
@@ -19,18 +32,18 @@ void AddTransactionButton::SetTransactions(std::vector<std::shared_ptr<Transacti
 		item = (wxMenuItem*)menu->GetMenuItems().GetLast();
 	}
 
-	for (auto& transaction : transactions)
+	for (auto& transaction : _viewModel->GetRecents())
 	{
 		menu->Append(transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
 	}
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &AddTransactionButton::OnMenuAddTransaction, this);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &AddTransactionButton::OnMenuSelect, this);
 }
 
 void AddTransactionButton::OnAddTransaction(wxCommandEvent& event) {
 	_commandsInvoker.OnNewTransaction(-1);
 }
 
-void AddTransactionButton::OnMenuAddTransaction(wxCommandEvent& event) {
+void AddTransactionButton::OnMenuSelect(wxCommandEvent& event) {
 	_commandsInvoker.OnCopyTransaction(event.GetId());
 }

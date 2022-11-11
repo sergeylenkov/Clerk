@@ -29,6 +29,7 @@
 #include "Controllers/TabsController.h"
 #include "../Data/ViewModels/StatusViewModel.h"
 #include "../Data/ViewModels/TreeMenuViewModel.h"
+#include "../Data/ViewModels/TransactionsMenuViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

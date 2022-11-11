@@ -2,97 +2,109 @@
 
 using namespace Clerk::UI;
 
+const int transactionsOffset = 1000;
+
 MainMenu::MainMenu(CommandsInvoker& commandsInvoker): _commandsInvoker(commandsInvoker) {
-	_menuFile = new wxMenu();
-	_menuHelp = new wxMenu();
-	_menuTransaction = new wxMenu();
-
-	_menuHelp->Append(static_cast<int>(MainMenuTypes::About), "&About...");
-
+	_menuFile = new wxMenu();	
+	
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuTypes::AddAccount), wxT("New Account..."));
-	_menuFile->Append(static_cast<int>(MainMenuTypes::AddBudget), wxT("New Budget..."));
-	_menuFile->Append(static_cast<int>(MainMenuTypes::AddGoal), wxT("New Goal..."));
-	_menuFile->Append(static_cast<int>(MainMenuTypes::AddScheduler), wxT("New Scheduler..."));
-	_menuFile->Append(static_cast<int>(MainMenuTypes::AddAlert), wxT("New Alert..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewAccount), wxT("New Account..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewBudget), wxT("New Budget..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewGoal), wxT("New Goal..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewScheduler), wxT("New Scheduler..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewAlert), wxT("New Alert..."));
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuTypes::Preferences), "Preferences...\tCtrl+P");
+	_menuFile->Append(static_cast<int>(MainMenuType::Preferences), "Preferences...\tCtrl+P");
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuTypes::Exit), "E&xit\tCtrl+W");
+	_menuFile->Append(static_cast<int>(MainMenuType::Exit), "E&xit\tCtrl+W");
 
 	this->Append(_menuFile, "&File");
-	this->Append(_menuHelp, "&Help");
 
-	_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAbout, this, static_cast<int>(MainMenuTypes::About));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddAccount, this, static_cast<int>(MainMenuTypes::AddAccount));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddBudget, this, static_cast<int>(MainMenuTypes::AddBudget));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddGoal, this, static_cast<int>(MainMenuTypes::AddGoal));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddScheduler, this, static_cast<int>(MainMenuTypes::AddScheduler));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnPreferences, this, static_cast<int>(MainMenuTypes::Preferences));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnQuit, this, static_cast<int>(MainMenuTypes::Exit));
-	_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddAlert, this, static_cast<int>(MainMenuTypes::AddAlert));
+	wxMenu* menuHelp = new wxMenu();
+	menuHelp->Append(static_cast<int>(MainMenuType::About), "&About...");
+
+	this->Append(menuHelp, "&Help");
+
+	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnMenuSelect, this);
 }
 
-void MainMenu::SetTransactions(std::vector<std::shared_ptr<TransactionViewModel>> transactions) {
+MainMenu::~MainMenu() {
+	delete _viewModel;
+}
+
+void MainMenu::SetViewModel(TransactionsMenuViewModel* viewModel) {
+	_viewModel = viewModel;
+	_viewModel->OnUpdate([=]() {
+		Update();
+	});
+
+	Update();
+}
+
+void MainMenu::Update() {
+	auto transactions = _viewModel->GetRecents();
+
 	if (transactions.size() == 0) {
-		_menuFile->Insert(0, static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction...\tCtrl+T"));
-		_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddTransaction, this, static_cast<int>(MainMenuTypes::AddTransaction));
+		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction...\tCtrl+T"));		
 	}
 	else {
-		_menuFile->Insert(0, static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction"), _menuTransaction);
+		wxMenu* menu = new wxMenu();
+		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnTransactionSelect, this);
 
-		wxMenuItem* item = (wxMenuItem*)_menuTransaction->GetMenuItems().GetLast();
-
-		while (item != NULL)
-		{
-			_menuTransaction->Destroy(item);
-			item = (wxMenuItem*)_menuTransaction->GetMenuItems().GetLast();
-		}
-
-		_menuTransaction->Append(static_cast<int>(MainMenuTypes::AddTransaction), wxT("New Transaction...\tCtrl+T"));
-		_menuTransaction->AppendSeparator();
+		menu->Append(static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction...\tCtrl+T"));
+		menu->AppendSeparator();
 
 		for (auto& transaction : transactions)
 		{
-			_menuTransaction->Append(transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+			menu->Append(transactionsOffset + transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
 		}
 
-		_menuTransaction->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnAddTransaction, this);
+		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction"), menu);
 	}
 }
 
-void MainMenu::OnQuit(wxCommandEvent& event) {
-	_commandsInvoker.OnQuit();
+
+void MainMenu::OnMenuSelect(wxCommandEvent& event) {
+	MainMenuType type = static_cast<MainMenuType>(event.GetId());
+
+	switch (type)
+	{
+		case Clerk::UI::MainMenuType::NewTransaction:
+			_commandsInvoker.OnNewTransaction(-1);
+			break;
+		case Clerk::UI::MainMenuType::NewAccount:
+			_commandsInvoker.OnNewAccount(AccountType::Deposit);
+			break;
+		case Clerk::UI::MainMenuType::NewBudget:
+			break;
+		case Clerk::UI::MainMenuType::NewScheduler:
+			break;
+		case Clerk::UI::MainMenuType::NewGoal:
+			break;
+		case Clerk::UI::MainMenuType::NewAlert:
+			break;
+		case Clerk::UI::MainMenuType::About:
+			_commandsInvoker.OnAbout();
+			break;
+		case Clerk::UI::MainMenuType::Preferences:
+			_commandsInvoker.OnPreferences();
+			break;
+		case Clerk::UI::MainMenuType::Exit:
+			_commandsInvoker.OnQuit();
+			break;
+		default:
+			break;
+	}
 }
 
-void MainMenu::OnAbout(wxCommandEvent& event) {
-	_commandsInvoker.OnAbout();
-}
 
-void MainMenu::OnPreferences(wxCommandEvent& event) {
-	_commandsInvoker.OnPreferences();
-}
+void MainMenu::OnTransactionSelect(wxCommandEvent& event) {
+	int id = event.GetId();
 
-void MainMenu::OnAddAccount(wxCommandEvent& event) {
-
-}
-
-void MainMenu::OnAddBudget(wxCommandEvent& event) {
-
-}
-
-void MainMenu::OnAddScheduler(wxCommandEvent& event) {
-
-}
-
-void MainMenu::OnAddGoal(wxCommandEvent& event) {
-
-}
-
-void MainMenu::OnAddAlert(wxCommandEvent& event) {
-
-}
-
-void MainMenu::OnAddTransaction(wxCommandEvent& event) {
-
+	if (id >= transactionsOffset) {
+		_commandsInvoker.OnCopyTransaction(id - transactionsOffset);
+	}
+	else if (id == static_cast<int>(MainMenuType::NewTransaction)) {
+		_commandsInvoker.OnNewTransaction(-1);
+	}
 }

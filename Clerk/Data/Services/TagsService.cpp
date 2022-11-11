@@ -10,7 +10,7 @@ std::vector<std::shared_ptr<TagViewModel>> TagsService::GetAll() {
 
 	std::vector<std::shared_ptr<TagViewModel>> result;
 
-	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [=](const std::shared_ptr<TagModel>& tag) {
+	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [&](const std::shared_ptr<TagModel>& tag) {
 		auto model = std::make_shared<TagViewModel>(*tag);
 
 		model->count = _tagsRepository.GetCount(tag->id);
@@ -38,7 +38,7 @@ std::vector<std::shared_ptr<TagViewModel>> TagsService::GetBySearch(wxString sea
 	
 	std::vector<std::shared_ptr<TagViewModel>> result;
 
-	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [=](const std::shared_ptr<TagModel>& tag) {
+	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [&](const std::shared_ptr<TagModel>& tag) {
 		return std::make_shared<TagViewModel>(*tag);
 	});
 

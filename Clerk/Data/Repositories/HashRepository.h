@@ -40,7 +40,7 @@ namespace Clerk {
 				if (model) {
 					_hash.erase(id);
 
-					auto search = std::find_if(_list.begin(), _list.end(), [model](std::shared_ptr<T> _t) { return (_t == model); });
+					auto search = std::find_if(_list.begin(), _list.end(), [&model](std::shared_ptr<T> _t) { return (_t == model); });
 
 					if (search != _list.end()) {
 						_list.erase(search);

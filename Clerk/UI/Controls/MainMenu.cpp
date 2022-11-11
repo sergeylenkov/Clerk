@@ -63,7 +63,6 @@ void MainMenu::Update() {
 	}
 }
 
-
 void MainMenu::OnMenuSelect(wxCommandEvent& event) {
 	MainMenuType type = static_cast<MainMenuType>(event.GetId());
 
@@ -96,7 +95,6 @@ void MainMenu::OnMenuSelect(wxCommandEvent& event) {
 			break;
 	}
 }
-
 
 void MainMenu::OnTransactionSelect(wxCommandEvent& event) {
 	int id = event.GetId();

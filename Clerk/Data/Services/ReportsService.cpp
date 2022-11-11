@@ -10,7 +10,7 @@ std::vector<std::shared_ptr<ReportViewModel>> ReportsService::GetAll() {
 
 	std::vector<std::shared_ptr<ReportViewModel>> result;
 
-	std::transform(reports.begin(), reports.end(), std::back_inserter(result), [this](const std::shared_ptr<ReportModel>& report) {
+	std::transform(reports.begin(), reports.end(), std::back_inserter(result), [&](const std::shared_ptr<ReportModel>& report) {
 		auto model = std::make_shared<ReportViewModel>(*report);
 
 		return model;

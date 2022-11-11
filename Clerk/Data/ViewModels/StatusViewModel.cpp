@@ -11,7 +11,7 @@ StatusViewModel::StatusViewModel(AccountingService& accountingService, ExchangeR
 
 	_eventEmitter = new EventEmitter();
 
-	_accountingService.OnUpdate([=]() {
+	_accountingService.OnUpdate([&]() {
 		_eventEmitter->Emit();
 	});
 }

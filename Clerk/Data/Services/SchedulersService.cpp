@@ -26,7 +26,7 @@ std::vector<std::shared_ptr<SchedulerViewModel>> SchedulersService::GetAll() {
 
 	std::vector<std::shared_ptr<SchedulerViewModel>> result;
 
-	std::transform(schedulers.begin(), schedulers.end(), std::back_inserter(result), [this](const std::shared_ptr<SchedulerModel>& scheduler) {
+	std::transform(schedulers.begin(), schedulers.end(), std::back_inserter(result), [&](const std::shared_ptr<SchedulerModel>& scheduler) {
 		auto model = std::make_shared<SchedulerViewModel>(*scheduler);		
 
 		auto account = _accountsRepository.GetById(scheduler->toAccountId);

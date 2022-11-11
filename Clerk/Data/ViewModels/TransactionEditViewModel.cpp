@@ -99,41 +99,6 @@ void TransactionEditViewModel::Update() {
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
 	}
-
-	/*auto receipts = _accountsService.GetByType(AccountType::Receipt);
-	auto deposits = _accountsService.GetByType(AccountType::Deposit);
-
-	_fromAccounts.clear();
-	_fromAccounts.insert(_fromAccounts.end(), receipts.begin(), receipts.end());
-	_fromAccounts.insert(_fromAccounts.end(), deposits.begin(), deposits.end());
-	
-	if (!_fromAccount) {
-		_fromAccount = _fromAccounts[0];
-	}
-
-	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
-	auto expenses = _accountsService.GetByType(AccountType::Expens);
-	auto debts = _accountsService.GetByType(AccountType::Debt);
-
-	_toAccounts.clear();
-
-	std::vector<std::shared_ptr<AccountViewModel>> filtered;
-
-	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
-	filtered.insert(filtered.end(), virtuals.begin(), virtuals.end());
-
-	if (_fromAccount->type == AccountType::Deposit) {
-		filtered.insert(filtered.end(), expenses.begin(), expenses.end());
-		filtered.insert(filtered.end(), debts.begin(), debts.end());
-	}	
-
-	std::copy_if(filtered.begin(), filtered.end(), std::back_inserter(_toAccounts), [=](const std::shared_ptr<AccountViewModel>& account) {
-		return account->id != _fromAccount->id;
-	});
-
-	if (!_toAccount) {
-		_toAccount = _toAccounts[0];
-	}*/
 }
 
 void TransactionEditViewModel::UpdateFromAccounts() {

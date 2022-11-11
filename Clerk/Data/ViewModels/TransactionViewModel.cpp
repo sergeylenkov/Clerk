@@ -44,7 +44,7 @@ TransactionModel* TransactionViewModel::GetModel() {
 	model->date = date.FormatISODate();
 	model->created = created.FormatISOCombined(' ');
 
-	std::transform(tags.begin(), tags.end(), std::back_inserter(model->tagsIds), [this](const std::shared_ptr<TagViewModel>& tag) {
+	std::transform(tags.begin(), tags.end(), std::back_inserter(model->tagsIds), [&](const std::shared_ptr<TagViewModel>& tag) {
 		return tag->id;
 	});
 	

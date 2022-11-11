@@ -35,7 +35,7 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetForPe
 
 	std::vector<std::shared_ptr<TransactionViewModel>> result;
 
-	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [this](const std::shared_ptr<TransactionModel>& transaction) {
+	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [&](const std::shared_ptr<TransactionModel>& transaction) {
 		auto model = std::make_shared<TransactionViewModel>(*transaction);
 
 		LoadDetails(*model, *transaction);
@@ -51,7 +51,7 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetRecen
 
 	std::vector<std::shared_ptr<TransactionViewModel>> result;
 
-	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [this](const std::shared_ptr<TransactionModel>& transaction) {
+	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [&](const std::shared_ptr<TransactionModel>& transaction) {
 		auto model = std::make_shared<TransactionViewModel>(*transaction);
 
 		LoadDetails(*model, *transaction);
@@ -68,7 +68,7 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetRecen
 
 	std::vector<std::shared_ptr<TransactionViewModel>> result;
 
-	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [this](const std::shared_ptr<TransactionModel>& transaction) {
+	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [&](const std::shared_ptr<TransactionModel>& transaction) {
 		auto model = std::make_shared<TransactionViewModel>(*transaction);
 
 		LoadDetails(*model, *transaction);
@@ -84,7 +84,7 @@ std::vector<std::shared_ptr<TransactionViewModel>> TransactionsService::GetDelet
 
 	std::vector<std::shared_ptr<TransactionViewModel>> result;
 
-	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [this](const std::shared_ptr<TransactionModel>& transaction) {
+	std::transform(transactions.begin(), transactions.end(), std::back_inserter(result), [&](const std::shared_ptr<TransactionModel>& transaction) {
 		auto model = std::make_shared<TransactionViewModel>(*transaction);
 
 		LoadDetails(*model, *transaction);

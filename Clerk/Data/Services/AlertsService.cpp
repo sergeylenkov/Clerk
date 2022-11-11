@@ -21,7 +21,7 @@ std::vector<std::shared_ptr<AlertViewModel>> AlertsService::GetAll() {
 
 	std::vector<std::shared_ptr<AlertViewModel>> result;
 
-	std::transform(alerts.begin(), alerts.end(), std::back_inserter(result), [=](const std::shared_ptr<AlertModel>& alert) {
+	std::transform(alerts.begin(), alerts.end(), std::back_inserter(result), [&](const std::shared_ptr<AlertModel>& alert) {
 		auto model = std::make_shared<AlertViewModel>(*alert);
 		model->balance = _alertsRepository.GetBalance(*alert);
 

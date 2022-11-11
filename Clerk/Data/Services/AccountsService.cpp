@@ -38,7 +38,7 @@ std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetActive() {
 
 	std::vector<std::shared_ptr<AccountViewModel>> result;
 
-	std::transform(filtered.begin(), filtered.end(), std::back_inserter(result), [=](const std::shared_ptr<AccountModel>& account) {
+	std::transform(filtered.begin(), filtered.end(), std::back_inserter(result), [&](const std::shared_ptr<AccountModel>& account) {
 		auto model = std::make_shared<AccountViewModel>(*account);
 		model->currency = _currenciesRepository.GetById(account->currencyId);
 
@@ -53,7 +53,7 @@ std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetByType(Accoun
 
 	std::vector<std::shared_ptr<AccountViewModel>> result;
 
-	std::transform(accounts.begin(), accounts.end(), std::back_inserter(result), [=](const std::shared_ptr<AccountModel>& account) {
+	std::transform(accounts.begin(), accounts.end(), std::back_inserter(result), [&](const std::shared_ptr<AccountModel>& account) {
 		auto model = std::make_shared<AccountViewModel>(*account);
 		model->currency = _currenciesRepository.GetById(account->currencyId);
 		
@@ -78,7 +78,7 @@ std::vector<std::shared_ptr<AccountViewModel>> AccountsService::GetArchive() {
 
 	std::vector<std::shared_ptr<AccountViewModel>> result;
 
-	std::transform(filtered.begin(), filtered.end(), std::back_inserter(result), [=](const std::shared_ptr<AccountModel>& account) {
+	std::transform(filtered.begin(), filtered.end(), std::back_inserter(result), [&](const std::shared_ptr<AccountModel>& account) {
 		auto model = std::make_shared<AccountViewModel>(*account);
 		model->currency = _currenciesRepository.GetById(account->currencyId);
 

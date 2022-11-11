@@ -14,7 +14,7 @@ DashboardViewModel::DashboardViewModel(AccountingService& accountingService, Tra
 {
 	_eventEmitter = new EventEmitter();
 
-	_transactionsService.OnUpdate([=]() {
+	_transactionsService.OnUpdate([&]() {
 		_eventEmitter->Emit();
 	});
 }

@@ -8,6 +8,7 @@
 #include "../Repositories/ExchangeRatesRepository.h"
 #include "../Settings.h"
 #include "./TagViewModel.h"
+#include "./Enums.h"
 
 namespace Clerk {
 	namespace Data {
@@ -40,7 +41,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagViewModel>> SearchTagsByString(wxString search);
 
 			void Save();
-			std::function<void(int fieldName)> OnUpdate;
+			std::function<void(TransactionEditViewModelField fiel)> OnUpdate;
 
 		private:
 			AccountsService& _accountsService;
@@ -60,6 +61,8 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagViewModel>> _tags;
 
 			void Update();
+			void UpdateFromAccounts();
+			void UpdateToAccounts();
 		};
 	}
 }

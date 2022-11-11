@@ -88,7 +88,19 @@ void TransactionEditViewModel::SetAccountId(int id) {
 }
 
 void TransactionEditViewModel::Update() {
-	auto receipts = _accountsService.GetByType(AccountType::Receipt);
+	UpdateFromAccounts();
+
+	if (!_fromAccount) {
+		_fromAccount = _fromAccounts[0];
+	}
+
+	UpdateToAccounts();
+
+	if (!_toAccount) {
+		_toAccount = _toAccounts[0];
+	}
+
+	/*auto receipts = _accountsService.GetByType(AccountType::Receipt);
 	auto deposits = _accountsService.GetByType(AccountType::Deposit);
 
 	_fromAccounts.clear();
@@ -121,7 +133,46 @@ void TransactionEditViewModel::Update() {
 
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
+	}*/
+}
+
+void TransactionEditViewModel::UpdateFromAccounts() {
+	auto receipts = _accountsService.GetByType(AccountType::Receipt);
+	auto deposits = _accountsService.GetByType(AccountType::Deposit);
+
+	_fromAccounts.clear();
+
+	std::vector<std::shared_ptr<AccountViewModel>> filtered;
+
+	filtered.insert(filtered.end(), receipts.begin(), receipts.end());
+	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
+
+	std::copy_if(filtered.begin(), filtered.end(), std::back_inserter(_fromAccounts), [&](const std::shared_ptr<AccountViewModel>& account) {
+		return _toAccount ? account->id != _toAccount->id : true;
+	});
+}
+
+void TransactionEditViewModel::UpdateToAccounts() {
+	auto deposits = _accountsService.GetByType(AccountType::Deposit);
+	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
+	auto expenses = _accountsService.GetByType(AccountType::Expens);
+	auto debts = _accountsService.GetByType(AccountType::Debt);
+
+	_toAccounts.clear();
+
+	std::vector<std::shared_ptr<AccountViewModel>> filtered;
+
+	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
+	filtered.insert(filtered.end(), virtuals.begin(), virtuals.end());
+
+	if (_fromAccount->type == AccountType::Deposit) {
+		filtered.insert(filtered.end(), expenses.begin(), expenses.end());
+		filtered.insert(filtered.end(), debts.begin(), debts.end());
 	}
+
+	std::copy_if(filtered.begin(), filtered.end(), std::back_inserter(_toAccounts), [&](const std::shared_ptr<AccountViewModel>& account) {
+		return _fromAccount ? account->id != _fromAccount->id : true;
+	});
 }
 
 std::vector<std::shared_ptr<AccountViewModel>> TransactionEditViewModel::GetFromAccounts() {	
@@ -144,6 +195,15 @@ int TransactionEditViewModel::GetFromAccountIndex() {
 
 void TransactionEditViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
+
+	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](const std::shared_ptr<AccountViewModel>& account) {
+		return account->id == _fromAccount->id;
+	});
+
+	if (result != _toAccounts.end()) {
+		UpdateToAccounts();
+		OnUpdate(TransactionEditViewModelField::FromAccount);
+	}
 }
 
 int TransactionEditViewModel::GetToAccountIndex() {
@@ -158,6 +218,15 @@ int TransactionEditViewModel::GetToAccountIndex() {
 
 void TransactionEditViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
+
+	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](const std::shared_ptr<AccountViewModel>& account) {
+		return account->id == _toAccount->id;
+	});
+
+	if (result != _fromAccounts.end()) {
+		UpdateFromAccounts();
+		OnUpdate(TransactionEditViewModelField::ToAccount);
+	}
 }
 
 float TransactionEditViewModel::GetFromAmount() {
@@ -175,8 +244,10 @@ void TransactionEditViewModel::SetFromAmount(float amount) {
 		}
 
 		_toAmount = _fromAmount * rate;
+	}
 
-		OnUpdate(1);
+	if (_fromAmount == amount) {
+		OnUpdate(TransactionEditViewModelField::FromAmount);
 	}
 }
 
@@ -186,11 +257,16 @@ float TransactionEditViewModel::GetToAmount() {
 
 void TransactionEditViewModel::SetToAmount(float amount) {
 	_toAmount = amount;
-	OnUpdate(1);
+
+	if (_toAmount == amount) {
+		OnUpdate(TransactionEditViewModelField::ToAmount);
+	}
 }
 
 void TransactionEditViewModel::SetNote(wxString note) {
 	_note = note;
+
+	OnUpdate(TransactionEditViewModelField::Note);
 }
 
 wxString TransactionEditViewModel::GetNote() {
@@ -199,6 +275,8 @@ wxString TransactionEditViewModel::GetNote() {
 
 void TransactionEditViewModel::SetDate(wxDateTime date) {
 	_date = date;
+
+	OnUpdate(TransactionEditViewModelField::Date);
 }
 
 wxDateTime TransactionEditViewModel::GetDate() {
@@ -245,12 +323,13 @@ void TransactionEditViewModel::SetTagsString(wxString tags) {
 		}
 	}
 
-	OnUpdate(2);
+	OnUpdate(TransactionEditViewModelField::Tags);
 }
 
 void TransactionEditViewModel::AddTag(std::shared_ptr<TagViewModel> tag) {
 	_tags.push_back(tag);
-	OnUpdate(2);
+
+	OnUpdate(TransactionEditViewModelField::Tags);
 }
 
 std::vector<std::shared_ptr<TagViewModel>> TransactionEditViewModel::SearchTagsByString(wxString search) {

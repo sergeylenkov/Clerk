@@ -129,7 +129,7 @@
     <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
     <ClCompile Include="UI\Controllers\TabsController.cpp" />
-    <ClCompile Include="UI\Controls\AddTransactionButton.cpp" />
+    <ClCompile Include="UI\Controls\NewTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
     <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp" />
@@ -256,6 +256,7 @@
     <ClInclude Include="Data\ViewModels\CurrencyValueViewModel.h" />
     <ClInclude Include="Data\ViewModels\DashboardViewModel.h" />
     <ClInclude Include="Data\ViewModels\DateValueViewModel.h" />
+    <ClInclude Include="Data\ViewModels\Enums.h" />
     <ClInclude Include="Data\ViewModels\GoalViewModel.h" />
     <ClInclude Include="Data\ViewModels\ReportViewModel.h" />
     <ClInclude Include="Data\ViewModels\SchedulerViewModel.h" />
@@ -269,7 +270,7 @@
     <ClInclude Include="Data\ViewModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
     <ClInclude Include="UI\Controllers\TabsController.h" />
-    <ClInclude Include="UI\Controls\AddTransactionButton.h" />
+    <ClInclude Include="UI\Controls\NewTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />
     <ClInclude Include="UI\Controls\CheckboxComboPopup.h" />

@@ -291,7 +291,7 @@
     <ClCompile Include="Data\Services\TagsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\AddTransactionButton.cpp">
+    <ClCompile Include="UI\Controls\NewTransactionButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controls\MainMenu.cpp">
@@ -701,7 +701,7 @@
     <ClInclude Include="Data\Services\TagsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\AddTransactionButton.h">
+    <ClInclude Include="UI\Controls\NewTransactionButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\MainMenu.h">
@@ -837,6 +837,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\ViewModels\TransactionsMenuViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\ViewModels\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

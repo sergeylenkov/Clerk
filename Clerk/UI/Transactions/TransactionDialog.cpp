@@ -8,87 +8,87 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->SetIcon(wxICON(APP_ICON));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	_mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	fromLabel = new wxStaticText(mainPanel, wxID_ANY, "From:", wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* fromLabel = new wxStaticText(_mainPanel, wxID_ANY, "From:", wxDefaultPosition, wxSize(40, -1), 0);
 	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
-	horizontalSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
+	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	horizontalSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
+	horizontalSizer->Add(_fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	toLabel = new wxStaticText(mainPanel, wxID_ANY, "To:", wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* toLabel = new wxStaticText(_mainPanel, wxID_ANY, "To:", wxDefaultPosition, wxSize(40, -1), 0);
 	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_toList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
-	horizontalSizer->Add(toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_toAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
+	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	toAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
-	horizontalSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_toAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
+	horizontalSizer->Add(_toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 	
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	dateLabel = new wxStaticText(mainPanel, wxID_ANY, "Date:", wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* dateLabel = new wxStaticText(_mainPanel, wxID_ANY, "Date:", wxDefaultPosition, wxSize(40, -1), 0);
 	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-	horizontalSizer->Add(datePicker, 0, wxALL, 5);
+	_datePicker = new wxDatePickerCtrl(_mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	horizontalSizer->Add(_datePicker, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	tagsLabel = new wxStaticText(mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* tagsLabel = new wxStaticText(_mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, wxSize(40, -1), 0);
 	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	tagsField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(tagsField, 1, wxALL | wxEXPAND, 5);
+	_tagsField = new wxTextCtrl(_mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(_tagsField, 1, wxALL | wxEXPAND, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	noteLabel = new wxStaticText(mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* noteLabel = new wxStaticText(_mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(40, -1), 0);
 	horizontalSizer->Add(noteLabel, 0, wxALL, 5);
 
-	noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	horizontalSizer->Add(noteField, 1, wxALL | wxEXPAND, 5);
+	_noteField = new wxTextCtrl(_mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	horizontalSizer->Add(_noteField, 1, wxALL | wxEXPAND, 5);
 
 	panelSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
 	
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(mainPanel, wxID_ANY, "OK", wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_okButton = new wxButton(_mainPanel, wxID_ANY, "OK", wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(_okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	cancelButton = new wxButton(mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_cancelButton = new wxButton(_mainPanel, wxID_ANY, "Cancel", wxDefaultPosition, wxDefaultSize, 0);
+	horizontalSizer->Add(_cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
-	mainPanel->SetSizer(panelSizer);
-	mainPanel->Layout();
+	_mainPanel->SetSizer(panelSizer);
+	_mainPanel->Layout();
 
-	panelSizer->Fit(mainPanel);
+	panelSizer->Fit(_mainPanel);
 
-	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, 0);
+	mainSizer->Add(_mainPanel, 1, wxEXPAND | wxALL, 0);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -99,16 +99,16 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_tagsPopup = new TagsPopup(this);	
 	_tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);
 
-	okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
-	cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
+	_okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
+	_cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
 
-	fromList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnFromAccountSelect, this);
-	toList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnToAccountSelect, this);
-	fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnFromAmountKillFocus, this);
-	toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
-	tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
-	tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
-	tagsField->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnTagsKeyDown, this);
+	_fromList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnFromAccountSelect, this);
+	_toList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnToAccountSelect, this);
+	_fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnFromAmountKillFocus, this);
+	_toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
+	_tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
+	_tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
+	_tagsField->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnTagsKeyDown, this);
 	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
@@ -119,22 +119,31 @@ TransactionDialog::~TransactionDialog() {
 
 void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
 	_viewModel = viewModel;
-	_viewModel->OnUpdate = [=](int fieldName) {
-		//Update();
-		if (fieldName == 1) {
-			fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
-			toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+	_viewModel->OnUpdate = [&](TransactionEditViewModelField field) {
+		if (field == TransactionEditViewModelField::FromAmount || field == TransactionEditViewModelField::ToAmount) {
+			_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+			_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
 		}
 
-		if (fieldName == 2) {
-			tagsField->SetValue(_viewModel->GetTagsString());
+		if (field == TransactionEditViewModelField::Tags) {
+			_tagsField->SetValue(_viewModel->GetTagsString());
+		}
+
+		if (field == TransactionEditViewModelField::FromAccount) {
+			UpdateToList();
+			SelectToAccount(_viewModel->GetToAccountIndex());
+		}
+
+		if (field == TransactionEditViewModelField::ToAccount) {
+			UpdateFromList();
+			SelectFromAccount(_viewModel->GetFromAccountIndex());
 		}
 	};
 
 	Update();
 	
-	fromAmountField->SetFocus();
-	fromAmountField->SelectAll();
+	_fromAmountField->SetFocus();
+	_fromAmountField->SelectAll();
 }
 
 void TransactionDialog::Update() {
@@ -144,95 +153,73 @@ void TransactionDialog::Update() {
 	SelectFromAccount(_viewModel->GetFromAccountIndex());
 	SelectToAccount(_viewModel->GetToAccountIndex());
 
-	fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
-	toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
-	tagsField->SetValue(_viewModel->GetTagsString());
-	datePicker->SetValue(_viewModel->GetDate());
-}
-
-void TransactionDialog::UpdateToList() {
-	auto accounts = _viewModel->GetFromAccounts();
-
-	fromList->Clear();
-
-	for (auto& account : accounts) {
-		int iconIndex = _icons.GetIconForAccount(account->icon);
-		fromList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
-	}
-
-	accounts = _viewModel->GetToAccounts();
+	_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+	_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+	_tagsField->SetValue(_viewModel->GetTagsString());
+	_datePicker->SetValue(_viewModel->GetDate());
 }
 
 void TransactionDialog::UpdateFromList() {
-	auto accounts = _viewModel->GetToAccounts();
+	auto accounts = _viewModel->GetFromAccounts();
 
-	toList->Clear();
+	_fromList->Clear();
 
 	for (auto& account : accounts) {
 		int iconIndex = _icons.GetIconForAccount(account->icon);
-		toList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
+		_fromList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
 	}
 }
 
-void TransactionDialog::OnKeyDown(wxKeyEvent &event) {
-	if ((int)event.GetKeyCode() == WXK_ESCAPE) {
-		event.StopPropagation();
-		Close();
-	}
-	else {
-		event.Skip();
+void TransactionDialog::UpdateToList() {
+	auto accounts = _viewModel->GetToAccounts();
+
+	_toList->Clear();
+
+	for (auto& account : accounts) {
+		int iconIndex = _icons.GetIconForAccount(account->icon);
+		_toList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
 	}
 }
 
 void TransactionDialog::SelectFromAccount(int index) {
 	auto account = _viewModel->GetFromAccounts()[index];
 
-	fromList->Select(index);
-	fromAmountLabel->SetLabel(*account->currency->shortName);
+	_fromList->Select(index);
+	_fromAmountLabel->SetLabel(*account->currency->shortName);
 }
 
 void TransactionDialog::SelectToAccount(int index) {
 	auto account = _viewModel->GetToAccounts()[index];
 
-	toList->Select(index);
-	toAmountLabel->SetLabel(*account->currency->shortName);
+	_toList->Select(index);
+	_toAmountLabel->SetLabel(*account->currency->shortName);
 }
 
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {
-	int index = fromList->GetSelection();
+	int index = _fromList->GetSelection();
 	_viewModel->SetFromAccount(index);
 }
 
 void TransactionDialog::OnToAccountSelect(wxCommandEvent &event) {
-	int index = fromList->GetSelection();
+	int index = _toList->GetSelection();
 	_viewModel->SetToAccount(index);
-}
-
-void TransactionDialog::OnOK(wxCommandEvent &event) {
-	_viewModel->Save();
-
-	Close();
-}
-
-void TransactionDialog::OnCancel(wxCommandEvent &event) {
-	Close();
 }
 
 void TransactionDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 	
-	_viewModel->SetFromAmount(fromAmountField->GetFloatValue());
+	_viewModel->SetFromAmount(_fromAmountField->GetFloatValue());
 }
 
 void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	_viewModel->SetToAmount(toAmountField->GetFloatValue());
+	_viewModel->SetToAmount(_toAmountField->GetFloatValue());
 }
 
 void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 	if (event.GetKeyCode() == WXK_ESCAPE) {
-		_viewModel->SetTagsString(tagsField->GetValue());
+		_viewModel->SetTagsString(_tagsField->GetValue());
 		_tagsPopup->Hide();
 	} else if (event.GetKeyCode() == WXK_UP) {
 		_tagsPopup->SelectPrev();
@@ -243,7 +230,7 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 		AddTag();
 		_tagsPopup->Hide();
 	} else {
-		wxStringTokenizer tokenizer(tagsField->GetValue(), ",");
+		wxStringTokenizer tokenizer(_tagsField->GetValue(), ",");
 		std::vector<wxString> tokens;
 
 		while (tokenizer.HasMoreTokens()) {
@@ -257,8 +244,8 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 			if (tags.size() > 0) {
 				_tagsPopup->Update(tags);
 
-				wxPoint pos = tagsField->GetScreenPosition();
-				wxSize size = tagsField->GetSize();
+				wxPoint pos = _tagsField->GetScreenPosition();
+				wxSize size = _tagsField->GetSize();
 				
 				_tagsPopup->Position(wxPoint(pos.x - 200, pos.y - 200 + size.GetHeight()), wxSize(200, 200));
 				_tagsPopup->Show();
@@ -295,5 +282,25 @@ void TransactionDialog::AddTag() {
 	auto tag = _tagsPopup->GetSelectedTag();
 	_viewModel->AddTag(tag);
 
-	tagsField->SetInsertionPointEnd();
+	_tagsField->SetInsertionPointEnd();
+}
+
+void TransactionDialog::OnOK(wxCommandEvent& event) {
+	_viewModel->Save();
+
+	Close();
+}
+
+void TransactionDialog::OnCancel(wxCommandEvent& event) {
+	Close();
+}
+
+void TransactionDialog::OnKeyDown(wxKeyEvent& event) {
+	if ((int)event.GetKeyCode() == WXK_ESCAPE) {
+		event.StopPropagation();
+		Close();
+	}
+	else {
+		event.Skip();
+	}
 }

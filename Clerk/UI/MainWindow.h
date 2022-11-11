@@ -12,7 +12,7 @@
 #include "../Data/Settings.h"
 #include "../Data/ExchangeRates/CBRRatesLoader.h"
 #include "TreeMenu/TreeMenu.h"
-#include "Controls/AddTransactionButton.h"
+#include "Controls/NewTransactionButton.h"
 #include "Controls/Statusbar.h"
 #include "Controls/MainMenu.h"
 #include "../Utils/Icons.h"
@@ -50,7 +50,7 @@ private:
 	Statusbar* _statusbar;
 	TreeMenu* _treeMenu;	
 	TabsPanel* _tabsPanel;
-	AddTransactionButton* _addTransactionButton;
+	NewTransactionButton* _newTransactionButton;
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;

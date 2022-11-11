@@ -10,11 +10,11 @@ using namespace Clerk::Commands;
 
 namespace Clerk {
 	namespace UI {
-		class AddTransactionButton : public DropDownButton
+		class NewTransactionButton : public DropDownButton
 		{
 		public:
-			AddTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker);
-			~AddTransactionButton();
+			NewTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker);
+			~NewTransactionButton();
 
 			void SetViewModel(TransactionsMenuViewModel* viewModel);
 

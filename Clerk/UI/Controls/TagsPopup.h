@@ -4,7 +4,7 @@
 #include <wx/listctrl.h>
 #include <vector>
 #include <memory>
-#include "../Data/ViewModels/TagViewModel.h"
+#include "../../Data/ViewModels/TagViewModel.h"
 
 using namespace Clerk::Data;
 
@@ -21,8 +21,8 @@ public:
 	std::function<void()> OnSelectTag;
 
 private:
-	wxScrolledWindow *panel;
-	wxListCtrl *list;
+	wxScrolledWindow *_panel;
+	wxListCtrl *_list;
 	std::vector<std::shared_ptr<TagViewModel>> _tags;
 
 	void OnListItemDoubleClick(wxListEvent &event);

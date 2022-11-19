@@ -11,8 +11,12 @@ AccountsService::~AccountsService() {
 	delete _eventEmitter;
 }
 
-void AccountsService::OnUpdate(std::function<void()> fn) {
-	_eventEmitter->Subscribe(fn);
+unsigned int AccountsService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void AccountsService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 std::shared_ptr<AccountViewModel> AccountsService::GetById(int id) {

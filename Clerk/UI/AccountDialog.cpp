@@ -137,7 +137,7 @@ void AccountDialog::Update() {
 	currencyList->SetSelection(_viewModel->GetCurrencyIndex());
 
 	for (int i = 0; i < _icons.GetImageList()->GetImageCount(); i++) {
-		iconList->Append("", _icons.GetBitmapForIcon(i));
+		iconList->Append("", *_icons.GetBitmapForIcon(i));
 	}
 
 	iconList->SetSelection(_viewModel->GetIconIndex());

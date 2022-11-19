@@ -50,6 +50,7 @@
       <AdditionalIncludeDirectories>D:\Developer\curl-7.64.1\include;D:\Developer\rapidxml;D:\Developer\rapidjson\include;D:\Developer\include\sqlite;D:\Developer\wxWidgets-3.2.0\lib\vc_lib\mswud\;D:\Developer\wxWidgets-3.2.0\include\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CRT_SECURE_NO_DEPRECATE=1;_CRT_NON_CONFORMING_SWPRINTFS=1;_SCL_SECURE_NO_WARNINGS=1;__WXMSW__;_UNICODE;_WINDOWS;NOPCH;CURL_STATICLIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -196,7 +197,7 @@
     <ClCompile Include="Data\Models\ReportModel.cpp" />
     <ClCompile Include="UI\Reports\ReportExpensesByMonthPanel.cpp" />
     <ClCompile Include="Data\Settings.cpp" />
-    <ClCompile Include="UI\TagsPopup.cpp" />
+    <ClCompile Include="UI\Controls\TagsPopup.cpp" />
     <ClCompile Include="Data\Models\TransactionModel.cpp" />
     <ClCompile Include="Clerk.cpp" />
     <ClCompile Include="UI\MainWindow.cpp" />
@@ -343,7 +344,7 @@
     <ClInclude Include="Data\Models\ReportModel.h" />
     <ClInclude Include="UI\Reports\ReportExpensesByMonthPanel.h" />
     <ClInclude Include="Data\Settings.h" />
-    <ClInclude Include="UI\TagsPopup.h" />
+    <ClInclude Include="UI\Controls\TagsPopup.h" />
     <ClInclude Include="Data\Models\TransactionModel.h" />
     <ClInclude Include="Clerk.h" />
     <ClInclude Include="UI\MainWindow.h" />

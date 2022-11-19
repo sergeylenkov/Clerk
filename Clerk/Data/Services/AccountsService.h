@@ -26,7 +26,8 @@ namespace Clerk {
 			void Save(AccountViewModel& viewModel);
 			void Delete(AccountViewModel& viewModel);
 
-			void OnUpdate(std::function<void()> fn);
+			unsigned int Subscribe(std::function<void()> fn);
+			void Unsubscribe(unsigned int subscriptionId);
 
 		private:
 			AccountsRepository& _accountsRepository;

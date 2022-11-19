@@ -7,7 +7,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 	this->SetIcon(wxICON(APP_ICON));
 
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	_mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
@@ -114,7 +114,9 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 TransactionDialog::~TransactionDialog() {
 	delete _viewModel;
-	delete _tagsPopup;	
+	delete _tagsPopup;
+	delete _mainPanel;
+	wxLogDebug("~TransactionDialog");
 }
 
 void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
@@ -166,7 +168,7 @@ void TransactionDialog::UpdateFromList() {
 
 	for (auto& account : accounts) {
 		int iconIndex = _icons.GetIconForAccount(account->icon);
-		_fromList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
+		_fromList->Append(account->name, *_icons.GetBitmapForIcon(iconIndex));
 	}
 }
 
@@ -177,7 +179,7 @@ void TransactionDialog::UpdateToList() {
 
 	for (auto& account : accounts) {
 		int iconIndex = _icons.GetIconForAccount(account->icon);
-		_toList->Append(account->name, _icons.GetBitmapForIcon(iconIndex));
+		_toList->Append(account->name, *_icons.GetBitmapForIcon(iconIndex));
 	}
 }
 

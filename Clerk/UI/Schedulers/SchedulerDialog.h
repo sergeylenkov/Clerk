@@ -8,7 +8,7 @@
 #include <wx/tokenzr.h>
 #include "../../Data/Models/SchedulerModel.h"
 #include "../../Data/Models/AccountModel.h"
-#include "../TagsPopup.h"
+#include "../Controls/TagsPopup.h"
 
 class SchedulerDialog : public wxFrame
 {

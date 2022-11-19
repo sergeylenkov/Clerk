@@ -13,11 +13,15 @@ TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsServ
 	_toAmount = 0;
 	_date = wxDateTime::Now();
 	
-	_accountsService.OnUpdate([=]() {
+	_subscriptionId = _accountsService.Subscribe([&]() {
 		Update();
 	});
 
 	Update();
+}
+
+TransactionEditViewModel::~TransactionEditViewModel() {
+	_accountsService.Unsubscribe(_subscriptionId);
 }
 
 void TransactionEditViewModel::SetTransactionId(int id) {

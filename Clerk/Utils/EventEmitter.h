@@ -2,16 +2,19 @@
 
 #include <vector>
 #include <functional>
+#include <map>
 
 class EventEmitter {
 public:
+	EventEmitter();
 	~EventEmitter();
 
-	void Subscribe(std::function<void()> function);
-	void Unsubscribe();
+	unsigned int Subscribe(std::function<void()> function);
+	void Unsubscribe(unsigned int key);
 	void Emit();
 	void Clear();
 
 private:
-	std::vector<std::function<void()>> _subscriptions;
+	unsigned int _key;
+	std::map<unsigned int, std::function<void()>> _subscriptions;
 };

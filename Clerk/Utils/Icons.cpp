@@ -14,6 +14,14 @@ Icons::Icons() {
 	LoadAccountsIcons();
 }
 
+Icons::~Icons() {
+	delete _imageList;
+
+	for (auto p : _images) {
+		delete p;
+	}
+}
+
 wxImageList* Icons::GetImageList() {
 	return _imageList;
 }
@@ -26,8 +34,8 @@ int Icons::GetIconForAccount(int index) {
 	return _defaultAccountIcon;
 }
 
-wxBitmap Icons::GetBitmapForIcon(int index) {
-	return _imageList->GetBitmap(index);
+wxBitmap* Icons::GetBitmapForIcon(int index) {
+	return _images[index];
 }
 
 void Icons::LoadMenuIcons() {
@@ -39,8 +47,7 @@ void Icons::LoadMenuIcons() {
 		{
 			wxBitmap* bitmap = new wxBitmap(image);
 			_imageList->Add(*bitmap);
-
-			delete bitmap;
+			_images.push_back(bitmap);
 		}
 	}
 }
@@ -54,8 +61,7 @@ void Icons::LoadAccountsIcons() {
 		{
 			wxBitmap* bitmap = new wxBitmap(image);
 			_imageList->Add(*bitmap);
-
-			delete bitmap;
+			_images.push_back(bitmap);
 		}
 	}
 }

@@ -1,19 +1,26 @@
 #include "EventEmitter.h"
 
+EventEmitter::EventEmitter() {
+	_key = 1;
+}
 EventEmitter::~EventEmitter() {
 	_subscriptions.clear();
 }
 
-void EventEmitter::Subscribe(std::function<void()> function) {
-	_subscriptions.push_back(function);
+unsigned int EventEmitter::Subscribe(std::function<void()> function) {
+	_key++;
+
+	_subscriptions[_key] = function;
+
+	return _key;
 }
 
-void EventEmitter::Unsubscribe() {
-	//
+void EventEmitter::Unsubscribe(unsigned int key) {
+	_subscriptions.erase(key);
 }
 
 void EventEmitter::Emit() {
-	for (auto& fn : _subscriptions) {
+	for (const auto& [key, fn] : _subscriptions) {
 		fn();
 	}
 }

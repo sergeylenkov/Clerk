@@ -7,7 +7,7 @@
 #include <wx/defs.h>
 #include <functional>
 #include "../../Data/Settings.h"
-#include "../TagsPopup.h"
+#include "../Controls/TagsPopup.h"
 #include "../Controls/AmountField.h"
 #include "../../Data/ViewModels/AccountViewModel.h"
 #include "../../Data/ViewModels/TransactionViewModel.h"

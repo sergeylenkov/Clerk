@@ -54,7 +54,7 @@
     <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TagsPopup.cpp">
+    <ClCompile Include="UI\Controls\TagsPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Settings.cpp">
@@ -449,7 +449,7 @@
     <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TagsPopup.h">
+    <ClInclude Include="UI\Controls\TagsPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Settings.h">

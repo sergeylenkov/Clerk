@@ -15,7 +15,8 @@ namespace Clerk {
 		class TransactionEditViewModel {
 		public:
 			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
-			
+			~TransactionEditViewModel();
+
 			void SetTransactionId(int id);
 			void SetCopyTransactionId(int id);
 			void SetSplitTransactionId(int id);
@@ -48,6 +49,7 @@ namespace Clerk {
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			TransactionsService& _transactionsService;
 			TagsService& _tagsService;
+			unsigned int _subscriptionId;
 			int _splitId = -1;
 			int _id = -1;
 			std::vector<std::shared_ptr<AccountViewModel>> _fromAccounts;

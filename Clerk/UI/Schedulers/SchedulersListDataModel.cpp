@@ -8,7 +8,7 @@ SchedulersListDataModel::~SchedulersListDataModel()
 {
 }
 
-void SchedulersListDataModel::SetItems(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers) {
+void SchedulersListDataModel::SetItems(std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers) {
 	_schedulers = schedulers;
 	Reset(_schedulers.size());
 }

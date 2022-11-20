@@ -73,7 +73,7 @@ void Statusbar::SetViewModel(StatusViewModel* viewModel) {
 }
 
 void Statusbar::Update() {
-	wxString sign = *_viewModel->GetBaseCurrency()->sign;
+	wxString sign = _viewModel->GetBaseCurrency()->sign;
 	wxString receiptsValue = Format::Amount(_viewModel->GetReceipts(), sign);
 	wxString expensesValue = Format::Amount(_viewModel->GetExpenses(), sign);
 	wxString balanceValue = Format::Amount(_viewModel->GetBalance(), sign);

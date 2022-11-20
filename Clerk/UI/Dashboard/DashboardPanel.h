@@ -10,7 +10,7 @@
 #include "./DashboardBalancePanel.h"
 #include "./DashboardGoalsPanel.h"
 #include "./DashboardDebtsPanel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 

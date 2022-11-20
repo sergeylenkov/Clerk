@@ -3,9 +3,9 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
-#include "../../Data/ViewModels/CurrencyValueViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/AccountPresentationModel.h"
+#include "../PresentationModels/Types.h"
+#include "../ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -20,7 +20,7 @@ public:
 private:
 	DashboardViewModel* _viewModel{};
 	float _maxValue = 0;
-	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
+	std::vector<std::shared_ptr<AccountPresentationModel>> _accounts;
 	float _total = 0.0;
 
 	void Update();

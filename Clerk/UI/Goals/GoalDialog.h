@@ -7,17 +7,18 @@
 #include <iostream>
 #include <algorithm>
 #include <set>
-#include "../../Data/ViewModels/GoalViewModel.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
+#include "../PresentationModels/GoalPresentationModel.h"
+#include "../PresentationModels/AccountPresentationModel.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class GoalDialog : public wxFrame
 {
 public:
 	GoalDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 
-	void SetGoal(std::shared_ptr<GoalViewModel> goal);
+	void SetGoal(std::shared_ptr<GoalPresentationModel> goal);
 	std::function<void()> OnClose;
 
 private:
@@ -32,8 +33,8 @@ private:
 	wxButton *okButton;
 	wxButton *cancelButton;
 	float amountValue = 0.0;
-	std::shared_ptr<GoalViewModel> goal;
-	std::vector<std::shared_ptr<AccountViewModel>> accounts;
+	std::shared_ptr<GoalPresentationModel> goal;
+	std::vector<std::shared_ptr<AccountPresentationModel>> accounts;
 
 	void UpdateAccounts();
 	void OnOK(wxCommandEvent &event);

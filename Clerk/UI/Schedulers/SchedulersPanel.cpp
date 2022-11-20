@@ -25,7 +25,7 @@ SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataP
 	this->Layout();
 }
 
-std::shared_ptr<SchedulerViewModel> SchedulersPanel::GetScheduler() {
+std::shared_ptr<SchedulerPresentationModel> SchedulersPanel::GetScheduler() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {

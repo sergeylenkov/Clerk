@@ -6,23 +6,23 @@ GoalsService::GoalsService(GoalsRepository& goalsRepository) : _goalsRepository(
 
 }
 
-std::shared_ptr<GoalViewModel> GoalsService::GetById(int id) {
+std::shared_ptr<GoalPresentationModel> GoalsService::GetById(int id) {
 	auto goal = _goalsRepository.GetById(id);
 
 	if (goal) {
-		return std::make_shared<GoalViewModel>(*goal);
+		return std::make_shared<GoalPresentationModel>(*goal);
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<GoalViewModel>> GoalsService::GetAll() {
+std::vector<std::shared_ptr<GoalPresentationModel>> GoalsService::GetAll() {
 	auto goals = _goalsRepository.GetAll();
 
-	std::vector<std::shared_ptr<GoalViewModel>> result;
+	std::vector<std::shared_ptr<GoalPresentationModel>> result;
 
 	std::transform(goals.begin(), goals.end(), std::back_inserter(result), [&](const std::shared_ptr<GoalModel>& goal) {
-		auto model = std::make_shared<GoalViewModel>(*goal);
+		auto model = std::make_shared<GoalPresentationModel>(*goal);
 		model->balance = _goalsRepository.GetBalance(goal->accountIds);
 
 		return model;

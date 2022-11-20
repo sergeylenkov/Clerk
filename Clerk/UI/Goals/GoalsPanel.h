@@ -5,7 +5,7 @@
 #include "../DataPanel.h"
 #include "GoalsListDataModel.h"
 #include "GoalsProgressRender.h"
-#include "../../Data/ViewModels/GoalViewModel.h"
+#include "../PresentationModels/GoalPresentationModel.h"
 
 using namespace Clerk::Data;
 
@@ -20,16 +20,16 @@ public:
 
 	GoalsPanel(wxWindow *parent, DataContext& context);
 
-	std::shared_ptr<GoalViewModel> GetGoal();
+	std::shared_ptr<GoalPresentationModel> GetGoal();
 	void Update();
 
-	std::function<void(std::shared_ptr<GoalViewModel> goal)> OnEdit;
+	std::function<void(std::shared_ptr<GoalPresentationModel> goal)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<GoalsListDataModel> model;
-	std::vector<std::shared_ptr<GoalViewModel>> goals;
+	std::vector<std::shared_ptr<GoalPresentationModel>> goals;
 
 	void Add();
 	void Edit();

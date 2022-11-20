@@ -1,6 +1,6 @@
 #include "TransactionContextMenu.h"
 
-TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction, std::vector<int> selectedIds):
+TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionPresentationModel> transaction, std::vector<int> selectedIds):
 	_commandsInvoker(commandsInvoker), _transaction(transaction), _selectedIds(selectedIds) {
 	if (transaction) {
 		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), wxT("Add..."));

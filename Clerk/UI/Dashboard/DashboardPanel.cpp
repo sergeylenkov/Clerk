@@ -12,7 +12,7 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
 	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(),
-		_context.GetBudgetsService(), _context.GetSchedulersService(), _context.GetGoalsService(), *_context.GetCurrenciesRepository().GetBaseCurrency());
+		_context.GetBudgetsService(), _context.GetSchedulersService(), _context.GetGoalsService(), _context.GetCurrenciesService());
 
 	_balancePanel = new DashboardBalancePanel(_leftPanel);
 	_balancePanel->SetViewModel(_viewModel);

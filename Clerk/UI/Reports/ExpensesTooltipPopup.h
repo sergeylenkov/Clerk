@@ -7,11 +7,12 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include "../../Data/ViewModels/StringValueViewModel.h"
+#include "../PresentationModels//Types.h"
 #include "../../Utils/Utils.h"
 
 using namespace Clerk::Utils;
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class ExpensesTooltipPanel : public wxPanel
 {

@@ -50,7 +50,7 @@ SchedulersConfirmDialog::~SchedulersConfirmDialog()
 {
 }
 
-void SchedulersConfirmDialog::SetSchedulers(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers) {
+void SchedulersConfirmDialog::SetSchedulers(std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers) {
 	_schedulers = schedulers;
 	UpdateList();
 }

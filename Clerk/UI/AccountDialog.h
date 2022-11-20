@@ -5,15 +5,16 @@
 #include <wx/bmpcbox.h>
 #include <functional>
 #include "../Data/Settings.h"
-#include "../Data/Models/Currency.h"
-#include "../Data/ViewModels/AccountViewModel.h"
-#include "../Data/ViewModels/TransactionViewModel.h"
-#include "../Data/ViewModels/AccountEditViewModel.h"
+#include "./PresentationModels/CurrencyPresentationModel.h"
+#include "./PresentationModels/AccountPresentationModel.h"
+#include "./PresentationModels/TransactionPresentationModel.h"
+#include "./ViewModels/AccountEditViewModel.h"
 #include "../Utils/Icons.h"
 #include "./Controls/AmountField.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class AccountDialog : public wxFrame
 {

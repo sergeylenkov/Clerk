@@ -5,7 +5,7 @@
 #include "../DataPanel.h"
 #include "BudgetsListDataModel.h"
 #include "BudgetsProgressRender.h"
-#include "../../Data/ViewModels/BudgetViewModel.h"
+#include "../PresentationModels/BudgetPresentationModel.h"
 
 using namespace Clerk::Data;
 
@@ -20,16 +20,16 @@ public:
 
 	BudgetsPanel(wxWindow *parent, DataContext& context);
 
-	std::shared_ptr<BudgetViewModel> GetBudget();
+	std::shared_ptr<BudgetPresentationModel> GetBudget();
 	void Update();	
 
-	std::function<void(std::shared_ptr<BudgetViewModel> budget)> OnEdit;
+	std::function<void(std::shared_ptr<BudgetPresentationModel> budget)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<BudgetsListDataModel> model;
-	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
+	std::vector<std::shared_ptr<BudgetPresentationModel>> _budgets;
 
 	void Add();
 	void Edit();

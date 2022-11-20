@@ -15,6 +15,6 @@ public:
 	void Clear();
 
 private:
-	unsigned int _key;
+	unsigned int _subscribeId;
 	std::map<unsigned int, std::function<void()>> _subscriptions;
 };

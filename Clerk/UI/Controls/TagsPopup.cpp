@@ -22,7 +22,7 @@ TagsPopup::~TagsPopup() {
 	//
 }
 
-void TagsPopup::Update(std::vector<std::shared_ptr<TagViewModel>> tags) {
+void TagsPopup::Update(std::vector<std::shared_ptr<TagPresentationModel>> tags) {
 	_tags = tags;
 	_list->ClearAll();
 
@@ -69,7 +69,7 @@ void TagsPopup::SelectPrev() {
 	}
 }
 
-std::shared_ptr<TagViewModel> TagsPopup::GetSelectedTag() {
+std::shared_ptr<TagPresentationModel> TagsPopup::GetSelectedTag() {
 	long index = _list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
 	if (index != -1) {	

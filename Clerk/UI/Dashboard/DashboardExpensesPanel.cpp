@@ -56,7 +56,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
-	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
+	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	wxSize size = dc.GetTextExtent(value);
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
@@ -71,7 +71,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = Format::Amount(account->balance, *account->currency->sign);
+		wxString value = Format::Amount(account->balance, account->currency->sign);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));

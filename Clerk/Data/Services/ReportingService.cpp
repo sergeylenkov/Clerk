@@ -32,7 +32,7 @@ std::vector<DateValueViewModel> ReportingService::GetExpensesByMonth(std::set<in
 	return results;
 }
 
-std::vector<DateValueViewModel> ReportingService::GetBalanceByMonth(const AccountViewModel& account, const wxDateTime& fromDate, const wxDateTime& toDate) {
+std::vector<DateValueViewModel> ReportingService::GetBalanceByMonth(const AccountPresentationModel& account, const wxDateTime& fromDate, const wxDateTime& toDate) {
 	std::vector<DateValueViewModel> results;
 
 	return results;

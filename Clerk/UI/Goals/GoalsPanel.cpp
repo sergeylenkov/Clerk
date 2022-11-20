@@ -31,7 +31,7 @@ GoalsPanel::GoalsPanel(wxWindow *parent, DataContext& context) : DataPanel(paren
 	this->Layout();
 }
 
-std::shared_ptr<GoalViewModel> GoalsPanel::GetGoal() {
+std::shared_ptr<GoalPresentationModel> GoalsPanel::GetGoal() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {

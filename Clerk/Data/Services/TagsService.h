@@ -1,9 +1,10 @@
 #pragma once
 
 #include "../Repositories/TagsRepository.h"
-#include "../ViewModels/TagViewModel.h"
+#include "../../UI/PresentationModels/TagPresentationModel.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {
@@ -11,9 +12,9 @@ namespace Clerk {
 		public:
 			TagsService(TagsRepository& tagsRepository);
 
-			std::vector<std::shared_ptr<TagViewModel>> GetAll();
-			std::shared_ptr<TagViewModel> GetById(int id);
-			std::vector<std::shared_ptr<TagViewModel>> GetBySearch(wxString search);
+			std::vector<std::shared_ptr<TagPresentationModel>> GetAll();
+			std::shared_ptr<TagPresentationModel> GetById(int id);
+			std::vector<std::shared_ptr<TagPresentationModel>> GetBySearch(wxString search);
 
 		private:
 			TagsRepository& _tagsRepository;

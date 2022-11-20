@@ -8,7 +8,7 @@ AlertsListDataModel::~AlertsListDataModel()
 {
 }
 
-void AlertsListDataModel::SetItems(std::vector<std::shared_ptr<AlertViewModel>> alerts) {
+void AlertsListDataModel::SetItems(std::vector<std::shared_ptr<AlertPresentationModel>> alerts) {
 	_alerts = alerts;
 	Reset(_alerts.size());
 }

@@ -1,26 +1,27 @@
 #pragma once
 
-#include "Repositories/AccountsRepository.h"
-#include "Repositories/ReportsRepository.h"
-#include "Repositories/BudgetsRepository.h"
-#include "Repositories/GoalsRepository.h"
-#include "Repositories/AlertsRepository.h"
-#include "Repositories/SchedulersRepository.h"
-#include "Repositories/TransactionsRepository.h"
-#include "Repositories/TagsRepository.h"
-#include "Repositories/CurrenciesRepository.h"
-#include "Repositories/ExchangeRatesRepository.h"
-#include "Repositories/ReportingRepository.h"
-#include "Services/AccountingService.h"
-#include "Services/AccountsService.h"
-#include "Services/SchedulersService.h"
-#include "Services/BudgetsService.h"
-#include "Services/TransactionsService.h"
-#include "Services/TagsService.h"
-#include "Services/ReportsService.h"
-#include "Services/AlertsService.h"
-#include "Services/GoalsService.h"
-#include "Services/ReportingService.h"
+#include "./Repositories/AccountsRepository.h"
+#include "./Repositories/ReportsRepository.h"
+#include "./Repositories/BudgetsRepository.h"
+#include "./Repositories/GoalsRepository.h"
+#include "./Repositories/AlertsRepository.h"
+#include "./Repositories/SchedulersRepository.h"
+#include "./Repositories/TransactionsRepository.h"
+#include "./Repositories/TagsRepository.h"
+#include "./Repositories/CurrenciesRepository.h"
+#include "./Repositories/ExchangeRatesRepository.h"
+#include "./Repositories/ReportingRepository.h"
+#include "./Services/AccountingService.h"
+#include "./Services/AccountsService.h"
+#include "./Services/SchedulersService.h"
+#include "./Services/BudgetsService.h"
+#include "./Services/TransactionsService.h"
+#include "./Services/TagsService.h"
+#include "./Services/ReportsService.h"
+#include "./Services/AlertsService.h"
+#include "./Services/GoalsService.h"
+#include "./Services/ReportingService.h"
+#include "./Services/CurrenciesService.h"
 #include "../Commands/CommandsInvoker.h"
 
 using namespace Clerk::Commands;
@@ -34,7 +35,8 @@ namespace Clerk {
 				TransactionsRepository& transactionsRepository, TagsRepository& tagsRepository, CurrenciesRepository& currenciesRepository,
 				ExchangeRatesRepository& exchangeRatesRepository, ReportingRepository& reportingRepository, AccountingService& accountingService,
 				AccountsService& accountsService, SchedulersService& schedulersService, BudgetsService& budgetsService, TransactionsService& transactionsService,
-				TagsService& tagsService, ReportsService& reportsService, AlertsService& alertsService, GoalsService& goalsService, ReportingService& reportingService);
+				TagsService& tagsService, ReportsService& reportsService, AlertsService& alertsService, GoalsService& goalsService,
+				ReportingService& reportingService, CurrenciesService& currenciesService);
 			~DataContext();
 
 			AccountsRepository& GetAccountsRepository();
@@ -58,7 +60,7 @@ namespace Clerk {
 			AlertsService& GetAlertsService();
 			GoalsService& GetGoalsService();
 			ReportingService& GetReportingService();
-
+			CurrenciesService& GetCurrenciesService();
 			void SetCommandsInvoker(CommandsInvoker* commandsInvoker);
 			CommandsInvoker& GetCommandsInvoker();
 
@@ -84,6 +86,7 @@ namespace Clerk {
 			AlertsService& _alertsService;
 			GoalsService& _goalsService;
 			ReportingService& _reportingService;
+			CurrenciesService& _currenciesService;
 			CommandsInvoker* _commandsInvoker;
 		};
 	}

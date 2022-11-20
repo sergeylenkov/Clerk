@@ -7,9 +7,10 @@
 #include <map>
 #include <functional>
 #include <numeric>
-#include "../../Data/ViewModels/StringValueViewModel.h"
+#include "../PresentationModels/Types.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class LineChart : public wxPanel
 {

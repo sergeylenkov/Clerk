@@ -92,7 +92,7 @@ void TagsPanel::UpdateList() {
 	}
 }
 
-std::shared_ptr<TagViewModel> TagsPanel::GetTag() {
+std::shared_ptr<TagPresentationModel> TagsPanel::GetTag() {
 	long itemIndex = -1;
 
 	for (;;) {

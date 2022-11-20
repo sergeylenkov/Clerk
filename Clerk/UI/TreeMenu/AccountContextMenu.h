@@ -2,8 +2,8 @@
 
 #include <wx/wx.h>
 #include "Enums.h"
-#include "../../Data/ViewModels/TransactionViewModel.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
+#include "../PresentationModels/AccountPresentationModel.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "TreeContextMenu.h"
 
@@ -15,10 +15,10 @@ namespace Clerk {
 	namespace UI {
 		class AccountContextMenu : public TreeContextMenu {
 		public:
-			AccountContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions);
+			AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions);
 
 		private:
-			AccountViewModel& _account;
+			AccountPresentationModel& _account;
 			void OnMenuSelect(wxCommandEvent& event);
 		};
 	}

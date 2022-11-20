@@ -78,7 +78,7 @@ void TrashPanel::Update() {
 	}
 }
 
-std::shared_ptr<TransactionViewModel> TrashPanel::GetTransaction() {
+std::shared_ptr<TransactionPresentationModel> TrashPanel::GetTransaction() {
 	long itemIndex = -1;
 
 	for (;;) {

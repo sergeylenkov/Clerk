@@ -159,7 +159,7 @@ void TreeMenu::Update() {
 	SetIsTrashEmpty(_viewModel->IsTrashEmpty());
 }
 
-void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountViewModel> account) {
+void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account) {
 	int iconId = _icons.GetIconForAccount(account->icon);
 
 	TreeMenuItemData* itemData = new TreeMenuItemData();
@@ -194,12 +194,12 @@ void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	}
 }
 
-std::shared_ptr<AccountViewModel> TreeMenu::GetContextMenuAccount() {
+std::shared_ptr<AccountPresentationModel> TreeMenu::GetContextMenuAccount() {
 	if (_contextMenuItem != NULL) {
 		TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
 		if (item->type == TreeMenuItemType::Account) {
-			std::shared_ptr<AccountViewModel> account = std::static_pointer_cast<AccountViewModel>(item->object);
+			std::shared_ptr<AccountPresentationModel> account = std::static_pointer_cast<AccountPresentationModel>(item->object);
 			return account;
 		}
 	}
@@ -335,7 +335,7 @@ void TreeMenu::OnEndDrag(wxTreeEvent &event) {
 		TreeMenuItemData *itemData = (TreeMenuItemData *)_treeMenu->GetItemData(itemId);
 
 		if (draggedData->type == itemData->type) {
-			auto account = std::static_pointer_cast<AccountViewModel>(draggedData->object);
+			auto account = std::static_pointer_cast<AccountPresentationModel>(draggedData->object);
 
 			TreeMenuItemData *itemData = new TreeMenuItemData();
 			itemData->type = draggedData->type;

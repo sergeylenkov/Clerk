@@ -2,9 +2,10 @@
 
 #include <wx/wx.h>
 #include <wx/listctrl.h>
-#include "../../Data/ViewModels/SchedulerViewModel.h"
+#include "../PresentationModels/SchedulerPresentationModel.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class SchedulersConfirmDialog : public wxFrame
 {
@@ -12,7 +13,7 @@ public:
 	SchedulersConfirmDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
 	~SchedulersConfirmDialog();
 
-	void SetSchedulers(std::vector<std::shared_ptr<SchedulerViewModel>> schedulers);
+	void SetSchedulers(std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers);
 
 	std::function<void()> OnClose;
 
@@ -22,7 +23,7 @@ private:
 	wxButton *skipButton;
 	wxButton *applyAllButton;
 
-	std::vector<std::shared_ptr<SchedulerViewModel>> _schedulers;
+	std::vector<std::shared_ptr<SchedulerPresentationModel>> _schedulers;
 
 	void UpdateList();
 	int SelectedItemIndex();

@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Repositories/AlertsRepository.h"
-#include "../ViewModels/AlertViewModel.h"
+#include "../../UI/PresentationModels/AlertPresentationModel.h"
+
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {
@@ -9,8 +11,8 @@ namespace Clerk {
 		public:
 			AlertsService(AlertsRepository& alertsRepository);
 
-			std::shared_ptr<AlertViewModel> GetById(int id);
-			std::vector<std::shared_ptr<AlertViewModel>> GetAll();
+			std::shared_ptr<AlertPresentationModel> GetById(int id);
+			std::vector<std::shared_ptr<AlertPresentationModel>> GetAll();
 
 		private:
 			AlertsRepository& _alertsRepository;

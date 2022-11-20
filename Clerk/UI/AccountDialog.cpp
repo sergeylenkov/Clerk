@@ -130,7 +130,7 @@ void AccountDialog::Update() {
 	auto currencies = _viewModel->GetCurrencies();
 
 	for (auto& currency : currencies) {
-		wxString name = wxString::Format("%s (%s)", currency->shortName->c_str(), currency->name->c_str());
+		wxString name = wxString::Format("%s (%s)", currency->shortName, currency->name);
 		currencyList->AppendString(name);
 	}
 

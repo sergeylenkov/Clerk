@@ -32,19 +32,19 @@ public:
         ASSERT_TRUE(1);
     }
 
-    void OpenNewTransactionDialog(int id) override {        
+    void NewTransaction(int id) override {        
         testId = id;
     }
 
-    void OpenCopyTransactionDialog(int id) override {
+    void CopyTransaction(int id) override {
         testId = id;
     }
 
-    void OpenSplitTransactionDialog(int id) override {
+    void SplitTransaction(int id) override {
         testId = id;
     }
 
-    void OpenEditTransactionDialog(int id) override {
+    void EditTransaction(int id) override {
         testId = id;
     }
 
@@ -87,9 +87,9 @@ public:
         NewTabCommand* newTabCommand = new NewTabCommand(commandsReceiver);
 
         commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
-                                              *newTransactionCommand, *copyTransactionCommand,
-                                              *splitTransactionCommand, *editTransactionCommand, deleteTransactionCommand,
-                                              *newAccountCommand, *editAccountCommand, *newTabCommand);
+            *newTransactionCommand, *copyTransactionCommand,
+            *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
+            *newAccountCommand, *editAccountCommand, *newTabCommand);
     }
 
     ~CommandsTest() {

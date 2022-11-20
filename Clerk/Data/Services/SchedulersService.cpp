@@ -11,23 +11,23 @@ void SchedulersService::SetBaseCurrency(int id) {
 	_baseCurrencyId = id;
 }
 
-std::shared_ptr<SchedulerViewModel> SchedulersService::GetById(int id) {
+std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
 	auto scheduler = _schedulersRepository.GetById(id);
 
 	if (scheduler) {
-		return std::make_shared<SchedulerViewModel>(*scheduler);
+		return std::make_shared<SchedulerPresentationModel>(*scheduler);
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<SchedulerViewModel>> SchedulersService::GetAll() {
+std::vector<std::shared_ptr<SchedulerPresentationModel>> SchedulersService::GetAll() {
 	auto schedulers = _schedulersRepository.GetAll();
 
-	std::vector<std::shared_ptr<SchedulerViewModel>> result;
+	std::vector<std::shared_ptr<SchedulerPresentationModel>> result;
 
 	std::transform(schedulers.begin(), schedulers.end(), std::back_inserter(result), [&](const std::shared_ptr<SchedulerModel>& scheduler) {
-		auto model = std::make_shared<SchedulerViewModel>(*scheduler);		
+		auto model = std::make_shared<SchedulerPresentationModel>(*scheduler);
 
 		auto account = _accountsRepository.GetById(scheduler->toAccountId);
 
@@ -40,22 +40,22 @@ std::vector<std::shared_ptr<SchedulerViewModel>> SchedulersService::GetAll() {
 	return result;
 }
 
-std::vector<std::shared_ptr<SchedulerViewModel>> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
+std::vector<std::shared_ptr<SchedulerPresentationModel>> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
 	auto schedulers = GetAll();
-	std::vector<std::shared_ptr<SchedulerViewModel>> result;
+	std::vector<std::shared_ptr<SchedulerPresentationModel>> result;
 
-	std::copy_if(schedulers.begin(), schedulers.end(), std::back_inserter(result), [fromDate, toDate](const std::shared_ptr<SchedulerViewModel>& scheduler) {
+	std::copy_if(schedulers.begin(), schedulers.end(), std::back_inserter(result), [fromDate, toDate](const std::shared_ptr<SchedulerPresentationModel>& scheduler) {
 		return scheduler->isActive && scheduler->nextDate.IsBetween(fromDate, toDate);
 	});
 
-	std::sort(result.begin(), result.end(), [](std::shared_ptr<SchedulerViewModel> a, std::shared_ptr<SchedulerViewModel> b) {
+	std::sort(result.begin(), result.end(), [](std::shared_ptr<SchedulerPresentationModel> a, std::shared_ptr<SchedulerPresentationModel> b) {
 		return a->nextDate.IsEarlierThan(b->nextDate);
 	});
 
 	return result;
 }
 
-void SchedulersService::Run(const SchedulerViewModel& scheduler) {	
+void SchedulersService::Run(const SchedulerPresentationModel& scheduler) {
 	auto nextDate = CalculateNextDate(scheduler);
 
 	auto model = _schedulersRepository.GetById(scheduler.id);
@@ -67,14 +67,14 @@ void SchedulersService::Run(const SchedulerViewModel& scheduler) {
 	_schedulersRepository.Save(*model);
 }
 
-void SchedulersService::Pause(const SchedulerViewModel& scheduler) {
+void SchedulersService::Pause(const SchedulerPresentationModel& scheduler) {
 	auto model = _schedulersRepository.GetById(scheduler.id);
 	model->active = false;
 
 	_schedulersRepository.Save(*model);
 }
 
-wxDateTime SchedulersService::CalculateNextDate(const SchedulerViewModel& scheduler) {
+wxDateTime SchedulersService::CalculateNextDate(const SchedulerPresentationModel& scheduler) {
 	auto date = wxDateTime(scheduler.previousDate);
 
 	if (scheduler.type == SchedulerType::Daily) {
@@ -103,7 +103,7 @@ wxDateTime SchedulersService::CalculateNextDate(const SchedulerViewModel& schedu
 	return date;
 }
 
-void SchedulersService::Execute(const SchedulerViewModel& scheduler) {
+void SchedulersService::Execute(const SchedulerPresentationModel& scheduler) {
 	/*auto transaction = new Transaction();
 
 	transaction->fromAccount = fromAccount;

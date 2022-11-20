@@ -4,11 +4,12 @@
 #include <wx/numformatter.h>
 #include <wx/graphics.h>
 #include "../../Utils/Utils.h"
-#include "../../Data/ViewModels/CurrencyValueViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/Types.h"
+#include "../ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Utils;
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class DashboardBalancePanel : public wxPanel
 {

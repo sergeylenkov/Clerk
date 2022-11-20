@@ -1,13 +1,14 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/ViewModels/TransactionViewModel.h"
-#include "../../Data/ViewModels/TransactionsMenuViewModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
+#include "../ViewModels/TransactionsMenuViewModel.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace UI {

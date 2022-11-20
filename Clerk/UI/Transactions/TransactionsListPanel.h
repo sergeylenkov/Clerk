@@ -10,7 +10,7 @@
 #include <algorithm>
 #include <string> 
 #include "../DataPanel.h"
-#include "../../Data/ViewModels/TransactionViewModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Data/Settings.h"
 #include "../TreeMenu/Enums.h"
 #include "TransactionsListDataModel.h"
@@ -44,15 +44,15 @@ private:
 	wxPanel *infoPanel;
 	std::shared_ptr<AccountModel> account;
 	TreeMenuItemType type;
-	std::vector<std::shared_ptr<TransactionViewModel>> _transactions;
-	std::vector<std::shared_ptr<TransactionViewModel>> _filtered;
+	std::vector<std::shared_ptr<TransactionPresentationModel>> _transactions;
+	std::vector<std::shared_ptr<TransactionPresentationModel>> _filtered;
 	float balance;
 	int sortBy;
 	bool sortDesc;
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
 	
-	std::shared_ptr<TransactionViewModel> GetTransaction();
+	std::shared_ptr<TransactionPresentationModel> GetTransaction();
 	std::vector<int> GetSelectedIds();
 	void Sort();
 	void Filter();

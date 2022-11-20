@@ -2,9 +2,10 @@
 #include <wx/numformatter.h>
 #include <vector>
 #include <algorithm>
-#include "../../Data/ViewModels/StringValueViewModel.h"
+#include "../PresentationModels/Types.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class BarChart : public wxPanel {
 public:

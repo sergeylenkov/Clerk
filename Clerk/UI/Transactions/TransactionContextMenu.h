@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include "../../Commands/CommandsInvoker.h"
-#include "../../Data/ViewModels/TransactionViewModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
@@ -13,11 +13,11 @@ namespace Clerk {
 	namespace UI {
 		class TransactionContextMenu : public wxMenu {
 		public:
-			TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionViewModel> transaction, std::vector<int> selectedIds);
+			TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionPresentationModel> transaction, std::vector<int> selectedIds);
 
 		private:
 			CommandsInvoker& _commandsInvoker;
-			std::shared_ptr<TransactionViewModel> _transaction;
+			std::shared_ptr<TransactionPresentationModel> _transaction;
 			std::vector<int> _selectedIds;
 			void OnMenuSelect(wxCommandEvent& event);
 		};

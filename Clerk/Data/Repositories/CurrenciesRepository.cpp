@@ -2,7 +2,7 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<Currency>> CurrenciesRepository::GetAll() {
+std::vector<std::shared_ptr<CurrencyModel>> CurrenciesRepository::GetAll() {
 	char* sql = "SELECT id FROM currencies ORDER BY name";
 	sqlite3_stmt* statement;
 
@@ -22,8 +22,8 @@ std::vector<std::shared_ptr<Currency>> CurrenciesRepository::GetAll() {
 	return GetHashList();
 }
 
-std::shared_ptr<Currency> CurrenciesRepository::GetById(int id) {
-	std::shared_ptr<Currency> currency = GetFromHash(id);
+std::shared_ptr<CurrencyModel> CurrenciesRepository::GetById(int id) {
+	std::shared_ptr<CurrencyModel> currency = GetFromHash(id);
 
 	if (!currency) {
 		currency = Load(id);
@@ -37,12 +37,12 @@ void CurrenciesRepository::SetBaseCurrency(int id) {
 	_baseCurrencyId = id;
 }
 
-std::shared_ptr<Currency> CurrenciesRepository::GetBaseCurrency() {
+std::shared_ptr<CurrencyModel> CurrenciesRepository::GetBaseCurrency() {
 	return GetById(_baseCurrencyId);
 }
 
-std::shared_ptr<Currency> CurrenciesRepository::Load(int id) {
-	std::shared_ptr<Currency> currency = nullptr;
+std::shared_ptr<CurrencyModel> CurrenciesRepository::Load(int id) {
+	std::shared_ptr<CurrencyModel> currency = nullptr;
 
 	char* sql = "SELECT id, name, short_name, sign FROM currencies WHERE id = ?";
 	sqlite3_stmt* statement;
@@ -51,12 +51,12 @@ std::shared_ptr<Currency> CurrenciesRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			currency = std::make_shared<Currency>();
+			currency = std::make_shared<CurrencyModel>();
 
 			currency->id = sqlite3_column_int(statement, 0);
-			currency->name = std::make_shared<wxString>(wxString::FromUTF8((char*)sqlite3_column_text(statement, 1)));
-			currency->shortName = std::make_shared<wxString>(wxString::FromUTF8((char*)sqlite3_column_text(statement, 2)));
-			currency->sign = std::make_shared<wxString>(wxString::FromUTF8((char*)sqlite3_column_text(statement, 3)));
+			currency->name = std::string((char*)sqlite3_column_text(statement, 1));
+			currency->shortName = std::string((char*)sqlite3_column_text(statement, 2));
+			currency->sign = std::string((char*)sqlite3_column_text(statement, 3));
 		}
 	}
 

@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include "wx/dataview.h"
-#include "../../Data/ViewModels/AlertViewModel.h"
+#include "../PresentationModels/AlertPresentationModel.h"
 #include "../DataPanel.h"
 #include "AlertsListDataModel.h"
 
@@ -19,16 +19,16 @@ public:
 
 	AlertsPanel(wxWindow *parent, DataContext& context);
 
-	std::shared_ptr<AlertViewModel> GetAlert();
+	std::shared_ptr<AlertPresentationModel> GetAlert();
 	void Update();	
 
-	std::function<void(std::shared_ptr<AlertViewModel> alert)> OnEdit;
+	std::function<void(std::shared_ptr<AlertPresentationModel> alert)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<AlertsListDataModel> model;
-	std::vector<std::shared_ptr<AlertViewModel>> alerts;
+	std::vector<std::shared_ptr<AlertPresentationModel>> alerts;
 
 	void Add();
 	void Edit();

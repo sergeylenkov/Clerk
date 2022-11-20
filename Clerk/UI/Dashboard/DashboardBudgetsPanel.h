@@ -3,8 +3,8 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
-#include "../../Data/ViewModels/BudgetViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/BudgetPresentationModel.h"
+#include "../ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -18,7 +18,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
-	std::vector<std::shared_ptr<BudgetViewModel>> _budgets;
+	std::vector<std::shared_ptr<BudgetPresentationModel>> _budgets;
 	int _daysCount = 0;
 	int _currentDay = 0;
 

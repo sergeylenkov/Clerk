@@ -4,9 +4,10 @@
 #include "../Repositories/SchedulersRepository.h"
 #include "../Repositories/AccountsRepository.h"
 #include "../Repositories/ExchangeRatesRepository.h"
-#include "../ViewModels/SchedulerViewModel.h"
+#include "../../UI/PresentationModels/SchedulerPresentationModel.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {
@@ -15,12 +16,12 @@ namespace Clerk {
 			SchedulersService(SchedulersRepository& schedulersRepository, AccountsRepository& accountsRepository,  ExchangeRatesRepository& exchangeRatesRepository);
 
 			void SetBaseCurrency(int id);
-			std::shared_ptr<SchedulerViewModel> GetById(int id);
-			std::vector<std::shared_ptr<SchedulerViewModel>> GetAll();
-			std::vector<std::shared_ptr<SchedulerViewModel>> GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate);
-			void Run(const SchedulerViewModel& scheduler);
-			void Pause(const SchedulerViewModel& scheduler);			
-			void Execute(const SchedulerViewModel& scheduler);			
+			std::shared_ptr<SchedulerPresentationModel> GetById(int id);
+			std::vector<std::shared_ptr<SchedulerPresentationModel>> GetAll();
+			std::vector<std::shared_ptr<SchedulerPresentationModel>> GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate);
+			void Run(const SchedulerPresentationModel& scheduler);
+			void Pause(const SchedulerPresentationModel& scheduler);
+			void Execute(const SchedulerPresentationModel& scheduler);
 
 		private:
 			SchedulersRepository& _schedulersRepository;
@@ -29,7 +30,7 @@ namespace Clerk {
 
 			int _baseCurrencyId = 0;
 
-			wxDateTime CalculateNextDate(const SchedulerViewModel& scheduler);
+			wxDateTime CalculateNextDate(const SchedulerPresentationModel& scheduler);
 		};
 	}
 }

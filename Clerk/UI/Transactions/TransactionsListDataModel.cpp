@@ -8,7 +8,7 @@ TransactionsListDataModel::~TransactionsListDataModel()
 {
 }
 
-void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<TransactionViewModel>> transactions) {
+void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<TransactionPresentationModel>> transactions) {
 	_transactions = transactions;
 	Reset(_transactions.size());
 }
@@ -92,7 +92,7 @@ wxString TransactionsListDataModel::FormatDate(const wxDateTime& date) const
 	return dateFormat;
 }
 
-wxString TransactionsListDataModel::FormatAmount(const TransactionViewModel& transaction) const {
+wxString TransactionsListDataModel::FormatAmount(const TransactionPresentationModel& transaction) const {
 	wxString amount = "";
 	// TODO
 	if (transaction.fromAmount != transaction.toAmount) {

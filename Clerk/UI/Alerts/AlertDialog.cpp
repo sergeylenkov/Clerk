@@ -120,7 +120,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	Bind(wxEVT_CHAR_HOOK, &AlertDialog::OnKeyDown, this);
 }
 
-void AlertDialog::SetAlert(std::shared_ptr<AlertViewModel> alert) {
+void AlertDialog::SetAlert(std::shared_ptr<AlertPresentationModel> alert) {
 	this->alert = alert;
 
 	nameField->SetValue(this->alert->name);

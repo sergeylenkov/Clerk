@@ -114,7 +114,7 @@ TransactionsListPanel::~TransactionsListPanel() {
 	SaveColumnsSettings();	
 }
 
-std::shared_ptr<TransactionViewModel> TransactionsListPanel::GetTransaction() {
+std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
 	wxDataViewItem item = _list->GetSelection();
 
 	if (item.IsOk()) {
@@ -175,7 +175,7 @@ void TransactionsListPanel::Update() {
 }
 
 void TransactionsListPanel::Sort() {
-	std::sort(_transactions.begin(), _transactions.end(), [this](const std::shared_ptr<TransactionViewModel>& v1, const std::shared_ptr<TransactionViewModel>& v2) {
+	std::sort(_transactions.begin(), _transactions.end(), [this](const std::shared_ptr<TransactionPresentationModel>& v1, const std::shared_ptr<TransactionPresentationModel>& v2) {
 		if (this->sortBy == 0) {
 			return v1->fromAccount->name.Cmp(v2->fromAccount->name) == 0;
 		}

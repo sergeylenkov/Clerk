@@ -89,7 +89,7 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 	Bind(wxEVT_CHAR_HOOK, &GoalDialog::OnKeyDown, this);
 }
 
-void GoalDialog::SetGoal(std::shared_ptr<GoalViewModel> goal) {
+void GoalDialog::SetGoal(std::shared_ptr<GoalPresentationModel> goal) {
 	this->goal = goal;
 
 	nameField->SetValue(this->goal->name);	

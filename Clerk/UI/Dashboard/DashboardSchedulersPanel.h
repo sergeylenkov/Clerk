@@ -3,8 +3,8 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include <map>
-#include "../../Data/ViewModels/SchedulerViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/SchedulerPresentationModel.h"
+#include "../ViewModels/DashboardViewModel.h"
 
 using namespace Clerk::Data;
 
@@ -17,7 +17,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
-	std::vector<std::shared_ptr<SchedulerViewModel>> _schedulers;
+	std::vector<std::shared_ptr<SchedulerPresentationModel>> _schedulers;
 	std::map<wxString, float> _values;
 	float _maxValue = 0;
 

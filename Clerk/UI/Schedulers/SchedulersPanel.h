@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include "wx/dataview.h"
-#include "../../Data/ViewModels/SchedulerViewModel.h"
+#include "../PresentationModels/SchedulerPresentationModel.h"
 #include "../DataPanel.h"
 #include "SchedulersListDataModel.h"
 
@@ -21,16 +21,16 @@ public:
 
 	SchedulersPanel(wxWindow *parent, DataContext& context);
 	
-	std::shared_ptr<SchedulerViewModel> GetScheduler();
+	std::shared_ptr<SchedulerPresentationModel> GetScheduler();
 	void Update();	
 
-	std::function<void(std::shared_ptr<SchedulerViewModel> scheduler)> OnEdit;
+	std::function<void(std::shared_ptr<SchedulerPresentationModel> scheduler)> OnEdit;
 	std::function<void()> OnAdd;
 
 private:
 	wxDataViewCtrl *list;
 	wxObjectDataPtr<SchedulersListDataModel> model;
-	std::vector<std::shared_ptr<SchedulerViewModel>> schedulers;
+	std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers;
 
 	void Add();
 	void Edit();

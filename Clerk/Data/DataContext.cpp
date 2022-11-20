@@ -23,7 +23,8 @@ DataContext::DataContext(
 	ReportsService& reportsService,
 	AlertsService& alertsService,
 	GoalsService& goalsService,
-	ReportingService& reportingService
+	ReportingService& reportingService,
+	CurrenciesService& currenciesService
 ):
 	_accountsRepository(accountsRepository),
 	_reportsRepository(reportsRepository),
@@ -45,7 +46,8 @@ DataContext::DataContext(
 	_reportsService(reportsService),
 	_alertsService(alertsService),
 	_goalsService(goalsService),
-	_reportingService(reportingService)
+	_reportingService(reportingService),
+	_currenciesService(currenciesService)
 {	
 }
 
@@ -71,6 +73,7 @@ DataContext::~DataContext() {
 	delete& _alertsService;
 	delete& _goalsService;
 	delete& _reportingService;
+	delete& _currenciesService;
 	delete _commandsInvoker;
 }
 
@@ -155,6 +158,10 @@ GoalsService& DataContext::GetGoalsService() {
 
 ReportingService& DataContext::GetReportingService() {
 	return _reportingService;
+}
+
+CurrenciesService& DataContext::GetCurrenciesService() {
+	return _currenciesService;
 }
 
 void DataContext::SetCommandsInvoker(CommandsInvoker* commandsInvoker) {

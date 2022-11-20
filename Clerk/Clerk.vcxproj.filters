@@ -213,7 +213,7 @@
     <ClCompile Include="Data\Models\AlertModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Models\Currency.cpp">
+    <ClCompile Include="Data\Models\CurrencyModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Models\GoalModel.cpp">
@@ -246,13 +246,13 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\AccountViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\AccountPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\SchedulerViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\SchedulerPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\TransactionViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\TransactionPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\TransactionsService.cpp">
@@ -264,7 +264,7 @@
     <ClCompile Include="Data\Models\BudgetModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\BudgetViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\BudgetPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\BudgetsService.cpp">
@@ -282,7 +282,7 @@
     <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\TagViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Models\TagModel.cpp">
@@ -306,19 +306,19 @@
     <ClCompile Include="Commands\CommandsReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\ReportViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\ReportPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\ReportsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\AlertViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\AlertPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\AlertsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\GoalViewModel.cpp">
+    <ClCompile Include="UI\PresentationModels\GoalPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\GoalsService.cpp">
@@ -339,19 +339,19 @@
     <ClCompile Include="Commands\AboutCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\DashboardViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\DashboardViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\StatusViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\StatusViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\TreeMenuViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\TreeMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\NewTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\TransactionEditViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\TransactionEditViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils\EventEmitter.cpp">
@@ -366,7 +366,7 @@
     <ClCompile Include="Commands\EditAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\AccountEditViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\AccountEditViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp">
@@ -399,7 +399,13 @@
     <ClCompile Include="UI\Tabs\TabsContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\ViewModels\TransactionsMenuViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\TransactionsMenuViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Data\Services\CurrenciesService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -608,7 +614,7 @@
     <ClInclude Include="Data\Models\AlertModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Models\Currency.h">
+    <ClInclude Include="Data\Models\CurrencyModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Models\GoalModel.h">
@@ -644,13 +650,13 @@
     <ClInclude Include="Data\Services\SchedulersService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\AccountViewModel.h">
+    <ClInclude Include="UI\PresentationModels\AccountPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\SchedulerViewModel.h">
+    <ClInclude Include="UI\PresentationModels\SchedulerPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\TransactionViewModel.h">
+    <ClInclude Include="UI\PresentationModels\TransactionPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\TransactionsService.h">
@@ -665,13 +671,13 @@
     <ClInclude Include="Data\Models\BudgetModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\BudgetViewModel.h">
+    <ClInclude Include="UI\PresentationModels\BudgetPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\BudgetsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\Types.h">
+    <ClInclude Include="UI\PresentationModels\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Icons.h">
@@ -692,7 +698,7 @@
     <ClInclude Include="UI\TreeMenu\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\TagViewModel.h">
+    <ClInclude Include="UI\PresentationModels\TagPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Models\TagModel.h">
@@ -719,19 +725,19 @@
     <ClInclude Include="Commands\CommandsReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\ReportViewModel.h">
+    <ClInclude Include="UI\PresentationModels\ReportPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\ReportsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\AlertViewModel.h">
+    <ClInclude Include="UI\PresentationModels\AlertPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\AlertsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\GoalViewModel.h">
+    <ClInclude Include="UI\PresentationModels\GoalPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\GoalsService.h">
@@ -741,15 +747,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Repositories\ReportingRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\ViewModels\StringValueViewModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\ViewModels\DateValueViewModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\ViewModels\CurrencyValueViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\ICommandsReceiver.h">
@@ -764,19 +761,19 @@
     <ClInclude Include="Commands\AboutCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\DashboardViewModel.h">
+    <ClInclude Include="UI\ViewModels\DashboardViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\StatusViewModel.h">
+    <ClInclude Include="UI\ViewModels\StatusViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\TreeMenuViewModel.h">
+    <ClInclude Include="UI\ViewModels\TreeMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\NewTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\TransactionEditViewModel.h">
+    <ClInclude Include="UI\ViewModels\TransactionEditViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\EventEmitter.h">
@@ -794,7 +791,7 @@
     <ClInclude Include="Commands\EditAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\AccountEditViewModel.h">
+    <ClInclude Include="UI\ViewModels\AccountEditViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h">
@@ -836,10 +833,16 @@
     <ClInclude Include="UI\Tabs\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\TransactionsMenuViewModel.h">
+    <ClInclude Include="UI\ViewModels\TransactionsMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\ViewModels\Enums.h">
+    <ClInclude Include="UI\ViewModels\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data\Services\CurrenciesService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

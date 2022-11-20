@@ -3,9 +3,9 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
-#include "../../Data/ViewModels/Types.h"
+#include "../PresentationModels/AccountPresentationModel.h"
+#include "../ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

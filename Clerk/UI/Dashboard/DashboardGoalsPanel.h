@@ -2,9 +2,9 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
-#include "../../Data/ViewModels/Types.h"
-#include "../../Data/ViewModels/GoalViewModel.h"
-#include "../../Data/ViewModels/DashboardViewModel.h"
+#include "../PresentationModels/Types.h"
+#include "../PresentationModels/GoalPresentationModel.h"
+#include "../ViewModels/DashboardViewModel.h"
 #include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;

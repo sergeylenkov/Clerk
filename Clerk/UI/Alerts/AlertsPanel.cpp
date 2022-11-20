@@ -24,7 +24,7 @@ AlertsPanel::AlertsPanel(wxWindow *parent, DataContext& context) : DataPanel(par
 	this->Layout();
 }
 
-std::shared_ptr<AlertViewModel> AlertsPanel::GetAlert() {
+std::shared_ptr<AlertPresentationModel> AlertsPanel::GetAlert() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {

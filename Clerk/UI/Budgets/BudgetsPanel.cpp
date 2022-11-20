@@ -30,7 +30,7 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, DataContext& context): DataPanel(pa
 	this->Layout();
 }
 
-std::shared_ptr<BudgetViewModel> BudgetsPanel::GetBudget() {	
+std::shared_ptr<BudgetPresentationModel> BudgetsPanel::GetBudget() {	
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {

@@ -5,7 +5,7 @@
 #include <thread>
 #include <memory>
 #include "DataPanel.h"
-#include "../Data/ViewModels/TagViewModel.h"
+#include "./PresentationModels/TagPresentationModel.h"
 
 using namespace Clerk::Data;
 
@@ -22,13 +22,13 @@ public:
 	~TagsPanel();
 
 	void Update();
-	std::shared_ptr<TagViewModel> GetTag();
+	std::shared_ptr<TagPresentationModel> GetTag();
 
 private:
 	wxTextCtrl *searchField;
 	wxListCtrl *list;
-	std::vector<std::shared_ptr<TagViewModel>> tags;
-	std::vector<std::shared_ptr<TagViewModel>> filteredTags;
+	std::vector<std::shared_ptr<TagPresentationModel>> tags;
+	std::vector<std::shared_ptr<TagPresentationModel>> filteredTags;
 	long editedIndex;
 
 	void Filter();

@@ -8,7 +8,7 @@ BudgetsListDataModel::~BudgetsListDataModel()
 {
 }
 
-void BudgetsListDataModel::SetItems(std::vector<std::shared_ptr<BudgetViewModel>> budgets) {
+void BudgetsListDataModel::SetItems(std::vector<std::shared_ptr<BudgetPresentationModel>> budgets) {
 	_budgets = budgets;
 	Reset(_budgets.size());
 }

@@ -56,7 +56,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	dc.SetFont(balanceFont);
 	
-	wxString value = Format::Amount(_total, *_viewModel->GetCurrency().sign);
+	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	dc.DrawText(value, wxPoint(0, y));
 
 	y = 80;
@@ -68,7 +68,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	
 	y = y + 40;
 
-	value = Format::Amount(_ownFunds, *_viewModel->GetCurrency().sign);
+	value = Format::Amount(_ownFunds, _viewModel->GetCurrency()->sign);
 	wxSize size = dc.GetTextExtent(value);
 	
 	dc.SetTextForeground(wxColor(0, 0, 0));
@@ -86,7 +86,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 
 	y = y + 40;	
 
-	value = Format::Amount(_creditFunds, *_viewModel->GetCurrency().sign);
+	value = Format::Amount(_creditFunds, _viewModel->GetCurrency()->sign);
 	size = dc.GetTextExtent(value);
 
 	dc.SetTextForeground(wxColor(0, 0, 0));

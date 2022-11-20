@@ -2,7 +2,7 @@
 
 const int transactionsOffset = 1000;
 
-AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountViewModel& account, std::vector<std::shared_ptr<TransactionViewModel>> transactions): TreeContextMenu(commandsInvoker),
+AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions): TreeContextMenu(commandsInvoker),
 	_account(account) {
 
 	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), wxT("Open in New Tab"));

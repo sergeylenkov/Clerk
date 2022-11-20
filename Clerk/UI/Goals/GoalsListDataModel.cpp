@@ -8,7 +8,7 @@ GoalsListDataModel::~GoalsListDataModel()
 {
 }
 
-void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<GoalViewModel>> goals) {
+void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<GoalPresentationModel>> goals) {
 	_goals = goals;
 	Reset(_goals.size());
 }

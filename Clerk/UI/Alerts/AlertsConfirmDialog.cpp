@@ -40,7 +40,7 @@ AlertsConfirmDialog::~AlertsConfirmDialog()
 {
 }
 
-void AlertsConfirmDialog::SetAlerts(std::vector<std::shared_ptr<AlertViewModel>> alerts) {
+void AlertsConfirmDialog::SetAlerts(std::vector<std::shared_ptr<AlertPresentationModel>> alerts) {
 	this->alerts = alerts;
 	UpdateList();
 }

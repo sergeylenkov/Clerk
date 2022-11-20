@@ -187,14 +187,14 @@ void TransactionDialog::SelectFromAccount(int index) {
 	auto account = _viewModel->GetFromAccounts()[index];
 
 	_fromList->Select(index);
-	_fromAmountLabel->SetLabel(*account->currency->shortName);
+	_fromAmountLabel->SetLabel(account->currency->shortName);
 }
 
 void TransactionDialog::SelectToAccount(int index) {
 	auto account = _viewModel->GetToAccounts()[index];
 
 	_toList->Select(index);
-	_toAmountLabel->SetLabel(*account->currency->shortName);
+	_toAmountLabel->SetLabel(account->currency->shortName);
 }
 
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {

@@ -29,8 +29,9 @@ bool ClerkApp::OnInit()
 	ExchangeRatesRepository* exchangeRatesRepository = new ExchangeRatesRepository(*_connection);
 	ReportingRepository* reportingRepository = new ReportingRepository(*_connection);
 
+	CurrenciesService* currenciesService = new CurrenciesService(*currenciesRepository);
 	AccountingService* accountingService = new AccountingService(*accountsRepository, *exchangeRatesRepository);
-	AccountsService* accountsService = new AccountsService(*accountsRepository, *currenciesRepository);
+	AccountsService* accountsService = new AccountsService(*accountsRepository, *currenciesService);
 	SchedulersService* schedulersService = new SchedulersService(*schedulersRepository, *accountsRepository, *exchangeRatesRepository);
 	BudgetsService* budgetsService = new BudgetsService(*budgetsRepository);
 	TagsService* tagsService = new TagsService(*tagsRepository);
@@ -39,8 +40,9 @@ bool ClerkApp::OnInit()
 	AlertsService* alertsService = new AlertsService(*alertsRepository);
 	GoalsService* goalsService = new GoalsService(*goalsRepository);
 	ReportingService* reportingService = new ReportingService(*reportingRepository, *exchangeRatesRepository);
+	
 
-	currenciesRepository->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
+	currenciesService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
 	accountingService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
 	schedulersService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
 	reportingService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
@@ -48,7 +50,7 @@ bool ClerkApp::OnInit()
 	_context = new DataContext(*accountsRepository, *reportsRepository, *budgetsRepository, *goalsRepository, *alertsRepository,
 		*schedulersRepository, *transactionsRepository, *tagsRepository, *currenciesRepository, *exchangeRatesRepository, *reportingRepository,
 		*accountingService, *accountsService, *schedulersService, *budgetsService, *transactionsService, *tagsService,
-		*reportsService, *alertsService, *goalsService, *reportingService);
+		*reportsService, *alertsService, *goalsService, *reportingService, *currenciesService);
 
 	_icons = new Icons();
 

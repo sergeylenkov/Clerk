@@ -101,7 +101,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	Bind(wxEVT_CHAR_HOOK, &BudgetDialog::OnKeyDown, this);
 }
 
-void BudgetDialog::SetBudget(std::shared_ptr<BudgetViewModel> budget) {
+void BudgetDialog::SetBudget(std::shared_ptr<BudgetPresentationModel> budget) {
 	_budget = budget;
 
 	nameField->SetValue(budget->name);	

@@ -11,10 +11,11 @@
 #include "../Charts/LineChart.h"
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
-#include "../../Data/ViewModels/DateValueViewModel.h"
+#include "../PresentationModels/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class ReportBalancePanel : public DataPanel
 {
@@ -30,7 +31,7 @@ private:
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
-	std::vector<std::shared_ptr<AccountViewModel>> _accounts;
+	std::vector<std::shared_ptr<AccountPresentationModel>> _accounts;
 	ExpensesTooltipPopup *chartPopup;
 	std::vector<DateValueViewModel> values;
 	wxDateTime periodFromDate;

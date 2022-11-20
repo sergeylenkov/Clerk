@@ -2,10 +2,11 @@
 
 #include <wx/dataview.h>
 #include "../../Utils/Utils.h"
-#include "../../Data/ViewModels/AlertViewModel.h"
+#include "../PresentationModels/AlertPresentationModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class AlertsListDataModel : public wxDataViewListStore
 {
@@ -23,7 +24,7 @@ public:
 	AlertsListDataModel();
 	~AlertsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<AlertViewModel>> alerts);
+	void SetItems(std::vector<std::shared_ptr<AlertPresentationModel>> alerts);
 	
 	virtual unsigned int GetColumnCount() const;
 	virtual wxString GetColumnType(unsigned int column) const;
@@ -32,6 +33,6 @@ public:
 	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
 
 private:
-	std::vector<std::shared_ptr<AlertViewModel>> _alerts;
+	std::vector<std::shared_ptr<AlertPresentationModel>> _alerts;
 };
 

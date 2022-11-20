@@ -3,10 +3,11 @@
 #include <set>
 #include <wx/wx.h>
 #include <wx/combo.h>
-#include "CheckboxComboPopup.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
+#include "./CheckboxComboPopup.h"
+#include "../PresentationModels/AccountPresentationModel.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 class AccountsComboBox : public wxComboCtrl
 {
@@ -16,12 +17,12 @@ public:
 
 	std::function<void(std::set<int> ids)> OnChange;
 
-	void SetAccounts(std::vector<std::shared_ptr<AccountViewModel>> accounts);
+	void SetAccounts(std::vector<std::shared_ptr<AccountPresentationModel>> accounts);
 	void SetSelection(std::set<int> ids);
 
 private:
 	CheckboxComboPopup *accountsList;
-	std::vector<std::shared_ptr<AccountViewModel>> accounts;
+	std::vector<std::shared_ptr<AccountPresentationModel>> accounts;
 	std::set<int> selectedIds;
 	bool ignoreSelection;
 

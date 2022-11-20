@@ -9,9 +9,9 @@
 #include "../../Data/Settings.h"
 #include "../Controls/TagsPopup.h"
 #include "../Controls/AmountField.h"
-#include "../../Data/ViewModels/AccountViewModel.h"
-#include "../../Data/ViewModels/TransactionViewModel.h"
-#include "../../Data/ViewModels/TransactionEditViewModel.h"
+#include "../PresentationModels/AccountPresentationModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
+#include "../ViewModels/TransactionEditViewModel.h"
 #include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
@@ -45,8 +45,8 @@ private:
 	AmountField *_fromAmountField;
 	wxStaticText *_toAmountLabel;
 	AmountField *_toAmountField;
-	std::shared_ptr<TransactionViewModel> _transaction;
-	std::shared_ptr<TransactionViewModel> _splitTransaction;
+	std::shared_ptr<TransactionPresentationModel> _transaction;
+	std::shared_ptr<TransactionPresentationModel> _splitTransaction;
 	TagsPopup *_tagsPopup;
 
 	void Update();

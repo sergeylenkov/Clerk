@@ -4,9 +4,9 @@
 #include <wx/treectrl.h>
 #include <memory>
 #include "../../Data/Settings.h"
-#include "../../Data/ViewModels/TreeMenuViewModel.h"
-#include "../../Data/ViewModels/TransactionViewModel.h"
-#include "../../Data/ViewModels/ReportViewModel.h"
+#include "../ViewModels/TreeMenuViewModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
+#include "../PresentationModels//AccountPresentationModel.h"
 #include "../../Utils/Icons.h"
 #include "TreeMenuItemData.h"
 #include "AccountContextMenu.h"
@@ -49,7 +49,7 @@ namespace Clerk {
 			void CreateMenu();
 			void Update();
 			void SetIsTrashEmpty(bool isEmpty);
-			std::shared_ptr<AccountViewModel> GetContextMenuAccount();
+			std::shared_ptr<AccountPresentationModel> GetContextMenuAccount();
 			void ExpandItem(wxTreeItemId& item);
 			void OnTreeSpecItemMenu(wxTreeEvent& event);
 			void OnTreeItemSelect(wxTreeEvent& event);			
@@ -58,7 +58,7 @@ namespace Clerk {
 			void OnBeginDrag(wxTreeEvent& event);
 			void OnEndDrag(wxTreeEvent& event);
 			void ReorderAccounts(wxTreeItemId& item);
-			void AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountViewModel> account);
+			void AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account);
 		};
 	}
 }

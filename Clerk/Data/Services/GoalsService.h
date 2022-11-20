@@ -1,7 +1,9 @@
 #pragma once
 
 #include "../Repositories/GoalsRepository.h"
-#include "../ViewModels/GoalViewModel.h"
+#include "../../UI/PresentationModels/GoalPresentationModel.h"
+
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {
@@ -9,8 +11,8 @@ namespace Clerk {
 		public:
 			GoalsService(GoalsRepository& goalsRepository);
 
-			std::shared_ptr<GoalViewModel> GetById(int id);
-			std::vector<std::shared_ptr<GoalViewModel>> GetAll();
+			std::shared_ptr<GoalPresentationModel> GetById(int id);
+			std::vector<std::shared_ptr<GoalPresentationModel>> GetAll();
 
 		private:
 			GoalsRepository& _goalsRepository;

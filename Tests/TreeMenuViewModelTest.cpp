@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Clerk/Data/ViewModels/TreeMenuViewModel.h"
+#include "../Clerk/UI/ViewModels/TreeMenuViewModel.h"
 #include "Fixture.cpp"
 
 class TreeMenuViewModelTest : public Fixture {
@@ -63,7 +63,7 @@ TEST_F(TreeMenuViewModelTest, GetReports) {
 }
 
 TEST_F(TreeMenuViewModelTest, GetRecentsTransactions) {
-    AccountViewModel* account = new AccountViewModel();
+    AccountPresentationModel* account = new AccountPresentationModel();
     account->id = 69;
 
     auto transactions = viewModel->GetRecentsTransactions(*account);

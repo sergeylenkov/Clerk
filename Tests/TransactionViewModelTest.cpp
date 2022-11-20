@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Clerk/Data/ViewModels/TransactionViewModel.h"
+#include "../Clerk/UI/PresentationModels/TransactionPresentationModel.h"
 #include "Fixture.cpp"
 
 class TransactionViewModelTest : public Fixture {

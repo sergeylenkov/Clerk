@@ -60,7 +60,7 @@ TEST_F(TransactionsServiceTest, GetRecentsForAccount) {
     auto context = Fixture::context;
     auto model = context->GetAccountsRepository().GetById(2);
 
-    AccountViewModel* account = new AccountViewModel(*model);
+    AccountPresentationModel* account = new AccountPresentationModel(*model);
     account->id = 2;
 
     auto transactions = service->GetRecents(*account, 10);

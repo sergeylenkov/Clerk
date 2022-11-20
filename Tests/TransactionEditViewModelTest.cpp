@@ -1,7 +1,7 @@
 #include "pch.h"
 
-#include "../Clerk/Data/ViewModels/TransactionEditViewModel.h"
-#include "../Clerk/Data/ViewModels/TagViewModel.h"
+#include "../Clerk/UI/ViewModels/TransactionEditViewModel.h"
+#include "../Clerk/UI/PresentationModels/TagPresentationModel.h"
 #include "../Clerk/Data/Settings.h"
 #include "Fixture.cpp"
 
@@ -49,7 +49,7 @@ TEST_F(TransactionEditViewModelTest, SetToAmount) {
 }
 
 TEST_F(TransactionEditViewModelTest, AddTag) {
-    auto tag = std::make_shared<TagViewModel>();
+    auto tag = std::make_shared<TagPresentationModel>();
     tag->name = "Test";
 
     viewModel->AddTag(tag);

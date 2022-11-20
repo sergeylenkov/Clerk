@@ -8,7 +8,7 @@ public:
     void SetUp() override {
         Fixture::SetUp();
 
-        service = new AccountsService(context->GetAccountsRepository(), context->GetCurrenciesRepository());
+        service = new AccountsService(context->GetAccountsRepository(), context->GetCurrenciesService());
     }
 
     void TearDown() override {

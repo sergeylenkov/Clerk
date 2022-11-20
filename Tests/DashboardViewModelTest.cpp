@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Clerk/Data/ViewModels/DashboardViewModel.h"
+#include "../Clerk/UI/ViewModels/DashboardViewModel.h"
 #include "Fixture.cpp"
 
 class DashboardViewModelTest : public Fixture {
@@ -9,7 +9,7 @@ public:
         Fixture::SetUp();
 
         viewModel = new DashboardViewModel(context->GetAccountingService(), context->GetTransactionsService(), context->GetAccountsService(),
-            context->GetBudgetsService(), context->GetSchedulersService(), context->GetGoalsService(), *context->GetCurrenciesRepository().GetBaseCurrency());
+            context->GetBudgetsService(), context->GetSchedulersService(), context->GetGoalsService(), context->GetCurrenciesService());
     }
 
     void TearDown() override {
@@ -42,7 +42,7 @@ TEST_F(DashboardViewModelTest, GetCreditFunds) {
 TEST_F(DashboardViewModelTest, GetCurrency) {
     auto currency = viewModel->GetCurrency();
 
-    EXPECT_EQ(currency.id, 152);
+    EXPECT_EQ(currency->id, 152);
 }
 
 TEST_F(DashboardViewModelTest, GetAccounts) {

@@ -34,7 +34,7 @@ std::shared_ptr<CurrencyPresentationModel> CurrenciesService::GetById(int id) {
 }
 
 std::shared_ptr<CurrencyPresentationModel> CurrenciesService::GetBaseCurrency() {
-	auto currency = _currenciesRepository.GetBaseCurrency();
+	auto currency = _currenciesRepository.GetById(_baseCurrencyId);
 
 	if (currency) {
 		return std::make_shared<CurrencyPresentationModel>(*currency);

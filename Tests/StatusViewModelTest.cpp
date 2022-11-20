@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "../Clerk/Data/ViewModels/StatusViewModel.h"
+#include "../Clerk/UI/ViewModels/StatusViewModel.h"
 #include "Fixture.cpp"
 
 class StatusViewModelTest : public Fixture {
@@ -9,7 +9,7 @@ public:
         Fixture::SetUp();
 
         std::vector<int> ratesIds{ 180 };
-        viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesRepository(), ratesIds);
+        viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesService(), ratesIds);
     }
 
     void TearDown() override {

@@ -14,8 +14,6 @@ namespace Clerk {
 
 			std::vector<std::shared_ptr<CurrencyModel>> GetAll();
 			std::shared_ptr<CurrencyModel> GetById(int id);
-			void SetBaseCurrency(int id);
-			std::shared_ptr<CurrencyModel> GetBaseCurrency();
 
 		private:
 			std::shared_ptr<CurrencyModel> Load(int id);

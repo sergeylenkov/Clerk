@@ -33,14 +33,6 @@ std::shared_ptr<CurrencyModel> CurrenciesRepository::GetById(int id) {
 	return currency;
 }
 
-void CurrenciesRepository::SetBaseCurrency(int id) {
-	_baseCurrencyId = id;
-}
-
-std::shared_ptr<CurrencyModel> CurrenciesRepository::GetBaseCurrency() {
-	return GetById(_baseCurrencyId);
-}
-
 std::shared_ptr<CurrencyModel> CurrenciesRepository::Load(int id) {
 	std::shared_ptr<CurrencyModel> currency = nullptr;
 

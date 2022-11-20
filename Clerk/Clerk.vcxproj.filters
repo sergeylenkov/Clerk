@@ -351,7 +351,7 @@
     <ClCompile Include="Commands\NewTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\TransactionEditViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\TransactionViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils\EventEmitter.cpp">
@@ -366,7 +366,7 @@
     <ClCompile Include="Commands\EditAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\AccountEditViewModel.cpp">
+    <ClCompile Include="UI\ViewModels\AccountViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp">
@@ -773,7 +773,7 @@
     <ClInclude Include="Commands\NewTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\TransactionEditViewModel.h">
+    <ClInclude Include="UI\ViewModels\TransactionViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\EventEmitter.h">
@@ -791,7 +791,7 @@
     <ClInclude Include="Commands\EditAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\AccountEditViewModel.h">
+    <ClInclude Include="UI\ViewModels\AccountViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h">

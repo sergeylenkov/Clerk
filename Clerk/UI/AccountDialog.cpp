@@ -103,9 +103,9 @@ AccountDialog::~AccountDialog() {
 	delete _viewModel;
 }
 
-void AccountDialog::SetViewModel(AccountEditViewModel* viewModel) {
+void AccountDialog::SetViewModel(AccountViewModel* viewModel) {
 	_viewModel = viewModel;
-	_viewModel->OnUpdate = [=]() {
+	_viewModel->OnUpdate = [&](AccountViewModelField field) {
 		Update();
 	};
 

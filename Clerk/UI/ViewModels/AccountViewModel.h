@@ -3,12 +3,15 @@
 #include "../PresentationModels/CurrencyPresentationModel.h"
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/CurrenciesService.h"
+#include "./Enums.h"
+
+using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace UI {
-		class AccountEditViewModel {
+		class AccountViewModel {
 		public:
-			AccountEditViewModel(AccountsService& accountsService, CurrenciesService& currenciesService);
+			AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService);
 
 			void SetAccountId(int id);
 			std::vector<std::shared_ptr<CurrencyPresentationModel>> GetCurrencies();
@@ -18,7 +21,9 @@ namespace Clerk {
 			void SetType(AccountType type);
 			AccountType GetType();
 			void SetAmount(float amount);
-			float GetAmount();			
+			float GetAmount();	
+			void SetCreditLimit(float amount);
+			float GetCreditLimit();
 			std::shared_ptr<CurrencyPresentationModel> GetCurrency();
 			void SetCurrency(std::shared_ptr<CurrencyPresentationModel> currency);
 			void SetNote(wxString note);
@@ -28,7 +33,7 @@ namespace Clerk {
 			int GetCurrencyIndex();
 
 			void Save();
-			std::function<void()> OnUpdate;
+			std::function<void(AccountViewModelField field)> OnUpdate;
 
 		private:
 			AccountsService& _accountsService;
@@ -40,6 +45,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<CurrencyPresentationModel>> _currencies;
 			std::shared_ptr<CurrencyPresentationModel> _currency;
 			float _amount;
+			float _creditLimit;
 			wxString _note;
 			std::vector<wxString> _types;
 

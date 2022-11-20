@@ -11,11 +11,12 @@
 #include "../Controls/AmountField.h"
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
-#include "../ViewModels/TransactionEditViewModel.h"
+#include "../ViewModels/TransactionViewModel.h"
 #include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class TransactionDialog : public wxFrame
 {
@@ -23,10 +24,10 @@ public:
 	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
 	~TransactionDialog();
 		
-	void SetViewModel(TransactionEditViewModel* viewModel);
+	void SetViewModel(TransactionViewModel* viewModel);
 
 private:
-	TransactionEditViewModel* _viewModel;
+	TransactionViewModel* _viewModel;
 	Icons& _icons;
 	wxPanel *_mainPanel;
 	wxStaticText *_fromLabel;

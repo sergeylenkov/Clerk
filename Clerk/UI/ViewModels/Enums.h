@@ -2,7 +2,7 @@
 
 namespace Clerk {
 	namespace Data {
-		enum class TransactionEditViewModelField {
+		enum class TransactionViewModelField {
 			FromAccount = 0,
 			ToAccount = 1,
 			FromAmount = 2,
@@ -10,6 +10,16 @@ namespace Clerk {
 			Date = 4,
 			Tags = 5,
 			Note = 6,
+		};
+
+		enum class AccountViewModelField {
+			Name = 0,
+			Type = 1,
+			Icon = 2,
+			Amount = 3,			
+			Note = 4,
+			Currency = 5,
+			CreditLimit = 6,
 		};
 	}
 }

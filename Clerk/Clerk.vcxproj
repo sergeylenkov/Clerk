@@ -116,7 +116,7 @@
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
     <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp" />
-    <ClCompile Include="UI\ViewModels\AccountEditViewModel.cpp" />
+    <ClCompile Include="UI\ViewModels\AccountViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\AccountPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\AlertPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\BudgetPresentationModel.cpp" />
@@ -126,7 +126,7 @@
     <ClCompile Include="UI\PresentationModels\SchedulerPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp" />
-    <ClCompile Include="UI\ViewModels\TransactionEditViewModel.cpp" />
+    <ClCompile Include="UI\ViewModels\TransactionViewModel.cpp" />
     <ClCompile Include="UI\ViewModels\TransactionsMenuViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TransactionPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\TreeMenuViewModel.cpp" />
@@ -254,7 +254,7 @@
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
     <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h" />
-    <ClInclude Include="UI\ViewModels\AccountEditViewModel.h" />
+    <ClInclude Include="UI\ViewModels\AccountViewModel.h" />
     <ClInclude Include="UI\PresentationModels\AccountPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\AlertPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\BudgetPresentationModel.h" />
@@ -265,7 +265,7 @@
     <ClInclude Include="UI\PresentationModels\SchedulerPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\StatusViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TagPresentationModel.h" />
-    <ClInclude Include="UI\ViewModels\TransactionEditViewModel.h" />
+    <ClInclude Include="UI\ViewModels\TransactionViewModel.h" />
     <ClInclude Include="UI\ViewModels\TransactionsMenuViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TransactionPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\TreeMenuViewModel.h" />

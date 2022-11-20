@@ -14,10 +14,10 @@ using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace UI {
-		class TransactionEditViewModel {
+		class TransactionViewModel {
 		public:
-			TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
-			~TransactionEditViewModel();
+			TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
+			~TransactionViewModel();
 
 			void SetTransactionId(int id);
 			void SetCopyTransactionId(int id);
@@ -44,7 +44,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagPresentationModel>> SearchTagsByString(wxString search);
 
 			void Save();
-			std::function<void(TransactionEditViewModelField fiel)> OnUpdate;
+			std::function<void(TransactionViewModelField field)> OnUpdate;
 
 		private:
 			AccountsService& _accountsService;

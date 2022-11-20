@@ -119,24 +119,24 @@ TransactionDialog::~TransactionDialog() {
 	wxLogDebug("~TransactionDialog");
 }
 
-void TransactionDialog::SetViewModel(TransactionEditViewModel* viewModel) {
+void TransactionDialog::SetViewModel(TransactionViewModel* viewModel) {
 	_viewModel = viewModel;
-	_viewModel->OnUpdate = [&](TransactionEditViewModelField field) {
-		if (field == TransactionEditViewModelField::FromAmount || field == TransactionEditViewModelField::ToAmount) {
+	_viewModel->OnUpdate = [&](TransactionViewModelField field) {
+		if (field == TransactionViewModelField::FromAmount || field == TransactionViewModelField::ToAmount) {
 			_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
 			_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
 		}
 
-		if (field == TransactionEditViewModelField::Tags) {
+		if (field == TransactionViewModelField::Tags) {
 			_tagsField->SetValue(_viewModel->GetTagsString());
 		}
 
-		if (field == TransactionEditViewModelField::FromAccount) {
+		if (field == TransactionViewModelField::FromAccount) {
 			UpdateToList();
 			SelectToAccount(_viewModel->GetToAccountIndex());
 		}
 
-		if (field == TransactionEditViewModelField::ToAccount) {
+		if (field == TransactionViewModelField::ToAccount) {
 			UpdateFromList();
 			SelectFromAccount(_viewModel->GetFromAccountIndex());
 		}

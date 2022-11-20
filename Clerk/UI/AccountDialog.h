@@ -8,7 +8,7 @@
 #include "./PresentationModels/CurrencyPresentationModel.h"
 #include "./PresentationModels/AccountPresentationModel.h"
 #include "./PresentationModels/TransactionPresentationModel.h"
-#include "./ViewModels/AccountEditViewModel.h"
+#include "./ViewModels/AccountViewModel.h"
 #include "../Utils/Icons.h"
 #include "./Controls/AmountField.h"
 
@@ -22,10 +22,10 @@ public:
 	AccountDialog(wxFrame* parent, const wxChar* title, int xpos, int ypos, int width, int height, Icons& icons);
 	~AccountDialog();
 
-	void SetViewModel(AccountEditViewModel* viewModel);
+	void SetViewModel(AccountViewModel* viewModel);
 
 private:
-	AccountEditViewModel* _viewModel;
+	AccountViewModel* _viewModel;
 	Icons& _icons;
 	wxPanel *mainPanel;
 	wxStaticText *nameLabel;

@@ -1,8 +1,8 @@
-#include "TransactionEditViewModel.h"
+#include "TransactionViewModel.h"
 
 using namespace Clerk::UI;
 
-TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService):
+TransactionViewModel::TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService):
 	_accountsService(accountsService),
 	_transactionsService(transactionsService),
 	_exchangeRatesRepository(exchangeRatesRepository),
@@ -20,11 +20,11 @@ TransactionEditViewModel::TransactionEditViewModel(AccountsService& accountsServ
 	Update();
 }
 
-TransactionEditViewModel::~TransactionEditViewModel() {
+TransactionViewModel::~TransactionViewModel() {
 	_accountsService.Unsubscribe(_subscriptionId);
 }
 
-void TransactionEditViewModel::SetTransactionId(int id) {
+void TransactionViewModel::SetTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 
 	if (transaction) {
@@ -39,7 +39,7 @@ void TransactionEditViewModel::SetTransactionId(int id) {
 		Update();
 	}
 }
-void TransactionEditViewModel::SetSplitTransactionId(int id) {
+void TransactionViewModel::SetSplitTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 
 	if (transaction) {
@@ -56,7 +56,7 @@ void TransactionEditViewModel::SetSplitTransactionId(int id) {
 	}
 }
 
-void TransactionEditViewModel::SetCopyTransactionId(int id) {
+void TransactionViewModel::SetCopyTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 
 	if (transaction) {
@@ -72,7 +72,7 @@ void TransactionEditViewModel::SetCopyTransactionId(int id) {
 	}
 }
 
-void TransactionEditViewModel::SetAccountId(int id) {
+void TransactionViewModel::SetAccountId(int id) {
 	_fromAccount = _accountsService.GetById(id);
 
 	_id = -1;
@@ -91,7 +91,7 @@ void TransactionEditViewModel::SetAccountId(int id) {
 	Update();
 }
 
-void TransactionEditViewModel::Update() {
+void TransactionViewModel::Update() {
 	UpdateFromAccounts();
 
 	if (!_fromAccount) {
@@ -105,7 +105,7 @@ void TransactionEditViewModel::Update() {
 	}
 }
 
-void TransactionEditViewModel::UpdateFromAccounts() {
+void TransactionViewModel::UpdateFromAccounts() {
 	auto receipts = _accountsService.GetByType(AccountType::Receipt);
 	auto deposits = _accountsService.GetByType(AccountType::Deposit);
 
@@ -121,7 +121,7 @@ void TransactionEditViewModel::UpdateFromAccounts() {
 	});
 }
 
-void TransactionEditViewModel::UpdateToAccounts() {
+void TransactionViewModel::UpdateToAccounts() {
 	auto deposits = _accountsService.GetByType(AccountType::Deposit);
 	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
 	auto expenses = _accountsService.GetByType(AccountType::Expens);
@@ -144,15 +144,15 @@ void TransactionEditViewModel::UpdateToAccounts() {
 	});
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TransactionEditViewModel::GetFromAccounts() {
+std::vector<std::shared_ptr<AccountPresentationModel>> TransactionViewModel::GetFromAccounts() {
 	return _fromAccounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TransactionEditViewModel::GetToAccounts() {
+std::vector<std::shared_ptr<AccountPresentationModel>> TransactionViewModel::GetToAccounts() {
 	return _toAccounts;
 }
 
-int TransactionEditViewModel::GetFromAccountIndex() {
+int TransactionViewModel::GetFromAccountIndex() {
 	for (unsigned int i = 0; i < _fromAccounts.size(); i++) {
 		if (_fromAccount->id == _fromAccounts[i]->id) {
 			return i;
@@ -162,7 +162,7 @@ int TransactionEditViewModel::GetFromAccountIndex() {
 	return 0;
 }
 
-void TransactionEditViewModel::SetFromAccount(int index) {
+void TransactionViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
 
 	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](const std::shared_ptr<AccountPresentationModel>& account) {
@@ -171,11 +171,11 @@ void TransactionEditViewModel::SetFromAccount(int index) {
 
 	if (result != _toAccounts.end()) {
 		UpdateToAccounts();
-		OnUpdate(TransactionEditViewModelField::FromAccount);
+		OnUpdate(TransactionViewModelField::FromAccount);
 	}
 }
 
-int TransactionEditViewModel::GetToAccountIndex() {
+int TransactionViewModel::GetToAccountIndex() {
 	for (unsigned int i = 0; i < _toAccounts.size(); i++) {
 		if (_toAccount->id == _toAccounts[i]->id) {
 			return i;
@@ -185,7 +185,7 @@ int TransactionEditViewModel::GetToAccountIndex() {
 	return 0;
 }
 
-void TransactionEditViewModel::SetToAccount(int index) {
+void TransactionViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
 
 	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](const std::shared_ptr<AccountPresentationModel>& account) {
@@ -194,15 +194,15 @@ void TransactionEditViewModel::SetToAccount(int index) {
 
 	if (result != _fromAccounts.end()) {
 		UpdateFromAccounts();
-		OnUpdate(TransactionEditViewModelField::ToAccount);
+		OnUpdate(TransactionViewModelField::ToAccount);
 	}
 }
 
-float TransactionEditViewModel::GetFromAmount() {
+float TransactionViewModel::GetFromAmount() {
 	return _fromAmount;
 }
 
-void TransactionEditViewModel::SetFromAmount(float amount) {
+void TransactionViewModel::SetFromAmount(float amount) {
 	_fromAmount = amount;
 
 	if (_toAmount == 0) {
@@ -216,47 +216,47 @@ void TransactionEditViewModel::SetFromAmount(float amount) {
 	}
 
 	if (_fromAmount == amount) {
-		OnUpdate(TransactionEditViewModelField::FromAmount);
+		OnUpdate(TransactionViewModelField::FromAmount);
 	}
 }
 
-float TransactionEditViewModel::GetToAmount() {
+float TransactionViewModel::GetToAmount() {
 	return _toAmount;
 }
 
-void TransactionEditViewModel::SetToAmount(float amount) {
+void TransactionViewModel::SetToAmount(float amount) {
 	_toAmount = amount;
 
 	if (_toAmount == amount) {
-		OnUpdate(TransactionEditViewModelField::ToAmount);
+		OnUpdate(TransactionViewModelField::ToAmount);
 	}
 }
 
-void TransactionEditViewModel::SetNote(wxString note) {
+void TransactionViewModel::SetNote(wxString note) {
 	_note = note;
 
-	OnUpdate(TransactionEditViewModelField::Note);
+	OnUpdate(TransactionViewModelField::Note);
 }
 
-wxString TransactionEditViewModel::GetNote() {
+wxString TransactionViewModel::GetNote() {
 	return _note;
 }
 
-void TransactionEditViewModel::SetDate(wxDateTime date) {
+void TransactionViewModel::SetDate(wxDateTime date) {
 	_date = date;
 
-	OnUpdate(TransactionEditViewModelField::Date);
+	OnUpdate(TransactionViewModelField::Date);
 }
 
-wxDateTime TransactionEditViewModel::GetDate() {
+wxDateTime TransactionViewModel::GetDate() {
 	return _date;
 }
 
-std::vector<std::shared_ptr<TagPresentationModel>> TransactionEditViewModel::GetTags() {
+std::vector<std::shared_ptr<TagPresentationModel>> TransactionViewModel::GetTags() {
 	return _tags;
 }
 
-wxString TransactionEditViewModel::GetTagsString() {
+wxString TransactionViewModel::GetTagsString() {
 	wxString result = "";
 
 	if (_tags.size() > 0) {
@@ -271,7 +271,7 @@ wxString TransactionEditViewModel::GetTagsString() {
 	return result;
 }
 
-void TransactionEditViewModel::SetTagsString(wxString tags) {
+void TransactionViewModel::SetTagsString(wxString tags) {
 	wxStringTokenizer tokenizer(tags, ",");
 	std::vector<wxString> tokens;
 
@@ -292,20 +292,20 @@ void TransactionEditViewModel::SetTagsString(wxString tags) {
 		}
 	}
 
-	OnUpdate(TransactionEditViewModelField::Tags);
+	OnUpdate(TransactionViewModelField::Tags);
 }
 
-void TransactionEditViewModel::AddTag(std::shared_ptr<TagPresentationModel> tag) {
+void TransactionViewModel::AddTag(std::shared_ptr<TagPresentationModel> tag) {
 	_tags.push_back(tag);
 
-	OnUpdate(TransactionEditViewModelField::Tags);
+	OnUpdate(TransactionViewModelField::Tags);
 }
 
-std::vector<std::shared_ptr<TagPresentationModel>> TransactionEditViewModel::SearchTagsByString(wxString search) {
+std::vector<std::shared_ptr<TagPresentationModel>> TransactionViewModel::SearchTagsByString(wxString search) {
 	return _tagsService.GetBySearch(search);
 }
 
-void TransactionEditViewModel::Save() {
+void TransactionViewModel::Save() {
 	auto transaction = _transactionsService.GetById(_id);
 
 	if (!transaction) {

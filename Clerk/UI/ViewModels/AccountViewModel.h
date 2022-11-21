@@ -14,6 +14,7 @@ namespace Clerk {
 			AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService);
 
 			void SetAccountId(int id);
+			void SetAccountType(AccountType type);
 			std::vector<std::shared_ptr<CurrencyPresentationModel>> GetCurrencies();
 			std::vector<wxString> GetTypes();
 			void SetName(wxString name);
@@ -48,8 +49,6 @@ namespace Clerk {
 			float _creditLimit;
 			wxString _note;
 			std::vector<wxString> _types;
-
-			void Update();
 		};
 	}
 }

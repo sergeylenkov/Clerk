@@ -15,18 +15,22 @@ Icons::Icons() {
 }
 
 Icons::~Icons() {
-	_imageList->Destroy();
-
 	for (auto p : _images) {
 		delete p;
 	}
+
+	_imageList->Destroy();
+}
+
+unsigned int Icons::GetAccountIconsCount() {
+	return _accountIconsCount;
 }
 
 wxImageList* Icons::GetImageList() {
 	return _imageList;
 }
 
-int Icons::GetIconForAccount(int index) {
+unsigned int Icons::GetIconIndexForAccount(unsigned int index) {
 	if (_menuIconsCount + index < _imageList->GetImageCount()) {
 		return _menuIconsCount + index;
 	}
@@ -34,8 +38,9 @@ int Icons::GetIconForAccount(int index) {
 	return _defaultAccountIcon;
 }
 
-wxBitmap* Icons::GetBitmapForIcon(int index) {
-	return _images[index];
+wxBitmap* Icons::GetAccountIcon(unsigned int index) {
+	unsigned int iconIndex = GetIconIndexForAccount(index);
+	return _images[iconIndex];
 }
 
 void Icons::LoadMenuIcons() {

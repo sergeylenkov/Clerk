@@ -167,8 +167,7 @@ void TransactionDialog::UpdateFromList() {
 	_fromList->Clear();
 
 	for (auto& account : accounts) {
-		int iconIndex = _icons.GetIconForAccount(account->icon);
-		_fromList->Append(account->name, *_icons.GetBitmapForIcon(iconIndex));
+		_fromList->Append(account->name, *_icons.GetAccountIcon(account->icon));
 	}
 }
 
@@ -178,8 +177,7 @@ void TransactionDialog::UpdateToList() {
 	_toList->Clear();
 
 	for (auto& account : accounts) {
-		int iconIndex = _icons.GetIconForAccount(account->icon);
-		_toList->Append(account->name, *_icons.GetBitmapForIcon(iconIndex));
+		_toList->Append(account->name, *_icons.GetAccountIcon(account->icon));
 	}
 }
 

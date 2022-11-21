@@ -60,15 +60,15 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	_creditPanel = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* creditLabel = new wxStaticText(_mainPanel, wxID_ANY, "Credit Limit:", wxDefaultPosition, wxSize(80, -1), 0);
-	horizontalSizer->Add(creditLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
+	_creditPanel->Add(creditLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	_creditField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(100, -1));
-	horizontalSizer->Add(_creditField, 0, wxALL, 5);
+	_creditPanel->Add(_creditField, 0, wxALL, 5);
 
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(_creditPanel, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -103,10 +103,16 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	this->Centre(wxBOTH);	
 	this->SetDoubleBuffered(true);
 
+	_typeList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnTypeSelect, this);
+	_iconList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnIconSelect, this);
+	_currencyList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnCurrencySelect, this);
 	_amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	_creditField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnCreditKillFocus, this);
+	_nameField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnNameKillFocus, this);
+	_noteField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnNoteKillFocus, this);
 	_okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
 	_cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
+
 	this->Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
@@ -117,7 +123,17 @@ AccountDialog::~AccountDialog() {
 void AccountDialog::SetViewModel(AccountViewModel* viewModel) {
 	_viewModel = viewModel;
 	_viewModel->OnUpdate = [&](AccountViewModelField field) {
-		Update();
+		if (field == AccountViewModelField::Amount) {
+			_amountField->SetValue(Format::Amount(_viewModel->GetAmount()));
+		}
+
+		if (field == AccountViewModelField::CreditLimit) {
+			_creditField->SetValue(Format::Amount(_viewModel->GetCreditLimit()));
+		}
+
+		if (field == AccountViewModelField::Type) {
+			_creditField->SetEditable(_viewModel->GetType() == AccountType::Deposit);
+		}
 	};
 
 	Update();
@@ -147,26 +163,18 @@ void AccountDialog::Update() {
 
 	_currencyList->SetSelection(_viewModel->GetCurrencyIndex());
 
-	for (int i = 0; i < _icons.GetImageList()->GetImageCount(); i++) {
-		_iconList->Append("", *_icons.GetBitmapForIcon(i));
+	for (unsigned int i = 0; i < _icons.GetAccountIconsCount() - 1; i++) {
+		_iconList->Append("", *_icons.GetAccountIcon(i));
 	}
 
 	_iconList->SetSelection(_viewModel->GetIconIndex());
 
-	_nameField->SetValue(_viewModel->GetName());
-	_noteField->SetValue(_viewModel->GetNote());
+	_amountField->SetValue(Format::Amount(_viewModel->GetAmount()));
 	_creditField->SetValue(Format::Amount(_viewModel->GetCreditLimit()));
-}
+	_nameField->SetValue(_viewModel->GetName());
+	_noteField->SetValue(_viewModel->GetNote());	
 
-
-void AccountDialog::OnOK(wxCommandEvent &event) {
-	_viewModel->Save();
-
-	Close();
-}
-
-void AccountDialog::OnCancel(wxCommandEvent &event) {
-	Close();
+	_creditField->SetEditable(_viewModel->GetType() == AccountType::Deposit);
 }
 
 void AccountDialog::OnAmountKillFocus(wxFocusEvent &event) {
@@ -181,6 +189,35 @@ void AccountDialog::OnCreditKillFocus(wxFocusEvent& event) {
 	_viewModel->SetCreditLimit(_amountField->GetFloatValue());
 }
 
+void AccountDialog::OnNameKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetName(_nameField->GetValue());
+}
+
+void AccountDialog::OnNoteKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetNote(_noteField->GetValue());
+}
+
+void AccountDialog::OnTypeSelect(wxCommandEvent& event) {
+	int index = _typeList->GetSelection();
+	_viewModel->SetType(static_cast<AccountType>(index));
+}
+
+void AccountDialog::OnIconSelect(wxCommandEvent& event) {
+	int index = _iconList->GetSelection();
+	_viewModel->SetIconIndex(index);
+}
+
+void AccountDialog::OnCurrencySelect(wxCommandEvent& event) {
+	int index = _currencyList->GetSelection();
+	auto currencies = _viewModel->GetCurrencies();
+
+	_viewModel->SetCurrency(currencies[index]);
+}
+
 void AccountDialog::OnKeyDown(wxKeyEvent &event) {
 	if ((int)event.GetKeyCode() == 27) {
 		event.StopPropagation();
@@ -189,4 +226,14 @@ void AccountDialog::OnKeyDown(wxKeyEvent &event) {
 	else {
 		event.Skip();
 	}
+}
+
+void AccountDialog::OnOK(wxCommandEvent& event) {
+	_viewModel->Save();
+
+	Close();
+}
+
+void AccountDialog::OnCancel(wxCommandEvent& event) {
+	Close();
 }

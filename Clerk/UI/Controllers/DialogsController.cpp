@@ -84,7 +84,7 @@ void DialogsController::ShowNewAccountDialog(AccountType type) {
 	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 380, 400, _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
-	viewModel->SetType(type);
+	viewModel->SetAccountType(type);
 
 	accountDialog->SetViewModel(viewModel);
 

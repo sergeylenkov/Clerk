@@ -16,8 +16,6 @@ AccountViewModel::AccountViewModel(AccountsService& accountsService, CurrenciesS
 	_types.push_back("Expens");
 	_types.push_back("Debt");
 	_types.push_back("Virtual");
-
-	Update();
 }
 
 void AccountViewModel::SetAccountId(int id) {
@@ -32,13 +30,11 @@ void AccountViewModel::SetAccountId(int id) {
 		_note = account->note;
 		_currency = account->currency;
 		_creditLimit = account->creditLimit;
-
-		Update();
 	}
 }
 
-void AccountViewModel::Update() {
-	
+void AccountViewModel::SetAccountType(AccountType type) {
+	_type = type;
 }
 
 std::vector<std::shared_ptr<CurrencyPresentationModel>> AccountViewModel::GetCurrencies() {

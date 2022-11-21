@@ -160,13 +160,13 @@ void TreeMenu::Update() {
 }
 
 void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account) {
-	int iconId = _icons.GetIconForAccount(account->icon);
+	int iconIndex = _icons.GetIconIndexForAccount(account->icon);
 
 	TreeMenuItemData* itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Account;
 	itemData->object = account;
 
-	wxTreeItemId itemId = _treeMenu->AppendItem(parent, account->name, iconId, iconId, itemData);
+	wxTreeItemId itemId = _treeMenu->AppendItem(parent, account->name, iconIndex, iconIndex, itemData);
 }
 
 void TreeMenu::RestoreState() {

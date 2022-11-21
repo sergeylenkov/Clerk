@@ -30,17 +30,12 @@ private:
 	TransactionViewModel* _viewModel;
 	Icons& _icons;
 	wxPanel *_mainPanel;
-	wxStaticText *_fromLabel;
-	wxStaticText *_toLabel;
 	wxBitmapComboBox *_fromList;
 	wxBitmapComboBox *_toList;
 	wxButton *_okButton;
 	wxButton *_cancelButton;
-	wxStaticText *_tagsLabel;
 	wxTextCtrl *_tagsField;
-	wxStaticText *_noteLabel;
 	wxTextCtrl *_noteField;
-	wxStaticText *_dateLabel;
 	wxDatePickerCtrl *_datePicker;
 	wxStaticText *_fromAmountLabel;
 	AmountField *_fromAmountField;

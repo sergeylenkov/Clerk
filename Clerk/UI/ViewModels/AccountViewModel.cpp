@@ -31,6 +31,7 @@ void AccountViewModel::SetAccountId(int id) {
 		_amount = 0;
 		_note = account->note;
 		_currency = account->currency;
+		_creditLimit = account->creditLimit;
 
 		Update();
 	}

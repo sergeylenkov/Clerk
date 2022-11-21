@@ -334,7 +334,7 @@ std::shared_ptr<AccountModel> AccountsRepository::Load(int id) {
 
 void AccountsRepository::Save(AccountModel& account) {
 	if (account.id == -1) {
-		char* sql = "INSERT INTO accounts (name, note, type_id, icon_id, order_id, currency_id, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+		char* sql = "INSERT INTO accounts (name, note, type_id, icon_id, order_id, currency_id, active, credit_limit, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -345,7 +345,8 @@ void AccountsRepository::Save(AccountModel& account) {
 			sqlite3_bind_int(statement, 5, account.orderId);
 			sqlite3_bind_int(statement, 6, account.currencyId);
 			sqlite3_bind_int(statement, 7, true);
-			sqlite3_bind_text(statement, 8, account.created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_double(statement, 8, account.creditLimit);
+			sqlite3_bind_text(statement, 9, account.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				account.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -360,7 +361,7 @@ void AccountsRepository::Save(AccountModel& account) {
 		}
 	}
 	else {
-		char* sql = "UPDATE accounts SET name = ?, note = ?, type_id = ?, icon_id = ?, order_id = ?, currency_id = ?, active = ? WHERE id = ?";
+		char* sql = "UPDATE accounts SET name = ?, note = ?, type_id = ?, icon_id = ?, order_id = ?, currency_id = ?, active = ?, credit_limit = ? WHERE id = ?";
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -371,7 +372,8 @@ void AccountsRepository::Save(AccountModel& account) {
 			sqlite3_bind_int(statement, 5, account.orderId);
 			sqlite3_bind_int(statement, 6, account.currencyId);
 			sqlite3_bind_int(statement, 7, account.isActive);
-			sqlite3_bind_int(statement, 8, account.id);
+			sqlite3_bind_double(statement, 8, account.creditLimit);
+			sqlite3_bind_int(statement, 9, account.id);
 
 			sqlite3_step(statement);
 		}

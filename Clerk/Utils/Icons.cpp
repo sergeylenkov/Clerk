@@ -15,7 +15,7 @@ Icons::Icons() {
 }
 
 Icons::~Icons() {
-	delete _imageList;
+	_imageList->Destroy();
 
 	for (auto p : _images) {
 		delete p;

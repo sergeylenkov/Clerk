@@ -27,25 +27,21 @@ public:
 private:
 	AccountViewModel* _viewModel;
 	Icons& _icons;
-	wxPanel *mainPanel;
-	wxStaticText *nameLabel;
-	wxTextCtrl *nameField;
-	wxStaticText *typeLabel;
-	wxComboBox *typeList;
-	wxStaticText *currencyLabel;
-	wxComboBox *currencyList;
-	wxStaticText *iconLabel;
-	wxBitmapComboBox *iconList;
-	wxStaticText *amountLabel;
-	AmountField *amountField;
-	wxStaticText *noteLabel;
-	wxTextCtrl *noteField;
-	wxButton *okButton;
-	wxButton *cancelButton;
+	wxPanel *_mainPanel;
+	wxTextCtrl *_nameField;
+	wxComboBox *_typeList;
+	wxComboBox *_currencyList;
+	wxBitmapComboBox *_iconList;
+	AmountField *_amountField;
+	AmountField* _creditField;
+	wxTextCtrl *_noteField;
+	wxButton *_okButton;
+	wxButton *_cancelButton;
 
 	void Update();
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnAmountKillFocus(wxFocusEvent &event);
+	void OnCreditKillFocus(wxFocusEvent& event);
 	void OnKeyDown(wxKeyEvent &event);
 };

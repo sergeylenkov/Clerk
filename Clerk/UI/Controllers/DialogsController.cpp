@@ -81,7 +81,7 @@ void DialogsController::DeleteTransaction(int id) {
 }
 
 void DialogsController::ShowNewAccountDialog(AccountType type) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 340, 400, _icons);
+	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 380, 400, _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetType(type);
@@ -93,7 +93,7 @@ void DialogsController::ShowNewAccountDialog(AccountType type) {
 
 }
 void DialogsController::ShowEditAccountDialog(int id) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 340, 400, _icons);
+	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 380, 400, _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetAccountId(id);

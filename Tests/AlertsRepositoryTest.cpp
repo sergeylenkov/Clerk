@@ -6,13 +6,10 @@
 class AlertsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
         repository = new AlertsRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:    
     AlertsRepository* repository;

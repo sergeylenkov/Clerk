@@ -6,13 +6,10 @@
 class BudgetsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
         repository = new Clerk::Data::BudgetsRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:
     BudgetsRepository* repository;

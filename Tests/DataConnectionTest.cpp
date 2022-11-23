@@ -4,13 +4,13 @@
 
 class TestConnection : public ::testing::Test {
 public:
-    TestConnection() { /* init protected members here */ }
-    ~TestConnection() { /* free protected members here */ }
+    TestConnection() {}
+    ~TestConnection() {}
     void SetUp() {
-        existingPath = std::string("D:\\Projects\\Clerk\\Tests\\Database.sqlite");
+        existingPath = std::string("Assets//Test.sqlite");
         nonExistentPath = std::string("No.sqlite");
     }
-    void TearDown() { /* called after every test */ }
+    void TearDown() {}
 
 protected:
     std::string existingPath;

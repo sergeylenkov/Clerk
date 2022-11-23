@@ -6,13 +6,10 @@
 class TreeMenuViewModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         viewModel = new TreeMenuViewModel(context->GetAccountsService(), context->GetReportsService(), context->GetTransactionsService());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete viewModel;
     }
 

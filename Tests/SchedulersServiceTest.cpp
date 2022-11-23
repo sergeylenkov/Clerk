@@ -6,13 +6,10 @@
 class SchedulersServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new SchedulersService(context->GetSchedulersRepository(), context->GetAccountsRepository(), context->GetExchangeRatesRepository());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

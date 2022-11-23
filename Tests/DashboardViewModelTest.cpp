@@ -6,14 +6,11 @@
 class DashboardViewModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         viewModel = new DashboardViewModel(context->GetAccountingService(), context->GetTransactionsService(), context->GetAccountsService(),
             context->GetBudgetsService(), context->GetSchedulersService(), context->GetGoalsService(), context->GetCurrenciesService());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete viewModel;
     }
 

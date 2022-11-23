@@ -6,13 +6,10 @@
 class AccountsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
         repository = new AccountsRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:    
     AccountsRepository* repository;
@@ -21,7 +18,7 @@ protected:
 TEST_F(AccountsRepositoryTest, GetAll) {
 	auto accounts = repository->GetAll();
 
-	EXPECT_EQ(accounts.size(), 78);
+	EXPECT_EQ(accounts.size(), 86);
 }
 
 TEST_F(AccountsRepositoryTest, GetByIdExists) {
@@ -41,7 +38,7 @@ TEST_F(AccountsRepositoryTest, GetBalance) {
     auto account = repository->GetById(2);
     float amount = repository->GetBalance(account->id, account->type);
 
-    EXPECT_EQ(static_cast<int>(amount), 1342);
+    EXPECT_EQ(static_cast<int>(amount), 3542);
 }
 
 TEST_F(AccountsRepositoryTest, GetBalanceForDate) {
@@ -60,7 +57,7 @@ TEST_F(AccountsRepositoryTest, GetReceipts) {
     auto account = repository->GetById(80);
     float amount = repository->GetReceipts(account->id);
 
-    EXPECT_EQ(static_cast<int>(amount), 3295718);
+    EXPECT_EQ(static_cast<int>(amount), 6119642);
 }
 
 TEST_F(AccountsRepositoryTest, GetReceiptsForPeriod) {
@@ -107,7 +104,7 @@ TEST_F(AccountsRepositoryTest, GetExpensesFroPeriod) {
 TEST_F(AccountsRepositoryTest, GetActive) {
     auto accounts = repository->GetActive();
 
-    EXPECT_EQ(accounts.size(), 31);
+    EXPECT_EQ(accounts.size(), 33);
 }
 
 TEST_F(AccountsRepositoryTest, GetByTypeDebt) {
@@ -131,13 +128,13 @@ TEST_F(AccountsRepositoryTest, GetByTypeExpens) {
 TEST_F(AccountsRepositoryTest, GetByTypeDeposit) {
     auto accounts = repository->GetByType(AccountType::Deposit);
 
-    EXPECT_EQ(accounts.size(), 4);
+    EXPECT_EQ(accounts.size(), 7);
 }
 
 TEST_F(AccountsRepositoryTest, GetArchives) {
     auto accounts = repository->GetArchive();
 
-    EXPECT_EQ(accounts.size(), 47);
+    EXPECT_EQ(accounts.size(), 53);
 }
 
 TEST_F(AccountsRepositoryTest, CreateAndDelete) {
@@ -195,5 +192,5 @@ TEST_F(AccountsRepositoryTest, GetLastUsedAccountId) {
 
     int id = repository->GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8()));
 
-    EXPECT_EQ(id, 69);
+    EXPECT_EQ(id, 80);
 }

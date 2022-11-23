@@ -6,13 +6,10 @@
 class BudgetsServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new BudgetsService(context->GetBudgetsRepository());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

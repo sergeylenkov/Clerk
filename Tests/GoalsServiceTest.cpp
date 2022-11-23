@@ -6,13 +6,10 @@
 class GoalsServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new GoalsService(context->GetGoalsRepository());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

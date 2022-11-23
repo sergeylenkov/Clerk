@@ -7,19 +7,14 @@
 class AccountViewModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         viewModel = new AccountViewModel(context->GetAccountsService(), context->GetCurrenciesService());
 
         viewModel->OnUpdate = ([&](AccountViewModelField field) {
-            if (field == AccountViewModelField::Name) {
-                int testId = 100;
-            }
+            this->testId = 100;
         });
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete viewModel;
     }
 
@@ -75,7 +70,7 @@ TEST_F(AccountViewModelTest, SetCurrency) {
     viewModel->SetCurrency(currency);
 
     EXPECT_EQ(viewModel->GetCurrency()->id, currency->id);
-    EXPECT_EQ(viewModel->GetCurrencyIndex(), 10);
+    EXPECT_EQ(viewModel->GetCurrencyIndex(), 0);
 }
 
 TEST_F(AccountViewModelTest, SetNote) {
@@ -91,5 +86,5 @@ TEST_F(AccountViewModelTest, SetIconIndex) {
 }
 
 TEST_F(AccountViewModelTest, OnUpdate) {
-    EXPECT_EQ(testId, 100);    
+    EXPECT_EQ(this->testId, 100);    
 }

@@ -71,7 +71,7 @@
     <ClCompile Include="StatusViewModelTest.cpp" />
     <ClCompile Include="TagsRepositoryTest.cpp" />
     <ClCompile Include="TagsServiceTest.cpp" />
-    <ClCompile Include="TransactionEditViewModelTest.cpp" />
+    <ClCompile Include="TransactionViewModelTest.cpp" />
     <ClCompile Include="TransactionsRepositoryTest.cpp" />
     <ClCompile Include="TransactionsServiceTest.cpp" />
     <ClCompile Include="TransactionPresentationModelTest.cpp" />

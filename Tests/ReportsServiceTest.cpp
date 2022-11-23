@@ -6,13 +6,10 @@
 class ReportsServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new Clerk::Data::ReportsService(context->GetReportsRepository());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

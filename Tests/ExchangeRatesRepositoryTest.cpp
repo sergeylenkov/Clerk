@@ -6,13 +6,10 @@
 class ExchangeRatesRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
         repository = new ExchangeRatesRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:
     ExchangeRatesRepository* repository;

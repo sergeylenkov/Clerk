@@ -6,13 +6,10 @@
 class GoalsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
         repository = new GoalsRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:
     GoalsRepository* repository;

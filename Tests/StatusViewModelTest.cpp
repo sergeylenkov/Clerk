@@ -6,14 +6,11 @@
 class StatusViewModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         std::vector<int> ratesIds{ 180 };
         viewModel = new StatusViewModel(context->GetAccountingService(), context->GetExchangeRatesRepository(), context->GetCurrenciesService(), ratesIds);
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete viewModel;
     }
 

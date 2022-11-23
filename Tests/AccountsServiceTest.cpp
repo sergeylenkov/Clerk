@@ -6,13 +6,10 @@
 class AccountsServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new AccountsService(context->GetAccountsRepository(), context->GetCurrenciesService());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 
@@ -36,7 +33,7 @@ TEST_F(AccountsServiceTest, GetByIdNotExists) {
 TEST_F(AccountsServiceTest, GetActive) {
     auto accounts = service->GetActive();
 
-    EXPECT_EQ(accounts.size(), 31);
+    EXPECT_EQ(accounts.size(), 33);
 }
 
 TEST_F(AccountsServiceTest, GetByTypeDebt) {
@@ -60,13 +57,13 @@ TEST_F(AccountsServiceTest, GetByTypeExpens) {
 TEST_F(AccountsServiceTest, GetByTypeDeposit) {
     auto accounts = service->GetByType(AccountType::Deposit);
 
-    EXPECT_EQ(accounts.size(), 4);
+    EXPECT_EQ(accounts.size(), 7);
 }
 
 TEST_F(AccountsServiceTest, GetArchives) {
     auto accounts = service->GetArchive();
 
-    EXPECT_EQ(accounts.size(), 47);
+    EXPECT_EQ(accounts.size(), 53);
 }
 
 TEST_F(AccountsServiceTest, GetDebts) {
@@ -86,7 +83,7 @@ TEST_F(AccountsServiceTest, GetPairAccount) {
 TEST_F(AccountsServiceTest, GetLastUsedAccount) {
     auto account = service->GetLastUsedAccount();
 
-    ASSERT_TRUE(account == nullptr);
+    ASSERT_TRUE(account != nullptr);
 }
 
 TEST_F(AccountsServiceTest, Save) {
@@ -99,7 +96,7 @@ TEST_F(AccountsServiceTest, Save) {
 
     auto accounts = service->GetByType(AccountType::Deposit);
 
-    EXPECT_EQ(accounts.size(), 5);
+    EXPECT_EQ(accounts.size(), 7);
 
     if (accounts.size() > 0) {
         auto account = accounts.back();

@@ -6,13 +6,10 @@
 class TransactionsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
-
         repository = new TransactionsRepository(*connection);
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete repository;
     }
 

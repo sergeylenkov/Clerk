@@ -6,13 +6,10 @@
 class SchedulersRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
         repository = new SchedulersRepository(*connection);
     }
 
-    void TearDown() override {
-        Fixture::TearDown();
-    }
+    void TearDown() {}
 
 protected:    
     SchedulersRepository* repository;

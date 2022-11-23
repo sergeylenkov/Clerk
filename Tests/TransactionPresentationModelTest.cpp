@@ -6,8 +6,6 @@
 class TransactionPresentationModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new TransactionsService(context->GetTransactionsRepository(), context->GetAccountsService(), context->GetTagsService());
     }
 

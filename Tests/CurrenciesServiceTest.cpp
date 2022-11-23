@@ -6,14 +6,11 @@
 class CurrenciesServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new CurrenciesService(context->GetCurrenciesRepository());
         service->SetBaseCurrency(152);
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

@@ -8,13 +8,10 @@
 class TransactionViewModelTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         viewModel = new TransactionViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository(), context->GetTagsService());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete viewModel;
     }
 

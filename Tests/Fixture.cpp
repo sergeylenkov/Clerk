@@ -15,7 +15,7 @@ public:
 	}
 
 	void SetUpConnection() {
-		std::string path("Test.sqlite");
+		std::string path("Assets//Test.sqlite");
 
 		connection = new DataConnection(std::move(path));
 	}

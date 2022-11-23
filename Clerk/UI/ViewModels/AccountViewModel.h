@@ -15,6 +15,7 @@ namespace Clerk {
 
 			void SetAccountId(int id);
 			void SetAccountType(AccountType type);
+			bool IsNew();
 			std::vector<std::shared_ptr<CurrencyPresentationModel>> GetCurrencies();
 			std::vector<wxString> GetTypes();
 			void SetName(wxString name);
@@ -25,8 +26,8 @@ namespace Clerk {
 			float GetAmount();	
 			void SetCreditLimit(float amount);
 			float GetCreditLimit();
-			std::shared_ptr<CurrencyPresentationModel> GetCurrency();
 			void SetCurrency(std::shared_ptr<CurrencyPresentationModel> currency);
+			std::shared_ptr<CurrencyPresentationModel> GetCurrency();			
 			void SetNote(wxString note);
 			wxString GetNote();
 			void SetIconIndex(int index);

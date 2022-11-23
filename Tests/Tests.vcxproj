@@ -38,8 +38,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AccountingServiceTest.cpp" />
+    <ClCompile Include="AccountPresentationModelTest.cpp" />
     <ClCompile Include="AccountsRepositoryTest.cpp" />
     <ClCompile Include="AccountsServiceTest.cpp" />
+    <ClCompile Include="AccountViewModelTest.cpp" />
     <ClCompile Include="AlertsRepositoryTest.cpp" />
     <ClCompile Include="AlertsServiceTest.cpp" />
     <ClCompile Include="BudgetsRepositoryTest.cpp" />
@@ -72,7 +74,7 @@
     <ClCompile Include="TransactionEditViewModelTest.cpp" />
     <ClCompile Include="TransactionsRepositoryTest.cpp" />
     <ClCompile Include="TransactionsServiceTest.cpp" />
-    <ClCompile Include="TransactionViewModelTest.cpp" />
+    <ClCompile Include="TransactionPresentationModelTest.cpp" />
     <ClCompile Include="TreeMenuViewModelTest.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -108,7 +110,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>
       <AdditionalLibraryDirectories>D:\Projects\Clerk\Clerk\Debug;D:\Developer\curl-7.64.1\build\Win32\VC15\LIB Debug;D:\Developer\lib;D:\Developer\wxWidgets-3.2.0\lib\vc_lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DataConnection.obj;DataContext.obj;BaseRepository.obj;CurrencyModel.obj;Model.obj;ReportModel.obj;AccountModel.obj;BudgetModel.obj;GoalModel.obj;AlertModel.obj;SchedulerModel.obj;TransactionModel.obj;TagModel.obj;AccountPresentationModel.obj;SchedulerPresentationModel.obj;BudgetPresentationModel.obj;TransactionPresentationModel.obj;TagPresentationModel.obj;ReportPresentationModel.obj;AlertPresentationModel.obj;GoalPresentationModel.obj;CurrencyPresentationModel.obj;DashboardViewModel.obj;StatusViewModel.obj;TreeMenuViewModel.obj;TransactionEditViewModel.obj;AccountsRepository.obj;ReportsRepository.obj;BudgetsRepository.obj;GoalsRepository.obj;AlertsRepository.obj;SchedulersRepository.obj;TransactionsRepository.obj;TagsRepository.obj;CurrenciesRepository.obj;ExchangeRatesRepository.obj;ReportingRepository.obj;AccountingService.obj;AccountsService.obj;SchedulersService.obj;BudgetsService.obj;TransactionsService.obj;TagsService.obj;ReportsService.obj;AlertsService.obj;GoalsService.obj;ReportingService.obj;CurrenciesService.obj;QuitCommand.obj;PreferencesCommand.obj;AboutCommand.obj;NewTransactionCommand.obj;CopyTransactionCommand.obj;SplitTransactionCommand.obj;EditTransactionCommand.obj;DeleteTransactionCommand.obj;NewAccountCommand.obj;EditAccountCommand.obj;NewTabCommand.obj;CommandsInvoker.obj;Settings.obj;Utils.obj;EventEmitter.obj;wxmsw32ud_core.lib;wxbase32ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;sqlite3.lib;libcurld.lib;Ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DataConnection.obj;DataContext.obj;BaseRepository.obj;CurrencyModel.obj;Model.obj;ReportModel.obj;AccountModel.obj;BudgetModel.obj;GoalModel.obj;AlertModel.obj;SchedulerModel.obj;TransactionModel.obj;TagModel.obj;AccountPresentationModel.obj;SchedulerPresentationModel.obj;BudgetPresentationModel.obj;TransactionPresentationModel.obj;TagPresentationModel.obj;ReportPresentationModel.obj;AlertPresentationModel.obj;GoalPresentationModel.obj;CurrencyPresentationModel.obj;DashboardViewModel.obj;StatusViewModel.obj;TreeMenuViewModel.obj;TransactionViewModel.obj;AccountViewModel.obj;AccountsRepository.obj;ReportsRepository.obj;BudgetsRepository.obj;GoalsRepository.obj;AlertsRepository.obj;SchedulersRepository.obj;TransactionsRepository.obj;TagsRepository.obj;CurrenciesRepository.obj;ExchangeRatesRepository.obj;ReportingRepository.obj;AccountingService.obj;AccountsService.obj;SchedulersService.obj;BudgetsService.obj;TransactionsService.obj;TagsService.obj;ReportsService.obj;AlertsService.obj;GoalsService.obj;ReportingService.obj;CurrenciesService.obj;QuitCommand.obj;PreferencesCommand.obj;AboutCommand.obj;NewTransactionCommand.obj;CopyTransactionCommand.obj;SplitTransactionCommand.obj;EditTransactionCommand.obj;DeleteTransactionCommand.obj;NewAccountCommand.obj;EditAccountCommand.obj;NewTabCommand.obj;CommandsInvoker.obj;Settings.obj;Utils.obj;EventEmitter.obj;wxmsw32ud_core.lib;wxbase32ud.lib;wxtiffd.lib;wxjpegd.lib;wxpngd.lib;wxzlibd.lib;wxregexud.lib;wxexpatd.lib;kernel32.lib;user32.lib;gdi32.lib;comdlg32.lib;winspool.lib;winmm.lib;shell32.lib;shlwapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;rpcrt4.lib;advapi32.lib;version.lib;wsock32.lib;wininet.lib;sqlite3.lib;libcurld.lib;Ws2_32.lib;Wldap32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

@@ -37,6 +37,10 @@ void AccountViewModel::SetAccountType(AccountType type) {
 	_type = type;
 }
 
+bool AccountViewModel::IsNew() {
+	return _id == -1;
+}
+
 std::vector<std::shared_ptr<CurrencyPresentationModel>> AccountViewModel::GetCurrencies() {
 	return _currencies;
 }

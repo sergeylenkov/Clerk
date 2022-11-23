@@ -3,7 +3,7 @@
 #include "../Clerk/UI/PresentationModels/TransactionPresentationModel.h"
 #include "Fixture.cpp"
 
-class TransactionViewModelTest : public Fixture {
+class TransactionPresentationModelTest : public Fixture {
 public:
     void SetUp() override {
         Fixture::SetUp();
@@ -19,7 +19,7 @@ protected:
     TransactionsService* service;
 };
 
-TEST_F(TransactionViewModelTest, GetById) {
+TEST_F(TransactionPresentationModelTest, GetById) {
     auto transaction = service->GetById(16500);
     
     EXPECT_EQ(transaction->id, 16500);

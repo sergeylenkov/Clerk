@@ -1,16 +1,16 @@
 #include "pch.h"
 
-#include "../Clerk/UI/ViewModels/TransactionEditViewModel.h"
+#include "../Clerk/UI/ViewModels/TransactionViewModel.h"
 #include "../Clerk/UI/PresentationModels/TagPresentationModel.h"
 #include "../Clerk/Data/Settings.h"
 #include "Fixture.cpp"
 
-class TransactionEditViewModelTest : public Fixture {
+class TransactionViewModelTest : public Fixture {
 public:
     void SetUp() override {
         Fixture::SetUp();
 
-        viewModel = new TransactionEditViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository(), context->GetTagsService());
+        viewModel = new TransactionViewModel(context->GetAccountsService(), context->GetTransactionsService(), context->GetExchangeRatesRepository(), context->GetTagsService());
     }
 
     void TearDown() override {
@@ -19,36 +19,36 @@ public:
     }
 
 protected:    
-    TransactionEditViewModel* viewModel;
+    TransactionViewModel* viewModel;
 };
 
-TEST_F(TransactionEditViewModelTest, GetFromAccounts) {
+TEST_F(TransactionViewModelTest, GetFromAccounts) {
     auto accounts = viewModel->GetFromAccounts();
 
     EXPECT_EQ(accounts.size(), 7);
 }
 
-TEST_F(TransactionEditViewModelTest, GetToAccounts) {
+TEST_F(TransactionViewModelTest, GetToAccounts) {
     auto accounts = viewModel->GetToAccounts();
 
     EXPECT_EQ(accounts.size(), 5);
 }
 
-TEST_F(TransactionEditViewModelTest, SetFromAmount) {
+TEST_F(TransactionViewModelTest, SetFromAmount) {
     viewModel->SetFromAmount(10);
     float value = viewModel->GetFromAmount();
 
     EXPECT_EQ(static_cast<int>(value), 10);
 }
 
-TEST_F(TransactionEditViewModelTest, SetToAmount) {
+TEST_F(TransactionViewModelTest, SetToAmount) {
     viewModel->SetToAmount(10);
     float value = viewModel->GetToAmount();
 
     EXPECT_EQ(static_cast<int>(value), 10);
 }
 
-TEST_F(TransactionEditViewModelTest, AddTag) {
+TEST_F(TransactionViewModelTest, AddTag) {
     auto tag = std::make_shared<TagPresentationModel>();
     tag->name = "Test";
 
@@ -60,7 +60,7 @@ TEST_F(TransactionEditViewModelTest, AddTag) {
     EXPECT_TRUE(str == "Test");
 }
 
-TEST_F(TransactionEditViewModelTest, SetTagsString) {
+TEST_F(TransactionViewModelTest, SetTagsString) {
     viewModel->SetTagsString("Tag 1, Tag 2, ");
 
     auto tags = viewModel->GetTags();

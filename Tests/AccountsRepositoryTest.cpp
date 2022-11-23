@@ -6,7 +6,7 @@
 class AccountsRepositoryTest : public Fixture {
 public:
     void SetUp() override {
-        SetUpConnection();
+        Fixture::SetUp();
         repository = new AccountsRepository(*connection);
     }
 

@@ -174,6 +174,7 @@ void AccountDialog::Update() {
 	_nameField->SetValue(_viewModel->GetName());
 	_noteField->SetValue(_viewModel->GetNote());	
 
+	_amountField->SetEditable(_viewModel->IsNew());
 	_creditField->SetEditable(_viewModel->GetType() == AccountType::Deposit);
 }
 

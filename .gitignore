@@ -11,3 +11,5 @@ Clerk.sdf
 .vs
 Clerk/Resource.aps
 packages
+Clerk/LastCoverageResults.log
+.opencppcov

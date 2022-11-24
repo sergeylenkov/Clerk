@@ -33,7 +33,7 @@ TEST_F(AccountsServiceTest, GetByIdNotExists) {
 TEST_F(AccountsServiceTest, GetActive) {
     auto accounts = service->GetActive();
 
-    EXPECT_EQ(accounts.size(), 33);
+    EXPECT_EQ(accounts.size(), 29);
 }
 
 TEST_F(AccountsServiceTest, GetByTypeDebt) {
@@ -57,7 +57,7 @@ TEST_F(AccountsServiceTest, GetByTypeExpens) {
 TEST_F(AccountsServiceTest, GetByTypeDeposit) {
     auto accounts = service->GetByType(AccountType::Deposit);
 
-    EXPECT_EQ(accounts.size(), 7);
+    EXPECT_EQ(accounts.size(), 3);
 }
 
 TEST_F(AccountsServiceTest, GetArchives) {
@@ -83,23 +83,29 @@ TEST_F(AccountsServiceTest, GetPairAccount) {
 TEST_F(AccountsServiceTest, GetLastUsedAccount) {
     auto account = service->GetLastUsedAccount();
 
-    ASSERT_TRUE(account != nullptr);
+    ASSERT_TRUE(account == nullptr);
 }
 
-TEST_F(AccountsServiceTest, Save) {
+TEST_F(AccountsServiceTest, New) {
     auto account = service->GetById(2);
 
     account->id = -1;
-    account->type = AccountType::Deposit;
+    account->name = "Test";
+    account->isActive = true;
 
     service->Save(*account);
 
-    auto accounts = service->GetByType(AccountType::Deposit);
+    EXPECT_GE(account->id, 0);
 
-    EXPECT_EQ(accounts.size(), 7);
+    auto accounts = service->GetActive();
+
+    EXPECT_EQ(accounts.size(), 30);
 
     if (accounts.size() > 0) {
-        auto account = accounts.back();
         service->Delete(*account);
+
+        accounts = service->GetActive();
+
+        EXPECT_EQ(accounts.size(), 29);
     }
 }

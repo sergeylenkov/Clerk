@@ -49,7 +49,7 @@ TEST_F(BudgetsRepositoryTest, GetExpenses) {
         amount = repository->GetExpenses(*budget, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
     }
 
-    EXPECT_EQ(amount, 11534217.0);
+    EXPECT_EQ(static_cast<int>(amount), 14948899);
 }
 
 TEST_F(BudgetsRepositoryTest, CreateAndDelete) {

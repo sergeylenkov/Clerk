@@ -38,7 +38,7 @@ TEST_F(GoalsRepositoryTest, GetBalance) {
     auto goal = repository->GetById(1);
     float balance = repository->GetBalance(goal->accountIds);
 
-    EXPECT_EQ(static_cast<int>(balance), 184386);
+    EXPECT_EQ(static_cast<int>(balance), 3542);
 }
 
 TEST_F(GoalsRepositoryTest, CreateAndDelete) {

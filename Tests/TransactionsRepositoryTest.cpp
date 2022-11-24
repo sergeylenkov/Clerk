@@ -20,7 +20,7 @@ protected:
 TEST_F(TransactionsRepositoryTest, GetAll) {
     auto transactions = repository->GetAll();
 
-    EXPECT_EQ(transactions.size(), 14387);
+    EXPECT_EQ(transactions.size(), 16206);
 }
 
 TEST_F(TransactionsRepositoryTest, GetByIdExists) {
@@ -39,7 +39,7 @@ TEST_F(TransactionsRepositoryTest, GetByIdNotExists) {
 TEST_F(TransactionsRepositoryTest, GetDeleted) {
     auto transactions = repository->GetDeleted();
 
-    EXPECT_EQ(transactions.size(), 4);
+    EXPECT_EQ(transactions.size(), 1);
 }
 
 TEST_F(TransactionsRepositoryTest, GetRecents) {

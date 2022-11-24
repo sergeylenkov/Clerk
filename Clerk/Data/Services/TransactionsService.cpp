@@ -124,6 +124,8 @@ void TransactionsService::Save(TransactionPresentationModel& transaction) {
 
 	_transactionsRepository.Save(model);
 
+	transaction.id = model.id;
+
 	delete& model;
 
 	_eventEmitter->Emit();

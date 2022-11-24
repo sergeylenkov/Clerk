@@ -18,14 +18,14 @@ protected:
 TEST_F(SchedulersRepositoryTest, GetAll) {
     auto schedulers = repository->GetAll();
 
-    EXPECT_EQ(schedulers.size(), 4);
+    EXPECT_EQ(schedulers.size(), 2);
 }
 
 TEST_F(SchedulersRepositoryTest, GetByIdExists) {
-    auto scheduler = repository->GetById(10);
+    auto scheduler = repository->GetById(11);
 
     ASSERT_TRUE(scheduler != nullptr);
-    EXPECT_EQ(scheduler->id, 10);
+    EXPECT_EQ(scheduler->id, 11);
 }
 
 TEST_F(SchedulersRepositoryTest, GetByIdNotExists) {

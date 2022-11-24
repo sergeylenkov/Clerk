@@ -20,14 +20,14 @@ protected:
 TEST_F(SchedulersServiceTest, GetAll) {
     auto schedulers = service->GetAll();
 
-    EXPECT_EQ(schedulers.size(), 4);
+    EXPECT_EQ(schedulers.size(), 2);
 }
 
 TEST_F(SchedulersServiceTest, GetByIdExists) {
-    auto scheduler = service->GetById(10);
+    auto scheduler = service->GetById(11);
 
     ASSERT_TRUE(scheduler != nullptr);
-    EXPECT_EQ(scheduler->id, 10);
+    EXPECT_EQ(scheduler->id, 11);
 }
 
 TEST_F(SchedulersServiceTest, GetByIdNotExists) {
@@ -39,15 +39,15 @@ TEST_F(SchedulersServiceTest, GetByIdNotExists) {
 TEST_F(SchedulersServiceTest, GetByPeriod) {
     wxDateTime fromDate = wxDateTime::Now();
     fromDate.SetYear(2021);
-    fromDate.SetMonth(wxDateTime::Feb);
+    fromDate.SetMonth(wxDateTime::Jan);
     fromDate.SetDay(1);
 
     wxDateTime toDate = wxDateTime::Now();
-    toDate.SetYear(2021);
-    toDate.SetMonth(wxDateTime::Mar);
+    toDate.SetYear(2022);
+    toDate.SetMonth(wxDateTime::Dec);
     toDate.SetDay(31);
 
     auto schedulers = service->GetByPeriod(fromDate, toDate);
 
-    EXPECT_EQ(schedulers.size(), 3);
+    EXPECT_EQ(schedulers.size(), 1);
 }

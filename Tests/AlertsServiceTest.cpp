@@ -6,13 +6,10 @@
 class AlertsServiceTest : public Fixture {
 public:
     void SetUp() override {
-        Fixture::SetUp();
-
         service = new AlertsService(context->GetAlertsRepository());
     }
 
     void TearDown() override {
-        Fixture::TearDown();
         delete service;
     }
 

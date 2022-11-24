@@ -18,7 +18,7 @@ protected:
 TEST_F(TagsRepositoryTest, GetAll) {
     auto tags = repository->GetAll();
 
-    EXPECT_EQ(tags.size(), 1554);
+    EXPECT_EQ(tags.size(), 1578);
 }
 
 TEST_F(TagsRepositoryTest, GetByIdExists) {
@@ -45,7 +45,7 @@ TEST_F(TagsRepositoryTest, GetBySearch) {
 TEST_F(TagsRepositoryTest, GetCount) {
     int count = repository->GetCount(1);
 
-    EXPECT_EQ(count, 4279);
+    EXPECT_EQ(count, 5178);
 }
 
 TEST_F(TagsRepositoryTest, CreateAndDelete) {

@@ -21,7 +21,7 @@ protected:
 TEST_F(CurrenciesServiceTest, GetAll) {
     auto currencies = service->GetAll();
 
-    EXPECT_EQ(currencies.size(), 3);
+    EXPECT_EQ(currencies.size(), 204);
 }
 
 TEST_F(CurrenciesServiceTest, GetByIdExists) {

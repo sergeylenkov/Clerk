@@ -38,7 +38,7 @@ TEST_F(AlertsRepositoryTest, GetBalance) {
     auto alert = repository->GetById(1);
     float balance = repository->GetBalance(*alert);
 
-    EXPECT_EQ(balance, 1583);
+    EXPECT_EQ(static_cast<int>(balance), 3542);
 }
 
 TEST_F(AlertsRepositoryTest, CreateAndDelete) {

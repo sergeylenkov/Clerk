@@ -71,7 +71,7 @@ TEST_F(TransactionsServiceTest, GetRecentsForAccount) {
 TEST_F(TransactionsServiceTest, GetDeleted) {
     auto transactions = service->GetDeleted();
 
-    EXPECT_EQ(transactions.size(), 4);
+    EXPECT_EQ(transactions.size(), 1);
 }
 
 TEST_F(TransactionsServiceTest, Update) {

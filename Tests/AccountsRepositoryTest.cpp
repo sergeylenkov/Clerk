@@ -18,7 +18,7 @@ protected:
 TEST_F(AccountsRepositoryTest, GetAll) {
 	auto accounts = repository->GetAll();
 
-	EXPECT_EQ(accounts.size(), 86);
+	EXPECT_EQ(accounts.size(), 82);
 }
 
 TEST_F(AccountsRepositoryTest, GetByIdExists) {
@@ -104,7 +104,7 @@ TEST_F(AccountsRepositoryTest, GetExpensesFroPeriod) {
 TEST_F(AccountsRepositoryTest, GetActive) {
     auto accounts = repository->GetActive();
 
-    EXPECT_EQ(accounts.size(), 33);
+    EXPECT_EQ(accounts.size(), 29);
 }
 
 TEST_F(AccountsRepositoryTest, GetByTypeDebt) {
@@ -128,7 +128,7 @@ TEST_F(AccountsRepositoryTest, GetByTypeExpens) {
 TEST_F(AccountsRepositoryTest, GetByTypeDeposit) {
     auto accounts = repository->GetByType(AccountType::Deposit);
 
-    EXPECT_EQ(accounts.size(), 7);
+    EXPECT_EQ(accounts.size(), 3);
 }
 
 TEST_F(AccountsRepositoryTest, GetArchives) {

@@ -18,5 +18,5 @@ protected:
 TEST_F(ExchangeRatesRepositoryTest, GetRateRubToUsd) {
     auto rate = repository->GetExchangeRate(180, 152);
 
-    EXPECT_EQ(static_cast<int>(rate), 75);
+    EXPECT_EQ(static_cast<int>(rate), 60);
 }

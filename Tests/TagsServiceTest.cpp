@@ -18,7 +18,7 @@ protected:
 TEST_F(TagsServiceTest, GetAll) {
     auto tags = service->GetAll();
 
-    EXPECT_EQ(tags.size(), 1554);
+    EXPECT_EQ(tags.size(), 1578);
 }
 
 TEST_F(TagsServiceTest, GetByIdExists) {

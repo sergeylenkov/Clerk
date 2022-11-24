@@ -21,13 +21,13 @@ protected:
 TEST_F(DashboardViewModelTest, GetTotalFunds) {
     float value = viewModel->GetTotalFunds();
 
-    EXPECT_EQ(static_cast<int>(value), 1216233);
+    EXPECT_EQ(static_cast<int>(value), 1427793);
 }
 
 TEST_F(DashboardViewModelTest, GetOwnFunds) {
     float value = viewModel->GetOwnFunds();
 
-    EXPECT_EQ(static_cast<int>(value), 672233);
+    EXPECT_EQ(static_cast<int>(value), 883793);
 }
 
 TEST_F(DashboardViewModelTest, GetCreditFunds) {
@@ -45,7 +45,7 @@ TEST_F(DashboardViewModelTest, GetCurrency) {
 TEST_F(DashboardViewModelTest, GetAccounts) {
     auto accounts = viewModel->GetAccounts();
 
-    EXPECT_EQ(accounts.size(), 5);
+    EXPECT_EQ(accounts.size(), 4);
 }
 
 TEST_F(DashboardViewModelTest, GetBudgets) {
@@ -63,5 +63,5 @@ TEST_F(DashboardViewModelTest, GetDepts) {
 TEST_F(DashboardViewModelTest, GetGoals) {
     auto goals = viewModel->GetGoals();
 
-    EXPECT_EQ(goals.size(), 1);
+    EXPECT_EQ(goals.size(), 0);
 }

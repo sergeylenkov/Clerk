@@ -8,10 +8,6 @@ class AccountViewModelTest : public Fixture {
 public:
     void SetUp() override {
         viewModel = new AccountViewModel(context->GetAccountsService(), context->GetCurrenciesService());
-
-        viewModel->OnUpdate = ([&](AccountViewModelField field) {
-            this->testId = 100;
-        });
     }
 
     void TearDown() override {
@@ -20,7 +16,6 @@ public:
 
 protected:
     AccountViewModel* viewModel;
-    int testId = 0;
 };
 
 TEST_F(AccountViewModelTest, IsNew) {
@@ -86,5 +81,14 @@ TEST_F(AccountViewModelTest, SetIconIndex) {
 }
 
 TEST_F(AccountViewModelTest, OnUpdate) {
-    EXPECT_EQ(this->testId, 100);    
+    viewModel->OnUpdate = ([&](AccountViewModelField field) {
+        if (field == AccountViewModelField::Name) {
+            EXPECT_TRUE(viewModel->GetName() == "Update");
+        }
+        else {
+            FAIL() << "We shouldn't get here.";
+        }
+    });
+
+    viewModel->SetName("Update");
 }

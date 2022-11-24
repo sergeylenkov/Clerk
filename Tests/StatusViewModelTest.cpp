@@ -21,7 +21,7 @@ protected:
 TEST_F(StatusViewModelTest, GetBalance) {
     float value = viewModel->GetBalance();
 
-    EXPECT_EQ(static_cast<int>(value), 672233);
+    EXPECT_EQ(static_cast<int>(value), 883793);
 }
 
 TEST_F(StatusViewModelTest, GetReceipts) {
@@ -39,5 +39,5 @@ TEST_F(StatusViewModelTest, GetExpenses) {
 TEST_F(StatusViewModelTest, GetExchangeRates) {
     auto rates = viewModel->GetExchangeRates();
 
-    EXPECT_TRUE(rates == wxString("75.51 USD"));
+    EXPECT_TRUE(rates == wxString("60.47 $"));
 }

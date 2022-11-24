@@ -44,13 +44,13 @@ TEST_F(TreeMenuViewModelTest, GetDebtsAccounts) {
 TEST_F(TreeMenuViewModelTest, GetVirtualsAccounts) {
     auto accounts = viewModel->GetVirtualsAccounts();
 
-    EXPECT_EQ(accounts.size(), 1);
+    EXPECT_EQ(accounts.size(), 0);
 }
 
 TEST_F(TreeMenuViewModelTest, GetArchiveAccounts) {
     auto accounts = viewModel->GetArchiveAccounts();
 
-    EXPECT_EQ(accounts.size(), 47);
+    EXPECT_EQ(accounts.size(), 53);
 }
 
 TEST_F(TreeMenuViewModelTest, GetReports) {

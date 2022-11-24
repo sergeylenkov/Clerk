@@ -66,3 +66,16 @@ TEST_F(TransactionViewModelTest, SetTagsString) {
     EXPECT_EQ(tags.size(), 2);
     EXPECT_TRUE(str == "Tag 1, Tag 2");
 }
+
+TEST_F(TransactionViewModelTest, OnUpdate) {
+    viewModel->OnUpdate = ([&](TransactionViewModelField field) {
+        if (field == TransactionViewModelField::Note) {
+            EXPECT_TRUE(viewModel->GetNote() == "Update");
+        }
+        else {
+            FAIL() << "We shouldn't get here.";
+        }
+     });
+
+    viewModel->SetNote("Update");
+}

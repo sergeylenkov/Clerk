@@ -69,7 +69,10 @@ AccountType AccountViewModel::GetType() {
 
 void AccountViewModel::SetAmount(float amount) {
 	_amount = amount;
-	OnUpdate(AccountViewModelField::Amount);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Amount);
+	}
 }
 
 float AccountViewModel::GetAmount() {
@@ -78,7 +81,10 @@ float AccountViewModel::GetAmount() {
 
 void AccountViewModel::SetCreditLimit(float amount) {
 	_creditLimit = amount;
-	OnUpdate(AccountViewModelField::CreditLimit);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::CreditLimit);
+	}
 }
 
 float AccountViewModel::GetCreditLimit() {
@@ -96,7 +102,10 @@ wxString AccountViewModel::GetNote() {
 
 void AccountViewModel::SetCurrency(std::shared_ptr<CurrencyPresentationModel> currency) {
 	_currency = currency;
-	OnUpdate(AccountViewModelField::Currency);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Currency);
+	}
 }
 
 std::shared_ptr<CurrencyPresentationModel> AccountViewModel::GetCurrency() {
@@ -115,7 +124,10 @@ int AccountViewModel::GetCurrencyIndex() {
 
 void AccountViewModel::SetIconIndex(int index) {
 	_iconId = index;
-	OnUpdate(AccountViewModelField::Icon);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Icon);
+	}
 }
 
 int AccountViewModel::GetIconIndex() {

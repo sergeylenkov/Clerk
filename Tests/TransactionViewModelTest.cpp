@@ -1,7 +1,6 @@
 #include "pch.h"
 
 #include "../Clerk/UI/ViewModels/TransactionViewModel.h"
-#include "../Clerk/UI/PresentationModels/TagPresentationModel.h"
 #include "../Clerk/Data/Settings.h"
 #include "Fixture.cpp"
 
@@ -22,27 +21,59 @@ protected:
 TEST_F(TransactionViewModelTest, GetFromAccounts) {
     auto accounts = viewModel->GetFromAccounts();
 
-    EXPECT_EQ(accounts.size(), 7);
+    EXPECT_EQ(accounts.size(), 6);
 }
 
 TEST_F(TransactionViewModelTest, GetToAccounts) {
     auto accounts = viewModel->GetToAccounts();
 
-    EXPECT_EQ(accounts.size(), 5);
+    EXPECT_EQ(accounts.size(), 3);
+}
+
+
+TEST_F(TransactionViewModelTest, SetFromAccount) {
+    viewModel->SetFromAccount(2);
+
+    EXPECT_EQ(viewModel->GetFromAccountIndex(), 2);
+}
+
+TEST_F(TransactionViewModelTest, SetToAccount) {
+    viewModel->SetToAccount(2);
+
+    EXPECT_EQ(viewModel->GetToAccountIndex(), 2);
 }
 
 TEST_F(TransactionViewModelTest, SetFromAmount) {
     viewModel->SetFromAmount(10);
-    float value = viewModel->GetFromAmount();
 
-    EXPECT_EQ(static_cast<int>(value), 10);
+    EXPECT_EQ(static_cast<int>(viewModel->GetFromAmount()), 10);
 }
 
 TEST_F(TransactionViewModelTest, SetToAmount) {
     viewModel->SetToAmount(10);
-    float value = viewModel->GetToAmount();
 
-    EXPECT_EQ(static_cast<int>(value), 10);
+    EXPECT_EQ(static_cast<int>(viewModel->GetToAmount()), 10);
+}
+
+TEST_F(TransactionViewModelTest, SetNote) {
+    viewModel->SetNote("Test");
+
+    EXPECT_TRUE(viewModel->GetNote() == "Test");
+}
+
+TEST_F(TransactionViewModelTest, SetDate) {
+    wxDateTime date = wxDateTime::Now();
+    date.SetYear(2022);
+    date.SetMonth(wxDateTime::Jan);
+    date.SetDay(1);
+
+    viewModel->SetDate(date);
+
+    wxDateTime value = viewModel->GetDate();
+
+    EXPECT_EQ(value.GetYear(), date.GetYear());
+    EXPECT_EQ(value.GetMonth(), date.GetMonth());
+    EXPECT_EQ(value.GetDay(), date.GetDay());
 }
 
 TEST_F(TransactionViewModelTest, AddTag) {

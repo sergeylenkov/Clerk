@@ -194,7 +194,10 @@ void TransactionViewModel::SetToAccount(int index) {
 
 	if (result != _fromAccounts.end()) {
 		UpdateFromAccounts();
-		OnUpdate(TransactionViewModelField::ToAccount);
+
+		if (OnUpdate) {
+			OnUpdate(TransactionViewModelField::ToAccount);
+		}
 	}
 }
 
@@ -215,7 +218,7 @@ void TransactionViewModel::SetFromAmount(float amount) {
 		_toAmount = _fromAmount * rate;
 	}
 
-	if (_fromAmount == amount) {
+	if (_fromAmount == amount && OnUpdate) {
 		OnUpdate(TransactionViewModelField::FromAmount);
 	}
 }
@@ -227,7 +230,7 @@ float TransactionViewModel::GetToAmount() {
 void TransactionViewModel::SetToAmount(float amount) {
 	_toAmount = amount;
 
-	if (_toAmount == amount) {
+	if (_toAmount == amount && OnUpdate) {
 		OnUpdate(TransactionViewModelField::ToAmount);
 	}
 }
@@ -235,7 +238,9 @@ void TransactionViewModel::SetToAmount(float amount) {
 void TransactionViewModel::SetNote(wxString note) {
 	_note = note;
 
-	OnUpdate(TransactionViewModelField::Note);
+	if (OnUpdate) {
+		OnUpdate(TransactionViewModelField::Note);
+	}
 }
 
 wxString TransactionViewModel::GetNote() {
@@ -245,7 +250,9 @@ wxString TransactionViewModel::GetNote() {
 void TransactionViewModel::SetDate(wxDateTime date) {
 	_date = date;
 
-	OnUpdate(TransactionViewModelField::Date);
+	if (OnUpdate) {
+		OnUpdate(TransactionViewModelField::Date);
+	}
 }
 
 wxDateTime TransactionViewModel::GetDate() {
@@ -292,13 +299,17 @@ void TransactionViewModel::SetTagsString(wxString tags) {
 		}
 	}
 
-	OnUpdate(TransactionViewModelField::Tags);
+	if (OnUpdate) {
+		OnUpdate(TransactionViewModelField::Tags);
+	}
 }
 
 void TransactionViewModel::AddTag(std::shared_ptr<TagPresentationModel> tag) {
 	_tags.push_back(tag);
 
-	OnUpdate(TransactionViewModelField::Tags);
+	if (OnUpdate) {
+		OnUpdate(TransactionViewModelField::Tags);
+	}
 }
 
 std::vector<std::shared_ptr<TagPresentationModel>> TransactionViewModel::SearchTagsByString(wxString search) {

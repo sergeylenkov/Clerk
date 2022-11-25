@@ -30,10 +30,7 @@ namespace Clerk {
 			boolean isActive = false;
 			wxDateTime date;
 
-			operator AccountModel& ();
-
-		private:
-			AccountModel* GetModel();
+			std::shared_ptr<AccountModel> GetModel();
 		};
 	}
 }

@@ -78,7 +78,7 @@ TEST_F(TransactionsServiceTest, Update) {
     auto transaction = service->GetById(14670);
     transaction->note = "Test";
 
-    service->Save(*transaction);
+    service->Save(transaction);
 
     transaction = service->GetById(14670);
 
@@ -90,19 +90,25 @@ TEST_F(TransactionsServiceTest, New) {
 
     transaction->id = -1;    
     transaction->date = wxDateTime::Today();
-    service->Save(*transaction);
 
-    wxDateTime fromDate = wxDateTime::Today();    
+    auto savedTransaction = service->Save(transaction);
 
-    wxDateTime toDate = wxDateTime::Today();
-    toDate.SetHour(23);
+    EXPECT_NE(savedTransaction->id, -1);
 
-    auto transactions = service->GetRecents(1);
+    auto newTransaction = service->GetById(savedTransaction->id);
 
-    EXPECT_EQ(transactions.size(), 1);
+    ASSERT_TRUE(newTransaction != nullptr);
 
-    if (transactions.size() > 0) {
-        auto transaction = transactions[0];
-        service->Delete(*transaction);
-    }
+    service->Delete(newTransaction);
+}
+
+TEST_F(TransactionsServiceTest, Duplicate) {
+    auto transaction = service->GetById(14670);
+
+    auto newTransaction = service->Duplicate(transaction);
+
+    ASSERT_TRUE(newTransaction != nullptr);
+    EXPECT_NE(newTransaction->id, -1);
+
+    service->Delete(newTransaction);
 }

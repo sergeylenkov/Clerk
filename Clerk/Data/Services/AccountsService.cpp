@@ -159,24 +159,20 @@ std::shared_ptr<AccountPresentationModel> AccountsService::GetLastUsedAccount() 
 	return GetById(_accountsRepository.GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8())));
 }
 
-void AccountsService::Save(AccountPresentationModel& account) {
-	AccountModel& model = account;
+std::shared_ptr<AccountPresentationModel> AccountsService::Save(std::shared_ptr<AccountPresentationModel> account) {
+	auto model = account->GetModel();
 
-	_accountsRepository.Save(model);
-
-	account.id = model.id;
-
-	delete& model;
-
+	auto savedModel = _accountsRepository.Save(model);
+	
 	_eventEmitter->Emit();
+
+	return GetById(savedModel->id);
 }
 
-void AccountsService::Delete(AccountPresentationModel& account) {
-	AccountModel& model = account;
+void AccountsService::Delete(std::shared_ptr<AccountPresentationModel> account) {
+	auto model = account->GetModel();
 
 	_accountsRepository.Delete(model);
-
-	delete& model;
 
 	_eventEmitter->Emit();
 }

@@ -93,19 +93,14 @@ TEST_F(AccountsServiceTest, New) {
     account->name = "Test";
     account->isActive = true;
 
-    service->Save(*account);
+    auto newAccount = service->Save(account);
 
-    EXPECT_GE(account->id, 0);
+    EXPECT_NE(newAccount->id, -1);
+    ASSERT_TRUE(newAccount != nullptr);
 
-    auto accounts = service->GetActive();
+    newAccount = service->GetById(newAccount->id);
 
-    EXPECT_EQ(accounts.size(), 30);
+    ASSERT_TRUE(newAccount != nullptr);
 
-    if (accounts.size() > 0) {
-        service->Delete(*account);
-
-        accounts = service->GetActive();
-
-        EXPECT_EQ(accounts.size(), 29);
-    }
+    service->Delete(newAccount);
 }

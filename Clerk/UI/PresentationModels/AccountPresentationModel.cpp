@@ -35,12 +35,8 @@ AccountPresentationModel::AccountPresentationModel(AccountModel& account) {
 	this->date.ParseISODate(account.created);
 }
 
-AccountPresentationModel::operator AccountModel& () {
-	return *GetModel();
-}
-
-AccountModel* AccountPresentationModel::GetModel() {
-	auto model = new AccountModel();
+std::shared_ptr<AccountModel> AccountPresentationModel::GetModel() {
+	auto model = std::make_shared<AccountModel>();
 
 	model->id = id;
 	model->name = name;

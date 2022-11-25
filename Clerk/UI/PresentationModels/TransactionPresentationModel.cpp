@@ -28,12 +28,8 @@ TransactionPresentationModel::TransactionPresentationModel(TransactionModel& tra
 	this->tagsString = wxString("");
 }
 
-TransactionPresentationModel::operator TransactionModel& () {
-	return *GetModel();
-}
-
-TransactionModel* TransactionPresentationModel::GetModel() {
-	auto model = new TransactionModel();
+std::shared_ptr<TransactionModel> TransactionPresentationModel::GetModel() {
+	auto model = std::make_shared<TransactionModel>();
 
 	model->id = id;
 	model->fromAccountId = fromAccount->id;

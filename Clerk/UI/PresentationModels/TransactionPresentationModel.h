@@ -23,12 +23,9 @@ namespace Clerk {
 			wxDateTime date;
 			wxDateTime created;
 			std::vector<std::shared_ptr<TagPresentationModel>> tags;
-			wxString tagsString;
-			
-			operator TransactionModel& ();
+			wxString tagsString;			
 
-		private:
-			TransactionModel* GetModel();
+			std::shared_ptr<TransactionModel> GetModel();
 		};
 	}
 }

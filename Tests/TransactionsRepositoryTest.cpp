@@ -49,14 +49,9 @@ TEST_F(TransactionsRepositoryTest, GetRecents) {
 }
 
 TEST_F(TransactionsRepositoryTest, GetRecentsForAccount) {
-    AccountModel* account = new AccountModel();
-    account->id = 2;
-
-    auto transactions = repository->GetRecents(account->id, 10);
+    auto transactions = repository->GetRecents(2, 10);
 
     EXPECT_EQ(transactions.size(), 10);
-
-    delete account;
 }
 
 TEST_F(TransactionsRepositoryTest, GetForPeriod) {
@@ -72,7 +67,7 @@ TEST_F(TransactionsRepositoryTest, GetForPeriod) {
 
     auto transactions = repository->GetForPeriod(std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
 
-    EXPECT_EQ(transactions.size(), 90);
+    EXPECT_EQ(transactions.size(), 75);
 }
 
 TEST_F(TransactionsRepositoryTest, GetInitialTransactionForAccount) {
@@ -85,19 +80,14 @@ TEST_F(TransactionsRepositoryTest, GetInitialTransactionForAccount) {
 TEST_F(TransactionsRepositoryTest, CreateAndDelete) {
     int count = repository->GetAll().size();
 
-    TransactionModel* newTransaction = new TransactionModel();
+    auto newTransaction = std::make_shared<TransactionModel>();
 
-    repository->Save(*newTransaction);
+    auto savedTransaction = repository->Save(newTransaction);
 
-    EXPECT_NE(newTransaction->id, -1);
+    EXPECT_NE(savedTransaction->id, -1);
+    ASSERT_TRUE(repository->GetById(savedTransaction->id) != nullptr);
 
-    auto transaction = repository->GetById(newTransaction->id);
-
-    ASSERT_TRUE(transaction != nullptr);
-
-    repository->Delete(*newTransaction);
-
-    delete newTransaction;
+    repository->Delete(savedTransaction);
 
     EXPECT_EQ(repository->GetAll().size(), count);
 }
@@ -110,7 +100,7 @@ TEST_F(TransactionsRepositoryTest, Update) {
     int amount = rand();
     transaction->fromAmount = amount;
 
-    repository->Save(*transaction);
+    repository->Save(transaction);
 
     auto newTransaction = repository->GetById(1);
 

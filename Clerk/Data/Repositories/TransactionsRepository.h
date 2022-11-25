@@ -23,12 +23,12 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TransactionModel>> GetForPeriod(std::string& fromDate, std::string& toDate);
 			std::shared_ptr<TransactionModel> GetInitialTransactionForAccount(int accountId);
 
-			void Save(TransactionModel& transaction);
-			void Delete(const TransactionModel& transaction);
+			std::shared_ptr<TransactionModel> Save(std::shared_ptr<TransactionModel> transaction);
+			void Delete(std::shared_ptr<TransactionModel> transaction);
 
 		private:
 			std::shared_ptr<TransactionModel> Load(int id);
-			void UpdateTags(const TransactionModel& transaction);
+			void UpdateTags(std::shared_ptr<TransactionModel> transaction);
 		};
 	}
 }

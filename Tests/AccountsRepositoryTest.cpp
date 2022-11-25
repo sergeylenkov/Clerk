@@ -54,10 +54,10 @@ TEST_F(AccountsRepositoryTest, GetBalanceForDate) {
 }
 
 TEST_F(AccountsRepositoryTest, GetReceipts) {
-    auto account = repository->GetById(80);
+    auto account = repository->GetById(3);
     float amount = repository->GetReceipts(account->id);
 
-    EXPECT_EQ(static_cast<int>(amount), 6119642);
+    EXPECT_EQ(static_cast<int>(amount), 3030285);
 }
 
 TEST_F(AccountsRepositoryTest, GetReceiptsForPeriod) {
@@ -140,19 +140,17 @@ TEST_F(AccountsRepositoryTest, GetArchives) {
 TEST_F(AccountsRepositoryTest, CreateAndDelete) {
     int count = repository->GetAll().size();
 
-    AccountModel* newAccount = new AccountModel();
+    auto newAccount = std::make_shared<AccountModel>();
 
-    repository->Save(*newAccount);
+    auto savedModel = repository->Save(newAccount);
 
-    EXPECT_NE(newAccount->id, -1);
+    EXPECT_NE(savedModel->id, -1);
 
-    auto account = repository->GetById(newAccount->id);
+    auto account = repository->GetById(savedModel->id);
 
     ASSERT_TRUE(account != nullptr);
 
-    repository->Delete(*newAccount);
-
-    delete newAccount;
+    repository->Delete(savedModel);
 
     EXPECT_EQ(repository->GetAll().size(), count);
 }
@@ -166,7 +164,9 @@ TEST_F(AccountsRepositoryTest, Update) {
 
     account->orderId = orderId;
 
-    repository->Save(*account);
+    auto savedAccount = repository->Save(account);
+
+    EXPECT_EQ(savedAccount->orderId, orderId);
 
     auto newAccount = repository->GetById(2);
 

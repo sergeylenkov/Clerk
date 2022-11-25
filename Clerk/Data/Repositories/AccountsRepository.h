@@ -28,8 +28,8 @@ namespace Clerk {
 			int GetPairAccountId(int accountId, AccountType type, std::string& fromDate);
 			int GetLastUsedAccountId(std::string& fromDate);
 
-			void Save(AccountModel& account);
-			void Delete(const AccountModel& account);
+			std::shared_ptr<AccountModel> Save(std::shared_ptr<AccountModel> account);
+			void Delete(std::shared_ptr<AccountModel> account);
 
 		private:
 			std::shared_ptr<AccountModel> Load(int id);		

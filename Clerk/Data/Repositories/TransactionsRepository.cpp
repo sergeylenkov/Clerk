@@ -187,23 +187,26 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Load(int id) {
 	return transaction;
 }
 
-void TransactionsRepository::Save(TransactionModel& transaction) {
-	if (transaction.id == -1) {
+std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<TransactionModel> transaction) {
+	if (transaction->id == -1) {
 		char* sql = "INSERT INTO transactions (from_account_id, to_account_id, from_account_amount, to_account_amount, deleted, paid_at, note, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, transaction.fromAccountId);
-			sqlite3_bind_int(statement, 2, transaction.toAccountId);
-			sqlite3_bind_double(statement, 3, transaction.fromAmount);
-			sqlite3_bind_double(statement, 4, transaction.toAmount);
+			sqlite3_bind_int(statement, 1, transaction->fromAccountId);
+			sqlite3_bind_int(statement, 2, transaction->toAccountId);
+			sqlite3_bind_double(statement, 3, transaction->fromAmount);
+			sqlite3_bind_double(statement, 4, transaction->toAmount);
 			sqlite3_bind_int(statement, 5, false);
-			sqlite3_bind_text(statement, 6, transaction.date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 7, transaction.note.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 8, transaction.created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 6, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 7, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 8, transaction->created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				transaction.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				int id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+
+				transaction = Load(id);
+				AddToHash(id, transaction);
 			}
 		}
 
@@ -214,13 +217,13 @@ void TransactionsRepository::Save(TransactionModel& transaction) {
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_int(statement, 1, transaction.fromAccountId);
-			sqlite3_bind_int(statement, 2, transaction.toAccountId);
-			sqlite3_bind_double(statement, 3, transaction.fromAmount);
-			sqlite3_bind_double(statement, 4, transaction.toAmount);
-			sqlite3_bind_text(statement, 5, transaction.date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 6, transaction.note.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 7, transaction.id);
+			sqlite3_bind_int(statement, 1, transaction->fromAccountId);
+			sqlite3_bind_int(statement, 2, transaction->toAccountId);
+			sqlite3_bind_double(statement, 3, transaction->fromAmount);
+			sqlite3_bind_double(statement, 4, transaction->toAmount);
+			sqlite3_bind_text(statement, 5, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text(statement, 6, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_int(statement, 7, transaction->id);
 
 			sqlite3_step(statement);
 		}
@@ -228,20 +231,22 @@ void TransactionsRepository::Save(TransactionModel& transaction) {
 		sqlite3_finalize(statement);
 	}
 
-	if (transaction.id != -1) {
+	if (transaction->id != -1) {
 		UpdateTags(transaction);
 	}
+
+	return transaction;
 }
 
-void TransactionsRepository::Delete(const TransactionModel& transaction) {
+void TransactionsRepository::Delete(std::shared_ptr<TransactionModel> transaction) {
 	char* sql = "DELETE FROM transactions WHERE id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, transaction.id);
+		sqlite3_bind_int(statement, 1, transaction->id);
 		
 		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(transaction.id);
+			RemoveFromHash(transaction->id);
 		}
 	}
 
@@ -250,31 +255,31 @@ void TransactionsRepository::Delete(const TransactionModel& transaction) {
 	sql = "DELETE FROM transactions_tags WHERE transaction_id = ?";
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, transaction.id);
+		sqlite3_bind_int(statement, 1, transaction->id);
 		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);
 }
 
-void TransactionsRepository::UpdateTags(const TransactionModel& transaction)
+void TransactionsRepository::UpdateTags(std::shared_ptr<TransactionModel> transaction)
 {
 	char* sql = "DELETE FROM transactions_tags WHERE transaction_id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, transaction.id);
+		sqlite3_bind_int(statement, 1, transaction->id);
 		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);
 
-	for (int tagId : transaction.tagsIds) {
+	for (int tagId : transaction->tagsIds) {
 		sql = "INSERT INTO transactions_tags (tag_id, transaction_id) VALUES (?, ?)";
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 			sqlite3_bind_int(statement, 1, tagId);
-			sqlite3_bind_int(statement, 2, transaction.id);
+			sqlite3_bind_int(statement, 2, transaction->id);
 
 			sqlite3_step(statement);
 		}

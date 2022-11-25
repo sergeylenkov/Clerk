@@ -22,10 +22,10 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TransactionPresentationModel>> GetRecents(int count);
 			std::vector<std::shared_ptr<TransactionPresentationModel>> GetRecents(const AccountPresentationModel& account, int count);
 			std::vector<std::shared_ptr<TransactionPresentationModel>> GetDeleted();
-			void Duplicate(TransactionPresentationModel& viewModel);
-			void Split(TransactionPresentationModel& splitTransaction, TransactionPresentationModel& newTransaction);
-			void Save(TransactionPresentationModel& viewModel);
-			void Delete(TransactionPresentationModel& viewModel);
+			std::shared_ptr<TransactionPresentationModel> Duplicate(std::shared_ptr<TransactionPresentationModel> viewModel);
+			void Split(std::shared_ptr<TransactionPresentationModel> splitTransaction, std::shared_ptr<TransactionPresentationModel> newTransaction);
+			std::shared_ptr<TransactionPresentationModel> Save(std::shared_ptr<TransactionPresentationModel> viewModel);
+			void Delete(std::shared_ptr<TransactionPresentationModel> viewModel);
 
 			void OnUpdate(std::function<void()> fn);
 
@@ -35,7 +35,7 @@ namespace Clerk {
 			TagsService& _tagsService;
 			EventEmitter* _eventEmitter;
 
-			void LoadDetails(TransactionPresentationModel& model, TransactionModel& transaction);
+			void LoadDetails(std::shared_ptr<TransactionPresentationModel> model, std::shared_ptr<TransactionModel> transaction);
 		};
 	}
 }

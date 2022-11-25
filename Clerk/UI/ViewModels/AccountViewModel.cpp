@@ -146,5 +146,5 @@ void AccountViewModel::Save() {
 	account->currency = _currency;
 	account->note = _note;
 
-	_accountsService.Save(*account);
+	_accountsService.Save(account);
 }

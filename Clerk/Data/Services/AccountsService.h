@@ -23,8 +23,8 @@ namespace Clerk {
 			std::shared_ptr<AccountPresentationModel> GetPairAccount(const AccountPresentationModel& account);
 			std::shared_ptr<AccountPresentationModel> GetLastUsedAccount();
 
-			void Save(AccountPresentationModel& viewModel);
-			void Delete(AccountPresentationModel& viewModel);
+			std::shared_ptr<AccountPresentationModel> Save(std::shared_ptr<AccountPresentationModel>);
+			void Delete(std::shared_ptr<AccountPresentationModel> viewModel);
 
 			unsigned int Subscribe(std::function<void()> fn);
 			void Unsubscribe(unsigned int subscriptionId);

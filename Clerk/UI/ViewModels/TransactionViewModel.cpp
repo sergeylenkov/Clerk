@@ -331,7 +331,7 @@ void TransactionViewModel::Save() {
 	transaction->tags = _tags;
 	transaction->date = _date;
 	
-	_transactionsService.Save(*transaction);
+	_transactionsService.Save(transaction);
 
 	auto splitTransaction = _transactionsService.GetById(_splitId);
 
@@ -339,6 +339,6 @@ void TransactionViewModel::Save() {
 		splitTransaction->fromAmount = splitTransaction->fromAmount - transaction->fromAmount;
 		splitTransaction->toAmount = splitTransaction->toAmount - transaction->toAmount;
 
-		_transactionsService.Split(*splitTransaction, *transaction);
+		_transactionsService.Split(splitTransaction, transaction);
 	}
 }

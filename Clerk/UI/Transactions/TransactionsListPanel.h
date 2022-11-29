@@ -13,10 +13,10 @@
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Data/Settings.h"
 #include "../TreeMenu/Enums.h"
-#include "TransactionsListDataModel.h"
-#include "TransactionsTagsRender.h"
-#include "TransactionsAmountRender.h"
-#include "TransactionContextMenu.h"
+#include "./TransactionsListDataModel.h"
+#include "./TransactionsTagsRender.h"
+#include "./TransactionsAmountRender.h"
+#include "./TransactionContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -26,14 +26,11 @@ class TransactionsListPanel : public DataPanel
 public:
 	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
-	
-	void Update();
-
-	std::function<void()> OnPeriodChanged;	
 
 private:	
 	wxDataViewCtrl *_list;
-	wxObjectDataPtr<TransactionsListDataModel> model;
+	wxObjectDataPtr<TransactionsListDataModel> _model;
+	TransactionsService* _transactionsService;
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
@@ -51,9 +48,9 @@ private:
 	bool sortDesc;
 	wxDateTime periodFromDate;
 	wxDateTime periodToDate;
-	
-	std::shared_ptr<TransactionPresentationModel> GetTransaction();
-	std::vector<int> GetSelectedIds();
+	unsigned int _subscriptionId;
+
+	void Update();
 	void Sort();
 	void Filter();
 	void CreateListColumns();
@@ -69,4 +66,6 @@ private:
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
 	void SaveColumnsSettings();
+	std::shared_ptr<TransactionPresentationModel> GetTransaction();
+	std::vector<int> GetSelectedIds();
 };

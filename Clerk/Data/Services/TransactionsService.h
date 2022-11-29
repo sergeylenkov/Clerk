@@ -27,7 +27,8 @@ namespace Clerk {
 			std::shared_ptr<TransactionPresentationModel> Save(std::shared_ptr<TransactionPresentationModel> viewModel);
 			void Delete(std::shared_ptr<TransactionPresentationModel> viewModel);
 
-			void OnUpdate(std::function<void()> fn);
+			unsigned int Subscribe(std::function<void()> fn);
+			void Unsubscribe(unsigned int subscriptionId);
 
 		private:			
 			TransactionsRepository& _transactionsRepository;

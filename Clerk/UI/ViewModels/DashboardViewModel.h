@@ -41,6 +41,7 @@ namespace Clerk {
 			GoalsService& _goalsService;
 			CurrenciesService& _currenciesService;
 			EventEmitter* _eventEmitter;
+			unsigned int _subscriptionId;
 		};
 	}
 }

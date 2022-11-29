@@ -19,6 +19,7 @@ namespace Clerk {
 		private:
 			TransactionsService& _transactionsService;
 			EventEmitter* _eventEmitter;
+			unsigned int _subscriptionId;
 		};
 	}
 }

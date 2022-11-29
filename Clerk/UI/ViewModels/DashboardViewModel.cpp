@@ -14,12 +14,13 @@ DashboardViewModel::DashboardViewModel(AccountingService& accountingService, Tra
 {
 	_eventEmitter = new EventEmitter();
 
-	_transactionsService.OnUpdate([&]() {
+	unsigned int _subscriptionId = _transactionsService.Subscribe([&]() {
 		_eventEmitter->Emit();
 	});
 }
 
 DashboardViewModel::~DashboardViewModel() {
+	_transactionsService.Unsubscribe(_subscriptionId);
 	delete _eventEmitter;
 }
 

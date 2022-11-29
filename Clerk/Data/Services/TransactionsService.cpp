@@ -12,8 +12,12 @@ TransactionsService::~TransactionsService() {
 	delete _eventEmitter;
 }
 
-void TransactionsService::OnUpdate(std::function<void()> fn) {
-	_eventEmitter->Subscribe(fn);
+unsigned int TransactionsService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void TransactionsService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 std::shared_ptr<TransactionPresentationModel> TransactionsService::GetById(int id) {

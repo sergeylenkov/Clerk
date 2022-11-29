@@ -6,12 +6,13 @@ TransactionsMenuViewModel::TransactionsMenuViewModel(TransactionsService& transa
 {
 	_eventEmitter = new EventEmitter();
 
-	_transactionsService.OnUpdate([=]() {
+	_subscriptionId = _transactionsService.Subscribe([&]() {
 		_eventEmitter->Emit();
 	});
 }
 
 TransactionsMenuViewModel::~TransactionsMenuViewModel() {
+	_transactionsService.Unsubscribe(_subscriptionId);
 	delete _eventEmitter;
 }
 

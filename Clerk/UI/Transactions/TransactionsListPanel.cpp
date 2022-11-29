@@ -3,8 +3,8 @@
 TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxBORDER_NONE);
 
-	model = new TransactionsListDataModel();
-	_list->AssociateModel(model.get());
+	_model = new TransactionsListDataModel();
+	_list->AssociateModel(_model.get());
 
 	//transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
@@ -104,14 +104,20 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	sortBy = 2;
 	sortDesc = false;
 
-	_context.GetTransactionsService().OnUpdate([this]() {
+	_transactionsService = &_context.GetTransactionsService();
+
+	_subscriptionId = _transactionsService->Subscribe([&]() {
 		Update();
 	});
+
+	Update();
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
-	SaveFilterSettings();
-	SaveColumnsSettings();	
+	_transactionsService->Unsubscribe(_subscriptionId);
+
+	//SaveFilterSettings();
+	//SaveColumnsSettings();	
 }
 
 std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
@@ -145,27 +151,11 @@ std::vector<int> TransactionsListPanel::GetSelectedIds() {
 }
 
 void TransactionsListPanel::Update() {
-	std::thread([=]()
+	std::thread([&]()
 	{
 		RestoreFilterSettings();
-		//TODO
-		/*if (this->type == TreeMenuItemTypes::Account) {
-			transactions = DataHelper::GetInstance().GetTransactions(*account, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
-		}
-		else if (this->type == TreeMenuItemTypes::Expenses) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Expens, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
-		}
-		else if (this->type == TreeMenuItemTypes::Receipts) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Receipt, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
-		}
-		else if (this->type == TreeMenuItemTypes::Deposits) {
-			transactions = DataHelper::GetInstance().GetTransactionsByType(AccountType::Deposit, &fromDatePicker->GetValue(), &toDatePicker->GetValue());
-		}
-		else if (this->type == TreeMenuItemTypes::Accounts) {
-			transactions = DataHelper::GetInstance().GetTransactions(&fromDatePicker->GetValue(), &toDatePicker->GetValue());
-		}*/
 
-		_transactions = _context.GetTransactionsService().GetForPeriod(fromDatePicker->GetValue(), toDatePicker->GetValue());
+		_transactions = _transactionsService->GetForPeriod(fromDatePicker->GetValue(), toDatePicker->GetValue());
 
 		Sort();
 		Filter();
@@ -175,7 +165,7 @@ void TransactionsListPanel::Update() {
 }
 
 void TransactionsListPanel::Sort() {
-	std::sort(_transactions.begin(), _transactions.end(), [this](const std::shared_ptr<TransactionPresentationModel>& v1, const std::shared_ptr<TransactionPresentationModel>& v2) {
+	std::sort(_transactions.begin(), _transactions.end(), [&](const std::shared_ptr<TransactionPresentationModel>& v1, const std::shared_ptr<TransactionPresentationModel>& v2) {
 		if (this->sortBy == 0) {
 			return v1->fromAccount->name.Cmp(v2->fromAccount->name) == 0;
 		}
@@ -209,10 +199,9 @@ void TransactionsListPanel::Filter() {
 		std::wstring searchW = search.ToStdWstring();
 		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
-		//TODO
-		for (auto &transaction : _transactions)
+		for (auto& transaction : _transactions)
 		{		
-			wxString tags = wxString(""); //transaction->GetTagsString();
+			wxString tags = transaction->tagsString;
 			wxString note = transaction->note;			
 
 			wxString searchString = transaction->fromAccount->name + " " + transaction->toAccount->name + " " + tags + " " + note;
@@ -249,9 +238,9 @@ void TransactionsListPanel::CreateListColumns() {
 
 	_list->ClearColumns();
 
-	auto &columns = Settings::GetInstance().GetTransactionsListColumns(columnsType);
+	auto& columns = Settings::GetInstance().GetTransactionsListColumns(columnsType);
 
-	for (auto &column : columns) {
+	for (auto& column : columns) {
 		switch (static_cast<TransactionsListDataModel::Columns>(column.index))
 		{
 			case TransactionsListDataModel::Columns::Date:
@@ -287,7 +276,7 @@ void TransactionsListPanel::CreateListColumns() {
 }
 
 void TransactionsListPanel::UpdateList() {
-	model.get()->SetItems(_filtered);
+	_model.get()->SetItems(_filtered);
 	UpdateInfo();
 }
 
@@ -402,7 +391,7 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 	}
 
 	sortBy = event.GetColumn();
-	Update();
+	//Update();
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
@@ -417,11 +406,7 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 	SaveFilterSettings();
 
 	CalculatePeriod();
-	Update();
-
-	if (OnPeriodChanged) {
-		OnPeriodChanged();
-	}
+	//Update();
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
@@ -430,11 +415,7 @@ void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
 
 	SaveFilterSettings();
 
-	Update();
-
-	if (OnPeriodChanged) {
-		OnPeriodChanged();
-	}
+	//Update();
 }
 
 void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {

@@ -35,9 +35,9 @@ TEST_F(TagsServiceTest, GetByIdNotExists) {
 }
 
 TEST_F(TagsServiceTest, GetBySearch) {
-    wxString search = wxString("te");
+    wxString search = wxString(L"Разное");
 
     auto tags = service->GetBySearch(search);
 
-    EXPECT_EQ(tags.size(), 38);
+    EXPECT_EQ(tags.size(), 1);
 }

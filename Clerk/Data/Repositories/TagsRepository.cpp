@@ -36,22 +36,20 @@ std::shared_ptr<TagModel> TagsRepository::GetById(int id) {
 std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::wstring search) {
 	auto result = std::vector<std::shared_ptr<TagModel>>();
 
-	/*auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
-	using convert_typeX = std::codecvt_utf8<wchar_t>;
-	std::wstring_convert<convert_typeX, wchar_t> converterX;
+	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
 
 	f.tolower(&search[0], &search[0] + search.size());
 
-	for (auto& tag : GetAll()) {		
-		std::wstring searchStringW = converterX.from_bytes(tag->name);
-		f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
+	for (auto& tag : GetAll()) {
+		std::wstring tagName = tag->name;
+		f.tolower(&tagName[0], &tagName[0] + tagName.size());
 
-		std::size_t found = searchStringW.find(search);
+		std::size_t found = tagName.find(search);
 
 		if (found != std::string::npos) {
 			result.push_back(tag);
 		}
-	}*/
+	}
 
 	return result;
 }
@@ -88,7 +86,7 @@ std::shared_ptr<TagModel> TagsRepository::Load(int id) {
 			tag = std::make_shared<TagModel>();
 
 			tag->id = sqlite3_column_int(statement, 0);
-			tag->name = std::string((char*)sqlite3_column_text(statement, 1));
+			tag->name = std::wstring((wchar_t *)sqlite3_column_text16(statement, 1));
 		}
 	}
 
@@ -104,7 +102,7 @@ void TagsRepository::Save(TagModel& tag)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				tag.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -118,7 +116,7 @@ void TagsRepository::Save(TagModel& tag)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, tag.id);
 
 			sqlite3_step(statement);

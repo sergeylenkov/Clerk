@@ -10,6 +10,6 @@ TagPresentationModel::TagPresentationModel() {
 
 TagPresentationModel::TagPresentationModel(TagModel& tag) {
 	this->id = tag.id;
-	this->name = wxString::FromUTF8(tag.name.c_str());
+	this->name = wxString(tag.name);
 	this->count = 0;
 }

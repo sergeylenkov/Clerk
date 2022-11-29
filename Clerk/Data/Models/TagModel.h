@@ -10,7 +10,7 @@ namespace Clerk {
 		public:
 			TagModel();
 
-			std::string name;
+			std::wstring name;
 		};
 
 	}

@@ -60,10 +60,9 @@ void TagsPanel::Filter() {
 		std::wstring searchW = search.ToStdWstring();
 		f.tolower(&searchW[0], &searchW[0] + searchW.size());
 
-		for (auto &tag : tags)
+		for (auto& tag : tags)
 		{
-			wxString searchString = tag->name;
-			std::wstring searchStringW = searchString.ToStdWstring();
+			std::wstring searchStringW = tag->name.ToStdWstring();
 			f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
 
 			std::size_t found = searchStringW.find(searchW);

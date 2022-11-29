@@ -73,7 +73,7 @@ TEST_F(TagsRepositoryTest, Update) {
 
     ASSERT_TRUE(tag != nullptr);
 
-    std::string newName = wxString::Format("%d", rand()).ToUTF8();
+    std::wstring newName = wxString::Format("%d", rand()).ToStdWstring();
     
     tag->name = newName;
 

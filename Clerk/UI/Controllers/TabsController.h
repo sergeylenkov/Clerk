@@ -19,7 +19,7 @@ namespace Clerk {
 			void RestoreLastTabs();
 
 		private:
-			TabsPanel* _panel;
+			TabsPanel* _tabsPanel;
 			DataContext& _context;
 			Icons& _icons;
 

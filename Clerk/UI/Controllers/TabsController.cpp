@@ -3,11 +3,11 @@
 using namespace Clerk::UI;
 
 TabsController::TabsController(DataContext& context, Icons& icons) : _context(context), _icons(icons) {
-	_panel = nullptr;
+	_tabsPanel = nullptr;
 }
 
 void TabsController::SetTabsPanel(TabsPanel* panel) {
-	_panel = panel;
+	_tabsPanel = panel;
 }
 
 void TabsController::RestoreLastTabs() {
@@ -18,13 +18,15 @@ void TabsController::RestoreLastTabs() {
 }
 
 void TabsController::OpenNewTab(TabType type) {
-	if (_panel) {		
+	if (_tabsPanel) {
 		DataPanel* tabPanel = CreatePanel(type);		
 		wxString title = GetTabTitle(type);
 
 		if (tabPanel) {
 			tabPanel->type = type;
-			_panel->AddPanel(tabPanel, title);
+
+			_tabsPanel->AddPanel(tabPanel, title);
+			_tabsPanel->SelectLastTab();
 		}
 	}
 }
@@ -33,31 +35,31 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 	switch (type)
 	{
 		case TabType::Dashboard:
-			return new DashboardPanel(_panel, _context);
+			return new DashboardPanel(_tabsPanel, _context);
 			break;
 		case TabType::Transactions:
-			return new TransactionsListPanel(_panel, _context);
+			return new TransactionsListPanel(_tabsPanel, _context);
 			break;
 		case TabType::Reports:
-			return new DashboardPanel(_panel, _context);
+			return new DashboardPanel(_tabsPanel, _context);
 			break;
 		case TabType::Budgets:
-			return new BudgetsPanel(_panel, _context);
+			return new BudgetsPanel(_tabsPanel, _context);
 			break;
 		case TabType::Schedulers:
-			return new SchedulersPanel(_panel, _context);
+			return new SchedulersPanel(_tabsPanel, _context);
 			break;
 		case TabType::Goals:
-			return new GoalsPanel(_panel, _context);
+			return new GoalsPanel(_tabsPanel, _context);
 			break;
 		case TabType::Tags:
-			return new TagsPanel(_panel, _context);
+			return new TagsPanel(_tabsPanel, _context);
 			break;
 		case TabType::Alerts:
-			return new AlertsPanel(_panel, _context);
+			return new AlertsPanel(_tabsPanel, _context);
 			break;
 		case TabType::Trash:
-			return new TrashPanel(_panel, _context);
+			return new TrashPanel(_tabsPanel, _context);
 			break;
 		default:
 			break;
@@ -76,7 +78,7 @@ wxString TabsController::GetTabTitle(TabType type) {
 			return "Transactions";
 			break;
 		case TabType::Reports:
-			return "";
+			return "Reports";
 			break;
 		case TabType::Budgets:
 			return "Budgets";

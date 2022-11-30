@@ -4,14 +4,14 @@ using namespace Clerk::UI;
 
 BudgetPresentationModel::BudgetPresentationModel(BudgetModel& budget) {
 	this->id = budget.id;
-	this->name = wxString::FromUTF8(budget.name.c_str());
+	this->name = budget.name;
 	this->date = wxDateTime();
 	this->periodDate = wxDateTime::Today();
 	this->amount = budget.amount;
 
 	this->date.ParseISODate(budget.date);
 
-	std::stringstream ss(budget.accountIds);
+	std::wstringstream ss(budget.accountIds);
 
 	int i;
 

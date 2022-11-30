@@ -61,8 +61,8 @@ void SchedulersService::Run(const SchedulerPresentationModel& scheduler) {
 	auto model = _schedulersRepository.GetById(scheduler.id);
 
 	model->active = true;
-	model->previousDate = std::string(scheduler.nextDate.FormatISODate());
-	model->nextDate = std::string(nextDate.FormatISODate());
+	model->previousDate = scheduler.nextDate.FormatISODate();
+	model->nextDate = nextDate.FormatISODate();
 
 	_schedulersRepository.Save(*model);
 }

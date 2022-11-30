@@ -5,7 +5,7 @@ using namespace Clerk::Data;
 CurrencyModel::CurrencyModel()
 {
 	this->id = -1;
-	this->name = std::string();
-	this->shortName = std::string();
-	this->sign = std::string();
+	this->name = std::wstring();
+	this->shortName = std::wstring();
+	this->sign = std::wstring();
 }

@@ -4,13 +4,13 @@ using namespace Clerk::UI;
 
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	this->id = alert.id;
-	this->name = wxString::FromUTF8(alert.name.c_str());
+	this->name = alert.name;
 	this->date = wxDateTime().ParseFormat(alert.created);
 	this->type = alert.type;
 	this->period = alert.period;
 	this->condition = alert.condition;
 	
-	std::stringstream ss(alert.accountIds);
+	std::wstringstream ss(alert.accountIds);
 
 	int i;
 

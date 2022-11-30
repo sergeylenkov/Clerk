@@ -12,12 +12,12 @@ namespace Clerk {
 		public:			
 			BudgetModel();
 
-			std::string name;
+			std::wstring name;
 			float amount;
 			BudgetPeriod period;
-			std::string date;
-			std::string created;
-			std::string accountIds;
+			std::wstring date;
+			std::wstring created;
+			std::wstring accountIds;
 		};
 	}
 }

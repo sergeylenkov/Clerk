@@ -106,9 +106,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnToAccountSelect, this);
 	_fromAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnFromAmountKillFocus, this);
 	_toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
+	_noteField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnNoteKillFocus, this);
 	_tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
 	_tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
 	_tagsField->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnTagsKeyDown, this);
+
 	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
@@ -158,6 +160,7 @@ void TransactionDialog::Update() {
 	_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
 	_tagsField->SetValue(_viewModel->GetTagsString());
 	_datePicker->SetValue(_viewModel->GetDate());
+	_noteField->SetValue(_viewModel->GetNote());
 }
 
 void TransactionDialog::UpdateFromList() {
@@ -214,6 +217,12 @@ void TransactionDialog::OnToAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
 	_viewModel->SetToAmount(_toAmountField->GetFloatValue());
+}
+
+void TransactionDialog::OnNoteKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetNote(_noteField->GetValue());
 }
 
 void TransactionDialog::OnTextChanged(wxKeyEvent &event) {

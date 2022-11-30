@@ -46,7 +46,7 @@ std::shared_ptr<SchedulerModel> SchedulersRepository::Load(int id) {
 			scheduler = std::make_shared<SchedulerModel>();
 
 			scheduler->id = sqlite3_column_int(statement, 0);
-			scheduler->name = std::string((char*)sqlite3_column_text(statement, 1));
+			scheduler->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
 			scheduler->type = static_cast<SchedulerType>(sqlite3_column_int(statement, 2));
 			scheduler->day = sqlite3_column_int(statement, 3);
 			scheduler->week = sqlite3_column_int(statement, 4);
@@ -55,9 +55,9 @@ std::shared_ptr<SchedulerModel> SchedulersRepository::Load(int id) {
 			scheduler->toAccountId = sqlite3_column_int(statement, 7);
 			scheduler->fromAmount = static_cast<float>(sqlite3_column_double(statement, 8));
 			scheduler->toAmount = static_cast<float>(sqlite3_column_double(statement, 9));
-			scheduler->tags = std::string((char*)sqlite3_column_text(statement, 10));
-			scheduler->previousDate = std::string((char*)sqlite3_column_text(statement, 11));
-			scheduler->nextDate = std::string((char*)sqlite3_column_text(statement, 12));
+			scheduler->tags = std::wstring((wchar_t*)sqlite3_column_text16(statement, 10));
+			scheduler->previousDate = std::wstring((wchar_t*)sqlite3_column_text16(statement, 11));
+			scheduler->nextDate = std::wstring((wchar_t*)sqlite3_column_text16(statement, 12));
 			scheduler->active = sqlite3_column_int(statement, 13);
 		}
 	}
@@ -73,7 +73,7 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, scheduler.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, scheduler.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(scheduler.type));
 			sqlite3_bind_int(statement, 3, scheduler.day);
 			sqlite3_bind_int(statement, 4, scheduler.week);
@@ -82,9 +82,9 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 			sqlite3_bind_int(statement, 7, scheduler.toAccountId);
 			sqlite3_bind_double(statement, 8, scheduler.fromAmount);
 			sqlite3_bind_double(statement, 9, scheduler.toAmount);
-			sqlite3_bind_text(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 13, scheduler.active);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -100,7 +100,7 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, scheduler.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, scheduler.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(scheduler.type));
 			sqlite3_bind_int(statement, 3, scheduler.day);
 			sqlite3_bind_int(statement, 4, scheduler.week);
@@ -109,9 +109,9 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 			sqlite3_bind_int(statement, 7, scheduler.toAccountId);
 			sqlite3_bind_double(statement, 8, scheduler.fromAmount);
 			sqlite3_bind_double(statement, 9, scheduler.toAmount);
-			sqlite3_bind_text(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 13, scheduler.active);
 
 			sqlite3_bind_int(statement, 14, scheduler.id);

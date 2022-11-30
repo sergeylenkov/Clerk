@@ -33,13 +33,13 @@ std::shared_ptr<GoalModel> GoalsRepository::GetById(int id) {
 	return goal;
 }
 
-float GoalsRepository::GetBalance(std::string& accountIds) {
+float GoalsRepository::GetBalance(std::wstring& accountIds) {
 	float total = 0.0;
 	float receipt_sum = 0.0;
 	float expense_sum = 0.0;
 	char sql[512];
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", static_cast<const char*>(accountIds.c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", accountIds.c_str());
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -50,7 +50,7 @@ float GoalsRepository::GetBalance(std::string& accountIds) {
 
 	sqlite3_reset(statement);
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", static_cast<const char*>(accountIds.c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%ls) AND deleted = 0", accountIds.c_str());
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -78,11 +78,11 @@ std::shared_ptr<GoalModel> GoalsRepository::Load(int id) {
 			goal = std::make_shared<GoalModel>();
 
 			goal->id = sqlite3_column_int(statement, 0);
-			goal->name = std::string((char*)sqlite3_column_text(statement, 1));			
-			goal->date = std::string((char*)sqlite3_column_text(statement, 2));
+			goal->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
+			goal->date = std::wstring((wchar_t*)sqlite3_column_text16(statement, 2));
 			goal->amount = static_cast<float>(sqlite3_column_double(statement, 3));
-			goal->accountIds = std::string((char*)sqlite3_column_text(statement, 4));
-			goal->created = std::string((char*)sqlite3_column_text(statement, 5));
+			goal->accountIds = std::wstring((wchar_t*)sqlite3_column_text16(statement, 4));
+			goal->created = std::wstring((wchar_t*)sqlite3_column_text16(statement, 5));
 		}
 	}
 
@@ -98,11 +98,11 @@ void GoalsRepository::Save(GoalModel& goal)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, goal.name.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, goal.date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, goal.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 2, goal.date.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, goal.amount);
-			sqlite3_bind_text(statement, 4, goal.accountIds.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 5, goal.created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 4, goal.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 5, goal.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				goal.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -115,10 +115,10 @@ void GoalsRepository::Save(GoalModel& goal)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, goal.name.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, goal.date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, goal.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 2, goal.date.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, goal.amount);
-			sqlite3_bind_text(statement, 4, goal.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 4, goal.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_bind_int(statement, 5, goal.id);
 

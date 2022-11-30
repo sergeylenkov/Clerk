@@ -9,7 +9,7 @@ TransactionModel::TransactionModel()
 	this->toAccountId = -1;
 	this->fromAmount = 0;
 	this->toAmount = 0;
-	this->note = std::wstring(L"");
-	this->date = std::wstring(L"");
-	this->created = std::wstring(L"");
+	this->note = std::wstring();
+	this->date = std::wstring();
+	this->created = std::wstring();
 }

@@ -11,11 +11,11 @@ namespace Clerk {
 		public:
 			GoalModel();
 
-			std::string name;
+			std::wstring name;
 			float amount;
-			std::string date;
-			std::string created;
-			std::string accountIds;
+			std::wstring date;
+			std::wstring created;
+			std::wstring accountIds;
 		};
 	}
 }

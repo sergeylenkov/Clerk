@@ -46,9 +46,9 @@ std::shared_ptr<CurrencyModel> CurrenciesRepository::Load(int id) {
 			currency = std::make_shared<CurrencyModel>();
 
 			currency->id = sqlite3_column_int(statement, 0);
-			currency->name = std::string((char*)sqlite3_column_text(statement, 1));
-			currency->shortName = std::string((char*)sqlite3_column_text(statement, 2));
-			currency->sign = std::string((char*)sqlite3_column_text(statement, 3));
+			currency->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
+			currency->shortName = std::wstring((wchar_t*)sqlite3_column_text16(statement, 2));
+			currency->sign = std::wstring((wchar_t*)sqlite3_column_text16(statement, 3));
 		}
 	}
 

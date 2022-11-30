@@ -14,7 +14,7 @@ namespace Clerk {
 
 			std::vector<std::shared_ptr<GoalModel>> GetAll();
 			std::shared_ptr<GoalModel> GetById(int id);
-			float GetBalance(std::string& accountIds);
+			float GetBalance(std::wstring& accountIds);
 
 			void Save(GoalModel& goal);
 			void Delete(const GoalModel& goal);

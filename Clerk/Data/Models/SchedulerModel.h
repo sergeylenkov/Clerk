@@ -13,7 +13,7 @@ namespace Clerk {
 		public:
 			SchedulerModel();
 			
-			std::string name;
+			std::wstring name;
 			SchedulerType type;
 			int day;
 			int week;
@@ -22,9 +22,9 @@ namespace Clerk {
 			int toAccountId;
 			float fromAmount;
 			float toAmount;
-			std::string tags;
-			std::string previousDate;
-			std::string nextDate;
+			std::wstring tags;
+			std::wstring previousDate;
+			std::wstring nextDate;
 			bool active;
 		};
 	}

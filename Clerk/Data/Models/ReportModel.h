@@ -10,7 +10,7 @@ namespace Clerk {
 		public:
 			ReportModel();
 
-			std::string name;
+			std::wstring name;
 		};
 	}
 }

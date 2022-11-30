@@ -170,9 +170,8 @@ void TransactionsListPanel::Sort() {
 			return v1->fromAccount->name.Cmp(v2->fromAccount->name) == 0;
 		}
 		else if (this->sortBy == 1) {
-			//TODO
-			wxString s = wxString("");//v1->GetTagsString().Lower();
-			wxString s1 = wxString("");//v2->GetTagsString().Lower();
+			wxString s = v1->tagsString.Lower();
+			wxString s1 = v2->tagsString.Lower();
 			return s.CmpNoCase(s1) == 0;
 		}
 		else if (this->sortBy == 2) {
@@ -379,7 +378,7 @@ void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
-		_context.GetCommandsInvoker().OnNewTransaction(transaction->id);
+		_context.GetCommandsInvoker().OnEditTransaction(transaction->id);
 	} else {
 		_context.GetCommandsInvoker().OnNewTransaction(-1);
 	}

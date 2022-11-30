@@ -11,13 +11,13 @@ namespace Clerk {
 		public:
 			AlertModel();
 
-			std::string name;
+			std::wstring name;
 			AlertType type;
 			AlertPeriod period;
 			AlertCondition condition;
 			float amount;
-			std::string accountIds;
-			std::string created;
+			std::wstring accountIds;
+			std::wstring created;
 		};
 	}
 }

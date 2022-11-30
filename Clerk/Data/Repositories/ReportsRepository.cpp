@@ -7,21 +7,21 @@ ReportsRepository::ReportsRepository(DataConnection& connection) : HashRepositor
 	auto report = std::make_shared<ReportModel>();
 
 	report->id = 1;
-	report->name = std::string("Expenses By Month");
+	report->name = std::wstring(L"Expenses By Month");
 
 	AddToHash(1, report);
 
 	report = std::make_shared<ReportModel>();
 
 	report->id = 2;
-	report->name = std::string("Balance By Month");
+	report->name = std::wstring(L"Balance By Month");
 
 	AddToHash(2, report);
 
 	report = std::make_shared<ReportModel>();
 
 	report->id = 3;
-	report->name = std::string("Expenses For Period");
+	report->name = std::wstring(L"Expenses For Period");
 
 	AddToHash(3, report);
 }

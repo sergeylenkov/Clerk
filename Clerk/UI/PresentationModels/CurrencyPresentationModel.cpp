@@ -11,7 +11,7 @@ CurrencyPresentationModel::CurrencyPresentationModel() {
 
 CurrencyPresentationModel::CurrencyPresentationModel(CurrencyModel& currency) {
 	this->id = currency.id;
-	this->name = wxString::FromUTF8(currency.name.c_str());
-	this->shortName = wxString::FromUTF8(currency.shortName.c_str());
-	this->sign = wxString::FromUTF8(currency.sign.c_str());
+	this->name = currency.name;
+	this->shortName = currency.shortName;
+	this->sign = currency.sign;
 }

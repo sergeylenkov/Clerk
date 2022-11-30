@@ -11,9 +11,9 @@ namespace Clerk {
 		public:
 			CurrencyModel();
 
-			std::string name;
-			std::string shortName;
-			std::string sign;
+			std::wstring name;
+			std::wstring shortName;
+			std::wstring sign;
 		};
 	}
 }

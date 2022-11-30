@@ -39,7 +39,7 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 	float expense_sum = 0.0;
 	char sql[512];
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", static_cast<const char*>(alert.accountIds.c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%ls) AND deleted = 0", alert.accountIds.c_str());
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -50,7 +50,7 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 
 	sqlite3_reset(statement);
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", static_cast<const char*>(alert.accountIds.c_str()));
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%ls) AND deleted = 0", alert.accountIds.c_str());
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
@@ -78,13 +78,13 @@ std::shared_ptr<AlertModel> AlertsRepository::Load(int id) {
 			alert = std::make_shared<AlertModel>();
 
 			alert->id = sqlite3_column_int(statement, 0);
-			alert->name = std::string((char*)sqlite3_column_text(statement, 1));
+			alert->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
 			alert->type = static_cast<AlertType>(sqlite3_column_int(statement, 2));
 			alert->period = static_cast<AlertPeriod>(sqlite3_column_int(statement, 3));
 			alert->condition = static_cast<AlertCondition>(sqlite3_column_int(statement, 4));
 			alert->amount = static_cast<float>(sqlite3_column_double(statement, 5));
-			alert->accountIds = std::string((char*)sqlite3_column_text(statement, 6));
-			alert->created = std::string((char*)sqlite3_column_text(statement, 7));
+			alert->accountIds = std::wstring((wchar_t*)sqlite3_column_text16(statement, 6));
+			alert->created = std::wstring((wchar_t*)sqlite3_column_text16(statement, 7));
 		}
 	}
 
@@ -100,13 +100,13 @@ void AlertsRepository::Save(AlertModel& alert)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, alert.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, alert.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(alert.type));
 			sqlite3_bind_int(statement, 3, static_cast<int>(alert.period));
 			sqlite3_bind_int(statement, 4, static_cast<int>(alert.condition));
 			sqlite3_bind_double(statement, 5, alert.amount);
-			sqlite3_bind_text(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 7, alert.created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 7, alert.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				alert.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -121,12 +121,12 @@ void AlertsRepository::Save(AlertModel& alert)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, alert.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, alert.name.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 2, static_cast<int>(alert.type));
 			sqlite3_bind_int(statement, 3, static_cast<int>(alert.period));
 			sqlite3_bind_int(statement, 4, static_cast<int>(alert.condition));
 			sqlite3_bind_double(statement, 5, alert.amount);
-			sqlite3_bind_text(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 6, alert.accountIds.c_str(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_bind_int(statement, 7, alert.id);
 

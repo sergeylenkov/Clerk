@@ -25,6 +25,7 @@ namespace Clerk {
 			float GetReceipts(int accountId);
 			float GetExpenses(int accountId, std::string& fromDate, std::string& toDate);
 			float GetReceipts(int accountId, std::string& fromDate, std::string& toDate);
+			float GetInitialAmount(int accountId, AccountType type);
 			int GetPairAccountId(int accountId, AccountType type, std::string& fromDate);
 			int GetLastUsedAccountId(std::string& fromDate);
 

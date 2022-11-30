@@ -159,6 +159,10 @@ std::shared_ptr<AccountPresentationModel> AccountsService::GetLastUsedAccount() 
 	return GetById(_accountsRepository.GetLastUsedAccountId(std::string(fromDate.FormatISODate().ToUTF8())));
 }
 
+float AccountsService::GetInitialAmount(const AccountPresentationModel& account) {
+	return _accountsRepository.GetInitialAmount(account.id, account.type);
+}
+
 std::shared_ptr<AccountPresentationModel> AccountsService::Save(std::shared_ptr<AccountPresentationModel> account) {
 	auto model = account->GetModel();
 

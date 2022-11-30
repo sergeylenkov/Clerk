@@ -190,7 +190,7 @@ float AccountsRepository::GetReceipts(int accountId) {
 		}
 	}
 
-	sqlite3_reset(statement);
+	sqlite3_finalize(statement);
 
 	return receipt;
 }
@@ -211,7 +211,7 @@ float AccountsRepository::GetExpenses(int accountId, std::string& fromDate, std:
 		}
 	}
 
-	sqlite3_reset(statement);
+	sqlite3_finalize(statement);
 
 	return total;
 }
@@ -232,9 +232,34 @@ float AccountsRepository::GetReceipts(int accountId, std::string& fromDate, std:
 		}
 	}
 
-	sqlite3_reset(statement);
+	sqlite3_finalize(statement);
 
 	return total;
+}
+
+float AccountsRepository::GetInitialAmount(int accountId, AccountType type) {
+	float result = 0;
+	char* sql = "";
+	sqlite3_stmt* statement;
+
+	if (type == AccountType::Deposit || type == AccountType::Virtual) {
+		sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE from_account_id = -1 AND to_account_id = ? AND deleted = 0";
+	}
+	else if (type == AccountType::Expens || type == AccountType::Debt) {
+		sql = "SELECT TOTAL(from_account_amount) FROM transactions WHERE to_account_id = -1 AND from_account_id = ? AND deleted = 0";
+	}
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		sqlite3_bind_int(statement, 1, accountId);
+
+		if (sqlite3_step(statement) == SQLITE_ROW) {
+			result = static_cast<float>(sqlite3_column_double(statement, 0));
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
 }
 
 int AccountsRepository::GetPairAccountId(int accountId, AccountType type, std::string& fromDate) {
@@ -315,15 +340,15 @@ std::shared_ptr<AccountModel> AccountsRepository::Load(int id) {
 			account = std::make_shared<AccountModel>();
 
 			account->id = sqlite3_column_int(statement, 0);
-			account->name = std::string((char*)sqlite3_column_text(statement, 1));
-			account->note = std::string((char*)sqlite3_column_text(statement, 2));
+			account->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
+			account->note = std::wstring((wchar_t*)sqlite3_column_text16(statement, 2));
 			account->iconId = sqlite3_column_int(statement, 3);
 			account->type = static_cast<AccountType>(sqlite3_column_int(statement, 4));
 			account->orderId = sqlite3_column_int(statement, 5);
 			account->currencyId = sqlite3_column_int(statement, 6);
 			account->creditLimit = static_cast<float>(sqlite3_column_double(statement, 7));
 			account->isActive = sqlite3_column_int(statement, 8);
-			account->created = std::string((char*)sqlite3_column_text(statement, 9));
+			account->created = std::wstring((wchar_t*)sqlite3_column_text16(statement, 9));
 		}
 	}
 
@@ -338,22 +363,21 @@ std::shared_ptr<AccountModel> AccountsRepository::Save(std::shared_ptr<AccountMo
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, account->name.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, account->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, account->name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 2, account->note.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, static_cast<int>(account->type));
 			sqlite3_bind_int(statement, 4, account->iconId);
 			sqlite3_bind_int(statement, 5, account->orderId);
 			sqlite3_bind_int(statement, 6, account->currencyId);
 			sqlite3_bind_int(statement, 7, true);
 			sqlite3_bind_double(statement, 8, account->creditLimit);
-			sqlite3_bind_text(statement, 9, account->created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 9, account->created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				int id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				account->id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 
-				if (id != -1) {
-					account = Load(id);
-					AddToHash(id, account);
+				if (account->id != -1) {
+					AddToHash(account->id, account);
 				}
 			}
 		}
@@ -365,8 +389,8 @@ std::shared_ptr<AccountModel> AccountsRepository::Save(std::shared_ptr<AccountMo
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text(statement, 1, account->name.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 2, account->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, account->name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 2, account->note.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 3, static_cast<int>(account->type));
 			sqlite3_bind_int(statement, 4, account->iconId);
 			sqlite3_bind_int(statement, 5, account->orderId);

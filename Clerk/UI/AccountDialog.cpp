@@ -187,7 +187,7 @@ void AccountDialog::OnAmountKillFocus(wxFocusEvent &event) {
 void AccountDialog::OnCreditKillFocus(wxFocusEvent& event) {
 	event.Skip();
 
-	_viewModel->SetCreditLimit(_amountField->GetFloatValue());
+	_viewModel->SetCreditLimit(_creditField->GetFloatValue());
 }
 
 void AccountDialog::OnNameKillFocus(wxFocusEvent& event) {

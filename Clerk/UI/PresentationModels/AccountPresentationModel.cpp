@@ -8,20 +8,20 @@ AccountPresentationModel::AccountPresentationModel() {
 	this->note = wxString("");
 	this->type = AccountType::Deposit;
 	this->icon = -1;
-	this->order = 0;
+	this->order = 1000;
 	this->creditLimit = 0;
 	this->isCredit = false;
 	this->balance = 0;
 	this->expenses = 0;
 	this->receipts = 0;
-	this->isActive = false;
+	this->isActive = true;
 	this->date = wxDateTime::Today();
 }
 
 AccountPresentationModel::AccountPresentationModel(AccountModel& account) {
 	this->id = account.id;
-	this->name = wxString::FromUTF8(account.name.c_str());
-	this->note = wxString::FromUTF8(account.note.c_str());
+	this->name = wxString(account.name);
+	this->note = wxString(account.note);
 	this->type = account.type;
 	this->icon = account.iconId;
 	this->order = account.orderId;

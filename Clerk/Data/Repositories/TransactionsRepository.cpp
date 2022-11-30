@@ -163,8 +163,8 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Load(int id) {
 			transaction->toAccountId = sqlite3_column_int(statement, 2);
 			transaction->fromAmount = static_cast<float>(sqlite3_column_double(statement, 3));
 			transaction->toAmount = static_cast<float>(sqlite3_column_double(statement, 4));
-			transaction->date = std::string((char*)sqlite3_column_text(statement, 5));
-			transaction->note = std::string((char*)sqlite3_column_text(statement, 6));
+			transaction->date = std::wstring((wchar_t*)sqlite3_column_text16(statement, 5));
+			transaction->note = std::wstring((wchar_t*)sqlite3_column_text16(statement, 6));
 		}
 	}
 
@@ -198,9 +198,9 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<T
 			sqlite3_bind_double(statement, 3, transaction->fromAmount);
 			sqlite3_bind_double(statement, 4, transaction->toAmount);
 			sqlite3_bind_int(statement, 5, false);
-			sqlite3_bind_text(statement, 6, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 7, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 8, transaction->created.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 6, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 7, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 8, transaction->created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				transaction->id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -221,8 +221,8 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<T
 			sqlite3_bind_int(statement, 2, transaction->toAccountId);
 			sqlite3_bind_double(statement, 3, transaction->fromAmount);
 			sqlite3_bind_double(statement, 4, transaction->toAmount);
-			sqlite3_bind_text(statement, 5, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_text(statement, 6, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 5, transaction->date.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 6, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 7, transaction->id);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {

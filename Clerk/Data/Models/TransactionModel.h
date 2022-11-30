@@ -15,9 +15,9 @@ namespace Clerk {
 			int fromAccountId;
 			float fromAmount;
 			float toAmount;
-			std::string date;
-			std::string note;
-			std::string created;
+			std::wstring date;
+			std::wstring note;
+			std::wstring created;
 			std::vector<int> tagsIds;
 		};
 	}

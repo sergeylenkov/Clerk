@@ -12,15 +12,15 @@ namespace Clerk {
 		public:
 			AccountModel();
 
-			std::string name;
-			std::string note;
+			std::wstring name;
+			std::wstring note;
 			AccountType type;
 			int iconId;
 			int orderId;
 			int currencyId;
 			float creditLimit;
 			bool isActive;
-			std::string created;
+			std::wstring created;
 		};
 	}
 }

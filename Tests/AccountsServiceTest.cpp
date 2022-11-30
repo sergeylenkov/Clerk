@@ -104,3 +104,10 @@ TEST_F(AccountsServiceTest, New) {
 
     service->Delete(newAccount);
 }
+
+TEST_F(AccountsServiceTest, GetInitialAmount) {
+    auto account = service->GetById(2);
+    auto amount = service->GetInitialAmount(*account);
+  
+    EXPECT_EQ(amount, 600);
+}

@@ -22,11 +22,11 @@ void AccountViewModel::SetAccountId(int id) {
 	auto account = _accountsService.GetById(id);
 
 	if (account) {
-		_id = -1;
+		_id = account->id;
 		_name = account->name;
 		_type = account->type;
 		_iconId = account->icon;
-		_amount = 0;
+		_amount = _accountsService.GetInitialAmount(*account);
 		_note = account->note;
 		_currency = account->currency;
 		_creditLimit = account->creditLimit;
@@ -51,7 +51,10 @@ std::vector<wxString> AccountViewModel::GetTypes() {
 
 void AccountViewModel::SetName(wxString name) {
 	_name = name;
-	OnUpdate(AccountViewModelField::Name);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Name);
+	}
 }
 
 wxString AccountViewModel::GetName() {
@@ -60,7 +63,10 @@ wxString AccountViewModel::GetName() {
 
 void AccountViewModel::SetType(AccountType type) {
 	_type = type;
-	OnUpdate(AccountViewModelField::Type);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Type);
+	}
 }
 
 AccountType AccountViewModel::GetType() {
@@ -93,7 +99,10 @@ float AccountViewModel::GetCreditLimit() {
 
 void AccountViewModel::SetNote(wxString note) {
 	_note = note;
-	OnUpdate(AccountViewModelField::Note);
+
+	if (OnUpdate) {
+		OnUpdate(AccountViewModelField::Note);
+	}
 }
 
 wxString AccountViewModel::GetNote() {
@@ -138,12 +147,14 @@ void AccountViewModel::Save() {
 	auto account = _accountsService.GetById(_id);
 
 	if (!account) {
-		account = std::make_shared<AccountPresentationModel>();
+		account = std::make_shared<AccountPresentationModel>();		
 	}
 
 	account->name = _name;
 	account->type = _type;
 	account->currency = _currency;
+	account->creditLimit = _creditLimit;
+	account->icon = _iconId;
 	account->note = _note;
 
 	_accountsService.Save(account);

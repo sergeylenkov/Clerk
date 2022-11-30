@@ -22,6 +22,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<AccountPresentationModel>> GetDebts();
 			std::shared_ptr<AccountPresentationModel> GetPairAccount(const AccountPresentationModel& account);
 			std::shared_ptr<AccountPresentationModel> GetLastUsedAccount();
+			float GetInitialAmount(const AccountPresentationModel& account);
 
 			std::shared_ptr<AccountPresentationModel> Save(std::shared_ptr<AccountPresentationModel>);
 			void Delete(std::shared_ptr<AccountPresentationModel> viewModel);

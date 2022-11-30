@@ -45,7 +45,7 @@ float AmountField::GetValueFromString(wxString& value)
 			wxChar operand = tokenizer.GetLastDelimiter();
 			
 			double result = 0;
-			token.ToDouble(&result);
+			token.ToCDouble(&result);
 
 			values.push_back(result);
 			operands.push_back(operand);

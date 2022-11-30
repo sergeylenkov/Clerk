@@ -14,23 +14,17 @@ NewTransactionButton::~NewTransactionButton() {
 
 void NewTransactionButton::SetViewModel(TransactionsMenuViewModel* viewModel) {
 	_viewModel = viewModel;
-	_viewModel->OnUpdate([=]() {
+	_viewModel->OnUpdate([&]() {
 		Update();
-		});
+	});
 
 	Update();
 }
 
 void NewTransactionButton::Update() {
-	wxMenu* menu = this->GetMenu();
-	
-	wxMenuItem* item = (wxMenuItem*)menu->GetMenuItems().GetLast();
+	this->ClearMenu();
 
-	while (item != NULL)
-	{
-		menu->Destroy(item);
-		item = (wxMenuItem*)menu->GetMenuItems().GetLast();
-	}
+	wxMenu* menu = this->GetMenu();	
 
 	for (auto& transaction : _viewModel->GetRecents())
 	{

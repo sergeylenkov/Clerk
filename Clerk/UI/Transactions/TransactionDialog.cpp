@@ -116,7 +116,6 @@ TransactionDialog::~TransactionDialog() {
 	delete _viewModel;
 	delete _tagsPopup;
 	delete _mainPanel;
-	wxLogDebug("~TransactionDialog");
 }
 
 void TransactionDialog::SetViewModel(TransactionViewModel* viewModel) {

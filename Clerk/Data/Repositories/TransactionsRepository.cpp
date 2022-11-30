@@ -231,9 +231,7 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<T
 		sqlite3_finalize(statement);
 	}
 
-	if (transaction->id != -1) {
-		UpdateTags(transaction);
-	}
+	UpdateTags(transaction);
 
 	return transaction;
 }

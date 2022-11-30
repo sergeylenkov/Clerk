@@ -34,7 +34,7 @@ MainMenu::~MainMenu() {
 
 void MainMenu::SetViewModel(TransactionsMenuViewModel* viewModel) {
 	_viewModel = viewModel;
-	_viewModel->OnUpdate([=]() {
+	_viewModel->OnUpdate([&]() {
 		Update();
 	});
 

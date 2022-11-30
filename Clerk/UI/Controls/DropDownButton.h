@@ -11,6 +11,7 @@ public:
 	~DropDownButton();
 
 	wxMenu *GetMenu();
+	void ClearMenu();
 
 protected:
 	void OnKillFocus(wxFocusEvent& event);
@@ -20,7 +21,6 @@ protected:
 	void OnLeftButtonDown(wxMouseEvent& event);
 	void OnMenuClose(wxMenuEvent& event);
 	void OnPaint(wxPaintEvent &event);
-
 	bool Enable(bool enable = true) override;
 
 private:

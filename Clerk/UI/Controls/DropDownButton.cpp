@@ -50,6 +50,18 @@ wxMenu* DropDownButton::GetMenu()
 	return menu;
 }
 
+void DropDownButton::ClearMenu() {
+	wxMenuItemList items = menu->GetMenuItems();
+
+	wxMenuItemList::iterator iter;
+
+	for (iter = items.begin(); iter != items.end(); ++iter)
+	{
+		wxMenuItem* item = *iter;
+		menu->Destroy(item);
+	}
+}
+
 void DropDownButton::OnKillFocus(wxFocusEvent& event)
 {
 	state = wxCONTROL_NONE;

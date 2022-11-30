@@ -329,6 +329,7 @@ void TransactionViewModel::Save() {
 	transaction->toAmount = _toAmount;
 	transaction->note = _note;
 	transaction->tags = _tags;
+	transaction->tagsString = GetTagsString();
 	transaction->date = _date;
 	
 	_transactionsService.Save(transaction);

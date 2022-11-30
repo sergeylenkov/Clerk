@@ -13,3 +13,12 @@ TagPresentationModel::TagPresentationModel(TagModel& tag) {
 	this->name = wxString(tag.name);
 	this->count = 0;
 }
+
+std::shared_ptr<TagModel> TagPresentationModel::GetModel() {
+	auto model = std::make_shared<TagModel>();
+
+	model->id = id;
+	model->name = name;
+
+	return model;
+}

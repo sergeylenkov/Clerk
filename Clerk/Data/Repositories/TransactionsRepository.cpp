@@ -203,10 +203,10 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<T
 			sqlite3_bind_text(statement, 8, transaction->created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				int id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				transaction->id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 
-				transaction = Load(id);
-				AddToHash(id, transaction);
+				UpdateTags(transaction);
+				AddToHash(transaction->id, transaction);
 			}
 		}
 
@@ -225,13 +225,13 @@ std::shared_ptr<TransactionModel> TransactionsRepository::Save(std::shared_ptr<T
 			sqlite3_bind_text(statement, 6, transaction->note.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 7, transaction->id);
 
-			sqlite3_step(statement);
+			if (sqlite3_step(statement) == SQLITE_DONE) {
+				UpdateTags(transaction);
+			}
 		}
 
 		sqlite3_finalize(statement);
 	}
-
-	UpdateTags(transaction);
 
 	return transaction;
 }

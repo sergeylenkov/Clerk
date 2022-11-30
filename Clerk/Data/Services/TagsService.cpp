@@ -44,3 +44,11 @@ std::vector<std::shared_ptr<TagPresentationModel>> TagsService::GetBySearch(wxSt
 
 	return result;
 }
+
+std::shared_ptr<TagPresentationModel> TagsService::Save(std::shared_ptr<TagPresentationModel> tag) {
+	auto model = tag->GetModel();
+
+	auto savedModel = _tagsRepository.Save(model);
+
+	return GetById(savedModel->id);
+}

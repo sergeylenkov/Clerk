@@ -124,6 +124,12 @@ std::shared_ptr<TransactionPresentationModel> TransactionsService::Duplicate(std
 std::shared_ptr<TransactionPresentationModel> TransactionsService::Save(std::shared_ptr<TransactionPresentationModel> transaction) {
 	auto model = transaction->GetModel();
 
+	for (auto& tag : transaction->tags) {
+		if (tag->id == -1) {
+			_tagsService.Save(tag);
+		}
+	}
+
 	auto savedModel = _transactionsRepository.Save(model);
 
 	_eventEmitter->Emit();

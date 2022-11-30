@@ -51,19 +51,17 @@ TEST_F(TagsRepositoryTest, GetCount) {
 TEST_F(TagsRepositoryTest, CreateAndDelete) {
     int count = repository->GetAll().size();
 
-    TagModel* newTag = new TagModel();
+    auto newTag = std::make_shared<TagModel>();
 
-    repository->Save(*newTag);
+    auto savedTag = repository->Save(newTag);
 
-    EXPECT_NE(newTag->id, -1);
+    EXPECT_NE(savedTag->id, -1);
 
-    auto tag = repository->GetById(newTag->id);
+    auto tag = repository->GetById(savedTag->id);
 
     ASSERT_TRUE(tag != nullptr);
 
-    repository->Delete(*newTag);
-
-    delete newTag;
+    repository->Delete(newTag);
 
     EXPECT_EQ(repository->GetAll().size(), count);
 }
@@ -77,7 +75,7 @@ TEST_F(TagsRepositoryTest, Update) {
     
     tag->name = newName;
 
-    repository->Save(*tag);
+    repository->Save(tag);
 
     auto newTag = repository->GetById(100);
 

@@ -15,6 +15,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagPresentationModel>> GetAll();
 			std::shared_ptr<TagPresentationModel> GetById(int id);
 			std::vector<std::shared_ptr<TagPresentationModel>> GetBySearch(wxString search);
+			std::shared_ptr<TagPresentationModel> Save(std::shared_ptr<TagPresentationModel> tag);
 
 		private:
 			TagsRepository& _tagsRepository;

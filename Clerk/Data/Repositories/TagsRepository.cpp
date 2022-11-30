@@ -95,17 +95,18 @@ std::shared_ptr<TagModel> TagsRepository::Load(int id) {
 	return tag;
 }
 
-void TagsRepository::Save(TagModel& tag)
+std::shared_ptr<TagModel> TagsRepository::Save(std::shared_ptr<TagModel> tag)
 {
-	if (tag.id == -1) {
+	if (tag->id == -1) {
 		char* sql = "INSERT INTO tags (name) VALUES (?)";
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text16(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 1, tag->name.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				tag.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				tag->id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				AddToHash(tag->id, tag);
 			}
 		}
 
@@ -116,27 +117,28 @@ void TagsRepository::Save(TagModel& tag)
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			sqlite3_bind_text16(statement, 1, tag.name.c_str(), -1, SQLITE_TRANSIENT);
-			sqlite3_bind_int(statement, 2, tag.id);
+			sqlite3_bind_text16(statement, 1, tag->name.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_int(statement, 2, tag->id);
 
 			sqlite3_step(statement);
 		}
 
-		sqlite3_finalize(statement);
-		
+		sqlite3_finalize(statement);		
 	}
+
+	return tag;
 }
 
-void TagsRepository::Delete(const TagModel& tag)
+void TagsRepository::Delete(std::shared_ptr<TagModel> tag)
 {
 	char* sql = "DELETE FROM tags WHERE id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, tag.id);
+		sqlite3_bind_int(statement, 1, tag->id);
 
 		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(tag.id);
+			RemoveFromHash(tag->id);
 		}
 	}
 
@@ -145,7 +147,7 @@ void TagsRepository::Delete(const TagModel& tag)
 	sql = "DELETE FROM transactions_tags WHERE tag_id = ?";
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, tag.id);
+		sqlite3_bind_int(statement, 1, tag->id);
 		sqlite3_step(statement);
 	}
 

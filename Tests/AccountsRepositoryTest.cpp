@@ -140,19 +140,21 @@ TEST_F(AccountsRepositoryTest, GetArchives) {
 TEST_F(AccountsRepositoryTest, CreateAndDelete) {
     int count = repository->GetAll().size();
 
-    auto newAccount = std::make_shared<AccountModel>();
+    AccountModel* newAccount = new AccountModel();
 
-    auto savedModel = repository->Save(newAccount);
+    int id = repository->Save(*newAccount);
 
-    EXPECT_NE(savedModel->id, -1);
+    EXPECT_NE(id, -1);
 
-    auto account = repository->GetById(savedModel->id);
+    auto account = repository->GetById(id);
 
     ASSERT_TRUE(account != nullptr);
 
-    repository->Delete(savedModel);
+    repository->Delete(*account);
 
     EXPECT_EQ(repository->GetAll().size(), count);
+
+    delete newAccount;
 }
 
 TEST_F(AccountsRepositoryTest, Update) {
@@ -164,9 +166,9 @@ TEST_F(AccountsRepositoryTest, Update) {
 
     account->orderId = orderId;
 
-    auto savedAccount = repository->Save(account);
+    int id = repository->Save(*account);
 
-    EXPECT_EQ(savedAccount->orderId, orderId);
+    EXPECT_EQ(account->orderId, orderId);
 
     auto newAccount = repository->GetById(2);
 

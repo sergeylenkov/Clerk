@@ -4,17 +4,19 @@
 #include "./CurrenciesService.h"
 #include "../../UI/PresentationModels/AccountPresentationModel.h"
 #include "../../Utils/EventEmitter.h"
+#include "./HashService.h"
 
 using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace Data {
-		class AccountsService {
+		class AccountsService : HashService<AccountPresentationModel> {
 		public:
 			AccountsService(AccountsRepository& accountsRepository, CurrenciesService& currenciesService);
 			~AccountsService();
 
 			std::shared_ptr<AccountPresentationModel> GetById(int id);
+			std::vector<std::shared_ptr<AccountPresentationModel>> GetAll();
 			std::vector<std::shared_ptr<AccountPresentationModel>> GetActive();
 			std::vector<std::shared_ptr<AccountPresentationModel>> GetByType(AccountType type);
 			std::vector<std::shared_ptr<AccountPresentationModel>> GetArchive();
@@ -24,8 +26,8 @@ namespace Clerk {
 			std::shared_ptr<AccountPresentationModel> GetLastUsedAccount();
 			float GetInitialAmount(const AccountPresentationModel& account);
 
-			std::shared_ptr<AccountPresentationModel> Save(std::shared_ptr<AccountPresentationModel>);
-			void Delete(std::shared_ptr<AccountPresentationModel> viewModel);
+			std::shared_ptr<AccountPresentationModel> Save(AccountPresentationModel& account);
+			void Delete(AccountPresentationModel& account);
 
 			unsigned int Subscribe(std::function<void()> fn);
 			void Unsubscribe(unsigned int subscriptionId);

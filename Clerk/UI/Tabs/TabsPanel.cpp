@@ -1,9 +1,11 @@
 #include "TabsPanel.h"
 
-TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker) {
+TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker, Icons& icons) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker), _icons(icons) {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);
+	_notebook->SetImageList(_icons.GetImageList());
+
 	mainSizer->Add(_notebook, 1, wxEXPAND | wxALL, 0);	
 
 	this->SetSizer(mainSizer);
@@ -35,7 +37,7 @@ void TabsPanel::AddPanel(DataPanel* dataPanel, wxString title) {
 	dataPanel->Reparent(tabPanel);
 	sizer->Add(dataPanel, 1, wxEXPAND | wxALL, 0);
 
-	_notebook->AddPage(tabPanel, title);
+	_notebook->AddPage(tabPanel, title, true, 10);
 	
 	sizer->Layout();
 

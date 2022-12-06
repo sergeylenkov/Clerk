@@ -845,6 +845,9 @@
     <ClInclude Include="Data\Services\CurrenciesService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Data\Services\HashService.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Logo.ico">

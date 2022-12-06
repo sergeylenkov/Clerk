@@ -248,6 +248,7 @@
     <ClInclude Include="Data\Services\BudgetsService.h" />
     <ClInclude Include="Data\Services\CurrenciesService.h" />
     <ClInclude Include="Data\Services\GoalsService.h" />
+    <ClInclude Include="Data\Services\HashService.h" />
     <ClInclude Include="Data\Services\ReportingService.h" />
     <ClInclude Include="Data\Services\ReportsService.h" />
     <ClInclude Include="Data\Services\SchedulersService.h" />

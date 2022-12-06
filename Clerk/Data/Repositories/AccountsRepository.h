@@ -10,9 +10,9 @@
 
 namespace Clerk {
 	namespace Data {
-		class AccountsRepository : HashRepository<AccountModel> {
+		class AccountsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			BaseRepository::BaseRepository;
 
 			std::vector<std::shared_ptr<AccountModel>> GetAll();
 			std::shared_ptr<AccountModel> GetById(int id);
@@ -29,12 +29,11 @@ namespace Clerk {
 			int GetPairAccountId(int accountId, AccountType type, std::string& fromDate);
 			int GetLastUsedAccountId(std::string& fromDate);
 
-			std::shared_ptr<AccountModel> Save(std::shared_ptr<AccountModel> account);
-			void Delete(std::shared_ptr<AccountModel> account);
+			int Save(const AccountModel& account);
+			void Delete(const AccountModel& account);
 
 		private:
-			std::shared_ptr<AccountModel> Load(int id);		
-			bool _isAllLoaded = false;
+			std::shared_ptr<AccountModel> Load(int id);
 		};
 	}
 }

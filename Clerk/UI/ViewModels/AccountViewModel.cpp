@@ -157,5 +157,5 @@ void AccountViewModel::Save() {
 	account->icon = _iconId;
 	account->note = _note;
 
-	_accountsService.Save(account);
+	_accountsService.Save(*account);
 }

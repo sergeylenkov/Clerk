@@ -20,6 +20,7 @@
 #include "../TreeMenu/Enums.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "./TabsContextMenu.h"
+#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
@@ -27,7 +28,7 @@ using namespace Clerk::Commands;
 class TabsPanel : public wxPanel
 {
 public:
-	TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker);
+	TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker, Icons& icons);
 	~TabsPanel();
 		
 	void AddPanel(DataPanel* panel, wxString title);
@@ -36,6 +37,7 @@ public:
 private:
 	DataContext& _context;
 	CommandsInvoker& _commandsInvoker;
+	Icons& _icons;
 	wxNotebook *_notebook;	
 	std::vector<DataPanel *> _tabsPanels;
 

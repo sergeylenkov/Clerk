@@ -151,7 +151,7 @@ void TreeMenu::Update() {
 		TreeMenuItemData* itemData = new TreeMenuItemData();
 
 		itemData->type = TreeMenuItemType::Report;
-		itemData->object = report;
+		//itemData->object = report;
 
 		wxTreeItemId itemId = _treeMenu->AppendItem(_reportsItem, report->name, 5, 5, itemData);
 	}
@@ -159,7 +159,7 @@ void TreeMenu::Update() {
 	SetIsTrashEmpty(_viewModel->IsTrashEmpty());
 }
 
-void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account) {
+void TreeMenu::AddAccountItem(wxTreeItemId& parent, AccountPresentationModel* account) {
 	int iconIndex = _icons.GetIconIndexForAccount(account->icon);
 
 	TreeMenuItemData* itemData = new TreeMenuItemData();
@@ -194,12 +194,12 @@ void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	}
 }
 
-std::shared_ptr<AccountPresentationModel> TreeMenu::GetContextMenuAccount() {
+AccountPresentationModel* TreeMenu::GetContextMenuAccount() {
 	if (_contextMenuItem != NULL) {
 		TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
 		if (item->type == TreeMenuItemType::Account) {
-			std::shared_ptr<AccountPresentationModel> account = std::static_pointer_cast<AccountPresentationModel>(item->object);
+			AccountPresentationModel* account = (AccountPresentationModel*)item->object;
 			return account;
 		}
 	}
@@ -239,63 +239,6 @@ void TreeMenu::OnTreeItemSelect(wxTreeEvent &event) {
 	wxTreeItemId itemId = event.GetItem();
 	TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(itemId);
 	wxTreeItemId oldItem = event.GetOldItem();
-	
-	/*if (item != NULL && oldItem != NULL) {
-		if (item->type == TreeMenuItemType::Account) {
-			auto account = std::static_pointer_cast<AccountModel>(item->object);
-
-			if (OnAccountSelect) {
-				OnAccountSelect(account);
-			}
-		}
-		else if (item->type == TreeMenuItemType::Dashboard) {
-			if (OnDashboardSelect) {
-				OnDashboardSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Budgets) {
-			if (OnBudgetsSelect) {
-				OnBudgetsSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Goals) {
-			if (OnGoalsSelect) {
-				OnGoalsSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Schedulers) {
-			if (OnSchedulersSelect) {
-				OnSchedulersSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Trash) {
-			if (OnTrashSelect) {
-				OnTrashSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Tags) {
-			if (OnTagsSelect) {
-				OnTagsSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Alerts) {
-			if (OnAlertsSelect) {
-				OnAlertsSelect();
-			}
-		}
-		else if (item->type == TreeMenuItemType::Report) {
-			auto report = std::static_pointer_cast<Report>(item->object);
-
-			if (OnReportSelect) {
-				OnReportSelect(report);
-			}
-		}
-		else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Receipts || item->type == TreeMenuItemType::Virtual) {
-			if (OnAccountsSelect) {
-				OnAccountsSelect(item->type);
-			}
-		}
-	}*/
 }
 
 void TreeMenu::OnTreeItemExpanded(wxTreeEvent &event) {
@@ -335,7 +278,7 @@ void TreeMenu::OnEndDrag(wxTreeEvent &event) {
 		TreeMenuItemData *itemData = (TreeMenuItemData *)_treeMenu->GetItemData(itemId);
 
 		if (draggedData->type == itemData->type) {
-			auto account = std::static_pointer_cast<AccountPresentationModel>(draggedData->object);
+			auto account = (AccountPresentationModel*)draggedData->object;
 
 			TreeMenuItemData *itemData = new TreeMenuItemData();
 			itemData->type = draggedData->type;
@@ -358,7 +301,7 @@ void TreeMenu::ReorderAccounts(wxTreeItemId &item) {
 	while (child.IsOk())
 	{
 		TreeMenuItemData *data = (TreeMenuItemData *)_treeMenu->GetItemData(child);
-		auto account = std::static_pointer_cast<AccountModel>(data->object);
+		auto account = (AccountPresentationModel*)data->object;
 
 		//TODO moved methos ti interactor
 		//account->orderId = orderId++;

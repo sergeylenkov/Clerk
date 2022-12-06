@@ -18,7 +18,7 @@ AccountsComboBox::~AccountsComboBox() {
 	
 }
 
-void AccountsComboBox::SetAccounts(std::vector<std::shared_ptr<AccountPresentationModel>> accounts) {
+void AccountsComboBox::SetAccounts(std::vector<AccountPresentationModel*> accounts) {
 	this->accounts = accounts;
 	UpdateList();
 }

@@ -2,8 +2,8 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetAll() {
-	std::vector<std::shared_ptr<AccountModel>> result;
+std::vector<AccountModel *> AccountsRepository::GetAll() {
+	std::vector<AccountModel*> result;
 
 	char* sql = "SELECT id FROM accounts a";
 	sqlite3_stmt* statement;
@@ -20,11 +20,11 @@ std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetAll() {
 	return result;
 }
 
-std::shared_ptr<AccountModel> AccountsRepository::GetById(int id) {	
+AccountModel* AccountsRepository::GetById(int id) {	
 	return Load(id);
 }
 
-std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetActive() {
+/*std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetActive() {
 	auto accounts = GetAll();
 	std::vector<std::shared_ptr<AccountModel>> result;
 
@@ -55,7 +55,7 @@ std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetArchive() {
 	});
 
 	return result;
-}
+}*/
 
 float AccountsRepository::GetBalance(int accountId, AccountType type)
 {
@@ -312,8 +312,8 @@ int AccountsRepository::GetLastUsedAccountId(std::string& fromDate) {
 	return id;
 }
 
-std::shared_ptr<AccountModel> AccountsRepository::Load(int id) {
-	std::shared_ptr<AccountModel> account = nullptr;
+AccountModel* AccountsRepository::Load(int id) {
+	AccountModel* account = nullptr;
 
 	char* sql = "SELECT id, name, note, icon_id, type_id, order_id, currency_id, credit_limit, active, created_at FROM accounts WHERE id = ?";
 	sqlite3_stmt* statement;
@@ -322,7 +322,7 @@ std::shared_ptr<AccountModel> AccountsRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			account = std::make_shared<AccountModel>();
+			account = new AccountModel();
 
 			account->id = sqlite3_column_int(statement, 0);
 			account->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));

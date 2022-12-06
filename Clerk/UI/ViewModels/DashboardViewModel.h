@@ -21,13 +21,13 @@ namespace Clerk {
 			float GetOwnFunds();
 			float GetCreditFunds();
 			std::shared_ptr<CurrencyPresentationModel> GetCurrency();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetExpensesForMonth();
+			std::vector<AccountPresentationModel*> GetAccounts();
+			std::vector<AccountPresentationModel*> GetExpensesForMonth();
 			float GetTotalReceiptsForMonth();
 			float GetTotalExpensesForMonth();
 			std::vector<std::shared_ptr<BudgetPresentationModel>> GetBudgets();
 			std::vector<std::shared_ptr<SchedulerPresentationModel>> GetSchedulersForMonth();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetDepts();
+			std::vector<AccountPresentationModel*> GetDepts();
 			std::vector<std::shared_ptr<GoalPresentationModel>> GetGoals();
 
 			void OnUpdate(std::function<void()> fn);

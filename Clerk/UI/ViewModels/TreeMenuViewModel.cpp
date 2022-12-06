@@ -10,7 +10,7 @@ TreeMenuViewModel::TreeMenuViewModel(AccountsService& accountsService, ReportsSe
 
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetReceiptsAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetReceiptsAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Receipt);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -20,7 +20,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetRec
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetDepositsAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetDepositsAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Deposit);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -30,7 +30,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetDep
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetExpensesAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetExpensesAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Expens);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -40,7 +40,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetExp
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetDebtsAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetDebtsAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Debt);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -50,7 +50,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetDeb
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetVirtualsAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetVirtualsAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Virtual);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -60,7 +60,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetVir
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TreeMenuViewModel::GetArchiveAccounts() {
+std::vector<AccountPresentationModel*> TreeMenuViewModel::GetArchiveAccounts() {
 	return _accountsService.GetArchive();
 }
 

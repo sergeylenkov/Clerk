@@ -30,8 +30,8 @@ bool ClerkApp::OnInit()
 	ReportingRepository* reportingRepository = new ReportingRepository(*_connection);
 
 	CurrenciesService* currenciesService = new CurrenciesService(*currenciesRepository);
-	AccountingService* accountingService = new AccountingService(*accountsRepository, *exchangeRatesRepository);
 	AccountsService* accountsService = new AccountsService(*accountsRepository, *currenciesService);
+	AccountingService* accountingService = new AccountingService(*accountsService, *exchangeRatesRepository);
 	SchedulersService* schedulersService = new SchedulersService(*schedulersRepository, *accountsRepository, *exchangeRatesRepository);
 	BudgetsService* budgetsService = new BudgetsService(*budgetsRepository);
 	TagsService* tagsService = new TagsService(*tagsRepository);

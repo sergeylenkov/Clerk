@@ -5,10 +5,17 @@ AccountsService::AccountsService(AccountsRepository& accountsRepository, Currenc
 	_currenciesService(currenciesService)
 {
 	_eventEmitter = new EventEmitter();
+	_isLoading = false;
 }
 
 AccountsService::~AccountsService() {
 	delete _eventEmitter;
+	
+	_hash.clear();
+
+	for (auto account = _list.begin(); account != _list.end(); ++account) {
+		delete* account;
+	}
 }
 
 unsigned int AccountsService::Subscribe(std::function<void()> fn) {
@@ -19,7 +26,7 @@ void AccountsService::Unsubscribe(unsigned int subscriptionId) {
 	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
-std::shared_ptr<AccountPresentationModel> AccountsService::GetById(int id) {
+AccountPresentationModel* AccountsService::GetById(int id) {
 	auto account = GetFromHash(id);
 
 	if (account) {
@@ -29,10 +36,12 @@ std::shared_ptr<AccountPresentationModel> AccountsService::GetById(int id) {
 	auto model = _accountsRepository.GetById(id);
 
 	if (model) {
-		account = std::make_shared<AccountPresentationModel>(*model);
+		account = new AccountPresentationModel(*model);
 		account->currency = _currenciesService.GetById(model->currencyId);
 
 		AddToHash(account->id, account);
+
+		delete model;
 
 		return account;
 	}
@@ -40,70 +49,88 @@ std::shared_ptr<AccountPresentationModel> AccountsService::GetById(int id) {
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetAll() {
+std::vector<AccountPresentationModel*> AccountsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
+
 	auto models = _accountsRepository.GetAll();
 
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto account = new AccountPresentationModel(*model);
+			account->currency = _currenciesService.GetById(model->currencyId);
 
-	std::transform(models.begin(), models.end(), std::back_inserter(result), [&](const std::shared_ptr<AccountModel>& model) {
-		auto account = GetFromHash(model->id);
-
-		if (account) {
-			return account;
+			AddToHash(account->id, account);
 		}
+	}
 
-		account = std::make_shared<AccountPresentationModel>(*model);
-		account->currency = _currenciesService.GetById(model->currencyId);
+	for (auto model = models.begin(); model != models.end(); ++model) {
+		delete* model;
+	}
 
-		AddToHash(account->id, account);
-		
-		return account;
-	});
+	models.clear();
 
-	return result;
+	_isLoading = true;
+
+	return GetHashList();
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetActive() {
+std::vector<AccountPresentationModel*> AccountsService::GetActive() {
+	if (_active.size() > 0) {
+		return _active;
+	}
+
 	auto accounts = GetAll();
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
 
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [](const std::shared_ptr<AccountPresentationModel>& account) {
-		return account->isActive;
-	});
+	for (auto& account : accounts) {
+		if (account->isActive) {
+			_active.push_back(account);
+		}
+	}
 
-	return result;
+	return _active;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetByType(AccountType type) {
+std::vector<AccountPresentationModel*> AccountsService::GetByType(AccountType type) {
+	if (_types[type].size() > 0) {
+		return _types[type];
+	}
+
 	auto accounts = GetActive();
 
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
+	for (auto& account : accounts) {
+		if (account->type == type) {
+			_types[type].push_back(account);
+		}
+	}
 
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [&](const std::shared_ptr<AccountPresentationModel>& account) {
-		return account->type == type;
-	});
-
-	return result;
+	return _types[type];
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetArchive() {
+std::vector<AccountPresentationModel*> AccountsService::GetArchive() {
+	if (_archive.size() > 0) {
+		return _archive;
+	}
+
 	auto accounts = GetAll();
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
 
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [](const std::shared_ptr<AccountPresentationModel>& account) {
-		return !account->isActive;
-	});
+	for (auto& account : accounts) {
+		if (!account->isActive) {
+			_archive.push_back(account);
+		}
+	}
 
-	return result;
+	return _archive;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
+std::vector<AccountPresentationModel*> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	auto accounts = GetByType(AccountType::Expens);
 	auto debts = GetByType(AccountType::Debt);
 
 	accounts.insert(accounts.end(), debts.begin(), debts.end());
 
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
+	std::vector<AccountPresentationModel*> result;
 
 	for (auto& account : accounts) {
 		account->balance = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
@@ -116,13 +143,13 @@ std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetExpen
 	return result;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetDebts() {
+std::vector<AccountPresentationModel*> AccountsService::GetDebts() {
 	auto accounts = GetByType(AccountType::Debt);
 	auto credits = GetByType(AccountType::Deposit);
 
 	accounts.insert(accounts.end(), credits.begin(), credits.end());
 
-	std::vector<std::shared_ptr<AccountPresentationModel>> result;
+	std::vector<AccountPresentationModel*> result;
 
 	for (auto& account : accounts) {
 		account->balance = _accountsRepository.GetBalance(account->id, account->type);
@@ -140,7 +167,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> AccountsService::GetDebts
 	return result;
 }
 
-std::shared_ptr<AccountPresentationModel> AccountsService::GetPairAccount(const AccountPresentationModel& account) {
+AccountPresentationModel* AccountsService::GetPairAccount(const AccountPresentationModel& account) {
 	wxDateTime fromDate = wxDateTime::Now();
 
 	fromDate.Add(wxDateSpan::Months(-3));
@@ -149,7 +176,7 @@ std::shared_ptr<AccountPresentationModel> AccountsService::GetPairAccount(const 
 	return GetById(_accountsRepository.GetPairAccountId(account.id, account.type, std::string(fromDate.FormatISODate().ToUTF8())));
 }
 
-std::shared_ptr<AccountPresentationModel> AccountsService::GetLastUsedAccount() {
+AccountPresentationModel* AccountsService::GetLastUsedAccount() {
 	wxDateTime fromDate = wxDateTime::Now();
 
 	fromDate.Add(wxDateSpan::Months(-3));
@@ -162,7 +189,7 @@ float AccountsService::GetInitialAmount(const AccountPresentationModel& account)
 	return _accountsRepository.GetInitialAmount(account.id, account.type);
 }
 
-std::shared_ptr<AccountPresentationModel> AccountsService::Save(AccountPresentationModel& account) {
+AccountPresentationModel* AccountsService::Save(AccountPresentationModel& account) {
 	AccountModel& model = account;
 
 	int id = _accountsRepository.Save(model);

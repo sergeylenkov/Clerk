@@ -35,7 +35,7 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	wxCheckBox *averageCheckbox;
-	std::vector<std::shared_ptr<AccountPresentationModel>> _accounts;
+	std::vector<AccountPresentationModel*> _accounts;
 	ExpensesTooltipPopup *chartPopup;
 	std::vector<DateValueViewModel> values = {};
 	wxDateTime periodFromDate;

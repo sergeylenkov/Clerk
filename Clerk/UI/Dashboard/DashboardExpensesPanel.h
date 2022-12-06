@@ -20,7 +20,7 @@ public:
 private:
 	DashboardViewModel* _viewModel{};
 	float _maxValue = 0;
-	std::vector<std::shared_ptr<AccountPresentationModel>> _accounts;
+	std::vector<AccountPresentationModel*> _accounts;
 	float _total = 0.0;
 
 	void Update();

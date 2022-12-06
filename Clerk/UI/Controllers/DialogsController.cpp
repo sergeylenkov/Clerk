@@ -24,12 +24,12 @@ void DialogsController::ShowPreferencesDialog() {
 	preferencesDialog->CenterOnParent();
 }
 
-void DialogsController::ShowNewTransactionDialog(int id) {
+void DialogsController::ShowNewTransactionDialog(int id) {	
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
-
+	
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
-
+	
 	transactionDialog->SetViewModel(viewModel);
 
 	transactionDialog->Show(true);

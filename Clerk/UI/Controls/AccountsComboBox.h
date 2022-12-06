@@ -17,12 +17,12 @@ public:
 
 	std::function<void(std::set<int> ids)> OnChange;
 
-	void SetAccounts(std::vector<std::shared_ptr<AccountPresentationModel>> accounts);
+	void SetAccounts(std::vector<AccountPresentationModel*> accounts);
 	void SetSelection(std::set<int> ids);
 
 private:
 	CheckboxComboPopup *accountsList;
-	std::vector<std::shared_ptr<AccountPresentationModel>> accounts;
+	std::vector<AccountPresentationModel*> accounts;
 	std::set<int> selectedIds;
 	bool ignoreSelection;
 

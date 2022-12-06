@@ -14,11 +14,11 @@ namespace Clerk {
 		public:
 			BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<AccountModel>> GetAll();
-			std::shared_ptr<AccountModel> GetById(int id);
-			std::vector<std::shared_ptr<AccountModel>> GetActive();
-			std::vector<std::shared_ptr<AccountModel>> GetByType(AccountType type);
-			std::vector<std::shared_ptr<AccountModel>> GetArchive();
+			std::vector<AccountModel*> GetAll();
+			AccountModel* GetById(int id);
+			//std::vector<std::shared_ptr<AccountModel>> GetActive();
+			//std::vector<std::shared_ptr<AccountModel>> GetByType(AccountType type);
+			//std::vector<std::shared_ptr<AccountModel>> GetArchive();
 			float GetBalance(int accountId, AccountType type);
 			float GetBalanceForDate(int accountId, AccountType type, std::string& date);
 			float GetExpenses(int accountId);
@@ -33,7 +33,7 @@ namespace Clerk {
 			void Delete(const AccountModel& account);
 
 		private:
-			std::shared_ptr<AccountModel> Load(int id);
+			AccountModel* Load(int id);
 		};
 	}
 }

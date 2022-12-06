@@ -15,12 +15,12 @@ namespace Clerk {
 		public:
 			TreeMenuViewModel(AccountsService& accountsService, ReportsService& reportsService, TransactionsService& transactionsService);
 
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetReceiptsAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetDepositsAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetExpensesAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetDebtsAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetVirtualsAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetArchiveAccounts();
+			std::vector<AccountPresentationModel*> GetReceiptsAccounts();
+			std::vector<AccountPresentationModel*> GetDepositsAccounts();
+			std::vector<AccountPresentationModel*> GetExpensesAccounts();
+			std::vector<AccountPresentationModel*> GetDebtsAccounts();
+			std::vector<AccountPresentationModel*> GetVirtualsAccounts();
+			std::vector<AccountPresentationModel*> GetArchiveAccounts();
 			std::vector<std::shared_ptr<ReportPresentationModel>> GetReports();
 			std::vector<std::shared_ptr<TransactionPresentationModel>> GetRecentsTransactions(const AccountPresentationModel& account);
 			bool IsTrashEmpty();

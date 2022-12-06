@@ -31,7 +31,7 @@ private:
 	wxComboBox *periodList;
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
-	std::vector<std::shared_ptr<AccountPresentationModel>> _accounts;
+	std::vector<AccountPresentationModel*> _accounts;
 	ExpensesTooltipPopup *chartPopup;
 	std::vector<DateValueViewModel> values;
 	wxDateTime periodFromDate;

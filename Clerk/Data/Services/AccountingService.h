@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/datetime.h>
-#include "../Repositories/AccountsRepository.h"
+#include "./AccountsService.h"
 #include "../Repositories/ExchangeRatesRepository.h"
 #include "../../Utils/EventEmitter.h"
 
@@ -11,7 +11,7 @@ namespace Clerk {
 	namespace Data {
 		class AccountingService {
 		public:
-			AccountingService(AccountsRepository& accountsRepository, ExchangeRatesRepository& exchangeRatesRepository);
+			AccountingService(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository);
 			~AccountingService();
 
 			void SetBaseCurrency(int id);
@@ -23,7 +23,7 @@ namespace Clerk {
 			void OnUpdate(std::function<void()> fn);
 
 		private:
-			AccountsRepository& _accountsRepository;
+			AccountsService& _accountsService;
 			ExchangeRatesRepository& _exchangeRatesRepository;
 			EventEmitter* _eventEmitter;
 

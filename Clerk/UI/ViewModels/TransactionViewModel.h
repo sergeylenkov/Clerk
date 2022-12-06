@@ -23,8 +23,8 @@ namespace Clerk {
 			void SetCopyTransactionId(int id);
 			void SetSplitTransactionId(int id);
 			void SetAccountId(int id);
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetFromAccounts();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetToAccounts();
+			std::vector<AccountPresentationModel*> GetFromAccounts();
+			std::vector<AccountPresentationModel*> GetToAccounts();
 			int GetFromAccountIndex();
 			void SetFromAccount(int index);
 			int GetToAccountIndex();
@@ -54,10 +54,10 @@ namespace Clerk {
 			unsigned int _subscriptionId;
 			int _splitId = -1;
 			int _id = -1;
-			std::vector<std::shared_ptr<AccountPresentationModel>> _fromAccounts;
-			std::vector<std::shared_ptr<AccountPresentationModel>> _toAccounts;
-			std::shared_ptr<AccountPresentationModel> _fromAccount;
-			std::shared_ptr<AccountPresentationModel> _toAccount;
+			std::vector<AccountPresentationModel*> _fromAccounts;
+			std::vector<AccountPresentationModel*> _toAccounts;
+			AccountPresentationModel* _fromAccount;
+			AccountPresentationModel* _toAccount;
 			float _fromAmount =- 0.0;
 			float _toAmount = 0.0;
 			wxString _note;
@@ -65,6 +65,7 @@ namespace Clerk {
 			std::vector<std::shared_ptr<TagPresentationModel>> _tags;
 
 			void Update();
+			void UpdateAccounts();
 			void UpdateFromAccounts();
 			void UpdateToAccounts();
 		};

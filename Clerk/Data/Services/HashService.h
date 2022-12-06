@@ -11,18 +11,18 @@ namespace Clerk {
 		class HashService {
 		public:
 
-			std::vector<std::shared_ptr<T>> GetHashList() {
+			std::vector<T> GetHashList() {
 				return _list;
 			}
 
-			void AddToHash(int id, std::shared_ptr<T> t) {
+			void AddToHash(int id, T t) {
 				if (t) {
 					_hash[id] = t;
 					_list.push_back(t);
 				}
 			}
 
-			std::shared_ptr<T> GetFromHash(int id) {
+			T GetFromHash(int id) {
 				auto search = _hash.find(id);
 
 				if (search != _hash.end()) {
@@ -38,7 +38,7 @@ namespace Clerk {
 				if (model) {
 					_hash.erase(id);
 
-					auto search = std::find_if(_list.begin(), _list.end(), [&model](std::shared_ptr<T> _t) { return (_t == model); });
+					auto search = std::find_if(_list.begin(), _list.end(), [&model](T _t) { return (_t == model); });
 
 					if (search != _list.end()) {
 						_list.erase(search);
@@ -46,9 +46,9 @@ namespace Clerk {
 				}
 			}
 
-		private:
-			std::vector<std::shared_ptr<T>> _list;
-			std::map<int, std::shared_ptr<T>> _hash;
+		protected:
+			std::vector<T> _list;
+			std::map<int, T> _hash;
 		};
 	}
 }

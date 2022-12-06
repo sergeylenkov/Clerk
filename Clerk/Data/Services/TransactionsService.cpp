@@ -145,19 +145,19 @@ void TransactionsService::Delete(std::shared_ptr<TransactionPresentationModel> t
 	_eventEmitter->Emit();
 }
 
-void TransactionsService::LoadDetails(std::shared_ptr<TransactionPresentationModel> model, std::shared_ptr<TransactionModel> transaction) {
-	model->fromAccount = _accountsService.GetById(transaction->fromAccountId);
-	model->toAccount = _accountsService.GetById(transaction->toAccountId);
+void TransactionsService::LoadDetails(std::shared_ptr<TransactionPresentationModel> transaction, std::shared_ptr<TransactionModel> model) {
+	transaction->fromAccount = _accountsService.GetById(model->fromAccountId);
+	transaction->toAccount = _accountsService.GetById(model->toAccountId);
 
-	model->tags.clear();
-	model->tagsString = wxString("");
+	transaction->tags.clear();
+	transaction->tagsString = wxString("");
 
-	for (auto& tagId : transaction->tagsIds) {
+	for (auto& tagId : model->tagsIds) {
 		auto tag = _tagsService.GetById(tagId);
 
-		model->tags.push_back(tag);
-		model->tagsString += tag->name + ", ";
+		transaction->tags.push_back(tag);
+		transaction->tagsString += tag->name + ", ";
 	}
 
-	model->tagsString.RemoveLast(2);
+	transaction->tagsString.RemoveLast(2);
 }

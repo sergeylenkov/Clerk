@@ -44,7 +44,7 @@ std::shared_ptr<CurrencyPresentationModel> DashboardViewModel::GetCurrency() {
 	return _currenciesService.GetBaseCurrency();
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> DashboardViewModel::GetAccounts() {
+std::vector<AccountPresentationModel*> DashboardViewModel::GetAccounts() {
 	auto accounts = _accountsService.GetByType(AccountType::Deposit);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -62,7 +62,7 @@ std::vector<std::shared_ptr<AccountPresentationModel>> DashboardViewModel::GetAc
 	return accounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> DashboardViewModel::GetExpensesForMonth() {
+std::vector<AccountPresentationModel*> DashboardViewModel::GetExpensesForMonth() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
@@ -109,7 +109,7 @@ std::vector<std::shared_ptr<SchedulerPresentationModel>> DashboardViewModel::Get
 	return _schedulersService.GetByPeriod(today, month);
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> DashboardViewModel::GetDepts() {
+std::vector<AccountPresentationModel*> DashboardViewModel::GetDepts() {
 	return _accountsService.GetDebts();
 }
 

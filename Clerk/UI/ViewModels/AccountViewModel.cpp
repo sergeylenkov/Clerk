@@ -147,7 +147,7 @@ void AccountViewModel::Save() {
 	auto account = _accountsService.GetById(_id);
 
 	if (!account) {
-		account = std::make_shared<AccountPresentationModel>();		
+		account = new AccountPresentationModel();		
 	}
 
 	account->name = _name;

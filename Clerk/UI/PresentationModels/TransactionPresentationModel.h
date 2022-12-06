@@ -15,8 +15,8 @@ namespace Clerk {
 			TransactionPresentationModel(TransactionModel& transaction);
 
 			int id;
-			std::shared_ptr<AccountPresentationModel> fromAccount;
-			std::shared_ptr<AccountPresentationModel> toAccount;
+			AccountPresentationModel* fromAccount;
+			AccountPresentationModel* toAccount;
 			float fromAmount;
 			float toAmount;
 			wxString note;

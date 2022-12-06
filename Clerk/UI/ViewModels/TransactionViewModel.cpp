@@ -92,18 +92,38 @@ void TransactionViewModel::SetAccountId(int id) {
 }
 
 void TransactionViewModel::Update() {
-	UpdateFromAccounts();
+	//UpdateFromAccounts();
+	UpdateAccounts();
 
 	if (!_fromAccount) {
 		_fromAccount = _fromAccounts[0];
 	}
 
-	UpdateToAccounts();
+	//UpdateToAccounts();
 
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
 	}
 }
+
+void TransactionViewModel::UpdateAccounts() {
+	auto accounts = _accountsService.GetActive();
+	auto deposits = _accountsService.GetByType(AccountType::Deposit);
+
+	_fromAccounts.clear();
+	_toAccounts.clear();
+
+	for (auto& account : accounts) {
+		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit) {
+			_fromAccounts.push_back(account);
+		}
+
+		if (account->type != AccountType::Receipt) {
+			_toAccounts.push_back(account);
+		}
+	}
+}
+
 
 void TransactionViewModel::UpdateFromAccounts() {
 	auto receipts = _accountsService.GetByType(AccountType::Receipt);
@@ -111,14 +131,23 @@ void TransactionViewModel::UpdateFromAccounts() {
 
 	_fromAccounts.clear();
 
-	std::vector<std::shared_ptr<AccountPresentationModel>> filtered;
-
-	filtered.insert(filtered.end(), receipts.begin(), receipts.end());
-	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
-
-	std::copy_if(filtered.begin(), filtered.end(), std::back_inserter(_fromAccounts), [&](const std::shared_ptr<AccountPresentationModel>& account) {
-		return _toAccount ? account->id != _toAccount->id : true;
-	});
+	for (auto& account : receipts) {
+		if (_toAccount && account->id != _toAccount->id) {
+			_fromAccounts.push_back(account);
+		}
+		else {
+			_fromAccounts.push_back(account);
+		}
+	}
+	
+	for (auto& account : deposits) {
+		if (_toAccount && account->id != _toAccount->id) {
+			_fromAccounts.push_back(account);
+		}
+		else {
+			_fromAccounts.push_back(account);
+		}
+	}
 }
 
 void TransactionViewModel::UpdateToAccounts() {
@@ -128,8 +157,8 @@ void TransactionViewModel::UpdateToAccounts() {
 	auto debts = _accountsService.GetByType(AccountType::Debt);
 
 	_toAccounts.clear();
-
-	std::vector<std::shared_ptr<AccountPresentationModel>> filtered;
+	
+	std::vector<AccountPresentationModel*> filtered;
 
 	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
 	filtered.insert(filtered.end(), virtuals.begin(), virtuals.end());
@@ -139,16 +168,21 @@ void TransactionViewModel::UpdateToAccounts() {
 		filtered.insert(filtered.end(), debts.begin(), debts.end());
 	}
 
-	std::copy_if(filtered.begin(), filtered.end(), std::back_inserter(_toAccounts), [&](const std::shared_ptr<AccountPresentationModel>& account) {
-		return _fromAccount ? account->id != _fromAccount->id : true;
-	});
+	for (auto& account : filtered) {
+		if (_fromAccount && account->id != _fromAccount->id) {
+			_toAccounts.push_back(account);
+		}
+		else {
+			_toAccounts.push_back(account);
+		}
+	}
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TransactionViewModel::GetFromAccounts() {
+std::vector<AccountPresentationModel*> TransactionViewModel::GetFromAccounts() {
 	return _fromAccounts;
 }
 
-std::vector<std::shared_ptr<AccountPresentationModel>> TransactionViewModel::GetToAccounts() {
+std::vector<AccountPresentationModel*> TransactionViewModel::GetToAccounts() {
 	return _toAccounts;
 }
 
@@ -165,13 +199,16 @@ int TransactionViewModel::GetFromAccountIndex() {
 void TransactionViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
 
-	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](const std::shared_ptr<AccountPresentationModel>& account) {
+	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](const AccountPresentationModel* account) {
 		return account->id == _fromAccount->id;
 	});
 
 	if (result != _toAccounts.end()) {
 		UpdateToAccounts();
-		OnUpdate(TransactionViewModelField::FromAccount);
+
+		if (OnUpdate) {
+			OnUpdate(TransactionViewModelField::FromAccount);
+		}
 	}
 }
 
@@ -188,7 +225,7 @@ int TransactionViewModel::GetToAccountIndex() {
 void TransactionViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
 
-	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](const std::shared_ptr<AccountPresentationModel>& account) {
+	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](const AccountPresentationModel* account) {
 		return account->id == _toAccount->id;
 	});
 

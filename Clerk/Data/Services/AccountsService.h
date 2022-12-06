@@ -10,23 +10,23 @@ using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace Data {
-		class AccountsService : HashService<AccountPresentationModel> {
+		class AccountsService : HashService<AccountPresentationModel*> {
 		public:
 			AccountsService(AccountsRepository& accountsRepository, CurrenciesService& currenciesService);
 			~AccountsService();
 
-			std::shared_ptr<AccountPresentationModel> GetById(int id);
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetAll();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetActive();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetByType(AccountType type);
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetArchive();
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
-			std::vector<std::shared_ptr<AccountPresentationModel>> GetDebts();
-			std::shared_ptr<AccountPresentationModel> GetPairAccount(const AccountPresentationModel& account);
-			std::shared_ptr<AccountPresentationModel> GetLastUsedAccount();
+			AccountPresentationModel* GetById(int id);
+			std::vector<AccountPresentationModel*> GetAll();
+			std::vector<AccountPresentationModel*> GetActive();
+			std::vector<AccountPresentationModel*> GetByType(AccountType type);
+			std::vector<AccountPresentationModel*> GetArchive();
+			std::vector<AccountPresentationModel*> GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<AccountPresentationModel*> GetDebts();
+			AccountPresentationModel* GetPairAccount(const AccountPresentationModel& account);
+			AccountPresentationModel* GetLastUsedAccount();
 			float GetInitialAmount(const AccountPresentationModel& account);
 
-			std::shared_ptr<AccountPresentationModel> Save(AccountPresentationModel& account);
+			AccountPresentationModel* Save(AccountPresentationModel& account);
 			void Delete(AccountPresentationModel& account);
 
 			unsigned int Subscribe(std::function<void()> fn);
@@ -36,6 +36,11 @@ namespace Clerk {
 			AccountsRepository& _accountsRepository;
 			CurrenciesService& _currenciesService;
 			EventEmitter* _eventEmitter;
+
+			std::vector<AccountPresentationModel*> _active;
+			std::vector<AccountPresentationModel*> _archive;
+			std::map<AccountType, std::vector<AccountPresentationModel*>> _types;
+			boolean _isLoading;
 		};
 	}
 }

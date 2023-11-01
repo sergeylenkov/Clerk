@@ -163,7 +163,7 @@ void AccountDialog::Update() {
 
 	_currencyList->SetSelection(_viewModel->GetCurrencyIndex());
 
-	for (unsigned int i = 0; i < _icons.GetAccountIconsCount() - 1; i++) {
+	for (int i = 0; i < _icons.GetAccountIconsCount() - 1; i++) {
 		_iconList->Append("", *_icons.GetAccountIcon(i));
 	}
 

@@ -26,9 +26,10 @@ AlertsPanel::AlertsPanel(wxWindow *parent, DataContext& context) : DataPanel(par
 
 std::shared_ptr<AlertPresentationModel> AlertsPanel::GetAlert() {
 	wxDataViewItem item = list->GetSelection();
-
+	
 	if (item.IsOk()) {
-		int index = (int)item.GetID() - 1;		
+		int index = reinterpret_cast<int>(item.GetID()) - 1;
+
 		return alerts[index];
 	}	
 

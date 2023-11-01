@@ -35,7 +35,7 @@ std::shared_ptr<GoalPresentationModel> GoalsPanel::GetGoal() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
-		int index = (int)item.GetID() - 1;
+		int index = reinterpret_cast<int>(item.GetID()) - 1;
 		return goals[index];
 	}
 

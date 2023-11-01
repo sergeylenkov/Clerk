@@ -38,7 +38,6 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
-      <AdditionalOptions>/external:W0 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -47,7 +46,7 @@
       <SubSystem>Windows</SubSystem>
     </Link>
     <Manifest>
-      <EnableDpiAwareness>true</EnableDpiAwareness>
+      <EnableDpiAwareness>PerMonitorHighDPIAware</EnableDpiAwareness>
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>

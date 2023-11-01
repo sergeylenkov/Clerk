@@ -45,19 +45,11 @@ std::shared_ptr<CurrencyPresentationModel> DashboardViewModel::GetCurrency() {
 }
 
 std::vector<AccountPresentationModel*> DashboardViewModel::GetAccounts() {
-	auto accounts = _accountsService.GetByType(AccountType::Deposit);
+	auto accounts = _accountsService.GetDepositsAndVirtuals();
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
 		return a->order < b->order;
 	});
-
-	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
-
-	std::sort(virtuals.begin(), virtuals.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
-
-	accounts.insert(accounts.end(), virtuals.begin(), virtuals.end());
 
 	return accounts;
 }
@@ -72,7 +64,7 @@ std::vector<AccountPresentationModel*> DashboardViewModel::GetExpensesForMonth()
 	auto expenses = _accountsService.GetExpenses(fromDate, toDate);
 
 	std::sort(expenses.begin(), expenses.end(), [](auto a, auto b) {
-		return a->balance > b->balance;
+		return a->expenses > b->expenses;
 	});
 
 	return expenses;

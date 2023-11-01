@@ -23,7 +23,7 @@ std::vector<std::shared_ptr<GoalPresentationModel>> GoalsService::GetAll() {
 
 	std::transform(goals.begin(), goals.end(), std::back_inserter(result), [&](const std::shared_ptr<GoalModel>& goal) {
 		auto model = std::make_shared<GoalPresentationModel>(*goal);
-		model->balance = _goalsRepository.GetBalance(goal->accountIds);
+		model->balance = _goalsRepository.GetBalance(model->accountIds);
 
 		return model;
 	});

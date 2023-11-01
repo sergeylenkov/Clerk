@@ -21,13 +21,12 @@ void AccountingService::SetBaseCurrency(int id) {
 
 float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
+	// TODO
+	for (auto& account : _accountsService.GetByType(AccountType::Receipt)) {
+		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
 
-	/*for (auto& account : _accountsService.GetByType(AccountType::Receipt)) {
-		float amount = _accountsService.GetReceipts(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
-
-		result = result + (amount * rate);
-	}*/
+		result = result + (account->receipts * rate);
+	}
 
 	return result;
 }
@@ -35,19 +34,11 @@ float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTim
 float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
 
-	/*for (auto& account : _accountsService.GetByType(AccountType::Expens)) {
-		float amount = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
+	for (auto& account : _accountsService.GetExpenses(fromDate, toDate)) {
+		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
 
-		result = result + (amount * rate);
+		result = result + (account->expenses * rate);
 	}
-
-	for (auto& account : _accountsService.GetByType(AccountType::Debt)) {
-		float amount = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
-
-		result = result + (amount * rate);
-	}*/
 
 	return result;
 }
@@ -55,9 +46,9 @@ float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTim
 float AccountingService::GetBalance() {
 	float result = 0;
 
-	/*for (auto& account : _accountsRepository.GetByType(AccountType::Deposit)) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
-		float balance = _accountsRepository.GetBalance(account->id, account->type) * rate;
+	for (auto& account : _accountsService.GetDeposits()) {
+		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float balance = account->balance * rate;
 
 		if (account->creditLimit > 0 && balance > 0) {			
 			result = result + balance;
@@ -65,7 +56,7 @@ float AccountingService::GetBalance() {
 		else {
 			result = result + balance;
 		}
-	}*/
+	}
 
 	return result;
 }
@@ -73,14 +64,14 @@ float AccountingService::GetBalance() {
 float AccountingService::GetCredit() {
 	float result = 0;
 
-	/*for (auto& account : _accountsRepository.GetByType(AccountType::Deposit)) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
-		float balance = _accountsRepository.GetBalance(account->id, account->type) * rate;
+	for (auto& account : _accountsService.GetByType(AccountType::Deposit)) {
+		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float balance = account->balance * rate;
 
 		if (account->creditLimit > 0 && balance > 0) {
 			result = result + account->creditLimit;
 		}
-	}*/
+	}
 
 	return result;
 }

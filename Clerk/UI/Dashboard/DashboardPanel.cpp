@@ -3,12 +3,15 @@
 DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
+	this->SetBackgroundColour(*wxWHITE);
+
 	_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
 	_scrolledWindow->SetScrollRate(5, 5);
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	_leftPanel = new wxPanel(_scrolledWindow, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+
 	wxBoxSizer *leftSizer = new wxBoxSizer(wxVERTICAL);
 
 	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(),

@@ -124,7 +124,7 @@ std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransact
 	wxDataViewItem item = _list->GetSelection();
 
 	if (item.IsOk()) {
-		int index = (int)item.GetID() - 1;
+		int index = reinterpret_cast<int>(item.GetID()) - 1;
 		return _filtered[index];
 	}
 

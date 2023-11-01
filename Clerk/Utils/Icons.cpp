@@ -22,7 +22,7 @@ Icons::~Icons() {
 	_imageList->Destroy();
 }
 
-unsigned int Icons::GetAccountIconsCount() {
+int Icons::GetAccountIconsCount() {
 	return _accountIconsCount;
 }
 
@@ -30,7 +30,7 @@ wxImageList* Icons::GetImageList() {
 	return _imageList;
 }
 
-unsigned int Icons::GetIconIndexForAccount(unsigned int index) {
+int Icons::GetIconIndexForAccount(int index) {
 	if (_menuIconsCount + index < _imageList->GetImageCount()) {
 		return _menuIconsCount + index;
 	}
@@ -38,8 +38,8 @@ unsigned int Icons::GetIconIndexForAccount(unsigned int index) {
 	return _defaultAccountIcon;
 }
 
-wxBitmap* Icons::GetAccountIcon(unsigned int index) {
-	unsigned int iconIndex = GetIconIndexForAccount(index);
+wxBitmap* Icons::GetAccountIcon(int index) {
+	int iconIndex = GetIconIndexForAccount(index);
 	return _images[iconIndex];
 }
 

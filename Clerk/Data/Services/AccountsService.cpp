@@ -59,7 +59,9 @@ std::vector<AccountPresentationModel*> AccountsService::GetAll() {
 	for (auto& model : models) {
 		if (!GetFromHash(model->id)) {
 			auto account = new AccountPresentationModel(*model);
+
 			account->currency = _currenciesService.GetById(model->currencyId);
+			account->balance = _accountsRepository.GetBalance(account->id, account->type);
 
 			AddToHash(account->id, account);
 		}
@@ -124,6 +126,35 @@ std::vector<AccountPresentationModel*> AccountsService::GetArchive() {
 	return _archive;
 }
 
+std::vector<AccountPresentationModel*> AccountsService::GetDeposits() {
+	auto accounts = GetByType(AccountType::Deposit);
+
+	std::vector<AccountPresentationModel*> result;
+
+	for (auto& account : accounts) {
+		account->balance = _accountsRepository.GetBalance(account->id, account->type);
+		result.push_back(account);
+	}
+
+	return result;
+}
+
+std::vector<AccountPresentationModel*> AccountsService::GetDepositsAndVirtuals() {
+	auto accounts = GetByType(AccountType::Deposit);
+	auto virtuals = GetByType(AccountType::Virtual);
+
+	accounts.insert(accounts.end(), virtuals.begin(), virtuals.end());
+
+	std::vector<AccountPresentationModel*> result;
+
+	for (auto& account : accounts) {
+		account->balance = _accountsRepository.GetBalance(account->id, account->type);
+		result.push_back(account);
+	}
+
+	return result;
+}
+
 std::vector<AccountPresentationModel*> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	auto accounts = GetByType(AccountType::Expens);
 	auto debts = GetByType(AccountType::Debt);
@@ -133,9 +164,9 @@ std::vector<AccountPresentationModel*> AccountsService::GetExpenses(const wxDate
 	std::vector<AccountPresentationModel*> result;
 
 	for (auto& account : accounts) {
-		account->balance = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
+		account->expenses = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
 
-		if (account->balance > 0) {
+		if (account->expenses > 0) {
 			result.push_back(account);
 		}
 	}
@@ -152,7 +183,6 @@ std::vector<AccountPresentationModel*> AccountsService::GetDebts() {
 	std::vector<AccountPresentationModel*> result;
 
 	for (auto& account : accounts) {
-		account->balance = _accountsRepository.GetBalance(account->id, account->type);
 		account->expenses = abs(_accountsRepository.GetExpenses(account->id));
 		account->receipts = _accountsRepository.GetReceipts(account->id);
 

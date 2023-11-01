@@ -64,7 +64,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
-	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 20));	
+	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 20)));	
 	_statusbar->SetViewModel(statusViewModel);
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);

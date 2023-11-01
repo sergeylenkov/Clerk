@@ -24,8 +24,8 @@ void DashboardExpensesPanel::Update()
 	_maxValue = 0;
 
 	for (auto& account : _accounts) {
-		if (account->balance > _maxValue) {
-			_maxValue = account->balance;
+		if (account->expenses > _maxValue) {
+			_maxValue = account->expenses;
 		}
 	}
 
@@ -61,7 +61,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = 50;
+	int y = this->FromDIP(50);
 	
 	for (auto &account : _accounts) {
 		dc.SetFont(accountFont);
@@ -71,12 +71,12 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = Format::Amount(account->balance, account->currency->sign);
+		wxString value = Format::Amount(account->expenses, account->currency->sign);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 
-		int percent = (account->balance / _maxValue) * 100;
+		int percent = (account->expenses / _maxValue) * 100;
 		int progressWidth = (width / 100.0) * percent;
 
 		if (progressWidth < 5) {
@@ -86,9 +86,9 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
 		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
 
-		dc.DrawRectangle(0, y + 20, progressWidth, 2);
+		dc.DrawRectangle(0, y + this->FromDIP(20), progressWidth, 2);
 
-		y = y + 35;
+		y = y + this->FromDIP(35);
 	}
 }
 

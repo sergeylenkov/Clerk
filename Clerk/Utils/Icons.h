@@ -10,15 +10,15 @@ namespace Clerk {
 			~Icons();
 
 			wxImageList* GetImageList();
-			unsigned int GetIconIndexForAccount(unsigned int index);
-			unsigned int GetAccountIconsCount();
-			wxBitmap* GetAccountIcon(unsigned int index);
+			int GetIconIndexForAccount(int index);
+			int GetAccountIconsCount();
+			wxBitmap* GetAccountIcon(int index);
 
 		private:
 			wxImageList* _imageList;
-			unsigned int _menuIconsCount;
-			unsigned int _accountIconsCount;
-			unsigned int _defaultAccountIcon;
+			int _menuIconsCount;
+			int _accountIconsCount;
+			int _defaultAccountIcon;
 			std::vector<wxBitmap *> _images;
 
 			void LoadMenuIcons();

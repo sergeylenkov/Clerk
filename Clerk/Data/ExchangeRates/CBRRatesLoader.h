@@ -2,7 +2,7 @@
 
 #include "ExchangeRatesLoader.h"
 #include <curl/curl.h>
-#include <rapidxml.hpp>
+#include <rapidxml/rapidxml.hpp>
 
 using namespace std;
 using namespace rapidxml;

@@ -155,6 +155,22 @@ std::vector<AccountPresentationModel*> AccountsService::GetDepositsAndVirtuals()
 	return result;
 }
 
+std::vector<AccountPresentationModel*> AccountsService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
+	auto accounts = GetByType(AccountType::Receipt);
+
+	std::vector<AccountPresentationModel*> result;
+
+	for (auto& account : accounts) {
+		account->receipts = _accountsRepository.GetReceipts(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
+
+		if (account->expenses > 0) {
+			result.push_back(account);
+		}
+	}
+
+	return result;
+}
+
 std::vector<AccountPresentationModel*> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	auto accounts = GetByType(AccountType::Expens);
 	auto debts = GetByType(AccountType::Debt);

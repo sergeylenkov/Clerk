@@ -22,6 +22,7 @@ namespace Clerk {
 			std::vector<AccountPresentationModel*> GetArchive();
 			std::vector<AccountPresentationModel*> GetDeposits();
 			std::vector<AccountPresentationModel*> GetDepositsAndVirtuals();
+			std::vector<AccountPresentationModel*> GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<AccountPresentationModel*> GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<AccountPresentationModel*> GetDebts();
 			AccountPresentationModel* GetPairAccount(const AccountPresentationModel& account);

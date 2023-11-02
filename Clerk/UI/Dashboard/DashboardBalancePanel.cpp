@@ -26,7 +26,7 @@ void DashboardBalancePanel::Update()
 	_ownFunds = _viewModel->GetOwnFunds();
 	_creditFunds = _viewModel->GetCreditFunds();
 
-	SetMinSize(this->FromDIP(wxSize(-1, 170)));
+	SetMinSize(wxSize(-1, 170));
 	Refresh();
 }
 

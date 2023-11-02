@@ -21,8 +21,8 @@ void AccountingService::SetBaseCurrency(int id) {
 
 float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
-	// TODO
-	for (auto& account : _accountsService.GetByType(AccountType::Receipt)) {
+
+	for (auto& account : _accountsService.GetReceipts(fromDate, toDate)) {
 		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
 
 		result = result + (account->receipts * rate);

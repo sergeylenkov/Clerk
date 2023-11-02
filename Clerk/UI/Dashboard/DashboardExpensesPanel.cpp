@@ -61,7 +61,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = this->FromDIP(50);
+	int y = 50;
 	
 	for (auto &account : _accounts) {
 		dc.SetFont(accountFont);
@@ -88,7 +88,7 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(0, y + this->FromDIP(20), progressWidth, 2);
 
-		y = y + this->FromDIP(35);
+		y = y + 35;
 	}
 }
 

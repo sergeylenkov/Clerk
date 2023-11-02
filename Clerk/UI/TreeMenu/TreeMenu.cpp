@@ -219,7 +219,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 		if (account) {
 			auto transactions = _viewModel->GetRecentsTransactions(*account);
-			menu = new AccountContextMenu(_commandsInvoker, *account, transactions);
+			menu = new AccountContextMenu(_commandsInvoker, *account, transactions, _icons);
 		}
 	} else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
 		      || item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {

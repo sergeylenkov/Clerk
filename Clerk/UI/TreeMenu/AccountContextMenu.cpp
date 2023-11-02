@@ -2,8 +2,8 @@
 
 const int transactionsOffset = 1000;
 
-AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions): TreeContextMenu(commandsInvoker),
-	_account(account) {
+AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions, Icons& icons): TreeContextMenu(commandsInvoker),
+	_account(account), _icons(icons) {
 
 	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), wxT("Open in New Tab"));
 	item->SetBitmap(wxBitmap(wxT("ICON_NEW_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
@@ -34,7 +34,18 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Account
 
 			for (auto& transaction : transactions)
 			{
-				recentsMenu->Append(transactionsOffset + transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+				wxMenuItem* transactionItem = recentsMenu->Append(transactionsOffset + transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+
+				int iconId = account.icon;
+
+				if (account.id == transaction->fromAccount->id) {
+					iconId = transaction->toAccount->icon;
+				}
+				else {
+					iconId = transaction->fromAccount->icon;
+				}
+
+				transactionItem->SetBitmap(*_icons.GetAccountIcon(iconId));
 			}
 		}
 		else {

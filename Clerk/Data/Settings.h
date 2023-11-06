@@ -69,6 +69,8 @@ public:
 	int GetWindowHeight();		
 	void SetWindowWidth(int width);
 	void SetWindowHeight(int height);
+	bool GetWindowIsMaximized();
+	void SetWindowIsMaximized(bool maximized);
 	int GetBaseCurrencyId();
 	void SetBaseCurrencyId(int id);
 	bool IsConvertCurrency();
@@ -97,6 +99,7 @@ private:
 	int selectedAccountId;
 	int windowWidth;
 	int windowHeight;
+	bool windowIsMaximized;
 	int baseCurrencyId;
 	bool convertCurrency;
 	bool loadExchangeRates;

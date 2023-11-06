@@ -55,10 +55,12 @@ bool ClerkApp::OnInit()
 	_icons = new Icons();
 
 	MainWindow *frame = new MainWindow(*_context, *_icons);
+	
 	frame->Show(TRUE);
-	frame->Center();
+	frame->Center();	
 
 	SetTopWindow(frame);
+	
 
 	return TRUE;
 }

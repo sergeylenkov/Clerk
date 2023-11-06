@@ -1,11 +1,18 @@
 ﻿#include "MainWindow.h"
 
-MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, ""), _context(context), _icons(icons)
+MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, "Clerk"), _context(context), _icons(icons)
 {
-	this->SetTitle("Clerk");
-	this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
+	//this->SetTitle("Clerk");	
 	this->SetIcon(wxICON(APP_ICON));
 	
+	if (!Settings::GetInstance().GetWindowIsMaximized())
+	{
+		this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
+	}
+	else {
+		this->Maximize();
+	}
+
 	SetupCommands();
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
@@ -119,6 +126,7 @@ MainWindow::~MainWindow()
 
 	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
+	Settings::GetInstance().SetWindowIsMaximized(this->IsMaximized());
 
 	Settings::GetInstance().Save();
 }

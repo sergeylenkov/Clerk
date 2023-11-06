@@ -8,6 +8,7 @@ void Settings::Open(char *configName) {
 	selectedTab = 0;
 	windowWidth = 1000;
 	windowHeight = 800;
+	windowIsMaximized = false;
 	baseCurrencyId = 180;
 	convertCurrency = false;
 	loadExchangeRates = true;
@@ -41,6 +42,10 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("WindowHeight") && json["WindowHeight"].IsInt()) {
 			windowHeight = json["WindowHeight"].GetInt();
+		}
+
+		if (json.HasMember("WindowIsMaximized") && json["WindowIsMaximized"].IsBool()) {
+			windowIsMaximized = json["WindowIsMaximized"].GetBool();
 		}
 
 		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
@@ -156,6 +161,7 @@ void Settings::Save() {
 
 	json.AddMember("WindowWidth", windowWidth, json.GetAllocator());
 	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
+	json.AddMember("WindowIsMaximized", windowIsMaximized, json.GetAllocator());	
 	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
 	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
 	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
@@ -359,6 +365,14 @@ void Settings::SetWindowWidth(int width) {
 
 void Settings::SetWindowHeight(int height) {
 	windowHeight = height;
+}
+
+bool Settings::GetWindowIsMaximized() {
+	return windowIsMaximized;
+}
+
+void Settings::SetWindowIsMaximized(bool maximized) {
+	windowIsMaximized = maximized;
 }
 
 int Settings::GetBaseCurrencyId() {

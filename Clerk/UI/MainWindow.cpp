@@ -2,15 +2,20 @@
 
 MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, "Clerk"), _context(context), _icons(icons)
 {
-	//this->SetTitle("Clerk");	
 	this->SetIcon(wxICON(APP_ICON));
 	
 	if (!Settings::GetInstance().GetWindowIsMaximized())
 	{
-		this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));
+		this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));		
 	}
 	else {
 		this->Maximize();
+	}
+
+	int activeDisplay = Settings::GetInstance().GetActiveDisplay();
+
+	if (activeDisplay != 0 && activeDisplay < wxDisplay::GetCount()) {
+		this->Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
 	}
 
 	SetupCommands();
@@ -127,6 +132,7 @@ MainWindow::~MainWindow()
 	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 	Settings::GetInstance().SetWindowIsMaximized(this->IsMaximized());
+	Settings::GetInstance().SetActiveDisplay(wxDisplay::GetFromWindow(this));
 
 	Settings::GetInstance().Save();
 }

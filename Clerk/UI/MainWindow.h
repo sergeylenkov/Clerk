@@ -5,6 +5,7 @@
 #include <wx/stdpaths.h>
 #include <wx/fileconf.h>
 #include <wx/dataview.h>
+#include <wx/display.h>
 #include <memory>
 #include <thread>
 #include "../Data/DataContext.h"

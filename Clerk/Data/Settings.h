@@ -71,6 +71,8 @@ public:
 	void SetWindowHeight(int height);
 	bool GetWindowIsMaximized();
 	void SetWindowIsMaximized(bool maximized);
+	int GetActiveDisplay();
+	void SetActiveDisplay(int index);
 	int GetBaseCurrencyId();
 	void SetBaseCurrencyId(int id);
 	bool IsConvertCurrency();
@@ -100,6 +102,7 @@ private:
 	int windowWidth;
 	int windowHeight;
 	bool windowIsMaximized;
+	int activeDisplay;
 	int baseCurrencyId;
 	bool convertCurrency;
 	bool loadExchangeRates;

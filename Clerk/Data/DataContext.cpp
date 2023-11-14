@@ -74,7 +74,6 @@ DataContext::~DataContext() {
 	delete& _goalsService;
 	delete& _reportingService;
 	delete& _currenciesService;
-	delete _commandsInvoker;
 }
 
 AccountsRepository& DataContext::GetAccountsRepository() {

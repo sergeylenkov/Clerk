@@ -39,8 +39,7 @@ bool ClerkApp::OnInit()
 	ReportsService* reportsService = new ReportsService(*reportsRepository);
 	AlertsService* alertsService = new AlertsService(*alertsRepository);
 	GoalsService* goalsService = new GoalsService(*goalsRepository);
-	ReportingService* reportingService = new ReportingService(*reportingRepository, *exchangeRatesRepository);
-	
+	ReportingService* reportingService = new ReportingService(*reportingRepository, *exchangeRatesRepository);	
 
 	currenciesService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
 	accountingService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
@@ -54,21 +53,20 @@ bool ClerkApp::OnInit()
 
 	_icons = new Icons();
 
-	MainWindow *frame = new MainWindow(*_context, *_icons);
+	MainWindow* frame = new MainWindow(*_context, *_icons);
 	
 	frame->Show(TRUE);
 	frame->Center();	
 
 	SetTopWindow(frame);
-	
 
 	return TRUE;
 }
 
 int ClerkApp::OnExit()
 {	
-	delete _context;
 	delete _connection;
+	delete _context;	
 	delete _icons;
 	delete _locale;
 

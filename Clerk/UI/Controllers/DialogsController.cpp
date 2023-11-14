@@ -24,8 +24,10 @@ void DialogsController::ShowPreferencesDialog() {
 	preferencesDialog->CenterOnParent();
 }
 
-void DialogsController::ShowNewTransactionDialog(int id) {	
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+void DialogsController::ShowNewTransactionDialog(int id) {
+	wxSize size = GetTransactionDialogSize();
+
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 	
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
@@ -37,7 +39,9 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 }
 
 void DialogsController::ShowCopyTransactionDialog(int id) {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+	wxSize size = GetTransactionDialogSize();
+
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
@@ -49,7 +53,9 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 }
 
 void DialogsController::ShowSplitTransactionDialog(int id) {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+	wxSize size = GetTransactionDialogSize();
+
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetSplitTransactionId(id);
@@ -61,7 +67,9 @@ void DialogsController::ShowSplitTransactionDialog(int id) {
 }
 
 void DialogsController::ShowEditTransactionDialog(int id) {
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, 450, 350, _icons);
+	wxSize size = GetTransactionDialogSize();
+
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
 	viewModel->SetTransactionId(id);
@@ -102,4 +110,13 @@ void DialogsController::ShowEditAccountDialog(int id) {
 
 	accountDialog->Show(true);
 	accountDialog->CenterOnParent();
+}
+
+wxSize DialogsController::GetTransactionDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(450));
+	size.SetHeight(_parent->FromDIP(350));
+
+	return size;
 }

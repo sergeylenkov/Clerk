@@ -33,6 +33,8 @@ namespace Clerk {
 			wxFrame* _parent;
 			DataContext& _context;
 			Icons& _icons;
+
+			wxSize GetTransactionDialogSize();
 		};
 	}
 }

@@ -126,6 +126,7 @@ MainWindow::~MainWindow()
 	delete _treeMenu;
 	delete _tabsPanel;
 	delete _commandsReceiver;
+	delete _commandsInvoker;
 	delete _dialogsController;
 	delete _tabsController;
 

@@ -18,7 +18,8 @@ Icons::~Icons() {
 	for (auto p : _images) {
 		delete p;
 	}
-
+	
+	_images.erase(_images.begin(), _images.end());
 	_imageList->Destroy();
 }
 

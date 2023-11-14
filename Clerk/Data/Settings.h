@@ -97,22 +97,22 @@ public:
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);
 
 private:
-	wxString fileName;
-	int selectedAccountId;
-	int windowWidth;
-	int windowHeight;
-	bool windowIsMaximized;
-	int activeDisplay;
-	int baseCurrencyId;
-	bool convertCurrency;
-	bool loadExchangeRates;
-	std::vector<int> selectedExchangeRates;
-	std::vector<TabSettings> tabs;
-	std::map<int, bool> expandedMenu;
-	int selectedTab;
-	std::vector<ListFilterSettings> transactionListFilterSettings;
-	std::map<int, std::vector<ListColumnsSettings>> transactionsListColumnsSettings;
-	std::vector<ReportFilterSettings> reportFilterSettings;
+	wxString _fileName;
+	int _selectedAccountId;
+	int _windowWidth;
+	int _windowHeight;
+	bool _windowIsMaximized;
+	int _activeDisplay;
+	int _baseCurrencyId;
+	bool _convertCurrency;
+	bool _loadExchangeRates;
+	std::vector<int> _selectedExchangeRates;
+	std::vector<TabSettings> _tabs;
+	std::map<int, bool> _expandedMenu;
+	int _selectedTab;
+	std::vector<ListFilterSettings> _transactionListFilterSettings;
+	std::map<int, std::vector<ListColumnsSettings>> _transactionsListColumnsSettings;
+	std::vector<ReportFilterSettings> _reportFilterSettings;
 
 	void RestoreDefaultColumns();
 };

@@ -2,25 +2,25 @@
 
 void Settings::Open(char *configName) {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), configName);
-	fileName = path.GetFullPath();
+	_fileName = path.GetFullPath();
 
-	selectedAccountId = -1;
-	selectedTab = 0;
-	windowWidth = 1000;
-	windowHeight = 800;
-	windowIsMaximized = false;
-	activeDisplay = 0;
-	baseCurrencyId = 180;
-	convertCurrency = false;
-	loadExchangeRates = true;
+	_selectedAccountId = -1;
+	_selectedTab = 0;
+	_windowWidth = 1000;
+	_windowHeight = 800;
+	_windowIsMaximized = false;
+	_activeDisplay = 0;
+	_baseCurrencyId = 180;
+	_convertCurrency = false;
+	_loadExchangeRates = true;
 
-	selectedExchangeRates.push_back(180);
-	selectedExchangeRates.push_back(62);
+	_selectedExchangeRates.push_back(180);
+	_selectedExchangeRates.push_back(62);
 
 	RestoreDefaultColumns();	
 
-	if (wxFile::Exists(fileName)) {
-		FILE *fp = fopen(fileName.char_str(), "rb");
+	if (wxFile::Exists(_fileName)) {
+		FILE *fp = fopen(_fileName.char_str(), "rb");
 		char readBuffer[65536]{0};
 		FileReadStream is(fp, readBuffer, sizeof(readBuffer));
 
@@ -30,46 +30,46 @@ void Settings::Open(char *configName) {
 		fclose(fp);
 
 		if (json.HasMember("SelectedAccount") && json["SelectedAccount"].IsInt()) {
-			selectedAccountId = json["SelectedAccount"].GetInt();
+			_selectedAccountId = json["SelectedAccount"].GetInt();
 		}
 
 		if (json.HasMember("SelectedTab") && json["SelectedTab"].IsInt()) {
-			selectedTab = json["SelectedTab"].GetInt();
+			_selectedTab = json["SelectedTab"].GetInt();
 		}
 
 		if (json.HasMember("WindowWidth") && json["WindowWidth"].IsInt()) {
-			windowWidth = json["WindowWidth"].GetInt();
+			_windowWidth = json["WindowWidth"].GetInt();
 		}
 
 		if (json.HasMember("WindowHeight") && json["WindowHeight"].IsInt()) {
-			windowHeight = json["WindowHeight"].GetInt();
+			_windowHeight = json["WindowHeight"].GetInt();
 		}
 
 		if (json.HasMember("WindowIsMaximized") && json["WindowIsMaximized"].IsBool()) {
-			windowIsMaximized = json["WindowIsMaximized"].GetBool();
+			_windowIsMaximized = json["WindowIsMaximized"].GetBool();
 		}
 
 		if (json.HasMember("ActiveDisplay") && json["ActiveDisplay"].IsInt()) {
-			activeDisplay = json["ActiveDisplay"].GetInt();
+			_activeDisplay = json["ActiveDisplay"].GetInt();
 		}
 
 		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
-			baseCurrencyId = json["BaseCurrency"].GetInt();
+			_baseCurrencyId = json["BaseCurrency"].GetInt();
 		}
 
 		if (json.HasMember("ConvertCurrency") && json["ConvertCurrency"].IsBool()) {
-			convertCurrency = json["ConvertCurrency"].GetBool();
+			_convertCurrency = json["ConvertCurrency"].GetBool();
 		}
 
 		if (json.HasMember("LoadExchangeRates") && json["LoadExchangeRates"].IsBool()) {
-			loadExchangeRates = json["LoadExchangeRates"].GetBool();
+			_loadExchangeRates = json["LoadExchangeRates"].GetBool();
 		}
 
 		if (json.HasMember("ExpandedMenu") && json["ExpandedMenu"].IsArray()) {
 			const Value &array = json["ExpandedMenu"];
 			
 			for (SizeType i = 0; i < array.Size(); i++) {
-				expandedMenu[array[i].GetInt()] = true;
+				_expandedMenu[array[i].GetInt()] = true;
 			}
 		}
 
@@ -100,7 +100,7 @@ void Settings::Open(char *configName) {
 				int period = filter["Period"].GetInt();
 
 				ListFilterSettings value = { type, id, period, fromDate, toDate };
-				transactionListFilterSettings.push_back(value);
+				_transactionListFilterSettings.push_back(value);
 			}
 		}
 
@@ -121,7 +121,7 @@ void Settings::Open(char *configName) {
 					columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
 				}
 
-				transactionsListColumnsSettings[columnsType] = columns;
+				_transactionsListColumnsSettings[columnsType] = columns;
 			}
 		}
 
@@ -152,7 +152,7 @@ void Settings::Open(char *configName) {
 
 				ReportFilterSettings value = { id, accountIds, period, fromDate, toDate, average };
 
-				reportFilterSettings.push_back(value);
+				_reportFilterSettings.push_back(value);
 			}
 		}
 
@@ -164,19 +164,19 @@ void Settings::Save() {
 
 	json.SetObject();
 
-	json.AddMember("WindowWidth", windowWidth, json.GetAllocator());
-	json.AddMember("WindowHeight", windowHeight, json.GetAllocator());
-	json.AddMember("WindowIsMaximized", windowIsMaximized, json.GetAllocator());	
-	json.AddMember("ActiveDisplay", activeDisplay, json.GetAllocator());
-	json.AddMember("SelectedAccount", selectedAccountId, json.GetAllocator());
-	json.AddMember("SelectedTab", selectedTab, json.GetAllocator());	
-	json.AddMember("BaseCurrency", baseCurrencyId, json.GetAllocator());
-	json.AddMember("ConvertCurrency", convertCurrency, json.GetAllocator());
-	json.AddMember("LoadExchangeRates", loadExchangeRates, json.GetAllocator());
+	json.AddMember("WindowWidth", _windowWidth, json.GetAllocator());
+	json.AddMember("WindowHeight", _windowHeight, json.GetAllocator());
+	json.AddMember("WindowIsMaximized", _windowIsMaximized, json.GetAllocator());	
+	json.AddMember("ActiveDisplay", _activeDisplay, json.GetAllocator());
+	json.AddMember("SelectedAccount", _selectedAccountId, json.GetAllocator());
+	json.AddMember("SelectedTab", _selectedTab, json.GetAllocator());	
+	json.AddMember("BaseCurrency", _baseCurrencyId, json.GetAllocator());
+	json.AddMember("ConvertCurrency", _convertCurrency, json.GetAllocator());
+	json.AddMember("LoadExchangeRates", _loadExchangeRates, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
-	for (const auto &value : expandedMenu)
+	for (const auto &value : _expandedMenu)
 	{
 		if (value.second) {
 			menuJson.PushBack(value.first, json.GetAllocator());
@@ -185,10 +185,10 @@ void Settings::Save() {
 
 	json.AddMember("ExpandedMenu", menuJson, json.GetAllocator());
 
-	if (tabs.size() > 0) {
+	if (_tabs.size() > 0) {
 		Value tabsJson(kArrayType);
 
-		for (auto& tab : tabs) {
+		for (auto& tab : _tabs) {
 			Value tabJson(kObjectType);
 
 			tabJson.AddMember("Type", tab.type, json.GetAllocator());
@@ -200,10 +200,10 @@ void Settings::Save() {
 		json.AddMember("Tabs", tabsJson, json.GetAllocator());
 	}
 
-	if (transactionListFilterSettings.size() > 0) {
+	if (_transactionListFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto& settings : transactionListFilterSettings)
+		for (auto& settings : _transactionListFilterSettings)
 		{
 			Value filterJson(kObjectType);
 
@@ -229,9 +229,9 @@ void Settings::Save() {
 
 	Value settingsJson(kArrayType);
 
-	for (const auto &value : transactionsListColumnsSettings)
+	for (const auto &value : _transactionsListColumnsSettings)
 	{
-		auto& columns = transactionsListColumnsSettings[value.first];
+		auto& columns = _transactionsListColumnsSettings[value.first];
 
 		Value columnsTypeJson(kObjectType);
 		Value columnsJson(kArrayType);
@@ -259,10 +259,10 @@ void Settings::Save() {
 
 	json.AddMember("TransactionsListColumns", settingsJson, json.GetAllocator());
 
-	if (reportFilterSettings.size() > 0) {
+	if (_reportFilterSettings.size() > 0) {
 		Value settingsJson(kArrayType);
 
-		for (auto& settings : reportFilterSettings)
+		for (auto& settings : _reportFilterSettings)
 		{
 			Value filterJson(kObjectType);
 			
@@ -290,7 +290,7 @@ void Settings::Save() {
 		json.AddMember("ReportFilters", settingsJson, json.GetAllocator());
 	}
 
-	FILE *fp = fopen(fileName.char_str(), "wb"); 
+	FILE *fp = fopen(_fileName.char_str(), "wb"); 
 	char writeBuffer[65536]{0};
 
 	FileWriteStream os(fp, writeBuffer, sizeof(writeBuffer));
@@ -315,7 +315,7 @@ void Settings::RestoreDefaultColumns() {
 	columns.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
+	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
 
 	std::vector<ListColumnsSettings> columns2;
 
@@ -325,7 +325,7 @@ void Settings::RestoreDefaultColumns() {
 	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
+	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
 
 	std::vector<ListColumnsSettings> columns3;
 
@@ -335,7 +335,7 @@ void Settings::RestoreDefaultColumns() {
 	columns3.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns3.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
+	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
 
 	std::vector<ListColumnsSettings> columns4;
 
@@ -346,109 +346,109 @@ void Settings::RestoreDefaultColumns() {
 	columns4.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
+	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
 }
 
 int Settings::GetSelectedAccountId() {
-	return selectedAccountId;
+	return _selectedAccountId;
 }
 
 void Settings::SetSelectedAccountId(int id) {
-	selectedAccountId = id;
+	_selectedAccountId = id;
 }
 
 int Settings::GetWindowWidth() {
-	return windowWidth;
+	return _windowWidth;
 }
 
 int Settings::GetWindowHeight() {
-	return windowHeight;
+	return _windowHeight;
 }
 
 void Settings::SetWindowWidth(int width) {
-	windowWidth = width;
+	_windowWidth = width;
 }
 
 void Settings::SetWindowHeight(int height) {
-	windowHeight = height;
+	_windowHeight = height;
 }
 
 bool Settings::GetWindowIsMaximized() {
-	return windowIsMaximized;
+	return _windowIsMaximized;
 }
 
 void Settings::SetWindowIsMaximized(bool maximized) {
-	windowIsMaximized = maximized;
+	_windowIsMaximized = maximized;
 }
 
 int Settings::GetActiveDisplay() {
-	return activeDisplay;
+	return _activeDisplay;
 }
 
 void Settings::SetActiveDisplay(int index) {
-	activeDisplay = index;
+	_activeDisplay = index;
 }
 
 int Settings::GetBaseCurrencyId() {
-	return baseCurrencyId;
+	return _baseCurrencyId;
 }
 
 void Settings::SetBaseCurrencyId(int id) {
-	baseCurrencyId = id;
+	_baseCurrencyId = id;
 }
 
 bool Settings::IsConvertCurrency() {
-	return convertCurrency;
+	return _convertCurrency;
 }
 
 void Settings::SetConvertCurrency(bool convert) {
-	convertCurrency = convert;
+	_convertCurrency = convert;
 }
 
 bool Settings::IsLoadExchangeRates() {
-	return loadExchangeRates;
+	return _loadExchangeRates;
 }
 
 void Settings::SetLoadExchangeRates(bool load) {
-	loadExchangeRates = load;
+	_loadExchangeRates = load;
 }
 
 std::vector<int> Settings::GetSelectedExchangeRates() {
-	return selectedExchangeRates;
+	return _selectedExchangeRates;
 }
 
 void Settings::ClearTabs() {
-	tabs.clear();
+	_tabs.clear();
 }
 
 void Settings::AddTab(int type, int id) {
 	TabSettings tab = { type, id };
-	tabs.push_back(tab);
+	_tabs.push_back(tab);
 }
 
 std::vector<TabSettings> Settings::GetTabs() {
-	return tabs;
+	return _tabs;
 }
 
 void Settings::SetSelectedTab(int id) {
-	selectedTab = id;
+	_selectedTab = id;
 }
 
 int Settings::GetSelectedTab() {
-	return selectedTab;
+	return _selectedTab;
 }
 
 void Settings::AddExpandedMenu(int type) {
-	expandedMenu[type] = true;
+	_expandedMenu[type] = true;
 }
 
 void Settings::RemoveExpandedMenu(int type) {
-	expandedMenu[type] = false;
+	_expandedMenu[type] = false;
 }
 
 bool Settings::IsMenuExpanded(int type) {
-	if (expandedMenu.find(type) != expandedMenu.end()) {
-		return expandedMenu[type];
+	if (_expandedMenu.find(type) != _expandedMenu.end()) {
+		return _expandedMenu[type];
 	}
 
 	return false;
@@ -457,7 +457,7 @@ bool Settings::IsMenuExpanded(int type) {
 void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
-	for (auto &settings : transactionListFilterSettings)
+	for (auto &settings : _transactionListFilterSettings)
 	{		
 		if (settings.type == type && settings.id == id) {
 			settings.period = period;
@@ -470,7 +470,7 @@ void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fr
 	}
 
 	if (!found) {
-		transactionListFilterSettings.push_back({ type, id, period, fromDate, toDate });
+		_transactionListFilterSettings.push_back({ type, id, period, fromDate, toDate });
 	}
 }
 
@@ -482,7 +482,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 
 	ListFilterSettings result = { 0, 0, 0, fromDate, toDate };
 
-	for (auto &settings : transactionListFilterSettings)
+	for (auto &settings : _transactionListFilterSettings)
 	{
 		if (settings.type == type && settings.id == id) {
 			return settings;
@@ -493,7 +493,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 }
 
 std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumnsTypes type) {
-	auto& columns = transactionsListColumnsSettings[static_cast<int>(type)];
+	auto& columns = _transactionsListColumnsSettings[static_cast<int>(type)];
 
 	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;
@@ -503,7 +503,7 @@ std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumn
 }
 
 void Settings::SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
-	transactionsListColumnsSettings[static_cast<int>(type)] = columns;
+	_transactionsListColumnsSettings[static_cast<int>(type)] = columns;
 }
 
 ReportFilterSettings Settings::GetReportFilterSettings(int id) {
@@ -515,7 +515,7 @@ ReportFilterSettings Settings::GetReportFilterSettings(int id) {
 
 	ReportFilterSettings result = { 0, "-1", 0, fromDate, toDate, false };
 
-	for (auto &settings : reportFilterSettings)
+	for (auto &settings : _reportFilterSettings)
 	{
 		if (settings.id == id) {
 			return settings;
@@ -532,7 +532,7 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average) {
 	bool found = false;
 
-	for (auto &settings : reportFilterSettings)
+	for (auto &settings : _reportFilterSettings)
 	{
 		if (settings.id == id) {
 			settings.accountIds = accountIds;
@@ -548,6 +548,6 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 	}
 
 	if (!found) {
-		reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate, average });
+		_reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate, average });
 	}
 }

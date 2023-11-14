@@ -163,7 +163,7 @@ std::vector<AccountPresentationModel*> AccountsService::GetReceipts(const wxDate
 	for (auto& account : accounts) {
 		account->receipts = _accountsRepository.GetReceipts(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
 
-		if (account->expenses > 0) {
+		if (account->receipts > 0) {
 			result.push_back(account);
 		}
 	}

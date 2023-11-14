@@ -37,7 +37,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_newTransactionButton = new NewTransactionButton(_toolbar, *_commandsInvoker);
+	_newTransactionButton = new NewTransactionButton(_toolbar, *_commandsInvoker, _icons);
 	_newTransactionButton->SetViewModel(addButtonViewModel);
 
 	horizontalSizer->Add(_newTransactionButton, 0, wxALL, 5);

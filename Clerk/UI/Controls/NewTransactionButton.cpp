@@ -2,7 +2,8 @@
 
 using namespace Clerk::UI;
 
-NewTransactionButton::NewTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker) : DropDownButton(parent, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34)), _commandsInvoker(commandsInvoker) {
+NewTransactionButton::NewTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker, Icons& icons) : DropDownButton(parent, wxID_ANY, wxT("Add Transaction"), wxDefaultPosition, wxSize(-1, 34)),
+	_commandsInvoker(commandsInvoker), _icons(icons) {
 	this->SetBackgroundColour(wxColour(255, 255, 255));
 
 	this->Bind(wxEVT_BUTTON, &NewTransactionButton::OnAddTransaction, this);
@@ -28,7 +29,8 @@ void NewTransactionButton::Update() {
 
 	for (auto& transaction : _viewModel->GetRecents())
 	{
-		menu->Append(transaction->id, wxString::Format("%s > %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+		wxMenuItem* transactionItem = menu->Append(transaction->id, wxString::Format("%s > %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+		transactionItem->SetBitmap(*_icons.GetAccountIcon(transaction->toAccount->icon));
 	}
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &NewTransactionButton::OnMenuSelect, this);

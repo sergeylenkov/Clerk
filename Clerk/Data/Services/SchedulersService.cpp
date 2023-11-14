@@ -34,6 +34,8 @@ std::vector<std::shared_ptr<SchedulerPresentationModel>> SchedulersService::GetA
 		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
 		model->amount = scheduler->toAmount * rate;
 
+		delete account;
+
 		return model;
 	});
 

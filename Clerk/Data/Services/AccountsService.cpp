@@ -67,11 +67,11 @@ std::vector<AccountPresentationModel*> AccountsService::GetAll() {
 		}
 	}
 
-	for (auto model = models.begin(); model != models.end(); ++model) {
-		delete* model;
+	for (auto p : models) {
+		delete p;
 	}
 
-	models.clear();
+	models.erase(models.begin(), models.end());
 
 	_isLoading = true;
 

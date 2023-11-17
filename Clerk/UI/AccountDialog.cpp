@@ -12,7 +12,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 	
-	wxStaticText* nameLabel = new wxStaticText(_mainPanel, wxID_ANY, "Name:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText* nameLabel = new wxStaticText(_mainPanel, wxID_ANY, "Name:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	_nameField = new wxTextCtrl(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0);
@@ -22,17 +22,17 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* typeLabel = new wxStaticText(_mainPanel, wxID_ANY, "Type:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText* typeLabel = new wxStaticText(_mainPanel, wxID_ANY, "Type:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(typeLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	_typeList = new wxComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxSize(100, -1), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	_typeList = new wxComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, this->FromDIP(wxSize(100, -1)), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	horizontalSizer->Add(_typeList, 0, wxALL | wxEXPAND, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *currencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "Currency:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText *currencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "Currency:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(currencyLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
 	_currencyList = new wxComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
@@ -42,37 +42,37 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* iconLabel = new wxStaticText(_mainPanel, wxID_ANY, "Icon:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText* iconLabel = new wxStaticText(_mainPanel, wxID_ANY, "Icon:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(iconLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	_iconList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxSize(100, -1), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	_iconList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, this->FromDIP(wxSize(100, -1)), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	horizontalSizer->Add(_iconList, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* amountLabel = new wxStaticText(_mainPanel, wxID_ANY, "Amount:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText* amountLabel = new wxStaticText(_mainPanel, wxID_ANY, "Amount:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(amountLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 	
-	_amountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(100, -1));
+	_amountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(100, -1)));
 	horizontalSizer->Add(_amountField, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	_creditPanel = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* creditLabel = new wxStaticText(_mainPanel, wxID_ANY, "Credit Limit:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText* creditLabel = new wxStaticText(_mainPanel, wxID_ANY, "Credit Limit:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	_creditPanel->Add(creditLabel, 0, wxALL | wxALIGN_CENTER_VERTICAL, 5);
 
-	_creditField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(100, -1));
+	_creditField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(100, -1)));
 	_creditPanel->Add(_creditField, 0, wxALL, 5);
 
 	panelSizer->Add(_creditPanel, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *noteLabel = new wxStaticText(_mainPanel, wxID_ANY, "Note:", wxDefaultPosition, wxSize(80, -1), 0);
+	wxStaticText *noteLabel = new wxStaticText(_mainPanel, wxID_ANY, "Note:", wxDefaultPosition, this->FromDIP(wxSize(80, -1)), 0);
 	horizontalSizer->Add(noteLabel, 0, wxALIGN_TOP | wxALL, 5);
 
 	_noteField = new wxTextCtrl(_mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);

@@ -30,6 +30,34 @@ void TabsController::OpenNewTab(TabType type) {
 	}
 }
 
+void TabsController::OpenNewAccountTab(int accountId) {
+	if (_tabsPanel) {
+		DataPanel* tabPanel = CreatePanel(TabType::Transactions);
+
+		auto account = _context.GetAccountsService().GetById(accountId);
+
+		if (tabPanel && account) {
+			tabPanel->type = TabType::Transactions;
+			
+			_tabsPanel->AddPanel(tabPanel, account->name, _icons.GetIconIndexForAccount(account->icon));
+			_tabsPanel->SelectLastTab();
+		}
+	}
+}
+
+void TabsController::OpenNewAccountsTab(AccountType type) {
+	if (_tabsPanel) {
+		DataPanel* tabPanel = CreatePanel(TabType::Transactions);
+
+		if (tabPanel) {
+			tabPanel->type = TabType::Transactions;
+
+			_tabsPanel->AddPanel(tabPanel, GetTabTitle(TabType::Transactions), GetIconIndex(TabType::Transactions));
+			_tabsPanel->SelectLastTab();
+		}
+	}
+}
+
 DataPanel* TabsController::CreatePanel(TabType type) {
 	switch (type)
 	{

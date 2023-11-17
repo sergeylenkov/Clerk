@@ -155,11 +155,13 @@ void MainWindow::SetupCommands() {
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
 	NewTabCommand* newTabCommand = new NewTabCommand(_commandsReceiver);
+	NewAccountTabCommand* newAccountTabCommand = new NewAccountTabCommand(_commandsReceiver);
+	NewAccountsTabCommand* newAccountsTabCommand = new NewAccountsTabCommand(_commandsReceiver);
 
 	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
 		                                   *newTransactionCommand, *copyTransactionCommand,
 										   *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
-		                                   *newAccountCommand, *editAccountCommand, *newTabCommand);
+		                                   *newAccountCommand, *editAccountCommand, *newTabCommand, *newAccountTabCommand, *newAccountsTabCommand);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
 }

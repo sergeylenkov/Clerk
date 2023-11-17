@@ -21,6 +21,8 @@ namespace Clerk {
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;
 			virtual void OpenNewTab(TabType type) = 0;
+			virtual void OpenNewAccountTab(int accountId) = 0;
+			virtual void OpenNewAccountsTab(AccountType type) = 0;
 		};
 	}
 }

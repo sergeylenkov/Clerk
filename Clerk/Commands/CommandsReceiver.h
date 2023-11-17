@@ -26,6 +26,8 @@ namespace Clerk {
 			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;
 			void OpenNewTab(TabType type) override;
+			void OpenNewAccountTab(int accountId) override;
+			void OpenNewAccountsTab(AccountType type) override;
 
 		private:
 			wxFrame* _frame{};

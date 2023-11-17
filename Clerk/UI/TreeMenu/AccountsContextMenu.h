@@ -21,6 +21,7 @@ namespace Clerk {
 			TreeMenuItemType _type;
 
 			void OnMenuSelect(wxCommandEvent& event);
+			AccountType GetAccountTypeByMenuType(TreeMenuItemType type);
 		};
 	}
 }

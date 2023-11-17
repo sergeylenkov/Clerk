@@ -67,5 +67,7 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	}
 	else if (id == static_cast<int>(TreeContextMenuType::EditAccount)) {
 		_commandsInvoker.OnEditAccount(_account.id);
+	} else if (id == static_cast<int>(TreeContextMenuType::NewTab)) {
+		_commandsInvoker.OnNewAccountTab(_account.id);
 	}
 }

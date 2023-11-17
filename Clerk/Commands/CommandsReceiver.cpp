@@ -55,3 +55,11 @@ void CommandsReceiver::OpenEditAccountDialog(int id) {
 void CommandsReceiver::OpenNewTab(TabType type) {
 	_tabsController->OpenNewTab(type);
 }
+
+void CommandsReceiver::OpenNewAccountTab(int accountId) {
+	_tabsController->OpenNewAccountTab(accountId);
+}
+
+void CommandsReceiver::OpenNewAccountsTab(AccountType type) {
+	_tabsController->OpenNewAccountsTab(type);
+}

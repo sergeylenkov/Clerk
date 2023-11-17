@@ -11,6 +11,8 @@
 #include "NewAccountCommand.h"
 #include "EditAccountCommand.h"
 #include "NewTabCommand.h"
+#include "NewAccountTabCommand.h"
+#include "NewAccountsTabCommand.h"
 #include "../Data/Enums.h"
 #include "../UI/Enums.h"
 
@@ -24,7 +26,8 @@ namespace Clerk {
 			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
 				           NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
 						   SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand);
+				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand, NewAccountTabCommand& newAccountTabCommand,
+							NewAccountsTabCommand& newAccountsTabCommand);
 			~CommandsInvoker();
 
 			void OnQuit();
@@ -37,8 +40,10 @@ namespace Clerk {
 			void OnDeleteTransaction(int id);
 			void OnNewAccount(AccountType type);
 			void OnEditAccount(int id);
-			void OnNewTab(TabType id);
-			
+			void OnNewTab(TabType type);
+			void OnNewAccountTab(int accountId);
+			void OnNewAccountsTab(AccountType id);
+
 		private:
 			QuitCommand& _quitCommand;
 			PreferencesCommand& _preferencesCommand;
@@ -51,6 +56,8 @@ namespace Clerk {
 			NewAccountCommand& _newAccountCommand;
 			EditAccountCommand& _editAccountCommand;			
 			NewTabCommand& _newTabCommand;
+			NewAccountTabCommand& _newAccountTabCommand;
+			NewAccountsTabCommand& _newAccountsTabCommand;
 		};
 	}
 }

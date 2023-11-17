@@ -16,6 +16,8 @@ namespace Clerk {
 
 			void SetTabsPanel(TabsPanel* panel);
 			void OpenNewTab(TabType type);
+			void OpenNewAccountTab(int accountId);
+			void OpenNewAccountsTab(AccountType type);
 			void RestoreLastTabs();
 
 		private:

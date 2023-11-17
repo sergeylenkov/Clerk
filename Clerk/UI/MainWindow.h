@@ -26,6 +26,8 @@
 #include "../Commands/NewAccountCommand.h"
 #include "../Commands/EditAccountCommand.h"
 #include "../Commands/NewTabCommand.h"
+#include "../Commands/NewAccountTabCommand.h"
+#include "../Commands/NewAccountsTabCommand.h"
 #include "Controllers/DialogsController.h"
 #include "Controllers/TabsController.h"
 #include "./ViewModels/StatusViewModel.h"

@@ -56,6 +56,8 @@
     <ClCompile Include="Commands\EditAccountCommand.cpp" />
     <ClCompile Include="Commands\EditTransactionCommand.cpp" />
     <ClCompile Include="Commands\NewAccountCommand.cpp" />
+    <ClCompile Include="Commands\NewAccountsTabCommand.cpp" />
+    <ClCompile Include="Commands\NewAccountTabCommand.cpp" />
     <ClCompile Include="Commands\NewTabCommand.cpp" />
     <ClCompile Include="Commands\NewTransactionCommand.cpp" />
     <ClCompile Include="Commands\CommandsInvoker.cpp" />
@@ -189,6 +191,8 @@
     <ClInclude Include="Commands\EditAccountCommand.h" />
     <ClInclude Include="Commands\EditTransactionCommand.h" />
     <ClInclude Include="Commands\NewAccountCommand.h" />
+    <ClInclude Include="Commands\NewAccountsTabCommand.h" />
+    <ClInclude Include="Commands\NewAccountTabCommand.h" />
     <ClInclude Include="Commands\NewTabCommand.h" />
     <ClInclude Include="Commands\NewTransactionCommand.h" />
     <ClInclude Include="Commands\Command.h" />

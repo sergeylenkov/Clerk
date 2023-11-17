@@ -13,8 +13,15 @@ void TabsController::SetTabsPanel(TabsPanel* panel) {
 void TabsController::RestoreLastTabs() {
 	for (auto& tab : Settings::GetInstance().GetTabs()) {
 		TabType type = static_cast<TabType>(tab.type);
-		OpenNewTab(type);
+
+		if (type == TabType::Transactions && tab.id != -1) {
+			OpenNewAccountTab(tab.id);
+		} else {
+			OpenNewTab(type);
+		}		
 	}
+
+	_tabsPanel->SelectTab(Settings::GetInstance().GetSelectedTab());
 }
 
 void TabsController::OpenNewTab(TabType type) {
@@ -22,6 +29,7 @@ void TabsController::OpenNewTab(TabType type) {
 		DataPanel* tabPanel = CreatePanel(type);
 
 		if (tabPanel) {
+			tabPanel->id = -1;
 			tabPanel->type = type;
 
 			_tabsPanel->AddPanel(tabPanel, GetTabTitle(type), GetIconIndex(type));
@@ -37,6 +45,7 @@ void TabsController::OpenNewAccountTab(int accountId) {
 		auto account = _context.GetAccountsService().GetById(accountId);
 
 		if (tabPanel && account) {
+			tabPanel->id = accountId;
 			tabPanel->type = TabType::Transactions;
 			
 			_tabsPanel->AddPanel(tabPanel, account->name, _icons.GetIconIndexForAccount(account->icon));
@@ -50,6 +59,7 @@ void TabsController::OpenNewAccountsTab(AccountType type) {
 		DataPanel* tabPanel = CreatePanel(TabType::Transactions);
 
 		if (tabPanel) {
+			tabPanel->id = -1;
 			tabPanel->type = TabType::Transactions;
 
 			_tabsPanel->AddPanel(tabPanel, GetTabTitle(TabType::Transactions), GetIconIndex(TabType::Transactions));

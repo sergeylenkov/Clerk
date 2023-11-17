@@ -44,6 +44,12 @@ void TabsPanel::AddPanel(DataPanel* dataPanel, wxString title, int iconIndex) {
 	_tabsPanels.push_back(dataPanel);
 }
 
+void TabsPanel::SelectTab(int index) {
+	if (index < _notebook->GetPageCount()) {
+		_notebook->SetSelection(index);
+	}
+}
+
 void TabsPanel::SelectLastTab() {
 	_notebook->SetSelection(_notebook->GetPageCount() - 1);
 }

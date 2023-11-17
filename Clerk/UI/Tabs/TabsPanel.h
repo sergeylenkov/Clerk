@@ -32,6 +32,7 @@ public:
 	~TabsPanel();
 		
 	void AddPanel(DataPanel* panel, wxString title, int iconIndex);
+	void SelectTab(int index);
 	void SelectLastTab();
 
 private:

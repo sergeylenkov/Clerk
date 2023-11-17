@@ -66,13 +66,15 @@ public:
 	int GetSelectedAccountId();
 	void SetSelectedAccountId(int id);
 	int GetWindowWidth();
-	int GetWindowHeight();		
 	void SetWindowWidth(int width);
+	int GetWindowHeight();			
 	void SetWindowHeight(int height);
 	bool GetWindowIsMaximized();
 	void SetWindowIsMaximized(bool maximized);
 	int GetActiveDisplay();
 	void SetActiveDisplay(int index);
+	int GetTreeMenuWidth();
+	void SetTreeMenuWidth(int width);
 	int GetBaseCurrencyId();
 	void SetBaseCurrencyId(int id);
 	bool IsConvertCurrency();
@@ -103,6 +105,7 @@ private:
 	int _windowHeight;
 	bool _windowIsMaximized;
 	int _activeDisplay;
+	int _treeMenuWidth;
 	int _baseCurrencyId;
 	bool _convertCurrency;
 	bool _loadExchangeRates;

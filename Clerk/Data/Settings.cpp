@@ -10,6 +10,7 @@ void Settings::Open(char *configName) {
 	_windowHeight = 800;
 	_windowIsMaximized = false;
 	_activeDisplay = 0;
+	_treeMenuWidth = 300;
 	_baseCurrencyId = 180;
 	_convertCurrency = false;
 	_loadExchangeRates = true;
@@ -51,6 +52,10 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("ActiveDisplay") && json["ActiveDisplay"].IsInt()) {
 			_activeDisplay = json["ActiveDisplay"].GetInt();
+		}
+
+		if (json.HasMember("TreeMenuWidth") && json["TreeMenuWidth"].IsInt()) {
+			_treeMenuWidth = json["TreeMenuWidth"].GetInt();
 		}
 
 		if (json.HasMember("BaseCurrency") && json["BaseCurrency"].IsInt()) {
@@ -168,6 +173,7 @@ void Settings::Save() {
 	json.AddMember("WindowHeight", _windowHeight, json.GetAllocator());
 	json.AddMember("WindowIsMaximized", _windowIsMaximized, json.GetAllocator());	
 	json.AddMember("ActiveDisplay", _activeDisplay, json.GetAllocator());
+	json.AddMember("TreeMenuWidth", _treeMenuWidth, json.GetAllocator());
 	json.AddMember("SelectedAccount", _selectedAccountId, json.GetAllocator());
 	json.AddMember("SelectedTab", _selectedTab, json.GetAllocator());	
 	json.AddMember("BaseCurrency", _baseCurrencyId, json.GetAllocator());
@@ -387,6 +393,14 @@ int Settings::GetActiveDisplay() {
 
 void Settings::SetActiveDisplay(int index) {
 	_activeDisplay = index;
+}
+
+int Settings::GetTreeMenuWidth() {
+	return _treeMenuWidth;
+}
+
+void Settings::SetTreeMenuWidth(int width) {
+	_treeMenuWidth = width;
 }
 
 int Settings::GetBaseCurrencyId() {

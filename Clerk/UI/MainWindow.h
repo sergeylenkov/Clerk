@@ -53,6 +53,7 @@ private:
 	Statusbar* _statusbar;
 	TreeMenu* _treeMenu;	
 	TabsPanel* _tabsPanel;
+	wxSplitterWindow* _splitter;
 	NewTransactionButton* _newTransactionButton;
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;

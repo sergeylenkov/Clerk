@@ -47,13 +47,13 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	mainSizer->Add(_toolbar, 0, wxEXPAND, 0);
 	
-	wxSplitterWindow* splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
-	splitter->SetSashGravity(0.5);
-	splitter->SetMinimumPaneSize(300);
+	_splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
+	_splitter->SetSashGravity(0);
+	_splitter->SetMinimumPaneSize(300);
 
-	mainSizer->Add(splitter, 1, wxEXPAND, 5);
+	mainSizer->Add(_splitter, 1, wxEXPAND, 5);
 
-	wxPanel* splitterLeftPanel = new wxPanel(splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+	wxPanel* splitterLeftPanel = new wxPanel(_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	splitterLeftPanel->SetBackgroundColour(wxColour(245, 245, 245, 1));
 	
 	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);	
@@ -64,7 +64,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);
 	splitterLeftPanel->SetSizer(boxSizer);		
 
-	wxPanel* splitterRightPanel = new wxPanel(splitter);	
+	wxPanel* splitterRightPanel = new wxPanel(_splitter);
 
 	wxBoxSizer* rightPanelSizer = new wxBoxSizer(wxVERTICAL);
 	splitterRightPanel->SetSizer(rightPanelSizer);
@@ -74,12 +74,14 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL, 0);
 	rightPanelSizer->Layout();
 
-	splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
+	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
 	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 20)));	
 	_statusbar->SetViewModel(statusViewModel);
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
+
+	_splitter->SetSashPosition(Settings::GetInstance().GetTreeMenuWidth());
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -134,6 +136,7 @@ MainWindow::~MainWindow()
 	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
 	Settings::GetInstance().SetWindowIsMaximized(this->IsMaximized());
 	Settings::GetInstance().SetActiveDisplay(wxDisplay::GetFromWindow(this));
+	Settings::GetInstance().SetTreeMenuWidth(_splitter->GetSashPosition());
 
 	Settings::GetInstance().Save();
 }

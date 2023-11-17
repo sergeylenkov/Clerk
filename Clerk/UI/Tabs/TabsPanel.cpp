@@ -29,7 +29,7 @@ TabsPanel::~TabsPanel()
 	delete _notebook;
 }
 
-void TabsPanel::AddPanel(DataPanel* dataPanel, wxString title) {
+void TabsPanel::AddPanel(DataPanel* dataPanel, wxString title, int iconIndex) {
 	wxPanel* tabPanel = new wxPanel(_notebook);
 	wxBoxSizer* sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -37,7 +37,7 @@ void TabsPanel::AddPanel(DataPanel* dataPanel, wxString title) {
 	dataPanel->Reparent(tabPanel);
 	sizer->Add(dataPanel, 1, wxEXPAND | wxALL, 0);
 
-	_notebook->AddPage(tabPanel, title, true, 10);
+	_notebook->AddPage(tabPanel, title, true, iconIndex);
 	
 	sizer->Layout();
 

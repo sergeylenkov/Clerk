@@ -4,7 +4,7 @@ TagsPopup::TagsPopup(wxWindow *parent) : wxPopupWindow(parent) {
 	_panel = new wxScrolledWindow(this, wxID_ANY);
 	_panel->SetBackgroundColour(*wxLIGHT_GREY);
 	
-	_list = new wxListCtrl(_panel, wxID_ANY, wxPoint(0, 0), wxSize(200, 200), wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
+	_list = new wxListCtrl(_panel, wxID_ANY, wxPoint(0, 0), this->FromDIP(wxSize(200, 200)), wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
 	_list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TagsPopup::OnListItemDoubleClick, this);
 
 	wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);

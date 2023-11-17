@@ -31,7 +31,7 @@ public:
 	TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker, Icons& icons);
 	~TabsPanel();
 		
-	void AddPanel(DataPanel* panel, wxString title);
+	void AddPanel(DataPanel* panel, wxString title, int iconIndex);
 	void SelectLastTab();
 
 private:

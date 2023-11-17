@@ -19,7 +19,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_fromList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	_fromAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
+	_fromAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	_fromAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);
@@ -35,7 +35,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	_toAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, wxSize(80, -1));
+	_toAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	_toAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxSize(40, -1), 0);

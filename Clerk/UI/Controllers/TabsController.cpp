@@ -19,13 +19,12 @@ void TabsController::RestoreLastTabs() {
 
 void TabsController::OpenNewTab(TabType type) {
 	if (_tabsPanel) {
-		DataPanel* tabPanel = CreatePanel(type);		
-		wxString title = GetTabTitle(type);
+		DataPanel* tabPanel = CreatePanel(type);
 
 		if (tabPanel) {
 			tabPanel->type = type;
 
-			_tabsPanel->AddPanel(tabPanel, title);
+			_tabsPanel->AddPanel(tabPanel, GetTabTitle(type), GetIconIndex(type));
 			_tabsPanel->SelectLastTab();
 		}
 	}
@@ -103,4 +102,41 @@ wxString TabsController::GetTabTitle(TabType type) {
 	}
 
 	return "";
+}
+
+int TabsController::GetIconIndex(TabType type) {
+	switch (type)
+	{
+		case TabType::Dashboard:
+			return 0;
+			break;
+		case TabType::Transactions:
+			return 1;
+			break;
+		case TabType::Reports:
+			return 4;
+			break;
+		case TabType::Budgets:
+			return 6;
+			break;
+		case TabType::Schedulers:
+			return 7;
+			break;
+		case TabType::Goals:
+			return 8;
+			break;
+		case TabType::Tags:
+			return 9;
+			break;
+		case TabType::Alerts:
+			return 12;
+			break;
+		case TabType::Trash: {
+			return _context.GetTransactionsService().GetDeleted().size() == 0 ? 11 : 10;
+		}		
+		default:
+			break;
+		}
+
+	return 0;
 }

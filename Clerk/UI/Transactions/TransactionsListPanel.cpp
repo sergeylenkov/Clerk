@@ -12,7 +12,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
+	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -29,7 +29,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 
-	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
+	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
@@ -49,7 +49,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
-	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20));
+	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(200, 20)));
 	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
 
 	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);

@@ -199,7 +199,7 @@ std::vector<AccountPresentationModel*> AccountsService::GetDebts() {
 	std::vector<AccountPresentationModel*> result;
 
 	for (auto& account : accounts) {
-		account->expenses = abs(_accountsRepository.GetExpenses(account->id));
+		account->balance = abs(_accountsRepository.GetExpenses(account->id));
 		account->receipts = _accountsRepository.GetReceipts(account->id);
 
 		if (account->type == AccountType::Debt) {

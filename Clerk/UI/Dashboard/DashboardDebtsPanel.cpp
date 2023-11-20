@@ -34,9 +34,9 @@ void DashboardDebtsPanel::Update()
 			_totalValue = _totalValue + abs(amount);
 		}
 		else {
-			float amount = account->expenses;
+			float amount = account->balance;
 			float currentAmount = account->receipts;
-			float remainAmount = abs(account->balance);
+			float remainAmount = amount - currentAmount;
 			float remainPercent = (currentAmount / amount) * 100.0;
 
 			_values.push_back({ account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });

@@ -24,39 +24,6 @@ AccountModel* AccountsRepository::GetById(int id) {
 	return Load(id);
 }
 
-/*std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetActive() {
-	auto accounts = GetAll();
-	std::vector<std::shared_ptr<AccountModel>> result;
-
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [](const std::shared_ptr<AccountModel>& account) {
-		return account->isActive;
-	});
-
-	return result;
-}
-
-std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetByType(AccountType type) {
-	auto accounts = GetAll();
-	std::vector<std::shared_ptr<AccountModel>> result;
-
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [type](const std::shared_ptr<AccountModel>& account) {
-		return account->isActive && account->type == type;
-	});
-
-	return result;
-}
-
-std::vector<std::shared_ptr<AccountModel>> AccountsRepository::GetArchive() {
-	auto accounts = GetAll();
-	std::vector<std::shared_ptr<AccountModel>> result;
-
-	std::copy_if(accounts.begin(), accounts.end(), std::back_inserter(result), [](const std::shared_ptr<AccountModel>& account) {
-		return !account->isActive;
-	});
-
-	return result;
-}*/
-
 float AccountsRepository::GetBalance(int accountId, AccountType type)
 {
 	float receipt = 0.0;
@@ -362,7 +329,6 @@ int AccountsRepository::Save(const AccountModel& account) {
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
-				Load(id);
 			}
 		}
 

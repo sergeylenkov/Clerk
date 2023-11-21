@@ -1,11 +1,8 @@
 #pragma once
 
 #include <string>
-#include <locale>
-#include <codecvt>
 #include <vector>
 #include <memory>
-#include <cctype>
 #include "HashRepository.h"
 #include "../Models/TagModel.h"
 
@@ -15,15 +12,14 @@ namespace Clerk {
 		public:
 			using HashRepository::HashRepository;
 
-			std::vector<std::shared_ptr<TagModel>> GetAll();
-			std::shared_ptr<TagModel> GetById(int id);
-			std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::wstring search);
+			std::vector<TagModel*> GetAll();
+			TagModel* GetById(int id);
 			int GetCount(int id);
-			std::shared_ptr<TagModel> Save(std::shared_ptr<TagModel> tag);
-			void Delete(std::shared_ptr<TagModel> tag);
+			int Save(const TagModel& tag);
+			void Delete(const TagModel& tag);
 
 		private:
-			std::shared_ptr<TagModel> Load(int id);
+			TagModel* Load(int id);
 		};
 	}
 }

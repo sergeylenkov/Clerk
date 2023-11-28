@@ -16,7 +16,10 @@ namespace Clerk {
 			wxString name;
 			int count;
 
-			std::shared_ptr<TagModel> GetModel();
+			operator TagModel& ();
+
+		private:
+			TagModel& GetModel();
 		};
 	}
 }

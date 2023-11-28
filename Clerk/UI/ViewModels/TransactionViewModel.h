@@ -9,6 +9,7 @@
 #include "../../Data/Repositories/ExchangeRatesRepository.h"
 #include "../../Data/Settings.h"
 #include "./Enums.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 
@@ -23,8 +24,8 @@ namespace Clerk {
 			void SetCopyTransactionId(int id);
 			void SetSplitTransactionId(int id);
 			void SetAccountId(int id);
-			std::vector<AccountPresentationModel*> GetFromAccounts();
-			std::vector<AccountPresentationModel*> GetToAccounts();
+			shared_vector<AccountPresentationModel> GetFromAccounts();
+			shared_vector<AccountPresentationModel> GetToAccounts();
 			int GetFromAccountIndex();
 			void SetFromAccount(int index);
 			int GetToAccountIndex();
@@ -37,11 +38,11 @@ namespace Clerk {
 			wxString GetNote();
 			void SetDate(wxDateTime date);
 			wxDateTime GetDate();
-			std::vector<std::shared_ptr<TagPresentationModel>> GetTags();
+			shared_vector<TagPresentationModel> GetTags();
 			wxString GetTagsString();
 			void SetTagsString(wxString tags);
 			void AddTag(std::shared_ptr<TagPresentationModel> tag);
-			std::vector<std::shared_ptr<TagPresentationModel>> SearchTagsByString(wxString search);
+			shared_vector<TagPresentationModel> SearchTagsByString(wxString search);
 
 			void Save();
 			std::function<void(TransactionViewModelField field)> OnUpdate;
@@ -54,15 +55,15 @@ namespace Clerk {
 			unsigned int _subscriptionId;
 			int _splitId = -1;
 			int _id = -1;
-			std::vector<AccountPresentationModel*> _fromAccounts;
-			std::vector<AccountPresentationModel*> _toAccounts;
-			AccountPresentationModel* _fromAccount;
-			AccountPresentationModel* _toAccount;
+			shared_vector<AccountPresentationModel> _fromAccounts;
+			shared_vector<AccountPresentationModel> _toAccounts;
+			std::shared_ptr<AccountPresentationModel> _fromAccount;
+			std::shared_ptr<AccountPresentationModel> _toAccount;
 			float _fromAmount =- 0.0;
 			float _toAmount = 0.0;
 			wxString _note;
 			wxDateTime _date;
-			std::vector<std::shared_ptr<TagPresentationModel>> _tags;
+			shared_vector<TagPresentationModel> _tags;
 
 			void Update();
 			void UpdateAccounts();

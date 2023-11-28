@@ -8,6 +8,7 @@
 #include "../../Data/Services/GoalsService.h"
 #include "../../Data/Models/CurrencyModel.h"
 #include "../../Utils/EventEmitter.h"
+#include "../../Utils/Types.h"
 
 namespace Clerk {
 	namespace UI {
@@ -21,14 +22,14 @@ namespace Clerk {
 			float GetOwnFunds();
 			float GetCreditFunds();
 			std::shared_ptr<CurrencyPresentationModel> GetCurrency();
-			std::vector<AccountPresentationModel*> GetAccounts();
-			std::vector<AccountPresentationModel*> GetExpensesForMonth();
+			shared_vector<AccountPresentationModel> GetAccounts();
+			shared_vector<AccountPresentationModel> GetExpensesForMonth();
 			float GetTotalReceiptsForMonth();
 			float GetTotalExpensesForMonth();
-			std::vector<std::shared_ptr<BudgetPresentationModel>> GetBudgets();
-			std::vector<std::shared_ptr<SchedulerPresentationModel>> GetSchedulersForMonth();
-			std::vector<AccountPresentationModel*> GetDepts();
-			std::vector<std::shared_ptr<GoalPresentationModel>> GetGoals();
+			shared_vector<BudgetPresentationModel> GetBudgets();
+			shared_vector<SchedulerPresentationModel> GetSchedulersForMonth();
+			shared_vector<AccountPresentationModel> GetDepts();
+			shared_vector<GoalPresentationModel> GetGoals();
 
 			void OnUpdate(std::function<void()> fn);
 

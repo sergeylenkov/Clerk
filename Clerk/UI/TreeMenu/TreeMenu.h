@@ -49,7 +49,7 @@ namespace Clerk {
 			void CreateMenu();
 			void Update();
 			void SetIsTrashEmpty(bool isEmpty);
-			AccountPresentationModel* GetContextMenuAccount();
+			std::shared_ptr<AccountPresentationModel> GetContextMenuAccount();
 			void ExpandItem(wxTreeItemId& item);
 			void OnTreeSpecItemMenu(wxTreeEvent& event);
 			void OnTreeItemSelect(wxTreeEvent& event);			
@@ -58,7 +58,7 @@ namespace Clerk {
 			void OnBeginDrag(wxTreeEvent& event);
 			void OnEndDrag(wxTreeEvent& event);
 			void ReorderAccounts(wxTreeItemId& item);
-			void AddAccountItem(wxTreeItemId& parent, AccountPresentationModel* account);
+			void AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account);
 		};
 	}
 }

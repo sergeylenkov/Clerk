@@ -20,6 +20,6 @@ void TransactionsMenuViewModel::OnUpdate(std::function<void()> fn) {
 	_eventEmitter->Subscribe(fn);
 }
 
-std::vector<std::shared_ptr<TransactionPresentationModel>> TransactionsMenuViewModel::GetRecents() {
+shared_vector<TransactionPresentationModel> TransactionsMenuViewModel::GetRecents() {
 	return _transactionsService.GetRecents(10);
 }

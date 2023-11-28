@@ -2,6 +2,10 @@
 
 using namespace Clerk::Data;
 
+AccountModel* AccountsRepository::GetById(int id) {
+	return Load(id);
+}
+
 std::vector<AccountModel *> AccountsRepository::GetAll() {
 	std::vector<AccountModel*> result;
 
@@ -18,10 +22,6 @@ std::vector<AccountModel *> AccountsRepository::GetAll() {
 	sqlite3_finalize(statement);
 
 	return result;
-}
-
-AccountModel* AccountsRepository::GetById(int id) {	
-	return Load(id);
 }
 
 float AccountsRepository::GetBalance(int accountId, AccountType type)

@@ -5,6 +5,7 @@
 #include <wx/combo.h>
 #include "./CheckboxComboPopup.h"
 #include "../PresentationModels/AccountPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
@@ -17,14 +18,14 @@ public:
 
 	std::function<void(std::set<int> ids)> OnChange;
 
-	void SetAccounts(std::vector<AccountPresentationModel*> accounts);
+	void SetAccounts(shared_vector<AccountPresentationModel> accounts);
 	void SetSelection(std::set<int> ids);
 
 private:
-	CheckboxComboPopup *accountsList;
-	std::vector<AccountPresentationModel*> accounts;
-	std::set<int> selectedIds;
-	bool ignoreSelection;
+	CheckboxComboPopup *_accountsList;
+	shared_vector<AccountPresentationModel> _accounts;
+	std::set<int> _selectedIds;
+	bool _ignoreSelection;
 
 	void UpdateList();
 	void UpdateNames();

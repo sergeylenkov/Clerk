@@ -44,7 +44,7 @@ std::shared_ptr<CurrencyPresentationModel> DashboardViewModel::GetCurrency() {
 	return _currenciesService.GetBaseCurrency();
 }
 
-std::vector<AccountPresentationModel*> DashboardViewModel::GetAccounts() {
+shared_vector<AccountPresentationModel> DashboardViewModel::GetAccounts() {
 	auto accounts = _accountsService.GetDepositsAndVirtuals();
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
@@ -54,7 +54,7 @@ std::vector<AccountPresentationModel*> DashboardViewModel::GetAccounts() {
 	return accounts;
 }
 
-std::vector<AccountPresentationModel*> DashboardViewModel::GetExpensesForMonth() {
+shared_vector<AccountPresentationModel> DashboardViewModel::GetExpensesForMonth() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
@@ -90,21 +90,21 @@ float DashboardViewModel::GetTotalExpensesForMonth() {
 	return _accountingService.GetExpenses(fromDate, toDate);
 }
 
-std::vector<std::shared_ptr<BudgetPresentationModel>> DashboardViewModel::GetBudgets() {
+shared_vector<BudgetPresentationModel> DashboardViewModel::GetBudgets() {
 	return _budgetsService.GetAll();
 }
 
-std::vector<std::shared_ptr<SchedulerPresentationModel>> DashboardViewModel::GetSchedulersForMonth() {
+shared_vector<SchedulerPresentationModel> DashboardViewModel::GetSchedulersForMonth() {
 	wxDateTime today = wxDateTime::Now();
 	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
 
 	return _schedulersService.GetByPeriod(today, month);
 }
 
-std::vector<AccountPresentationModel*> DashboardViewModel::GetDepts() {
+shared_vector<AccountPresentationModel> DashboardViewModel::GetDepts() {
 	return _accountsService.GetDebts();
 }
 
-std::vector<std::shared_ptr<GoalPresentationModel>> DashboardViewModel::GetGoals() {
+shared_vector<GoalPresentationModel> DashboardViewModel::GetGoals() {
 	return _goalsService.GetAll();
 }

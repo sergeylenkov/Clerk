@@ -6,6 +6,7 @@
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "../PresentationModels/ReportPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::UI;
 
@@ -15,14 +16,14 @@ namespace Clerk {
 		public:
 			TreeMenuViewModel(AccountsService& accountsService, ReportsService& reportsService, TransactionsService& transactionsService);
 
-			std::vector<AccountPresentationModel*> GetReceiptsAccounts();
-			std::vector<AccountPresentationModel*> GetDepositsAccounts();
-			std::vector<AccountPresentationModel*> GetExpensesAccounts();
-			std::vector<AccountPresentationModel*> GetDebtsAccounts();
-			std::vector<AccountPresentationModel*> GetVirtualsAccounts();
-			std::vector<AccountPresentationModel*> GetArchiveAccounts();
-			std::vector<std::shared_ptr<ReportPresentationModel>> GetReports();
-			std::vector<std::shared_ptr<TransactionPresentationModel>> GetRecentsTransactions(const AccountPresentationModel& account);
+			shared_vector<AccountPresentationModel> GetReceiptsAccounts();
+			shared_vector<AccountPresentationModel> GetDepositsAccounts();
+			shared_vector<AccountPresentationModel> GetExpensesAccounts();
+			shared_vector<AccountPresentationModel> GetDebtsAccounts();
+			shared_vector<AccountPresentationModel> GetVirtualsAccounts();
+			shared_vector<AccountPresentationModel> GetArchiveAccounts();
+			shared_vector<ReportPresentationModel> GetReports();
+			shared_vector<TransactionPresentationModel> GetRecentsTransactions(const AccountPresentationModel& account);
 			bool IsTrashEmpty();
 
 		private:

@@ -92,14 +92,11 @@ void TransactionViewModel::SetAccountId(int id) {
 }
 
 void TransactionViewModel::Update() {
-	//UpdateFromAccounts();
 	UpdateAccounts();
 
 	if (!_fromAccount) {
 		_fromAccount = _fromAccounts[0];
 	}
-
-	//UpdateToAccounts();
 
 	if (!_toAccount) {
 		_toAccount = _toAccounts[0];
@@ -158,7 +155,7 @@ void TransactionViewModel::UpdateToAccounts() {
 
 	_toAccounts.clear();
 	
-	std::vector<AccountPresentationModel*> filtered;
+	shared_vector<AccountPresentationModel> filtered;
 
 	filtered.insert(filtered.end(), deposits.begin(), deposits.end());
 	filtered.insert(filtered.end(), virtuals.begin(), virtuals.end());
@@ -178,11 +175,11 @@ void TransactionViewModel::UpdateToAccounts() {
 	}
 }
 
-std::vector<AccountPresentationModel*> TransactionViewModel::GetFromAccounts() {
+shared_vector<AccountPresentationModel> TransactionViewModel::GetFromAccounts() {
 	return _fromAccounts;
 }
 
-std::vector<AccountPresentationModel*> TransactionViewModel::GetToAccounts() {
+shared_vector<AccountPresentationModel> TransactionViewModel::GetToAccounts() {
 	return _toAccounts;
 }
 
@@ -199,7 +196,7 @@ int TransactionViewModel::GetFromAccountIndex() {
 void TransactionViewModel::SetFromAccount(int index) {
 	_fromAccount = _fromAccounts[index];
 
-	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](const AccountPresentationModel* account) {
+	const auto result = std::find_if(_toAccounts.begin(), _toAccounts.end(), [&](auto account) {
 		return account->id == _fromAccount->id;
 	});
 
@@ -225,7 +222,7 @@ int TransactionViewModel::GetToAccountIndex() {
 void TransactionViewModel::SetToAccount(int index) {
 	_toAccount = _toAccounts[index];
 
-	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](const AccountPresentationModel* account) {
+	const auto result = std::find_if(_fromAccounts.begin(), _fromAccounts.end(), [&](auto account) {
 		return account->id == _toAccount->id;
 	});
 
@@ -296,7 +293,7 @@ wxDateTime TransactionViewModel::GetDate() {
 	return _date;
 }
 
-std::vector<std::shared_ptr<TagPresentationModel>> TransactionViewModel::GetTags() {
+shared_vector<TagPresentationModel> TransactionViewModel::GetTags() {
 	return _tags;
 }
 
@@ -349,7 +346,7 @@ void TransactionViewModel::AddTag(std::shared_ptr<TagPresentationModel> tag) {
 	}
 }
 
-std::vector<std::shared_ptr<TagPresentationModel>> TransactionViewModel::SearchTagsByString(wxString search) {
+shared_vector<TagPresentationModel> TransactionViewModel::SearchTagsByString(wxString search) {
 	return _tagsService.GetBySearch(search);
 }
 
@@ -369,14 +366,11 @@ void TransactionViewModel::Save() {
 	transaction->tagsString = GetTagsString();
 	transaction->date = _date;
 	
-	_transactionsService.Save(transaction);
+	_transactionsService.Save(*transaction);
 
 	auto splitTransaction = _transactionsService.GetById(_splitId);
 
 	if (splitTransaction) {
-		splitTransaction->fromAmount = splitTransaction->fromAmount - transaction->fromAmount;
-		splitTransaction->toAmount = splitTransaction->toAmount - transaction->toAmount;
-
-		_transactionsService.Split(splitTransaction, transaction);
+		_transactionsService.Split(*splitTransaction, *transaction);
 	}
 }

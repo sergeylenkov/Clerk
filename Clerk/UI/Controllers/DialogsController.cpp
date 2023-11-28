@@ -84,7 +84,7 @@ void DialogsController::DeleteTransaction(int id) {
 	auto transaction = _context.GetTransactionsService().GetById(id);
 
 	if (transaction) {
-		_context.GetTransactionsService().Delete(transaction);
+		_context.GetTransactionsService().Delete(*transaction);
 	}
 }
 

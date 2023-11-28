@@ -159,7 +159,7 @@ void TreeMenu::Update() {
 	SetIsTrashEmpty(_viewModel->IsTrashEmpty());
 }
 
-void TreeMenu::AddAccountItem(wxTreeItemId& parent, AccountPresentationModel* account) {
+void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account) {
 	int iconIndex = _icons.GetIconIndexForAccount(account->icon);
 
 	TreeMenuItemData* itemData = new TreeMenuItemData();
@@ -194,12 +194,12 @@ void TreeMenu::ExpandItem(wxTreeItemId &item) {
 	}
 }
 
-AccountPresentationModel* TreeMenu::GetContextMenuAccount() {
+std::shared_ptr<AccountPresentationModel> TreeMenu::GetContextMenuAccount() {
 	if (_contextMenuItem != NULL) {
 		TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
 		if (item->type == TreeMenuItemType::Account) {
-			AccountPresentationModel* account = (AccountPresentationModel*)item->object;
+			auto account = std::static_pointer_cast<AccountPresentationModel>(item->object);
 			return account;
 		}
 	}
@@ -278,7 +278,7 @@ void TreeMenu::OnEndDrag(wxTreeEvent &event) {
 		TreeMenuItemData *itemData = (TreeMenuItemData *)_treeMenu->GetItemData(itemId);
 
 		if (draggedData->type == itemData->type) {
-			auto account = (AccountPresentationModel*)draggedData->object;
+			auto account = std::static_pointer_cast<AccountPresentationModel>(itemData->object);
 
 			TreeMenuItemData *itemData = new TreeMenuItemData();
 			itemData->type = draggedData->type;
@@ -300,12 +300,8 @@ void TreeMenu::ReorderAccounts(wxTreeItemId &item) {
 
 	while (child.IsOk())
 	{
-		TreeMenuItemData *data = (TreeMenuItemData *)_treeMenu->GetItemData(child);
-		auto account = (AccountPresentationModel*)data->object;
-
-		//TODO moved methos ti interactor
-		//account->orderId = orderId++;
-		//account->Save();
+		TreeMenuItemData *itemData = (TreeMenuItemData *)_treeMenu->GetItemData(child);
+		auto account = std::static_pointer_cast<AccountPresentationModel>(itemData->object);
 
 		child = _treeMenu->GetNextChild(item, cookie);
 	}

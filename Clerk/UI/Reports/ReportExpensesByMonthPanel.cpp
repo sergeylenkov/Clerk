@@ -64,7 +64,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	this->SetSizer(mainSizer);
 
-	auto account = new AccountPresentationModel();
+	auto account = std::make_shared<AccountPresentationModel>();
 	account->name = wxString("All");
 	account->id = -1;
 	account->icon = -1;

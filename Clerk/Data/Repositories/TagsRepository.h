@@ -3,14 +3,14 @@
 #include <string>
 #include <vector>
 #include <memory>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/TagModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class TagsRepository : HashRepository<TagModel> {
+		class TagsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
 			std::vector<TagModel*> GetAll();
 			TagModel* GetById(int id);

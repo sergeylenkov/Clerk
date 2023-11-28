@@ -4,6 +4,7 @@
 #include "../../Data/Models/TransactionModel.h"
 #include "./TagPresentationModel.h"
 #include "./AccountPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 
@@ -15,17 +16,20 @@ namespace Clerk {
 			TransactionPresentationModel(TransactionModel& transaction);
 
 			int id;
-			AccountPresentationModel* fromAccount;
-			AccountPresentationModel* toAccount;
+			std::shared_ptr<AccountPresentationModel> fromAccount;
+			std::shared_ptr<AccountPresentationModel> toAccount;
 			float fromAmount;
 			float toAmount;
 			wxString note;
 			wxDateTime date;
 			wxDateTime created;
-			std::vector<std::shared_ptr<TagPresentationModel>> tags;
+			shared_vector<TagPresentationModel> tags;
 			wxString tagsString;			
 
-			std::shared_ptr<TransactionModel> GetModel();
+			operator TransactionModel& ();
+
+		private:
+			TransactionModel& GetModel();
 		};
 	}
 }

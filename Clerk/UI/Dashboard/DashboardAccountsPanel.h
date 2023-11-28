@@ -3,6 +3,7 @@
 #include <wx/wx.h>
 #include <wx/numformatter.h>
 #include "../../Utils/Utils.h"
+#include "../../Utils/Types.h"
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "../ViewModels/DashboardViewModel.h"
 
@@ -18,7 +19,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
-	std::vector<AccountPresentationModel*> _accounts;
+	shared_vector<AccountPresentationModel> _accounts;
 	float _total = 0.0;
 
 	void Update();

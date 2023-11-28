@@ -14,8 +14,8 @@ namespace Clerk {
 		public:
 			BaseRepository::BaseRepository;
 
-			std::vector<AccountModel*> GetAll();
 			AccountModel* GetById(int id);
+			std::vector<AccountModel*> GetAll();
 			float GetBalance(int accountId, AccountType type);
 			float GetBalanceForDate(int accountId, AccountType type, std::string& date);
 			float GetExpenses(int accountId);

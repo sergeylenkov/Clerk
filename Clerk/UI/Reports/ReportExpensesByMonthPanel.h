@@ -14,7 +14,8 @@
 #include "ExpensesTooltipPopup.h"
 #include "../../Data/Settings.h"
 #include "../Controls/AccountsComboBox.h"
-#include "../PresentationModels//Types.h"
+#include "../PresentationModels/Types.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -35,7 +36,7 @@ private:
 	wxDatePickerCtrl *fromDatePicker;
 	wxDatePickerCtrl *toDatePicker;
 	wxCheckBox *averageCheckbox;
-	std::vector<AccountPresentationModel*> _accounts;
+	shared_vector<AccountPresentationModel> _accounts;
 	ExpensesTooltipPopup *chartPopup;
 	std::vector<DateValueViewModel> values = {};
 	wxDateTime periodFromDate;

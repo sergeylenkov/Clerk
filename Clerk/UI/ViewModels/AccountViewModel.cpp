@@ -41,7 +41,7 @@ bool AccountViewModel::IsNew() {
 	return _id == -1;
 }
 
-std::vector<std::shared_ptr<CurrencyPresentationModel>> AccountViewModel::GetCurrencies() {
+shared_vector<CurrencyPresentationModel> AccountViewModel::GetCurrencies() {
 	return _currencies;
 }
 
@@ -147,7 +147,7 @@ void AccountViewModel::Save() {
 	auto account = _accountsService.GetById(_id);
 
 	if (!account) {
-		account = new AccountPresentationModel();		
+		account = std::make_shared<AccountPresentationModel>();
 	}
 
 	account->name = _name;

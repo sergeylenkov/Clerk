@@ -2,6 +2,7 @@
 
 #include "../../Data/Services/TransactionsService.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 
@@ -12,7 +13,7 @@ namespace Clerk {
 			TransactionsMenuViewModel(TransactionsService& transactionsService);
 			~TransactionsMenuViewModel();
 
-			std::vector<std::shared_ptr<TransactionPresentationModel>> GetRecents();
+			shared_vector<TransactionPresentationModel> GetRecents();
 
 			void OnUpdate(std::function<void()> fn);
 

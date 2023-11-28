@@ -4,6 +4,7 @@
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/CurrenciesService.h"
 #include "./Enums.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 
@@ -16,7 +17,7 @@ namespace Clerk {
 			void SetAccountId(int id);
 			void SetAccountType(AccountType type);
 			bool IsNew();
-			std::vector<std::shared_ptr<CurrencyPresentationModel>> GetCurrencies();
+			shared_vector<CurrencyPresentationModel> GetCurrencies();
 			std::vector<wxString> GetTypes();
 			void SetName(wxString name);
 			wxString GetName();
@@ -44,7 +45,7 @@ namespace Clerk {
 			wxString _name;
 			AccountType _type;
 			int _iconId;
-			std::vector<std::shared_ptr<CurrencyPresentationModel>> _currencies;
+			shared_vector<CurrencyPresentationModel> _currencies;
 			std::shared_ptr<CurrencyPresentationModel> _currency;
 			float _amount;
 			float _creditLimit;

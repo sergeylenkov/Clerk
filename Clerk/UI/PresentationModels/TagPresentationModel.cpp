@@ -14,11 +14,15 @@ TagPresentationModel::TagPresentationModel(TagModel& tag) {
 	this->count = 0;
 }
 
-std::shared_ptr<TagModel> TagPresentationModel::GetModel() {
-	auto model = std::make_shared<TagModel>();
+TagPresentationModel::operator TagModel& () {
+	return GetModel();
+}
+
+TagModel& TagPresentationModel::GetModel() {
+	TagModel* model = new TagModel();
 
 	model->id = id;
 	model->name = name;
-
-	return model;
+	
+	return *model;
 }

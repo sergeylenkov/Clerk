@@ -332,6 +332,7 @@
     <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h" />
     <ClInclude Include="Utils\EventEmitter.h" />
     <ClInclude Include="Utils\Icons.h" />
+    <ClInclude Include="Utils\Types.h" />
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>

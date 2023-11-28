@@ -11,24 +11,24 @@
 
 namespace Clerk {
 	namespace Data {
-		class TransactionsRepository : HashRepository<TransactionModel> {
+		class TransactionsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			BaseRepository::BaseRepository;
 
-			std::shared_ptr<TransactionModel> GetById(int id);
-			std::vector<std::shared_ptr<TransactionModel>> GetAll();
-			std::vector<std::shared_ptr<TransactionModel>> GetDeleted();
-			std::vector<std::shared_ptr<TransactionModel>> GetRecents(int count);
-			std::vector<std::shared_ptr<TransactionModel>> GetRecents(int accountId, int count);
-			std::vector<std::shared_ptr<TransactionModel>> GetForPeriod(std::string& fromDate, std::string& toDate);
-			std::shared_ptr<TransactionModel> GetInitialTransactionForAccount(int accountId);
+			TransactionModel* GetById(int id);
+			std::vector<TransactionModel*> GetAll();
+			std::vector<TransactionModel*> GetDeleted();
+			std::vector<TransactionModel*> GetRecents(int count);
+			std::vector<TransactionModel*> GetRecents(int accountId, int count);
+			std::vector<TransactionModel*> GetForPeriod(std::string& fromDate, std::string& toDate);
+			TransactionModel* GetInitialTransactionForAccount(int accountId);
 
-			std::shared_ptr<TransactionModel> Save(std::shared_ptr<TransactionModel> transaction);
-			void Delete(std::shared_ptr<TransactionModel> transaction);
+			int Save(const TransactionModel& transaction);
+			void Delete(const TransactionModel& transaction);
 
 		private:
-			std::shared_ptr<TransactionModel> Load(int id);
-			void UpdateTags(std::shared_ptr<TransactionModel> transaction);
+			TransactionModel* Load(int id);
+			void UpdateTags(const TransactionModel& transaction);
 		};
 	}
 }

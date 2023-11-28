@@ -3,52 +3,88 @@
 TagsService::TagsService(TagsRepository& tagsRepository):
 	_tagsRepository(tagsRepository)
 {
-}
-
-std::vector<std::shared_ptr<TagPresentationModel>> TagsService::GetAll() {
-	auto tags = _tagsRepository.GetAll();
-
-	std::vector<std::shared_ptr<TagPresentationModel>> result;
-
-	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [&](const std::shared_ptr<TagModel>& tag) {
-		auto model = std::make_shared<TagPresentationModel>(*tag);
-
-		model->count = _tagsRepository.GetCount(tag->id);
-
-		return model;
-	});
-
-	return result;
+	_isLoading = false;
 }
 
 std::shared_ptr<TagPresentationModel> TagsService::GetById(int id) {
-	auto tag = _tagsRepository.GetById(id);
+	auto tag = GetFromHash(id);
 
 	if (tag) {
-		auto model = std::make_shared<TagPresentationModel>(*tag);
+		return tag;
+	}
 
-		return model;
+	auto model = _tagsRepository.GetById(id);
+
+	if (model) {
+		auto tag = std::make_shared<TagPresentationModel>(*model);
+		tag->count = _tagsRepository.GetCount(model->id);
+
+		AddToHash(tag->id, tag);
+
+		delete model;
+
+		return tag;
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<TagPresentationModel>> TagsService::GetBySearch(wxString search) {
-	auto tags = _tagsRepository.GetBySearch(search.ToStdWstring());
-	
-	std::vector<std::shared_ptr<TagPresentationModel>> result;
+shared_vector<TagPresentationModel> TagsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
 
-	std::transform(tags.begin(), tags.end(), std::back_inserter(result), [&](const std::shared_ptr<TagModel>& tag) {
-		return std::make_shared<TagPresentationModel>(*tag);
-	});
+	auto models = _tagsRepository.GetAll();
+
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto tag = std::make_shared<TagPresentationModel>(*model);
+			tag->count = _tagsRepository.GetCount(model->id);
+
+			AddToHash(tag->id, tag);
+		}
+	}
+
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
+}
+
+shared_vector<TagPresentationModel> TagsService::GetBySearch(wxString search) {
+	shared_vector<TagPresentationModel> result;
+
+	std::wstring wSearch = search.ToStdWstring();
+	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
+	f.tolower(&wSearch[0], &wSearch[0] + wSearch.size());
+
+	for (auto& tag : GetAll()) {
+		std::wstring tagName = tag->name;
+		f.tolower(&tagName[0], &tagName[0] + tagName.size());
+
+		std::size_t found = tagName.find(wSearch);
+
+		if (found != std::string::npos) {
+			result.push_back(tag);
+		}
+	}
 
 	return result;
 }
 
-std::shared_ptr<TagPresentationModel> TagsService::Save(std::shared_ptr<TagPresentationModel> tag) {
-	auto model = tag->GetModel();
+std::shared_ptr<TagPresentationModel> TagsService::Save(TagPresentationModel& tag) {
+	TagModel& model = tag;
 
-	auto savedModel = _tagsRepository.Save(model);
+	int id = _tagsRepository.Save(model);
 
-	return GetById(savedModel->id);
+	delete& model;
+
+	RemoveFromHash(id);
+
+	return GetById(id);
 }

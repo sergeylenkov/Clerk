@@ -24,27 +24,6 @@ TagModel* TagsRepository::GetById(int id) {
 	return Load(id);
 }
 
-/*std::vector<std::shared_ptr<TagModel>> TagsRepository::GetBySearch(std::wstring search) {
-	auto result = std::vector<std::shared_ptr<TagModel>>();
-
-	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
-
-	f.tolower(&search[0], &search[0] + search.size());
-
-	for (auto& tag : GetAll()) {
-		std::wstring tagName = tag->name;
-		f.tolower(&tagName[0], &tagName[0] + tagName.size());
-
-		std::size_t found = tagName.find(search);
-
-		if (found != std::string::npos) {
-			result.push_back(tag);
-		}
-	}
-
-	return result;
-}*/
-
 int TagsRepository::GetCount(int id) {
 	int result = 0;
 
@@ -99,7 +78,6 @@ int TagsRepository::Save(const TagModel& tag)
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
-				Load(id);
 			}
 		}
 

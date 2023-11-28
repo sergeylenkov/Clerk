@@ -1,30 +1,28 @@
 #include "AccountsComboBox.h"
 
 AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size) : wxComboCtrl(parent, id, value, pos, size, wxCB_READONLY) {
-	accountsList = new CheckboxComboPopup();
+	_accountsList = new CheckboxComboPopup();
 
-	this->SetPopupControl(accountsList);
+	this->SetPopupControl(_accountsList);
 
-	accountsList->EnableCheckBoxes(true);
-	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	_accountsList->EnableCheckBoxes(true);
+	_accountsList->OnItemSelect = std::bind(&AccountsComboBox::OnAccountSelect, this, std::placeholders::_1);
 
-	accountsList->OnItemSelect = std::bind(&AccountsComboBox::OnAccountSelect, this, std::placeholders::_1);
-
-	selectedIds = {};
-	ignoreSelection = false;
+	_selectedIds = {};
+	_ignoreSelection = false;
 }
 
 AccountsComboBox::~AccountsComboBox() {
 	
 }
 
-void AccountsComboBox::SetAccounts(std::vector<AccountPresentationModel*> accounts) {
-	this->accounts = accounts;
+void AccountsComboBox::SetAccounts(shared_vector<AccountPresentationModel> accounts) {
+	this->_accounts = accounts;
 	UpdateList();
 }
 
 void AccountsComboBox::SetSelection(std::set<int> ids) {
-	this->selectedIds = ids;
+	this->_selectedIds = ids;
 
 	UpdateNames();
 	UpdateSelection();
@@ -37,18 +35,18 @@ void AccountsComboBox::UpdateList() {
 	column.SetText(_("Name"));
 	column.SetWidth(180);
 
-	accountsList->InsertColumn(0, column);
+	_accountsList->InsertColumn(0, column);
 
 	int i = 0;
 
-	for (auto& account : accounts)
+	for (auto& account : _accounts)
 	{
 		wxListItem listItem;
 
 		listItem.SetId(i);
 		listItem.SetData(account->id);
 		
-		accountsList->InsertItem(i, account->name, account->icon);
+		_accountsList->InsertItem(i, account->name, account->icon);
 
 		i++;
 	}
@@ -57,11 +55,11 @@ void AccountsComboBox::UpdateList() {
 void AccountsComboBox::UpdateNames() {
 	wxString names = "";
 
-	if (selectedIds.count(-1) > 0) {
+	if (_selectedIds.count(-1) > 0) {
 		names = "All";
 	} else {
-		for (auto& account : accounts) {
-			if (selectedIds.count(account->id) > 0) {
+		for (auto& account : _accounts) {
+			if (_selectedIds.count(account->id) > 0) {
 				names = names + wxString::Format("%s, ", account->name);
 			}
 		}
@@ -70,55 +68,55 @@ void AccountsComboBox::UpdateNames() {
 	}
 
 	this->SetValue(names);
-	accountsList->SetStringValue(names);
+	_accountsList->SetStringValue(names);
 }
 
 void AccountsComboBox::UpdateSelection() {	
-	ignoreSelection = true;
+	_ignoreSelection = true;
 	int i = 0;
 
-	for (auto& account : accounts)
+	for (auto& account : _accounts)
 	{
-		bool checked = selectedIds.count(account->id) > 0;
+		bool checked = _selectedIds.count(account->id) > 0;
 
-		if (selectedIds.count(-1) > 0) {
+		if (_selectedIds.count(-1) > 0) {
 			checked = true;
 		}
 
-		accountsList->CheckItem(i, checked);
+		_accountsList->CheckItem(i, checked);
 
 		i++;
 	}
 
-	ignoreSelection = false;
+	_ignoreSelection = false;
 }
 
 void AccountsComboBox::OnAccountSelect(int index) {
-	if (ignoreSelection) {
+	if (_ignoreSelection) {
 		return;
 	}
 
-	auto account = accounts[index];
+	auto account = _accounts[index];
 
 	if (account->id == -1) {
-		if (selectedIds.count(account->id) == 0) {
-			selectedIds.clear();
+		if (_selectedIds.count(account->id) == 0) {
+			_selectedIds.clear();
 
-			for (auto& account : accounts) {
-				selectedIds.insert(account->id);
+			for (auto& account : _accounts) {
+				_selectedIds.insert(account->id);
 			}
 		} else {
-			selectedIds.clear();
+			_selectedIds.clear();
 		}
 	}
 	else {
-		selectedIds.erase(-1);
+		_selectedIds.erase(-1);
 
-		if (selectedIds.count(account->id) == 0) {
-			selectedIds.insert(account->id);
+		if (_selectedIds.count(account->id) == 0) {
+			_selectedIds.insert(account->id);
 		}
 		else {
-			selectedIds.erase(account->id);
+			_selectedIds.erase(account->id);
 		}
 	}	
 
@@ -126,6 +124,6 @@ void AccountsComboBox::OnAccountSelect(int index) {
 	UpdateSelection();
 
 	if (OnChange) {
-		OnChange(selectedIds);
+		OnChange(_selectedIds);
 	}
 }

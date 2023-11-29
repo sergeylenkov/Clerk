@@ -1,30 +1,31 @@
 #include "TagsPopup.h"
 
 TagsPopup::TagsPopup(wxWindow *parent) : wxPopupWindow(parent) {
-	_panel = new wxScrolledWindow(this, wxID_ANY);
+	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+
+	_panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
 	_panel->SetBackgroundColour(*wxLIGHT_GREY);
 	
-	_list = new wxListCtrl(_panel, wxID_ANY, wxPoint(0, 0), wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
+	mainSizer->Add(_panel, 0, wxEXPAND, 0);
+
+	_list = new wxListCtrl(_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
 	_list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TagsPopup::OnListItemDoubleClick, this);
 
 	wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
-	topSizer->Add(_list, 0, wxALL, 1);
+	topSizer->Add(_list, 0, wxEXPAND, 1);
 
-	_panel->SetAutoLayout(true);
 	_panel->SetSizer(topSizer);
+	_panel->Layout();
 
-	topSizer->Fit(_panel);
-
-	SetClientSize(wxDefaultSize);
+	this->SetSizer(mainSizer);
+	this->Layout();
 }
 
-void TagsPopup::SetSize(wxSize size) {
-	wxPopupWindow::SetSize(size);
+void TagsPopup::Position(wxPoint position, wxSize size) {
+	wxPopupWindow::Position(position, size);
 
-	_list->SetSize(size);
-	_panel->SetSize(size);
-
-	SetClientSize(size);
+	this->SetSize(size);
+	_list->SetMinSize(size);
 
 	this->Layout();
 }
@@ -37,8 +38,8 @@ void TagsPopup::Update(shared_vector<TagPresentationModel> tags) {
 
 	col.SetId(0);
 	col.SetText(_(""));
-	col.SetWidth(_list->GetSize().GetWidth() - 20);
-
+	col.SetWidth(_list->GetSize().GetWidth() - 40);
+	
 	_list->InsertColumn(0, col);
 
 	for (unsigned int i = 0; i < tags.size(); i++) {

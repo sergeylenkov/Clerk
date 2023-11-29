@@ -15,7 +15,7 @@ class TagsPopup : public wxPopupWindow
 public:
 	TagsPopup(wxWindow *parent);
 
-	void SetSize(wxSize size);
+	void Position(wxPoint position, wxSize size);
 	void Update(shared_vector<TagPresentationModel> tags);
 	void SelectNext();
 	void SelectPrev();

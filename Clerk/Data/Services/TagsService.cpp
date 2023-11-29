@@ -4,6 +4,7 @@ TagsService::TagsService(TagsRepository& tagsRepository):
 	_tagsRepository(tagsRepository)
 {
 	_isLoading = false;
+	GetAll();
 }
 
 std::shared_ptr<TagPresentationModel> TagsService::GetById(int id) {

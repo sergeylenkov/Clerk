@@ -4,7 +4,7 @@ using namespace Clerk::UI;
 
 const int transactionsOffset = 1000;
 
-MainMenu::MainMenu(CommandsInvoker& commandsInvoker): _commandsInvoker(commandsInvoker) {
+MainMenu::MainMenu(CommandsInvoker& commandsInvoker, Icons& icons): _commandsInvoker(commandsInvoker), _icons(icons) {
 	_menuFile = new wxMenu();	
 	
 	_menuFile->AppendSeparator();
@@ -44,6 +44,7 @@ void MainMenu::SetViewModel(TransactionsMenuViewModel* viewModel) {
 void MainMenu::Update() {
 	auto transactions = _viewModel->GetRecents();
 
+
 	if (transactions.size() == 0) {
 		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction...\tCtrl+T"));		
 	}
@@ -56,7 +57,8 @@ void MainMenu::Update() {
 
 		for (auto& transaction : transactions)
 		{
-			menu->Append(transactionsOffset + transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+			wxMenuItem* transactionItem = menu->Append(transactionsOffset + transaction->id, wxString::Format("%s › %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
+			transactionItem->SetBitmap(*_icons.GetAccountIcon(transaction->toAccount->icon));
 		}
 
 		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction"), menu);

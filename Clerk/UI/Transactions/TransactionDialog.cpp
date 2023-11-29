@@ -250,11 +250,11 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 			auto tags = _viewModel->SearchTagsByString(tokens.back());
 
 			if (tags.size() > 0) {
-				wxPoint pos = _tagsField->GetScreenPosition();
+				wxPoint position = _tagsField->GetScreenPosition();
 				wxSize size = _tagsField->GetSize();
-				wxSize dialogSize = wxSize(size.GetWidth(), 300);
+				wxSize dialogSize = wxSize(size.GetWidth(), this->GetSize().GetHeight() - _tagsField->GetPosition().y - size.GetHeight());
 
-				_tagsPopup->Position(wxPoint(pos.x - dialogSize.GetWidth(), (pos.y - dialogSize.GetHeight()) + size.GetHeight()), dialogSize);
+				_tagsPopup->Position(wxPoint(position.x - dialogSize.GetWidth(), (position.y - dialogSize.GetHeight()) + size.GetHeight()), dialogSize);
 				_tagsPopup->Update(tags);
 				_tagsPopup->Show();
 			}

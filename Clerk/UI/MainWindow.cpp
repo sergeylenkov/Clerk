@@ -25,14 +25,14 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 
-	_mainMenu = new MainMenu(*_commandsInvoker);
+	_mainMenu = new MainMenu(*_commandsInvoker, _icons);
 	_mainMenu->SetViewModel(mainMenuViewModel);
 
 	this->SetMenuBar(_mainMenu);
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	_toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxDefaultSize), wxBORDER_NONE);
+	_toolbar = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	_toolbar->SetBackgroundColour(wxColour(255, 255, 255));
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);

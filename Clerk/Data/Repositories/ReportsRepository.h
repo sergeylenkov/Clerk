@@ -3,17 +3,17 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/ReportModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class ReportsRepository : HashRepository<ReportModel> {
+		class ReportsRepository : BaseRepository {
 		public:
-			ReportsRepository(DataConnection& connection);
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<ReportModel>> GetAll();
-			std::shared_ptr<ReportModel> GetById(int id);
+			std::vector<ReportModel*> GetAll();
+			ReportModel* GetById(int id);
 		};
 	}
 }

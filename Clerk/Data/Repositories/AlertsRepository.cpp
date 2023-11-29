@@ -2,35 +2,26 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<AlertModel>> AlertsRepository::GetAll() {
+AlertModel* AlertsRepository::GetById(int id) {	
+	return Load(id);
+}
+
+std::vector<AlertModel*> AlertsRepository::GetAll() {
+	std::vector<AlertModel*> result;
+
 	char* sql = "SELECT id FROM alerts ORDER BY name";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			int id = sqlite3_column_int(statement, 0);
-
-			if (!GetFromHash(id)) {
-				auto alert = Load(id);
-				AddToHash(id, alert);
-			}
+			result.push_back(Load(id));
 		}
 	}
 
 	sqlite3_finalize(statement);
 	
-	return GetHashList();
-}
-
-std::shared_ptr<AlertModel> AlertsRepository::GetById(int id) {
-	std::shared_ptr<AlertModel> alert = GetFromHash(id);
-	
-	if (!alert) {
-		alert = Load(id);
-		AddToHash(id, alert);
-	}
-
-	return alert;
+	return result;
 }
 
 float AlertsRepository::GetBalance(const AlertModel& alert) {
@@ -65,8 +56,8 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 	return total;
 }
 
-std::shared_ptr<AlertModel> AlertsRepository::Load(int id) {
-	std::shared_ptr<AlertModel> alert = nullptr;
+AlertModel* AlertsRepository::Load(int id) {
+	AlertModel* alert = nullptr;
 
 	char* sql = "SELECT id, name, type, period, condition, amount, account_ids, created_at FROM alerts WHERE id = ?";
 	sqlite3_stmt* statement;
@@ -75,7 +66,7 @@ std::shared_ptr<AlertModel> AlertsRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			alert = std::make_shared<AlertModel>();
+			alert = new AlertModel();
 
 			alert->id = sqlite3_column_int(statement, 0);
 			alert->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
@@ -93,8 +84,9 @@ std::shared_ptr<AlertModel> AlertsRepository::Load(int id) {
 	return alert;
 }
 
-void AlertsRepository::Save(AlertModel& alert)
-{
+int AlertsRepository::Save(const AlertModel& alert) {
+	int id = alert.id;
+
 	if (alert.id == -1) {
 		char* sql = "INSERT INTO alerts (name, type, period, condition, amount, account_ids, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
@@ -109,14 +101,13 @@ void AlertsRepository::Save(AlertModel& alert)
 			sqlite3_bind_text16(statement, 7, alert.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				alert.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 			}
 		}
 
 		sqlite3_finalize(statement);
 	}
-	else {
-		
+	else {		
 		char* sql = "UPDATE alerts SET name = ?, type = ?, period = ?, condition = ?, amount = ?, account_ids = ? WHERE id = ?";
 		sqlite3_stmt* statement;
 
@@ -135,6 +126,8 @@ void AlertsRepository::Save(AlertModel& alert)
 
 		sqlite3_finalize(statement);
 	}
+
+	return id;
 }
 
 void AlertsRepository::Delete(const AlertModel& alert)
@@ -144,10 +137,7 @@ void AlertsRepository::Delete(const AlertModel& alert)
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, alert.id);
-
-		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(alert.id);
-		}
+		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);

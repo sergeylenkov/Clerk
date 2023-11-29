@@ -2,35 +2,26 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<BudgetModel>> BudgetsRepository::GetAll() {
-	if (GetHashList().empty()) {
-		char* sql = "SELECT id FROM budgets ORDER BY name";
-		sqlite3_stmt* statement;
-
-		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				int id = sqlite3_column_int(statement, 0);
-				auto budget = Load(id);
-
-				AddToHash(id, budget);
-			}
-		}
-
-		sqlite3_finalize(statement);
-	}
-
-	return GetHashList();
+BudgetModel* BudgetsRepository::GetById(int id) {	
+	return Load(id);
 }
 
-std::shared_ptr<BudgetModel> BudgetsRepository::GetById(int id) {
-	std::shared_ptr<BudgetModel> budget = GetFromHash(id);
+std::vector<BudgetModel*> BudgetsRepository::GetAll() {
+	std::vector<BudgetModel*> result;
 
-	if (!budget) {		
-		budget = Load(id);
-		AddToHash(id, budget);
+	char* sql = "SELECT id FROM budgets ORDER BY name";
+	sqlite3_stmt* statement;
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int id = sqlite3_column_int(statement, 0);
+			result.push_back(Load(id));
+		}
 	}
 
-	return budget;
+	sqlite3_finalize(statement);
+
+	return result;
 }
 
 float BudgetsRepository::GetExpenses(const BudgetModel& budget, std::string& fromDate, std::string& toDate) {
@@ -55,8 +46,8 @@ float BudgetsRepository::GetExpenses(const BudgetModel& budget, std::string& fro
 	return total;
 }
 
-std::shared_ptr<BudgetModel> BudgetsRepository::Load(int id) {
-	std::shared_ptr<BudgetModel> budget = nullptr;
+BudgetModel* BudgetsRepository::Load(int id) {
+	BudgetModel* budget = nullptr;
 
 	char* sql = "SELECT b.id, b.name, b.period, b.date, b.amount, b.account_ids FROM budgets b WHERE b.id = ?";
 	sqlite3_stmt* statement;
@@ -65,7 +56,7 @@ std::shared_ptr<BudgetModel> BudgetsRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			budget = std::make_shared<BudgetModel>();
+			budget = new BudgetModel();
 
 			budget->id = sqlite3_column_int(statement, 0);
 			budget->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
@@ -81,8 +72,9 @@ std::shared_ptr<BudgetModel> BudgetsRepository::Load(int id) {
 	return budget;
 }
 
-void BudgetsRepository::Save(BudgetModel& budget)
-{
+int BudgetsRepository::Save(const BudgetModel& budget) {
+	int id = budget.id;
+
 	if (budget.id == -1) {
 		char* sql = "INSERT INTO budgets (name, period, date, amount, account_ids, created_at) VALUES (?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
@@ -96,7 +88,7 @@ void BudgetsRepository::Save(BudgetModel& budget)
 			sqlite3_bind_text16(statement, 6, budget.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				budget.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 			}
 		}
 
@@ -120,6 +112,8 @@ void BudgetsRepository::Save(BudgetModel& budget)
 
 		sqlite3_finalize(statement);
 	}
+
+	return id;
 }
 
 void BudgetsRepository::Delete(const BudgetModel& budget)
@@ -129,10 +123,7 @@ void BudgetsRepository::Delete(const BudgetModel& budget)
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, budget.id);
-
-		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(budget.id);
-		}
+		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);

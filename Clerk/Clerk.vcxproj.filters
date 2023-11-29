@@ -641,9 +641,6 @@
     <ClInclude Include="Data\Repositories\CurrenciesRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Repositories\HashRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data\Repositories\ExchangeRatesRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>

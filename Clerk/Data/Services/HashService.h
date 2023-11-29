@@ -10,7 +10,6 @@ namespace Clerk {
 		template <class T>
 		class HashService {
 		public:
-
 			std::vector<T> GetHashList() {
 				return _list;
 			}

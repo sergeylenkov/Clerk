@@ -2,34 +2,33 @@
 
 using namespace Clerk::Data;
 
-ReportsRepository::ReportsRepository(DataConnection& connection) : HashRepository(connection) {
-	//TODO: Get reports from db
-	auto report = std::make_shared<ReportModel>();
+std::vector<ReportModel*> ReportsRepository::GetAll() {
+	std::vector<ReportModel*> result;
+
+	ReportModel* report = new ReportModel();
 
 	report->id = 1;
 	report->name = std::wstring(L"Expenses By Month");
 
-	AddToHash(1, report);
+	result.push_back(report);
 
-	report = std::make_shared<ReportModel>();
+	report = new ReportModel();
 
 	report->id = 2;
 	report->name = std::wstring(L"Balance By Month");
 
-	AddToHash(2, report);
+	result.push_back(report);
 
-	report = std::make_shared<ReportModel>();
+	report = new ReportModel();
 
 	report->id = 3;
 	report->name = std::wstring(L"Expenses For Period");
 
-	AddToHash(3, report);
+	result.push_back(report);
+
+	return result;
 }
 
-std::vector<std::shared_ptr<ReportModel>> ReportsRepository::GetAll() {
-	return GetHashList();
-}
-
-std::shared_ptr<ReportModel> ReportsRepository::GetById(int id) {
-	return GetFromHash(id);
+ReportModel* ReportsRepository::GetById(int id) {
+	return nullptr;
 }

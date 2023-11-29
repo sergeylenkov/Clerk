@@ -4,23 +4,23 @@
 #include <memory>
 #include <map>
 #include <algorithm>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/BudgetModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class BudgetsRepository : HashRepository<BudgetModel> {
+		class BudgetsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<BudgetModel>> GetAll();
-			std::shared_ptr<BudgetModel> GetById(int id);
+			BudgetModel* GetById(int id);
+			std::vector<BudgetModel*> GetAll();			
 			float GetExpenses(const BudgetModel& budget, std::string& fromDate, std::string& toDate);
-			void Save(BudgetModel& budget);
+			int Save(const BudgetModel& budget);
 			void Delete(const BudgetModel& budget);
 
 		private:
-			std::shared_ptr<BudgetModel> Load(int id);
+			BudgetModel* Load(int id);
 		};
 	}
 }

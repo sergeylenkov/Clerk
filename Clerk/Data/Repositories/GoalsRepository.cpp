@@ -2,36 +2,28 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<GoalModel>> GoalsRepository::GetAll() {
+GoalModel* GoalsRepository::GetById(int id) {
+	return Load(id);
+}
+
+std::vector<GoalModel*> GoalsRepository::GetAll() {
+	std::vector<GoalModel*> result;
+
 	char* sql = "SELECT id FROM goals ORDER BY name";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		while (sqlite3_step(statement) == SQLITE_ROW) {
 			int id = sqlite3_column_int(statement, 0);
-
-			if (!GetFromHash(id)) {
-				auto goal = Load(id);
-				AddToHash(id, goal);
-			}
+			result.push_back(Load(id));
 		}
 	}
 
 	sqlite3_finalize(statement);
 
-	return GetHashList();
+	return result;
 }
 
-std::shared_ptr<GoalModel> GoalsRepository::GetById(int id) {
-	std::shared_ptr<GoalModel> goal = GetFromHash(id);
-
-	if (!goal) {
-		goal = Load(id);
-		AddToHash(id, goal);
-	}
-
-	return goal;
-}
 
 float GoalsRepository::GetBalance(std::vector<int> accountIds) {
 	float total = 0.0;
@@ -43,7 +35,6 @@ float GoalsRepository::GetBalance(std::vector<int> accountIds) {
 	for (const auto& id : accountIds) {
 		ids += id + ",";
 	}
-
 
 	std::string sql = "";
 
@@ -80,8 +71,8 @@ float GoalsRepository::GetBalance(std::vector<int> accountIds) {
 	return total;
 }
 
-std::shared_ptr<GoalModel> GoalsRepository::Load(int id) {
-	std::shared_ptr<GoalModel> goal = nullptr;
+GoalModel* GoalsRepository::Load(int id) {
+	GoalModel* goal = nullptr;
 
 	char* sql = "SELECT id, name, date, amount, account_ids, created_at FROM goals WHERE id = ?";
 	sqlite3_stmt* statement;
@@ -90,7 +81,7 @@ std::shared_ptr<GoalModel> GoalsRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			goal = std::make_shared<GoalModel>();
+			goal = new GoalModel();
 
 			goal->id = sqlite3_column_int(statement, 0);
 			goal->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
@@ -106,8 +97,9 @@ std::shared_ptr<GoalModel> GoalsRepository::Load(int id) {
 	return goal;
 }
 
-void GoalsRepository::Save(GoalModel& goal)
-{
+int GoalsRepository::Save(const GoalModel& goal) {
+	int id = goal.id;
+
 	if (goal.id == -1) {
 		char* sql = "INSERT INTO goals (name, date, amount, account_ids, created_at) VALUES (?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
@@ -120,7 +112,7 @@ void GoalsRepository::Save(GoalModel& goal)
 			sqlite3_bind_text16(statement, 5, goal.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				goal.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 			}
 		}
 
@@ -142,6 +134,8 @@ void GoalsRepository::Save(GoalModel& goal)
 
 		sqlite3_finalize(statement);
 	}
+
+	return id;
 }
 
 void GoalsRepository::Delete(const GoalModel& goal)
@@ -151,10 +145,7 @@ void GoalsRepository::Delete(const GoalModel& goal)
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, goal.id);
-
-		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(goal.id);
-		}
+		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);

@@ -19,7 +19,6 @@ namespace Clerk {
 			std::vector<std::pair<std::string, float>> GetExpensesByAccount(std::string& fromDate, std::string& toDate);
 			std::vector<std::pair<std::string, float>> GetExpensesByAccount(std::string& accountIds, std::string& fromDate, std::string& toDate);
 			std::vector<std::pair<std::string, float>> GetExpensesForAccount(int accountId, std::string& fromDate, std::string& toDate);
-			std::vector<std::pair<std::string, float>> GetBalanceByMonth(int accountId, std::string& fromDate, std::string& toDate);
 		};
 	}
 }

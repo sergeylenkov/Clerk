@@ -3,20 +3,20 @@
 #include <vector>
 #include <memory>
 #include <map>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/CurrencyModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class CurrenciesRepository : HashRepository<CurrencyModel> {
+		class CurrenciesRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<CurrencyModel>> GetAll();
-			std::shared_ptr<CurrencyModel> GetById(int id);
+			CurrencyModel* GetById(int id);
+			std::vector<CurrencyModel*> GetAll();			
 
 		private:
-			std::shared_ptr<CurrencyModel> Load(int id);
+			CurrencyModel* Load(int id);
 			int _baseCurrencyId;
 		};
 	}

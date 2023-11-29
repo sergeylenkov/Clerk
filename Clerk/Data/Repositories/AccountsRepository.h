@@ -5,14 +5,14 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/AccountModel.h"
 
 namespace Clerk {
 	namespace Data {
 		class AccountsRepository : BaseRepository {
 		public:
-			BaseRepository::BaseRepository;
+			using BaseRepository::BaseRepository;
 
 			AccountModel* GetById(int id);
 			std::vector<AccountModel*> GetAll();

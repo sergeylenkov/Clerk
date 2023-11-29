@@ -4,24 +4,24 @@
 #include <memory>
 #include <map>
 #include <numeric>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/GoalModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class GoalsRepository : HashRepository<GoalModel> {
+		class GoalsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<GoalModel>> GetAll();
-			std::shared_ptr<GoalModel> GetById(int id);
+			GoalModel* GetById(int id);
+			std::vector<GoalModel*> GetAll();			
 			float GetBalance(std::vector<int> accountIds);
 
-			void Save(GoalModel& goal);
+			int Save(const GoalModel& goal);
 			void Delete(const GoalModel& goal);
 
 		private:
-			std::shared_ptr<GoalModel> Load(int id);
+			GoalModel* Load(int id);
 		};
 	}
 }

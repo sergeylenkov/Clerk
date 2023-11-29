@@ -2,39 +2,30 @@
 
 using namespace Clerk::Data;
 
-std::vector<std::shared_ptr<SchedulerModel>> SchedulersRepository::GetAll() {
-	if (GetHashList().empty()) {
-		char* sql = "SELECT id FROM schedulers ORDER BY name";
-		sqlite3_stmt* statement;
+SchedulerModel* SchedulersRepository::GetById(int id) {
+	return Load(id);
+}
 
-		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-			while (sqlite3_step(statement) == SQLITE_ROW) {
-				int id = sqlite3_column_int(statement, 0);
-				auto scheduler = Load(id);
+std::vector<SchedulerModel*> SchedulersRepository::GetAll() {
+	std::vector<SchedulerModel*> result;
 
-				AddToHash(id, scheduler);
-			}
+	char* sql = "SELECT id FROM schedulers ORDER BY name";
+	sqlite3_stmt* statement;
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int id = sqlite3_column_int(statement, 0);
+			result.push_back(Load(id));
 		}
-
-		sqlite3_finalize(statement);
 	}
 
-	return GetHashList();
+	sqlite3_finalize(statement);	
+
+	return result;
 }
 
-std::shared_ptr<SchedulerModel> SchedulersRepository::GetById(int id) {
-	std::shared_ptr<SchedulerModel> scheduler = GetFromHash(id);
-
-	if (!scheduler) {
-		scheduler = Load(id);
-		AddToHash(id, scheduler);		
-	}
-
-	return scheduler;
-}
-
-std::shared_ptr<SchedulerModel> SchedulersRepository::Load(int id) {
-	std::shared_ptr<SchedulerModel> scheduler = nullptr;
+SchedulerModel* SchedulersRepository::Load(int id) {
+	SchedulerModel* scheduler = nullptr;
 
 	char* sql = "SELECT s.id, s.name, s.type, s.day, s.week, s.month, s.from_account_id, s.to_account_id, s.from_account_amount, s.to_account_amount, s.tags, s.prev_date, s.next_date, s.active FROM schedulers s WHERE s.id = ?";
 	sqlite3_stmt* statement;
@@ -43,7 +34,7 @@ std::shared_ptr<SchedulerModel> SchedulersRepository::Load(int id) {
 		sqlite3_bind_int(statement, 1, id);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			scheduler = std::make_shared<SchedulerModel>();
+			scheduler = new SchedulerModel();
 
 			scheduler->id = sqlite3_column_int(statement, 0);
 			scheduler->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
@@ -67,7 +58,9 @@ std::shared_ptr<SchedulerModel> SchedulersRepository::Load(int id) {
 	return scheduler;
 }
 
-void SchedulersRepository::Save(SchedulerModel& scheduler) {
+int  SchedulersRepository::Save(const SchedulerModel& scheduler) {
+	int id = scheduler.id;
+
 	if (scheduler.id == -1) {
 		char* sql = "INSERT INTO schedulers (name, type, day, week, month, from_account_id, to_account_id, from_account_amount, to_account_amount, tags, prev_date, next_date, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
@@ -88,14 +81,13 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 			sqlite3_bind_int(statement, 13, scheduler.active);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				scheduler.id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
+				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 			}
 		}
 
 		sqlite3_finalize(statement);
 	}
-	else {
-		
+	else {		
 		char* sql = "UPDATE schedulers SET name = ?, type = ?, day = ?, week = ?, month = ?, from_account_id = ?, to_account_id = ?, from_account_amount = ?, to_account_amount = ?, tags = ?, prev_date = ?, next_date = ?, active = ? WHERE id = ?";
 		sqlite3_stmt* statement;
 
@@ -121,6 +113,8 @@ void SchedulersRepository::Save(SchedulerModel& scheduler) {
 
 		sqlite3_finalize(statement);
 	}
+
+	return id;
 }
 
 void SchedulersRepository::Delete(const SchedulerModel& scheduler) {
@@ -129,10 +123,7 @@ void SchedulersRepository::Delete(const SchedulerModel& scheduler) {
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_int(statement, 1, scheduler.id);
-
-		if (sqlite3_step(statement) == SQLITE_DONE) {
-			RemoveFromHash(scheduler.id);
-		}
+		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);

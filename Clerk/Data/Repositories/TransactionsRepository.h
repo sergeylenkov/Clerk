@@ -5,7 +5,7 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/TransactionModel.h"
 #include "../Models/AccountModel.h"
 
@@ -13,7 +13,7 @@ namespace Clerk {
 	namespace Data {
 		class TransactionsRepository : BaseRepository {
 		public:
-			BaseRepository::BaseRepository;
+			using BaseRepository::BaseRepository;
 
 			TransactionModel* GetById(int id);
 			std::vector<TransactionModel*> GetAll();

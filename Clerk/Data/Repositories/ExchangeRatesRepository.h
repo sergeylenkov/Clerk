@@ -8,7 +8,7 @@ namespace Clerk {
 	namespace Data {
 		class ExchangeRatesRepository : BaseRepository {
 		public:
-			BaseRepository::BaseRepository;
+			using BaseRepository::BaseRepository;
 
 			float GetExchangeRate(int fromCurrencyId, int toCurrencyId);
 			

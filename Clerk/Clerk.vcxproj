@@ -213,7 +213,6 @@
     <ClInclude Include="Data\Repositories\CurrenciesRepository.h" />
     <ClInclude Include="Data\Repositories\ExchangeRatesRepository.h" />
     <ClInclude Include="Data\Repositories\GoalsRepository.h" />
-    <ClInclude Include="Data\Repositories\HashRepository.h" />
     <ClInclude Include="Data\Repositories\ReportingRepository.h" />
     <ClInclude Include="Data\Repositories\ReportsRepository.h" />
     <ClInclude Include="Data\Repositories\SchedulersRepository.h" />

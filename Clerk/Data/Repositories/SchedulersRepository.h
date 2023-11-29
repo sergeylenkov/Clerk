@@ -5,22 +5,22 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/SchedulerModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class SchedulersRepository : HashRepository<SchedulerModel> {
+		class SchedulersRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<SchedulerModel>> GetAll();
-			std::shared_ptr<SchedulerModel> GetById(int id);
-			void Save(SchedulerModel& scheduler);
+			SchedulerModel* GetById(int id);
+			std::vector<SchedulerModel*> GetAll();			
+			void Save(const SchedulerModel& scheduler);
 			void Delete(const SchedulerModel& scheduler);
 
 		private:
-			std::shared_ptr<SchedulerModel> Load(int id);
+			SchedulerModel* Load(int id);
 		};
 	}
 }

@@ -2,23 +2,23 @@
 
 #include <vector>
 #include <memory>
-#include "HashRepository.h"
+#include "BaseRepository.h"
 #include "../Models/AlertModel.h"
 
 namespace Clerk {
 	namespace Data {
-		class AlertsRepository : HashRepository<AlertModel> {
+		class AlertsRepository : BaseRepository {
 		public:
-			using HashRepository::HashRepository;
+			using BaseRepository::BaseRepository;
 
-			std::vector<std::shared_ptr<AlertModel>> GetAll();
-			std::shared_ptr<AlertModel> GetById(int id);
+			AlertModel* GetById(int id);
+			std::vector<AlertModel*> GetAll();			
 			float GetBalance(const AlertModel& alert);
-			void Save(AlertModel& alert);
+			int Save(const AlertModel& alert);
 			void Delete(const AlertModel& alert);
 
 		private:
-			std::shared_ptr<AlertModel> Load(int id);			
+			AlertModel* Load(int id);			
 		};
 	}
 }

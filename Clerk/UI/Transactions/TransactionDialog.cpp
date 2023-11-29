@@ -254,8 +254,10 @@ void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
 
 				wxPoint pos = _tagsField->GetScreenPosition();
 				wxSize size = _tagsField->GetSize();
-				
-				_tagsPopup->Position(wxPoint(pos.x - 200, pos.y - 200 + size.GetHeight()), this->FromDIP(wxSize(200, 200)));
+				wxSize dialogSize = wxSize(size.GetWidth(), 200);
+
+				_tagsPopup->SetSize(dialogSize);
+				_tagsPopup->Position(wxPoint(pos.x - dialogSize.GetWidth(), (pos.y - dialogSize.GetHeight()) + size.GetHeight()), dialogSize);
 				_tagsPopup->Show();
 			}
 			else {

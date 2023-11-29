@@ -5,6 +5,7 @@
 #include <vector>
 #include <memory>
 #include "../PresentationModels/TagPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
@@ -13,9 +14,9 @@ class TagsPopup : public wxPopupWindow
 {
 public:
 	TagsPopup(wxWindow *parent);
-	~TagsPopup();
 
-	void Update(std::vector<std::shared_ptr<TagPresentationModel>> tags);
+	void SetSize(wxSize size);
+	void Update(shared_vector<TagPresentationModel> tags);
 	void SelectNext();
 	void SelectPrev();
 	std::shared_ptr<TagPresentationModel> GetSelectedTag();
@@ -24,7 +25,7 @@ public:
 private:
 	wxScrolledWindow *_panel;
 	wxListCtrl *_list;
-	std::vector<std::shared_ptr<TagPresentationModel>> _tags;
+	shared_vector<TagPresentationModel> _tags;
 
 	void OnListItemDoubleClick(wxListEvent &event);
 };

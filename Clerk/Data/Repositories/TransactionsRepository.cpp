@@ -52,7 +52,7 @@ std::vector<TransactionModel*> TransactionsRepository::GetRecents(int count) {
 		sqlite3_bind_int(statement, 1, count);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			int id = sqlite3_column_int(statement, 0);
+			int id = sqlite3_column_int(statement, 1);
 			result.push_back(Load(id));
 		}
 	}
@@ -74,7 +74,7 @@ std::vector<TransactionModel*> TransactionsRepository::GetRecents(int accountId,
 		sqlite3_bind_int(statement, 3, count);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			int id = sqlite3_column_int(statement, 0);
+			int id = sqlite3_column_int(statement, 1);
 			result.push_back(Load(id));
 		}
 	}

@@ -16,7 +16,7 @@ namespace Clerk {
 
 			SchedulerModel* GetById(int id);
 			std::vector<SchedulerModel*> GetAll();			
-			void Save(const SchedulerModel& scheduler);
+			int Save(const SchedulerModel& scheduler);
 			void Delete(const SchedulerModel& scheduler);
 
 		private:

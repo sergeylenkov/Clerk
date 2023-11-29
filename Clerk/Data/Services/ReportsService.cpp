@@ -3,30 +3,52 @@
 ReportsService::ReportsService(ReportsRepository& reportsRepository) :
 	_reportsRepository(reportsRepository)
 {
-}
-
-std::vector<std::shared_ptr<ReportPresentationModel>> ReportsService::GetAll() {
-	auto reports = _reportsRepository.GetAll();
-
-	std::vector<std::shared_ptr<ReportPresentationModel>> result;
-
-	std::transform(reports.begin(), reports.end(), std::back_inserter(result), [&](const std::shared_ptr<ReportModel>& report) {
-		auto model = std::make_shared<ReportPresentationModel>(*report);
-
-		return model;
-	});
-
-	return result;
+	_isLoading = false;
 }
 
 std::shared_ptr<ReportPresentationModel> ReportsService::GetById(int id) {
-	auto report = _reportsRepository.GetById(id);
+	auto report = GetFromHash(id);
 
 	if (report) {
-		auto model = std::make_shared<ReportPresentationModel>(*report);
+		return report;
+	}
 
-		return model;
+	auto model = _reportsRepository.GetById(id);
+
+	if (model) {
+		report = std::make_shared<ReportPresentationModel>(*model);
+
+		AddToHash(report->id, report);
+
+		delete model;
+
+		return report;
 	}
 
 	return nullptr;
+}
+
+shared_vector<ReportPresentationModel> ReportsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
+
+	auto models = _reportsRepository.GetAll();
+
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto report = std::make_shared<ReportPresentationModel>(*model);
+			AddToHash(report->id, report);
+		}
+	}
+
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
 }

@@ -68,3 +68,16 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 			break;
 	}
 }
+
+AlertPresentationModel::operator AlertModel& () {
+	return GetModel();
+}
+
+AlertModel& AlertPresentationModel::GetModel() {
+	AlertModel* model = new AlertModel();
+
+	model->id = id;
+	model->name = name;
+
+	return *model;
+}

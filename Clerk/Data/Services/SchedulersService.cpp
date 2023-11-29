@@ -1,10 +1,11 @@
 #include "SchedulersService.h"
 
-SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsRepository& accountsRepository, ExchangeRatesRepository& exchangeRatesRepository):
+SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository):
 	_schedulersRepository(schedulersRepository),
-	_accountsRepository(accountsRepository),
+	_accountsService(accountsService),
 	_exchangeRatesRepository(exchangeRatesRepository)
 {
+	_isLoading = false;
 }
 
 void SchedulersService::SetBaseCurrency(int id) {
@@ -12,37 +13,64 @@ void SchedulersService::SetBaseCurrency(int id) {
 }
 
 std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
-	auto scheduler = _schedulersRepository.GetById(id);
+	auto scheduler = GetFromHash(id);
 
 	if (scheduler) {
-		return std::make_shared<SchedulerPresentationModel>(*scheduler);
+		return scheduler;
+	}
+
+	auto model = _schedulersRepository.GetById(id);
+
+	if (model) {
+		scheduler = std::make_shared<SchedulerPresentationModel>(*model);
+
+		auto account = _accountsService.GetById(model->toAccountId);
+
+		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		scheduler->amount = model->toAmount * rate;
+
+		AddToHash(scheduler->id, scheduler);
+
+		delete model;
+
+		return scheduler;
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<SchedulerPresentationModel>> SchedulersService::GetAll() {
-	auto schedulers = _schedulersRepository.GetAll();
+shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
 
-	std::vector<std::shared_ptr<SchedulerPresentationModel>> result;
+	auto models = _schedulersRepository.GetAll();
 
-	std::transform(schedulers.begin(), schedulers.end(), std::back_inserter(result), [&](const std::shared_ptr<SchedulerModel>& scheduler) {
-		auto model = std::make_shared<SchedulerPresentationModel>(*scheduler);
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto scheduler = std::make_shared<SchedulerPresentationModel>(*model);
 
-		auto account = _accountsRepository.GetById(scheduler->toAccountId);
+			auto account = _accountsService.GetById(model->toAccountId);
 
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currencyId, _baseCurrencyId);
-		model->amount = scheduler->toAmount * rate;
+			float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+			scheduler->amount = model->toAmount * rate;
 
-		delete account;
+			AddToHash(scheduler->id, scheduler);
+		}
+	}
 
-		return model;
-	});
+	for (auto p : models) {
+		delete p;
+	}
 
-	return result;
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
 }
 
-std::vector<std::shared_ptr<SchedulerPresentationModel>> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
+shared_vector<SchedulerPresentationModel> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
 	auto schedulers = GetAll();
 	std::vector<std::shared_ptr<SchedulerPresentationModel>> result;
 

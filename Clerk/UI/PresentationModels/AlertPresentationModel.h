@@ -25,6 +25,11 @@ namespace Clerk {
 			wxString periodName;
 			wxString conditionName;
 			std::vector<int> accountIds;
+
+			operator AlertModel& ();
+
+		private:
+			AlertModel& GetModel();
 		};
 	}
 }

@@ -3,30 +3,55 @@
 using namespace Clerk::Data;
 
 GoalsService::GoalsService(GoalsRepository& goalsRepository) : _goalsRepository(goalsRepository) {
-
+	_isLoading = false;
 }
 
 std::shared_ptr<GoalPresentationModel> GoalsService::GetById(int id) {
-	auto goal = _goalsRepository.GetById(id);
+	auto goal = GetFromHash(id);
 
 	if (goal) {
-		return std::make_shared<GoalPresentationModel>(*goal);
+		return goal;
+	}
+
+	auto model = _goalsRepository.GetById(id);
+
+	if (model) {
+		goal = std::make_shared<GoalPresentationModel>(*model);
+		goal->balance = _goalsRepository.GetBalance(goal->accountIds);
+
+		AddToHash(goal->id, goal);
+
+		delete model;
+
+		return goal;
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<GoalPresentationModel>> GoalsService::GetAll() {
-	auto goals = _goalsRepository.GetAll();
+shared_vector<GoalPresentationModel> GoalsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
 
-	std::vector<std::shared_ptr<GoalPresentationModel>> result;
+	auto models = _goalsRepository.GetAll();
 
-	std::transform(goals.begin(), goals.end(), std::back_inserter(result), [&](const std::shared_ptr<GoalModel>& goal) {
-		auto model = std::make_shared<GoalPresentationModel>(*goal);
-		model->balance = _goalsRepository.GetBalance(model->accountIds);
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto goal = std::make_shared<GoalPresentationModel>(*model);
+			goal->balance = _goalsRepository.GetBalance(goal->accountIds);
 
-		return model;
-	});
+			AddToHash(goal->id, goal);
+		}
+	}
 
-	return result;
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
 }

@@ -8,6 +8,7 @@
 #include "./HashService.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {

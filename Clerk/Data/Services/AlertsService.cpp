@@ -1,32 +1,61 @@
 #include "AlertsService.h"
 
-using namespace Clerk::Data;
-
 AlertsService::AlertsService(AlertsRepository& alertsRepository) : _alertsRepository(alertsRepository) {
+	_isLoading = false;
+}
 
+AlertsService::~AlertsService() {
+	_hash.clear();
+	_list.clear();
 }
 
 std::shared_ptr<AlertPresentationModel> AlertsService::GetById(int id) {
-	auto alert = _alertsRepository.GetById(id);
+	auto alert = GetFromHash(id);
 
 	if (alert) {
-		return std::make_shared<AlertPresentationModel>(*alert);
+		return alert;
+	}
+
+	auto model = _alertsRepository.GetById(id);
+
+	if (model) {
+		alert = std::make_shared<AlertPresentationModel>(*model);
+		alert->balance = _alertsRepository.GetBalance(*alert);
+
+		AddToHash(alert->id, alert);
+
+		delete model;
+
+		return alert;
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<AlertPresentationModel>> AlertsService::GetAll() {
-	auto alerts = _alertsRepository.GetAll();
+shared_vector<AlertPresentationModel> AlertsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
 
-	std::vector<std::shared_ptr<AlertPresentationModel>> result;
+	auto models = _alertsRepository.GetAll();
 
-	std::transform(alerts.begin(), alerts.end(), std::back_inserter(result), [&](const std::shared_ptr<AlertModel>& alert) {
-		auto model = std::make_shared<AlertPresentationModel>(*alert);
-		model->balance = _alertsRepository.GetBalance(*alert);
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto alert = std::make_shared<AlertPresentationModel>(*model);
 
-		return model;
-	});
+			alert->balance = _alertsRepository.GetBalance(*alert);
 
-	return result;
+			AddToHash(alert->id, alert);
+		}
+	}
+
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
 }

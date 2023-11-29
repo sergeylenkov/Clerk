@@ -58,7 +58,7 @@ SchedulerModel* SchedulersRepository::Load(int id) {
 	return scheduler;
 }
 
-int  SchedulersRepository::Save(const SchedulerModel& scheduler) {
+int SchedulersRepository::Save(const SchedulerModel& scheduler) {
 	int id = scheduler.id;
 
 	if (scheduler.id == -1) {

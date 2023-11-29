@@ -3,30 +3,56 @@
 using namespace Clerk::Data;
 
 BudgetsService::BudgetsService(BudgetsRepository& budgetsRepository) : _budgetsRepository(budgetsRepository) {
-
+	_isLoading = false;
 }
 
 std::shared_ptr<BudgetPresentationModel> BudgetsService::GetById(int id) {
-	auto budget = _budgetsRepository.GetById(id);
+	auto budget = GetFromHash(id);
 
 	if (budget) {
-		return std::make_shared<BudgetPresentationModel>(*budget);
+		return budget;
+	}
+
+	auto model = _budgetsRepository.GetById(id);
+
+	if (model) {
+		budget = std::make_shared<BudgetPresentationModel>(*model);
+		budget->balance = _budgetsRepository.GetExpenses(*model, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+
+		AddToHash(budget->id, budget);
+
+		delete model;
+
+		return budget;
 	}
 
 	return nullptr;
 }
 
-std::vector<std::shared_ptr<BudgetPresentationModel>> BudgetsService::GetAll() {
-	auto budgets = _budgetsRepository.GetAll();
+shared_vector<BudgetPresentationModel> BudgetsService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
 
-	std::vector<std::shared_ptr<BudgetPresentationModel>> result;
+	auto models = _budgetsRepository.GetAll();
 
-	std::transform(budgets.begin(), budgets.end(), std::back_inserter(result), [&](const std::shared_ptr<BudgetModel>& budget) {
-		auto model = std::make_shared<BudgetPresentationModel>(*budget);
-		model->balance = _budgetsRepository.GetExpenses(*budget, std::string(model->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto budget = std::make_shared<BudgetPresentationModel>(*model);
 
-		return model;
-	});
+			budget->balance = _budgetsRepository.GetExpenses(*model, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
 
-	return result;
+			AddToHash(budget->id, budget);
+		}
+	}
+
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
 }

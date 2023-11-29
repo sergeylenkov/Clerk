@@ -3,42 +3,61 @@
 CurrenciesService::CurrenciesService(CurrenciesRepository& currenciesRepository) :
 	_currenciesRepository(currenciesRepository)
 {
+	_isLoading = false;
 }
 
 void CurrenciesService::SetBaseCurrency(int id) {
 	_baseCurrencyId = id;
 }
 
-std::vector<std::shared_ptr<CurrencyPresentationModel>> CurrenciesService::GetAll() {
-	auto currencies = _currenciesRepository.GetAll();
-
-	std::vector<std::shared_ptr<CurrencyPresentationModel>> result;
-
-	std::transform(currencies.begin(), currencies.end(), std::back_inserter(result), [&](const std::shared_ptr<CurrencyModel>& currency) {
-		return std::make_shared<CurrencyPresentationModel>(*currency);
-	});
-
-	return result;
-}
-
 std::shared_ptr<CurrencyPresentationModel> CurrenciesService::GetById(int id) {
-	auto currency = _currenciesRepository.GetById(id);
+	auto currency = GetFromHash(id);
 
 	if (currency) {
-		auto model = std::make_shared<CurrencyPresentationModel>(*currency);
+		return currency;
+	}
 
-		return model;
+	auto model = _currenciesRepository.GetById(id);
+
+	if (model) {
+		currency = std::make_shared<CurrencyPresentationModel>(*model);
+
+		AddToHash(currency->id, currency);
+
+		delete model;
+
+		return currency;
 	}
 
 	return nullptr;
 }
+
+shared_vector<CurrencyPresentationModel> CurrenciesService::GetAll() {
+	if (_isLoading && GetHashList().size() > 0) {
+		return GetHashList();
+	}
+
+	auto models = _currenciesRepository.GetAll();
+
+	for (auto& model : models) {
+		if (!GetFromHash(model->id)) {
+			auto currency = std::make_shared<CurrencyPresentationModel>(*model);
+			AddToHash(currency->id, currency);
+		}
+	}
+
+	for (auto p : models) {
+		delete p;
+	}
+
+	models.erase(models.begin(), models.end());
+
+	_isLoading = true;
+
+	return GetHashList();
+}
+
 
 std::shared_ptr<CurrencyPresentationModel> CurrenciesService::GetBaseCurrency() {
-	auto currency = _currenciesRepository.GetById(_baseCurrencyId);
-
-	if (currency) {
-		return std::make_shared<CurrencyPresentationModel>(*currency);
-	}
-
-	return nullptr;
+	return GetById(_baseCurrencyId);
 }

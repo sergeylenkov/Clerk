@@ -70,6 +70,22 @@ shared_vector<AccountPresentationModel> DashboardViewModel::GetExpensesForMonth(
 	return expenses;
 }
 
+shared_vector<AccountPresentationModel> DashboardViewModel::GetReceiptsForMonth() {
+	wxDateTime fromDate = wxDateTime::Now();
+	wxDateTime toDate = wxDateTime::Now();
+
+	fromDate.SetDay(1);
+	toDate.SetToLastMonthDay();
+
+	auto receipts = _accountsService.GetReceipts(fromDate, toDate);
+
+	std::sort(receipts.begin(), receipts.end(), [](auto a, auto b) {
+		return a->receipts > b->receipts;
+		});
+
+	return receipts;
+}
+
 float DashboardViewModel::GetTotalReceiptsForMonth() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();

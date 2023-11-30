@@ -6,6 +6,7 @@
 #include "./DashboardSchedulersPanel.h"
 #include "./DashboardBudgetsPanel.h"
 #include "./DashboardExpensesPanel.h"
+#include "./DashboardReceiptsPanel.h"
 #include "./DashboardAccountsPanel.h"
 #include "./DashboardBalancePanel.h"
 #include "./DashboardGoalsPanel.h"
@@ -29,6 +30,7 @@ private:
 	DashboardSchedulersPanel* _schedulersPanel;
 	DashboardBudgetsPanel* _budgetsPanel;
 	DashboardExpensesPanel* _expensesPanel;
+	DashboardReceiptsPanel* _receiptsPanel;
 	DashboardAccountsPanel* _accountsPanel;
 	DashboardBalancePanel* _balancePanel;
 	DashboardGoalsPanel* _goalsPanel;

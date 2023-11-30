@@ -89,6 +89,7 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
+    <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp" />
     <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\AccountViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\AccountPresentationModel.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="Data\Services\SchedulersService.h" />
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
+    <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />
     <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\AccountViewModel.h" />
     <ClInclude Include="UI\PresentationModels\AccountPresentationModel.h" />

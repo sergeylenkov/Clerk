@@ -27,6 +27,11 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 
 	leftSizer->Add(_accountsPanel, 0, wxEXPAND | wxALL, 5);
 
+	_receiptsPanel = new DashboardReceiptsPanel(_leftPanel);
+	_receiptsPanel->SetViewModel(_viewModel);
+
+	leftSizer->Add(_receiptsPanel, 0, wxEXPAND | wxALL, 5);
+
 	_expensesPanel = new DashboardExpensesPanel(_leftPanel);
 	_expensesPanel->SetViewModel(_viewModel);
 

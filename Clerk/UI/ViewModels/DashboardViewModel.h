@@ -24,6 +24,7 @@ namespace Clerk {
 			std::shared_ptr<CurrencyPresentationModel> GetCurrency();
 			shared_vector<AccountPresentationModel> GetAccounts();
 			shared_vector<AccountPresentationModel> GetExpensesForMonth();
+			shared_vector<AccountPresentationModel> GetReceiptsForMonth();
 			float GetTotalReceiptsForMonth();
 			float GetTotalExpensesForMonth();
 			shared_vector<BudgetPresentationModel> GetBudgets();

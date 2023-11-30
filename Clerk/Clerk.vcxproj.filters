@@ -234,9 +234,6 @@
     <ClCompile Include="Data\Repositories\CurrenciesRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Repositories\ExchangeRatesRepository.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Data\Services\AccountingService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -639,9 +636,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Repositories\CurrenciesRepository.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data\Repositories\ExchangeRatesRepository.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\AccountingService.h">

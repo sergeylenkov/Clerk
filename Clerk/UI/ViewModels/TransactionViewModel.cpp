@@ -2,10 +2,10 @@
 
 using namespace Clerk::UI;
 
-TransactionViewModel::TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService):
+TransactionViewModel::TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, CurrenciesService& currenciesService, TagsService& tagsService):
 	_accountsService(accountsService),
 	_transactionsService(transactionsService),
-	_exchangeRatesRepository(exchangeRatesRepository),
+	_currenciesService(currenciesService),
 	_tagsService(tagsService) {
 	_splitId = -1;
 	_id = -1;
@@ -246,7 +246,7 @@ void TransactionViewModel::SetFromAmount(float amount) {
 		float rate = 1;
 
 		if (Settings::GetInstance().IsConvertCurrency()) {
-			rate = _exchangeRatesRepository.GetExchangeRate(_fromAccount->currency->id, _toAccount->currency->id);
+			rate = _currenciesService.GetExchangeRate(*_fromAccount->currency, *_toAccount->currency);
 		}
 
 		_toAmount = _fromAmount * rate;

@@ -61,3 +61,28 @@ shared_vector<CurrencyPresentationModel> CurrenciesService::GetAll() {
 std::shared_ptr<CurrencyPresentationModel> CurrenciesService::GetBaseCurrency() {
 	return GetById(_baseCurrencyId);
 }
+
+float CurrenciesService::GetExchangeRate(const CurrencyPresentationModel& fromCurrency, const CurrencyPresentationModel& toCurrency) {
+	if (_exchangeRates.empty()) {
+		_exchangeRates = _currenciesRepository.LoadExchangeRates();
+	}
+
+	auto pair = std::make_pair(fromCurrency.id, toCurrency.id);
+
+	auto search = _exchangeRates.find(pair);
+
+	if (search != _exchangeRates.end()) {
+		return search->second;
+	}
+
+	return 1;
+}
+
+void CurrenciesService::UpdatedExchangeRates() {
+	_exchangeRates.clear();
+
+	CBRRatesLoader* loader = new CBRRatesLoader(_currenciesRepository.GetConnection());
+	loader->Load();
+
+	delete loader;
+}

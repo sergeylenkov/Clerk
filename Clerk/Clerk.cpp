@@ -26,28 +26,24 @@ bool ClerkApp::OnInit()
 	TransactionsRepository* transactionsRepository = new TransactionsRepository(*_connection);
 	TagsRepository* tagsRepository = new TagsRepository(*_connection);
 	CurrenciesRepository* currenciesRepository = new CurrenciesRepository(*_connection);
-	ExchangeRatesRepository* exchangeRatesRepository = new ExchangeRatesRepository(*_connection);
 	ReportingRepository* reportingRepository = new ReportingRepository(*_connection);
 
 	CurrenciesService* currenciesService = new CurrenciesService(*currenciesRepository);
 	AccountsService* accountsService = new AccountsService(*accountsRepository, *currenciesService);
-	AccountingService* accountingService = new AccountingService(*accountsService, *exchangeRatesRepository);
-	SchedulersService* schedulersService = new SchedulersService(*schedulersRepository, *accountsService, *exchangeRatesRepository);
+	AccountingService* accountingService = new AccountingService(*accountsService, *currenciesService);
+	SchedulersService* schedulersService = new SchedulersService(*schedulersRepository, *accountsService, *currenciesService);
 	BudgetsService* budgetsService = new BudgetsService(*budgetsRepository);
 	TagsService* tagsService = new TagsService(*tagsRepository);
 	TransactionsService* transactionsService = new TransactionsService(*transactionsRepository, *accountsService, *tagsService);	
 	ReportsService* reportsService = new ReportsService(*reportsRepository);
 	AlertsService* alertsService = new AlertsService(*alertsRepository);
 	GoalsService* goalsService = new GoalsService(*goalsRepository);
-	ReportingService* reportingService = new ReportingService(*reportingRepository, *exchangeRatesRepository);	
+	ReportingService* reportingService = new ReportingService(*reportingRepository, *currenciesService);
 
 	currenciesService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
-	accountingService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
-	schedulersService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
-	reportingService->SetBaseCurrency(Settings::GetInstance().GetBaseCurrencyId());
 
 	_context = new DataContext(*accountsRepository, *reportsRepository, *budgetsRepository, *goalsRepository, *alertsRepository,
-		*schedulersRepository, *transactionsRepository, *tagsRepository, *currenciesRepository, *exchangeRatesRepository, *reportingRepository,
+		*schedulersRepository, *transactionsRepository, *tagsRepository, *currenciesRepository, *reportingRepository,
 		*accountingService, *accountsService, *schedulersService, *budgetsService, *transactionsService, *tagsService,
 		*reportsService, *alertsService, *goalsService, *reportingService, *currenciesService);
 

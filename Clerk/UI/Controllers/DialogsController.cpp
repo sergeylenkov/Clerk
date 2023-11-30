@@ -29,7 +29,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 	
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
 	
 	transactionDialog->SetViewModel(viewModel);
@@ -43,7 +43,7 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -57,7 +57,7 @@ void DialogsController::ShowSplitTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetSplitTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -71,7 +71,7 @@ void DialogsController::ShowEditTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetExchangeRatesRepository(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);

@@ -1,8 +1,8 @@
 #include "AccountingService.h"
 
-AccountingService::AccountingService(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository):
+AccountingService::AccountingService(AccountsService& accountsService, CurrenciesService& currenciesService):
 	_accountsService(accountsService),
-	_exchangeRatesRepository(exchangeRatesRepository)
+	_currenciesService(currenciesService)
 {
 	_eventEmitter = new EventEmitter();
 }
@@ -15,15 +15,13 @@ void AccountingService::OnUpdate(std::function<void()> fn) {
 	_eventEmitter->Subscribe(fn);
 }
 
-void AccountingService::SetBaseCurrency(int id) {
-	_baseCurrencyId = id;
-}
-
 float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
 
+	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
+
 	for (auto& account : _accountsService.GetReceipts(fromDate, toDate)) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 
 		result = result + (account->receipts * rate);
 	}
@@ -34,8 +32,10 @@ float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTim
 float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	float result = 0;
 
+	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
+
 	for (auto& account : _accountsService.GetExpenses(fromDate, toDate)) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 
 		result = result + (account->expenses * rate);
 	}
@@ -46,8 +46,10 @@ float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTim
 float AccountingService::GetBalance() {
 	float result = 0;
 
+	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
+
 	for (auto& account : _accountsService.GetDeposits()) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 		float balance = account->balance * rate;
 
 		if (account->creditLimit > 0 && balance > 0) {			
@@ -64,8 +66,10 @@ float AccountingService::GetBalance() {
 float AccountingService::GetCredit() {
 	float result = 0;
 
+	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
+
 	for (auto& account : _accountsService.GetByType(AccountType::Deposit)) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 		float balance = account->balance * rate;
 
 		if (account->creditLimit > 0 && balance > 0) {

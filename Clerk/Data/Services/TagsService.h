@@ -21,7 +21,6 @@ namespace Clerk {
 
 		private:
 			TagsRepository& _tagsRepository;
-			boolean _isLoading;
 		};
 	}
 }

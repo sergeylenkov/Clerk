@@ -4,6 +4,7 @@
 #include "../../UI/PresentationModels/CurrencyPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "./HashService.h"
+#include "../ExchangeRates/CBRRatesLoader.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
@@ -18,12 +19,14 @@ namespace Clerk {
 			shared_vector<CurrencyPresentationModel> GetAll();
 			std::shared_ptr<CurrencyPresentationModel> GetById(int id);
 			std::shared_ptr<CurrencyPresentationModel> GetBaseCurrency();
+			float GetExchangeRate(const CurrencyPresentationModel& fromCurrency, const CurrencyPresentationModel& toCurrency);
+			void UpdatedExchangeRates();
 
 		private:
 			CurrenciesRepository& _currenciesRepository;
 
 			int _baseCurrencyId = 0;
-			boolean _isLoading;
+			exhange_rate_map _exchangeRates;
 		};
 	}
 }

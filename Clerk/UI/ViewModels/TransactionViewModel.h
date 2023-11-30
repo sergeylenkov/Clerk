@@ -6,7 +6,7 @@
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/TagsService.h"
-#include "../../Data/Repositories/ExchangeRatesRepository.h"
+#include "../../Data/Services/CurrenciesService.h"
 #include "../../Data/Settings.h"
 #include "./Enums.h"
 #include "../../Utils/Types.h"
@@ -17,7 +17,7 @@ namespace Clerk {
 	namespace UI {
 		class TransactionViewModel {
 		public:
-			TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, ExchangeRatesRepository& exchangeRatesRepository, TagsService& tagsService);
+			TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, CurrenciesService& currenciesService, TagsService& tagsService);
 			~TransactionViewModel();
 
 			void SetTransactionId(int id);
@@ -49,7 +49,7 @@ namespace Clerk {
 
 		private:
 			AccountsService& _accountsService;
-			ExchangeRatesRepository& _exchangeRatesRepository;
+			CurrenciesService& _currenciesService;
 			TransactionsService& _transactionsService;
 			TagsService& _tagsService;
 			unsigned int _subscriptionId;

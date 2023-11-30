@@ -12,6 +12,7 @@ namespace Clerk {
 		{
 		public:
 			BaseRepository(DataConnection& connection);
+			sqlite3* GetConnection();
 
 		protected:
 			DataConnection& _connection;

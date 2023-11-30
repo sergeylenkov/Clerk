@@ -45,7 +45,6 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> _active;
 			shared_vector<AccountPresentationModel> _archive;
 			std::map<AccountType, shared_vector<AccountPresentationModel>> _types;
-			boolean _isLoading;
 		};
 	}
 }

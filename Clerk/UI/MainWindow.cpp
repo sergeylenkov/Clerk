@@ -21,7 +21,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	SetupCommands();
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
-	StatusViewModel* statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetExchangeRatesRepository(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
+	_statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
 	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 
@@ -77,7 +77,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
 	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 20)));	
-	_statusbar->SetViewModel(statusViewModel);
+	_statusbar->SetViewModel(_statusViewModel);
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 
@@ -105,22 +105,20 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	{
 		std::this_thread::sleep_for(std::chrono::seconds(5));
 		this->GetEventHandler()->CallAfter(&MainFrame::CheckAlerts);
-	}).detach();
+	}).detach();*/
 
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
-		_statusbar->SetExchangeRates("Updating...");		
+		_statusViewModel->SetIsExchangeRatesLoading(true);
 
 		std::thread([this]()
 		{
-			//TODO
-			//UpdateExchangeRates();			
-			//DataHelper::GetInstance().ReloadExchangeRate();
+			_context.GetCurrenciesService().UpdatedExchangeRates();
 
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 
-			this->GetEventHandler()->CallAfter(&MainFrame::UpdateStatus);
+			this->GetEventHandler()->CallAfter(&MainWindow::UpdateStatus);
 		}).detach();
-	}*/
+	}
 }
 
 MainWindow::~MainWindow() 
@@ -167,4 +165,8 @@ void MainWindow::SetupCommands() {
 		                                   *newAccountCommand, *editAccountCommand, *newTabCommand, *newAccountTabCommand, *newAccountsTabCommand);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
+}
+
+void MainWindow::UpdateStatus() {
+	_statusViewModel->SetIsExchangeRatesLoading(false);
 }

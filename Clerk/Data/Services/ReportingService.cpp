@@ -1,11 +1,8 @@
 #include "ReportingService.h"
 
-ReportingService::ReportingService(ReportingRepository& reportingRepository, ExchangeRatesRepository& exchangeRatesRepository) : _reportingRepository(reportingRepository), _exchangeRatesRepository(exchangeRatesRepository) {
+ReportingService::ReportingService(ReportingRepository& reportingRepository, CurrenciesService& currenciesService) :
+	_reportingRepository(reportingRepository), _currenciesService(currenciesService) {
 
-}
-
-void ReportingService::SetBaseCurrency(int id) {
-	_baseCurrencyId = id;
 }
 
 std::vector<StringValueViewModel> ReportingService::GetExpensesByAccount(const wxDateTime& fromDate, const wxDateTime& toDate) {

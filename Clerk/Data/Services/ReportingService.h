@@ -3,7 +3,7 @@
 #include <set>
 #include <wx/datetime.h>
 #include "../Repositories/ReportingRepository.h"
-#include "../Repositories/ExchangeRatesRepository.h"
+#include "../Services/CurrenciesService.h"
 #include "../../UI/PresentationModels/Types.h"
 #include "../../UI/PresentationModels/AccountPresentationModel.h"
 
@@ -14,9 +14,8 @@ namespace Clerk {
 	namespace Data {
 		class ReportingService {
 		public:
-			ReportingService(ReportingRepository& reportingRepository, ExchangeRatesRepository& exchangeRatesRepository);
+			ReportingService(ReportingRepository& reportingRepository, CurrenciesService& currenciesService);
 
-			void SetBaseCurrency(int id);
 			std::vector<StringValueViewModel> GetExpensesByAccount(const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<StringValueViewModel> GetExpensesByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<DateValueViewModel> GetExpensesByMonth(const wxDateTime& fromDate, const wxDateTime& toDate);
@@ -25,9 +24,7 @@ namespace Clerk {
 
 		private:
 			ReportingRepository& _reportingRepository;
-			ExchangeRatesRepository& _exchangeRatesRepository;
-
-			int _baseCurrencyId = 0;
+			CurrenciesService& _currenciesService;
 		};
 	}
 }

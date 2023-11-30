@@ -1,15 +1,11 @@
 #include "SchedulersService.h"
 
-SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository):
+SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, CurrenciesService& currenciesService):
 	_schedulersRepository(schedulersRepository),
 	_accountsService(accountsService),
-	_exchangeRatesRepository(exchangeRatesRepository)
+	_currenciesService(currenciesService)
 {
 	_isLoading = false;
-}
-
-void SchedulersService::SetBaseCurrency(int id) {
-	_baseCurrencyId = id;
 }
 
 std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
@@ -25,8 +21,9 @@ std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
 		scheduler = std::make_shared<SchedulerPresentationModel>(*model);
 
 		auto account = _accountsService.GetById(model->toAccountId);
+		CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
 
-		float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 		scheduler->amount = model->toAmount * rate;
 
 		AddToHash(scheduler->id, scheduler);
@@ -44,6 +41,7 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
 		return GetHashList();
 	}
 
+	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
 	auto models = _schedulersRepository.GetAll();
 
 	for (auto& model : models) {
@@ -52,7 +50,7 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
 
 			auto account = _accountsService.GetById(model->toAccountId);
 
-			float rate = _exchangeRatesRepository.GetExchangeRate(account->currency->id, _baseCurrencyId);
+			float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 			scheduler->amount = model->toAmount * rate;
 
 			AddToHash(scheduler->id, scheduler);

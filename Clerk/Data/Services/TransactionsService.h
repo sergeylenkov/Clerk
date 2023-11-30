@@ -37,7 +37,6 @@ namespace Clerk {
 			AccountsService& _accountsService;
 			TagsService& _tagsService;
 			EventEmitter* _eventEmitter;
-			boolean _isLoading;
 
 			void LoadDetails(std::shared_ptr<TransactionPresentationModel> model, TransactionModel& transaction);
 		};

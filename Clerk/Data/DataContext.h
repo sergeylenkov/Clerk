@@ -9,7 +9,6 @@
 #include "./Repositories/TransactionsRepository.h"
 #include "./Repositories/TagsRepository.h"
 #include "./Repositories/CurrenciesRepository.h"
-#include "./Repositories/ExchangeRatesRepository.h"
 #include "./Repositories/ReportingRepository.h"
 #include "./Services/AccountingService.h"
 #include "./Services/AccountsService.h"
@@ -33,10 +32,9 @@ namespace Clerk {
 			DataContext(AccountsRepository& accountsRepository, ReportsRepository& reportsRepository, BudgetsRepository& budgetsRepository,
 				GoalsRepository& goalsRepository, AlertsRepository& alertsRepository, SchedulersRepository& schedulersRepository,
 				TransactionsRepository& transactionsRepository, TagsRepository& tagsRepository, CurrenciesRepository& currenciesRepository,
-				ExchangeRatesRepository& exchangeRatesRepository, ReportingRepository& reportingRepository, AccountingService& accountingService,
-				AccountsService& accountsService, SchedulersService& schedulersService, BudgetsService& budgetsService, TransactionsService& transactionsService,
-				TagsService& tagsService, ReportsService& reportsService, AlertsService& alertsService, GoalsService& goalsService,
-				ReportingService& reportingService, CurrenciesService& currenciesService);
+				ReportingRepository& reportingRepository, AccountingService& accountingService, AccountsService& accountsService, SchedulersService& schedulersService, 
+				BudgetsService& budgetsService, TransactionsService& transactionsService, TagsService& tagsService, ReportsService& reportsService, 
+				AlertsService& alertsService, GoalsService& goalsService, ReportingService& reportingService, CurrenciesService& currenciesService);
 			~DataContext();
 
 			AccountsRepository& GetAccountsRepository();
@@ -48,7 +46,6 @@ namespace Clerk {
 			TransactionsRepository& GetTransactionsRepository();
 			TagsRepository& GetTagsRepository();
 			CurrenciesRepository& GetCurrenciesRepository();
-			ExchangeRatesRepository& GetExchangeRatesRepository();
 			ReportingRepository& GetReportingRepository();
 			AccountingService& GetAccountingService();
 			AccountsService& GetAccountsService();
@@ -74,7 +71,6 @@ namespace Clerk {
 			TransactionsRepository& _transactionsRepository;
 			TagsRepository& _tagsRepository;
 			CurrenciesRepository& _currenciesRepository;
-			ExchangeRatesRepository& _exchangeRatesRepository;
 			ReportingRepository& _reportingRepository;
 			AccountingService& _accountingService;
 			AccountsService& _accountsService;

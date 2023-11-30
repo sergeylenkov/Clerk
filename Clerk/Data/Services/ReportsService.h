@@ -19,8 +19,6 @@ namespace Clerk {
 
 		private:
 			ReportsRepository& _reportsRepository;
-
-			boolean _isLoading;
 		};
 	}
 }

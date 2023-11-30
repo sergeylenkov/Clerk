@@ -2,7 +2,7 @@
 
 #include <wx/datetime.h>
 #include "./AccountsService.h"
-#include "../Repositories/ExchangeRatesRepository.h"
+#include "./CurrenciesService.h"
 #include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::Data;
@@ -11,10 +11,9 @@ namespace Clerk {
 	namespace Data {
 		class AccountingService {
 		public:
-			AccountingService(AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository);
+			AccountingService(AccountsService& accountsService, CurrenciesService& currenciesService);
 			~AccountingService();
 
-			void SetBaseCurrency(int id);
 			float GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate);
 			float GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
 			float GetBalance();
@@ -24,10 +23,8 @@ namespace Clerk {
 
 		private:
 			AccountsService& _accountsService;
-			ExchangeRatesRepository& _exchangeRatesRepository;
+			CurrenciesService& _currenciesService;
 			EventEmitter* _eventEmitter;
-
-			int _baseCurrencyId = 0;
 		};
 	}
 }

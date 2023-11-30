@@ -83,7 +83,12 @@ void Statusbar::Update() {
 	_expensesLabel->SetLabelText(expensesValue);
 	_balanceLabel->SetLabelText(balanceValue);
 
-	_exchangeRatesLabel->SetLabelText(_viewModel->GetExchangeRates());
+	if (_viewModel->GetIsExchangeRatesLoading()) {
+		_exchangeRatesLabel->SetLabelText("Updating...");
+	}
+	else {
+		_exchangeRatesLabel->SetLabelText(_viewModel->GetExchangeRates());
+	}
 
 	Layout();
 }

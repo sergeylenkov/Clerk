@@ -47,3 +47,26 @@ CurrencyModel* CurrenciesRepository::Load(int id) {
 
 	return currency;
 }
+
+exhange_rate_map CurrenciesRepository::LoadExchangeRates() {
+	exhange_rate_map result;
+
+	char* sql = "SELECT from_currency_id, to_currency_id, rate, count, MAX(date) FROM exchange_rates GROUP BY from_currency_id, to_currency_id";
+	sqlite3_stmt* statement;
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
+		while (sqlite3_step(statement) == SQLITE_ROW) {
+			int fromId = sqlite3_column_int(statement, 0);
+			int toId = sqlite3_column_int(statement, 1);
+			float rate = static_cast<float>(sqlite3_column_double(statement, 2));
+			int count = sqlite3_column_int(statement, 3);
+
+			result[std::make_pair(fromId, toId)] = count * rate;
+			result[std::make_pair(toId, fromId)] = count / rate;
+		}
+	}
+
+	sqlite3_finalize(statement);
+
+	return result;
+}

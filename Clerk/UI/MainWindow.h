@@ -59,6 +59,8 @@ private:
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
 	TabsController* _tabsController;
+	StatusViewModel* _statusViewModel;
 
 	void SetupCommands();
+	void UpdateStatus();
 };

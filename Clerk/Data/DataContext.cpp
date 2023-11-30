@@ -12,7 +12,6 @@ DataContext::DataContext(
 	TransactionsRepository& transactionsRepository,
 	TagsRepository& tagsRepository,
 	CurrenciesRepository& currenciesRepository,
-	ExchangeRatesRepository& exchangeRatesRepository,
 	ReportingRepository& reportingRepository,
 	AccountingService& accountingService,
 	AccountsService& accountsService,
@@ -35,7 +34,6 @@ DataContext::DataContext(
 	_transactionsRepository(transactionsRepository),
 	_tagsRepository(tagsRepository),
 	_currenciesRepository(currenciesRepository),
-	_exchangeRatesRepository(exchangeRatesRepository),
 	_reportingRepository(reportingRepository),
 	_accountingService(accountingService),
 	_accountsService(accountsService),
@@ -61,7 +59,6 @@ DataContext::~DataContext() {
 	delete& _transactionsRepository;
 	delete& _tagsRepository;
 	delete& _currenciesRepository;
-	delete& _exchangeRatesRepository;
 	delete& _reportingRepository;
 	delete& _accountingService;
 	delete& _accountsService;
@@ -110,10 +107,6 @@ TagsRepository& DataContext::GetTagsRepository() {
 
 CurrenciesRepository& DataContext::GetCurrenciesRepository() {
 	return _currenciesRepository;
-}
-
-ExchangeRatesRepository& DataContext::GetExchangeRatesRepository() {
-	return _exchangeRatesRepository;
 }
 
 ReportingRepository& DataContext::GetReportingRepository() {

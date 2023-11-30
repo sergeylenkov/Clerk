@@ -2,12 +2,12 @@
 
 using namespace Clerk::UI;
 
-StatusViewModel::StatusViewModel(AccountingService& accountingService, ExchangeRatesRepository& exchangeRatesRepository, CurrenciesService& currenciesService, std::vector<int> selectedRates) :
+StatusViewModel::StatusViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates) :
 	_accountingService(accountingService),
-	_exchangeRatesRepository(exchangeRatesRepository),
 	_currenciesService(currenciesService)
 {
 	_selectedRates = selectedRates;
+	_isExchangeRatesLoading = false;
 
 	_eventEmitter = new EventEmitter();
 
@@ -54,8 +54,8 @@ wxString StatusViewModel::GetExchangeRates() {
 	wxString rates("");
 
 	for (int id : _selectedRates) {
-		float rate = _exchangeRatesRepository.GetExchangeRate(id, baseCurrency->id);
 		auto currency = _currenciesService.GetById(id);
+		float rate = _currenciesService.GetExchangeRate(*currency, *baseCurrency);
 
 		rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + currency->sign + wxT("  ");
 	}
@@ -65,4 +65,13 @@ wxString StatusViewModel::GetExchangeRates() {
 
 std::shared_ptr<CurrencyPresentationModel> StatusViewModel::GetBaseCurrency() {
 	return _currenciesService.GetBaseCurrency();
+}
+
+void StatusViewModel::SetIsExchangeRatesLoading(boolean isLoading) {
+	_isExchangeRatesLoading = isLoading;
+	_eventEmitter->Emit();
+}
+
+boolean StatusViewModel::GetIsExchangeRatesLoading() {
+	return _isExchangeRatesLoading;
 }

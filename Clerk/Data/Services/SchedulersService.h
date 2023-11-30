@@ -2,7 +2,7 @@
 
 #include <wx/datetime.h>
 #include "../Repositories/SchedulersRepository.h"
-#include "../Repositories/ExchangeRatesRepository.h"
+#include "../Services/CurrenciesService.h"
 #include "../Services/AccountsService.h"
 #include "../../UI/PresentationModels/SchedulerPresentationModel.h"
 #include "../../Utils/Types.h"
@@ -15,9 +15,8 @@ namespace Clerk {
 	namespace Data {
 		class SchedulersService : HashService<std::shared_ptr<SchedulerPresentationModel>> {
 		public:
-			SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, ExchangeRatesRepository& exchangeRatesRepository);
+			SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, CurrenciesService& crrenciesService);
 
-			void SetBaseCurrency(int id);
 			std::shared_ptr<SchedulerPresentationModel> GetById(int id);
 			shared_vector<SchedulerPresentationModel> GetAll();
 			shared_vector<SchedulerPresentationModel> GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate);
@@ -28,10 +27,7 @@ namespace Clerk {
 		private:
 			SchedulersRepository& _schedulersRepository;
 			AccountsService& _accountsService;
-			ExchangeRatesRepository& _exchangeRatesRepository;
-
-			int _baseCurrencyId = 0;
-			boolean _isLoading;
+			CurrenciesService& _currenciesService;
 
 			wxDateTime CalculateNextDate(const SchedulerPresentationModel& scheduler);
 		};

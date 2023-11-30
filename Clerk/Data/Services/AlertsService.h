@@ -20,8 +20,6 @@ namespace Clerk {
 
 		private:
 			AlertsRepository& _alertsRepository;
-
-			boolean _isLoading;
 		};
 	}
 }

@@ -27,6 +27,7 @@ namespace Clerk {
 
 			DataPanel* CreatePanel(TabType type);
 			wxString GetTabTitle(TabType type);
+			wxString GetTabTitleByAccountType(AccountType type);
 			int GetIconIndex(TabType type);
 		};
 	}

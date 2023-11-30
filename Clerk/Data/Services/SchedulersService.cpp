@@ -70,7 +70,7 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
 
 shared_vector<SchedulerPresentationModel> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
 	auto schedulers = GetAll();
-	std::vector<std::shared_ptr<SchedulerPresentationModel>> result;
+	shared_vector<SchedulerPresentationModel> result;
 
 	std::copy_if(schedulers.begin(), schedulers.end(), std::back_inserter(result), [fromDate, toDate](const std::shared_ptr<SchedulerPresentationModel>& scheduler) {
 		return scheduler->isActive && scheduler->nextDate.IsBetween(fromDate, toDate);

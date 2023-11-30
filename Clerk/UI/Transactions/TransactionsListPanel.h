@@ -11,8 +11,9 @@
 #include <string> 
 #include "../DataPanel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
+#include "../PresentationModels/AccountPresentationModel.h"
 #include "../../Data/Settings.h"
-#include "../TreeMenu/Enums.h"
+#include "../../Utils/Types.h"
 #include "./TransactionsListDataModel.h"
 #include "./TransactionsTagsRender.h"
 #include "./TransactionsAmountRender.h"
@@ -27,29 +28,32 @@ public:
 	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
 
+	void SetAccount(std::shared_ptr<AccountPresentationModel> account);
+	void SetAccountType(AccountType type);
+
 private:	
 	wxDataViewCtrl *_list;
 	wxObjectDataPtr<TransactionsListDataModel> _model;
 	TransactionsService* _transactionsService;
-	wxComboBox *periodList;
-	wxDatePickerCtrl *fromDatePicker;
-	wxDatePickerCtrl *toDatePicker;
-	wxTextCtrl *searchField;
-	wxStaticText *transactionLabel;
-	wxStaticText *incomeLabel;
-	wxStaticText *outcomeLabel;
-	wxPanel *infoPanel;
-	std::shared_ptr<AccountModel> account;
-	TreeMenuItemType type;
-	std::vector<std::shared_ptr<TransactionPresentationModel>> _transactions;
-	std::vector<std::shared_ptr<TransactionPresentationModel>> _filtered;
-	float balance;
-	int sortBy;
-	bool sortDesc;
-	wxDateTime periodFromDate;
-	wxDateTime periodToDate;
+	wxComboBox *_periodList;
+	wxDatePickerCtrl *_fromDatePicker;
+	wxDatePickerCtrl *_toDatePicker;
+	wxTextCtrl *_searchField;
+	wxStaticText *_transactionLabel;
+	wxStaticText *_incomeLabel;
+	wxStaticText *_outcomeLabel;
+	wxPanel *_infoPanel;
+	std::shared_ptr<AccountPresentationModel> _account;
+	AccountType _accountType;
+	shared_vector<TransactionPresentationModel> _transactions;
+	shared_vector<TransactionPresentationModel> _filtered;
+	float _balance;
+	int _sortBy;
+	bool _sortDesc;
+	wxDateTime _periodFromDate;
+	wxDateTime _periodToDate;
 	unsigned int _subscriptionId;
-
+		
 	void Update();
 	void Sort();
 	void Filter();

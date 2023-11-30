@@ -40,13 +40,15 @@ void TabsController::OpenNewTab(TabType type) {
 
 void TabsController::OpenNewAccountTab(int accountId) {
 	if (_tabsPanel) {
-		DataPanel* tabPanel = CreatePanel(TabType::Transactions);
+		TransactionsListPanel* tabPanel = static_cast<TransactionsListPanel*>(CreatePanel(TabType::Transactions));
 
 		auto account = _context.GetAccountsService().GetById(accountId);
 
 		if (tabPanel && account) {
 			tabPanel->id = accountId;
 			tabPanel->type = TabType::Transactions;
+
+			tabPanel->SetAccount(account);
 			
 			_tabsPanel->AddPanel(tabPanel, account->name, _icons.GetIconIndexForAccount(account->icon));
 			_tabsPanel->SelectLastTab();
@@ -56,13 +58,15 @@ void TabsController::OpenNewAccountTab(int accountId) {
 
 void TabsController::OpenNewAccountsTab(AccountType type) {
 	if (_tabsPanel) {
-		DataPanel* tabPanel = CreatePanel(TabType::Transactions);
+		TransactionsListPanel* tabPanel = static_cast<TransactionsListPanel*>(CreatePanel(TabType::Transactions));
 
 		if (tabPanel) {
 			tabPanel->id = -1;
 			tabPanel->type = TabType::Transactions;
 
-			_tabsPanel->AddPanel(tabPanel, GetTabTitle(TabType::Transactions), GetIconIndex(TabType::Transactions));
+			tabPanel->SetAccountType(type);
+
+			_tabsPanel->AddPanel(tabPanel, GetTabTitleByAccountType(type), GetIconIndex(TabType::Transactions));
 			_tabsPanel->SelectLastTab();
 		}
 	}
@@ -137,6 +141,31 @@ wxString TabsController::GetTabTitle(TabType type) {
 			break;
 		default:
 			break;
+	}
+
+	return "";
+}
+
+wxString TabsController::GetTabTitleByAccountType(AccountType type) {
+	switch (type)
+	{
+	case AccountType::Deposit:
+		return "Deposits";
+		break;
+	case AccountType::Receipt:
+		return "Receipts";
+		break;
+	case AccountType::Expens:
+		return "Expenses";
+		break;
+	case AccountType::Debt:
+		return "Debts";
+		break;
+	case AccountType::Virtual:
+		return "Virtuals";
+		break;
+	default:
+		break;
 	}
 
 	return "";

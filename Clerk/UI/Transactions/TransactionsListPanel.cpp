@@ -28,127 +28,108 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 
-	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
+	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
+
 	delete values;
 
 	int indent = this->FromDIP(5);
 
 	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
-	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
+	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
-	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
+	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 
 	periodSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
-	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(_periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 	periodSizer->Add(fromText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
-	periodSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(_fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 	periodSizer->Add(toText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
-	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(_toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL);
 
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
-	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(300, 20)));
-	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
+	_searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(300, 20)));
+	_searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
 
 	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
-	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+	searchSizer->Add(_searchField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	filterSizer->Add(searchSizer, 0, wxALIGN_CENTER_VERTICAL, 0);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
 
-	infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
+	_infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
 	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *transactionText = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"));
+	wxStaticText *transactionText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Transactions:"));
 	infoSizer->Add(transactionText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0"));
-	infoSizer->Add(transactionLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	_transactionLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0"));
+	infoSizer->Add(_transactionLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *incomeText = new wxStaticText(infoPanel, wxID_ANY, wxT("Income:"));
+	wxStaticText *incomeText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Income:"));
 	infoSizer->Add(incomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"));
-	infoSizer->Add(incomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	_incomeLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0.00"));
+	infoSizer->Add(_incomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *outcomeText = new wxStaticText(infoPanel, wxID_ANY, wxT("Outcome:"));
+	wxStaticText *outcomeText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Outcome:"));
 	infoSizer->Add(outcomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"));
-	infoSizer->Add(outcomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	_outcomeLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0.00"));
+	infoSizer->Add(_outcomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	infoPanel->SetSizer(infoSizer);
-	infoPanel->Layout();
+	_infoPanel->SetSizer(infoSizer);
+	_infoPanel->Layout();
 
 	mainSizer->Add(filterPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
-	mainSizer->Add(infoPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
+	mainSizer->Add(_infoPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
 	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
 
-	periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
+	_periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
+	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
+	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
-	periodList->Select(0);
+	_periodList->Select(0);
 
 	CalculatePeriod();
 	CreateListColumns();
 
-	balance = 0.0;
-	sortBy = 2;
-	sortDesc = false;
+	_balance = 0.0;
+	_sortBy = 2;
+	_sortDesc = false;
 
 	_transactionsService = &_context.GetTransactionsService();
 
 	_subscriptionId = _transactionsService->Subscribe([&]() {
 		Update();
 	});
-
-	Update();
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
 	_transactionsService->Unsubscribe(_subscriptionId);
 
-	//SaveFilterSettings();
+	SaveFilterSettings();
 	//SaveColumnsSettings();	
 }
 
-std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
-	wxDataViewItem item = _list->GetSelection();
+void TransactionsListPanel::SetAccount(std::shared_ptr<AccountPresentationModel> account) {
+	_account = account;
 
-	if (item.IsOk()) {
-		int index = reinterpret_cast<int>(item.GetID()) - 1;
-		return _filtered[index];
-	}
-
-	return nullptr;
+	Update();
 }
 
-std::vector<int> TransactionsListPanel::GetSelectedIds() {
-	std::vector<int> result;
+void TransactionsListPanel::SetAccountType(AccountType type) {
+	_accountType = type;
 
-	wxDataViewItemArray selections;
-
-	_list->GetSelections(selections);
-
-	for (unsigned int i = 0; i < selections.GetCount(); i++) {
-		wxDataViewItem item = selections[i];
-
-		if (item.IsOk()) {
-			int index = (int)item.GetID() - 1;
-			result.push_back(_filtered[index]->id);
-		}
-	}
-
-	return result;
+	Update();
 }
 
 void TransactionsListPanel::Update() {
@@ -156,7 +137,23 @@ void TransactionsListPanel::Update() {
 	{
 		RestoreFilterSettings();
 
-		_transactions = _transactionsService->GetForPeriod(fromDatePicker->GetValue(), toDatePicker->GetValue());
+		_transactions.clear();
+
+		auto transactions = _transactionsService->GetForPeriod(_fromDatePicker->GetValue(), _toDatePicker->GetValue());
+
+		if (!_account) {
+			_transactions = transactions;
+		}
+		else if (_account) {
+			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
+				return transaction->toAccount->id == _account->id || transaction->fromAccount->id == _account->id;
+			});
+		}
+		else {
+			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
+				return transaction->toAccount->type == _accountType || transaction->fromAccount->type == _accountType;
+			});
+		}
 
 		Sort();
 		Filter();
@@ -167,15 +164,15 @@ void TransactionsListPanel::Update() {
 
 void TransactionsListPanel::Sort() {
 	std::sort(_transactions.begin(), _transactions.end(), [&](const std::shared_ptr<TransactionPresentationModel>& v1, const std::shared_ptr<TransactionPresentationModel>& v2) {
-		if (this->sortBy == 0) {
+		if (_sortBy == 0) {
 			return v1->fromAccount->name.Cmp(v2->fromAccount->name) == 0;
 		}
-		else if (this->sortBy == 1) {
+		else if (_sortBy == 1) {
 			wxString s = v1->tagsString.Lower();
 			wxString s1 = v2->tagsString.Lower();
 			return s.CmpNoCase(s1) == 0;
 		}
-		else if (this->sortBy == 2) {
+		else if (_sortBy == 2) {
 			return v1->date.GetMillisecond() < v2->date.GetMillisecond();
 		}
 		else {
@@ -183,7 +180,7 @@ void TransactionsListPanel::Sort() {
 		}
 	});
 
-	if (sortDesc) {
+	if (_sortDesc) {
 		std::reverse(_transactions.begin(), _transactions.end());
 	}
 }
@@ -191,8 +188,8 @@ void TransactionsListPanel::Sort() {
 void TransactionsListPanel::Filter() {
 	_filtered.clear();
 
-	if (searchField->GetValue().Length() > 0) {
-		wxString search = searchField->GetValue();
+	if (_searchField->GetValue().Length() > 0) {
+		wxString search = _searchField->GetValue();
 
 		auto &f = std::use_facet<std::ctype<wchar_t>>(std::locale());
 
@@ -224,15 +221,47 @@ void TransactionsListPanel::Filter() {
 void TransactionsListPanel::CreateListColumns() {
 	ListColumnsTypes columnsType = ListColumnsTypes::All;
 
-	if (this->type == TreeMenuItemType::Account && this->account) {
-		if (account->type == AccountType::Receipt) {
-			columnsType = ListColumnsTypes::Receipts;
+	if (_account) {
+		switch (_account->type)
+		{
+			case AccountType::Receipt:
+				columnsType = ListColumnsTypes::Receipts;
+				break;
+			case AccountType::Deposit:
+				columnsType = ListColumnsTypes::Deposits;
+				break;
+			case AccountType::Expens:
+				columnsType = ListColumnsTypes::Expenses;
+				break;
+			case AccountType::Debt:
+				columnsType = ListColumnsTypes::Expenses;
+				break;
+			case AccountType::Virtual:
+				columnsType = ListColumnsTypes::Deposits;
+				break;
+			default:
+				break;
 		}
-		else if (account->type == AccountType::Deposit || account->type == AccountType::Virtual) {
-			columnsType = ListColumnsTypes::Deposits;
-		}
-		else {
-			columnsType = ListColumnsTypes::Expenses;
+	} else {
+		switch (_accountType)
+		{
+			case AccountType::Receipt:
+				columnsType = ListColumnsTypes::Receipts;
+				break;
+			case AccountType::Deposit:
+				columnsType = ListColumnsTypes::Deposits;
+				break;
+			case AccountType::Expens:
+				columnsType = ListColumnsTypes::Expenses;
+				break;
+			case AccountType::Debt:
+				columnsType = ListColumnsTypes::Expenses;
+				break;
+			case AccountType::Virtual:
+				columnsType = ListColumnsTypes::Deposits;
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -284,96 +313,12 @@ void TransactionsListPanel::UpdateInfo() {
 	float income = 0;
 	float outcome = 0;
 
-	/*for (auto &transaction : _filtered)
-	{
-		if (this->type == TreeMenuItemTypes::Account) {
-			if (account->type == Account::Type::Deposit) {
-				income = income + transaction->toAmount;
-				outcome = outcome + transaction->fromAmount;
-			}
-			else if (account->type == Account::Type::Receipt) {
-				income = income + transaction->toAmount;
-			}
-			else if (account->type == Account::Type::Expens) {
-				outcome = outcome + transaction->toAmount;
-			}
-		}
-		else if (type == TreeMenuItemTypes::Accounts) {
-			if (transaction->toAccount->type == Account::Type::Expens) {
-				outcome = outcome + transaction->toAmount;
-			}			
-			
-			if (transaction->fromAccount->type == Account::Type::Receipt) {
-				income = income + transaction->toAmount;
-			}
-		}
-		else if (this->type == TreeMenuItemTypes::Expenses) {
-			outcome = outcome + transaction->toAmount;
-		}
-		else if (this->type == TreeMenuItemTypes::Receipts) {
-			income = income + transaction->toAmount;
-		}
-		else if (this->type == TreeMenuItemTypes::Deposits) {
-			income = income + transaction->toAmount;
-			outcome = outcome + transaction->fromAmount;
-		}
-	}*/
+	_transactionLabel->SetLabel(wxString::Format("%d", static_cast<int>(_filtered.size())));
+	_incomeLabel->SetLabel(wxNumberFormatter::ToString(income, 2));
+	_outcomeLabel->SetLabel(wxNumberFormatter::ToString(outcome, 2));
 
-	transactionLabel->SetLabel(wxString::Format("%d", _filtered.size()));
-	incomeLabel->SetLabel(wxNumberFormatter::ToString(income, 2));
-	outcomeLabel->SetLabel(wxNumberFormatter::ToString(outcome, 2));
-
-	infoPanel->Layout();
+	_infoPanel->Layout();
 }
-
-/*void TransactionsListPanel::Merge() {
-	vector<shared_ptr<Transaction>> _transactions;
-
-	wxDataViewItemArray selections;
-
-	list->GetSelections(selections);
-
-	for (unsigned int i = 0; i < selections.GetCount(); i++) {
-		wxDataViewItem item = selections[i];
-		
-		if (item.IsOk()) {
-			int index = (int)item.GetID() - 1;
-			_transactions.push_back(_filtered[index]);
-		}
-	}
-
-	if (_transactions.size() > 1) {
-		auto firstTransaction = _transactions[0];
-		auto tags = firstTransaction.tags;
-		std::vector<wxString> newTags;
-
-		for (unsigned int i = 1; i < _transactions.size(); i++) {
-			auto transaction = _transactions[i];
-
-			firstTransaction->fromAmount = firstTransaction->fromAmount + transaction->fromAmount;
-			firstTransaction->toAmount = firstTransaction->toAmount + transaction->toAmount;
-			
-			auto _tags = transaction.tags;
-
-			for (auto _tag : _tags)
-			{
-				for (auto tag : tags)
-				{
-					if (_tag != tag) {
-						newTags.push_back(_tag);
-					}
-				}
-			}
-
-			//transaction->Delete();
-		}
-		//TODO
-		firstTransaction->tags = newTags;
-		//firstTransaction->Save();
-
-		Update();
-	}
-}*/
 
 void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	auto transaction = GetTransaction();
@@ -386,11 +331,11 @@ void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 }
 
 void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
-	if (sortBy == event.GetColumn()) {
-		sortDesc = !sortDesc;
+	if (_sortBy == event.GetColumn()) {
+		_sortDesc = !_sortDesc;
 	}
 
-	sortBy = event.GetColumn();
+	_sortBy = event.GetColumn();
 	//Update();
 }
 
@@ -410,8 +355,8 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
-	periodFromDate = fromDatePicker->GetValue();
-	periodToDate = toDatePicker->GetValue();
+	_periodFromDate = _fromDatePicker->GetValue();
+	_periodToDate = _toDatePicker->GetValue();
 
 	SaveFilterSettings();
 
@@ -424,13 +369,13 @@ void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
 }
 
 void TransactionsListPanel::CalculatePeriod() {
-	int index = periodList->GetSelection();
+	int index = _periodList->GetSelection();
 
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDatePicker->Disable();
-	toDatePicker->Disable();
+	_fromDatePicker->Disable();
+	_toDatePicker->Disable();
 
 	switch (index)
 	{
@@ -459,34 +404,34 @@ void TransactionsListPanel::CalculatePeriod() {
 			break;
 
 		case 6:
-			fromDate = periodFromDate;
-			toDate = periodToDate;
+			fromDate = _periodFromDate;
+			toDate = _periodToDate;
 
-			fromDatePicker->Enable();
-			toDatePicker->Enable();
+			_fromDatePicker->Enable();
+			_toDatePicker->Enable();
 			break;
 
 		default:
 			break;
 	}
 
-	fromDatePicker->SetValue(fromDate);
-	toDatePicker->SetValue(toDate);
+	_fromDatePicker->SetValue(fromDate);
+	_toDatePicker->SetValue(toDate);
 }
 
 void TransactionsListPanel::RestoreFilterSettings() {
 	int id = -1;
 
-	if (account) {
-		id = account->id;
+	if (_account) {
+		id = _account->id;
 	}
 
-	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(static_cast<int>(type), id);
+	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(static_cast<int>(_accountType), id);
 
-	periodFromDate = settings.fromDate;
-	periodToDate = settings.toDate;
+	_periodFromDate = settings.fromDate;
+	_periodToDate = settings.toDate;
 
-	periodList->SetSelection(settings.period);
+	_periodList->SetSelection(settings.period);
 
 	CalculatePeriod();
 }
@@ -494,12 +439,12 @@ void TransactionsListPanel::RestoreFilterSettings() {
 void TransactionsListPanel::SaveFilterSettings() {
 	int id = -1;
 
-	if (account)
+	if (_account)
 	{
-		id = account->id;
+		id = _account->id;
 	}
 
-	Settings::GetInstance().SetListFilterSettings(static_cast<int>(type), id, periodList->GetSelection(), periodFromDate, periodToDate);
+	Settings::GetInstance().SetListFilterSettings(static_cast<int>(_accountType), id, _periodList->GetSelection(), _periodFromDate, _periodToDate);
 }
 
 void TransactionsListPanel::SaveColumnsSettings() {
@@ -528,4 +473,34 @@ void TransactionsListPanel::SaveColumnsSettings() {
 	}
 
 	Settings::GetInstance().SetTransactionsListColumns(columnsType, columns);*/
+}
+
+std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
+	wxDataViewItem item = _list->GetSelection();
+
+	if (item.IsOk()) {
+		int index = reinterpret_cast<int>(item.GetID()) - 1;
+		return _filtered[index];
+	}
+
+	return nullptr;
+}
+
+std::vector<int> TransactionsListPanel::GetSelectedIds() {
+	std::vector<int> result;
+
+	wxDataViewItemArray selections;
+
+	_list->GetSelections(selections);
+
+	for (unsigned int i = 0; i < selections.GetCount(); i++) {
+		wxDataViewItem item = selections[i];
+
+		if (item.IsOk()) {
+			int index = (int)item.GetID() - 1;
+			result.push_back(_filtered[index]->id);
+		}
+	}
+
+	return result;
 }

@@ -6,7 +6,6 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	_model = new TransactionsListDataModel();
 	_list->AssociateModel(_model.get());
 
-	//transactionsList->Bind(wxEVT_LIST_COL_CLICK, &TransactionsListPanel::OnListColumnClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
 
@@ -17,7 +16,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
+	wxStaticText *periodText = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
 	wxArrayString *values = new wxArrayString();
 
@@ -32,30 +31,32 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
-	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
+	int indent = this->FromDIP(5);
+
+	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
 	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
-	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
+	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
 	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 
-	periodSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
-	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
+	periodSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(fromText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
+	periodSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	periodSizer->Add(toText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
+	periodSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL | wxALIGN_LEFT, 5);
+	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL);
 
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
-	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(200, 20)));
+	searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(300, 20)));
 	searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
 
-	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 5);
-	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL, 5);
+	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+	searchSizer->Add(searchField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	filterSizer->Add(searchSizer, 0, wxALL, 5);
+	filterSizer->Add(searchSizer, 0, wxALIGN_CENTER_VERTICAL, 0);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
@@ -63,23 +64,23 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
 	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *st4 = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(st4, 0, wxALL, 5);
+	wxStaticText *transactionText = new wxStaticText(infoPanel, wxID_ANY, wxT("Transactions:"));
+	infoSizer->Add(transactionText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(transactionLabel, 0, wxALL, 5);
+	transactionLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0"));
+	infoSizer->Add(transactionLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *st5 = new wxStaticText(infoPanel, wxID_ANY, wxT("Income:"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(st5, 0, wxALL, 5);
+	wxStaticText *incomeText = new wxStaticText(infoPanel, wxID_ANY, wxT("Income:"));
+	infoSizer->Add(incomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(incomeLabel, 0, wxALL, 5);
+	incomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"));
+	infoSizer->Add(incomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *st6 = new wxStaticText(infoPanel, wxID_ANY, wxT("Outcome:"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(st6, 0, wxALL, 5);
+	wxStaticText *outcomeText = new wxStaticText(infoPanel, wxID_ANY, wxT("Outcome:"));
+	infoSizer->Add(outcomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"), wxDefaultPosition, wxDefaultSize, 0);
-	infoSizer->Add(outcomeLabel, 0, wxALL, 5);
+	outcomeLabel = new wxStaticText(infoPanel, wxID_ANY, wxT("0.00"));
+	infoSizer->Add(outcomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	infoPanel->SetSizer(infoSizer);
 	infoPanel->Layout();

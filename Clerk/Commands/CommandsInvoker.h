@@ -42,6 +42,7 @@ namespace Clerk {
 			void OnEditAccount(int id);
 			void OnNewTab(TabType type);
 			void OnNewAccountTab(int accountId);
+			void OnNewAccountsTab();
 			void OnNewAccountsTab(AccountType id);
 
 		private:

@@ -9,46 +9,10 @@
 #include "rapidjson/filereadstream.h"
 #include <rapidjson/writer.h>
 #include "../Utils/Utils.h"
+#include "Types.h"
 
 using namespace rapidjson;
 using namespace Clerk::Utils;
-
-struct TabSettings {
-	int type;
-	int id;
-};
-
-struct ListColumnsSettings {
-	int index;
-	int order;
-	wxString title;
-	int width;
-	bool sorted;
-};
-
-struct ListFilterSettings {	
-	int type;
-	int id;
-	int period;
-	wxDateTime fromDate;
-	wxDateTime toDate;
-};
-
-enum class ListColumnsTypes {
-	All = 0,
-	Receipts = 1,
-	Deposits = 2,
-	Expenses = 3,	
-};
-
-struct ReportFilterSettings {	
-	int id;
-	wxString accountIds;
-	int period;
-	wxDateTime fromDate;
-	wxDateTime toDate;
-	bool average;
-};
 
 class Settings
 {
@@ -92,8 +56,8 @@ public:
 	bool IsMenuExpanded(int type);	
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
-	std::vector<ListColumnsSettings> GetTransactionsListColumns(ListColumnsTypes type);
-	void SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns);
+	std::vector<ListColumnsSettings> GetTransactionsListColumns(TransactionsListType type);
+	void SetTransactionsListColumns(TransactionsListType type, std::vector<ListColumnsSettings> columns);
 	ReportFilterSettings GetReportFilterSettings(int id);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);

@@ -9,6 +9,7 @@
 #include <thread>
 #include <algorithm>
 #include <string> 
+#include <optional> 
 #include "../DataPanel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../PresentationModels/AccountPresentationModel.h"
@@ -28,6 +29,7 @@ public:
 	TransactionsListPanel(wxWindow *parent, DataContext& context);
 	~TransactionsListPanel();
 
+	void Update();
 	void SetAccount(std::shared_ptr<AccountPresentationModel> account);
 	void SetAccountType(AccountType type);
 
@@ -44,7 +46,7 @@ private:
 	wxStaticText *_outcomeLabel;
 	wxPanel *_infoPanel;
 	std::shared_ptr<AccountPresentationModel> _account;
-	AccountType _accountType;
+	std::optional<AccountType> _accountType;
 	shared_vector<TransactionPresentationModel> _transactions;
 	shared_vector<TransactionPresentationModel> _filtered;
 	float _balance;
@@ -52,9 +54,8 @@ private:
 	bool _sortDesc;
 	wxDateTime _periodFromDate;
 	wxDateTime _periodToDate;
-	unsigned int _subscriptionId;
-		
-	void Update();
+	unsigned int _subscriptionId;		
+	
 	void Sort();
 	void Filter();
 	void CreateListColumns();
@@ -72,4 +73,5 @@ private:
 	void SaveColumnsSettings();
 	std::shared_ptr<TransactionPresentationModel> GetTransaction();
 	std::vector<int> GetSelectedIds();
+	TransactionsListType GetListType();
 };

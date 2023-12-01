@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "Command.h"
 #include "ICommandsReceiver.h"
 #include "../UI/Enums.h"
@@ -16,7 +17,7 @@ namespace Clerk {
 
 		private:
 			ICommandsReceiver* _receiver;
-			AccountType _accountType;
+			std::optional<AccountType> _accountType;
 		};
 	}
 }

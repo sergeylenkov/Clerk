@@ -229,6 +229,7 @@
     <ClInclude Include="Data\Services\SchedulersService.h" />
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
+    <ClInclude Include="Data\Types.h" />
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />
     <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\AccountViewModel.h" />

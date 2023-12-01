@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <optional>
 #include "ICommandsReceiver.h"
 #include "../UI/Controllers/DialogsController.h"
 #include "../UI/Controllers/TabsController.h"
@@ -27,7 +28,7 @@ namespace Clerk {
 			void OpenEditAccountDialog(int id) override;
 			void OpenNewTab(TabType type) override;
 			void OpenNewAccountTab(int accountId) override;
-			void OpenNewAccountsTab(AccountType type) override;
+			void OpenNewAccountsTab(std::optional<AccountType> type) override;
 
 		private:
 			wxFrame* _frame{};

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <optional>
 #include "../Tabs/TabsPanel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
@@ -17,7 +18,7 @@ namespace Clerk {
 			void SetTabsPanel(TabsPanel* panel);
 			void OpenNewTab(TabType type);
 			void OpenNewAccountTab(int accountId);
-			void OpenNewAccountsTab(AccountType type);
+			void OpenNewAccountsTab(std::optional<AccountType> type);
 			void RestoreLastTabs();
 
 		private:

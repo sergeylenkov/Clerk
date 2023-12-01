@@ -860,6 +860,9 @@
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Data\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Logo.ico">

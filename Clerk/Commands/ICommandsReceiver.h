@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include "../Data/Enums.h"
 #include "../UI/Enums.h"
 
@@ -22,7 +23,7 @@ namespace Clerk {
 			virtual void OpenEditAccountDialog(int id) = 0;
 			virtual void OpenNewTab(TabType type) = 0;
 			virtual void OpenNewAccountTab(int accountId) = 0;
-			virtual void OpenNewAccountsTab(AccountType type) = 0;
+			virtual void OpenNewAccountsTab(std::optional<AccountType> type) = 0;
 		};
 	}
 }

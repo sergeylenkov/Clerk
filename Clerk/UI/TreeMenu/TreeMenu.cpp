@@ -151,7 +151,6 @@ void TreeMenu::Update() {
 		TreeMenuItemData* itemData = new TreeMenuItemData();
 
 		itemData->type = TreeMenuItemType::Report;
-		//itemData->object = report;
 
 		wxTreeItemId itemId = _treeMenu->AppendItem(_reportsItem, report->name, 5, 5, itemData);
 	}

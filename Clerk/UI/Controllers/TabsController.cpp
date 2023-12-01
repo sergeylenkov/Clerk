@@ -49,14 +49,15 @@ void TabsController::OpenNewAccountTab(int accountId) {
 			tabPanel->type = TabType::Transactions;
 
 			tabPanel->SetAccount(account);
-			
+			tabPanel->Update();
+
 			_tabsPanel->AddPanel(tabPanel, account->name, _icons.GetIconIndexForAccount(account->icon));
 			_tabsPanel->SelectLastTab();
 		}
 	}
 }
 
-void TabsController::OpenNewAccountsTab(AccountType type) {
+void TabsController::OpenNewAccountsTab(std::optional<AccountType> type) {
 	if (_tabsPanel) {
 		TransactionsListPanel* tabPanel = static_cast<TransactionsListPanel*>(CreatePanel(TabType::Transactions));
 
@@ -64,9 +65,17 @@ void TabsController::OpenNewAccountsTab(AccountType type) {
 			tabPanel->id = -1;
 			tabPanel->type = TabType::Transactions;
 
-			tabPanel->SetAccountType(type);
+			if (type.has_value()) {
+				tabPanel->SetAccountType(type.value());
+				tabPanel->Update();
 
-			_tabsPanel->AddPanel(tabPanel, GetTabTitleByAccountType(type), GetIconIndex(TabType::Transactions));
+				_tabsPanel->AddPanel(tabPanel, GetTabTitleByAccountType(type.value()), GetIconIndex(TabType::Transactions));
+			}
+			else {
+				tabPanel->Update();
+				_tabsPanel->AddPanel(tabPanel, "Transactions", GetIconIndex(TabType::Transactions));
+			}
+
 			_tabsPanel->SelectLastTab();
 		}
 	}

@@ -321,7 +321,7 @@ void Settings::RestoreDefaultColumns() {
 	columns.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::All)] = columns;
+	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::All)] = columns;
 
 	std::vector<ListColumnsSettings> columns2;
 
@@ -331,7 +331,7 @@ void Settings::RestoreDefaultColumns() {
 	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Receipts)] = columns2;
+	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Receipts)] = columns2;
 
 	std::vector<ListColumnsSettings> columns3;
 
@@ -341,7 +341,7 @@ void Settings::RestoreDefaultColumns() {
 	columns3.push_back({ 3, 3, wxT("Date"), 100, true });
 	columns3.push_back({ 4, 4, wxT("Amount"), 100, false });
 
-	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Expenses)] = columns3;
+	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Expenses)] = columns3;
 
 	std::vector<ListColumnsSettings> columns4;
 
@@ -352,7 +352,7 @@ void Settings::RestoreDefaultColumns() {
 	columns4.push_back({ 4, 4, wxT("Date"), 100, true });
 	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
 
-	_transactionsListColumnsSettings[static_cast<int>(ListColumnsTypes::Deposits)] = columns4;
+	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Deposits)] = columns4;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -506,7 +506,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 	return result;
 }
 
-std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumnsTypes type) {
+std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(TransactionsListType type) {
 	auto& columns = _transactionsListColumnsSettings[static_cast<int>(type)];
 
 	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
@@ -516,7 +516,7 @@ std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(ListColumn
 	return columns;
 }
 
-void Settings::SetTransactionsListColumns(ListColumnsTypes type, std::vector<ListColumnsSettings> columns) {
+void Settings::SetTransactionsListColumns(TransactionsListType type, std::vector<ListColumnsSettings> columns) {
 	_transactionsListColumnsSettings[static_cast<int>(type)] = columns;
 }
 

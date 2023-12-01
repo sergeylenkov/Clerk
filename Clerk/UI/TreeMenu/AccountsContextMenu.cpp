@@ -18,7 +18,12 @@ void AccountsContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	TreeContextMenuType type = static_cast<TreeContextMenuType>(event.GetId());
 
 	if (type == TreeContextMenuType::NewTab) {
-		_commandsInvoker.OnNewAccountsTab(GetAccountTypeByMenuType(_type));
+		if (_type == TreeMenuItemType::Accounts) {
+			_commandsInvoker.OnNewAccountsTab();
+		}
+		else {
+			_commandsInvoker.OnNewAccountsTab(GetAccountTypeByMenuType(_type));
+		}
 	} else if (type == TreeContextMenuType::NewTransaction) {
 		_commandsInvoker.OnNewTransaction(-1);
 	} else if (type == TreeContextMenuType::NewAccount) {
@@ -31,24 +36,24 @@ AccountType AccountsContextMenu::GetAccountTypeByMenuType(TreeMenuItemType type)
 
 	switch (_type)
 	{
-	case TreeMenuItemType::Deposits:
-		accountType = AccountType::Deposit;
-		break;
-	case TreeMenuItemType::Receipts:
-		accountType = AccountType::Receipt;
-		break;
-	case TreeMenuItemType::Expenses:
-		accountType = AccountType::Expens;
-		break;
-	case TreeMenuItemType::Debts:
-		accountType = AccountType::Debt;
-		break;
-	case TreeMenuItemType::Virtual:
-		accountType = AccountType::Virtual;
-		break;
-	default:
-		accountType = AccountType::Deposit;
-		break;
+		case TreeMenuItemType::Deposits:
+			accountType = AccountType::Deposit;
+			break;
+		case TreeMenuItemType::Receipts:
+			accountType = AccountType::Receipt;
+			break;
+		case TreeMenuItemType::Expenses:
+			accountType = AccountType::Expens;
+			break;
+		case TreeMenuItemType::Debts:
+			accountType = AccountType::Debt;
+			break;
+		case TreeMenuItemType::Virtual:
+			accountType = AccountType::Virtual;
+			break;
+		default:
+			accountType = AccountType::Deposit;
+			break;
 	}
 
 	return accountType;

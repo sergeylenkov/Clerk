@@ -60,6 +60,6 @@ void CommandsReceiver::OpenNewAccountTab(int accountId) {
 	_tabsController->OpenNewAccountTab(accountId);
 }
 
-void CommandsReceiver::OpenNewAccountsTab(AccountType type) {
+void CommandsReceiver::OpenNewAccountsTab(std::optional<AccountType> type) {
 	_tabsController->OpenNewAccountsTab(type);
 }

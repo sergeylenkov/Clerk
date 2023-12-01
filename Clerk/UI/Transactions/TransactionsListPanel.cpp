@@ -97,16 +97,17 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
 
-	_periodList->Select(0);
+	_periodList->Select(0);	
 
-	CalculatePeriod();
-	CreateListColumns();
-
+	_accountType = std::nullopt;
 	_balance = 0.0;
 	_sortBy = 2;
 	_sortDesc = false;
 
 	_transactionsService = &_context.GetTransactionsService();
+
+	CalculatePeriod();
+	CreateListColumns();
 
 	_subscriptionId = _transactionsService->Subscribe([&]() {
 		Update();
@@ -117,19 +118,15 @@ TransactionsListPanel::~TransactionsListPanel() {
 	_transactionsService->Unsubscribe(_subscriptionId);
 
 	SaveFilterSettings();
-	//SaveColumnsSettings();	
+	SaveColumnsSettings();	
 }
 
 void TransactionsListPanel::SetAccount(std::shared_ptr<AccountPresentationModel> account) {
 	_account = account;
-
-	Update();
 }
 
 void TransactionsListPanel::SetAccountType(AccountType type) {
 	_accountType = type;
-
-	Update();
 }
 
 void TransactionsListPanel::Update() {
@@ -141,18 +138,17 @@ void TransactionsListPanel::Update() {
 
 		auto transactions = _transactionsService->GetForPeriod(_fromDatePicker->GetValue(), _toDatePicker->GetValue());
 
-		if (!_account) {
-			_transactions = transactions;
-		}
-		else if (_account) {
+		if (_account) {
 			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
 				return transaction->toAccount->id == _account->id || transaction->fromAccount->id == _account->id;
-			});
-		}
-		else {
+				});
+		} else if (_accountType.has_value()) {		
 			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
 				return transaction->toAccount->type == _accountType || transaction->fromAccount->type == _accountType;
 			});
+		}
+		else {
+			_transactions = transactions;
 		}
 
 		Sort();
@@ -219,55 +215,11 @@ void TransactionsListPanel::Filter() {
 }
 
 void TransactionsListPanel::CreateListColumns() {
-	ListColumnsTypes columnsType = ListColumnsTypes::All;
-
-	if (_account) {
-		switch (_account->type)
-		{
-			case AccountType::Receipt:
-				columnsType = ListColumnsTypes::Receipts;
-				break;
-			case AccountType::Deposit:
-				columnsType = ListColumnsTypes::Deposits;
-				break;
-			case AccountType::Expens:
-				columnsType = ListColumnsTypes::Expenses;
-				break;
-			case AccountType::Debt:
-				columnsType = ListColumnsTypes::Expenses;
-				break;
-			case AccountType::Virtual:
-				columnsType = ListColumnsTypes::Deposits;
-				break;
-			default:
-				break;
-		}
-	} else {
-		switch (_accountType)
-		{
-			case AccountType::Receipt:
-				columnsType = ListColumnsTypes::Receipts;
-				break;
-			case AccountType::Deposit:
-				columnsType = ListColumnsTypes::Deposits;
-				break;
-			case AccountType::Expens:
-				columnsType = ListColumnsTypes::Expenses;
-				break;
-			case AccountType::Debt:
-				columnsType = ListColumnsTypes::Expenses;
-				break;
-			case AccountType::Virtual:
-				columnsType = ListColumnsTypes::Deposits;
-				break;
-			default:
-				break;
-		}
-	}
+	TransactionsListType listType = GetListType();
 
 	_list->ClearColumns();
 
-	auto& columns = Settings::GetInstance().GetTransactionsListColumns(columnsType);
+	auto& columns = Settings::GetInstance().GetTransactionsListColumns(listType);
 
 	for (auto& column : columns) {
 		switch (static_cast<TransactionsListDataModel::Columns>(column.index))
@@ -336,7 +288,9 @@ void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
 	}
 
 	_sortBy = event.GetColumn();
-	//Update();
+
+	Sort();
+	UpdateList();
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
@@ -351,7 +305,7 @@ void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
 	SaveFilterSettings();
 
 	CalculatePeriod();
-	//Update();
+	Update();
 }
 
 void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
@@ -360,7 +314,7 @@ void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
 
 	SaveFilterSettings();
 
-	//Update();
+	Update();
 }
 
 void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
@@ -420,13 +374,18 @@ void TransactionsListPanel::CalculatePeriod() {
 }
 
 void TransactionsListPanel::RestoreFilterSettings() {
-	int id = -1;
+	int accountId = -1;
+	int accountType = -1;
 
 	if (_account) {
-		id = _account->id;
+		accountId = _account->id;
 	}
 
-	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(static_cast<int>(_accountType), id);
+	if (_accountType.has_value()) {
+		accountType = static_cast<int>(_accountType.value());
+	}
+
+	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(accountType, accountId);
 
 	_periodFromDate = settings.fromDate;
 	_periodToDate = settings.toDate;
@@ -437,42 +396,35 @@ void TransactionsListPanel::RestoreFilterSettings() {
 }
 
 void TransactionsListPanel::SaveFilterSettings() {
-	int id = -1;
+	int accountId = -1;
+	int accountType = -1;
 
 	if (_account)
 	{
-		id = _account->id;
+		accountId = _account->id;
 	}
 
-	Settings::GetInstance().SetListFilterSettings(static_cast<int>(_accountType), id, _periodList->GetSelection(), _periodFromDate, _periodToDate);
+	if (_accountType.has_value()) {
+		accountType = static_cast<int>(_accountType.value());
+	}
+
+	Settings::GetInstance().SetListFilterSettings(accountType, accountId, _periodList->GetSelection(), _periodFromDate, _periodToDate);
 }
 
 void TransactionsListPanel::SaveColumnsSettings() {
-	/*ListColumnsTypes columnsType = ListColumnsTypes::All;
+	TransactionsListType listType = GetListType();
 
-	if (this->type == TreeMenuItemTypes::Account) {
-		if (account->type == Account::Type::Receipt) {
-			columnsType = ListColumnsTypes::Receipts;
-		}
-		else if (account->type == Account::Type::Deposit || account->type == Account::Type::Virtual) {
-			columnsType = ListColumnsTypes::Deposits;
-		}
-		else {
-			columnsType = ListColumnsTypes::Expenses;
-		}
-	}
-
-	auto columns = Settings::GetInstance().GetTransactionsListColumns(columnsType);
+	auto columns = Settings::GetInstance().GetTransactionsListColumns(listType);
 
 	for (unsigned int i = 0; i < columns.size(); i++) {
-		wxDataViewColumn *column = list->GetColumn(i);
+		wxDataViewColumn *column = _list->GetColumn(i);
 
-		columns[i].index = list->GetColumnIndex(column);
-		columns[i].order = list->GetColumnPosition(column);
+		columns[i].index = _list->GetColumnIndex(column);
+		columns[i].order = _list->GetColumnPosition(column);
 		columns[i].width = column->GetWidth();
 	}
 
-	Settings::GetInstance().SetTransactionsListColumns(columnsType, columns);*/
+	Settings::GetInstance().SetTransactionsListColumns(listType, columns);
 }
 
 std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
@@ -503,4 +455,55 @@ std::vector<int> TransactionsListPanel::GetSelectedIds() {
 	}
 
 	return result;
+}
+
+TransactionsListType TransactionsListPanel::GetListType() {
+	TransactionsListType type = TransactionsListType::All;
+
+	if (_account) {
+		switch (_account->type)
+		{
+		case AccountType::Receipt:
+			type = TransactionsListType::Receipts;
+			break;
+		case AccountType::Deposit:
+			type = TransactionsListType::Deposits;
+			break;
+		case AccountType::Expens:
+			type = TransactionsListType::Expenses;
+			break;
+		case AccountType::Debt:
+			type = TransactionsListType::Expenses;
+			break;
+		case AccountType::Virtual:
+			type = TransactionsListType::Deposits;
+			break;
+		default:
+			break;
+		}
+	}
+	else if (_accountType.has_value()) {
+		switch (_accountType.value())
+		{
+		case AccountType::Receipt:
+			type = TransactionsListType::Receipts;
+			break;
+		case AccountType::Deposit:
+			type = TransactionsListType::Deposits;
+			break;
+		case AccountType::Expens:
+			type = TransactionsListType::Expenses;
+			break;
+		case AccountType::Debt:
+			type = TransactionsListType::Expenses;
+			break;
+		case AccountType::Virtual:
+			type = TransactionsListType::Deposits;
+			break;
+		default:
+			break;
+		}
+	}
+
+	return type;
 }

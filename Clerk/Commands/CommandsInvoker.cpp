@@ -97,6 +97,10 @@ void CommandsInvoker::OnNewAccountTab(int accountId) {
 	_newAccountTabCommand.Execute();
 }
 
+void CommandsInvoker::OnNewAccountsTab() {
+	_newAccountsTabCommand.Execute();
+}
+
 void CommandsInvoker::OnNewAccountsTab(AccountType type) {
 	_newAccountsTabCommand.SetAccountType(type);
 	_newAccountsTabCommand.Execute();

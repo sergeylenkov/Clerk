@@ -106,9 +106,6 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	_transactionsService = &_context.GetTransactionsService();
 
-	CalculatePeriod();
-	CreateListColumns();
-
 	_subscriptionId = _transactionsService->Subscribe([&]() {
 		Update();
 	});
@@ -133,6 +130,8 @@ void TransactionsListPanel::Update() {
 	std::thread([&]()
 	{
 		RestoreFilterSettings();
+		CalculatePeriod();
+		CreateListColumns();
 
 		_transactions.clear();
 

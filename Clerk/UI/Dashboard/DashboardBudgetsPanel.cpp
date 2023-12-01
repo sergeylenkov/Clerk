@@ -9,7 +9,8 @@ DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent) : wxPanel(parent)
 void DashboardBudgetsPanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
 
-	_viewModel->OnUpdate([=]() {
+	_viewModel->OnUpdate([&]() {
+		_viewModel->UpdateBudgets();
 		Update();
 	});
 

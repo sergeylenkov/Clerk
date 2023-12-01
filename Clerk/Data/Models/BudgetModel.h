@@ -17,7 +17,7 @@ namespace Clerk {
 			BudgetPeriod period;
 			std::wstring date;
 			std::wstring created;
-			std::wstring accountIds;
+			std::wstring accountsIds;
 		};
 	}
 }

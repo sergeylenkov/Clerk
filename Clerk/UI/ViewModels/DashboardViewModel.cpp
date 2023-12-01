@@ -106,7 +106,7 @@ float DashboardViewModel::GetTotalExpensesForMonth() {
 	return _accountingService.GetExpenses(fromDate, toDate);
 }
 
-shared_vector<BudgetPresentationModel> DashboardViewModel::GetBudgets() {
+shared_vector<BudgetPresentationModel> DashboardViewModel::GetBudgets() {	
 	return _budgetsService.GetAll();
 }
 
@@ -123,4 +123,8 @@ shared_vector<AccountPresentationModel> DashboardViewModel::GetDepts() {
 
 shared_vector<GoalPresentationModel> DashboardViewModel::GetGoals() {
 	return _goalsService.GetAll();
+}
+
+void DashboardViewModel::UpdateBudgets() {
+	_budgetsService.UpdateBalance();
 }

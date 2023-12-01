@@ -15,7 +15,7 @@ namespace Clerk {
 
 			BudgetModel* GetById(int id);
 			std::vector<BudgetModel*> GetAll();			
-			float GetExpenses(const BudgetModel& budget, std::string& fromDate, std::string& toDate);
+			float GetExpenses(std::string accountsIds, std::string& fromDate, std::string& toDate);
 			int Save(const BudgetModel& budget);
 			void Delete(const BudgetModel& budget);
 

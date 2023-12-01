@@ -16,9 +16,12 @@ namespace Clerk {
 
 			std::shared_ptr<BudgetPresentationModel> GetById(int id);
 			shared_vector<BudgetPresentationModel> GetAll();
+			void UpdateBalance();			
 
 		private:
 			BudgetsRepository& _budgetsRepository;
+
+			float GetExpenses(BudgetPresentationModel& budget, std::string& fromDate, std::string& toDate);
 		};
 	}
 }

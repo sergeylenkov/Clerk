@@ -20,7 +20,13 @@ namespace Clerk {
 			wxString periodName;
 			wxDateTime periodDate;
 			wxDateTime date;
-			std::vector<int> accountIds;
+			std::vector<int> accountsIds;
+
+			operator BudgetModel& ();
+
+			wxString GetAccountsIdsString();
+		private:
+			BudgetModel& GetModel();
 		};
 	}
 }

@@ -10,5 +10,5 @@ BudgetModel::BudgetModel()
 	this->period = BudgetPeriod::Month;
 	this->date = std::wstring();
 	this->created = std::wstring();
-	this->accountIds = std::wstring();
+	this->accountsIds = std::wstring();
 }

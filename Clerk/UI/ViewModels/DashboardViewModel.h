@@ -31,6 +31,7 @@ namespace Clerk {
 			shared_vector<SchedulerPresentationModel> GetSchedulersForMonth();
 			shared_vector<AccountPresentationModel> GetDepts();
 			shared_vector<GoalPresentationModel> GetGoals();
+			void UpdateBudgets();
 
 			void OnUpdate(std::function<void()> fn);
 

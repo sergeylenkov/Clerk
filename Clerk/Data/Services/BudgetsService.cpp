@@ -17,7 +17,7 @@ std::shared_ptr<BudgetPresentationModel> BudgetsService::GetById(int id) {
 
 	if (model) {
 		budget = std::make_shared<BudgetPresentationModel>(*model);
-		budget->balance = _budgetsRepository.GetExpenses(*model, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+		budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
 
 		AddToHash(budget->id, budget);
 
@@ -40,7 +40,7 @@ shared_vector<BudgetPresentationModel> BudgetsService::GetAll() {
 		if (!GetFromHash(model->id)) {
 			auto budget = std::make_shared<BudgetPresentationModel>(*model);
 
-			budget->balance = _budgetsRepository.GetExpenses(*model, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+			budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
 
 			AddToHash(budget->id, budget);
 		}
@@ -55,4 +55,14 @@ shared_vector<BudgetPresentationModel> BudgetsService::GetAll() {
 	_isLoading = true;
 
 	return GetHashList();
+}
+
+void BudgetsService::UpdateBalance() {
+	for (auto& budget : GetHashList()) {
+		budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+	}
+}
+
+float BudgetsService::GetExpenses(BudgetPresentationModel& budget, std::string& fromDate, std::string& toDate) {	
+	return _budgetsRepository.GetExpenses(budget.GetAccountsIdsString().ToStdString(), std::string(budget.periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
 }

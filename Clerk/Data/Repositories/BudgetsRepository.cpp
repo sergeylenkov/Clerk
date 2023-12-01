@@ -24,13 +24,13 @@ std::vector<BudgetModel*> BudgetsRepository::GetAll() {
 	return result;
 }
 
-float BudgetsRepository::GetExpenses(const BudgetModel& budget, std::string& fromDate, std::string& toDate) {
+float BudgetsRepository::GetExpenses(std::string accountsIds, std::string& fromDate, std::string& toDate) {
 	float total = 0;
 
 	char sql[512];
 	sqlite3_stmt* statement;
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND a.active = 1 AND t.to_account_id IN(%ls) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", budget.accountIds.c_str());
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(t.to_account_amount) FROM transactions t, accounts a WHERE (a.type_id = 2 OR a.type_id = 3) AND a.active = 1 AND t.to_account_id IN(%s) AND t.to_account_id = a.id AND t.paid_at >= ? AND t.paid_at <= ? AND t.deleted = 0", accountsIds.c_str());
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		sqlite3_bind_text(statement, 1, fromDate.c_str(), -1, SQLITE_TRANSIENT);
@@ -63,7 +63,7 @@ BudgetModel* BudgetsRepository::Load(int id) {
 			budget->period = static_cast<BudgetPeriod>(sqlite3_column_int(statement, 2));
 			budget->date = std::wstring((wchar_t*)sqlite3_column_text16(statement, 3));
 			budget->amount = static_cast<float>(sqlite3_column_double(statement, 4));
-			budget->accountIds = std::wstring((wchar_t*)sqlite3_column_text16(statement, 5));
+			budget->accountsIds = std::wstring((wchar_t*)sqlite3_column_text16(statement, 5));
 		}
 	}
 
@@ -84,7 +84,7 @@ int BudgetsRepository::Save(const BudgetModel& budget) {
 			sqlite3_bind_int(statement, 2, static_cast<int>(budget.period));
 			sqlite3_bind_text16(statement, 3, budget.date.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_double(statement, 4, budget.amount);
-			sqlite3_bind_text16(statement, 5, budget.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 5, budget.accountsIds.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text16(statement, 6, budget.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
@@ -103,7 +103,7 @@ int BudgetsRepository::Save(const BudgetModel& budget) {
 			sqlite3_bind_int(statement, 2, static_cast<int>(budget.period));
 			sqlite3_bind_text16(statement, 3, budget.date.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_double(statement, 4, budget.amount);
-			sqlite3_bind_text16(statement, 5, budget.accountIds.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 5, budget.accountsIds.c_str(), -1, SQLITE_TRANSIENT);
 
 			sqlite3_bind_int(statement, 6, budget.id);
 

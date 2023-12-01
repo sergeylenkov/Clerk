@@ -313,7 +313,6 @@ void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
 	_periodToDate = _toDatePicker->GetValue();
 
 	SaveFilterSettings();
-
 	Update();
 }
 

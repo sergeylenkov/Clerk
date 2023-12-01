@@ -28,7 +28,7 @@ namespace Clerk {
 
 		private:
 			TransactionModel* Load(int id);
-			void UpdateTags(const TransactionModel& transaction);
+			void UpdateTags(int id, std::vector<int> tagsIds);
 		};
 	}
 }

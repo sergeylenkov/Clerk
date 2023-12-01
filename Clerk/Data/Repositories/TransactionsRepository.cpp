@@ -186,7 +186,7 @@ int TransactionsRepository::Save(const TransactionModel& transaction) {
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
 
-				UpdateTags(transaction);
+				UpdateTags(id, transaction.tagsIds);
 			}
 		}
 
@@ -206,7 +206,7 @@ int TransactionsRepository::Save(const TransactionModel& transaction) {
 			sqlite3_bind_int(statement, 7, transaction.id);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
-				UpdateTags(transaction);
+				UpdateTags(id, transaction.tagsIds);
 			}
 		}
 
@@ -237,24 +237,24 @@ void TransactionsRepository::Delete(const TransactionModel& transaction) {
 	sqlite3_finalize(statement);
 }
 
-void TransactionsRepository::UpdateTags(const TransactionModel& transaction)
+void TransactionsRepository::UpdateTags(int id, std::vector<int> tagsIds)
 {
 	char* sql = "DELETE FROM transactions_tags WHERE transaction_id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
-		sqlite3_bind_int(statement, 1, transaction.id);
+		sqlite3_bind_int(statement, 1, id);
 		sqlite3_step(statement);
 	}
 
 	sqlite3_finalize(statement);
 
-	for (int tagId : transaction.tagsIds) {
+	for (int tagId : tagsIds) {
 		sql = "INSERT INTO transactions_tags (tag_id, transaction_id) VALUES (?, ?)";
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 			sqlite3_bind_int(statement, 1, tagId);
-			sqlite3_bind_int(statement, 2, transaction.id);
+			sqlite3_bind_int(statement, 2, id);
 
 			sqlite3_step(statement);
 		}

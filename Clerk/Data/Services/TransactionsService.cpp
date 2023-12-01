@@ -132,13 +132,13 @@ std::shared_ptr<TransactionPresentationModel> TransactionsService::Duplicate(con
 }
 
 std::shared_ptr<TransactionPresentationModel> TransactionsService::Save(TransactionPresentationModel& transaction) {
-	TransactionModel& model = transaction;
-
 	for (auto& tag : transaction.tags) {
 		if (tag->id == -1) {
-			_tagsService.Save(*tag);
+			tag = _tagsService.Save(*tag);
 		}
 	}
+
+	TransactionModel& model = transaction;
 
 	int id = _transactionsRepository.Save(model);
 

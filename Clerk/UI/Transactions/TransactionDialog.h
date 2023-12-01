@@ -2,6 +2,7 @@
 
 #include <wx/wx.h>
 #include <wx/datectrl.h>
+#include <wx/dateevt.h>
 #include <wx/bmpcbox.h>
 #include <wx/valnum.h>
 #include <wx/defs.h>
@@ -54,8 +55,9 @@ private:
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);
 	void OnToAccountSelect(wxCommandEvent &event);
+	void OnDateChanged(wxDateEvent& event);
 	void OnFromAmountKillFocus(wxFocusEvent &event);
-	void OnToAmountKillFocus(wxFocusEvent &event);
+	void OnToAmountKillFocus(wxFocusEvent &event);	
 	void OnNoteKillFocus(wxFocusEvent& event);
 	void OnTextChanged(wxKeyEvent &event);
 	void OnTagsKeyDown(wxKeyEvent &event);

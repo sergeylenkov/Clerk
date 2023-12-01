@@ -65,7 +65,17 @@ std::vector<TransactionModel*> TransactionsRepository::GetRecents(int count) {
 std::vector<TransactionModel*> TransactionsRepository::GetRecents(int accountId, int count) {
 	std::vector<TransactionModel*> result;
 
-	char* sql = "SELECT MAX(t.paid_at), t.id, tt.tag_id FROM transactions t, transactions_tags tt WHERE(t.from_account_id = ? OR t.to_account_id = ?) AND t.id = tt.transaction_id GROUP BY t.from_account_id, t.to_account_id, tt.tag_id ORDER BY t.paid_at DESC LIMIT ?";
+	char* sql = "SELECT id FROM\
+		(\
+			SELECT t.paid_at, t.id, t.from_account_id, t.to_account_id, MAX(tt.tag_id) AS tag_id\
+			FROM transactions t, transactions_tags tt\
+			WHERE(t.from_account_id = ? OR t.to_account_id = ?) AND t.id = tt.transaction_id\
+			GROUP BY t.from_account_id, t.to_account_id, t.id\
+			ORDER BY t.paid_at DESC, t.id DESC\
+		)\
+		GROUP BY from_account_id, to_account_id, tag_id\
+		ORDER BY paid_at DESC, id DESC\
+		LIMIT ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -74,7 +84,7 @@ std::vector<TransactionModel*> TransactionsRepository::GetRecents(int accountId,
 		sqlite3_bind_int(statement, 3, count);
 
 		while (sqlite3_step(statement) == SQLITE_ROW) {
-			int id = sqlite3_column_int(statement, 1);
+			int id = sqlite3_column_int(statement, 0);
 			result.push_back(Load(id));
 		}
 	}

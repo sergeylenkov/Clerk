@@ -29,7 +29,7 @@ void DashboardReceiptsPanel::Update()
 		}
 	}
 
-	int height = 70 + (_accounts.size() * 35);
+	int height = this->FromDIP(60 + (_accounts.size() * 30));
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -61,7 +61,7 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = 50;
+	int y = this->FromDIP(40);
 
 	for (auto& account : _accounts) {
 		dc.SetFont(accountFont);
@@ -88,7 +88,7 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 
 		dc.DrawRectangle(0, y + this->FromDIP(20), progressWidth, 2);
 
-		y = y + 35;
+		y = y + this->FromDIP(30);
 	}
 }
 

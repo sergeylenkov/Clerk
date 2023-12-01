@@ -127,12 +127,12 @@ void TransactionsListPanel::SetAccountType(AccountType type) {
 }
 
 void TransactionsListPanel::Update() {
+	RestoreFilterSettings();
+	CalculatePeriod();
+	CreateListColumns();
+
 	std::thread([&]()
 	{
-		RestoreFilterSettings();
-		CalculatePeriod();
-		CreateListColumns();
-
 		_transactions.clear();
 
 		auto transactions = _transactionsService->GetForPeriod(_fromDatePicker->GetValue(), _toDatePicker->GetValue());

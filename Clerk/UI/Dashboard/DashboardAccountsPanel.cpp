@@ -22,7 +22,7 @@ void DashboardAccountsPanel::Update()
 	_accounts = _viewModel->GetAccounts();
 	_total = _viewModel->GetOwnFunds();
 
-	int height = 70 + (_viewModel->GetAccounts().size() * 30);
+	int height = this->FromDIP(60 + (_viewModel->GetAccounts().size() * 24));
 	this->SetMinSize(wxSize(-1, height));
 
 	Refresh();
@@ -54,7 +54,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = 50;
+	int y = this->FromDIP(40);
 
 	for (auto& account : _accounts) {
 		dc.SetFont(accountFont);
@@ -99,7 +99,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 			dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 		}
 
-		y = y + 30;
+		y = y + this->FromDIP(24);
 	}
 }
 

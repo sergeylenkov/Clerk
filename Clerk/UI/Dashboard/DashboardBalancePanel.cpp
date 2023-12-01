@@ -26,7 +26,7 @@ void DashboardBalancePanel::Update()
 	_ownFunds = _viewModel->GetOwnFunds();
 	_creditFunds = _viewModel->GetCreditFunds();
 
-	SetMinSize(wxSize(-1, 170));
+	SetMinSize(this->FromDIP(wxSize(-1, 130)));
 	Refresh();
 }
 
@@ -52,21 +52,21 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	font.SetPointSize(10);
 
 	int columnWidth = 0;
-	int y = 40;
+	int y = this->FromDIP(30);
 
 	dc.SetFont(balanceFont);
 	
 	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	dc.DrawText(value, wxPoint(0, y));
 
-	y = 80;
+	y = this->FromDIP(60);
 
 	dc.SetFont(font);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText("Own funds", wxPoint(0, y));
 	
-	y = y + 40;
+	y = y + this->FromDIP(25);
 
 	value = Format::Amount(_ownFunds, _viewModel->GetCurrency()->sign);
 	wxSize size = dc.GetTextExtent(value);
@@ -78,13 +78,13 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 		columnWidth = size.GetWidth();
 	}
 
-	y = 80;
-	int x = columnWidth + 80;
+	y = this->FromDIP(60);
+	int x = columnWidth + this->FromDIP(80);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText("Credit funds", wxPoint(x, y));
 
-	y = y + 40;	
+	y = y + this->FromDIP(25);
 
 	value = Format::Amount(_creditFunds, _viewModel->GetCurrency()->sign);
 	size = dc.GetTextExtent(value);

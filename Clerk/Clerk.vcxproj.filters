@@ -54,7 +54,7 @@
     <ClCompile Include="UI\Reports\ReportBalanceByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\TagsPopup.cpp">
+    <ClCompile Include="UI\Controls\TagsField\TagsPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Settings.cpp">
@@ -414,6 +414,12 @@
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\TagsField\TagsField.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\TagsField\TagElement.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -461,7 +467,7 @@
     <ClInclude Include="UI\Reports\ReportBalanceByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\TagsPopup.h">
+    <ClInclude Include="UI\Controls\TagsField\TagsPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Settings.h">
@@ -861,6 +867,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\TagsField\TagsField.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\TagsField\TagElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

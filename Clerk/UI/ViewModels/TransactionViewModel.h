@@ -38,11 +38,8 @@ namespace Clerk {
 			wxString GetNote();
 			void SetDate(wxDateTime date);
 			wxDateTime GetDate();
-			shared_vector<TagPresentationModel> GetTags();
-			wxString GetTagsString();
-			void SetTagsString(wxString tags);
-			void AddTag(std::shared_ptr<TagPresentationModel> tag);
-			shared_vector<TagPresentationModel> SearchTagsByString(wxString search);
+			shared_vector<TagPresentationModel> GetTags();			
+			void SetTags(shared_vector<TagPresentationModel> tags);
 
 			void Save();
 			std::function<void(TransactionViewModelField field)> OnUpdate;

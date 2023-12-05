@@ -8,8 +8,9 @@
 #include <wx/defs.h>
 #include <functional>
 #include "../../Data/Settings.h"
-#include "../Controls/TagsPopup.h"
+#include "../../Data/DataContext.h"
 #include "../Controls/AmountField.h"
+#include "../Controls/TagsField/TagsField.h"
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../ViewModels/TransactionViewModel.h"
@@ -22,7 +23,7 @@ using namespace Clerk::UI;
 class TransactionDialog : public wxFrame
 {
 public:
-	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
+	TransactionDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons, DataContext& context);
 	~TransactionDialog();
 		
 	void SetViewModel(TransactionViewModel* viewModel);
@@ -30,6 +31,7 @@ public:
 private:
 	TransactionViewModel* _viewModel;
 	Icons& _icons;
+	DataContext& _context;
 	wxPanel *_mainPanel;
 	wxBitmapComboBox *_fromList;
 	wxBitmapComboBox *_toList;
@@ -42,9 +44,9 @@ private:
 	AmountField *_fromAmountField;
 	wxStaticText *_toAmountLabel;
 	AmountField *_toAmountField;
+	TagsField *_tagsFieldNew;
 	std::shared_ptr<TransactionPresentationModel> _transaction;
 	std::shared_ptr<TransactionPresentationModel> _splitTransaction;
-	TagsPopup *_tagsPopup;
 
 	void Update();
 	void UpdateToList();
@@ -59,10 +61,5 @@ private:
 	void OnFromAmountKillFocus(wxFocusEvent &event);
 	void OnToAmountKillFocus(wxFocusEvent &event);	
 	void OnNoteKillFocus(wxFocusEvent& event);
-	void OnTextChanged(wxKeyEvent &event);
-	void OnTagsKeyDown(wxKeyEvent &event);
-	void OnTagsKillFocus(wxFocusEvent& event);	
-	void OnSelectTag();
-	void AddTag();	
 	void OnKeyDown(wxKeyEvent &event);
 };

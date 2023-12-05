@@ -297,57 +297,12 @@ shared_vector<TagPresentationModel> TransactionViewModel::GetTags() {
 	return _tags;
 }
 
-wxString TransactionViewModel::GetTagsString() {
-	wxString result = "";
-
-	if (_tags.size() > 0) {
-		for (unsigned int i = 0; i < _tags.size() - 1; i++) {
-			result.Append(_tags[i]->name);
-			result.Append(", ");
-		}
-
-		result.Append(_tags[_tags.size() - 1]->name);
-	}
-
-	return result;
-}
-
-void TransactionViewModel::SetTagsString(wxString tags) {
-	wxStringTokenizer tokenizer(tags, ",");
-	std::vector<wxString> tokens;
-
-	while (tokenizer.HasMoreTokens()) {
-		wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
-
-		if (!token.empty()) {
-			auto result = std::find_if(begin(_tags), end(_tags), [token](auto tag) {
-				return tag->name == token;
-			});
-
-			if (result == end(_tags)) {
-				auto newTag = std::make_shared<TagPresentationModel>();
-				newTag->name = token;
-
-				_tags.push_back(newTag);
-			}
-		}
-	}
+void TransactionViewModel::SetTags(shared_vector<TagPresentationModel> tags) {
+	_tags = tags;
 
 	if (OnUpdate) {
 		OnUpdate(TransactionViewModelField::Tags);
 	}
-}
-
-void TransactionViewModel::AddTag(std::shared_ptr<TagPresentationModel> tag) {
-	_tags.push_back(tag);
-
-	if (OnUpdate) {
-		OnUpdate(TransactionViewModelField::Tags);
-	}
-}
-
-shared_vector<TagPresentationModel> TransactionViewModel::SearchTagsByString(wxString search) {
-	return _tagsService.GetBySearch(search);
 }
 
 void TransactionViewModel::Save() {
@@ -363,7 +318,6 @@ void TransactionViewModel::Save() {
 	transaction->toAmount = _toAmount;
 	transaction->note = _note;
 	transaction->tags = _tags;
-	transaction->tagsString = GetTagsString();
 	transaction->date = _date;
 	
 	_transactionsService.Save(*transaction);

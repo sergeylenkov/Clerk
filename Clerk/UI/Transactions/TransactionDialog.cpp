@@ -1,7 +1,8 @@
 #include "TransactionDialog.h"
 
-TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons):
-	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
+TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
+	wxFrame(parent, wxID_ANY, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
+	_icons(icons), _context(context) {
 	SetBackgroundColour(wxColor(* wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
@@ -62,8 +63,14 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	wxStaticText* tagsLabel = new wxStaticText(_mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, labelSize);
 	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL, indent);
 
-	_tagsField = new wxTextCtrl(_mainPanel, wxID_ANY);
-	horizontalSizer->Add(_tagsField, 1);
+	_tagsFieldNew = new TagsField(_mainPanel, context.GetTagsService());
+	_tagsFieldNew->OnChange = [&]() {
+		_viewModel->SetTags(_tagsFieldNew->GetTags());
+	};
+
+	horizontalSizer->Add(_tagsFieldNew, 1);
+	//_tagsField = new wxTextCtrl(_mainPanel, wxID_ANY);
+	//horizontalSizer->Add(_tagsField, 1);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -100,8 +107,8 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->Centre(wxBOTH);
 	this->SetDoubleBuffered(true);
 
-	_tagsPopup = new TagsPopup(this);	
-	_tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);
+	/*_tagsPopup = new TagsPopup(this);
+	_tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);*/
 
 	_okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
 	_cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
@@ -112,16 +119,12 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toAmountField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnToAmountKillFocus, this);
 	_datePicker->Bind(wxEVT_DATE_CHANGED, &TransactionDialog::OnDateChanged, this);
 	_noteField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnNoteKillFocus, this);
-	_tagsField->Bind(wxEVT_KEY_UP, &TransactionDialog::OnTextChanged, this);
-	_tagsField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnTagsKillFocus, this);
-	_tagsField->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnTagsKeyDown, this);
 
 	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
 TransactionDialog::~TransactionDialog() {
 	delete _viewModel;
-	delete _tagsPopup;
 	delete _mainPanel;
 }
 
@@ -131,10 +134,6 @@ void TransactionDialog::SetViewModel(TransactionViewModel* viewModel) {
 		if (field == TransactionViewModelField::FromAmount || field == TransactionViewModelField::ToAmount) {
 			_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
 			_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
-		}
-
-		if (field == TransactionViewModelField::Tags) {
-			_tagsField->SetValue(_viewModel->GetTagsString());
 		}
 
 		if (field == TransactionViewModelField::FromAccount) {
@@ -163,7 +162,7 @@ void TransactionDialog::Update() {
 
 	_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
 	_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
-	_tagsField->SetValue(_viewModel->GetTagsString());
+	_tagsFieldNew->SetTags(_viewModel->GetTags());
 	_datePicker->SetValue(_viewModel->GetDate());
 	_noteField->SetValue(_viewModel->GetNote());
 }
@@ -232,76 +231,6 @@ void TransactionDialog::OnNoteKillFocus(wxFocusEvent& event) {
 	event.Skip();
 
 	_viewModel->SetNote(_noteField->GetValue());
-}
-
-void TransactionDialog::OnTextChanged(wxKeyEvent &event) {
-	if (event.GetKeyCode() == WXK_ESCAPE) {
-		_viewModel->SetTagsString(_tagsField->GetValue());
-		_tagsPopup->Hide();
-	} else if (event.GetKeyCode() == WXK_UP) {
-		_tagsPopup->SelectPrev();
-		event.StopPropagation();
-	} else if (event.GetKeyCode() == WXK_DOWN) {
-		_tagsPopup->SelectNext();
-	} else if (event.GetKeyCode() == WXK_RETURN) {		
-		AddTag();
-		_tagsPopup->Hide();
-	} else {
-		wxStringTokenizer tokenizer(_tagsField->GetValue(), ",");
-		std::vector<wxString> tokens;
-
-		while (tokenizer.HasMoreTokens()) {
-			wxString token = tokenizer.GetNextToken().Trim(true).Trim(false);
-			tokens.push_back(token);
-		}
-
-		if (!tokens.empty()) {			
-			auto tags = _viewModel->SearchTagsByString(tokens.back());
-
-			if (tags.size() > 0) {
-				wxPoint position = _tagsField->GetScreenPosition();
-				wxSize size = _tagsField->GetSize();
-				wxSize dialogSize = wxSize(size.GetWidth(), this->GetSize().GetHeight() - _tagsField->GetPosition().y - size.GetHeight());
-
-				_tagsPopup->Position(wxPoint(position.x - dialogSize.GetWidth(), (position.y - dialogSize.GetHeight()) + size.GetHeight()), dialogSize);
-				_tagsPopup->Update(tags);
-				_tagsPopup->Show();
-			}
-			else {
-				_tagsPopup->Hide();
-			}
-		}
-	}
-
-	event.Skip();
-}
-
-void TransactionDialog::OnTagsKeyDown(wxKeyEvent &event) {
-	if ((int)event.GetKeyCode() == WXK_ESCAPE && _tagsPopup->IsShown()) {
-		event.StopPropagation();		 
-	}
-	else {
-		event.Skip();
-	}
-}
-
-void TransactionDialog::OnTagsKillFocus(wxFocusEvent& event) {
-	_tagsPopup->Hide();
-	event.Skip();
-
-	_viewModel->SetTagsString(_tagsField->GetValue());
-}
-
-void TransactionDialog::OnSelectTag() {
-	AddTag();
-	_tagsPopup->Hide();	
-}
-
-void TransactionDialog::AddTag() {
-	auto tag = _tagsPopup->GetSelectedTag();
-	_viewModel->AddTag(tag);
-
-	_tagsField->SetInsertionPointEnd();
 }
 
 void TransactionDialog::OnOK(wxCommandEvent& event) {

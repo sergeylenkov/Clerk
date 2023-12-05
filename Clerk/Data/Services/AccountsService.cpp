@@ -196,13 +196,13 @@ shared_vector<AccountPresentationModel> AccountsService::GetDebts() {
 	shared_vector<AccountPresentationModel> result;
 
 	for (auto& account : accounts) {
-		account->balance = abs(_accountsRepository.GetExpenses(account->id));
+		account->expenses = abs(_accountsRepository.GetExpenses(account->id));
 		account->receipts = _accountsRepository.GetReceipts(account->id);
 
 		if (account->type == AccountType::Debt) {
 			result.push_back(account);
 		}
-		else if (account->isCredit && account->balance < 0) {
+		else if (account->isCredit && account->expenses < 0) {
 			result.push_back(account);
 		}
 	}

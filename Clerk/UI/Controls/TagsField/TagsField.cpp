@@ -1,24 +1,28 @@
 #include "TagsField.h"
 
-TagsField::TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& pos, const wxSize& size) : wxPanel(parent, wxID_ANY, pos, size),
+TagsField::TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& position, const wxSize& size) : wxPanel(parent, wxID_ANY, position, size),
 	_tagsService(tagsService)
 {
-	_mainSizer = new wxBoxSizer(wxHORIZONTAL);	
-	_textField = new wxTextCtrl(this, wxID_ANY);
-
+	//SetBackgroundColour(wxColor(*wxLIGHT_GREY));
 	_popup = new TagsPopup(this);
 	_popup->OnSelectTag = std::bind(&TagsField::OnSelectTag, this);
 
-	this->SetSizer(_mainSizer);
+	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+
+	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	_tagsSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	_textField = new wxTextCtrl(this, wxID_ANY);
+	horizontalSizer->Add(_textField, 1, wxEXPAND);	
+
+	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, this->FromDIP(5));
+	mainSizer->Add(_tagsSizer, 1, wxEXPAND);
+
+	this->SetSizer(mainSizer);
 	this->Layout();
 
 	_textField->Bind(wxEVT_KEY_UP, &TagsField::OnTextChanged, this);
 	_textField->Bind(wxEVT_CHAR_HOOK, &TagsField::OnTextKeyDown, this);
-}
-
-TagsField::~TagsField()
-{
-	//
 }
 
 void TagsField::SetTags(shared_vector<TagPresentationModel> tags) {
@@ -32,8 +36,7 @@ shared_vector<TagPresentationModel> TagsField::GetTags() {
 }
 
 void TagsField::Update() {
-	_mainSizer->Detach(_textField);
-	_mainSizer->Clear(true);
+	_tagsSizer->Clear(true);
 
 	for (auto& tag : _tags) {
 		TagElement* tagElement = new TagElement(this);
@@ -43,10 +46,10 @@ void TagsField::Update() {
 			DeleteTag(tag);
 		};
 
-		_mainSizer->Add(tagElement, 0, wxRIGHT, 5);
+		_tagsSizer->Add(tagElement, 0, wxRIGHT, 5);
 	}
-
-	_mainSizer->Add(_textField, 1);
+	
+	_tagsSizer->Layout();
 	this->Layout();
 }
 

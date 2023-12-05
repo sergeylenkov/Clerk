@@ -10,8 +10,7 @@ using namespace Clerk::UI;
 class TagElement : public wxPanel
 {
 public:
-	TagElement(wxWindow* parent, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
-	~TagElement();
+	TagElement(wxWindow* parent, const wxPoint& position = wxDefaultPosition, const wxSize& size = wxDefaultSize);
 
 	void SetTag(std::shared_ptr<TagPresentationModel> tag);
 	std::function<void(std::shared_ptr<TagPresentationModel>)> OnDeleteTag;

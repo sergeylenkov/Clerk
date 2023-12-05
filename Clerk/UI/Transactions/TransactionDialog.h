@@ -37,14 +37,13 @@ private:
 	wxBitmapComboBox *_toList;
 	wxButton *_okButton;
 	wxButton *_cancelButton;
-	wxTextCtrl *_tagsField;
 	wxTextCtrl *_noteField;
 	wxDatePickerCtrl *_datePicker;
 	wxStaticText *_fromAmountLabel;
 	AmountField *_fromAmountField;
 	wxStaticText *_toAmountLabel;
 	AmountField *_toAmountField;
-	TagsField *_tagsFieldNew;
+	TagsField *_tagsField;
 	std::shared_ptr<TransactionPresentationModel> _transaction;
 	std::shared_ptr<TransactionPresentationModel> _splitTransaction;
 

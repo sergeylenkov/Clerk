@@ -14,8 +14,7 @@ class TagsField : public wxPanel
 {
 public:
 	TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
-	~TagsField();
-
+	
 	void SetTags(shared_vector<TagPresentationModel> tags);
 	shared_vector<TagPresentationModel> GetTags();
 	std::function<void()> OnChange;
@@ -24,7 +23,7 @@ private:
 	TagsService& _tagsService;
 	shared_vector<TagPresentationModel> _tags;
 
-	wxBoxSizer* _mainSizer;
+	wxBoxSizer* _tagsSizer;
 	wxTextCtrl* _textField;
 	TagsPopup* _popup;
 

@@ -3,7 +3,7 @@
 TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
 	wxFrame(parent, wxID_ANY, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
 	_icons(icons), _context(context) {
-	SetBackgroundColour(wxColor(* wxWHITE));
+	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
 	this->SetIcon(wxICON(APP_ICON));
@@ -19,7 +19,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* fromLabel = new wxStaticText(_mainPanel, wxID_ANY, "From:", wxDefaultPosition, labelSize);
-	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL, indent);
+	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_fromList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
@@ -35,7 +35,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* toLabel = new wxStaticText(_mainPanel, wxID_ANY, "To:", wxDefaultPosition, labelSize);
-	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL, indent);
+	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_toList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
@@ -51,7 +51,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* dateLabel = new wxStaticText(_mainPanel, wxID_ANY, "Date:", wxDefaultPosition, labelSize);
-	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL, indent);
+	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_datePicker = new wxDatePickerCtrl(_mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
 	horizontalSizer->Add(_datePicker);
@@ -61,16 +61,15 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* tagsLabel = new wxStaticText(_mainPanel, wxID_ANY, "Tags:", wxDefaultPosition, labelSize);
-	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL, indent);
+	horizontalSizer->Add(tagsLabel);
 
-	_tagsFieldNew = new TagsField(_mainPanel, context.GetTagsService());
-	_tagsFieldNew->OnChange = [&]() {
-		_viewModel->SetTags(_tagsFieldNew->GetTags());
+	_tagsField = new TagsField(_mainPanel, context.GetTagsService());
+	_tagsField->OnChange = [&]() {
+		_viewModel->SetTags(_tagsField->GetTags());
+		this->Layout();
 	};
 
-	horizontalSizer->Add(_tagsFieldNew, 1);
-	//_tagsField = new wxTextCtrl(_mainPanel, wxID_ANY);
-	//horizontalSizer->Add(_tagsField, 1);
+	horizontalSizer->Add(_tagsField, 1, wxEXPAND, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -106,9 +105,6 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 	this->Centre(wxBOTH);
 	this->SetDoubleBuffered(true);
-
-	/*_tagsPopup = new TagsPopup(this);
-	_tagsPopup->OnSelectTag = std::bind(&TransactionDialog::OnSelectTag, this);*/
 
 	_okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
 	_cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
@@ -162,7 +158,7 @@ void TransactionDialog::Update() {
 
 	_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
 	_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
-	_tagsFieldNew->SetTags(_viewModel->GetTags());
+	_tagsField->SetTags(_viewModel->GetTags());
 	_datePicker->SetValue(_viewModel->GetDate());
 	_noteField->SetValue(_viewModel->GetNote());
 }

@@ -17,6 +17,10 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	_viewModel = new DashboardViewModel(_context.GetAccountingService(), _context.GetTransactionsService(), _context.GetAccountsService(),
 		_context.GetBudgetsService(), _context.GetSchedulersService(), _context.GetGoalsService(), _context.GetCurrenciesService());
 
+	_viewModel->OnUpdate([=]() {
+		Update();
+	});
+
 	_balancePanel = new DashboardBalancePanel(_leftPanel);
 	_balancePanel->SetViewModel(_viewModel);
 

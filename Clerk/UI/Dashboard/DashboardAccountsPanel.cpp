@@ -72,8 +72,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 		
 				dc.SetTextForeground(wxColor(60, 60, 60));
 				dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
-			}
-			else {
+			} else {
 				float amount = account->creditLimit + account->balance;
 
 				wxString value = Format::Amount(account->balance, sign);
@@ -90,8 +89,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 				dc.DrawText(value, wxPoint(x - size.GetWidth() - 10, y));
 			}
 			
-		}
-		else {
+		} else {
 			wxString value = Format::Amount(account->balance, sign);
 			wxSize size = dc.GetTextExtent(value);
 

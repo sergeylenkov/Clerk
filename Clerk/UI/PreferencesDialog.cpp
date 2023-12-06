@@ -1,47 +1,53 @@
 #include "PreferencesDialog.h"
 
-PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)) {
+PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, DataContext& context) :
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX | wxMINIMIZE_BOX)),
+	_context(context) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
 	this->SetIcon(wxICON(APP_ICON));
 
+	int indent = this->FromDIP(5);
+	int bottomIndent = this->FromDIP(15);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	currencyLabel = new wxStaticText(this, wxID_ANY, _("Base Currency:"), wxDefaultPosition, wxSize(-1, -1), 0);	
-	horizontalSizer->Add(currencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText* currencyLabel = new wxStaticText(this, wxID_ANY, _("Base Currency:"));
+	horizontalSizer->Add(currencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	horizontalSizer->Add(currencyList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	horizontalSizer->Add(_currencyList, 1, wxALIGN_CENTER_VERTICAL);
 
-	mainSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);	
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert currencies by exchange rate"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(convertCurrenciesCheckBox, 0, wxALL, 5);
-
-	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
+	verticalSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, _("Load exchange rates on start"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(loadExchangeRatesCheckBox, 0, wxALL, 5);
+	_convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert currencies by exchange rate"));
+	horizontalSizer->Add(_convertCurrenciesCheckBox);
 
-	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
-
-	mainSizer->Add(0, 0, 1, wxEXPAND, 5);
+	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(this, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, _("Load exchange rates on start"));
+	horizontalSizer->Add(_loadExchangeRatesCheckBox);
 
-	cancelButton = new wxButton(this, wxID_ANY, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
 
-	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	mainSizer->Add(verticalSizer, 1, wxEXPAND | wxALL, indent * 2);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxButton* okButton = new wxButton(this, wxID_ANY, _("OK"));
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+
+	wxButton* cancelButton = new wxButton(this, wxID_ANY, _("Cancel"));
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL);
+
+	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, indent * 2);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -51,14 +57,13 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
 	int index = 0;
 	int i = 0;
-
-	//TODO
-	/*for (auto currency : DataHelper::GetInstance().GetCurrencies())
+	
+	for (auto currency : _context.GetCurrenciesService().GetAll())
 	{
-		currencies.push_back(currency);
+		_currencies.push_back(currency);
 
-		wxString name = wxString::Format("%s (%s)", currency->shortName->c_str(), currency->name->c_str());
-		currencyList->AppendString(name);
+		wxString name = wxString::Format("%s (%s)", currency->shortName, currency->name);
+		_currencyList->AppendString(name);
 
 		if (baseCurrencyId == currency->id) {
 			index = i;
@@ -67,10 +72,10 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 		i++;
 	}
 
-	currencyList->SetSelection(index);*/
+	_currencyList->SetSelection(index);
 
-	convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
-	loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());
+	_convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
+	_loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());
 
 	okButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnCancel, this);
@@ -78,11 +83,11 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 }
 
 void PreferencesDialog::OnOK(wxCommandEvent &event) {
-	auto currency = currencies[currencyList->GetSelection()];
+	auto currency = _currencies[_currencyList->GetSelection()];
 	Settings::GetInstance().SetBaseCurrencyId(currency->id);
 
-	Settings::GetInstance().SetConvertCurrency(convertCurrenciesCheckBox->IsChecked());
-	Settings::GetInstance().SetLoadExchangeRates(loadExchangeRatesCheckBox->IsChecked());
+	Settings::GetInstance().SetConvertCurrency(_convertCurrenciesCheckBox->IsChecked());
+	Settings::GetInstance().SetLoadExchangeRates(_loadExchangeRatesCheckBox->IsChecked());
 
 	Close();
 }

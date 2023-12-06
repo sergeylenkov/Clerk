@@ -26,7 +26,7 @@ AboutDialog::AboutDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	verticalSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *copyrightLabel = new wxStaticText(this, wxID_ANY, _("Copyright © 2024 Sergey Lenkov"));
+	wxStaticText *copyrightLabel = new wxStaticText(this, wxID_ANY, _("Copyright"));
 	verticalSizer->Add(copyrightLabel, 0, wxALIGN_CENTER_HORIZONTAL | wxBOTTOM, this->FromDIP(10));
 
 	mainSizer->Add(verticalSizer, 0, wxEXPAND);

@@ -19,7 +19,9 @@ void DialogsController::ShowAboutDialog() {
 }
 
 void DialogsController::ShowPreferencesDialog() {
-	PreferencesDialog* preferencesDialog = new PreferencesDialog(_parent, _("Preferences"), 0, 0, 400, 300);
+	wxSize size = GetPreferencesDialogSize();
+
+	PreferencesDialog* preferencesDialog = new PreferencesDialog(_parent, _("Preferences"), 0, 0, size.GetWidth(), size.GetHeight(), _context);
 
 	preferencesDialog->Show(true);
 	preferencesDialog->CenterOnParent();
@@ -127,6 +129,15 @@ wxSize DialogsController::GetTransactionDialogSize() {
 
 	size.SetWidth(_parent->FromDIP(450));
 	size.SetHeight(_parent->FromDIP(350));
+
+	return size;
+}
+
+wxSize DialogsController::GetPreferencesDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(400));
+	size.SetHeight(_parent->FromDIP(300));
 
 	return size;
 }

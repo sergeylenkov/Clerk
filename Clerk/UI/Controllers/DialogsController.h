@@ -36,6 +36,7 @@ namespace Clerk {
 
 			wxSize GetAboutDialogSize();
 			wxSize GetTransactionDialogSize();
+			wxSize GetPreferencesDialogSize();
 		};
 	}
 }

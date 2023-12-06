@@ -8,7 +8,7 @@ SchedulersConfirmDialog::SchedulersConfirmDialog(wxFrame *parent, const wxChar *
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *titleLabel = new wxStaticText(this, wxID_ANY, wxT("Confirm scheduler transactions:"), wxDefaultPosition, wxDefaultSize, 0);	
+	wxStaticText *titleLabel = new wxStaticText(this, wxID_ANY, _("Confirm scheduler transactions:"), wxDefaultPosition, wxDefaultSize, 0);	
 	mainSizer->Add(titleLabel, 0, wxALL, 10);
 
 	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT);
@@ -17,15 +17,15 @@ SchedulersConfirmDialog::SchedulersConfirmDialog(wxFrame *parent, const wxChar *
 	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTAB_TRAVERSAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	skipAllButton = new wxButton(buttonsPanel, wxID_ANY, wxT("Skip All"), wxDefaultPosition, wxDefaultSize, 0);
+	skipAllButton = new wxButton(buttonsPanel, wxID_ANY, _("Skip All"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(skipAllButton, 0, wxALIGN_LEFT | wxALL, 5);
 
-	skipButton = new wxButton(buttonsPanel, wxID_ANY, wxT("Skip"), wxDefaultPosition, wxDefaultSize, 0);
+	skipButton = new wxButton(buttonsPanel, wxID_ANY, _("Skip"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(skipButton, 0, wxALIGN_LEFT | wxALL, 5);
 
 	horizontalSizer->Add(0, 0, 1, wxEXPAND, 5);
 
-	applyAllButton = new wxButton(buttonsPanel, wxID_ANY, wxT("Apply All"), wxDefaultPosition, wxDefaultSize, 0);
+	applyAllButton = new wxButton(buttonsPanel, wxID_ANY, _("Apply All"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(applyAllButton, 0, wxALL, 5);
 
 	buttonsPanel->SetSizer(horizontalSizer);

@@ -8,7 +8,7 @@ AlertsConfirmDialog::AlertsConfirmDialog(wxFrame *parent, const wxChar *title, i
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *titleLabel = new wxStaticText(this, wxID_ANY, wxT("Alerts:"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *titleLabel = new wxStaticText(this, wxID_ANY, _("Alerts:"), wxDefaultPosition, wxDefaultSize, 0);
 	mainSizer->Add(titleLabel, 0, wxALL, 10);
 
 	list = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
@@ -17,7 +17,7 @@ AlertsConfirmDialog::AlertsConfirmDialog(wxFrame *parent, const wxChar *title, i
 	wxPanel *buttonsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTAB_TRAVERSAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(buttonsPanel, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	okButton = new wxButton(buttonsPanel, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	buttonsPanel->SetSizer(horizontalSizer);

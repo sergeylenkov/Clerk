@@ -3,12 +3,12 @@
 SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
-	list->AppendTextColumn("Name", static_cast<int>(SchedulersListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Type", static_cast<int>(SchedulersListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Amount", static_cast<int>(SchedulersListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 100, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Next Date", static_cast<int>(SchedulersListDataModel::Columns::NextDate), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Days Left", static_cast<int>(SchedulersListDataModel::Columns::DaysLeft), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Status", static_cast<int>(SchedulersListDataModel::Columns::Status), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Name"), static_cast<int>(SchedulersListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Type"), static_cast<int>(SchedulersListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Amount"), static_cast<int>(SchedulersListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 100, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Next Date"), static_cast<int>(SchedulersListDataModel::Columns::NextDate), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Days Left"), static_cast<int>(SchedulersListDataModel::Columns::DaysLeft), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Status"), static_cast<int>(SchedulersListDataModel::Columns::Status), wxDATAVIEW_CELL_INERT, 100, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendTextColumn("", static_cast<int>(SchedulersListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 
 	model = new SchedulersListDataModel();
@@ -90,9 +90,9 @@ void SchedulersPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 void SchedulersPanel::OnRightClick(wxDataViewEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), wxT("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), wxT("Delete"));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), _("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), _("Edit..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), _("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);
@@ -114,11 +114,11 @@ void SchedulersPanel::OnRightClick(wxDataViewEvent &event) {
 		auto scheduler = GetScheduler();
 
 		if (scheduler->isActive) {
-			wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Pause), wxT("Pause"));
+			wxMenuItem *pauseItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Pause), _("Pause"));
 			menu->Append(pauseItem);
 		}
 		else {
-			wxMenuItem *runItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Run), wxT("Run"));
+			wxMenuItem *runItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Run), _("Run"));
 			menu->Append(runItem);
 		}
 

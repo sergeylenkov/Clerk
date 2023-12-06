@@ -46,10 +46,10 @@ void SchedulersListDataModel::GetValueByRow(wxVariant &variant, unsigned int row
 			break;
 		case Columns::Status:
 			if (scheduler->isActive) {
-				variant = "Active";
+				variant = _("Active");
 			}
 			else {
-				variant = "Paused";
+				variant = _("Paused");
 			}
 			break;
 	}

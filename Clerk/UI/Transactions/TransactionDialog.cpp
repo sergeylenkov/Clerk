@@ -4,8 +4,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	wxFrame(parent, wxID_ANY, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
 	_icons(icons), _context(context) {
 	SetBackgroundColour(wxColor(*wxWHITE));
-
-	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
+	
 	this->SetIcon(wxICON(APP_ICON));
 
 	int indent = this->FromDIP(5);
@@ -27,8 +26,8 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_fromAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_fromAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
-	horizontalSizer->Add(_fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	_fromCurrencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
+	horizontalSizer->Add(_fromCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -43,8 +42,8 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_toAmountLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
-	horizontalSizer->Add(_toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
+	_toCurrencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
+	horizontalSizer->Add(_toCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 	
@@ -85,11 +84,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_okButton = new wxButton(_mainPanel, wxID_ANY, _("OK"));
-	horizontalSizer->Add(_okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+	wxButton* okButton = new wxButton(_mainPanel, wxID_ANY, _("OK"));
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	_cancelButton = new wxButton(_mainPanel, wxID_ANY, _("Cancel"));
-	horizontalSizer->Add(_cancelButton, 0, wxALIGN_CENTER_VERTICAL);
+	wxButton* cancelButton = new wxButton(_mainPanel, wxID_ANY, _("Cancel"));
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL);
 
 	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT);
 
@@ -106,8 +105,8 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	this->Centre(wxBOTH);
 	this->SetDoubleBuffered(true);
 
-	_okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
-	_cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
+	okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
+	cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
 
 	_fromList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnFromAccountSelect, this);
 	_toList->Bind(wxEVT_COMBOBOX, &TransactionDialog::OnToAccountSelect, this);
@@ -187,14 +186,14 @@ void TransactionDialog::SelectFromAccount(int index) {
 	auto account = _viewModel->GetFromAccounts()[index];
 
 	_fromList->Select(index);
-	_fromAmountLabel->SetLabel(account->currency->shortName);
+	_fromCurrencyLabel->SetLabel(account->currency->shortName);
 }
 
 void TransactionDialog::SelectToAccount(int index) {
 	auto account = _viewModel->GetToAccounts()[index];
 
 	_toList->Select(index);
-	_toAmountLabel->SetLabel(account->currency->shortName);
+	_toCurrencyLabel->SetLabel(account->currency->shortName);
 }
 
 void TransactionDialog::OnFromAccountSelect(wxCommandEvent &event) {

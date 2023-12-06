@@ -73,7 +73,7 @@ void TabsController::OpenNewAccountsTab(std::optional<AccountType> type) {
 			}
 			else {
 				tabPanel->Update();
-				_tabsPanel->AddPanel(tabPanel, "Transactions", GetIconIndex(TabType::Transactions));
+				_tabsPanel->AddPanel(tabPanel, _("Transactions"), GetIconIndex(TabType::Transactions));
 			}
 
 			_tabsPanel->SelectLastTab();
@@ -122,31 +122,31 @@ wxString TabsController::GetTabTitle(TabType type) {
 	switch(type)
 	{
 		case TabType::Dashboard:
-			return "Dashboard";
+			return _("Dashboard");
 			break;
 		case TabType::Transactions:
-			return "Transactions";
+			return _("Transactions");
 			break;
 		case TabType::Reports:
-			return "Reports";
+			return _("Reports");
 			break;
 		case TabType::Budgets:
-			return "Budgets";
+			return _("Budgets");
 			break;
 		case TabType::Schedulers:
-			return "Schedulers";
+			return _("Schedulers");
 			break;
 		case TabType::Goals:
-			return "Goals";
+			return _("Goals");
 			break;
 		case TabType::Tags:
-			return "Tags";
+			return _("Tags");
 			break;
 		case TabType::Alerts:
-			return "Alerts";
+			return _("Alerts");
 			break;
 		case TabType::Trash:
-			return "Trash";
+			return _("Trash");
 			break;
 		default:
 			break;
@@ -159,19 +159,19 @@ wxString TabsController::GetTabTitleByAccountType(AccountType type) {
 	switch (type)
 	{
 	case AccountType::Deposit:
-		return "Deposits";
+		return _("Deposits");
 		break;
 	case AccountType::Receipt:
-		return "Receipts";
+		return _("Receipts");
 		break;
 	case AccountType::Expens:
-		return "Expenses";
+		return _("Expenses");
 		break;
 	case AccountType::Debt:
-		return "Debts";
+		return _("Debts");
 		break;
 	case AccountType::Virtual:
-		return "Virtuals";
+		return _("Virtuals");
 		break;
 	default:
 		break;

@@ -37,7 +37,7 @@ void TagsPopup::Update(shared_vector<TagPresentationModel> tags) {
 	wxListItem col;
 
 	col.SetId(0);
-	col.SetText(_(""));
+	col.SetText("");
 	col.SetWidth(_list->GetSize().GetWidth() - 40);
 	
 	_list->InsertColumn(0, col);

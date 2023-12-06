@@ -144,10 +144,10 @@ void TrashPanel::ClearAll() {
 void TrashPanel::OnListItemClick(wxListEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(static_cast<int>(TrashPanelMenuTypes::Restore), wxT("Restore"));
+	menu->Append(static_cast<int>(TrashPanelMenuTypes::Restore), _("Restore"));
 	menu->AppendSeparator();
-	menu->Append(static_cast<int>(TrashPanelMenuTypes::Delete), wxT("Delete..."));
-	menu->Append(static_cast<int>(TrashPanelMenuTypes::ClearAll), wxT("Clear All..."));
+	menu->Append(static_cast<int>(TrashPanelMenuTypes::Delete), _("Delete..."));
+	menu->Append(static_cast<int>(TrashPanelMenuTypes::ClearAll), _("Clear All..."));
 
 	void *data = reinterpret_cast<void *>(event.GetItem().GetData());
 	menu->SetClientData(data);

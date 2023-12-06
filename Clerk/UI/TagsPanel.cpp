@@ -9,7 +9,7 @@ TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent,
 
 	wxBoxSizer *boxSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *searchLabel = new wxStaticText(topPanel, wxID_ANY, wxT("Search:"), wxDefaultPosition, wxDefaultSize, 0);	
+	wxStaticText *searchLabel = new wxStaticText(topPanel, wxID_ANY, _("Search:"), wxDefaultPosition, wxDefaultSize, 0);	
 	boxSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	searchField = new wxTextCtrl(topPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(200, -1), 0);
@@ -158,7 +158,7 @@ void TagsPanel::Delete() {
 	auto tag = GetTag();
 
 	if (tag) {
-		wxMessageDialog *dialog = new wxMessageDialog(this, wxString::Format("You are sure want to delete tag '%s'?", tag->name), wxT("Delete tag"), wxOK | wxCANCEL | wxCENTER);
+		wxMessageDialog *dialog = new wxMessageDialog(this, wxString::Format(_("Delete tag confirm"), tag->name), _("Delete tag"), wxOK | wxCANCEL | wxCENTER);
 
 		if (dialog->ShowModal() == wxID_OK) {
 			//TODO
@@ -238,10 +238,10 @@ void TagsPanel::OnListItemDoubleClick(wxListEvent &event) {
 void TagsPanel::OnRightClick(wxContextMenuEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	menu->Append(static_cast<int>(TagsPanelMenuTypes::Show), wxT("Show transactions"));
+	menu->Append(static_cast<int>(TagsPanelMenuTypes::Show), _("Show transactions"));
 	menu->AppendSeparator();
-	menu->Append(static_cast<int>(TagsPanelMenuTypes::Rename), wxT("Rename"));
-	menu->Append(static_cast<int>(TagsPanelMenuTypes::Delete), wxT("Delete..."));
+	menu->Append(static_cast<int>(TagsPanelMenuTypes::Rename), _("Rename"));
+	menu->Append(static_cast<int>(TagsPanelMenuTypes::Delete), _("Delete..."));
 
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &TagsPanel::OnMenuSelect, this);
 

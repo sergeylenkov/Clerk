@@ -64,7 +64,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	titleFont.SetPointSize(12);	
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Debts", wxPoint(0, 0));
+	dc.DrawText(_("Debts"), wxPoint(0, 0));
 
 	wxFont amountFont = this->GetFont();
 
@@ -111,11 +111,11 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
-	size = dc.GetTextExtent("Debt");
-	dc.DrawText("Debt", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
+	size = dc.GetTextExtent(_("Debt"));
+	dc.DrawText(_("Debt"), wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
 
-	size = dc.GetTextExtent("Remain");
-	dc.DrawText("Remain", wxPoint(width - size.GetWidth(), y));
+	size = dc.GetTextExtent(_("Remain"));
+	dc.DrawText(_("Remain"), wxPoint(width - size.GetWidth(), y));
 
 	y = y + 20;
 

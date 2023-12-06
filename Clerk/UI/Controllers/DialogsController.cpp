@@ -11,14 +11,15 @@ void DialogsController::SetMainWindow(wxFrame* frame) {
 }
 
 void DialogsController::ShowAboutDialog() {
-	AboutDialog* aboutDialog = new AboutDialog(_parent, wxT("About"), 0, 0, 250, 340);
+	wxSize size = GetAboutDialogSize();
+	AboutDialog* aboutDialog = new AboutDialog(_parent, _("About"), 0, 0, size.GetWidth(), size.GetHeight());
 
 	aboutDialog->Show(true);
 	aboutDialog->CenterOnParent();
 }
 
 void DialogsController::ShowPreferencesDialog() {
-	PreferencesDialog* preferencesDialog = new PreferencesDialog(_parent, wxT("Preferences"), 0, 0, 400, 300);
+	PreferencesDialog* preferencesDialog = new PreferencesDialog(_parent, _("Preferences"), 0, 0, 400, 300);
 
 	preferencesDialog->Show(true);
 	preferencesDialog->CenterOnParent();
@@ -27,7 +28,7 @@ void DialogsController::ShowPreferencesDialog() {
 void DialogsController::ShowNewTransactionDialog(int id) {
 	wxSize size = GetTransactionDialogSize();
 
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 	
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
@@ -41,7 +42,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 void DialogsController::ShowCopyTransactionDialog(int id) {
 	wxSize size = GetTransactionDialogSize();
 
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
@@ -55,7 +56,7 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 void DialogsController::ShowSplitTransactionDialog(int id) {
 	wxSize size = GetTransactionDialogSize();
 
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetSplitTransactionId(id);
@@ -69,7 +70,7 @@ void DialogsController::ShowSplitTransactionDialog(int id) {
 void DialogsController::ShowEditTransactionDialog(int id) {
 	wxSize size = GetTransactionDialogSize();
 
-	TransactionDialog* transactionDialog = new TransactionDialog(_parent, wxT("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
 	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetTransactionId(id);
@@ -89,7 +90,7 @@ void DialogsController::DeleteTransaction(int id) {
 }
 
 void DialogsController::ShowNewAccountDialog(AccountType type) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 380, 400, _icons);
+	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, 380, 400, _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetAccountType(type);
@@ -101,7 +102,7 @@ void DialogsController::ShowNewAccountDialog(AccountType type) {
 
 }
 void DialogsController::ShowEditAccountDialog(int id) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, wxT("Account"), 0, 0, 380, 400, _icons);
+	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, 380, 400, _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetAccountId(id);
@@ -110,6 +111,15 @@ void DialogsController::ShowEditAccountDialog(int id) {
 
 	accountDialog->Show(true);
 	accountDialog->CenterOnParent();
+}
+
+wxSize DialogsController::GetAboutDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(250));
+	size.SetHeight(_parent->FromDIP(250));
+
+	return size;
 }
 
 wxSize DialogsController::GetTransactionDialogSize() {

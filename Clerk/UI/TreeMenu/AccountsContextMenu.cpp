@@ -3,13 +3,13 @@
 AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type) : TreeContextMenu(commandsInvoker) {
 	_type = type;
 
-	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), wxT("Open in New Tab"));
-	item->SetBitmap(wxBitmap(wxT("ICON_NEW_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
+	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
+	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
 
 	this->AppendSeparator();
 
-	this->Append(static_cast<int>(TreeContextMenuType::NewAccount), wxT("New Account..."));
-	this->Append(static_cast<int>(TreeContextMenuType::NewTransaction), wxT("New Transaction..."));
+	this->Append(static_cast<int>(TreeContextMenuType::NewAccount), _("New Account..."));
+	this->Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
 
 	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &AccountsContextMenu::OnMenuSelect, this);
 }

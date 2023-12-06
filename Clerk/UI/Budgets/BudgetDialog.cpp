@@ -16,17 +16,17 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(50, -1), 0);
+	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(nameText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	nameField = new wxTextCtrl(mainPanel, wxID_ANY);
 	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *periodText = new wxStaticText(mainPanel, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
+	wxStaticText *periodText = new wxStaticText(mainPanel, wxID_ANY, _("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	periodList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
@@ -39,7 +39,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
+	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	amountField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
@@ -49,7 +49,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	horizontalSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *accountLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Accounts:"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *accountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Accounts:"));
 	horizontalSizer->Add(accountLabel, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxLEFT | wxRIGHT | wxTOP, 5);
@@ -65,10 +65,10 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(mainPanel, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	cancelButton = new wxButton(mainPanel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"));
 	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
@@ -85,10 +85,10 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	this->Centre(wxBOTH);
 
-	periodList->AppendString("Week");
-	periodList->AppendString("Month");
-	periodList->AppendString("Year");
-	periodList->AppendString("Custom");
+	periodList->AppendString(_("Week"));
+	periodList->AppendString(_("Month"));
+	periodList->AppendString(_("Year"));
+	periodList->AppendString(_("Custom"));
 
 	periodList->SetSelection(static_cast<int>(BudgetPeriod::Month));
 

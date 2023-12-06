@@ -1,6 +1,6 @@
 ﻿#include "MainWindow.h"
 
-MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, "Clerk"), _context(context), _icons(icons)
+MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, APP_NAME), _context(context), _icons(icons)
 {
 	this->SetIcon(wxICON(APP_ICON));
 	

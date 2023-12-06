@@ -53,7 +53,7 @@ void DashboardSchedulersPanel::Draw(wxPaintDC &dc) {
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Schedulers", wxPoint(0, 0));
+	dc.DrawText(_("Schedulers"), wxPoint(0, 0));
 
 	DrawCalendar(dc);
 	DrawTable(dc);

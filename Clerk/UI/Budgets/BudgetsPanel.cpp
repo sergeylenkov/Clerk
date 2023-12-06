@@ -6,17 +6,17 @@ BudgetsPanel::BudgetsPanel(wxWindow *parent, DataContext& context): DataPanel(pa
 	model = new BudgetsListDataModel();
 	list->AssociateModel(model.get());
 
-	list->AppendTextColumn("Name", static_cast<int>(BudgetsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Period", static_cast<int>(BudgetsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 100, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Name"), static_cast<int>(BudgetsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Period"), static_cast<int>(BudgetsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 100, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 
 	BudgetsProgressRender *render = new BudgetsProgressRender();
 
-	wxDataViewColumn *column =	new wxDataViewColumn("Progress", render, static_cast<int>(BudgetsListDataModel::Columns::Progress), 200, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	wxDataViewColumn *column =	new wxDataViewColumn(_("Progress"), render, static_cast<int>(BudgetsListDataModel::Columns::Progress), 200, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendColumn(column);
 
-	list->AppendTextColumn("Limit", static_cast<int>(BudgetsListDataModel::Columns::Limit), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Current", static_cast<int>(BudgetsListDataModel::Columns::Current), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Remain", static_cast<int>(BudgetsListDataModel::Columns::Remain), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Limit"), static_cast<int>(BudgetsListDataModel::Columns::Limit), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Current"), static_cast<int>(BudgetsListDataModel::Columns::Current), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Remain"), static_cast<int>(BudgetsListDataModel::Columns::Remain), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendTextColumn("", static_cast<int>(BudgetsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 
 	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &BudgetsPanel::OnListItemDoubleClick, this);
@@ -79,9 +79,9 @@ void BudgetsPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 void BudgetsPanel::OnRightClick(wxDataViewEvent &event) {
 	wxMenu *menu = new wxMenu;
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), wxT("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), wxT("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), wxT("Delete"));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), _("Add..."));
+	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), _("Edit..."));
+	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), _("Delete"));
 
 	addItem->Enable(true);
 	editItem->Enable(true);

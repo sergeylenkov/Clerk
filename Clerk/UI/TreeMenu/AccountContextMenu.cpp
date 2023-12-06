@@ -5,30 +5,30 @@ const int transactionsOffset = 1000;
 AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions, Icons& icons): TreeContextMenu(commandsInvoker),
 	_account(account), _icons(icons) {
 
-	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), wxT("Open in New Tab"));
-	item->SetBitmap(wxBitmap(wxT("ICON_NEW_TAB"), wxBITMAP_TYPE_PNG_RESOURCE));
+	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
+	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
 
 	this->AppendSeparator();
 
 	if (!account.isActive) {	
-		item = this->Append(static_cast<int>(TreeContextMenuType::RestoreAccount), wxT("Restore from Archive"));
-		item->SetBitmap(wxBitmap(wxT("ICON_UNDO"), wxBITMAP_TYPE_PNG_RESOURCE));
+		item = this->Append(static_cast<int>(TreeContextMenuType::RestoreAccount), _("Restore from Archive"));
+		item->SetBitmap(wxBitmap("ICON_UNDO", wxBITMAP_TYPE_PNG_RESOURCE));
 	}
 	else {
-		item = this->Append(static_cast<int>(TreeContextMenuType::EditAccount), wxT("Edit Account..."));
-		item->SetBitmap(wxBitmap(wxT("ICON_EDIT"), wxBITMAP_TYPE_PNG_RESOURCE));
+		item = this->Append(static_cast<int>(TreeContextMenuType::EditAccount), _("Edit Account..."));
+		item->SetBitmap(wxBitmap("ICON_EDIT", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		item = this->Append(static_cast<int>(TreeContextMenuType::DeleteAccount), wxT("Move to Archive"));
-		item->SetBitmap(wxBitmap(wxT("ICON_DELETE"), wxBITMAP_TYPE_PNG_RESOURCE));
+		item = this->Append(static_cast<int>(TreeContextMenuType::DeleteAccount), _("Move to Archive"));
+		item->SetBitmap(wxBitmap("ICON_DELETE", wxBITMAP_TYPE_PNG_RESOURCE));
 
 		this->AppendSeparator();
 
 		if (transactions.size() > 0) {
 			wxMenu* recentsMenu = new wxMenu();
-			this->AppendSubMenu(recentsMenu, wxT("New Transaction"));
+			this->AppendSubMenu(recentsMenu, _("New Transaction"));
 
-			item = recentsMenu->Append(static_cast<int>(TreeContextMenuType::NewTransaction), wxT("New Transaction..."));
-			item->SetBitmap(wxBitmap(wxT("ICON_ADD"), wxBITMAP_TYPE_PNG_RESOURCE));
+			item = recentsMenu->Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
+			item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 
 			recentsMenu->AppendSeparator();
 
@@ -49,8 +49,8 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Account
 			}
 		}
 		else {
-			item = this->Append(static_cast<int>(TreeContextMenuType::NewTransaction), wxT("New Transaction..."));
-			item->SetBitmap(wxBitmap(wxT("ICON_ADD"), wxBITMAP_TYPE_PNG_RESOURCE));
+			item = this->Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
+			item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 		}
 	}
 

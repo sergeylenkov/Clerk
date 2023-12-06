@@ -8,7 +8,6 @@
 #include <wx/tokenzr.h>
 #include "../../Data/Models/SchedulerModel.h"
 #include "../../Data/Models/AccountModel.h"
-#include "../Controls/TagsPopup.h"
 
 class SchedulerDialog : public wxFrame
 {
@@ -72,7 +71,6 @@ private:
 	std::shared_ptr<SchedulerModel> scheduler;
 	std::shared_ptr<AccountModel> fromAccount;
 	std::shared_ptr<AccountModel> toAccount;
-	TagsPopup *tagsPopup;
 
 	void SelectFromAccount(int index);
 	void SelectToAccount(int index);
@@ -85,10 +83,6 @@ private:
 	void OnToAccountSelect(wxCommandEvent &event);
 	void OnFromAmountKillFocus(wxFocusEvent &event);
 	void OnToAmountKillFocus(wxFocusEvent &event);
-	void OnTextChanged(wxKeyEvent &event);
-	void OnTagsKillFocus(wxFocusEvent& event);
-	void OnSelectTag();
-	void AddTag();
 	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
 	void SelectPatternType(SchedulerType type);

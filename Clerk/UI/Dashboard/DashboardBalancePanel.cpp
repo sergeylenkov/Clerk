@@ -43,7 +43,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Balance", wxPoint(0, 0));
+	dc.DrawText(_("Balance"), wxPoint(0, 0));
 
 	wxFont balanceFont = this->GetFont();
 	balanceFont.SetPointSize(12);
@@ -64,7 +64,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	dc.SetFont(font);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
-	dc.DrawText("Own funds", wxPoint(0, y));
+	dc.DrawText(_("Own funds"), wxPoint(0, y));
 	
 	y = y + this->FromDIP(25);
 
@@ -82,7 +82,7 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	int x = columnWidth + this->FromDIP(80);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
-	dc.DrawText("Credit funds", wxPoint(x, y));
+	dc.DrawText(_("Credit funds"), wxPoint(x, y));
 
 	y = y + this->FromDIP(25);
 

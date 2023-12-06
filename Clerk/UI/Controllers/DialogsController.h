@@ -34,6 +34,7 @@ namespace Clerk {
 			DataContext& _context;
 			Icons& _icons;
 
+			wxSize GetAboutDialogSize();
 			wxSize GetTransactionDialogSize();
 		};
 	}

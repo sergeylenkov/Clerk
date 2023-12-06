@@ -53,7 +53,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
-	dc.DrawText("Goals", wxPoint(0, 0));
+	dc.DrawText(_("Goals"), wxPoint(0, 0));
 
 	wxFont font = this->GetFont();
 	font.SetPointSize(8);
@@ -64,10 +64,10 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int columnWidth1 = 0;
 	int columnWidth2 = 0;
 
-	wxSize size = dc.GetTextExtent("Goal");
+	wxSize size = dc.GetTextExtent(_("Goal"));
 	columnWidth1 = size.GetWidth();
 
-	size = dc.GetTextExtent("Remain");
+	size = dc.GetTextExtent(_("Remain"));
 	columnWidth2 = size.GetWidth();
 
 	for (auto &value : _values) {
@@ -96,11 +96,11 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	dc.DrawText("0%", wxPoint(columnWidth0 + 20, y));
 	dc.DrawText("100%", wxPoint(width - columnWidth1 - columnWidth2 - 65, y));
 
-	size = dc.GetTextExtent("Goal");
-	dc.DrawText("Goal", wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
+	size = dc.GetTextExtent(_("Goal"));
+	dc.DrawText(_("Goal"), wxPoint(width - columnWidth2 - size.GetWidth() - 20, y));
 
-	size = dc.GetTextExtent("Remain");
-	dc.DrawText("Remain", wxPoint(width - size.GetWidth(), y));
+	size = dc.GetTextExtent(_("Remain"));
+	dc.DrawText(_("Remain"), wxPoint(width - size.GetWidth(), y));
 
 	y = y + 20;
 

@@ -16,23 +16,23 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, wxT("Name:"), wxDefaultPosition, wxSize(60, -1), 0);
+	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(nameText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+	nameField = new wxTextCtrl(mainPanel, wxID_ANY);
 	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);	
 
-	typeLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Type:"), wxDefaultPosition, wxSize(60, -1), 0);
+	typeLabel = new wxStaticText(mainPanel, wxID_ANY, _("Type:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(typeLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	typeList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(typeList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	periodLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
+	periodLabel = new wxStaticText(mainPanel, wxID_ANY, _("Period:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	periodList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
@@ -42,13 +42,13 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	conditionLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Condition:"), wxDefaultPosition, wxSize(60, -1), 0);
+	conditionLabel = new wxStaticText(mainPanel, wxID_ANY, _("Condition:"), wxDefaultPosition, wxSize(60, -1), 0);
 	horizontalSizer->Add(conditionLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	conditionList = new wxBitmapComboBox(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(conditionList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
+	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
 	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	amountField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), wxTE_RIGHT, amountValidator);
@@ -58,7 +58,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	horizontalSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *accountLabel = new wxStaticText(mainPanel, wxID_ANY, wxT("Accounts:"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *accountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Accounts:"));
 	horizontalSizer->Add(accountLabel, 0, wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxLEFT | wxRIGHT | wxTOP, 5);
@@ -74,10 +74,10 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(mainPanel, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	cancelButton = new wxButton(mainPanel, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"));
 	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
@@ -94,21 +94,21 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	this->Centre(wxBOTH);
 
-	typeList->AppendString("Receipt");
-	typeList->AppendString("Expense");
-	typeList->AppendString("Balance");
+	typeList->AppendString(_("Receipt"));
+	typeList->AppendString(_("Expense"));
+	typeList->AppendString(_("Balance"));
 
 	typeList->SetSelection(static_cast<int>(AlertType::Receipt));
 
-	periodList->AppendString("Week");
-	periodList->AppendString("Month");
-	periodList->AppendString("Year");
+	periodList->AppendString(_("Week"));
+	periodList->AppendString(_("Month"));
+	periodList->AppendString(_("Year"));
 
 	periodList->SetSelection(static_cast<int>(AlertPeriod::Month));
 
-	conditionList->AppendString("Less");
-	conditionList->AppendString("More");
-	conditionList->AppendString("Equal");
+	conditionList->AppendString(_("Less"));
+	conditionList->AppendString(_("More"));
+	conditionList->AppendString(_("Equal"));
 
 	conditionList->SetSelection(static_cast<int>(AlertCondition::Less));
 

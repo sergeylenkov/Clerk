@@ -42,77 +42,77 @@ void TreeMenu::CreateMenu() {
 	TreeMenuItemData* itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Dashboard;
 
-	wxTreeItemId homeItem = _treeMenu->AppendItem(rootItem, "Dashboard", 0, 0, itemData);
+	wxTreeItemId homeItem = _treeMenu->AppendItem(rootItem, _("Dashboard"), 0, 0, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Accounts;
 
-	wxTreeItemId accountsItem = _treeMenu->AppendItem(rootItem, "Accounts", 1, 1, itemData);
+	wxTreeItemId accountsItem = _treeMenu->AppendItem(rootItem, _("Accounts"), 1, 1, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Receipts;
 
-	_receiptsItem = _treeMenu->AppendItem(accountsItem, "Receipts", 2, 2, itemData);
+	_receiptsItem = _treeMenu->AppendItem(accountsItem, _("Receipts"), 2, 2, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Deposits;
 
-	_depositsItem = _treeMenu->AppendItem(accountsItem, "Deposits", 2,  2, itemData);
+	_depositsItem = _treeMenu->AppendItem(accountsItem, _("Deposits"), 2,  2, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Virtual;
 
-	_virtualItem = _treeMenu->AppendItem(accountsItem, "Virtual", 2, 2, itemData);
+	_virtualItem = _treeMenu->AppendItem(accountsItem, _("Virtual"), 2, 2, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Expenses;
 
-	_expensesItem = _treeMenu->AppendItem(accountsItem, "Expenses", 2, 2, itemData);
+	_expensesItem = _treeMenu->AppendItem(accountsItem, _("Expenses"), 2, 2, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Debts;
 
-	_debtsItem = _treeMenu->AppendItem(accountsItem, "Debts", 2, 2, itemData);
+	_debtsItem = _treeMenu->AppendItem(accountsItem, _("Debts"), 2, 2, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Archive;
 
-	_archiveItem = _treeMenu->AppendItem(accountsItem, "Archive", 3, 3, itemData);
+	_archiveItem = _treeMenu->AppendItem(accountsItem, _("Archive"), 3, 3, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Reports;
 
-	_reportsItem = _treeMenu->AppendItem(rootItem, "Reports", 4, 4, itemData);
+	_reportsItem = _treeMenu->AppendItem(rootItem, _("Reports"), 4, 4, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Budgets;
 
-	wxTreeItemId budgetsItem = _treeMenu->AppendItem(rootItem, "Budgets", 6, 6, itemData);
+	wxTreeItemId budgetsItem = _treeMenu->AppendItem(rootItem, _("Budgets"), 6, 6, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Goals;
 
-	wxTreeItemId goalsItem = _treeMenu->AppendItem(rootItem, "Goals", 8, 8, itemData);
+	wxTreeItemId goalsItem = _treeMenu->AppendItem(rootItem, _("Goals"), 8, 8, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Schedulers;
 
-	wxTreeItemId schedulersItem = _treeMenu->AppendItem(rootItem, "Schedulers", 7, 7, itemData);
+	wxTreeItemId schedulersItem = _treeMenu->AppendItem(rootItem, _("Schedulers"), 7, 7, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Alerts;
 
-	wxTreeItemId alertsItem = _treeMenu->AppendItem(rootItem, "Alerts", 12, 12, itemData);
+	wxTreeItemId alertsItem = _treeMenu->AppendItem(rootItem, _("Alerts"), 12, 12, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Tags;
 
-	wxTreeItemId tagsItem = _treeMenu->AppendItem(rootItem, "Tags", 9, 9, itemData);
+	wxTreeItemId tagsItem = _treeMenu->AppendItem(rootItem, _("Tags"), 9, 9, itemData);
 
 	itemData = new TreeMenuItemData();
 	itemData->type = TreeMenuItemType::Trash;
 
-	_trashItem = _treeMenu->AppendItem(rootItem, "Trash", 0, 0, itemData);
+	_trashItem = _treeMenu->AppendItem(rootItem, _("Trash"), 0, 0, itemData);
 }
 
 void TreeMenu::Update() {

@@ -9,7 +9,7 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	currencyLabel = new wxStaticText(this, wxID_ANY, wxT("Base Currency:"), wxDefaultPosition, wxSize(-1, -1), 0);	
+	currencyLabel = new wxStaticText(this, wxID_ANY, _("Base Currency:"), wxDefaultPosition, wxSize(-1, -1), 0);	
 	horizontalSizer->Add(currencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
@@ -19,14 +19,14 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Convert currencies by exchange rate"), wxDefaultPosition, wxDefaultSize, 0);
+	convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert currencies by exchange rate"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(convertCurrenciesCheckBox, 0, wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, wxT("Load exchange rates on start"), wxDefaultPosition, wxDefaultSize, 0);
+	loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, _("Load exchange rates on start"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(loadExchangeRatesCheckBox, 0, wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALL, 5);
@@ -35,10 +35,10 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	okButton = new wxButton(this, wxID_ANY, wxT("OK"), wxDefaultPosition, wxDefaultSize, 0);
+	okButton = new wxButton(this, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	cancelButton = new wxButton(this, wxID_ANY, wxT("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+	cancelButton = new wxButton(this, wxID_ANY, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
 	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	mainSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);

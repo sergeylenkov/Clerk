@@ -6,11 +6,11 @@ AlertsPanel::AlertsPanel(wxWindow *parent, DataContext& context) : DataPanel(par
 	model = new AlertsListDataModel();
 	list->AssociateModel(model.get());
 
-	list->AppendTextColumn("Name", static_cast<int>(AlertsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Type", static_cast<int>(AlertsListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 150, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Period", static_cast<int>(AlertsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Condition", static_cast<int>(AlertsListDataModel::Columns::Condition), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("Amount", static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Name"), static_cast<int>(AlertsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Type"), static_cast<int>(AlertsListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 150, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Period"), static_cast<int>(AlertsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Condition"), static_cast<int>(AlertsListDataModel::Columns::Condition), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 	list->AppendTextColumn("", static_cast<int>(AlertsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 
 	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsPanel::OnListItemDoubleClick, this);

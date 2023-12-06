@@ -16,17 +16,17 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *periodText = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
+	wxStaticText *periodText = new wxStaticText(filterPanel, wxID_ANY, _("Period:"));
 
 	wxArrayString *values = new wxArrayString();
 
-	values->Add(wxT("Current Week"));
-	values->Add(wxT("Previous Week"));
-	values->Add(wxT("Current Month"));
-	values->Add(wxT("Previous Month"));	
-	values->Add(wxT("Current Year"));
-	values->Add(wxT("Previous Year"));
-	values->Add(wxT("Custom"));
+	values->Add(_("Current Week"));
+	values->Add(_("Previous Week"));
+	values->Add(_("Current Month"));
+	values->Add(_("Previous Month"));	
+	values->Add(_("Current Year"));
+	values->Add(_("Previous Year"));
+	values->Add(_("Custom"));
 
 	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
 
@@ -34,9 +34,9 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	int indent = this->FromDIP(5);
 
-	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
+	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, _("From:"));
 	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
-	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
+	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, _("To:"));
 	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 
 	periodSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
@@ -50,7 +50,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, wxT("Search:"));
+	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, _("Search:"));
 	_searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(300, 20)));
 	_searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
 
@@ -65,22 +65,22 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	_infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
 	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *transactionText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Transactions:"));
+	wxStaticText *transactionText = new wxStaticText(_infoPanel, wxID_ANY, _("Transactions:"));
 	infoSizer->Add(transactionText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	_transactionLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0"));
+	_transactionLabel = new wxStaticText(_infoPanel, wxID_ANY, "0");
 	infoSizer->Add(_transactionLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *incomeText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Income:"));
+	wxStaticText *incomeText = new wxStaticText(_infoPanel, wxID_ANY, _("Income:"));
 	infoSizer->Add(incomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	_incomeLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0.00"));
+	_incomeLabel = new wxStaticText(_infoPanel, wxID_ANY, "0.00");
 	infoSizer->Add(_incomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	wxStaticText *outcomeText = new wxStaticText(_infoPanel, wxID_ANY, wxT("Outcome:"));
+	wxStaticText *outcomeText = new wxStaticText(_infoPanel, wxID_ANY, _("Outcome:"));
 	infoSizer->Add(outcomeText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
 
-	_outcomeLabel = new wxStaticText(_infoPanel, wxID_ANY, wxT("0.00"));
+	_outcomeLabel = new wxStaticText(_infoPanel, wxID_ANY, "0.00");
 	infoSizer->Add(_outcomeLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	_infoPanel->SetSizer(infoSizer);
@@ -224,28 +224,28 @@ void TransactionsListPanel::CreateListColumns() {
 		switch (static_cast<TransactionsListDataModel::Columns>(column.index))
 		{
 			case TransactionsListDataModel::Columns::Date:
-				_list->AppendTextColumn("Date", static_cast<int>(TransactionsListDataModel::Columns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn(_("Date"), static_cast<int>(TransactionsListDataModel::Columns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::FromAccount:
-				_list->AppendTextColumn("From Account", static_cast<int>(TransactionsListDataModel::Columns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn(_("From Account"), static_cast<int>(TransactionsListDataModel::Columns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::ToAccount:
-				_list->AppendTextColumn("To Account", static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn(_("To Account"), static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::Tags: {
 				TransactionsTagsRender *render = new TransactionsTagsRender();
 
-				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Tags", render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				wxDataViewColumn *dataViewColumn = new wxDataViewColumn(_("Tags"), render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);
 				}
 				break;
 			case TransactionsListDataModel::Columns::Note:
-				_list->AppendTextColumn("Note", static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendTextColumn(_("Note"), static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case TransactionsListDataModel::Columns::Amount: {
 				TransactionsAmountRender *render = new TransactionsAmountRender();
 
-				wxDataViewColumn *dataViewColumn = new wxDataViewColumn("Amount", render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				wxDataViewColumn *dataViewColumn = new wxDataViewColumn(_("Amount"), render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);
 				}
 				break;

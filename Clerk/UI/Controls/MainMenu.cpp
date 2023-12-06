@@ -8,22 +8,22 @@ MainMenu::MainMenu(CommandsInvoker& commandsInvoker, Icons& icons): _commandsInv
 	_menuFile = new wxMenu();	
 	
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuType::NewAccount), wxT("New Account..."));
-	_menuFile->Append(static_cast<int>(MainMenuType::NewBudget), wxT("New Budget..."));
-	_menuFile->Append(static_cast<int>(MainMenuType::NewGoal), wxT("New Goal..."));
-	_menuFile->Append(static_cast<int>(MainMenuType::NewScheduler), wxT("New Scheduler..."));
-	_menuFile->Append(static_cast<int>(MainMenuType::NewAlert), wxT("New Alert..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewAccount), _("New Account..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewBudget), _("New Budget..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewGoal), _("New Goal..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewScheduler), _("New Scheduler..."));
+	_menuFile->Append(static_cast<int>(MainMenuType::NewAlert), _("New Alert..."));
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuType::Preferences), "Preferences...\tCtrl+P");
+	_menuFile->Append(static_cast<int>(MainMenuType::Preferences), _("Preferences...\tCtrl+P"));
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuType::Exit), "E&xit\tCtrl+W");
+	_menuFile->Append(static_cast<int>(MainMenuType::Exit), _("E&xit\tCtrl+W"));
 
-	this->Append(_menuFile, "&File");
+	this->Append(_menuFile, _("&File"));
 
 	wxMenu* menuHelp = new wxMenu();
-	menuHelp->Append(static_cast<int>(MainMenuType::About), "&About...");
+	menuHelp->Append(static_cast<int>(MainMenuType::About), _("&About..."));
 
-	this->Append(menuHelp, "&Help");
+	this->Append(menuHelp, _("&Help"));
 
 	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnMenuSelect, this);
 }
@@ -46,13 +46,13 @@ void MainMenu::Update() {
 
 
 	if (transactions.size() == 0) {
-		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction...\tCtrl+T"));		
+		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), _("New Transaction...\tCtrl+T"));		
 	}
 	else {
 		wxMenu* menu = new wxMenu();
 		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnTransactionSelect, this);
 
-		menu->Append(static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction...\tCtrl+T"));
+		menu->Append(static_cast<int>(MainMenuType::NewTransaction), _("New Transaction...\tCtrl+T"));
 		menu->AppendSeparator();
 
 		for (auto& transaction : transactions)
@@ -61,7 +61,7 @@ void MainMenu::Update() {
 			transactionItem->SetBitmap(*_icons.GetAccountIcon(transaction->toAccount->icon));
 		}
 
-		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), wxT("New Transaction"), menu);
+		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), _("New Transaction"), menu);
 	}
 }
 

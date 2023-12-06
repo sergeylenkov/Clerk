@@ -7,8 +7,14 @@ IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
-	_locale = new wxLocale();
-	_locale->Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
+	wxString localePath(wxStandardPaths::Get().GetUserDataDir());
+	localePath = localePath + "\\Resources\\Locales";
+
+	_locale = new wxLocale();	
+	_locale->Init(wxLANGUAGE_RUSSIAN, wxLOCALE_DONT_LOAD_DEFAULT);
+
+	_locale->AddCatalogLookupPathPrefix(localePath);
+	_locale->AddCatalog("Clerk");
 
 	Settings::GetInstance().Open("Config.json");
 

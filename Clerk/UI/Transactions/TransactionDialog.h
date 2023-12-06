@@ -32,7 +32,6 @@ private:
 	TransactionViewModel* _viewModel;
 	Icons& _icons;
 	DataContext& _context;
-	wxPanel *_mainPanel;
 	wxBitmapComboBox *_fromList;
 	wxBitmapComboBox *_toList;
 	wxTextCtrl *_noteField;

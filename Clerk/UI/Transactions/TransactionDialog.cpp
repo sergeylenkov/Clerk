@@ -12,57 +12,57 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	wxSize labelSize = this->FromDIP(wxSize(40, -1));
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-	_mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* fromLabel = new wxStaticText(_mainPanel, wxID_ANY, _("From:"), wxDefaultPosition, labelSize);
+	wxStaticText* fromLabel = new wxStaticText(mainPanel, wxID_ANY, _("From:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	_fromList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	_fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	_fromAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
+	_fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_fromCurrencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
+	_fromCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
 	horizontalSizer->Add(_fromCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* toLabel = new wxStaticText(_mainPanel, wxID_ANY, _("To:"), wxDefaultPosition, labelSize);
+	wxStaticText* toLabel = new wxStaticText(mainPanel, wxID_ANY, _("To:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	_toList = new wxBitmapComboBox(_mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	_toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	_toAmountField = new AmountField(_mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
+	_toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_toCurrencyLabel = new wxStaticText(_mainPanel, wxID_ANY, "RUB");
+	_toCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
 	horizontalSizer->Add(_toCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 	
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* dateLabel = new wxStaticText(_mainPanel, wxID_ANY, _("Date:"), wxDefaultPosition, labelSize);
+	wxStaticText* dateLabel = new wxStaticText(mainPanel, wxID_ANY, _("Date:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	_datePicker = new wxDatePickerCtrl(_mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	_datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
 	horizontalSizer->Add(_datePicker);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* tagsLabel = new wxStaticText(_mainPanel, wxID_ANY, _("Tags:"), wxDefaultPosition, labelSize);
+	wxStaticText* tagsLabel = new wxStaticText(mainPanel, wxID_ANY, _("Tags:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(tagsLabel);
 
-	_tagsField = new TagsField(_mainPanel, context.GetTagsService());
+	_tagsField = new TagsField(mainPanel, context.GetTagsService());
 	_tagsField->OnChange = [&]() {
 		_viewModel->SetTags(_tagsField->GetTags());
 		this->Layout();
@@ -74,30 +74,30 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* noteLabel = new wxStaticText(_mainPanel, wxID_ANY, _("Note:"), wxDefaultPosition, labelSize);
+	wxStaticText* noteLabel = new wxStaticText(mainPanel, wxID_ANY, _("Note:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(noteLabel);
 
-	_noteField = new wxTextCtrl(_mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
+	_noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
 	horizontalSizer->Add(_noteField, 1, wxEXPAND, indent);
 
 	panelSizer->Add(horizontalSizer, 1, wxEXPAND | wxBOTTOM, bottomIndent);
 	
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxButton* okButton = new wxButton(_mainPanel, wxID_ANY, _("OK"));
+	wxButton* okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	wxButton* cancelButton = new wxButton(_mainPanel, wxID_ANY, _("Cancel"));
+	wxButton* cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"));
 	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL);
 
 	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT);
 
-	_mainPanel->SetSizer(panelSizer);
-	_mainPanel->Layout();
+	mainPanel->SetSizer(panelSizer);
+	mainPanel->Layout();
 
-	panelSizer->Fit(_mainPanel);
+	panelSizer->Fit(mainPanel);
 
-	mainSizer->Add(_mainPanel, 1, wxEXPAND | wxALL, indent * 2);
+	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
 	this->SetSizer(mainSizer);
 	this->Layout();
@@ -120,7 +120,6 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 TransactionDialog::~TransactionDialog() {
 	delete _viewModel;
-	delete _mainPanel;
 }
 
 void TransactionDialog::SetViewModel(TransactionViewModel* viewModel) {

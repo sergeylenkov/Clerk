@@ -2,8 +2,8 @@
 
 #include "wx/wx.h"
 #include "../../Data/Services/TagsService.h"
-#include "../../PresentationModels/TagPresentationModel.h"
-#include "../../../Utils/Types.h"
+#include "../PresentationModels/TagPresentationModel.h"
+#include "../../Utils/Types.h"
 #include "TagsPopup.h"
 #include "TagElement.h"
 

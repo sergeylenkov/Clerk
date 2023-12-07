@@ -42,17 +42,23 @@ void MainMenu::SetViewModel(TransactionsMenuViewModel* viewModel) {
 }
 
 void MainMenu::Update() {
+	int menuId = static_cast<int>(MainMenuType::NewTransaction);
+	wxMenuItem* menuItem = _menuFile->FindItem(menuId);
+
+	if (menuItem) {
+		_menuFile->Remove(menuItem);
+	}
+
 	auto transactions = _viewModel->GetRecents();
 
-
 	if (transactions.size() == 0) {
-		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), _("New Transaction...\tCtrl+T"));		
+		_menuFile->Insert(0, menuId, _("New Transaction...\tCtrl+T"));
 	}
 	else {
 		wxMenu* menu = new wxMenu();
 		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnTransactionSelect, this);
 
-		menu->Append(static_cast<int>(MainMenuType::NewTransaction), _("New Transaction...\tCtrl+T"));
+		menu->Append(menuId, _("New Transaction...\tCtrl+T"));
 		menu->AppendSeparator();
 
 		for (auto& transaction : transactions)
@@ -61,7 +67,7 @@ void MainMenu::Update() {
 			transactionItem->SetBitmap(*_icons.GetAccountIcon(transaction->toAccount->icon));
 		}
 
-		_menuFile->Insert(0, static_cast<int>(MainMenuType::NewTransaction), _("New Transaction"), menu);
+		_menuFile->Insert(0, menuId, _("New Transaction"), menu);
 	}
 }
 

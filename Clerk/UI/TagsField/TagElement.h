@@ -1,8 +1,8 @@
 #pragma once
 
 #include "wx/wx.h"
-#include "../../PresentationModels/TagPresentationModel.h"
-#include "../../../Utils/Types.h"
+#include "../PresentationModels/TagPresentationModel.h"
+#include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

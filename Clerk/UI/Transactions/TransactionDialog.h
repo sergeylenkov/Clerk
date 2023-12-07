@@ -10,7 +10,7 @@
 #include "../../Data/Settings.h"
 #include "../../Data/DataContext.h"
 #include "../Controls/AmountField.h"
-#include "../Controls/TagsField/TagsField.h"
+#include "../TagsField/TagsField.h"
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../ViewModels/TransactionViewModel.h"

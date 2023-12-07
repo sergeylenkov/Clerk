@@ -89,8 +89,8 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
-    <ClCompile Include="UI\Controls\TagsField\TagElement.cpp" />
-    <ClCompile Include="UI\Controls\TagsField\TagsField.cpp" />
+    <ClCompile Include="UI\TagsField\TagElement.cpp" />
+    <ClCompile Include="UI\TagsField\TagsField.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp" />
     <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\AccountViewModel.cpp" />
@@ -176,7 +176,7 @@
     <ClCompile Include="Data\Models\ReportModel.cpp" />
     <ClCompile Include="UI\Reports\ReportExpensesByMonthPanel.cpp" />
     <ClCompile Include="Data\Settings.cpp" />
-    <ClCompile Include="UI\Controls\TagsField\TagsPopup.cpp" />
+    <ClCompile Include="UI\TagsField\TagsPopup.cpp" />
     <ClCompile Include="Data\Models\TransactionModel.cpp" />
     <ClCompile Include="Clerk.cpp" />
     <ClCompile Include="UI\MainWindow.cpp" />
@@ -232,8 +232,8 @@
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
     <ClInclude Include="Data\Types.h" />
-    <ClInclude Include="UI\Controls\TagsField\TagElement.h" />
-    <ClInclude Include="UI\Controls\TagsField\TagsField.h" />
+    <ClInclude Include="UI\TagsField\TagElement.h" />
+    <ClInclude Include="UI\TagsField\TagsField.h" />
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />
     <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\AccountViewModel.h" />
@@ -327,7 +327,7 @@
     <ClInclude Include="Data\Models\ReportModel.h" />
     <ClInclude Include="UI\Reports\ReportExpensesByMonthPanel.h" />
     <ClInclude Include="Data\Settings.h" />
-    <ClInclude Include="UI\Controls\TagsField\TagsPopup.h" />
+    <ClInclude Include="UI\TagsField\TagsPopup.h" />
     <ClInclude Include="Data\Models\TransactionModel.h" />
     <ClInclude Include="Clerk.h" />
     <ClInclude Include="UI\MainWindow.h" />

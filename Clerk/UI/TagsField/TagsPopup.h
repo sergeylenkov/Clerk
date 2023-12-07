@@ -4,7 +4,7 @@
 #include <wx/listctrl.h>
 #include <vector>
 #include <memory>
-#include "../../PresentationModels/TagPresentationModel.h"
+#include "../PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
 
 using namespace Clerk::Data;

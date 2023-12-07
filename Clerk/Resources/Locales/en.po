@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Clerk\n"
-"POT-Creation-Date: 2023-12-06 14:42+0300\n"
-"PO-Revision-Date: 2023-12-06 14:45+0300\n"
+"POT-Creation-Date: 2023-12-07 09:23+0300\n"
+"PO-Revision-Date: 2023-12-07 09:23+0300\n"
 "Last-Translator: Sergey Lenkov <serglazy@gmail.com>\n"
 "Language-Team: Sergey Lenkov\n"
 "Language: en\n"
@@ -20,6 +20,10 @@ msgstr ""
 #: UI/Controllers/DialogsController.cpp:15
 msgid "About"
 msgstr "About"
+
+#: UI/Controls/MainMenu.cpp:24
+msgid "About..."
+msgstr "About..."
 
 #: UI/Controllers/DialogsController.cpp:95
 #: UI/Controllers/DialogsController.cpp:107
@@ -132,14 +136,14 @@ msgid "Confirm scheduler transactions:"
 msgstr "Confirm scheduler transactions:"
 
 #: UI/PreferencesDialog.cpp:28
-msgid "Convert currencies by exchange rate"
-msgstr "Convert currencies by exchange rate"
+msgid "Convert amount by exchange rate"
+msgstr "Convert amount by exchange rate"
 
 #: UI/Transactions/TransactionContextMenu.cpp:12
 msgid "Copy..."
 msgstr "Copy..."
 
-#: UI/AboutDialog.cpp:29
+#: UI/AboutDialog.cpp:32
 msgid "Copyright"
 msgstr "Copyright © 2024 Sergey Lenkov"
 
@@ -229,7 +233,7 @@ msgstr "Delete tag"
 
 #: UI/TagsPanel.cpp:161
 msgid "Delete tag confirm"
-msgstr "Delete tag confirm"
+msgstr "Are you sure want to delete tag"
 
 #: UI/TagsPanel.cpp:244 UI/TrashPanel.cpp:149
 msgid "Delete..."
@@ -266,6 +270,10 @@ msgstr "Equal"
 msgid "Every"
 msgstr "Every"
 
+#: UI/Controls/MainMenu.cpp:19
+msgid "Exit\tCtrl+W"
+msgstr "Exit\tCtrl+W"
+
 #: UI/Alerts/AlertDialog.cpp:98
 msgid "Expense"
 msgstr "Expense"
@@ -278,6 +286,10 @@ msgstr "Expenses"
 #: UI/Schedulers/SchedulerDialog.cpp:250
 msgid "February"
 msgstr "February"
+
+#: UI/Controls/MainMenu.cpp:21
+msgid "File"
+msgstr "File"
 
 #: UI/Schedulers/SchedulerDialog.cpp:194
 msgid "Friday"
@@ -307,6 +319,10 @@ msgstr "Goal"
 #: UI/Dashboard/DashboardGoalsPanel.cpp:56 UI/TreeMenu/TreeMenu.cpp:95
 msgid "Goals"
 msgstr "Goals"
+
+#: UI/Controls/MainMenu.cpp:26
+msgid "Help"
+msgstr "Help"
 
 #: UI/AccountDialog.cpp:45
 msgid "Icon:"
@@ -395,11 +411,27 @@ msgstr "Name"
 msgid "Name:"
 msgstr "Name:"
 
-#: UI/TreeMenu/AccountsContextMenu.cpp:11
+#: UI/Controls/MainMenu.cpp:11 UI/TreeMenu/AccountsContextMenu.cpp:11
 msgid "New Account..."
 msgstr "New Account..."
 
-#: UI/TreeMenu/AccountContextMenu.cpp:28
+#: UI/Controls/MainMenu.cpp:15
+msgid "New Alert..."
+msgstr "New Alert..."
+
+#: UI/Controls/MainMenu.cpp:12
+msgid "New Budget..."
+msgstr "New Budget..."
+
+#: UI/Controls/MainMenu.cpp:13
+msgid "New Goal..."
+msgstr "New Goal..."
+
+#: UI/Controls/MainMenu.cpp:14
+msgid "New Scheduler..."
+msgstr "New Scheduler..."
+
+#: UI/Controls/MainMenu.cpp:64 UI/TreeMenu/AccountContextMenu.cpp:28
 msgid "New Transaction"
 msgstr "New Transaction"
 
@@ -407,6 +439,10 @@ msgstr "New Transaction"
 #: UI/TreeMenu/AccountsContextMenu.cpp:12
 msgid "New Transaction..."
 msgstr "New Transaction..."
+
+#: UI/Controls/MainMenu.cpp:49 UI/Controls/MainMenu.cpp:55
+msgid "New Transaction...\tCtrl+T"
+msgstr "New Transaction...\tCtrl+T"
 
 #: UI/Schedulers/SchedulersPanel.cpp:9
 msgid "Next Date"
@@ -469,6 +505,10 @@ msgstr "Period:"
 #: UI/Controllers/DialogsController.cpp:24
 msgid "Preferences"
 msgstr "Preferences"
+
+#: UI/Controls/MainMenu.cpp:17
+msgid "Preferences...\tCtrl+P"
+msgstr "Preferences...\tCtrl+P"
 
 #: UI/Transactions/TransactionsListPanel.cpp:26
 msgid "Previous Month"
@@ -633,7 +673,7 @@ msgstr "Type:"
 msgid "Updating..."
 msgstr "Updating..."
 
-#: UI/AboutDialog.cpp:6
+#: UI/AboutDialog.cpp:7
 #, c-format
 msgid "Version %s"
 msgstr "Version %s"

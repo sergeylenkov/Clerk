@@ -25,7 +25,7 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert currencies by exchange rate"));
+	_convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert amount by exchange rate"));
 	horizontalSizer->Add(_convertCurrenciesCheckBox);
 
 	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);

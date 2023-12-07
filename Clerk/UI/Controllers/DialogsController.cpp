@@ -119,7 +119,7 @@ wxSize DialogsController::GetAboutDialogSize() {
 	wxSize size = wxSize();
 
 	size.SetWidth(_parent->FromDIP(250));
-	size.SetHeight(_parent->FromDIP(250));
+	size.SetHeight(_parent->FromDIP(260));
 
 	return size;
 }

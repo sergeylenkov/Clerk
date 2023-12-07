@@ -1,4 +1,5 @@
 #include "wx/wx.h" 
+#include <wx/uilocale.h>
 #include "UI/MainWindow.h"
 #include "Data/DataConnection.h"
 #include "Data/DataContext.h"

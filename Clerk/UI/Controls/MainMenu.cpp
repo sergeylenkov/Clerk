@@ -16,14 +16,14 @@ MainMenu::MainMenu(CommandsInvoker& commandsInvoker, Icons& icons): _commandsInv
 	_menuFile->AppendSeparator();
 	_menuFile->Append(static_cast<int>(MainMenuType::Preferences), _("Preferences...\tCtrl+P"));
 	_menuFile->AppendSeparator();
-	_menuFile->Append(static_cast<int>(MainMenuType::Exit), _("E&xit\tCtrl+W"));
+	_menuFile->Append(static_cast<int>(MainMenuType::Exit), _("Exit\tCtrl+W"));
 
-	this->Append(_menuFile, _("&File"));
+	this->Append(_menuFile, _("File"));
 
 	wxMenu* menuHelp = new wxMenu();
-	menuHelp->Append(static_cast<int>(MainMenuType::About), _("&About..."));
+	menuHelp->Append(static_cast<int>(MainMenuType::About), _("About..."));
 
-	this->Append(menuHelp, _("&Help"));
+	this->Append(menuHelp, _("Help"));
 
 	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnMenuSelect, this);
 }

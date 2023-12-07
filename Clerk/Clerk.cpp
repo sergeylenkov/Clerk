@@ -10,11 +10,15 @@ bool ClerkApp::OnInit()
 	wxString localePath(wxStandardPaths::Get().GetUserDataDir());
 	localePath = localePath + "\\Resources\\Locales";
 
+	int systemLang = wxLocale::GetSystemLanguage();
+
 	_locale = new wxLocale();	
-	_locale->Init(wxLANGUAGE_RUSSIAN, wxLOCALE_DONT_LOAD_DEFAULT);
+	_locale->Init(wxLANGUAGE_ENGLISH, wxLOCALE_DONT_LOAD_DEFAULT);
 
 	_locale->AddCatalogLookupPathPrefix(localePath);
-	_locale->AddCatalog("Clerk");
+	_locale->AddCatalog("locale");
+
+	wxUILocale::UseDefault();
 
 	Settings::GetInstance().Open("Config.json");
 

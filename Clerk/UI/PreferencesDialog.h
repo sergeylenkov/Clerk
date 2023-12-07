@@ -1,6 +1,8 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <utility>
+#include <array>
 #include "../UI/PresentationModels/CurrencyPresentationModel.h"
 #include "../Data/Settings.h"
 #include "../Data/DataContext.h"
@@ -18,11 +20,12 @@ public:
 private:
 	DataContext& _context;
 	shared_vector<CurrencyPresentationModel> _currencies;
+	std::vector<Language> _languages;
 
-	wxComboBox *_currencyList;
+	wxComboBox* _languagesList;
+	wxComboBox *_currenciesList;
 	wxCheckBox *_convertCurrenciesCheckBox;
-	wxCheckBox *_loadExchangeRatesCheckBox;
-	
+	wxCheckBox *_loadExchangeRatesCheckBox;	
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

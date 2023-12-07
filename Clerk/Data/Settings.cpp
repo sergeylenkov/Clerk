@@ -1,4 +1,4 @@
-#include "Settings.h"
+﻿#include "Settings.h"
 
 void Settings::Open(char *configName) {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), configName);
@@ -14,9 +14,18 @@ void Settings::Open(char *configName) {
 	_baseCurrencyId = 180;
 	_convertCurrency = false;
 	_loadExchangeRates = true;
-
+	
 	_selectedExchangeRates.push_back(180);
 	_selectedExchangeRates.push_back(62);
+
+	_languages.push_back({ wxLANGUAGE_ENGLISH, wxT("English") });
+	_languages.push_back({ wxLANGUAGE_RUSSIAN, wxT("Русский") });
+
+	_language = wxLocale::GetSystemLanguage();
+
+	if (_language != wxLANGUAGE_ENGLISH && _language != wxLANGUAGE_RUSSIAN) {
+		_language = wxLANGUAGE_ENGLISH;
+	}
 
 	RestoreDefaultColumns();	
 
@@ -68,6 +77,10 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("LoadExchangeRates") && json["LoadExchangeRates"].IsBool()) {
 			_loadExchangeRates = json["LoadExchangeRates"].GetBool();
+		}
+
+		if (json.HasMember("Language") && json["Language"].IsInt()) {
+			_language = json["Language"].GetInt();
 		}
 
 		if (json.HasMember("ExpandedMenu") && json["ExpandedMenu"].IsArray()) {
@@ -179,6 +192,7 @@ void Settings::Save() {
 	json.AddMember("BaseCurrency", _baseCurrencyId, json.GetAllocator());
 	json.AddMember("ConvertCurrency", _convertCurrency, json.GetAllocator());
 	json.AddMember("LoadExchangeRates", _loadExchangeRates, json.GetAllocator());
+	json.AddMember("Language", _language, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -564,4 +578,16 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 	if (!found) {
 		_reportFilterSettings.push_back({ id, accountIds, period, fromDate, toDate, average });
 	}
+}
+
+std::vector<Language> Settings::GetLanguages() {
+	return _languages;
+}
+
+int Settings::GetLanguage() {
+	return _language;
+}
+
+void Settings::SetLanguage(int id) {
+	_language = id;
 }

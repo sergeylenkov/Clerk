@@ -37,3 +37,8 @@ struct ReportFilterSettings {
 	wxDateTime toDate;
 	bool average;
 };
+
+struct Language {
+	int id;
+	wxString name;
+};

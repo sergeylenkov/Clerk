@@ -17,4 +17,7 @@ private:
 	DataContext* _context{};
 	Icons* _icons{};
 	wxLocale* _locale;
+
+	void InitLocale();
+	void InitContext();
 };

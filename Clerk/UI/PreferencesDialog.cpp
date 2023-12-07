@@ -13,13 +13,23 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxStaticText* languageLabel = new wxStaticText(this, wxID_ANY, _("Language:"));
+	horizontalSizer->Add(languageLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+
+	_languagesList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	horizontalSizer->Add(_languagesList, 1, wxALIGN_CENTER_VERTICAL);
+
+	verticalSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* currencyLabel = new wxStaticText(this, wxID_ANY, _("Base Currency:"));
 	horizontalSizer->Add(currencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	_currencyList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
-	horizontalSizer->Add(_currencyList, 1, wxALIGN_CENTER_VERTICAL);
+	_currenciesList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	horizontalSizer->Add(_currenciesList, 1, wxALIGN_CENTER_VERTICAL);
 
 	verticalSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -53,26 +63,46 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	this->Layout();
 
 	this->Centre(wxBOTH);
-		
-	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
-	int index = 0;
-	int i = 0;
 	
-	for (auto currency : _context.GetCurrenciesService().GetAll())
+	_currencies = _context.GetCurrenciesService().GetAll();
+	_languages = Settings::GetInstance().GetLanguages();
+
+	int currentLanguage = Settings::GetInstance().GetLanguage();	
+
+	int index = 0;
+	bool found = false;
+
+	for (auto language : _languages)
 	{
-		_currencies.push_back(currency);
+		_languagesList->AppendString(language.name);
 
-		wxString name = wxString::Format("%s (%s)", currency->shortName, currency->name);
-		_currencyList->AppendString(name);
-
-		if (baseCurrencyId == currency->id) {
-			index = i;
+		if (language.id == currentLanguage) {
+			found = true;
 		}
-
-		i++;
+		else if (language.id != currentLanguage && !found) {
+			index++;
+		}
 	}
 
-	_currencyList->SetSelection(index);
+	_languagesList->SetSelection(index);
+
+	int baseCurrencyId = Settings::GetInstance().GetBaseCurrencyId();
+	index = 0;
+	found = false;
+
+	for (auto currency : _currencies)
+	{
+		wxString name = wxString::Format("%s (%s)", currency->shortName, currency->name);
+		_currenciesList->AppendString(name);
+
+		if (currency->id == baseCurrencyId) {
+			found = true;
+		} else if (currency->id != baseCurrencyId && !found) {
+			index++;
+		}
+	}
+
+	_currenciesList->SetSelection(index);
 
 	_convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
 	_loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());
@@ -83,7 +113,12 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 }
 
 void PreferencesDialog::OnOK(wxCommandEvent &event) {
-	auto currency = _currencies[_currencyList->GetSelection()];
+	auto language = _languages[_languagesList->GetSelection()];
+
+	Settings::GetInstance().SetLanguage(language.id);
+
+	auto currency = _currencies[_currenciesList->GetSelection()];
+
 	Settings::GetInstance().SetBaseCurrencyId(currency->id);
 
 	Settings::GetInstance().SetConvertCurrency(_convertCurrenciesCheckBox->IsChecked());

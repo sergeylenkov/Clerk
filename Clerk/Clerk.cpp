@@ -7,21 +7,47 @@ IMPLEMENT_APP(ClerkApp)
 
 bool ClerkApp::OnInit()
 {
+	Settings::GetInstance().Open("Config.json");
+
+	InitLocale();
+	InitContext();	
+
+	_icons = new Icons();
+
+	MainWindow* frame = new MainWindow(*_context, *_icons);
+	
+	frame->Show(TRUE);
+	frame->Center();	
+
+	SetTopWindow(frame);
+
+	return TRUE;
+}
+
+int ClerkApp::OnExit()
+{	
+	delete _connection;
+	delete _context;	
+	delete _icons;
+	delete _locale;
+
+	return 0;
+}
+
+void ClerkApp::InitLocale() {
 	wxString localePath(wxStandardPaths::Get().GetUserDataDir());
 	localePath = localePath + "\\Resources\\Locales";
 
-	int systemLang = wxLocale::GetSystemLanguage();
-
-	_locale = new wxLocale();	
-	_locale->Init(wxLANGUAGE_ENGLISH, wxLOCALE_DONT_LOAD_DEFAULT);
+	_locale = new wxLocale();
+	_locale->Init(Settings::GetInstance().GetLanguage(), wxLOCALE_DONT_LOAD_DEFAULT);
 
 	_locale->AddCatalogLookupPathPrefix(localePath);
 	_locale->AddCatalog("locale");
 
 	wxUILocale::UseDefault();
+}
 
-	Settings::GetInstance().Open("Config.json");
-
+void ClerkApp::InitContext() {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), "Database.sqlite");
 	std::string dbPath(path.GetFullPath().char_str());
 
@@ -44,7 +70,7 @@ bool ClerkApp::OnInit()
 	SchedulersService* schedulersService = new SchedulersService(*schedulersRepository, *accountsService, *currenciesService);
 	BudgetsService* budgetsService = new BudgetsService(*budgetsRepository);
 	TagsService* tagsService = new TagsService(*tagsRepository);
-	TransactionsService* transactionsService = new TransactionsService(*transactionsRepository, *accountsService, *tagsService);	
+	TransactionsService* transactionsService = new TransactionsService(*transactionsRepository, *accountsService, *tagsService);
 	ReportsService* reportsService = new ReportsService(*reportsRepository);
 	AlertsService* alertsService = new AlertsService(*alertsRepository);
 	GoalsService* goalsService = new GoalsService(*goalsRepository);
@@ -56,25 +82,4 @@ bool ClerkApp::OnInit()
 		*schedulersRepository, *transactionsRepository, *tagsRepository, *currenciesRepository, *reportingRepository,
 		*accountingService, *accountsService, *schedulersService, *budgetsService, *transactionsService, *tagsService,
 		*reportsService, *alertsService, *goalsService, *reportingService, *currenciesService);
-
-	_icons = new Icons();
-
-	MainWindow* frame = new MainWindow(*_context, *_icons);
-	
-	frame->Show(TRUE);
-	frame->Center();	
-
-	SetTopWindow(frame);
-
-	return TRUE;
-}
-
-int ClerkApp::OnExit()
-{	
-	delete _connection;
-	delete _context;	
-	delete _icons;
-	delete _locale;
-
-	return 0;
 }

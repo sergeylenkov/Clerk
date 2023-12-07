@@ -61,6 +61,9 @@ public:
 	ReportFilterSettings GetReportFilterSettings(int id);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);
+	std::vector<Language> GetLanguages();
+	int GetLanguage();
+	void SetLanguage(int id);
 
 private:
 	wxString _fileName;
@@ -72,7 +75,7 @@ private:
 	int _treeMenuWidth;
 	int _baseCurrencyId;
 	bool _convertCurrency;
-	bool _loadExchangeRates;
+	bool _loadExchangeRates;	
 	std::vector<int> _selectedExchangeRates;
 	std::vector<TabSettings> _tabs;
 	std::map<int, bool> _expandedMenu;
@@ -80,6 +83,8 @@ private:
 	std::vector<ListFilterSettings> _transactionListFilterSettings;
 	std::map<int, std::vector<ListColumnsSettings>> _transactionsListColumnsSettings;
 	std::vector<ReportFilterSettings> _reportFilterSettings;
+	std::vector<Language> _languages;
+	int _language;
 
 	void RestoreDefaultColumns();
 };

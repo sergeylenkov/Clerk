@@ -16,6 +16,7 @@
 #include "Controls/NewTransactionButton.h"
 #include "Controls/Statusbar.h"
 #include "Controls/MainMenu.h"
+#include "Notifications/NotificationsButton.h"
 #include "../Utils/Icons.h"
 #include "../Commands/CommandsInvoker.h"
 #include "../Commands/CommandsReceiver.h"
@@ -55,6 +56,7 @@ private:
 	TabsPanel* _tabsPanel;
 	wxSplitterWindow* _splitter;
 	NewTransactionButton* _newTransactionButton;
+	NotificationsButton* _notificationButton;
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;

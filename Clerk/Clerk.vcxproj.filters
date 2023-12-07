@@ -420,6 +420,15 @@
     <ClCompile Include="UI\TagsField\TagElement.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Notifications\NotificationsPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\ToolbarButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Notifications\NotificationsButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -875,9 +884,24 @@
     <ClInclude Include="UI\TagsField\TagElement.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="UI\Notifications\NotificationsPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\ToolbarButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Notifications\NotificationsButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Resources\Logo.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\Bell.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\BellActive.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

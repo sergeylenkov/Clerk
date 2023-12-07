@@ -16,7 +16,7 @@ namespace Clerk {
 		class NewTransactionButton : public DropDownButton
 		{
 		public:
-			NewTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker, Icons& icons);
+			NewTransactionButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, CommandsInvoker& commandsInvoker, Icons& icons);
 			~NewTransactionButton();
 
 			void SetViewModel(TransactionsMenuViewModel* viewModel);

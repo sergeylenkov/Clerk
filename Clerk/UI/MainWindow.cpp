@@ -2,20 +2,20 @@
 
 MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, APP_NAME), _context(context), _icons(icons)
 {
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 	
 	if (!Settings::GetInstance().GetWindowIsMaximized())
 	{
-		this->SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));		
+		SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));		
 	}
 	else {
-		this->Maximize();
+		Maximize();
 	}
 
 	int activeDisplay = Settings::GetInstance().GetActiveDisplay();
 
 	if (activeDisplay != 0 && activeDisplay < wxDisplay::GetCount()) {
-		this->Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
+		Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
 	}
 
 	SetupCommands();
@@ -28,7 +28,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_mainMenu = new MainMenu(*_commandsInvoker, _icons);
 	_mainMenu->SetViewModel(mainMenuViewModel);
 
-	this->SetMenuBar(_mainMenu);
+	SetMenuBar(_mainMenu);
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -37,21 +37,25 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_newTransactionButton = new NewTransactionButton(_toolbar, *_commandsInvoker, _icons);
+	_newTransactionButton = new NewTransactionButton(_toolbar, wxDefaultPosition, FromDIP(wxSize(-1, 34)), *_commandsInvoker, _icons);
 	_newTransactionButton->SetViewModel(addButtonViewModel);
 
-	horizontalSizer->Add(_newTransactionButton, 0, wxALL, 5);
+	horizontalSizer->Add(_newTransactionButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
+	horizontalSizer->Add(0, 1, wxEXPAND);
+
+	_notificationButton = new NotificationsButton(_toolbar, wxDefaultPosition, FromDIP(wxSize(34, 34)));
+	horizontalSizer->Add(_notificationButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
 
 	_toolbar->SetSizer(horizontalSizer);
 	_toolbar->Layout();
 
-	mainSizer->Add(_toolbar, 0, wxEXPAND, 0);
+	mainSizer->Add(_toolbar, 0, wxEXPAND);
 	
 	_splitter = new wxSplitterWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NOBORDER);
 	_splitter->SetSashGravity(0);
 	_splitter->SetMinimumPaneSize(300);
 
-	mainSizer->Add(_splitter, 1, wxEXPAND, 5);
+	mainSizer->Add(_splitter, 1, wxEXPAND, FromDIP(5));
 
 	wxPanel* splitterLeftPanel = new wxPanel(_splitter, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
 	splitterLeftPanel->SetBackgroundColour(wxColour(245, 245, 245, 1));
@@ -61,7 +65,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_treeMenu = new TreeMenu(splitterLeftPanel, _icons, *_commandsInvoker);
 	_treeMenu->SetViewModel(treeViewModel);
 
-	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);
+	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL);
 	splitterLeftPanel->SetSizer(boxSizer);		
 
 	wxPanel* splitterRightPanel = new wxPanel(_splitter);
@@ -71,22 +75,22 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_tabsPanel = new TabsPanel(splitterRightPanel, _context, *_commandsInvoker, _icons);
 
-	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL, 0);
+	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL);
 	rightPanelSizer->Layout();
 
 	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
-	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 20)));	
+	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 20)));	
 	_statusbar->SetViewModel(_statusViewModel);
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 
 	_splitter->SetSashPosition(Settings::GetInstance().GetTreeMenuWidth());
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);	
+	Centre(wxBOTH);	
 
 	_treeMenu->RestoreState();
 
@@ -94,18 +98,6 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_tabsController->SetTabsPanel(_tabsPanel);
 
 	_tabsController->RestoreLastTabs();
-
-	/*std::thread([this]()
-	{
-		std::this_thread::sleep_for(std::chrono::seconds(3));		
-		this->GetEventHandler()->CallAfter(&MainFrame::CheckSchedulers);
-	}).detach();
-
-	std::thread([this]()
-	{
-		std::this_thread::sleep_for(std::chrono::seconds(5));
-		this->GetEventHandler()->CallAfter(&MainFrame::CheckAlerts);
-	}).detach();*/
 
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
 		_statusViewModel->SetIsExchangeRatesLoading(true);
@@ -116,7 +108,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 
-			this->GetEventHandler()->CallAfter(&MainWindow::UpdateStatus);
+			GetEventHandler()->CallAfter(&MainWindow::UpdateStatus);
 		}).detach();
 	}
 }
@@ -130,9 +122,9 @@ MainWindow::~MainWindow()
 	delete _dialogsController;
 	delete _tabsController;
 
-	Settings::GetInstance().SetWindowWidth(this->GetSize().GetWidth());
-	Settings::GetInstance().SetWindowHeight(this->GetSize().GetHeight());
-	Settings::GetInstance().SetWindowIsMaximized(this->IsMaximized());
+	Settings::GetInstance().SetWindowWidth(GetSize().GetWidth());
+	Settings::GetInstance().SetWindowHeight(GetSize().GetHeight());
+	Settings::GetInstance().SetWindowIsMaximized(IsMaximized());
 	Settings::GetInstance().SetActiveDisplay(wxDisplay::GetFromWindow(this));
 	Settings::GetInstance().SetTreeMenuWidth(_splitter->GetSashPosition());
 

@@ -11,10 +11,10 @@ TagsPopup::TagsPopup(wxWindow *parent) : wxPopupWindow(parent) {
 	_list = new wxListCtrl(_panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER | wxLC_SINGLE_SEL);
 	_list->Bind(wxEVT_LIST_ITEM_ACTIVATED, &TagsPopup::OnListItemDoubleClick, this);
 
-	wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
-	topSizer->Add(_list, 0, wxEXPAND, 1);
+	wxBoxSizer *verticalSizer = new wxBoxSizer(wxVERTICAL);
+	verticalSizer->Add(_list, 0, wxEXPAND, 1);
 
-	_panel->SetSizer(topSizer);
+	_panel->SetSizer(verticalSizer);
 	_panel->Layout();
 
 	SetSizer(mainSizer);

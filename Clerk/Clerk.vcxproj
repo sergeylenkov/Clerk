@@ -89,6 +89,9 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
+    <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
+    <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
+    <ClCompile Include="UI\Notifications\NotificationsPopup.cpp" />
     <ClCompile Include="UI\TagsField\TagElement.cpp" />
     <ClCompile Include="UI\TagsField\TagsField.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp" />
@@ -232,6 +235,9 @@
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
     <ClInclude Include="Data\Types.h" />
+    <ClInclude Include="UI\Controls\ToolbarButton.h" />
+    <ClInclude Include="UI\Notifications\NotificationsButton.h" />
+    <ClInclude Include="UI\Notifications\NotificationsPopup.h" />
     <ClInclude Include="UI\TagsField\TagElement.h" />
     <ClInclude Include="UI\TagsField\TagsField.h" />
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />
@@ -340,6 +346,8 @@
     <ClInclude Include="Utils\Utils.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="Resources\Bell.png" />
+    <Image Include="Resources\BellActive.png" />
     <Image Include="Resources\Logo.ico" />
   </ItemGroup>
   <ItemGroup>

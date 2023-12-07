@@ -19,7 +19,6 @@ protected:
 	bool Enable(bool enable = true) override;
 	void ProcessClick();
 
-private:
 	int _state = 0;
 	bool _isEnabled = true;
 };

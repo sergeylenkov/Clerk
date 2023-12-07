@@ -46,7 +46,7 @@ namespace Clerk {
 			}
 
 		protected:
-			boolean _isLoading;
+			bool _isLoading;
 			std::vector<T> _list;
 			std::map<int, T> _hash;
 		};

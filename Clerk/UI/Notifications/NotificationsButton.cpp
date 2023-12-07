@@ -28,10 +28,15 @@ void NotificationsButton::OnPaint(wxPaintEvent& event)
 }
 
 void NotificationsButton::OnClick(wxCommandEvent& event) {
+	if (_popup->IsShown()) {
+		_popup->Hide();
+		return;
+	}
+
 	wxPoint position = GetScreenPosition();
 	wxSize size = GetSize();
 	wxSize panelSize = wxSize(FromDIP(300), FromDIP(300));
 
-	_popup->Position(wxPoint((position.x + size.GetWidth()) - panelSize.GetWidth(), position.y + size.GetHeight()), panelSize);	
+	_popup->Position(wxPoint(position.x + size.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);
 	_popup->Show();
 }

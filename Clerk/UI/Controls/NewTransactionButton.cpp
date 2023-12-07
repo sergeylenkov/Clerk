@@ -3,7 +3,7 @@
 using namespace Clerk::UI;
 
 NewTransactionButton::NewTransactionButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, CommandsInvoker& commandsInvoker, Icons& icons) :
-	DropDownButton(parent, wxID_ANY, _("Add Transaction"), pos, size),
+	DropDownButton(parent, wxBitmap(wxT("ICON_ADD_BIG"), wxBITMAP_TYPE_PNG_RESOURCE), _("Add Transaction"), pos, size),
 	_commandsInvoker(commandsInvoker), _icons(icons) {
 	SetBackgroundColour(wxColour(255, 255, 255));
 	SetSize(size);

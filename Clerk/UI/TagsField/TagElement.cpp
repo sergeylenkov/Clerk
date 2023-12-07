@@ -6,8 +6,8 @@ TagElement::TagElement(wxWindow* parent, const wxPoint& position, const wxSize& 
 
 	_mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	this->SetSizer(_mainSizer);
-	this->Layout();
+	SetSizer(_mainSizer);
+	Layout();
 }
 
 void TagElement::SetTag(std::shared_ptr<TagPresentationModel> tag) {
@@ -16,9 +16,9 @@ void TagElement::SetTag(std::shared_ptr<TagPresentationModel> tag) {
 	_mainSizer->Clear(true);
 
 	wxStaticText* label = new wxStaticText(this, wxID_ANY, tag->name);
-	_mainSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, this->FromDIP(5));
+	_mainSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, FromDIP(5));
 
-	wxButton* button = new wxButton(this, wxID_ANY, L"🞪", wxDefaultPosition, this->FromDIP(wxSize(20, 20)), wxBORDER_NONE);
+	wxButton* button = new wxButton(this, wxID_ANY, L"🞪", wxDefaultPosition, FromDIP(wxSize(20, 20)), wxBORDER_NONE);
 	button->SetBackgroundColour(wxColor(241, 248, 255));
 
 	button->Bind(wxEVT_BUTTON, &TagElement::OnDelete, this);

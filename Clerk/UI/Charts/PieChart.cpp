@@ -1,7 +1,7 @@
 #include "PieChart.h"
 
 PieChart::PieChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Connect(wxEVT_PAINT, wxPaintEventHandler(PieChart::OnPaint));
+	Connect(wxEVT_PAINT, wxPaintEventHandler(PieChart::OnPaint));
 }
 
 PieChart::~PieChart() {
@@ -26,7 +26,7 @@ void PieChart::Draw() {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	auto sum = accumulate(_values.begin(), _values.end(), 0.0f,
 		[](const float previous, const std::pair<wxString, float>& p) { 

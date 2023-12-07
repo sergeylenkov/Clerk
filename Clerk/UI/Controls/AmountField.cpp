@@ -8,7 +8,7 @@ AmountField::AmountField(wxWindow* parent, wxWindowID id, const wxString& value,
 	wxTextValidator validator(wxFILTER_INCLUDE_CHAR_LIST);
 	validator.SetIncludes(chars);
 
-	this->SetValidator(validator);
+	SetValidator(validator);
 }
 
 AmountField::~AmountField()

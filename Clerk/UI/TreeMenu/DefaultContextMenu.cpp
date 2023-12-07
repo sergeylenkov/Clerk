@@ -3,10 +3,10 @@
 DefaultContextMenu::DefaultContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type) : TreeContextMenu(commandsInvoker) {
 	_type = type;
 		
-	wxMenuItem* item = this->Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
+	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
 	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
 
-	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &DefaultContextMenu::OnMenuSelect, this);
+	Bind(wxEVT_COMMAND_MENU_SELECTED, &DefaultContextMenu::OnMenuSelect, this);
 }
 
 void DefaultContextMenu::OnMenuSelect(wxCommandEvent& event) {

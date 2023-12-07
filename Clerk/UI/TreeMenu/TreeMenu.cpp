@@ -13,8 +13,8 @@ TreeMenu::TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvo
 
 	mainSizer->Add(_treeMenu, 1, wxEXPAND | wxALL, 0);
 
-	this->SetSizer(mainSizer);
-	this->Layout();	
+	SetSizer(mainSizer);
+	Layout();	
 
 	_treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &TreeMenu::OnTreeItemSelect, this);
 	_treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &TreeMenu::OnTreeSpecItemMenu, this);

@@ -3,7 +3,7 @@
 DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
-	this->SetBackgroundColour(*wxWHITE);
+	SetBackgroundColour(*wxWHITE);
 
 	_scrolledWindow = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);
 	_scrolledWindow->SetScrollRate(5, 5);
@@ -84,10 +84,10 @@ DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPan
 	horizontalSizer->Fit(_scrolledWindow);
 	mainSizer->Add(_scrolledWindow, 1, wxEXPAND | wxALL, 0);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->SetDoubleBuffered(true);
+	SetDoubleBuffered(true);
 }
 
 DashboardPanel::~DashboardPanel() {
@@ -95,5 +95,5 @@ DashboardPanel::~DashboardPanel() {
 }
 
 void DashboardPanel::Update() {	
-	this->Layout();
+	Layout();
 }

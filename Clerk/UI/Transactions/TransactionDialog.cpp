@@ -5,11 +5,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_icons(icons), _context(context) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 	
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 
-	int indent = this->FromDIP(5);
-	int bottomIndent = this->FromDIP(15);
-	wxSize labelSize = this->FromDIP(wxSize(40, -1));
+	int indent = FromDIP(5);
+	int bottomIndent = FromDIP(15);
+	wxSize labelSize = FromDIP(wxSize(40, -1));
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -23,7 +23,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	_fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
+	_fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
 	_fromCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
@@ -39,7 +39,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
 	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	_toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, this->FromDIP(wxSize(80, -1)));
+	_toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, FromDIP(wxSize(80, -1)));
 	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
 	_toCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
@@ -65,7 +65,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_tagsField = new TagsField(mainPanel, context.GetTagsService());
 	_tagsField->OnChange = [&]() {
 		_viewModel->SetTags(_tagsField->GetTags());
-		this->Layout();
+		Layout();
 	};
 
 	horizontalSizer->Add(_tagsField, 1, wxEXPAND, indent);
@@ -99,11 +99,11 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);
-	this->SetDoubleBuffered(true);
+	Centre(wxBOTH);
+	SetDoubleBuffered(true);
 
 	okButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &TransactionDialog::OnCancel, this);
@@ -115,7 +115,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_datePicker->Bind(wxEVT_DATE_CHANGED, &TransactionDialog::OnDateChanged, this);
 	_noteField->Bind(wxEVT_KILL_FOCUS, &TransactionDialog::OnNoteKillFocus, this);
 
-	this->Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
+	Bind(wxEVT_CHAR_HOOK, &TransactionDialog::OnKeyDown, this);
 }
 
 TransactionDialog::~TransactionDialog() {

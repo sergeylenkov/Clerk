@@ -16,7 +16,7 @@ public:
     std::function<void(int index)> OnItemSelect;
 
 private:
-    wxString value;
+    wxString _value;
 
     void OnMouseMove(wxMouseEvent& event);
     void OnMouseClick(wxMouseEvent& event);

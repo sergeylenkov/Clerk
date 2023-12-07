@@ -24,12 +24,12 @@ protected:
 	bool Enable(bool enable = true) override;
 
 private:
-	wxBitmap image;
-	wxString label;
-	wxMenu *menu = nullptr;
+	wxBitmap _image;
+	wxString _label;
+	wxMenu *_menu = nullptr;
 
-	int state = 0;	
-	bool IsEnabled = true;
-	bool IsMenuVisible = false;	
-	const int arrowButtonWidth = 16;
+	int _state = 0;	
+	bool _isEnabled = true;
+	bool _isMenuVisible = false;	
+	const int _arrowButtonWidth = 16;
 };

@@ -1,9 +1,9 @@
 #include "DashboardSchedulersPanel.h"
 
 DashboardSchedulersPanel::DashboardSchedulersPanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-	this->Bind(wxEVT_PAINT, &DashboardSchedulersPanel::OnPaint, this);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	Bind(wxEVT_PAINT, &DashboardSchedulersPanel::OnPaint, this);
 }
 
 void DashboardSchedulersPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -40,7 +40,7 @@ void DashboardSchedulersPanel::Update()
 	}
 
 	int height = 200 + (_schedulers.size() * 40);
-	this->SetMinSize(wxSize(-1, height));
+	SetMinSize(wxSize(-1, height));
 
 	Refresh();
 }
@@ -63,7 +63,7 @@ void DashboardSchedulersPanel::DrawCalendar(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	wxFont dayFont = this->GetFont();
 	dayFont.SetPointSize(8);
@@ -138,7 +138,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	int dayWidth = width / 30;
 	int lineWidth = dayWidth * 30;
@@ -146,7 +146,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 	int y = 170;
 	int padding = 10;
 
-	wxFont font = this->GetFont();
+	wxFont font = GetFont();
 	font.SetPointSize(8);
 
 	int firstColumnWidth = 0;

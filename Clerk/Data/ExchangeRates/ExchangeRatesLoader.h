@@ -16,7 +16,7 @@ private:
 
 	
 protected:
-	sqlite3 *db;
+	sqlite3 *_db;
 
 	void UpdateValue(wxDateTime *date, string *from, string *to, float value, int count);
 };

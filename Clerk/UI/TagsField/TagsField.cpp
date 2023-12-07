@@ -3,7 +3,6 @@
 TagsField::TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& position, const wxSize& size) : wxPanel(parent, wxID_ANY, position, size),
 	_tagsService(tagsService)
 {
-	//SetBackgroundColour(wxColor(*wxLIGHT_GREY));
 	_popup = new TagsPopup(this);
 	_popup->OnSelectTag = std::bind(&TagsField::OnSelectTag, this);
 
@@ -15,11 +14,11 @@ TagsField::TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& 
 	_textField = new wxTextCtrl(this, wxID_ANY);
 	horizontalSizer->Add(_textField, 1, wxEXPAND);	
 
-	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, this->FromDIP(5));
+	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, FromDIP(5));
 	mainSizer->Add(_tagsSizer, 1, wxEXPAND);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
 	_textField->Bind(wxEVT_KEY_UP, &TagsField::OnTextChanged, this);
 	_textField->Bind(wxEVT_CHAR_HOOK, &TagsField::OnTextKeyDown, this);
@@ -50,7 +49,7 @@ void TagsField::Update() {
 	}
 	
 	_tagsSizer->Layout();
-	this->Layout();
+	Layout();
 }
 
 void TagsField::OnSelectTag() {

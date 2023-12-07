@@ -1,9 +1,9 @@
 #include "DashboardBudgetsPanel.h"
 
 DashboardBudgetsPanel::DashboardBudgetsPanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-	this->Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	Bind(wxEVT_PAINT, &DashboardBudgetsPanel::OnPaint, this);
 }
 
 void DashboardBudgetsPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -40,18 +40,18 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Budgets"), wxPoint(0, 0));
 
-	wxFont font = this->GetFont();
+	wxFont font = GetFont();
 	font.SetPointSize(8);
 
 	dc.SetFont(font);

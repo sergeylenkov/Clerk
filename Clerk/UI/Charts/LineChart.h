@@ -26,19 +26,19 @@ public:
 	std::function<void(int x, int y , int index)> OnUpdatePopup;
 
 private:
-	std::vector<StringValueViewModel> values;
-	std::vector<std::pair<int, int>> points;
-	float maxValue;
-	float totalValue;
-	int width;
-	int height;
-	int graphWidth;
-	float stepX;
-	float stepY;
-	int offsetX;
-	int offsetY;
-	int currentPopupIndex;
-	bool drawAverage;
+	std::vector<StringValueViewModel> _values;
+	std::vector<std::pair<int, int>> _points;
+	float _maxValue;
+	float _totalValue;
+	int _width;
+	int _height;
+	int _graphWidth;
+	float _stepX;
+	float _stepY;
+	int _offsetX;
+	int _offsetY;
+	int _currentPopupIndex;
+	bool _drawAverage;
 
 	void DrawGraph();
 	void OnPaint(wxPaintEvent& event);

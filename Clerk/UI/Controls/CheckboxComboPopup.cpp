@@ -14,11 +14,11 @@ wxWindow *CheckboxComboPopup::GetControl() {
 }
 
 void CheckboxComboPopup::SetStringValue(const wxString &s) {
-    value = s;
+    _value = s;
 }
 
 wxString CheckboxComboPopup::GetStringValue() const {
-    return value;
+    return _value;
 }
 
 void CheckboxComboPopup::OnCheck(wxListEvent &event) {

@@ -8,8 +8,8 @@ TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& co
 
 	mainSizer->Add(_notebook, 1, wxEXPAND | wxALL, 0);	
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
 	_notebook->Bind(wxEVT_NOTEBOOK_PAGE_CHANGED, &TabsPanel::OnTabChanged, this);
 	_notebook->Bind(wxEVT_RIGHT_DOWN, &TabsPanel::OnTabClick, this);

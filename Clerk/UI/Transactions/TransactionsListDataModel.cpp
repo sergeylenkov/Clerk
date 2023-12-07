@@ -41,7 +41,6 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 		case Columns::Amount: {
 			wxArrayString values;
 
-			//TODO
 			wxString fromValue = Format::Amount(transaction->fromAmount);
 			wxString toValue = Format::Amount(transaction->toAmount);
 
@@ -94,7 +93,7 @@ wxString TransactionsListDataModel::FormatDate(const wxDateTime& date) const
 
 wxString TransactionsListDataModel::FormatAmount(const TransactionPresentationModel& transaction) const {
 	wxString amount = "";
-	// TODO
+
 	if (transaction.fromAmount != transaction.toAmount) {
 		wxString fromAmount = Format::Amount(transaction.fromAmount);
 		wxString toAmount = Format::Amount(transaction.toAmount);

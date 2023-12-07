@@ -1,9 +1,9 @@
 #include "DashboardGoalsPanel.h"
 
 DashboardGoalsPanel::DashboardGoalsPanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-	this->Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	Bind(wxEVT_PAINT, &DashboardGoalsPanel::OnPaint, this);
 }
 
 void DashboardGoalsPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -21,7 +21,7 @@ void DashboardGoalsPanel::Update()
 	auto _goals = _viewModel->GetGoals();
 
 	if (_goals.empty()) {
-		this->SetMinSize(wxSize(-1, -1));
+		SetMinSize(wxSize(-1, -1));
 		return;
 	}
 
@@ -35,7 +35,7 @@ void DashboardGoalsPanel::Update()
 	}
 
 	int height = 170 + (_goals.size() * 30);
-	this->SetMinSize(wxSize(-1, height));
+	SetMinSize(wxSize(-1, height));
 
 	Refresh();
 }
@@ -44,18 +44,18 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Goals"), wxPoint(0, 0));
 
-	wxFont font = this->GetFont();
+	wxFont font = GetFont();
 	font.SetPointSize(8);
 
 	dc.SetFont(font);

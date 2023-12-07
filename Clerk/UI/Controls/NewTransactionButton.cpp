@@ -4,10 +4,10 @@ using namespace Clerk::UI;
 
 NewTransactionButton::NewTransactionButton(wxWindow* parent, CommandsInvoker& commandsInvoker, Icons& icons) : DropDownButton(parent, wxID_ANY, _("Add Transaction"), wxDefaultPosition, wxDefaultSize),
 	_commandsInvoker(commandsInvoker), _icons(icons) {
-	this->SetBackgroundColour(wxColour(255, 255, 255));
-	this->SetSize(this->FromDIP(wxSize(-1, 40)));
+	SetBackgroundColour(wxColour(255, 255, 255));
+	SetSize(FromDIP(wxSize(-1, 40)));
 
-	this->Bind(wxEVT_BUTTON, &NewTransactionButton::OnAddTransaction, this);
+	Bind(wxEVT_BUTTON, &NewTransactionButton::OnAddTransaction, this);
 }
 
 NewTransactionButton::~NewTransactionButton() {
@@ -24,9 +24,9 @@ void NewTransactionButton::SetViewModel(TransactionsMenuViewModel* viewModel) {
 }
 
 void NewTransactionButton::Update() {
-	this->ClearMenu();
+	ClearMenu();
 
-	wxMenu* menu = this->GetMenu();	
+	wxMenu* menu = GetMenu();	
 
 	for (auto& transaction : _viewModel->GetRecents())
 	{

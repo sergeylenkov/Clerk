@@ -10,7 +10,7 @@ static int writer(char *data, size_t size, size_t nmemb, string *writerData)
 }
 
 CBRRatesLoader::CBRRatesLoader(sqlite3 *db) : ExchangeRatesLoader(db) {
-	url = "http://www.cbr.ru/scripts/XML_daily.asp";
+	_url = "http://www.cbr.ru/scripts/XML_daily.asp";
 }
 
 void CBRRatesLoader::Load() {
@@ -20,7 +20,7 @@ void CBRRatesLoader::Load() {
 	char *sql = "SELECT MAX(date) FROM exchange_rates";
 	sqlite3_stmt *statement;
 
-	if (sqlite3_prepare_v2(db, sql, -1, &statement, NULL) == SQLITE_OK) {
+	if (sqlite3_prepare_v2(_db, sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {			
 			lastDate.ParseISODate(wxString::FromUTF8((char *)sqlite3_column_text(statement, 0)));
 		}
@@ -36,7 +36,7 @@ void CBRRatesLoader::Load() {
 		if (curl) {
 			string buffer;
 
-			curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+			curl_easy_setopt(curl, CURLOPT_URL, _url.c_str());
 			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
 			curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, writer);
 			curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);

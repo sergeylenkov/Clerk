@@ -3,38 +3,38 @@
 TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionPresentationModel> transaction, std::vector<int> selectedIds):
 	_commandsInvoker(commandsInvoker), _transaction(transaction), _selectedIds(selectedIds) {
 	if (transaction) {
-		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
+		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
 		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Edit), _("Edit..."));
+		item = Append(static_cast<int>(TransactionContextMenuType::Edit), _("Edit..."));
 		item->SetBitmap(wxBitmap("ICON_EDIT", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Copy), _("Copy..."));
+		item = Append(static_cast<int>(TransactionContextMenuType::Copy), _("Copy..."));
 		item->SetBitmap(wxBitmap("ICON_COPY", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		this->Append(static_cast<int>(TransactionContextMenuType::Duplicate), _("Dublicate"));
-		this->AppendSeparator();
+		Append(static_cast<int>(TransactionContextMenuType::Duplicate), _("Dublicate"));
+		AppendSeparator();
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Split), _("Split..."));
+		item = Append(static_cast<int>(TransactionContextMenuType::Split), _("Split..."));
 		item->SetBitmap(wxBitmap("ICON_SPLIT", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		this->AppendSeparator();
+		AppendSeparator();
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Delete), _("Delete"));
+		item = Append(static_cast<int>(TransactionContextMenuType::Delete), _("Delete"));
 		item->SetBitmap(wxBitmap("ICON_DELETE", wxBITMAP_TYPE_PNG_RESOURCE));
 	}
 	else if (_selectedIds.size() > 0) {
-		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
+		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
 		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 
-		item = this->Append(static_cast<int>(TransactionContextMenuType::Merge), _("Merge"));
+		item = Append(static_cast<int>(TransactionContextMenuType::Merge), _("Merge"));
 		item->SetBitmap(wxBitmap("ICON_MERGE", wxBITMAP_TYPE_PNG_RESOURCE));
 	} else {
-		wxMenuItem* item = this->Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
+		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
 		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 	}
 
-	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionContextMenu::OnMenuSelect, this);
+	Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionContextMenu::OnMenuSelect, this);
 }
 
 void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {

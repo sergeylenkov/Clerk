@@ -1,10 +1,10 @@
 #include "DashboardAccountsPanel.h"
 
 DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
-	this->Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
+	Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
 void DashboardAccountsPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -22,8 +22,8 @@ void DashboardAccountsPanel::Update()
 	_accounts = _viewModel->GetAccounts();
 	_total = _viewModel->GetOwnFunds();
 
-	int height = this->FromDIP(60 + (_viewModel->GetAccounts().size() * 24));
-	this->SetMinSize(wxSize(-1, height));
+	int height = FromDIP(60 + (_viewModel->GetAccounts().size() * 24));
+	SetMinSize(wxSize(-1, height));
 
 	Refresh();
 }
@@ -32,19 +32,19 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Accounts"), wxPoint(0, 0));
 
-	wxFont accountFont = this->GetFont();
-	wxFont amountFont = this->GetFont();
+	wxFont accountFont = GetFont();
+	wxFont amountFont = GetFont();
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
@@ -54,7 +54,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = this->FromDIP(40);
+	int y = FromDIP(40);
 
 	for (auto& account : _accounts) {
 		dc.SetFont(accountFont);
@@ -97,7 +97,7 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 			dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 		}
 
-		y = y + this->FromDIP(24);
+		y = y + FromDIP(24);
 	}
 }
 

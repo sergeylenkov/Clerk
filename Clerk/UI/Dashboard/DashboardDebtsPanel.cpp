@@ -1,9 +1,9 @@
 #include "DashboardDebtsPanel.h"
 
 DashboardDebtsPanel::DashboardDebtsPanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-	this->Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	Bind(wxEVT_PAINT, &DashboardDebtsPanel::OnPaint, this);
 }
 
 void DashboardDebtsPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -55,18 +55,18 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);	
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Debts"), wxPoint(0, 0));
 
-	wxFont amountFont = this->GetFont();
+	wxFont amountFont = GetFont();
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
@@ -76,7 +76,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	wxFont font = this->GetFont();
+	wxFont font = GetFont();
 	font.SetPointSize(8);
 
 	dc.SetFont(font);

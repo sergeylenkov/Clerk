@@ -4,14 +4,14 @@ using namespace Clerk::Data;
 
 AccountModel::AccountModel()
 {
-	this->id = -1;
-	this->name = std::wstring();
-	this->note = std::wstring();
-	this->type = AccountType::Deposit;
-	this->iconId = 0;
-	this->orderId = 1000;
-	this->currencyId = 152;
-	this->creditLimit = 0;
-	this->isActive = true;
-	this->created = std::wstring();
+	id = -1;
+	name = std::wstring();
+	note = std::wstring();
+	type = AccountType::Deposit;
+	iconId = 0;
+	orderId = 1000;
+	currencyId = 152;
+	creditLimit = 0;
+	isActive = true;
+	created = std::wstring();
 }

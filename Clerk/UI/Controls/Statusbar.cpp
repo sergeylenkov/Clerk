@@ -1,9 +1,9 @@
 #include "Statusbar.h"
 
 Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxPanel(parent, id, pos, size, wxBORDER_NONE | wxTAB_TRAVERSAL, "") {
-	this->SetBackgroundColour(wxColour(245, 245, 245, 1));
-	this->SetForegroundColour(wxColour(68, 68, 68, 1));
-	this->SetMinSize(size);
+	SetBackgroundColour(wxColour(245, 245, 245, 1));
+	SetForegroundColour(wxColour(68, 68, 68, 1));
+	SetMinSize(size);
 
 	wxBoxSizer *statusbarSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -54,8 +54,8 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 	statusbarSizer->Add(_exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	
 
-	this->SetSizer(statusbarSizer);
-	this->Layout();
+	SetSizer(statusbarSizer);
+	Layout();
 }
 
 Statusbar::~Statusbar() {

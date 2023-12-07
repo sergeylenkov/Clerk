@@ -11,7 +11,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
+	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 40)));
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -28,16 +28,16 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	values->Add(_("Previous Year"));
 	values->Add(_("Custom"));
 
-	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
+	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
 
 	delete values;
 
-	int indent = this->FromDIP(5);
+	int indent = FromDIP(5);
 
 	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, _("From:"));
-	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
+	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, _("To:"));
-	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), this->FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
+	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 
 	periodSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 	periodSizer->Add(_periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
@@ -51,7 +51,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *searchLabel = new wxStaticText(filterPanel, wxID_ANY, _("Search:"));
-	_searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), this->FromDIP(wxSize(300, 20)));
+	_searchField = new wxTextCtrl(filterPanel, wxID_ANY, "", wxPoint(0, 0), FromDIP(wxSize(300, 20)));
 	_searchField->Bind(wxEVT_TEXT, &TransactionsListPanel::OnSearchChanged, this);
 
 	searchSizer->Add(searchLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
@@ -62,7 +62,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
 
-	_infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, this->FromDIP(wxSize(-1, 40)));
+	_infoPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 40)));
 	wxBoxSizer *infoSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText *transactionText = new wxStaticText(_infoPanel, wxID_ANY, _("Transactions:"));
@@ -90,8 +90,8 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	mainSizer->Add(_infoPanel, 0, wxEXPAND | wxLEFT | wxRIGHT | wxTOP, 0);
 	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
 	_periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
 	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
@@ -153,7 +153,7 @@ void TransactionsListPanel::Update() {
 		Sort();
 		Filter();
 
-		this->GetEventHandler()->CallAfter(&TransactionsListPanel::UpdateList);
+		GetEventHandler()->CallAfter(&TransactionsListPanel::UpdateList);
 	}).detach();
 }
 

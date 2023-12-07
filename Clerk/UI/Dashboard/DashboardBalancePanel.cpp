@@ -1,10 +1,10 @@
 #include "DashboardBalancePanel.h"
 
 DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
-	this->Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
+	Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
 DashboardBalancePanel::~DashboardBalancePanel() {
@@ -26,7 +26,7 @@ void DashboardBalancePanel::Update()
 	_ownFunds = _viewModel->GetOwnFunds();
 	_creditFunds = _viewModel->GetCreditFunds();
 
-	SetMinSize(this->FromDIP(wxSize(-1, 130)));
+	SetMinSize(FromDIP(wxSize(-1, 130)));
 	Refresh();
 }
 
@@ -34,39 +34,39 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Balance"), wxPoint(0, 0));
 
-	wxFont balanceFont = this->GetFont();
+	wxFont balanceFont = GetFont();
 	balanceFont.SetPointSize(12);
 
-	wxFont font = this->GetFont();
+	wxFont font = GetFont();
 	font.SetPointSize(10);
 
 	int columnWidth = 0;
-	int y = this->FromDIP(30);
+	int y = FromDIP(30);
 
 	dc.SetFont(balanceFont);
 	
 	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	dc.DrawText(value, wxPoint(0, y));
 
-	y = this->FromDIP(60);
+	y = FromDIP(60);
 
 	dc.SetFont(font);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText(_("Own funds"), wxPoint(0, y));
 	
-	y = y + this->FromDIP(25);
+	y = y + FromDIP(25);
 
 	value = Format::Amount(_ownFunds, _viewModel->GetCurrency()->sign);
 	wxSize size = dc.GetTextExtent(value);
@@ -78,13 +78,13 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 		columnWidth = size.GetWidth();
 	}
 
-	y = this->FromDIP(60);
-	int x = columnWidth + this->FromDIP(80);
+	y = FromDIP(60);
+	int x = columnWidth + FromDIP(80);
 
 	dc.SetTextForeground(wxColor(127, 127, 127));
 	dc.DrawText(_("Credit funds"), wxPoint(x, y));
 
-	y = y + this->FromDIP(25);
+	y = y + FromDIP(25);
 
 	value = Format::Amount(_creditFunds, _viewModel->GetCurrency()->sign);
 	size = dc.GetTextExtent(value);

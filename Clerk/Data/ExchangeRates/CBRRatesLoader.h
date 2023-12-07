@@ -14,6 +14,6 @@ public:
 	void Load();
 
 private:
-	string url;
+	string _url;
 	void Parse(string *data);
 };

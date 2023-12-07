@@ -3,7 +3,7 @@
 AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size) : wxComboCtrl(parent, id, value, pos, size, wxCB_READONLY) {
 	_accountsList = new CheckboxComboPopup();
 
-	this->SetPopupControl(_accountsList);
+	SetPopupControl(_accountsList);
 
 	_accountsList->EnableCheckBoxes(true);
 	_accountsList->OnItemSelect = std::bind(&AccountsComboBox::OnAccountSelect, this, std::placeholders::_1);
@@ -17,12 +17,12 @@ AccountsComboBox::~AccountsComboBox() {
 }
 
 void AccountsComboBox::SetAccounts(shared_vector<AccountPresentationModel> accounts) {
-	this->_accounts = accounts;
+	_accounts = accounts;
 	UpdateList();
 }
 
 void AccountsComboBox::SetSelection(std::set<int> ids) {
-	this->_selectedIds = ids;
+	_selectedIds = ids;
 
 	UpdateNames();
 	UpdateSelection();
@@ -67,7 +67,7 @@ void AccountsComboBox::UpdateNames() {
 		names.RemoveLast(2);
 	}
 
-	this->SetValue(names);
+	SetValue(names);
 	_accountsList->SetStringValue(names);
 }
 

@@ -4,7 +4,7 @@ using namespace Clerk::UI;
 
 TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnabled, bool isCloseEnabled):
 	_tabId(tabId), _isLeftEnabled(isLeftEnabled), _isRightEnabled(isRightEnabled), _isCloseEnabled(isCloseEnabled) {
-	wxMenuItem* item = this->Append(static_cast<int>(TabsContextMenuType::Left), _("Move to Left"));
+	wxMenuItem* item = Append(static_cast<int>(TabsContextMenuType::Left), _("Move to Left"));
 	item->SetBitmap(wxBitmap("ICON_ARROW_LEFT", wxBITMAP_TYPE_PNG_RESOURCE));
 
 	if (!_isLeftEnabled) {
@@ -12,7 +12,7 @@ TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnab
 		item->SetTextColour(*wxLIGHT_GREY);
 	}
 
-	item = this->Append(static_cast<int>(TabsContextMenuType::Right), _("Move to Right"));	
+	item = Append(static_cast<int>(TabsContextMenuType::Right), _("Move to Right"));	
 	item->SetBitmap(wxBitmap("ICON_ARROW_RIGHT", wxBITMAP_TYPE_PNG_RESOURCE));
 
 	if (!_isRightEnabled) {
@@ -20,9 +20,9 @@ TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnab
 		item->SetTextColour(*wxLIGHT_GREY);
 	}
 
-	this->AppendSeparator();
+	AppendSeparator();
 
-	item = this->Append(static_cast<int>(TabsContextMenuType::Close), _("Close"));
+	item = Append(static_cast<int>(TabsContextMenuType::Close), _("Close"));
 	item->SetBitmap(wxBitmap("ICON_CLOSE_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
 
 	if (!_isCloseEnabled) {
@@ -30,7 +30,7 @@ TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnab
 		item->SetTextColour(*wxLIGHT_GREY);
 	}
 
-	this->Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsContextMenu::OnMenuSelect, this);
+	Bind(wxEVT_COMMAND_MENU_SELECTED, &TabsContextMenu::OnMenuSelect, this);
 }
 
 void TabsContextMenu::OnMenuSelect(wxCommandEvent& event) {

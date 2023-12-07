@@ -1,9 +1,9 @@
 #include "DashboardReceiptsPanel.h"
 
 DashboardReceiptsPanel::DashboardReceiptsPanel(wxWindow* parent) : wxPanel(parent) {
-	this->SetDoubleBuffered(true);
-	this->SetBackgroundStyle(wxBG_STYLE_CUSTOM);
-	this->Bind(wxEVT_PAINT, &DashboardReceiptsPanel::OnPaint, this);
+	SetDoubleBuffered(true);
+	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
+	Bind(wxEVT_PAINT, &DashboardReceiptsPanel::OnPaint, this);
 }
 
 void DashboardReceiptsPanel::SetViewModel(DashboardViewModel* viewModel) {
@@ -19,6 +19,12 @@ void DashboardReceiptsPanel::SetViewModel(DashboardViewModel* viewModel) {
 void DashboardReceiptsPanel::Update()
 {
 	_accounts = _viewModel->GetReceiptsForMonth();
+
+	if (_accounts.empty()) {
+		SetMinSize(wxSize(-1, -1));
+		return;
+	}
+
 	_total = _viewModel->GetTotalReceiptsForMonth();
 
 	_maxValue = 0;
@@ -29,8 +35,8 @@ void DashboardReceiptsPanel::Update()
 		}
 	}
 
-	int height = this->FromDIP(60 + (_accounts.size() * 30));
-	this->SetMinSize(wxSize(-1, height));
+	int height = FromDIP(60 + (_accounts.size() * 30));
+	SetMinSize(wxSize(-1, height));
 
 	Refresh();
 }
@@ -39,19 +45,19 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
 	dc.SetFont(titleFont);
 	dc.DrawText(_("Receipts"), wxPoint(0, 0));
 
-	wxFont accountFont = this->GetFont();
-	wxFont amountFont = this->GetFont();
+	wxFont accountFont = GetFont();
+	wxFont amountFont = GetFont();
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
@@ -61,7 +67,7 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 
 	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
 
-	int y = this->FromDIP(40);
+	int y = FromDIP(40);
 
 	for (auto& account : _accounts) {
 		dc.SetFont(accountFont);
@@ -86,9 +92,9 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 		dc.SetPen(wxPen(wxColor(10, 199, 117), 1));
 		dc.SetBrush(wxBrush(wxColor(10, 199, 117)));
 
-		dc.DrawRectangle(0, y + this->FromDIP(20), progressWidth, 2);
+		dc.DrawRectangle(0, y + FromDIP(20), progressWidth, 2);
 
-		y = y + this->FromDIP(30);
+		y = y + FromDIP(30);
 	}
 }
 

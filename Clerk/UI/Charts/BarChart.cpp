@@ -1,7 +1,7 @@
 #include "BarChart.h"
 
 BarChart::BarChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
-	this->Bind(wxEVT_PAINT, &BarChart::OnPaint, this);
+	Bind(wxEVT_PAINT, &BarChart::OnPaint, this);
 }
 
 BarChart::~BarChart() {
@@ -26,7 +26,7 @@ void BarChart::Draw() {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	auto ptr = max_element(_values.begin(), _values.end(),
 		[](const StringValueViewModel p1, const StringValueViewModel p2) {

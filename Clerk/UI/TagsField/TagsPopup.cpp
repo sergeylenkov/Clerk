@@ -17,17 +17,17 @@ TagsPopup::TagsPopup(wxWindow *parent) : wxPopupWindow(parent) {
 	_panel->SetSizer(topSizer);
 	_panel->Layout();
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 }
 
 void TagsPopup::Position(wxPoint position, wxSize size) {
 	wxPopupWindow::Position(position, size);
 
-	this->SetSize(size);
+	SetSize(size);
 	_list->SetMinSize(size);
 
-	this->Layout();
+	Layout();
 }
 
 void TagsPopup::Update(shared_vector<TagPresentationModel> tags) {

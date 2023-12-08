@@ -4,7 +4,11 @@ using namespace Clerk::UI;
 
 const int transactionsOffset = 1000;
 
-MainMenu::MainMenu(CommandsInvoker& commandsInvoker, Icons& icons): _commandsInvoker(commandsInvoker), _icons(icons) {
+MainMenu::MainMenu(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons):
+	_viewModel(viewModel),
+	_commandsInvoker(commandsInvoker),
+	_icons(icons)
+{
 	_menuFile = new wxMenu();	
 	
 	_menuFile->AppendSeparator();
@@ -24,21 +28,18 @@ MainMenu::MainMenu(CommandsInvoker& commandsInvoker, Icons& icons): _commandsInv
 	menuHelp->Append(static_cast<int>(MainMenuType::About), _("About..."));
 
 	Append(menuHelp, _("Help"));
+	
+	_viewModel.OnUpdate([&]() {
+		Update();
+	});
+
+	Update();
 
 	Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnMenuSelect, this);
 }
 
 MainMenu::~MainMenu() {
-	delete _viewModel;
-}
-
-void MainMenu::SetViewModel(TransactionsMenuViewModel* viewModel) {
-	_viewModel = viewModel;
-	_viewModel->OnUpdate([&]() {
-		Update();
-	});
-
-	Update();
+	delete& _viewModel;
 }
 
 void MainMenu::Update() {
@@ -49,7 +50,7 @@ void MainMenu::Update() {
 		_menuFile->Remove(menuItem);
 	}
 
-	auto transactions = _viewModel->GetRecents();
+	auto transactions = _viewModel.GetRecents();
 
 	if (transactions.size() == 0) {
 		_menuFile->Insert(0, menuId, _("New Transaction...\tCtrl+T"));

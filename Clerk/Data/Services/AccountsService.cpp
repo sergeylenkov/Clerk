@@ -10,9 +10,6 @@ AccountsService::AccountsService(AccountsRepository& accountsRepository, Currenc
 
 AccountsService::~AccountsService() {
 	delete _eventEmitter;
-	
-	_hash.clear();
-	_list.clear();
 }
 
 unsigned int AccountsService::Subscribe(std::function<void()> fn) {

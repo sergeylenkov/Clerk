@@ -12,18 +12,16 @@ using namespace Clerk::UI;
 class Statusbar : public wxPanel
 {
 public:
-	Statusbar(wxWindow *parent, wxWindowID id = wxID_ANY, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+	Statusbar(StatusViewModel& viewModel, wxWindow *parent, const wxPoint& pos, const wxSize& size);
 	~Statusbar();
 
-	void SetViewModel(StatusViewModel* viewModel);
-
 private:
+	StatusViewModel& _viewModel;
 	wxStaticText* _periodLabel;
 	wxStaticText* _receiptsLabel;
 	wxStaticText* _expensesLabel;
 	wxStaticText* _balanceLabel;
-	wxStaticText* _exchangeRatesLabel;
-	StatusViewModel* _viewModel{};
+	wxStaticText* _exchangeRatesLabel;	
 
 	void Update();
 };

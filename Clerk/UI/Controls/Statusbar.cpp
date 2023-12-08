@@ -1,6 +1,8 @@
 #include "Statusbar.h"
 
-Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const wxSize &size) : wxPanel(parent, id, pos, size, wxBORDER_NONE | wxTAB_TRAVERSAL, "") {
+Statusbar::Statusbar(StatusViewModel& viewModel, wxWindow *parent, const wxPoint &pos, const wxSize &size):
+	wxPanel(parent, wxID_ANY, pos, size, wxBORDER_NONE | wxTAB_TRAVERSAL, ""),
+	_viewModel(viewModel) {
 	SetBackgroundColour(wxColour(245, 245, 245, 1));
 	SetForegroundColour(wxColour(68, 68, 68, 1));
 	SetMinSize(size);
@@ -53,41 +55,36 @@ Statusbar::Statusbar(wxWindow *parent, wxWindowID id, const wxPoint &pos, const 
 
 	statusbarSizer->Add(_exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	
+	_viewModel.OnUpdate([=]() {
+		Update();
+	});
+
+	Update();
 
 	SetSizer(statusbarSizer);
 	Layout();
 }
 
 Statusbar::~Statusbar() {
-	delete _viewModel;
-}
-
-void Statusbar::SetViewModel(StatusViewModel* viewModel) {
-	_viewModel = viewModel;
-
-	_viewModel->OnUpdate([=]() {
-		Update();
-	});
-
-	Update();
+	delete& _viewModel;
 }
 
 void Statusbar::Update() {
-	wxString sign = _viewModel->GetBaseCurrency()->sign;
-	wxString receiptsValue = Format::Amount(_viewModel->GetReceipts(), sign);
-	wxString expensesValue = Format::Amount(_viewModel->GetExpenses(), sign);
-	wxString balanceValue = Format::Amount(_viewModel->GetBalance(), sign);
+	wxString sign = _viewModel.GetBaseCurrency()->sign;
+	wxString receiptsValue = Format::Amount(_viewModel.GetReceipts(), sign);
+	wxString expensesValue = Format::Amount(_viewModel.GetExpenses(), sign);
+	wxString balanceValue = Format::Amount(_viewModel.GetBalance(), sign);
 
 	_periodLabel->SetLabelText(wxDateTime::Now().Format("%B"));
 	_receiptsLabel->SetLabelText(receiptsValue);
 	_expensesLabel->SetLabelText(expensesValue);
 	_balanceLabel->SetLabelText(balanceValue);
 
-	if (_viewModel->GetIsExchangeRatesLoading()) {
+	if (_viewModel.GetIsExchangeRatesLoading()) {
 		_exchangeRatesLabel->SetLabelText(_("Updating..."));
 	}
 	else {
-		_exchangeRatesLabel->SetLabelText(_viewModel->GetExchangeRates());
+		_exchangeRatesLabel->SetLabelText(_viewModel.GetExchangeRates());
 	}
 
 	Layout();

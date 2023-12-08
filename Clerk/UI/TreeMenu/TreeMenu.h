@@ -24,16 +24,15 @@ namespace Clerk {
 		class TreeMenu : public wxPanel
 		{
 		public:
-			TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvoker);
+			TreeMenu(TreeMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent);
 			~TreeMenu();
 
 			void RestoreState();
-			void SetViewModel(TreeMenuViewModel* viewModel);
 
 		private:
-			TreeMenuViewModel* _viewModel;
-			Icons& _icons;
+			TreeMenuViewModel& _viewModel;
 			CommandsInvoker& _commandsInvoker;
+			Icons& _icons;			
 			wxTreeCtrl* _treeMenu;
 			wxTreeItemId _receiptsItem;
 			wxTreeItemId _depositsItem;

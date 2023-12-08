@@ -429,6 +429,9 @@
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ViewModels\NotificationsViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -891,6 +894,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Notifications\NotificationsButton.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ViewModels\NotificationsViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,26 +2,26 @@
 
 using namespace Clerk::UI;
 
-NewTransactionButton::NewTransactionButton(wxWindow* parent, const wxPoint& pos, const wxSize& size, CommandsInvoker& commandsInvoker, Icons& icons) :
+NewTransactionButton::NewTransactionButton(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size):
 	DropDownButton(parent, wxBitmap(wxT("ICON_ADD_BIG"), wxBITMAP_TYPE_PNG_RESOURCE), _("Add Transaction"), pos, size),
-	_commandsInvoker(commandsInvoker), _icons(icons) {
+	_viewModel(viewModel),
+	_commandsInvoker(commandsInvoker),
+	_icons(icons)
+	 {
 	SetBackgroundColour(wxColour(255, 255, 255));
 	SetSize(size);
-
-	Bind(wxEVT_BUTTON, &NewTransactionButton::OnAddTransaction, this);
-}
-
-NewTransactionButton::~NewTransactionButton() {
-	delete _viewModel;
-}
-
-void NewTransactionButton::SetViewModel(TransactionsMenuViewModel* viewModel) {
-	_viewModel = viewModel;
-	_viewModel->OnUpdate([&]() {
+	
+	_viewModel.OnUpdate([&]() {
 		Update();
 	});
 
 	Update();
+
+	Bind(wxEVT_BUTTON, &NewTransactionButton::OnClick, this);
+}
+
+NewTransactionButton::~NewTransactionButton() {
+	delete& _viewModel;
 }
 
 void NewTransactionButton::Update() {
@@ -29,7 +29,7 @@ void NewTransactionButton::Update() {
 
 	wxMenu* menu = GetMenu();	
 
-	for (auto& transaction : _viewModel->GetRecents())
+	for (auto& transaction : _viewModel.GetRecents())
 	{
 		wxMenuItem* transactionItem = menu->Append(transaction->id, wxString::Format("%s > %s (%s)", transaction->fromAccount->name, transaction->toAccount->name, transaction->tagsString));
 		transactionItem->SetBitmap(*_icons.GetAccountIcon(transaction->toAccount->icon));
@@ -38,7 +38,7 @@ void NewTransactionButton::Update() {
 	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &NewTransactionButton::OnMenuSelect, this);
 }
 
-void NewTransactionButton::OnAddTransaction(wxCommandEvent& event) {
+void NewTransactionButton::OnClick(wxCommandEvent& event) {
 	_commandsInvoker.OnNewTransaction(-1);
 }
 

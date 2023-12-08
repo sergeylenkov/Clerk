@@ -16,15 +16,13 @@ namespace Clerk {
 	namespace UI {
 		class MainMenu : public wxMenuBar {
 		public:
-			MainMenu(CommandsInvoker& commandsInvoker, Icons& icons);
+			MainMenu(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons);
 			~MainMenu();
 
-			void SetViewModel(TransactionsMenuViewModel* viewModel);
-
 		private:
+			TransactionsMenuViewModel& _viewModel;
 			CommandsInvoker& _commandsInvoker;
-			Icons& _icons;
-			TransactionsMenuViewModel* _viewModel{};
+			Icons& _icons;			
 			wxMenu* _menuFile;
 
 			void Update();

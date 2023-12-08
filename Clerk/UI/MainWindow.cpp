@@ -1,6 +1,8 @@
 ﻿#include "MainWindow.h"
 
-MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, APP_NAME), _context(context), _icons(icons)
+MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)NULL, -1, APP_NAME),
+	_context(context),
+	_icons(icons)
 {
 	SetIcon(wxICON(APP_ICON));
 	
@@ -24,9 +26,9 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
 	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
+	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService());
 
-	_mainMenu = new MainMenu(*_commandsInvoker, _icons);
-	_mainMenu->SetViewModel(mainMenuViewModel);
+	_mainMenu = new MainMenu(*mainMenuViewModel, *_commandsInvoker, _icons);
 
 	SetMenuBar(_mainMenu);
 
@@ -37,13 +39,19 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_newTransactionButton = new NewTransactionButton(_toolbar, wxDefaultPosition, FromDIP(wxSize(-1, 34)), *_commandsInvoker, _icons);
-	_newTransactionButton->SetViewModel(addButtonViewModel);
-
+	_newTransactionButton = new NewTransactionButton(
+		*addButtonViewModel,
+		*_commandsInvoker,
+		_icons,		
+		_toolbar,
+		wxDefaultPosition,
+		FromDIP(wxSize(-1, 34))		
+	);
+	
 	horizontalSizer->Add(_newTransactionButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
 	horizontalSizer->Add(0, 1, wxEXPAND);
 
-	_notificationButton = new NotificationsButton(_toolbar, wxDefaultPosition, FromDIP(wxSize(34, 34)));
+	_notificationButton = new NotificationsButton(*notificationsViewModel, _toolbar, wxDefaultPosition, FromDIP(wxSize(34, 34)));
 	horizontalSizer->Add(_notificationButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
 
 	_toolbar->SetSizer(horizontalSizer);
@@ -62,8 +70,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	
 	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);	
 
-	_treeMenu = new TreeMenu(splitterLeftPanel, _icons, *_commandsInvoker);
-	_treeMenu->SetViewModel(treeViewModel);
+	_treeMenu = new TreeMenu(*treeViewModel, *_commandsInvoker, _icons, splitterLeftPanel);
 
 	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL);
 	splitterLeftPanel->SetSizer(boxSizer);		
@@ -80,8 +87,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
-	_statusbar = new Statusbar(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 20)));	
-	_statusbar->SetViewModel(_statusViewModel);
+	_statusbar = new Statusbar(*_statusViewModel, this, wxDefaultPosition, FromDIP(wxSize(-1, 20)));
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 

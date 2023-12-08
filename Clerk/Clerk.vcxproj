@@ -104,6 +104,7 @@
     <ClCompile Include="UI\PresentationModels\GoalPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\ReportPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\SchedulerPresentationModel.cpp" />
+    <ClCompile Include="UI\ViewModels\NotificationsViewModel.cpp" />
     <ClCompile Include="UI\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\TransactionViewModel.cpp" />
@@ -251,6 +252,7 @@
     <ClInclude Include="UI\PresentationModels\GoalPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\ReportPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\SchedulerPresentationModel.h" />
+    <ClInclude Include="UI\ViewModels\NotificationsViewModel.h" />
     <ClInclude Include="UI\ViewModels\StatusViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TagPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\TransactionViewModel.h" />

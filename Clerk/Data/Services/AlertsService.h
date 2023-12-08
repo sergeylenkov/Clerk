@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Repositories/AlertsRepository.h"
+#include "AccountsService.h"
 #include "../../UI/PresentationModels/AlertPresentationModel.h"
 #include "./HashService.h"
 #include "../../Utils/Types.h"
@@ -12,14 +13,15 @@ namespace Clerk {
 	namespace Data {
 		class AlertsService : HashService<std::shared_ptr<AlertPresentationModel>> {
 		public:
-			AlertsService(AlertsRepository& alertsRepository);
-			~AlertsService();
+			AlertsService(AlertsRepository& alertsRepository, AccountsService& accountsService);
 
 			std::shared_ptr<AlertPresentationModel> GetById(int id);
 			shared_vector<AlertPresentationModel> GetAll();
+			shared_vector<AlertPresentationModel> GetActive();
 
 		private:
 			AlertsRepository& _alertsRepository;
+			AccountsService& _accountsService;
 		};
 	}
 }

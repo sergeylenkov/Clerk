@@ -10,6 +10,11 @@ namespace Clerk {
 		template <class T>
 		class HashService {
 		public:
+			~HashService() {
+				_hash.clear();
+				_list.clear();
+			}
+
 			std::vector<T> GetHashList() {
 				return _list;
 			}

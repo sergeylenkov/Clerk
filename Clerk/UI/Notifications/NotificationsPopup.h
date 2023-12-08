@@ -5,7 +5,7 @@
 #include <memory>
 #include "../../Utils/Types.h"
 
-class NotificationsPopup : public wxPopupWindow
+class NotificationsPopup : public wxPopupTransientWindow
 {
 public:
 	NotificationsPopup(wxWindow* parent);

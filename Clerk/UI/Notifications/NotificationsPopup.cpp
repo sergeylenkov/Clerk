@@ -1,6 +1,6 @@
 #include "NotificationsPopup.h"
 
-NotificationsPopup::NotificationsPopup(wxWindow* parent) : wxPopupWindow(parent) {
+NotificationsPopup::NotificationsPopup(wxWindow* parent) : wxPopupTransientWindow(parent, wxBORDER_SIMPLE) {
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	_panel = new wxScrolledWindow(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxVSCROLL);

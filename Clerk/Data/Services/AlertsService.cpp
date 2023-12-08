@@ -1,12 +1,9 @@
 #include "AlertsService.h"
 
-AlertsService::AlertsService(AlertsRepository& alertsRepository) : _alertsRepository(alertsRepository) {
+AlertsService::AlertsService(AlertsRepository& alertsRepository, AccountsService& accountsService) :
+	_alertsRepository(alertsRepository),
+	_accountsService(accountsService) {
 	_isLoading = false;
-}
-
-AlertsService::~AlertsService() {
-	_hash.clear();
-	_list.clear();
 }
 
 std::shared_ptr<AlertPresentationModel> AlertsService::GetById(int id) {
@@ -58,4 +55,36 @@ shared_vector<AlertPresentationModel> AlertsService::GetAll() {
 	_isLoading = true;
 
 	return GetHashList();
+}
+
+shared_vector<AlertPresentationModel> AlertsService::GetActive() {
+	shared_vector<AlertPresentationModel> result;
+
+	for (auto& alert : GetAll()) {
+		if (alert->type == AlertType::Balance) {
+			float total = 0;
+
+			for (int id : alert->accountIds) {
+				auto account = _accountsService.GetById(id);
+
+				if (account) {
+					total = account->balance;
+				}
+			}
+
+			if (alert->condition == AlertCondition::Equal && total == alert->amount) {
+				result.push_back(alert);
+			}
+
+			if (alert->condition == AlertCondition::Less && total < alert->amount) {
+				result.push_back(alert);
+			}
+
+			if (alert->condition == AlertCondition::More && total > alert->amount) {
+				result.push_back(alert);
+			}
+		}
+	}
+
+	return result;
 }

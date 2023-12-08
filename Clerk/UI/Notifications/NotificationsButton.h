@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
+#include "../ViewModels/NotificationsViewModel.h"
 #include "../Controls/ToolbarButton.h"
 #include "NotificationsPopup.h"
 
@@ -9,16 +10,18 @@ namespace Clerk {
 		class NotificationsButton : public ToolbarButton
 		{
 		public:
-			NotificationsButton(wxWindow* parent, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+			NotificationsButton(NotificationsViewModel& viewModel, wxWindow* parent, const wxPoint& pos, const wxSize& size);
+			~NotificationsButton();
 
 		protected:
 			void OnPaint(wxPaintEvent& event);
 
 		private:
+			NotificationsViewModel& _viewModel;
 			wxBitmap _image;
-			wxBitmap _imageActive;
 			NotificationsPopup* _popup;
 
+			void Update();
 			void OnClick(wxCommandEvent& event);
 		};
 	}

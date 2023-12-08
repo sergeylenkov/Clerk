@@ -72,7 +72,7 @@ void ClerkApp::InitContext() {
 	TagsService* tagsService = new TagsService(*tagsRepository);
 	TransactionsService* transactionsService = new TransactionsService(*transactionsRepository, *accountsService, *tagsService);
 	ReportsService* reportsService = new ReportsService(*reportsRepository);
-	AlertsService* alertsService = new AlertsService(*alertsRepository);
+	AlertsService* alertsService = new AlertsService(*alertsRepository, *accountsService);
 	GoalsService* goalsService = new GoalsService(*goalsRepository);
 	ReportingService* reportingService = new ReportingService(*reportingRepository, *currenciesService);
 

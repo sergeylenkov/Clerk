@@ -2,7 +2,11 @@
 
 using namespace Clerk::UI;
 
-TreeMenu::TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvoker) : wxPanel(parent), _icons(icons), _commandsInvoker(commandsInvoker)
+TreeMenu::TreeMenu(TreeMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent):
+	wxPanel(parent),
+	_viewModel(viewModel),
+	_commandsInvoker(commandsInvoker),
+	_icons(icons)
 {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -16,24 +20,19 @@ TreeMenu::TreeMenu(wxWindow* parent, Icons& icons, CommandsInvoker& commandsInvo
 	SetSizer(mainSizer);
 	Layout();	
 
+	CreateMenu();
+	Update();
+
 	_treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &TreeMenu::OnTreeItemSelect, this);
 	_treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &TreeMenu::OnTreeSpecItemMenu, this);
 	_treeMenu->Bind(wxEVT_TREE_ITEM_EXPANDED, &TreeMenu::OnTreeItemExpanded, this);
 	_treeMenu->Bind(wxEVT_TREE_ITEM_COLLAPSED, &TreeMenu::OnTreeItemCollapsed, this);
 	_treeMenu->Bind(wxEVT_TREE_BEGIN_DRAG, &TreeMenu::OnBeginDrag, this);
 	_treeMenu->Bind(wxEVT_TREE_END_DRAG, &TreeMenu::OnEndDrag, this);
-
-	CreateMenu();
 }
 
 TreeMenu::~TreeMenu() {
-	delete _viewModel;
-}
-
-void TreeMenu::SetViewModel(TreeMenuViewModel* viewModel) {
-	_viewModel = viewModel;
-
-	Update();
+	delete& _viewModel;
 }
 
 void TreeMenu::CreateMenu() {
@@ -116,37 +115,37 @@ void TreeMenu::CreateMenu() {
 }
 
 void TreeMenu::Update() {
-	for (auto& account : _viewModel->GetReceiptsAccounts())
+	for (auto& account : _viewModel.GetReceiptsAccounts())
 	{
 		AddAccountItem(_receiptsItem, account);
 	}
 
-	for (auto& account : _viewModel->GetDepositsAccounts())
+	for (auto& account : _viewModel.GetDepositsAccounts())
 	{
 		AddAccountItem(_depositsItem, account);
 	}
 
-	for (auto& account : _viewModel->GetExpensesAccounts())
+	for (auto& account : _viewModel.GetExpensesAccounts())
 	{
 		AddAccountItem(_expensesItem, account);
 	}
 
-	for (auto& account : _viewModel->GetDebtsAccounts())
+	for (auto& account : _viewModel.GetDebtsAccounts())
 	{
 		AddAccountItem(_debtsItem, account);
 	}
 
-	for (auto& account : _viewModel->GetVirtualsAccounts())
+	for (auto& account : _viewModel.GetVirtualsAccounts())
 	{
 		AddAccountItem(_virtualItem, account);
 	}
 
-	for (auto& account : _viewModel->GetArchiveAccounts())
+	for (auto& account : _viewModel.GetArchiveAccounts())
 	{
 		AddAccountItem(_archiveItem, account);
 	}
 
-	for (auto& report : _viewModel->GetReports())
+	for (auto& report : _viewModel.GetReports())
 	{
 		TreeMenuItemData* itemData = new TreeMenuItemData();
 
@@ -155,7 +154,7 @@ void TreeMenu::Update() {
 		wxTreeItemId itemId = _treeMenu->AppendItem(_reportsItem, report->name, 5, 5, itemData);
 	}
 
-	SetIsTrashEmpty(_viewModel->IsTrashEmpty());
+	SetIsTrashEmpty(_viewModel.IsTrashEmpty());
 }
 
 void TreeMenu::AddAccountItem(wxTreeItemId& parent, std::shared_ptr<AccountPresentationModel> account) {
@@ -217,7 +216,7 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 		auto account = GetContextMenuAccount();
 
 		if (account) {
-			auto transactions = _viewModel->GetRecentsTransactions(*account);
+			auto transactions = _viewModel.GetRecentsTransactions(*account);
 			menu = new AccountContextMenu(_commandsInvoker, *account, transactions, _icons);
 		}
 	} else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts

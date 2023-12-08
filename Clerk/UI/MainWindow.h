@@ -34,6 +34,7 @@
 #include "./ViewModels/StatusViewModel.h"
 #include "./ViewModels/TreeMenuViewModel.h"
 #include "./ViewModels/TransactionsMenuViewModel.h"
+#include "./ViewModels/NotificationsViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

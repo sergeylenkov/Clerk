@@ -3,13 +3,23 @@
 NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService) :
 	_alertsService(alertsService)
 {
-	_alerts = _alertsService.GetActive();
+	_activeAlerts = _alertsService.GetActive();
 }
 
 shared_vector<AlertPresentationModel> NotificationsViewModel::GetActiveAlerts() {
-	return _alerts;
+	return _activeAlerts;
 }
 
 bool NotificationsViewModel::IsActive() {
-	return _alerts.size() > 0;
+	return _activeAlerts.size() > 0;
+}
+
+void NotificationsViewModel::Dismiss(AlertPresentationModel& alert) {
+	alert.isDismissed = true;
+
+	_activeAlerts = _alertsService.GetActive();
+
+	if (OnUpdate) {
+		OnUpdate();
+	}
 }

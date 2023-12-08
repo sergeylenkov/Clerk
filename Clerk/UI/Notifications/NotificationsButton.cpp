@@ -10,6 +10,14 @@ NotificationsButton::NotificationsButton(NotificationsViewModel& viewModel, wxWi
 
 	_popup = new NotificationsPopup(this);
 
+	_popup->OnDismiss = [&](std::shared_ptr<AlertPresentationModel> alert) {
+		_viewModel.Dismiss(*alert);
+	};
+
+	_viewModel.OnUpdate = [&]() {
+		Update();
+	};
+
 	Update();
 
 	Bind(wxEVT_PAINT, &NotificationsButton::OnPaint, this);
@@ -26,7 +34,17 @@ void NotificationsButton::Update()
 		_image = wxBitmap(wxT("ICON_BELL_ACTIVE"), wxBITMAP_TYPE_PNG_RESOURCE);
 	} else {
 		_image = wxBitmap(wxT("ICON_BELL"), wxBITMAP_TYPE_PNG_RESOURCE);
-	}	
+	}
+
+	if (_popup->IsShown()) {
+		if (_viewModel.IsActive()) {
+			_popup->Update(_viewModel.GetActiveAlerts());
+		} else {
+			_popup->Hide();
+		}
+	}
+
+	Refresh();
 }
 
 void NotificationsButton::OnPaint(wxPaintEvent& event)
@@ -45,10 +63,16 @@ void NotificationsButton::OnPaint(wxPaintEvent& event)
 
 void NotificationsButton::OnClick(wxCommandEvent& event)
 {
+	if (!_viewModel.IsActive()) {
+		return;
+	}
+
 	wxPoint position = GetScreenPosition();
 	wxSize size = GetSize();
-	wxSize panelSize = wxSize(FromDIP(300), FromDIP(300));
+	wxSize panelSize = wxSize(FromDIP(300), -1);
 
 	_popup->Position(wxPoint(position.x + size.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);
+	_popup->Update(_viewModel.GetActiveAlerts());
 	_popup->Show();
+
 }

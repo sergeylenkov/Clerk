@@ -55,7 +55,7 @@ Statusbar::Statusbar(StatusViewModel& viewModel, wxWindow *parent, const wxPoint
 
 	statusbarSizer->Add(_exchangeRatesLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, 10);
 	
-	_viewModel.OnUpdate([=]() {
+	_viewModel.OnUpdate([&]() {
 		Update();
 	});
 

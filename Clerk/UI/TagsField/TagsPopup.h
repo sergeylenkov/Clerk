@@ -20,7 +20,7 @@ public:
 	void SelectNext();
 	void SelectPrev();
 	std::shared_ptr<TagPresentationModel> GetSelectedTag();
-	std::function<void()> OnSelectTag;
+	std::function<void(std::shared_ptr<TagPresentationModel>)> OnSelect;
 
 private:
 	wxScrolledWindow *_panel;

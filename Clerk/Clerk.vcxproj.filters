@@ -417,7 +417,7 @@
     <ClCompile Include="UI\TagsField\TagsField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\TagsField\TagElement.cpp">
+    <ClCompile Include="UI\TagsField\TagPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Notifications\NotificationsPopup.cpp">
@@ -430,6 +430,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\ViewModels\NotificationsViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -884,7 +887,7 @@
     <ClInclude Include="UI\TagsField\TagsField.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\TagsField\TagElement.h">
+    <ClInclude Include="UI\TagsField\TagPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Notifications\NotificationsPopup.h">
@@ -897,6 +900,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\NotificationsViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Notifications\NotificationAlertPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -11,6 +11,7 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	condition = alert.condition;
 	amount = alert.amount;
 	balance = 0;
+	isDismissed = false;
 
 	std::wstringstream ss(alert.accountIds);
 

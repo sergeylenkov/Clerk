@@ -4,7 +4,10 @@ TagsField::TagsField(wxWindow* parent, TagsService& tagsService, const wxPoint& 
 	_tagsService(tagsService)
 {
 	_popup = new TagsPopup(this);
-	_popup->OnSelectTag = std::bind(&TagsField::OnSelectTag, this);
+	_popup->OnSelect = [&](std::shared_ptr<TagPresentationModel> tag) {
+		AddTag(tag);
+		_popup->Hide();
+	};
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -38,23 +41,17 @@ void TagsField::Update() {
 	_tagsSizer->Clear(true);
 
 	for (auto& tag : _tags) {
-		TagElement* tagElement = new TagElement(this);
+		TagPanel* tagElement = new TagPanel(this);
 		tagElement->SetTag(tag);
 
-		tagElement->OnDeleteTag = [&](std::shared_ptr<TagPresentationModel> tag) {
+		tagElement->OnDelete = [&](std::shared_ptr<TagPresentationModel> tag) {
 			DeleteTag(tag);
 		};
 
 		_tagsSizer->Add(tagElement, 0, wxRIGHT, 5);
 	}
 	
-	_tagsSizer->Layout();
 	Layout();
-}
-
-void TagsField::OnSelectTag() {
-	AddTag(_popup->GetSelectedTag());
-	_popup->Hide();
 }
 
 void TagsField::AddTag(std::shared_ptr<TagPresentationModel> tag) {	

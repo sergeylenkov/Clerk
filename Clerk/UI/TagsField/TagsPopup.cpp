@@ -88,7 +88,7 @@ std::shared_ptr<TagPresentationModel> TagsPopup::GetSelectedTag() {
 }
 
 void TagsPopup::OnListItemDoubleClick(wxListEvent &event) {
-	if (OnSelectTag) {
-		OnSelectTag();
+	if (OnSelect) {
+		OnSelect(GetSelectedTag());
 	}
 }

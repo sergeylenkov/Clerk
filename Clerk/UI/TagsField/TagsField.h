@@ -5,7 +5,7 @@
 #include "../PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "TagsPopup.h"
-#include "TagElement.h"
+#include "TagPanel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
@@ -28,7 +28,6 @@ private:
 	TagsPopup* _popup;
 
 	void Update();
-	void OnSelectTag();
 	void AddTag(std::shared_ptr<TagPresentationModel> tag);
 	void DeleteTag(std::shared_ptr<TagPresentationModel> tag);
 	void OnTextChanged(wxKeyEvent& event);

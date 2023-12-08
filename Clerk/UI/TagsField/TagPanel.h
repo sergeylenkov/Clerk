@@ -7,18 +7,19 @@
 using namespace Clerk::Data;
 using namespace Clerk::UI;
 
-class TagElement : public wxPanel
+class TagPanel : public wxPanel
 {
 public:
-	TagElement(wxWindow* parent, const wxPoint& position = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+	TagPanel(wxWindow* parent, const wxPoint& position = wxDefaultPosition, const wxSize& size = wxDefaultSize);
 
 	void SetTag(std::shared_ptr<TagPresentationModel> tag);
-	std::function<void(std::shared_ptr<TagPresentationModel>)> OnDeleteTag;
+	std::function<void(std::shared_ptr<TagPresentationModel>)> OnDelete;
 
 private:
 	std::shared_ptr<TagPresentationModel> _tag;
 
 	wxBoxSizer* _mainSizer;
+	wxStaticText* _label;
 
-	void OnDelete(wxCommandEvent& event);
+	void OnDeleteClick(wxCommandEvent& event);
 };

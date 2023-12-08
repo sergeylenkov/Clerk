@@ -12,11 +12,14 @@ namespace Clerk {
 			
 			shared_vector<AlertPresentationModel> GetActiveAlerts();
 			bool IsActive();
+			void Dismiss(AlertPresentationModel& alert);
+
+			std::function<void()> OnUpdate;
 
 		private:
 			AlertsService& _alertsService;
 
-			shared_vector<AlertPresentationModel> _alerts;
+			shared_vector<AlertPresentationModel> _activeAlerts;
 		};
 	}
 }

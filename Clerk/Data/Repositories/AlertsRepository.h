@@ -13,7 +13,7 @@ namespace Clerk {
 
 			AlertModel* GetById(int id);
 			std::vector<AlertModel*> GetAll();			
-			float GetBalance(const AlertModel& alert);
+			float GetBalance(const std::wstring& accountsIds);
 			int Save(const AlertModel& alert);
 			void Delete(const AlertModel& alert);
 

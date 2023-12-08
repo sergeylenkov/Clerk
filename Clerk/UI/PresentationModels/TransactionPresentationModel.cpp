@@ -3,29 +3,29 @@
 using namespace Clerk::UI;
 
 TransactionPresentationModel::TransactionPresentationModel() {
-	this->id = -1;
-	this->fromAccount = nullptr;
-	this->toAccount = nullptr;
-	this->fromAmount = 0;
-	this->toAmount = 0;
-	this->note = wxString("");
-	this->date = wxDateTime::Today();
-	this->created = wxDateTime::Now();
-	this->tagsString = wxString("");
+	id = -1;
+	fromAccount = nullptr;
+	toAccount = nullptr;
+	fromAmount = 0;
+	toAmount = 0;
+	note = wxString("");
+	date = wxDateTime::Today();
+	created = wxDateTime::Now();
+	tagsString = wxString("");
 }
 
 TransactionPresentationModel::TransactionPresentationModel(TransactionModel& transaction) {
-	this->id = transaction.id;
-	this->fromAccount = nullptr;
-	this->toAccount = nullptr;
-	this->fromAmount = transaction.fromAmount;
-	this->toAmount = transaction.toAmount;
-	this->note = wxString(transaction.note);
-	this->date = wxDateTime::Today(); 
-	this->date.ParseISODate(transaction.date);
-	this->created = wxDateTime::Now();
-	this->created.ParseISODate(transaction.created);
-	this->tagsString = wxString("");
+	id = transaction.id;
+	fromAccount = nullptr;
+	toAccount = nullptr;
+	fromAmount = transaction.fromAmount;
+	toAmount = transaction.toAmount;
+	note = wxString(transaction.note);
+	date = wxDateTime::Today(); 
+	date.ParseISODate(transaction.date);
+	created = wxDateTime::Now();
+	created.ParseISODate(transaction.created);
+	tagsString = wxString("");
 }
 
 TransactionPresentationModel::operator TransactionModel& () {

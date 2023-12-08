@@ -24,13 +24,13 @@ std::vector<AlertModel*> AlertsRepository::GetAll() {
 	return result;
 }
 
-float AlertsRepository::GetBalance(const AlertModel& alert) {
+float AlertsRepository::GetBalance(const std::wstring& accountsIds) {
 	float total = 0.0;
 	float receipt_sum = 0.0;
 	float expense_sum = 0.0;
 	char sql[512];
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%ls) AND deleted = 0", alert.accountIds.c_str());
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%ls) AND deleted = 0", accountsIds.c_str());
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -41,7 +41,7 @@ float AlertsRepository::GetBalance(const AlertModel& alert) {
 
 	sqlite3_reset(statement);
 
-	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%ls) AND deleted = 0", alert.accountIds.c_str());
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%ls) AND deleted = 0", accountsIds.c_str());
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {

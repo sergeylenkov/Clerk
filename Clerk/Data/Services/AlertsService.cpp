@@ -17,7 +17,7 @@ std::shared_ptr<AlertPresentationModel> AlertsService::GetById(int id) {
 
 	if (model) {
 		alert = std::make_shared<AlertPresentationModel>(*model);
-		alert->balance = _alertsRepository.GetBalance(*alert);
+		alert->balance = _alertsRepository.GetBalance(model->accountIds);
 
 		AddToHash(alert->id, alert);
 
@@ -39,8 +39,7 @@ shared_vector<AlertPresentationModel> AlertsService::GetAll() {
 	for (auto& model : models) {
 		if (!GetFromHash(model->id)) {
 			auto alert = std::make_shared<AlertPresentationModel>(*model);
-
-			alert->balance = _alertsRepository.GetBalance(*alert);
+			alert->balance = _alertsRepository.GetBalance(model->accountIds);
 
 			AddToHash(alert->id, alert);
 		}
@@ -62,25 +61,15 @@ shared_vector<AlertPresentationModel> AlertsService::GetActive() {
 
 	for (auto& alert : GetAll()) {
 		if (alert->type == AlertType::Balance) {
-			float total = 0;
-
-			for (int id : alert->accountIds) {
-				auto account = _accountsService.GetById(id);
-
-				if (account) {
-					total = account->balance;
-				}
-			}
-
-			if (alert->condition == AlertCondition::Equal && total == alert->amount) {
+			if (alert->condition == AlertCondition::Equal && alert->balance == alert->amount) {
 				result.push_back(alert);
 			}
 
-			if (alert->condition == AlertCondition::Less && total < alert->amount) {
+			if (alert->condition == AlertCondition::Less && alert->balance < alert->amount) {
 				result.push_back(alert);
 			}
 
-			if (alert->condition == AlertCondition::More && total > alert->amount) {
+			if (alert->condition == AlertCondition::More && alert->balance > alert->amount) {
 				result.push_back(alert);
 			}
 		}

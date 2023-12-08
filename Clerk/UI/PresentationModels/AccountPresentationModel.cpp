@@ -3,36 +3,36 @@
 using namespace Clerk::UI;
 
 AccountPresentationModel::AccountPresentationModel() {
-	this->id = -1;
-	this->name = wxString("");
-	this->note = wxString("");
-	this->type = AccountType::Deposit;
-	this->icon = -1;
-	this->order = 1000;
-	this->creditLimit = 0;
-	this->isCredit = false;
-	this->balance = 0;
-	this->expenses = 0;
-	this->receipts = 0;
-	this->isActive = true;
-	this->date = wxDateTime::Today();
+	id = -1;
+	name = wxString("");
+	note = wxString("");
+	type = AccountType::Deposit;
+	icon = -1;
+	order = 1000;
+	creditLimit = 0;
+	isCredit = false;
+	balance = 0;
+	expenses = 0;
+	receipts = 0;
+	isActive = true;
+	date = wxDateTime::Today();
 }
 
 AccountPresentationModel::AccountPresentationModel(AccountModel& account) {
-	this->id = account.id;
-	this->name = wxString(account.name);
-	this->note = wxString(account.note);
-	this->type = account.type;
-	this->icon = account.iconId;
-	this->order = account.orderId;
-	this->creditLimit = account.creditLimit;
-	this->isCredit = account.creditLimit > 0;
-	this->balance = 0;
-	this->expenses = 0;
-	this->receipts = 0;
-	this->isActive = account.isActive;
-	this->date = wxDateTime::Today();
-	this->date.ParseISODate(account.created);
+	id = account.id;
+	name = wxString(account.name);
+	note = wxString(account.note);
+	type = account.type;
+	icon = account.iconId;
+	order = account.orderId;
+	creditLimit = account.creditLimit;
+	isCredit = account.creditLimit > 0;
+	balance = 0;
+	expenses = 0;
+	receipts = 0;
+	isActive = account.isActive;
+	date = wxDateTime::Today();
+	date.ParseISODate(account.created);
 }
 
 AccountPresentationModel::operator AccountModel &() {

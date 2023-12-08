@@ -3,20 +3,22 @@
 using namespace Clerk::UI;
 
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
-	this->id = alert.id;
-	this->name = alert.name;
-	this->date = wxDateTime().ParseFormat(alert.created);
-	this->type = alert.type;
-	this->period = alert.period;
-	this->condition = alert.condition;
-	
+	id = alert.id;
+	name = alert.name;
+	date = wxDateTime().ParseFormat(alert.created);
+	type = alert.type;
+	period = alert.period;
+	condition = alert.condition;
+	amount = alert.amount;
+	balance = 0;
+
 	std::wstringstream ss(alert.accountIds);
 
 	int i;
 
 	while (ss >> i)
 	{
-		this->accountIds.push_back(i);
+		accountIds.push_back(i);
 
 		if (ss.peek() == ',') {
 			ss.ignore();
@@ -26,13 +28,13 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	switch (alert.type)
 	{
 		case AlertType::Expense:
-			this->typeName = wxString("Expense");
+			typeName = _("Expense");
 			break;
 		case AlertType::Receipt:
-			this->typeName = wxString("Receipt");
+			typeName = _("Receipt");
 			break;
 		case AlertType::Balance:
-			this->typeName = wxString("Balance");
+			typeName = _("Balance");
 			break;
 		default:
 			break;
@@ -41,13 +43,13 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	switch (alert.period)
 	{
 		case AlertPeriod::Week:
-			this->periodName = wxString("Week");
+			periodName = _("Week");
 			break;
 		case AlertPeriod::Month:
-			this->periodName = wxString("Month");
+			periodName = _("Month");
 			break;
 		case AlertPeriod::Year:
-			this->periodName = wxString("Year");
+			periodName = _("Year");
 			break;
 		default:
 			break;
@@ -56,13 +58,13 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	switch (alert.condition)
 	{
 		case AlertCondition::Less:
-			this->conditionName = wxString("Less");
+			conditionName = _("Less");
 			break;
 		case AlertCondition::More:
-			this->conditionName = wxString("More");
+			conditionName = _("More");
 			break;
 		case AlertCondition::Equal:
-			this->conditionName = wxString("Equal");
+			conditionName = _("Equal");
 			break;
 		default:
 			break;

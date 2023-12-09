@@ -5,9 +5,9 @@
 
 namespace Clerk {
 	namespace Commands {
-		class PreferencesCommand : public Command {
+		class OpenPreferencesCommand : public Command {
 		public:
-			PreferencesCommand(ICommandsReceiver* _receiver);
+			OpenPreferencesCommand(ICommandsReceiver* _receiver);
 
 			void Execute() override;
 

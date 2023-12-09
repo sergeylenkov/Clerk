@@ -75,7 +75,7 @@ public:
         commandsReceiver = new MockCommandsReceiver();
 
         QuitCommand* quitCommand = new QuitCommand(commandsReceiver);
-        PreferencesCommand* preferencesCommand = new PreferencesCommand(commandsReceiver);
+        OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(commandsReceiver);
         AboutCommand* aboutCommand = new AboutCommand(commandsReceiver);
         NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(commandsReceiver);
         CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(commandsReceiver);
@@ -84,7 +84,7 @@ public:
         DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(commandsReceiver);
         NewAccountCommand* newAccountCommand = new NewAccountCommand(commandsReceiver);
         EditAccountCommand* editAccountCommand = new EditAccountCommand(commandsReceiver);
-        NewTabCommand* newTabCommand = new NewTabCommand(commandsReceiver);
+        OpenTabCommand* newTabCommand = new OpenTabCommand(commandsReceiver);
 
         commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
             *newTransactionCommand, *copyTransactionCommand,
@@ -106,7 +106,7 @@ TEST_F(CommandsTest, QuitCommand) {
     commandsInvoker->OnQuit();
 }
 
-TEST_F(CommandsTest, PreferencesCommand) {
+TEST_F(CommandsTest, OpenPreferencesCommand) {
     commandsInvoker->OnPreferences();
 }
 
@@ -149,7 +149,7 @@ TEST_F(CommandsTest, EditAccountCommand) {
     ASSERT_EQ(commandsReceiver->testId, 1);
 }
 
-TEST_F(CommandsTest, NewTabCommand) {
+TEST_F(CommandsTest, OpenTabCommand) {
     commandsInvoker->OnNewTab(TabType::Dashboard);
     ASSERT_EQ(commandsReceiver->testTabType, TabType::Dashboard);
 }

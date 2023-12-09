@@ -19,15 +19,15 @@ void AccountsContextMenu::OnMenuSelect(wxCommandEvent& event) {
 
 	if (type == TreeContextMenuType::NewTab) {
 		if (_type == TreeMenuItemType::Accounts) {
-			_commandsInvoker.OnNewAccountsTab();
+			_commandsInvoker.OpenAccountsTab();
 		}
 		else {
-			_commandsInvoker.OnNewAccountsTab(GetAccountTypeByMenuType(_type));
+			_commandsInvoker.OpenAccountsTab(GetAccountTypeByMenuType(_type));
 		}
 	} else if (type == TreeContextMenuType::NewTransaction) {
-		_commandsInvoker.OnNewTransaction(-1);
+		_commandsInvoker.NewTransaction(-1);
 	} else if (type == TreeContextMenuType::NewAccount) {
-		_commandsInvoker.OnNewAccount(GetAccountTypeByMenuType(_type));
+		_commandsInvoker.NewAccount(GetAccountTypeByMenuType(_type));
 	}
 }
 

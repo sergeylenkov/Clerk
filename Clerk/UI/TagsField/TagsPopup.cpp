@@ -78,6 +78,10 @@ void TagsPopup::SelectPrev() {
 }
 
 std::shared_ptr<TagPresentationModel> TagsPopup::GetSelectedTag() {
+	if (_list->GetItemCount() == 0) {
+		return nullptr;
+	}
+
 	long index = _list->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
 
 	if (index != -1) {	

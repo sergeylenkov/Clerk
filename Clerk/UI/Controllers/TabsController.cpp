@@ -15,16 +15,16 @@ void TabsController::RestoreLastTabs() {
 		TabType type = static_cast<TabType>(tab.type);
 
 		if (type == TabType::Transactions && tab.id != -1) {
-			OpenNewAccountTab(tab.id);
+			OpenAccountTab(tab.id);
 		} else {
-			OpenNewTab(type);
+			OpenTab(type);
 		}		
 	}
 
 	_tabsPanel->SelectTab(Settings::GetInstance().GetSelectedTab());
 }
 
-void TabsController::OpenNewTab(TabType type) {
+void TabsController::OpenTab(TabType type) {
 	if (_tabsPanel) {
 		DataPanel* tabPanel = CreatePanel(type);
 
@@ -38,14 +38,14 @@ void TabsController::OpenNewTab(TabType type) {
 	}
 }
 
-void TabsController::OpenNewAccountTab(int accountId) {
+void TabsController::OpenAccountTab(int id) {
 	if (_tabsPanel) {
 		TransactionsListPanel* tabPanel = static_cast<TransactionsListPanel*>(CreatePanel(TabType::Transactions));
 
-		auto account = _context.GetAccountsService().GetById(accountId);
+		auto account = _context.GetAccountsService().GetById(id);
 
 		if (tabPanel && account) {
-			tabPanel->id = accountId;
+			tabPanel->id = id;
 			tabPanel->type = TabType::Transactions;
 
 			tabPanel->SetAccount(account);
@@ -57,7 +57,7 @@ void TabsController::OpenNewAccountTab(int accountId) {
 	}
 }
 
-void TabsController::OpenNewAccountsTab(std::optional<AccountType> type) {
+void TabsController::OpenAccountsTab(std::optional<AccountType> type) {
 	if (_tabsPanel) {
 		TransactionsListPanel* tabPanel = static_cast<TransactionsListPanel*>(CreatePanel(TabType::Transactions));
 
@@ -81,6 +81,24 @@ void TabsController::OpenNewAccountsTab(std::optional<AccountType> type) {
 	}
 }
 
+void TabsController::OpenReportTab(int id) {
+	if (_tabsPanel) {
+		ReportExpensesByMonthPanel* tabPanel = new ReportExpensesByMonthPanel(_tabsPanel, _context);
+
+		auto report = _context.GetReportsService().GetById(id);
+
+		if (tabPanel && report) {
+			tabPanel->id = id;
+			tabPanel->type = TabType::Reports;
+			
+			tabPanel->Update();
+
+			_tabsPanel->AddPanel(tabPanel, report->name, GetIconIndex(TabType::Reports));
+			_tabsPanel->SelectLastTab();
+		}
+	}
+}
+
 DataPanel* TabsController::CreatePanel(TabType type) {
 	switch (type)
 	{
@@ -89,9 +107,6 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 			break;
 		case TabType::Transactions:
 			return new TransactionsListPanel(_tabsPanel, _context);
-			break;
-		case TabType::Reports:
-			return new DashboardPanel(_tabsPanel, _context);
 			break;
 		case TabType::Budgets:
 			return new BudgetsPanel(_tabsPanel, _context);
@@ -126,9 +141,6 @@ wxString TabsController::GetTabTitle(TabType type) {
 			break;
 		case TabType::Transactions:
 			return _("Transactions");
-			break;
-		case TabType::Reports:
-			return _("Reports");
 			break;
 		case TabType::Budgets:
 			return _("Budgets");

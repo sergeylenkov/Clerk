@@ -109,16 +109,17 @@ void TagsField::OnTextChanged(wxKeyEvent& event) {
 		if (!value.empty()) {
 			auto tags = _tagsService.GetBySearch(value);
 
+			_popup->Update(tags);
+
 			if (tags.size() > 0) {
 				wxPoint position = _textField->GetScreenPosition();
 				wxSize size = _textField->GetSize();
 				wxSize panelSize = wxSize(size.GetWidth(), FromDIP(300));
 
-				_popup->Position(wxPoint(position.x - panelSize.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);
-				_popup->Update(tags);
+				_popup->Position(wxPoint(position.x - panelSize.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);			
 				_popup->Show();
 			}
-			else {
+			else {				
 				_popup->Hide();
 			}
 		}

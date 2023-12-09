@@ -52,14 +52,18 @@ void CommandsReceiver::OpenEditAccountDialog(int id) {
 	_dialogsController->ShowEditAccountDialog(id);
 }
 
-void CommandsReceiver::OpenNewTab(TabType type) {
-	_tabsController->OpenNewTab(type);
+void CommandsReceiver::OpenTab(TabType type) {
+	_tabsController->OpenTab(type);
 }
 
-void CommandsReceiver::OpenNewAccountTab(int accountId) {
-	_tabsController->OpenNewAccountTab(accountId);
+void CommandsReceiver::OpenAccountTab(int id) {
+	_tabsController->OpenAccountTab(id);
 }
 
-void CommandsReceiver::OpenNewAccountsTab(std::optional<AccountType> type) {
-	_tabsController->OpenNewAccountsTab(type);
+void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
+	_tabsController->OpenAccountsTab(type);
+}
+
+void CommandsReceiver::OpenReportTab(int id) {
+	_tabsController->OpenReportTab(id);
 }

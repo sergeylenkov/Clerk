@@ -8,15 +8,15 @@ using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Commands {
-		class NewAccountTabCommand : public Command {
+		class OpenReportTabCommand : public Command {
 		public:
-			NewAccountTabCommand(ICommandsReceiver* _receiver);
-			void SetAccountId(int id);
+			OpenReportTabCommand(ICommandsReceiver* _receiver);
+			void SetReportId(int id);
 			void Execute() override;
 
 		private:
 			ICommandsReceiver* _receiver;
-			int _accountId;
+			int _reportId;
 		};
 	}
 }

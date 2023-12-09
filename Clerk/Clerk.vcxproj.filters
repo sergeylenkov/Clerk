@@ -327,7 +327,7 @@
     <ClCompile Include="Data\Repositories\ReportingRepository.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\PreferencesCommand.cpp">
+    <ClCompile Include="Commands\OpenPreferencesCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controllers\DialogsController.cpp">
@@ -375,7 +375,7 @@
     <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\NewTabCommand.cpp">
+    <ClCompile Include="Commands\OpenTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controllers\TabsController.cpp">
@@ -405,10 +405,10 @@
     <ClCompile Include="Data\Services\CurrenciesService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\NewAccountTabCommand.cpp">
+    <ClCompile Include="Commands\OpenAccountTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\NewAccountsTabCommand.cpp">
+    <ClCompile Include="Commands\OpenAccountsTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp">
@@ -433,6 +433,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\TreeMenu\ReportContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\OpenReportTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -773,7 +779,7 @@
     <ClInclude Include="Commands\ICommandsReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\PreferencesCommand.h">
+    <ClInclude Include="Commands\OpenPreferencesCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controllers\DialogsController.h">
@@ -827,7 +833,7 @@
     <ClInclude Include="UI\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\NewTabCommand.h">
+    <ClInclude Include="Commands\OpenTabCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controllers\TabsController.h">
@@ -869,10 +875,10 @@
     <ClInclude Include="Data\Services\HashService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\NewAccountTabCommand.h">
+    <ClInclude Include="Commands\OpenAccountTabCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\NewAccountsTabCommand.h">
+    <ClInclude Include="Commands\OpenAccountsTabCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Types.h">
@@ -903,6 +909,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\TreeMenu\ReportContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\OpenReportTabCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,9 +9,9 @@ using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Commands {
-		class NewAccountsTabCommand : public Command {
+		class OpenAccountsTabCommand : public Command {
 		public:
-			NewAccountsTabCommand(ICommandsReceiver* _receiver);
+			OpenAccountsTabCommand(ICommandsReceiver* _receiver);
 			void SetAccountType(AccountType type);
 			void Execute() override;
 

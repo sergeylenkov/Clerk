@@ -1,7 +1,7 @@
 #pragma once
 
 #include "QuitCommand.h"
-#include "PreferencesCommand.h"
+#include "OpenPreferencesCommand.h"
 #include "AboutCommand.h"
 #include "NewTransactionCommand.h"
 #include "CopyTransactionCommand.h"
@@ -10,9 +10,10 @@
 #include "DeleteTransactionCommand.h"
 #include "NewAccountCommand.h"
 #include "EditAccountCommand.h"
-#include "NewTabCommand.h"
-#include "NewAccountTabCommand.h"
-#include "NewAccountsTabCommand.h"
+#include "OpenTabCommand.h"
+#include "OpenAccountTabCommand.h"
+#include "OpenAccountsTabCommand.h"
+#include "OpenReportTabCommand.h"
 #include "../Data/Enums.h"
 #include "../UI/Enums.h"
 
@@ -23,31 +24,32 @@ namespace Clerk {
 	namespace Commands {
 		class CommandsInvoker {
 		public:
-			CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
+			CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
 				           NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
 						   SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand, NewAccountTabCommand& newAccountTabCommand,
-							NewAccountsTabCommand& newAccountsTabCommand);
+				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& openTabCommand, OpenAccountTabCommand& openAccountTabCommand,
+						   OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand);
 			~CommandsInvoker();
 
-			void OnQuit();
-			void OnPreferences();
-			void OnAbout();
-			void OnNewTransaction(int id);			
-			void OnCopyTransaction(int id);
-			void OnSplitTransaction(int id);
-			void OnEditTransaction(int id);
-			void OnDeleteTransaction(int id);
-			void OnNewAccount(AccountType type);
-			void OnEditAccount(int id);
-			void OnNewTab(TabType type);
-			void OnNewAccountTab(int accountId);
-			void OnNewAccountsTab();
-			void OnNewAccountsTab(AccountType id);
+			void Quit();
+			void OpenPreferences();
+			void OpenAbout();
+			void NewTransaction(int id);			
+			void CopyTransaction(int id);
+			void SplitTransaction(int id);
+			void EditTransaction(int id);
+			void DeleteTransaction(int id);
+			void NewAccount(AccountType type);
+			void EditAccount(int id);
+			void OpenTab(TabType type);
+			void OpenAccountTab(int id);
+			void OpenAccountsTab();
+			void OpenAccountsTab(AccountType type);
+			void OpenReportTab(int id);
 
 		private:
 			QuitCommand& _quitCommand;
-			PreferencesCommand& _preferencesCommand;
+			OpenPreferencesCommand& _preferencesCommand;
 			AboutCommand& _aboutCommand;
 			NewTransactionCommand& _newTransactionCommand;
 			CopyTransactionCommand& _copyTransactionCommand;
@@ -56,9 +58,10 @@ namespace Clerk {
 			DeleteTransactionCommand& _deleteTransactionCommand;
 			NewAccountCommand& _newAccountCommand;
 			EditAccountCommand& _editAccountCommand;			
-			NewTabCommand& _newTabCommand;
-			NewAccountTabCommand& _newAccountTabCommand;
-			NewAccountsTabCommand& _newAccountsTabCommand;
+			OpenTabCommand& _openTabCommand;
+			OpenAccountTabCommand& _openAccountTabCommand;
+			OpenAccountsTabCommand& _openAccountsTabCommand;
+			OpenReportTabCommand& _openReportTabCommand;
 		};
 	}
 }

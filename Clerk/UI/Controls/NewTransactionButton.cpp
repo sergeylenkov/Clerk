@@ -39,9 +39,9 @@ void NewTransactionButton::Update() {
 }
 
 void NewTransactionButton::OnClick(wxCommandEvent& event) {
-	_commandsInvoker.OnNewTransaction(-1);
+	_commandsInvoker.NewTransaction(-1);
 }
 
 void NewTransactionButton::OnMenuSelect(wxCommandEvent& event) {
-	_commandsInvoker.OnCopyTransaction(event.GetId());
+	_commandsInvoker.CopyTransaction(event.GetId());
 }

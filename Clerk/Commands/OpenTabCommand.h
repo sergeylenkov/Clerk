@@ -8,9 +8,9 @@ using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Commands {
-		class NewTabCommand : public Command {
+		class OpenTabCommand : public Command {
 		public:
-			NewTabCommand(ICommandsReceiver* _receiver);
+			OpenTabCommand(ICommandsReceiver* _receiver);
 			void SetType(TabType type);
 			void Execute() override;
 

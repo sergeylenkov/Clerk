@@ -2,7 +2,9 @@
 
 TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
 	wxFrame(parent, wxID_ANY, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
-	_icons(icons), _context(context) {
+	_icons(icons),
+	_context(context)
+{
 	SetBackgroundColour(wxColor(*wxWHITE));
 	
 	SetIcon(wxICON(APP_ICON));

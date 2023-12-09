@@ -26,7 +26,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
 	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
-	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService());
+	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService());
 
 	_mainMenu = new MainMenu(*mainMenuViewModel, *_commandsInvoker, _icons);
 
@@ -144,7 +144,7 @@ void MainWindow::SetupCommands() {
 	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController);
 
 	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
-	PreferencesCommand* preferencesCommand = new PreferencesCommand(_commandsReceiver);
+	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
 	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
 	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
@@ -153,14 +153,16 @@ void MainWindow::SetupCommands() {
 	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_commandsReceiver);
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
-	NewTabCommand* newTabCommand = new NewTabCommand(_commandsReceiver);
-	NewAccountTabCommand* newAccountTabCommand = new NewAccountTabCommand(_commandsReceiver);
-	NewAccountsTabCommand* newAccountsTabCommand = new NewAccountsTabCommand(_commandsReceiver);
+	OpenTabCommand* openTabCommand = new OpenTabCommand(_commandsReceiver);
+	OpenAccountTabCommand* openAccountTabCommand = new OpenAccountTabCommand(_commandsReceiver);
+	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(_commandsReceiver);
+	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(_commandsReceiver);
 
 	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
 		                                   *newTransactionCommand, *copyTransactionCommand,
 										   *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
-		                                   *newAccountCommand, *editAccountCommand, *newTabCommand, *newAccountTabCommand, *newAccountsTabCommand);
+		                                   *newAccountCommand, *editAccountCommand, *openTabCommand, *openAccountTabCommand,
+										   *openAccountsTabCommand, *openReportTabCommand);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
 }

@@ -48,19 +48,19 @@ void TransactionContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	switch (type)
 	{
 		case TransactionContextMenuType::Add:
-			_commandsInvoker.OnNewTransaction(id);
+			_commandsInvoker.NewTransaction(id);
 			break;
 		case TransactionContextMenuType::Edit:
-			_commandsInvoker.OnEditTransaction(id);
+			_commandsInvoker.EditTransaction(id);
 			break;
 		case TransactionContextMenuType::Copy:
-			_commandsInvoker.OnCopyTransaction(id);
+			_commandsInvoker.CopyTransaction(id);
 			break;
 		case TransactionContextMenuType::Split:
-			_commandsInvoker.OnSplitTransaction(id);
+			_commandsInvoker.SplitTransaction(id);
 			break;
 		case TransactionContextMenuType::Delete:
-			_commandsInvoker.OnDeleteTransaction(id);
+			_commandsInvoker.DeleteTransaction(id);
 			break;
 		default:
 			break;

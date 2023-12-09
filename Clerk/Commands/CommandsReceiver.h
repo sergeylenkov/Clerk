@@ -26,9 +26,10 @@ namespace Clerk {
 			void DeleteTransaction(int id) override;
 			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;
-			void OpenNewTab(TabType type) override;
-			void OpenNewAccountTab(int accountId) override;
-			void OpenNewAccountsTab(std::optional<AccountType> type) override;
+			void OpenTab(TabType type) override;
+			void OpenAccountTab(int idd) override;
+			void OpenAccountsTab(std::optional<AccountType> type) override;
+			void OpenReportTab(int id) override;
 
 		private:
 			wxFrame* _frame{};

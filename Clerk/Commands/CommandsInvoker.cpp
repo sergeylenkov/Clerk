@@ -2,11 +2,11 @@
 
 using namespace Clerk::Commands;
 
-CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
+CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
 	NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
 	SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, NewTabCommand& newTabCommand, NewAccountTabCommand& newAccountTabCommand,
-	NewAccountsTabCommand& newAccountsTabCommand) :
+	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& newTabCommand, OpenAccountTabCommand& newAccountTabCommand,
+	OpenAccountsTabCommand& newAccountsTabCommand, OpenReportTabCommand& openReportTabCommand) :
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
@@ -17,9 +17,10 @@ CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, PreferencesCommand& p
 	_deleteTransactionCommand(deleteTransactionCommand),
 	_newAccountCommand(newAccountCommand),
 	_editAccountCommand(editAccountCommand),
-	_newTabCommand(newTabCommand),
-	_newAccountTabCommand(newAccountTabCommand),
-	_newAccountsTabCommand(newAccountsTabCommand)
+	_openTabCommand(newTabCommand),
+	_openAccountTabCommand(newAccountTabCommand),
+	_openAccountsTabCommand(newAccountsTabCommand),
+	_openReportTabCommand(openReportTabCommand)
 {
 	
 }
@@ -35,73 +36,79 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _deleteTransactionCommand;
 	delete& _newAccountCommand;
 	delete& _editAccountCommand;
-	delete& _newTabCommand;
-	delete& _newAccountTabCommand;
-	delete& _newAccountsTabCommand;
+	delete& _openTabCommand;
+	delete& _openAccountTabCommand;
+	delete& _openAccountsTabCommand;
+	delete& _openReportTabCommand;
 }
 
-void CommandsInvoker::OnQuit() {
+void CommandsInvoker::Quit() {
 	_quitCommand.Execute();
 }
 
-void CommandsInvoker::OnPreferences() {
+void CommandsInvoker::OpenPreferences() {
 	_preferencesCommand.Execute();
 }
 
-void CommandsInvoker::OnAbout() {
+void CommandsInvoker::OpenAbout() {
 	_aboutCommand.Execute();
 }
 
-void CommandsInvoker::OnNewTransaction(int id) {
+void CommandsInvoker::NewTransaction(int id) {
 	_newTransactionCommand.SetAccountId(id);	
 	_newTransactionCommand.Execute();
 }
 
-void CommandsInvoker::OnCopyTransaction(int id) {
+void CommandsInvoker::CopyTransaction(int id) {
 	_copyTransactionCommand.SetTransactionId(id);
 	_copyTransactionCommand.Execute();
 }
 
-void CommandsInvoker::OnSplitTransaction(int id) {
+void CommandsInvoker::SplitTransaction(int id) {
 	_splitTransactionCommand.SetTransactionId(id);
 	_splitTransactionCommand.Execute();
 }
 
-void CommandsInvoker::OnEditTransaction(int id) {
+void CommandsInvoker::EditTransaction(int id) {
 	_editTransactionCommand.SetTransactionId(id);
 	_editTransactionCommand.Execute();
 }
 
-void CommandsInvoker::OnDeleteTransaction(int id) {
+void CommandsInvoker::DeleteTransaction(int id) {
 	_deleteTransactionCommand.SetTransactionId(id);
 	_deleteTransactionCommand.Execute();
 }
 
-void CommandsInvoker::OnNewAccount(AccountType type) {
+void CommandsInvoker::NewAccount(AccountType type) {
 	_newAccountCommand.SetAccountType(type);
 	_newAccountCommand.Execute();
 }
 
-void CommandsInvoker::OnEditAccount(int id) {
+void CommandsInvoker::EditAccount(int id) {
 	_editAccountCommand.SetAccountId(id);
 	_editAccountCommand.Execute();
 }
 
-void CommandsInvoker::OnNewTab(TabType type) {
-	_newTabCommand.SetType(type);
-	_newTabCommand.Execute();
+void CommandsInvoker::OpenTab(TabType type) {
+	_openTabCommand.SetType(type);
+	_openTabCommand.Execute();
 }
 
-void CommandsInvoker::OnNewAccountTab(int accountId) {
-	_newAccountTabCommand.SetAccountId(accountId);
-	_newAccountTabCommand.Execute();
+void CommandsInvoker::OpenAccountTab(int accountId) {
+	_openAccountTabCommand.SetAccountId(accountId);
+	_openAccountTabCommand.Execute();
 }
 
-void CommandsInvoker::OnNewAccountsTab() {
-	_newAccountsTabCommand.Execute();
+void CommandsInvoker::OpenAccountsTab() {
+	_openAccountsTabCommand.Execute();
 }
 
-void CommandsInvoker::OnNewAccountsTab(AccountType type) {
-	_newAccountsTabCommand.SetAccountType(type);
-	_newAccountsTabCommand.Execute();
+void CommandsInvoker::OpenAccountsTab(AccountType type) {
+	_openAccountsTabCommand.SetAccountType(type);
+	_openAccountsTabCommand.Execute();
+}
+
+void CommandsInvoker::OpenReportTab(int id) {
+	_openReportTabCommand.SetReportId(id);
+	_openReportTabCommand.Execute();
 }

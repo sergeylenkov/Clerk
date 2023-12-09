@@ -13,15 +13,15 @@ namespace Clerk {
 	namespace Data {
 		class AlertsService : HashService<std::shared_ptr<AlertPresentationModel>> {
 		public:
-			AlertsService(AlertsRepository& alertsRepository, AccountsService& accountsService);
+			AlertsService(AlertsRepository& alertsRepository);
 
 			std::shared_ptr<AlertPresentationModel> GetById(int id);
 			shared_vector<AlertPresentationModel> GetAll();
 			shared_vector<AlertPresentationModel> GetActive();
+			void Reload();
 
 		private:
 			AlertsRepository& _alertsRepository;
-			AccountsService& _accountsService;
 		};
 	}
 }

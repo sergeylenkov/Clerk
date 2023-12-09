@@ -61,13 +61,13 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
-		_commandsInvoker.OnCopyTransaction(id - transactionsOffset);
+		_commandsInvoker.CopyTransaction(id - transactionsOffset);
 	} else if (id == static_cast<int>(TreeContextMenuType::NewTransaction)) {
-		_commandsInvoker.OnNewTransaction(_account.id);
+		_commandsInvoker.NewTransaction(_account.id);
 	}
 	else if (id == static_cast<int>(TreeContextMenuType::EditAccount)) {
-		_commandsInvoker.OnEditAccount(_account.id);
+		_commandsInvoker.EditAccount(_account.id);
 	} else if (id == static_cast<int>(TreeContextMenuType::NewTab)) {
-		_commandsInvoker.OnNewAccountTab(_account.id);
+		_commandsInvoker.OpenAccountTab(_account.id);
 	}
 }

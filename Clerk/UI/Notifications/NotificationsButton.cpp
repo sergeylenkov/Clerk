@@ -14,9 +14,9 @@ NotificationsButton::NotificationsButton(NotificationsViewModel& viewModel, wxWi
 		_viewModel.Dismiss(*alert);
 	};
 
-	_viewModel.OnUpdate = [&]() {
+	_viewModel.OnUpdate([&]() {
 		Update();
-	};
+	});
 
 	Update();
 

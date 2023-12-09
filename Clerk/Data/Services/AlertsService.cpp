@@ -1,8 +1,8 @@
 #include "AlertsService.h"
 
-AlertsService::AlertsService(AlertsRepository& alertsRepository, AccountsService& accountsService) :
-	_alertsRepository(alertsRepository),
-	_accountsService(accountsService) {
+AlertsService::AlertsService(AlertsRepository& alertsRepository) :
+	_alertsRepository(alertsRepository)
+{
 	_isLoading = false;
 }
 
@@ -76,4 +76,11 @@ shared_vector<AlertPresentationModel> AlertsService::GetActive() {
 	}
 
 	return result;
+}
+
+void AlertsService::Reload() {
+	_isLoading = false;
+	_hash.clear();
+
+	GetAll();
 }

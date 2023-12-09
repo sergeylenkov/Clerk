@@ -275,9 +275,9 @@ void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	auto transaction = GetTransaction();
 
 	if (transaction) {
-		_context.GetCommandsInvoker().OnEditTransaction(transaction->id);
+		_context.GetCommandsInvoker().EditTransaction(transaction->id);
 	} else {
-		_context.GetCommandsInvoker().OnNewTransaction(-1);
+		_context.GetCommandsInvoker().NewTransaction(-1);
 	}
 }
 

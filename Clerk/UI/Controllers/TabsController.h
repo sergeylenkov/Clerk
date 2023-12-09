@@ -16,9 +16,10 @@ namespace Clerk {
 			TabsController(DataContext& context, Icons& icons);
 
 			void SetTabsPanel(TabsPanel* panel);
-			void OpenNewTab(TabType type);
-			void OpenNewAccountTab(int accountId);
-			void OpenNewAccountsTab(std::optional<AccountType> type);
+			void OpenTab(TabType type);
+			void OpenAccountTab(int id);
+			void OpenAccountsTab(std::optional<AccountType> type);
+			void OpenReportTab(int id);
 			void RestoreLastTabs();
 
 		private:

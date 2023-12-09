@@ -66,5 +66,5 @@ void DefaultContextMenu::OnMenuSelect(wxCommandEvent& event) {
 			break;
 	}
 
-	_commandsInvoker.OnNewTab(tabType);
+	_commandsInvoker.OpenTab(tabType);
 }

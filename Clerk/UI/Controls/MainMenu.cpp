@@ -78,10 +78,10 @@ void MainMenu::OnMenuSelect(wxCommandEvent& event) {
 	switch (type)
 	{
 		case Clerk::UI::MainMenuType::NewTransaction:
-			_commandsInvoker.OnNewTransaction(-1);
+			_commandsInvoker.NewTransaction(-1);
 			break;
 		case Clerk::UI::MainMenuType::NewAccount:
-			_commandsInvoker.OnNewAccount(AccountType::Deposit);
+			_commandsInvoker.NewAccount(AccountType::Deposit);
 			break;
 		case Clerk::UI::MainMenuType::NewBudget:
 			break;
@@ -92,13 +92,13 @@ void MainMenu::OnMenuSelect(wxCommandEvent& event) {
 		case Clerk::UI::MainMenuType::NewAlert:
 			break;
 		case Clerk::UI::MainMenuType::About:
-			_commandsInvoker.OnAbout();
+			_commandsInvoker.OpenAbout();
 			break;
 		case Clerk::UI::MainMenuType::Preferences:
-			_commandsInvoker.OnPreferences();
+			_commandsInvoker.OpenPreferences();
 			break;
 		case Clerk::UI::MainMenuType::Exit:
-			_commandsInvoker.OnQuit();
+			_commandsInvoker.Quit();
 			break;
 		default:
 			break;
@@ -109,9 +109,9 @@ void MainMenu::OnTransactionSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
-		_commandsInvoker.OnCopyTransaction(id - transactionsOffset);
+		_commandsInvoker.CopyTransaction(id - transactionsOffset);
 	}
 	else if (id == static_cast<int>(MainMenuType::NewTransaction)) {
-		_commandsInvoker.OnNewTransaction(-1);
+		_commandsInvoker.NewTransaction(-1);
 	}
 }

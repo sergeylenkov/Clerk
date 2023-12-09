@@ -150,6 +150,7 @@ void TreeMenu::Update() {
 		TreeMenuItemData* itemData = new TreeMenuItemData();
 
 		itemData->type = TreeMenuItemType::Report;
+		itemData->object = report;
 
 		wxTreeItemId itemId = _treeMenu->AppendItem(_reportsItem, report->name, 5, 5, itemData);
 	}
@@ -197,8 +198,19 @@ std::shared_ptr<AccountPresentationModel> TreeMenu::GetContextMenuAccount() {
 		TreeMenuItemData *item = (TreeMenuItemData *)_treeMenu->GetItemData(_contextMenuItem);
 
 		if (item->type == TreeMenuItemType::Account) {
-			auto account = std::static_pointer_cast<AccountPresentationModel>(item->object);
-			return account;
+			return std::static_pointer_cast<AccountPresentationModel>(item->object);
+		}
+	}
+
+	return nullptr;
+}
+
+std::shared_ptr<ReportPresentationModel> TreeMenu::GetContextMenuReport() {
+	if (_contextMenuItem != NULL) {
+		TreeMenuItemData* item = (TreeMenuItemData*)_treeMenu->GetItemData(_contextMenuItem);
+
+		if (item->type == TreeMenuItemType::Report) {
+			return std::static_pointer_cast<ReportPresentationModel>(item->object);
 		}
 	}
 
@@ -219,9 +231,17 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 			auto transactions = _viewModel.GetRecentsTransactions(*account);
 			menu = new AccountContextMenu(_commandsInvoker, *account, transactions, _icons);
 		}
-	} else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
-		      || item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
+	}
+	else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
+		|| item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
 		menu = new AccountsContextMenu(_commandsInvoker, item->type);
+	}
+	else if (item->type == TreeMenuItemType::Report) {
+		auto report = GetContextMenuReport();
+
+		if (report) {
+			menu = new ReportContextMenu(_commandsInvoker, *report);
+		}
 	}
 	else if (item->type != TreeMenuItemType::Reports) {
 		menu = new DefaultContextMenu(_commandsInvoker, item->type);

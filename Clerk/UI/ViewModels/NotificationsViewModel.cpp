@@ -1,9 +1,26 @@
 #include "NotificationsViewModel.h"
 
-NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService) :
-	_alertsService(alertsService)
+NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService, TransactionsService& transactionsService):
+	_alertsService(alertsService),
+	_transactionsService(transactionsService)
 {
 	_activeAlerts = _alertsService.GetActive();
+
+	_eventEmitter = new EventEmitter();
+
+	unsigned int _subscriptionId = _transactionsService.Subscribe([&]() {
+		_alertsService.Reload();
+		_eventEmitter->Emit();
+	});
+}
+
+NotificationsViewModel::~NotificationsViewModel() {
+	_transactionsService.Unsubscribe(_subscriptionId);
+	delete _eventEmitter;
+}
+
+void NotificationsViewModel::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 shared_vector<AlertPresentationModel> NotificationsViewModel::GetActiveAlerts() {
@@ -19,7 +36,5 @@ void NotificationsViewModel::Dismiss(AlertPresentationModel& alert) {
 
 	_activeAlerts = _alertsService.GetActive();
 
-	if (OnUpdate) {
-		OnUpdate();
-	}
+	_eventEmitter->Emit();
 }

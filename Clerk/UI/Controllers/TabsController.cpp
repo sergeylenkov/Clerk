@@ -16,6 +16,9 @@ void TabsController::RestoreLastTabs() {
 
 		if (type == TabType::Transactions && tab.id != -1) {
 			OpenAccountTab(tab.id);
+		}
+		else if (type == TabType::Reports && tab.id != -1) {
+			OpenReportTab(tab.id);
 		} else {
 			OpenTab(type);
 		}		
@@ -83,7 +86,7 @@ void TabsController::OpenAccountsTab(std::optional<AccountType> type) {
 
 void TabsController::OpenReportTab(int id) {
 	if (_tabsPanel) {
-		ReportExpensesByMonthPanel* tabPanel = new ReportExpensesByMonthPanel(_tabsPanel, _context);
+		DataPanel* tabPanel = GetReportPanelById(id);
 
 		auto report = _context.GetReportsService().GetById(id);
 
@@ -202,7 +205,7 @@ int TabsController::GetIconIndex(TabType type) {
 			return 1;
 			break;
 		case TabType::Reports:
-			return 4;
+			return 5;
 			break;
 		case TabType::Budgets:
 			return 6;
@@ -227,4 +230,22 @@ int TabsController::GetIconIndex(TabType type) {
 		}
 
 	return 0;
+}
+
+DataPanel* TabsController::GetReportPanelById(int id) {
+	switch (id)
+	{
+		case 1:
+			return new ReportExpensesByMonthPanel(_tabsPanel, _context);
+		case 2:
+			return new ReportExpensesForPeriodPanel(_tabsPanel, _context);
+		case 3:
+			return new ReportBalanceByMonthPanel(_tabsPanel, _context);
+		case 4:
+			return new ReportReceiptsByMonthPanel(_tabsPanel, _context);
+		default:
+			break;
+	}
+
+	return nullptr;
 }

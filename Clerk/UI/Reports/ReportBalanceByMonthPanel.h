@@ -18,11 +18,11 @@ using namespace Clerk::Data;
 using namespace Clerk::Utils;
 using namespace Clerk::UI;
 
-class ReportBalancePanel : public DataPanel
+class ReportBalanceByMonthPanel : public DataPanel
 {
 public:
-	ReportBalancePanel(wxWindow *parent, DataContext& context);
-	~ReportBalancePanel();
+	ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context);
+	~ReportBalanceByMonthPanel();
 
 	void Update();
 

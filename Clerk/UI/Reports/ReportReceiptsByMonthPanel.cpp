@@ -1,19 +1,19 @@
-#include "ReportExpensesByMonthPanel.h"
+#include "ReportReceiptsByMonthPanel.h"
 
-ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
+ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataContext& context) : DataPanel(parent, context) {
+	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
+	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *accountsLabel = new wxStaticText(this, wxID_ANY, _("Accounts:"));
+	wxStaticText* accountsLabel = new wxStaticText(this, wxID_ANY, _("Accounts:"));
 	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
 	_accountsComboBox = new AccountsComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(200, 20)));
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
-	wxStaticText *periodLabel = new wxStaticText(this, wxID_ANY, _("Period:"));
+	wxStaticText* periodLabel = new wxStaticText(this, wxID_ANY, _("Period:"));
 	filterSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
-	wxArrayString *values = new wxArrayString();
+	wxArrayString* values = new wxArrayString();
 
 	values->Add(_("3 Months"));
 	values->Add(_("6 Months"));
@@ -26,13 +26,13 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	delete values;
 
-	wxStaticText *fromLabel = new wxStaticText(this, wxID_ANY, _("From:"));
+	wxStaticText* fromLabel = new wxStaticText(this, wxID_ANY, _("From:"));
 	filterSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
 	_fromDatePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
 	filterSizer->Add(_fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
-	wxStaticText *toLabel = new wxStaticText(this, wxID_ANY, _("To:"));
+	wxStaticText* toLabel = new wxStaticText(this, wxID_ANY, _("To:"));
 	filterSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
 	_toDatePicker = new wxDatePickerCtrl(this, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
@@ -40,15 +40,15 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	filterSizer->Add(0, 0, 1, wxEXPAND);
 
-	_averageCheckbox = new wxCheckBox(this, wxID_ANY, _("Show average"));		
-	
+	_averageCheckbox = new wxCheckBox(this, wxID_ANY, _("Show average"));
+
 	filterSizer->Add(_averageCheckbox, 0, wxALIGN_CENTER_VERTICAL);
 
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
 	_chart = new LineChart(this, wxID_ANY);
 
-	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
+	wxBoxSizer* chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
@@ -66,22 +66,22 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	_accounts.push_back(account);
 
-	for (auto &account : _context.GetAccountsService().GetByType(AccountType::Expens))
+	for (auto& account : _context.GetAccountsService().GetByType(AccountType::Receipt))
 	{
 		_accounts.push_back(account);
 	}
 
 	_chartPopup = new ExpensesTooltipPopup(this);
 
-	_accountsComboBox->OnChange = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
-	_periodList->Bind(wxEVT_COMBOBOX, &ReportExpensesByMonthPanel::OnPeriodSelect, this);
-	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);
-	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportExpensesByMonthPanel::OnDateChanged, this);	
-	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
+	_accountsComboBox->OnChange = std::bind(&ReportReceiptsByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
+	_periodList->Bind(wxEVT_COMBOBOX, &ReportReceiptsByMonthPanel::OnPeriodSelect, this);
+	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportReceiptsByMonthPanel::OnDateChanged, this);
+	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportReceiptsByMonthPanel::OnDateChanged, this);
+	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportReceiptsByMonthPanel::OnDrawAverageCheck, this);
 
-	_chart->OnShowPopup = std::bind(&ReportExpensesByMonthPanel::ShowPopup, this);
-	_chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
-	_chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	_chart->OnShowPopup = std::bind(&ReportReceiptsByMonthPanel::ShowPopup, this);
+	_chart->OnHidePopup = std::bind(&ReportReceiptsByMonthPanel::HidePopup, this);
+	_chart->OnUpdatePopup = std::bind(&ReportReceiptsByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 	_periodList->Select(3);
 	_accountsComboBox->SetAccounts(_accounts);
@@ -91,18 +91,19 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 	RestoreFilterSettings();
 }
 
-ReportExpensesByMonthPanel::~ReportExpensesByMonthPanel() {
+ReportReceiptsByMonthPanel::~ReportReceiptsByMonthPanel() {
 	SaveFilterSettings();
 }
 
-void ReportExpensesByMonthPanel::Update() {
+void ReportReceiptsByMonthPanel::Update() {
 	wxDateTime fromDate = _fromDatePicker->GetValue();
 	wxDateTime toDate = _toDatePicker->GetValue();
-	
-	_values = _context.GetReportingService().GetExpensesByMonth(_selectedIds, fromDate, toDate);
+
+	_values = _context.GetReportingService().GetReceiptsByMonth(_selectedIds, fromDate, toDate);
+
 	std::vector<StringValueViewModel> chartValues;
 
-	for (auto &value : _values)
+	for (auto& value : _values)
 	{
 		StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
 		chartValues.push_back(chartValue);
@@ -112,12 +113,12 @@ void ReportExpensesByMonthPanel::Update() {
 	_chart->SetValues(chartValues);
 }
 
-void ReportExpensesByMonthPanel::OnAccountSelect(std::set<int> ids) {
+void ReportReceiptsByMonthPanel::OnAccountSelect(std::set<int> ids) {
 	_selectedIds = ids;
 	Update();
 }
 
-void ReportExpensesByMonthPanel::OnDateChanged(wxDateEvent &event) {
+void ReportReceiptsByMonthPanel::OnDateChanged(wxDateEvent& event) {
 	_periodFromDate = _fromDatePicker->GetValue();
 	_periodToDate = _toDatePicker->GetValue();
 
@@ -125,26 +126,26 @@ void ReportExpensesByMonthPanel::OnDateChanged(wxDateEvent &event) {
 	Update();
 }
 
-void ReportExpensesByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
+void ReportReceiptsByMonthPanel::OnPeriodSelect(wxCommandEvent& event) {
 	SaveFilterSettings();
 
 	CalculatePeriod();
 	Update();
 }
 
-void ReportExpensesByMonthPanel::OnDrawAverageCheck(wxCommandEvent& event) {
+void ReportReceiptsByMonthPanel::OnDrawAverageCheck(wxCommandEvent& event) {
 	Update();
 }
 
-void ReportExpensesByMonthPanel::ShowPopup() {
+void ReportReceiptsByMonthPanel::ShowPopup() {
 	_chartPopup->Show();
 }
 
-void ReportExpensesByMonthPanel::HidePopup() {
+void ReportReceiptsByMonthPanel::HidePopup() {
 	_chartPopup->Hide();
 }
 
-void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
+void ReportReceiptsByMonthPanel::UpdatePopup(int x, int y, int index) {
 	wxDateTime date = _values[index].date;
 
 	wxDateTime fromDate = date;
@@ -153,7 +154,7 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	std::vector<StringValueViewModel> popupValues;
 
-	popupValues = _context.GetReportingService().GetExpensesByAccount(_selectedIds, fromDate, toDate);
+	popupValues = _context.GetReportingService().GetReceiptsByAccount(_selectedIds, fromDate, toDate);
 
 	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
 	_chartPopup->SetPosition(position);
@@ -161,10 +162,10 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 	_chartPopup->Update(date.Format("%B"), popupValues);
 }
 
-void ReportExpensesByMonthPanel::RestoreFilterSettings() {
+void ReportReceiptsByMonthPanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
 
-	this->_selectedIds = {};
+	_selectedIds = {};
 
 	std::string str = settings.accountIds.mb_str();
 
@@ -186,19 +187,19 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 	_periodFromDate = settings.fromDate;
 	_periodToDate = settings.toDate;
 
-	_accountsComboBox->SetSelection(this->_selectedIds);
+	_accountsComboBox->SetSelection(_selectedIds);
 
 	_averageCheckbox->SetValue(settings.average);
 
 	CalculatePeriod();
 }
 
-void ReportExpensesByMonthPanel::SaveFilterSettings() {
+void ReportReceiptsByMonthPanel::SaveFilterSettings() {
 
 	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), _periodList->GetSelection(), _periodFromDate, _periodToDate, _averageCheckbox->IsChecked());
 }
 
-void ReportExpensesByMonthPanel::CalculatePeriod() {
+void ReportReceiptsByMonthPanel::CalculatePeriod() {
 	int index = _periodList->GetSelection();
 
 	wxDateTime fromDate = wxDateTime::Now();
@@ -209,45 +210,45 @@ void ReportExpensesByMonthPanel::CalculatePeriod() {
 
 	switch (index)
 	{
-		case 0:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));
-			fromDate.SetDay(1);
-			break;
+	case 0:
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));
+		fromDate.SetDay(1);
+		break;
 
-		case 1:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0));
-			fromDate.SetDay(1);
-			break;
+	case 1:
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0));
+		fromDate.SetDay(1);
+		break;
 
-		case 2:
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
-			break;
+	case 2:
+		fromDate.SetMonth(wxDateTime::Month::Jan);
+		fromDate.SetDay(1);
+		break;
 
-		case 3:
-			Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
-			break;
+	case 3:
+		Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
+		break;
 
-		case 4:
-			fromDate = _periodFromDate;
-			toDate = _periodToDate;
+	case 4:
+		fromDate = _periodFromDate;
+		toDate = _periodToDate;
 
-			_fromDatePicker->Enable();
-			_toDatePicker->Enable();
-			break;
+		_fromDatePicker->Enable();
+		_toDatePicker->Enable();
+		break;
 
-		default:
-			break;
+	default:
+		break;
 	}
 
 	_fromDatePicker->SetValue(fromDate);
 	_toDatePicker->SetValue(toDate);
 }
 
-wxString ReportExpensesByMonthPanel::GetSelectedAccounsIds() {
+wxString ReportReceiptsByMonthPanel::GetSelectedAccounsIds() {
 	wxString ids = "";
 
-	for (auto &account : _accounts) {
+	for (auto& account : _accounts) {
 		if (_selectedIds.count(account->id) > 0) {
 			ids = ids + wxString::Format("%i,", account->id);
 		}

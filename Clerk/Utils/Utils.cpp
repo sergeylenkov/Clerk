@@ -102,3 +102,15 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 			break;
 	}
 }
+
+std::string String::Split(std::vector<std::string> const& vec, std::string delim) {
+	if (vec.empty()) {
+		return std::string();
+	}
+
+	return accumulate(vec.begin() + 1, vec.end(),
+		vec[0],
+		[](const std::string& a, std::string b) {
+			return a + ", " + b;
+		});
+}

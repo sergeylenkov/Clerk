@@ -441,6 +441,9 @@
     <ClCompile Include="Commands\OpenReportTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -915,6 +918,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\OpenReportTabCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

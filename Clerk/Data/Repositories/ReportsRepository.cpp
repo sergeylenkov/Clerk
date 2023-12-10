@@ -15,14 +15,21 @@ std::vector<ReportModel*> ReportsRepository::GetAll() {
 	report = new ReportModel();
 
 	report->id = 2;
-	report->name = std::wstring(L"Balance By Month");
+	report->name = std::wstring(L"Expenses For Period");
 
 	result.push_back(report);
 
 	report = new ReportModel();
 
 	report->id = 3;
-	report->name = std::wstring(L"Expenses For Period");
+	report->name = std::wstring(L"Balance By Month");
+
+	result.push_back(report);	
+
+	report = new ReportModel();
+
+	report->id = 4;
+	report->name = std::wstring(L"Receipts By Month");
 
 	result.push_back(report);
 

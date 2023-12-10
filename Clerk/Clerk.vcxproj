@@ -94,6 +94,7 @@
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsPopup.cpp" />
+    <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp" />
     <ClCompile Include="UI\TagsField\TagPanel.cpp" />
     <ClCompile Include="UI\TagsField\TagsField.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp" />
@@ -244,6 +245,7 @@
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
     <ClInclude Include="UI\Notifications\NotificationsPopup.h" />
+    <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h" />
     <ClInclude Include="UI\TagsField\TagPanel.h" />
     <ClInclude Include="UI\TagsField\TagsField.h" />
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />

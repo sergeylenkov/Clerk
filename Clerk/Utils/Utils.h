@@ -2,6 +2,9 @@
 
 #include <wx/wx.h>
 #include <wx/numformatter.h>
+#include <iostream>
+#include <vector>
+#include <numeric>
 
 namespace Clerk {
 	namespace Utils {
@@ -32,6 +35,11 @@ namespace Clerk {
 			};
 
 			static void Calculate(Periods::Type type, wxDateTime& fromDate, wxDateTime& toDate);
+		};
+
+		class String {
+		public:
+			static std::string Split(std::vector<std::string> const& vec, std::string delim);
 		};
 	}
 }

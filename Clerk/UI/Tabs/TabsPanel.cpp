@@ -1,6 +1,11 @@
 #include "TabsPanel.h"
 
-TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker, Icons& icons) : wxPanel(parent), _context(context), _commandsInvoker(commandsInvoker), _icons(icons) {
+TabsPanel::TabsPanel(wxWindow *parent, DataContext& context, CommandsInvoker& commandsInvoker, Icons& icons):
+	wxPanel(parent),
+	_context(context),
+	_commandsInvoker(commandsInvoker),
+	_icons(icons)
+{
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	_notebook = new wxNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_TOP);

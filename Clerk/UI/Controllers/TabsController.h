@@ -6,6 +6,17 @@
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 #include "../Dashboard/DashboardPanel.h"
+#include "../Transactions/TransactionsListPanel.h"
+#include "../Budgets/BudgetsPanel.h"
+#include "../TrashPanel.h"
+#include "../Schedulers/SchedulersPanel.h"
+#include "../Goals/GoalsPanel.h"
+#include "../Alerts/AlertsPanel.h"
+#include "../TagsPanel.h"
+#include "../Reports/ReportExpensesByMonthPanel.h"
+#include "../Reports/ReportBalanceByMonthPanel.h"
+#include "../Reports/ReportExpensesForPeriodPanel.h"
+#include "../Reports/ReportReceiptsByMonthPanel.h"
 
 using namespace Clerk::Data;
 
@@ -31,6 +42,7 @@ namespace Clerk {
 			wxString GetTabTitle(TabType type);
 			wxString GetTabTitleByAccountType(AccountType type);
 			int GetIconIndex(TabType type);
+			DataPanel* GetReportPanelById(int id);
 		};
 	}
 }

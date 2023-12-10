@@ -1,6 +1,6 @@
 #include "ReportBalanceByMonthPanel.h"
 
-ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -85,14 +85,14 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context) :
 
 	chartPopup = new ExpensesTooltipPopup(this);
 
-	accountList->Bind(wxEVT_COMBOBOX, &ReportBalancePanel::OnAccountSelect, this);
-	periodList->Bind(wxEVT_COMBOBOX, &ReportBalancePanel::OnPeriodSelect, this);
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalancePanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalancePanel::OnDateChanged, this);
+	accountList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnAccountSelect, this);
+	periodList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnPeriodSelect, this);
+	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
+	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
 
-	chart->OnShowPopup = std::bind(&ReportBalancePanel::ShowPopup, this);
-	chart->OnHidePopup = std::bind(&ReportBalancePanel::HidePopup, this);
-	chart->OnUpdatePopup = std::bind(&ReportBalancePanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	chart->OnShowPopup = std::bind(&ReportBalanceByMonthPanel::ShowPopup, this);
+	chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
+	chart->OnUpdatePopup = std::bind(&ReportBalanceByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
 	accountList->Select(0);
 	periodList->Select(3);
@@ -100,11 +100,11 @@ ReportBalancePanel::ReportBalancePanel(wxWindow *parent, DataContext& context) :
 	RestoreFilterSettings();
 }
 
-ReportBalancePanel::~ReportBalancePanel() {
+ReportBalanceByMonthPanel::~ReportBalanceByMonthPanel() {
 	SaveFilterSettings();
 }
 
-void ReportBalancePanel::Update() {
+void ReportBalanceByMonthPanel::Update() {
 	wxDateTime fromDate = fromDatePicker->GetValue();
 	wxDateTime toDate = toDatePicker->GetValue();
 
@@ -125,11 +125,11 @@ void ReportBalancePanel::Update() {
 	}
 }
 
-void ReportBalancePanel::OnAccountSelect(wxCommandEvent &event) {
+void ReportBalanceByMonthPanel::OnAccountSelect(wxCommandEvent &event) {
 	Update();
 }
 
-void ReportBalancePanel::OnDateChanged(wxDateEvent &event) {
+void ReportBalanceByMonthPanel::OnDateChanged(wxDateEvent &event) {
 	periodFromDate = fromDatePicker->GetValue();
 	periodToDate = toDatePicker->GetValue();
 
@@ -137,22 +137,22 @@ void ReportBalancePanel::OnDateChanged(wxDateEvent &event) {
 	Update();
 }
 
-void ReportBalancePanel::OnPeriodSelect(wxCommandEvent &event) {
+void ReportBalanceByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
 	SaveFilterSettings();
 
 	CalculatePeriod();
 	Update();
 }
 
-void ReportBalancePanel::ShowPopup() {
+void ReportBalanceByMonthPanel::ShowPopup() {
 	chartPopup->Show();
 }
 
-void ReportBalancePanel::HidePopup() {
+void ReportBalanceByMonthPanel::HidePopup() {
 	chartPopup->Hide();
 }
 
-void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
+void ReportBalanceByMonthPanel::UpdatePopup(int x, int y, int index) {
 	std::vector<StringValueViewModel> popupValues;
 
 	wxDateTime date = values[index].date;
@@ -167,7 +167,7 @@ void ReportBalancePanel::UpdatePopup(int x, int y, int index) {
 	chartPopup->Update(date.Format("%B"), popupValues);
 }
 
-void ReportBalancePanel::RestoreFilterSettings() {
+void ReportBalanceByMonthPanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(2);
 
 	long accountId = -1;
@@ -187,13 +187,13 @@ void ReportBalancePanel::RestoreFilterSettings() {
 	CalculatePeriod();*/
 }
 
-void ReportBalancePanel::SaveFilterSettings() {
+void ReportBalanceByMonthPanel::SaveFilterSettings() {
 	/*Account *account = _accounts[accountList->GetSelection()].get();
 
 	Settings::GetInstance().SetReportFilterSettings(2, wxString::Format("%d", account->id), periodList->GetSelection(), periodFromDate, periodToDate);*/
 }
 
-void ReportBalancePanel::CalculatePeriod() {
+void ReportBalanceByMonthPanel::CalculatePeriod() {
 	int index = periodList->GetSelection();
 
 	wxDateTime fromDate = wxDateTime::Now();

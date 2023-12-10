@@ -6,21 +6,11 @@
 #include "../../Defines.h"
 #include "../../Data/Settings.h"
 #include "../../Data/DataContext.h"
-#include "../Transactions/TransactionsListPanel.h"
-#include "../Dashboard/DashboardPanel.h"
-#include "../Reports/ReportExpensesByMonthPanel.h"
-#include "../Reports/ReportBalanceByMonthPanel.h"
-#include "../Reports/ReportExpensesForPeriodPanel.h"
-#include "../Budgets/BudgetsPanel.h"
-#include "../TrashPanel.h"
-#include "../Schedulers/SchedulersPanel.h"
-#include "../Goals/GoalsPanel.h"
-#include "../Alerts/AlertsPanel.h"
-#include "../TagsPanel.h"
 #include "../TreeMenu/Enums.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "./TabsContextMenu.h"
 #include "../../Utils/Icons.h"
+#include "../TagsPanel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;

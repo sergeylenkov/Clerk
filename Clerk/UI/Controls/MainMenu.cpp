@@ -48,6 +48,7 @@ void MainMenu::Update() {
 
 	if (menuItem) {
 		_menuFile->Remove(menuItem);
+		delete menuItem;
 	}
 
 	auto transactions = _viewModel.GetRecents();

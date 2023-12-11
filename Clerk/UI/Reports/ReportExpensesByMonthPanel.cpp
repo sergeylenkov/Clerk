@@ -66,10 +66,12 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	_accounts.push_back(account);
 
-	for (auto &account : _context.GetAccountsService().GetByType(AccountType::Expens))
-	{
-		_accounts.push_back(account);
-	}
+	auto accounts = _context.GetAccountsService().GetExpenses();
+	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
+
+	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 
 	_chartPopup = new ExpensesTooltipPopup(this);
 

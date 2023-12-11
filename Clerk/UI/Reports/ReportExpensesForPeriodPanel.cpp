@@ -109,7 +109,7 @@ void ReportExpensesForPeriodPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesForPeriodPanel::SaveFilterSettings() {
-	//Settings::GetInstance().SetReportFilterSettings(3, -1, periodList->GetSelection(), fromDatePicker->GetValue(), toDatePicker->GetValue());
+	Settings::GetInstance().SetReportFilterSettings(3, "", periodList->GetSelection(), fromDatePicker->GetValue(), toDatePicker->GetValue());
 }
 
 void ReportExpensesForPeriodPanel::CalculatePeriod() {

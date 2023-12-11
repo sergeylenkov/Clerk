@@ -66,10 +66,12 @@ ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataCon
 
 	_accounts.push_back(account);
 
-	for (auto& account : _context.GetAccountsService().GetByType(AccountType::Receipt))
-	{
-		_accounts.push_back(account);
-	}
+	auto accounts = _context.GetAccountsService().GetReceipts();
+	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
+
+	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 
 	_chartPopup = new ExpensesTooltipPopup(this);
 
@@ -196,7 +198,7 @@ void ReportReceiptsByMonthPanel::RestoreFilterSettings() {
 
 void ReportReceiptsByMonthPanel::SaveFilterSettings() {
 
-	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), _periodList->GetSelection(), _periodFromDate, _periodToDate, _averageCheckbox->IsChecked());
+	Settings::GetInstance().SetReportFilterSettings(4, GetSelectedAccounsIds(), _periodList->GetSelection(), _periodFromDate, _periodToDate, _averageCheckbox->IsChecked());
 }
 
 void ReportReceiptsByMonthPanel::CalculatePeriod() {

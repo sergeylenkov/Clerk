@@ -119,6 +119,14 @@ void TransactionViewModel::UpdateAccounts() {
 			_toAccounts.push_back(account);
 		}
 	}
+
+	std::sort(_fromAccounts.begin(), _fromAccounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	std::sort(_toAccounts.begin(), _toAccounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 }
 
 
@@ -145,6 +153,10 @@ void TransactionViewModel::UpdateFromAccounts() {
 			_fromAccounts.push_back(account);
 		}
 	}
+
+	std::sort(_fromAccounts.begin(), _fromAccounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 }
 
 void TransactionViewModel::UpdateToAccounts() {
@@ -173,6 +185,10 @@ void TransactionViewModel::UpdateToAccounts() {
 			_toAccounts.push_back(account);
 		}
 	}
+
+	std::sort(_toAccounts.begin(), _toAccounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 }
 
 shared_vector<AccountPresentationModel> TransactionViewModel::GetFromAccounts() {

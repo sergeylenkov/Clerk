@@ -149,6 +149,10 @@ shared_vector<AccountPresentationModel> AccountsService::GetDepositsAndVirtuals(
 	return result;
 }
 
+shared_vector<AccountPresentationModel> AccountsService::GetReceipts() {
+	return GetByType(AccountType::Receipt);
+}
+
 shared_vector<AccountPresentationModel> AccountsService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {
 	auto accounts = GetByType(AccountType::Receipt);
 
@@ -163,6 +167,15 @@ shared_vector<AccountPresentationModel> AccountsService::GetReceipts(const wxDat
 	}
 
 	return result;
+}
+
+shared_vector<AccountPresentationModel> AccountsService::GetExpenses() {
+	auto accounts = GetByType(AccountType::Expens);
+	auto debts = GetByType(AccountType::Debt);
+
+	accounts.insert(accounts.end(), debts.begin(), debts.end());
+
+	return accounts;
 }
 
 shared_vector<AccountPresentationModel> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {

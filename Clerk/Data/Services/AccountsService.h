@@ -24,7 +24,9 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> GetArchive();
 			shared_vector<AccountPresentationModel> GetDeposits();
 			shared_vector<AccountPresentationModel> GetDepositsAndVirtuals();
+			shared_vector<AccountPresentationModel> GetReceipts();
 			shared_vector<AccountPresentationModel> GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate);
+			shared_vector<AccountPresentationModel> AccountsService::GetExpenses();
 			shared_vector<AccountPresentationModel> GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate);
 			shared_vector<AccountPresentationModel> GetDebts();
 			std::shared_ptr<AccountPresentationModel> GetPairAccount(const AccountPresentationModel& account);

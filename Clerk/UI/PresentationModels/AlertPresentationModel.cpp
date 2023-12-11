@@ -5,10 +5,12 @@ using namespace Clerk::UI;
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	id = alert.id;
 	name = alert.name;
+	message = alert.message;
 	date = wxDateTime().ParseFormat(alert.created);
 	type = alert.type;
 	period = alert.period;
 	condition = alert.condition;
+	importance = alert.importance;
 	amount = alert.amount;
 	balance = 0;
 	isDismissed = false;
@@ -66,6 +68,21 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 			break;
 		case AlertCondition::Equal:
 			conditionName = _("Equal");
+			break;
+		default:
+			break;
+	}
+
+	switch (alert.importance)
+	{
+		case AlertImportance::Low:
+			importanceName = _("Low");
+			break;
+		case AlertImportance::Medium:
+			importanceName = _("Medium");
+			break;
+		case AlertImportance::High:
+			importanceName = _("High");
 			break;
 		default:
 			break;

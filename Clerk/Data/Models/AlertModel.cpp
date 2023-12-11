@@ -4,12 +4,14 @@ using namespace Clerk::Data;
 
 AlertModel::AlertModel()
 {
-	this->id = -1;
-	this->name = std::wstring();
-	this->amount = 0;
-	this->type = AlertType::Balance;
-	this->period = AlertPeriod::Month;
-	this->condition = AlertCondition::Equal;
-	this->accountIds = std::wstring();
-	this->created = std::wstring();
+	id = -1;
+	name = std::wstring();
+	message = std::wstring();
+	type = AlertType::Balance;
+	period = AlertPeriod::Month;
+	condition = AlertCondition::Equal;
+	importance = AlertImportance::Low;
+	amount = 0;	
+	accountIds = std::wstring();
+	created = std::wstring();
 }

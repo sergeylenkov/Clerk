@@ -41,5 +41,11 @@ namespace Clerk {
 			More = 1,
 			Equal = 2
 		};
+
+		enum class AlertImportance {
+			Low = 0,
+			Medium = 1,
+			High = 2
+		};
 	}
 }

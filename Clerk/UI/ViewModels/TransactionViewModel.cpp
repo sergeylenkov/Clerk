@@ -17,7 +17,7 @@ TransactionViewModel::TransactionViewModel(AccountsService& accountsService, Tra
 		Update();
 	});
 
-	Update();
+	//Update();
 }
 
 TransactionViewModel::~TransactionViewModel() {
@@ -92,7 +92,8 @@ void TransactionViewModel::SetAccountId(int id) {
 }
 
 void TransactionViewModel::Update() {
-	UpdateAccounts();
+	UpdateFromAccounts();
+	UpdateToAccounts();
 
 	if (!_fromAccount) {
 		_fromAccount = _fromAccounts[0];
@@ -103,36 +104,17 @@ void TransactionViewModel::Update() {
 	}
 }
 
-void TransactionViewModel::UpdateAccounts() {
-	auto accounts = _accountsService.GetActive();
-	auto deposits = _accountsService.GetByType(AccountType::Deposit);
-
-	_fromAccounts.clear();
-	_toAccounts.clear();
-
-	for (auto& account : accounts) {
-		if (account->type == AccountType::Receipt || account->type == AccountType::Deposit) {
-			_fromAccounts.push_back(account);
-		}
-
-		if (account->type != AccountType::Receipt) {
-			_toAccounts.push_back(account);
-		}
-	}
-
-	std::sort(_fromAccounts.begin(), _fromAccounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
-
-	std::sort(_toAccounts.begin(), _toAccounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
-}
-
-
 void TransactionViewModel::UpdateFromAccounts() {
 	auto receipts = _accountsService.GetByType(AccountType::Receipt);
 	auto deposits = _accountsService.GetByType(AccountType::Deposit);
+
+	std::sort(receipts.begin(), receipts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	std::sort(deposits.begin(), deposits.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 
 	_fromAccounts.clear();
 
@@ -153,10 +135,6 @@ void TransactionViewModel::UpdateFromAccounts() {
 			_fromAccounts.push_back(account);
 		}
 	}
-
-	std::sort(_fromAccounts.begin(), _fromAccounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
 }
 
 void TransactionViewModel::UpdateToAccounts() {
@@ -164,6 +142,22 @@ void TransactionViewModel::UpdateToAccounts() {
 	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
 	auto expenses = _accountsService.GetByType(AccountType::Expens);
 	auto debts = _accountsService.GetByType(AccountType::Debt);
+
+	std::sort(deposits.begin(), deposits.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	std::sort(virtuals.begin(), virtuals.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	std::sort(expenses.begin(), expenses.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	std::sort(debts.begin(), debts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
 
 	_toAccounts.clear();
 	
@@ -185,10 +179,6 @@ void TransactionViewModel::UpdateToAccounts() {
 			_toAccounts.push_back(account);
 		}
 	}
-
-	std::sort(_toAccounts.begin(), _toAccounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
 }
 
 shared_vector<AccountPresentationModel> TransactionViewModel::GetFromAccounts() {

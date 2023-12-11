@@ -63,7 +63,6 @@ namespace Clerk {
 			shared_vector<TagPresentationModel> _tags;
 
 			void Update();
-			void UpdateAccounts();
 			void UpdateFromAccounts();
 			void UpdateToAccounts();
 		};

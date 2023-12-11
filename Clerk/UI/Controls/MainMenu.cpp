@@ -54,13 +54,16 @@ void MainMenu::Update() {
 	auto transactions = _viewModel.GetRecents();
 
 	if (transactions.size() == 0) {
-		_menuFile->Insert(0, menuId, _("New Transaction...\tCtrl+T"));
+		wxMenuItem* item = _menuFile->Insert(0, menuId, _("New Transaction...\tCtrl+T"));
+		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
 	}
 	else {
 		wxMenu* menu = new wxMenu();
 		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnTransactionSelect, this);
 
-		menu->Append(menuId, _("New Transaction...\tCtrl+T"));
+		wxMenuItem* item = menu->Append(menuId, _("New Transaction...\tCtrl+T"));
+		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+
 		menu->AppendSeparator();
 
 		for (auto& transaction : transactions)

@@ -56,7 +56,7 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> _toAccounts;
 			std::shared_ptr<AccountPresentationModel> _fromAccount;
 			std::shared_ptr<AccountPresentationModel> _toAccount;
-			float _fromAmount =- 0.0;
+			float _fromAmount = 0.0;
 			float _toAmount = 0.0;
 			wxString _note;
 			wxDateTime _date;

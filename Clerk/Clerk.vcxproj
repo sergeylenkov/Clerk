@@ -54,6 +54,7 @@
     <ClCompile Include="Commands\CopyTransactionCommand.cpp" />
     <ClCompile Include="Commands\DeleteTransactionCommand.cpp" />
     <ClCompile Include="Commands\EditAccountCommand.cpp" />
+    <ClCompile Include="Commands\EditAlertCommand.cpp" />
     <ClCompile Include="Commands\EditTransactionCommand.cpp" />
     <ClCompile Include="Commands\NewAccountCommand.cpp" />
     <ClCompile Include="Commands\OpenAccountsTabCommand.cpp" />
@@ -90,6 +91,7 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
+    <ClCompile Include="UI\Alerts\AlertContextMenu.cpp" />
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
@@ -121,7 +123,6 @@
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
     <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp" />
-    <ClCompile Include="UI\Alerts\AlertsConfirmDialog.cpp" />
     <ClCompile Include="Data\Models\AlertModel.cpp" />
     <ClCompile Include="UI\Alerts\AlertDialog.cpp" />
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
@@ -199,6 +200,7 @@
     <ClInclude Include="Commands\CopyTransactionCommand.h" />
     <ClInclude Include="Commands\DeleteTransactionCommand.h" />
     <ClInclude Include="Commands\EditAccountCommand.h" />
+    <ClInclude Include="Commands\EditAlertCommand.h" />
     <ClInclude Include="Commands\EditTransactionCommand.h" />
     <ClInclude Include="Commands\NewAccountCommand.h" />
     <ClInclude Include="Commands\OpenAccountsTabCommand.h" />
@@ -241,6 +243,8 @@
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
     <ClInclude Include="Data\Types.h" />
+    <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
+    <ClInclude Include="UI\Alerts\Enums.h" />
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
@@ -274,7 +278,6 @@
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />
     <ClInclude Include="UI\Controls\CheckboxComboPopup.h" />
-    <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h" />
     <ClInclude Include="Data\Models\AlertModel.h" />
     <ClInclude Include="UI\Alerts\AlertDialog.h" />
     <ClInclude Include="UI\Alerts\AlertsListDataModel.h" />

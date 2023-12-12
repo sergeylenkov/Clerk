@@ -7,12 +7,12 @@ namespace Clerk {
 	namespace Commands {
 		class OpenPreferencesCommand : public Command {
 		public:
-			OpenPreferencesCommand(ICommandsReceiver* _receiver);
+			OpenPreferencesCommand(ICommandsReceiver& _receiver);
 
 			void Execute() override;
 
 		private:
-			ICommandsReceiver* _receiver;
+			ICommandsReceiver& _receiver;
 		};
 	}
 }

@@ -67,3 +67,7 @@ void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
 void CommandsReceiver::OpenReportTab(int id) {
 	_tabsController->OpenReportTab(id);
 }
+
+void CommandsReceiver::OpenEditAlertDialog(int id) {
+	_dialogsController->ShowEditAlertDialog(id);
+}

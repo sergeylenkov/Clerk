@@ -28,6 +28,7 @@ namespace Clerk {
 			void DeleteTransaction(int id);
 			void ShowNewAccountDialog(AccountType type);
 			void ShowEditAccountDialog(int id);
+			void ShowEditAlertDialog(int id);
 
 		private:
 			wxFrame* _parent;

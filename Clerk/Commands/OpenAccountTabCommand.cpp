@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-OpenAccountTabCommand::OpenAccountTabCommand(ICommandsReceiver* receiver) : _accountId(-1) {
-	_receiver = receiver;
+OpenAccountTabCommand::OpenAccountTabCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_accountId(-1) {
 }
 
 void OpenAccountTabCommand::SetAccountId(int id) {
@@ -11,5 +12,5 @@ void OpenAccountTabCommand::SetAccountId(int id) {
 }
 
 void OpenAccountTabCommand::Execute() {
-	_receiver->OpenAccountTab(_accountId);
+	_receiver.OpenAccountTab(_accountId);
 }

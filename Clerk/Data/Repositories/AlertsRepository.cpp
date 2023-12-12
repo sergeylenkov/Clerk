@@ -70,7 +70,7 @@ AlertModel* AlertsRepository::Load(int id) {
 
 			alert->id = sqlite3_column_int(statement, 0);
 			alert->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 1));
-			alert->name = std::wstring((wchar_t*)sqlite3_column_text16(statement, 2));
+			alert->message = std::wstring((wchar_t*)sqlite3_column_text16(statement, 2));
 			alert->type = static_cast<AlertType>(sqlite3_column_int(statement, 3));
 			alert->period = static_cast<AlertPeriod>(sqlite3_column_int(statement, 4));
 			alert->condition = static_cast<AlertCondition>(sqlite3_column_int(statement, 5));

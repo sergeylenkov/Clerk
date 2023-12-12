@@ -5,8 +5,8 @@ using namespace Clerk::Commands;
 CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
 	NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
 	SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& newTabCommand, OpenAccountTabCommand& newAccountTabCommand,
-	OpenAccountsTabCommand& newAccountsTabCommand, OpenReportTabCommand& openReportTabCommand) :
+	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& openTabCommand, OpenAccountTabCommand& openAccountTabCommand,
+	OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand, EditAlertCommand& editAlertCommand) :
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
@@ -17,10 +17,11 @@ CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesComman
 	_deleteTransactionCommand(deleteTransactionCommand),
 	_newAccountCommand(newAccountCommand),
 	_editAccountCommand(editAccountCommand),
-	_openTabCommand(newTabCommand),
-	_openAccountTabCommand(newAccountTabCommand),
-	_openAccountsTabCommand(newAccountsTabCommand),
-	_openReportTabCommand(openReportTabCommand)
+	_openTabCommand(openTabCommand),
+	_openAccountTabCommand(openAccountTabCommand),
+	_openAccountsTabCommand(openAccountsTabCommand),
+	_openReportTabCommand(openReportTabCommand),
+	_editAlertCommand(editAlertCommand)
 {
 	
 }
@@ -40,6 +41,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _openAccountTabCommand;
 	delete& _openAccountsTabCommand;
 	delete& _openReportTabCommand;
+	delete& _editAlertCommand;
 }
 
 void CommandsInvoker::Quit() {
@@ -111,4 +113,17 @@ void CommandsInvoker::OpenAccountsTab(AccountType type) {
 void CommandsInvoker::OpenReportTab(int id) {
 	_openReportTabCommand.SetReportId(id);
 	_openReportTabCommand.Execute();
+}
+
+void CommandsInvoker::NewAlert(int id) {
+
+}
+
+void CommandsInvoker::EditAlert(int id) {
+	_editAlertCommand.SetAlertId(id);
+	_editAlertCommand.Execute();
+}
+
+void CommandsInvoker::DeleteAlert(int id) {
+
 }

@@ -143,26 +143,27 @@ void MainWindow::SetupCommands() {
 
 	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController);
 
-	QuitCommand* quitCommand = new QuitCommand(_commandsReceiver);
-	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(_commandsReceiver);
-	AboutCommand* aboutCommand = new AboutCommand(_commandsReceiver);
-	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(_commandsReceiver);
-	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(_commandsReceiver);
-	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(_commandsReceiver);
-	EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(_commandsReceiver);
-	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_commandsReceiver);
-	NewAccountCommand* newAccountCommand = new NewAccountCommand(_commandsReceiver);
-	EditAccountCommand* editAccountCommand = new EditAccountCommand(_commandsReceiver);
-	OpenTabCommand* openTabCommand = new OpenTabCommand(_commandsReceiver);
-	OpenAccountTabCommand* openAccountTabCommand = new OpenAccountTabCommand(_commandsReceiver);
-	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(_commandsReceiver);
-	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(_commandsReceiver);
+	QuitCommand* quitCommand = new QuitCommand(*_commandsReceiver);
+	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(*_commandsReceiver);
+	AboutCommand* aboutCommand = new AboutCommand(*_commandsReceiver);
+	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(*_commandsReceiver);
+	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(*_commandsReceiver);
+	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(*_commandsReceiver);
+	EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(*_commandsReceiver);
+	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(*_commandsReceiver);
+	NewAccountCommand* newAccountCommand = new NewAccountCommand(*_commandsReceiver);
+	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
+	OpenTabCommand* openTabCommand = new OpenTabCommand(*_commandsReceiver);
+	OpenAccountTabCommand* openAccountTabCommand = new OpenAccountTabCommand(*_commandsReceiver);
+	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(*_commandsReceiver);
+	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(*_commandsReceiver);
+	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
 
 	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
 		                                   *newTransactionCommand, *copyTransactionCommand,
 										   *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
 		                                   *newAccountCommand, *editAccountCommand, *openTabCommand, *openAccountTabCommand,
-										   *openAccountsTabCommand, *openReportTabCommand);
+										   *openAccountsTabCommand, *openReportTabCommand, *editAlertCommand);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
 }

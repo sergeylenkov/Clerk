@@ -25,7 +25,7 @@ std::vector<StringValueViewModel> ReportingService::GetExpensesByAccount(std::se
 		res.push_back(std::to_string(id));
 	}
 
-	auto expenses = _reportingRepository.GetExpensesByAccount(String::Split(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto expenses = _reportingRepository.GetExpensesByAccount(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto expense : expenses) {
 		results.push_back({ wxString(expense.first), expense.second });
@@ -42,7 +42,7 @@ std::vector<DateValueViewModel> ReportingService::GetExpensesByMonth(std::set<in
 		res.push_back(std::to_string(id));
 	}
 
-	auto expenses = _reportingRepository.GetExpensesByMonth(String::Split(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto expenses = _reportingRepository.GetExpensesByMonth(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto expense : expenses) {
 		wxDateTime date = wxDateTime::Today();
@@ -68,7 +68,7 @@ std::vector<DateValueViewModel> ReportingService::GetReceiptsByMonth(std::set<in
 		res.push_back(std::to_string(id));
 	}
 
-	auto receipts = _reportingRepository.GetReceiptsByMonth(String::Split(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto receipts = _reportingRepository.GetReceiptsByMonth(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto receipt : receipts) {
 		wxDateTime date = wxDateTime::Today();
@@ -88,7 +88,7 @@ std::vector<StringValueViewModel> ReportingService::GetReceiptsByAccount(std::se
 		res.push_back(std::to_string(id));
 	}
 
-	auto receipts = _reportingRepository.GetReceiptsByAccount(String::Split(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto receipts = _reportingRepository.GetReceiptsByAccount(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto receipt : receipts) {
 		results.push_back({ wxString(receipt.first), receipt.second });

@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-OpenTabCommand::OpenTabCommand(ICommandsReceiver* receiver) : _tabType(TabType::Dashboard) {
-	_receiver = receiver;
+OpenTabCommand::OpenTabCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_tabType(TabType::Dashboard) {
 }
 
 void OpenTabCommand::SetType(TabType type) {
@@ -11,5 +12,5 @@ void OpenTabCommand::SetType(TabType type) {
 }
 
 void OpenTabCommand::Execute() {
-	_receiver->OpenTab(_tabType);
+	_receiver.OpenTab(_tabType);
 }

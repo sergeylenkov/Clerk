@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-EditTransactionCommand::EditTransactionCommand(ICommandsReceiver* receiver) : _transactionId(-1) {
-	_receiver = receiver;
+EditTransactionCommand::EditTransactionCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_transactionId(-1) {
 }
 
 void EditTransactionCommand::SetTransactionId(int id) {
@@ -11,5 +12,5 @@ void EditTransactionCommand::SetTransactionId(int id) {
 }
 
 void EditTransactionCommand::Execute() {
-	_receiver->EditTransaction(_transactionId);
+	_receiver.EditTransaction(_transactionId);
 }

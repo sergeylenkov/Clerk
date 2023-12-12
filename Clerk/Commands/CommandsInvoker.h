@@ -14,6 +14,7 @@
 #include "OpenAccountTabCommand.h"
 #include "OpenAccountsTabCommand.h"
 #include "OpenReportTabCommand.h"
+#include "EditAlertCommand.h"
 #include "../Data/Enums.h"
 #include "../UI/Enums.h"
 
@@ -28,7 +29,7 @@ namespace Clerk {
 				           NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
 						   SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
 				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& openTabCommand, OpenAccountTabCommand& openAccountTabCommand,
-						   OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand);
+						   OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand, EditAlertCommand& editAlertCommand);
 			~CommandsInvoker();
 
 			void Quit();
@@ -46,6 +47,9 @@ namespace Clerk {
 			void OpenAccountsTab();
 			void OpenAccountsTab(AccountType type);
 			void OpenReportTab(int id);
+			void NewAlert(int id);
+			void EditAlert(int id);
+			void DeleteAlert(int id);
 
 		private:
 			QuitCommand& _quitCommand;
@@ -62,6 +66,7 @@ namespace Clerk {
 			OpenAccountTabCommand& _openAccountTabCommand;
 			OpenAccountsTabCommand& _openAccountsTabCommand;
 			OpenReportTabCommand& _openReportTabCommand;
+			EditAlertCommand& _editAlertCommand;
 		};
 	}
 }

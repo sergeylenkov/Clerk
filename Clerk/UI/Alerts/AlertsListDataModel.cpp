@@ -15,7 +15,7 @@ void AlertsListDataModel::SetItems(std::vector<std::shared_ptr<AlertPresentation
 
 unsigned int AlertsListDataModel::GetColumnCount() const
 {
-	return 6;
+	return 7;
 }
 
 wxString AlertsListDataModel::GetColumnType(unsigned int column) const
@@ -35,6 +35,9 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 		case Columns::Name:			
 			variant = alert->name;
 			break;
+		case Columns::Message:
+			variant = alert->message;
+			break;
 		case Columns::Type:
 			variant = alert->typeName;
 			break;
@@ -43,6 +46,9 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 			break;
 		case Columns::Condition:
 			variant = alert->conditionName;
+			break;
+		case Columns::Importance:
+			variant = alert->importanceName;
 			break;
 		case Columns::Amount:
 			variant = Format::Amount(alert->amount);

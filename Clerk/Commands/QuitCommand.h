@@ -7,12 +7,12 @@ namespace Clerk {
 	namespace Commands {
 		class QuitCommand : public Command {
 		public:
-			QuitCommand(ICommandsReceiver* _receiver);
+			QuitCommand(ICommandsReceiver& _receiver);
 
 			void Execute() override;
 
 		private:
-			ICommandsReceiver* _receiver;
+			ICommandsReceiver& _receiver;
 		};
 	}
 }

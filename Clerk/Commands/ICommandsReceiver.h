@@ -25,6 +25,7 @@ namespace Clerk {
 			virtual void OpenAccountTab(int accountId) = 0;
 			virtual void OpenAccountsTab(std::optional<AccountType> type) = 0;
 			virtual void OpenReportTab(int id) = 0;
+			virtual void OpenEditAlertDialog(int id) = 0;
 		};
 	}
 }

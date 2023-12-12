@@ -32,7 +32,12 @@ void NotificationAlertPanel::SetAlert(std::shared_ptr<AlertPresentationModel> al
 }
 
 void NotificationAlertPanel::Update() {
-	wxString label = wxString::Format("%s '%s' %s %s", _alert->typeName, _alert->name, _alert->conditionName.Lower(), Format::Amount(_alert->amount));
+	wxString label = _alert->message;
+
+	if (_alert->message.Length() == 0) {
+		label = wxString::Format("%s '%s' %s %s", _alert->typeName, _alert->name, _alert->conditionName.Lower(), Format::Amount(_alert->amount));
+	}
+
 	_label->SetLabel(label);
 	_label->Wrap(GetSize().GetWidth());
 }

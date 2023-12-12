@@ -2,31 +2,33 @@
 
 using namespace Clerk::UI;
 
+AlertPresentationModel::AlertPresentationModel() {
+	id = -1;
+	name = wxString("");
+	message = wxString("");
+	date = wxDateTime();
+	type = AlertType::Balance;
+	period = AlertPeriod::Month;
+	condition = AlertCondition::Equal;
+	importance = AlertImportance::Medium;
+	amount = 0;
+	balance = 0;
+	isDismissed = false;
+}
+
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	id = alert.id;
-	name = alert.name;
-	message = alert.message;
+	name = wxString(alert.name);
+	message = wxString(alert.message);
 	date = wxDateTime().ParseFormat(alert.created);
 	type = alert.type;
 	period = alert.period;
 	condition = alert.condition;
 	importance = alert.importance;
 	amount = alert.amount;
+	accountIds = String::Split(alert.accountIds, ',');
 	balance = 0;
 	isDismissed = false;
-
-	std::wstringstream ss(alert.accountIds);
-
-	int i;
-
-	while (ss >> i)
-	{
-		accountIds.push_back(i);
-
-		if (ss.peek() == ',') {
-			ss.ignore();
-		}
-	}
 
 	switch (alert.type)
 	{

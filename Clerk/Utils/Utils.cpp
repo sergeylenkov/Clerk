@@ -103,14 +103,33 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 	}
 }
 
-std::string String::Split(std::vector<std::string> const& vec, std::string delim) {
+std::vector<int> String::Split(std::wstring string, char delimiter) {
+	std::vector<int> result;
+
+	std::wstringstream stream(string);
+
+	int i;
+
+	while (stream >> i)
+	{
+		result.push_back(i);
+
+		if (stream.peek() == delimiter) {
+			stream.ignore();
+		}
+	}
+
+	return result;
+}
+
+std::string String::Join(std::vector<std::string> const& vec, std::string delimiter) {
 	if (vec.empty()) {
 		return std::string();
 	}
 
 	return accumulate(vec.begin() + 1, vec.end(),
 		vec[0],
-		[](const std::string& a, std::string b) {
-			return a + ", " + b;
+		[delimiter](const std::string& a, std::string b) {
+			return a + delimiter + b;
 		});
 }

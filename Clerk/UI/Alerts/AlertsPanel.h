@@ -5,35 +5,26 @@
 #include "../PresentationModels/AlertPresentationModel.h"
 #include "../DataPanel.h"
 #include "AlertsListDataModel.h"
+#include "AlertContextMenu.h"
 
 using namespace Clerk::Data;
 
 class AlertsPanel : public DataPanel
 {
-public:
-	enum class ContextMenuTypes {
-		Add = 1,
-		Edit = 2,
-		Delete = 3,
-	};
-
+public:	
 	AlertsPanel(wxWindow *parent, DataContext& context);
+	~AlertsPanel();
 
-	std::shared_ptr<AlertPresentationModel> GetAlert();
-	void Update();	
-
-	std::function<void(std::shared_ptr<AlertPresentationModel> alert)> OnEdit;
-	std::function<void()> OnAdd;
+	void Update();
 
 private:
-	wxDataViewCtrl *list;
-	wxObjectDataPtr<AlertsListDataModel> model;
-	std::vector<std::shared_ptr<AlertPresentationModel>> alerts;
+	wxDataViewCtrl *_list;
+	wxObjectDataPtr<AlertsListDataModel> _model;
+	std::vector<std::shared_ptr<AlertPresentationModel>> _alerts;
+	AlertsService* _alertsService;
+	unsigned int _subscriptionId;
 
-	void Add();
-	void Edit();
-	void Delete();
+	std::shared_ptr<AlertPresentationModel> GetAlert();	
 	void OnListItemDoubleClick(wxDataViewEvent &event);
 	void OnRightClick(wxDataViewEvent &event);
-	void OnMenuSelect(wxCommandEvent &event);
 };

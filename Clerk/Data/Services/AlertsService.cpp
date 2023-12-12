@@ -3,7 +3,20 @@
 AlertsService::AlertsService(AlertsRepository& alertsRepository) :
 	_alertsRepository(alertsRepository)
 {
+	_eventEmitter = new EventEmitter();
 	_isLoading = false;
+}
+
+AlertsService::~AlertsService() {
+	delete _eventEmitter;
+}
+
+unsigned int AlertsService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void AlertsService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 std::shared_ptr<AlertPresentationModel> AlertsService::GetById(int id) {

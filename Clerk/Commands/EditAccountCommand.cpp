@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-EditAccountCommand::EditAccountCommand(ICommandsReceiver* receiver) : _accountId(-1) {
-	_receiver = receiver;
+EditAccountCommand::EditAccountCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_accountId(-1) {
 }
 
 void EditAccountCommand::SetAccountId(int id) {
@@ -11,5 +12,5 @@ void EditAccountCommand::SetAccountId(int id) {
 }
 
 void EditAccountCommand::Execute() {
-	_receiver->OpenEditAccountDialog(_accountId);
+	_receiver.OpenEditAccountDialog(_accountId);
 }

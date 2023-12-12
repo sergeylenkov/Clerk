@@ -7,12 +7,12 @@ namespace Clerk {
 	namespace Commands {
 		class NewTransactionCommand : public Command {
 		public:
-			NewTransactionCommand(ICommandsReceiver* _receiver);
+			NewTransactionCommand(ICommandsReceiver& _receiver);
 			void SetAccountId(int id);
 			void Execute() override;
 
 		private:
-			ICommandsReceiver* _receiver;
+			ICommandsReceiver& _receiver;
 			int _accountId;
 		};
 	}

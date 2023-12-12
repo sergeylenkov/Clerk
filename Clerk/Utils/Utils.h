@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 #include <numeric>
+#include <sstream>
 
 namespace Clerk {
 	namespace Utils {
@@ -39,7 +40,8 @@ namespace Clerk {
 
 		class String {
 		public:
-			static std::string Split(std::vector<std::string> const& vec, std::string delim);
+			static std::vector<int> Split(std::wstring string, char delimiter);
+			static std::string Join(std::vector<std::string> const& vec, std::string delimiter);
 		};
 	}
 }

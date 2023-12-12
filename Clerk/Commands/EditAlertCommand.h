@@ -5,15 +5,15 @@
 
 namespace Clerk {
 	namespace Commands {
-		class DeleteTransactionCommand : public Command {
+		class EditAlertCommand : public Command {
 		public:
-			DeleteTransactionCommand(ICommandsReceiver& _receiver);
-			void SetTransactionId(int id);
+			EditAlertCommand(ICommandsReceiver& _receiver);
+			void SetAlertId(int id);
 			void Execute() override;
 
 		private:
 			ICommandsReceiver& _receiver;
-			int _transactionId;
+			int _alertId;
 		};
 	}
 }

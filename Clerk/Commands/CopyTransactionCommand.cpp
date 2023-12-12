@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-CopyTransactionCommand::CopyTransactionCommand(ICommandsReceiver* receiver) : _transactionId(-1) {
-	_receiver = receiver;
+CopyTransactionCommand::CopyTransactionCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_transactionId(-1) {
 }
 
 void CopyTransactionCommand::SetTransactionId(int id) {
@@ -11,5 +12,5 @@ void CopyTransactionCommand::SetTransactionId(int id) {
 }
 
 void CopyTransactionCommand::Execute() {
-	_receiver->CopyTransaction(_transactionId);
+	_receiver.CopyTransaction(_transactionId);
 }

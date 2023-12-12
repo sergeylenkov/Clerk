@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-SplitTransactionCommand::SplitTransactionCommand(ICommandsReceiver* receiver) : _transactionId(-1) {
-	_receiver = receiver;
+SplitTransactionCommand::SplitTransactionCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_transactionId(-1) {
 }
 
 void SplitTransactionCommand::SetTransactionId(int id) {
@@ -11,5 +12,5 @@ void SplitTransactionCommand::SetTransactionId(int id) {
 }
 
 void SplitTransactionCommand::Execute() {
-	_receiver->SplitTransaction(_transactionId);
+	_receiver.SplitTransaction(_transactionId);
 }

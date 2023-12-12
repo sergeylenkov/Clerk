@@ -2,10 +2,9 @@
 
 using namespace Clerk::Commands;
 
-QuitCommand::QuitCommand(ICommandsReceiver* receiver) {
-	_receiver = receiver;
+QuitCommand::QuitCommand(ICommandsReceiver& receiver): _receiver(receiver) {	
 }
 
 void QuitCommand::Execute() {
-	_receiver->Quit();
+	_receiver.Quit();
 }

@@ -30,6 +30,7 @@
 #include "../Commands/OpenAccountTabCommand.h"
 #include "../Commands/OpenAccountsTabCommand.h"
 #include "../Commands/OpenReportTabCommand.h"
+#include "../Commands/EditAlertCommand.h"
 #include "Controllers/DialogsController.h"
 #include "Controllers/TabsController.h"
 #include "./ViewModels/StatusViewModel.h"

@@ -1,16 +1,18 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <sstream>
 #include "../../Data/Models/AlertModel.h"
 #include "../../Data/Enums.h"
+#include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {
 		class AlertPresentationModel {
 		public:
+			AlertPresentationModel();
 			AlertPresentationModel(AlertModel& account);
 
 			int id;

@@ -14,9 +14,11 @@ public:
 	enum class Columns
 	{
 		Name,
+		Message,
 		Type,
 		Period,
 		Condition,
+		Importance,
 		Amount,
 		Last
 	};

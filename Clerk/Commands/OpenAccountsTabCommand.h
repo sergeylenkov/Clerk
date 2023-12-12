@@ -11,12 +11,12 @@ namespace Clerk {
 	namespace Commands {
 		class OpenAccountsTabCommand : public Command {
 		public:
-			OpenAccountsTabCommand(ICommandsReceiver* _receiver);
+			OpenAccountsTabCommand(ICommandsReceiver& _receiver);
 			void SetAccountType(AccountType type);
 			void Execute() override;
 
 		private:
-			ICommandsReceiver* _receiver;
+			ICommandsReceiver& _receiver;
 			std::optional<AccountType> _accountType;
 		};
 	}

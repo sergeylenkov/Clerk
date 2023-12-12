@@ -10,12 +10,12 @@ namespace Clerk {
 	namespace Commands {
 		class OpenReportTabCommand : public Command {
 		public:
-			OpenReportTabCommand(ICommandsReceiver* _receiver);
+			OpenReportTabCommand(ICommandsReceiver& _receiver);
 			void SetReportId(int id);
 			void Execute() override;
 
 		private:
-			ICommandsReceiver* _receiver;
+			ICommandsReceiver& _receiver;
 			int _reportId;
 		};
 	}

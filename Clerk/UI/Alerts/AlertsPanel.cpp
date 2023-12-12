@@ -1,119 +1,74 @@
 #include "AlertsPanel.h"
 
 AlertsPanel::AlertsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
-	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
+	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
-	model = new AlertsListDataModel();
-	list->AssociateModel(model.get());
+	_model = new AlertsListDataModel();
+	_list->AssociateModel(_model.get());
 
-	list->AppendTextColumn(_("Name"), static_cast<int>(AlertsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn(_("Type"), static_cast<int>(AlertsListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 150, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn(_("Period"), static_cast<int>(AlertsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn(_("Condition"), static_cast<int>(AlertsListDataModel::Columns::Condition), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-	list->AppendTextColumn("", static_cast<int>(AlertsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+	_list->AppendTextColumn(_("Name"), static_cast<int>(AlertsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Message"), static_cast<int>(AlertsListDataModel::Columns::Message), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Type"), static_cast<int>(AlertsListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, 150, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Period"), static_cast<int>(AlertsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Condition"), static_cast<int>(AlertsListDataModel::Columns::Condition), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Importance"), static_cast<int>(AlertsListDataModel::Columns::Importance), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, 150, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+	_list->AppendTextColumn("", static_cast<int>(AlertsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 
-	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsPanel::OnListItemDoubleClick, this);
-	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &AlertsPanel::OnRightClick, this);
+	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsPanel::OnListItemDoubleClick, this);
+	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &AlertsPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
-	mainSizer->Add(list, 1, wxALL | wxEXPAND, 0);
+	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
+
+	_alertsService = &_context.GetAlertsService();
+	_subscriptionId = _alertsService->Subscribe([&]() {
+		Update();
+	});
+
+	Update();
+}
+
+AlertsPanel::~AlertsPanel() {
+	_alertsService->Unsubscribe(_subscriptionId);
+}
+
+void AlertsPanel::Update() {
+	_alerts = _alertsService->GetAll();
+	_model.get()->SetItems(_alerts);
 }
 
 std::shared_ptr<AlertPresentationModel> AlertsPanel::GetAlert() {
-	wxDataViewItem item = list->GetSelection();
-	
+	wxDataViewItem item = _list->GetSelection();
+
 	if (item.IsOk()) {
 		int index = reinterpret_cast<int>(item.GetID()) - 1;
 
-		return alerts[index];
-	}	
+		return _alerts[index];
+	}
 
 	return nullptr;
 }
 
-void AlertsPanel::Update() {
-	alerts = _context.GetAlertsService().GetAll();
-	model.get()->SetItems(alerts);
-}
-
-void AlertsPanel::Add() {
-	if (OnAdd) {
-		OnAdd();
-	}
-}
-
-void AlertsPanel::Edit() {
-	if (OnEdit) {
-		auto alert = GetAlert();
-		OnEdit(alert);
-	}
-}
-
-void AlertsPanel::Delete() {
+void AlertsPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
 	auto alert = GetAlert();
 
 	if (alert) {
-		//_context.GetAlertsRepository().Delete(*alert);
-		Update();
+		_context.GetCommandsInvoker().EditTransaction(alert->id);
 	}
-}
-
-void AlertsPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
-	if (OnEdit) {
-		auto alert = GetAlert();
-		OnEdit(alert);
+	else {
+		_context.GetCommandsInvoker().NewTransaction(-1);
 	}
 }
 
 void AlertsPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu *menu = new wxMenu;
+	wxMenu* menu = new AlertContextMenu(_context.GetCommandsInvoker(), GetAlert());
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), _("Add..."));
-	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), _("Edit..."));
-	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), _("Delete"));
+	_list->PopupMenu(menu);
 
-	addItem->Enable(true);
-	editItem->Enable(true);
-	deleteItem->Enable(true);
-
-	if (list->GetSelectedItemsCount() == 0) {
-		editItem->Enable(false);
-		editItem->SetTextColour(*wxLIGHT_GREY);
-
-		deleteItem->Enable(false);
-		deleteItem->SetTextColour(*wxLIGHT_GREY);
-	}
-
-	menu->Append(addItem);
-	menu->Append(editItem);
-	menu->AppendSeparator();
-	menu->Append(deleteItem);
-
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &AlertsPanel::OnMenuSelect, this);
-
-	list->PopupMenu(menu);
-}
-
-void AlertsPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<ContextMenuTypes>(event.GetId())) {
-		case ContextMenuTypes::Add:
-			Add();
-			break;
-
-		case ContextMenuTypes::Edit:
-			Edit();
-			break;
-
-		case ContextMenuTypes::Delete:
-			Delete();
-			break;
-
-		default:
-			break;
-	}
+	delete menu;
 }

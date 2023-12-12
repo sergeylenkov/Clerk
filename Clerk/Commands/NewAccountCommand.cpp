@@ -2,8 +2,9 @@
 
 using namespace Clerk::Commands;
 
-NewAccountCommand::NewAccountCommand(ICommandsReceiver* receiver) : _accountType(AccountType::Deposit) {
-	_receiver = receiver;
+NewAccountCommand::NewAccountCommand(ICommandsReceiver& receiver):
+	_receiver(receiver), 
+	_accountType(AccountType::Deposit) {
 }
 
 void NewAccountCommand::SetAccountType(AccountType type) {
@@ -11,5 +12,5 @@ void NewAccountCommand::SetAccountType(AccountType type) {
 }
 
 void NewAccountCommand::Execute() {
-	_receiver->OpenNewAccountDialog(_accountType);
+	_receiver.OpenNewAccountDialog(_accountType);
 }

@@ -165,9 +165,6 @@
     <ClCompile Include="UI\Alerts\AlertsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Alerts\AlertsConfirmDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -444,6 +441,12 @@
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Alerts\AlertContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\EditAlertCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -600,9 +603,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Alerts\AlertsPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Alerts\AlertsConfirmDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h">
@@ -921,6 +921,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Alerts\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Alerts\AlertContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\EditAlertCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

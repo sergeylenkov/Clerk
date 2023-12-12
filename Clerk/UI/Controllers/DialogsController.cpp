@@ -115,6 +115,10 @@ void DialogsController::ShowEditAccountDialog(int id) {
 	accountDialog->CenterOnParent();
 }
 
+void DialogsController::ShowEditAlertDialog(int id) {
+
+}
+
 wxSize DialogsController::GetAboutDialogSize() {
 	wxSize size = wxSize();
 

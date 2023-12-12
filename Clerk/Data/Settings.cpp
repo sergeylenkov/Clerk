@@ -174,6 +174,18 @@ void Settings::Open(char *configName) {
 			}
 		}
 
+		if (json.HasMember("AlertsListColumns") && json["AlertsListColumns"].IsArray()) {
+			const Value& values = json["AlertsListColumns"];
+			std::vector<ListColumnsSettings> columns;
+
+			for (SizeType i = 0; i < values.Size(); i++) {
+				const Value& value = values[i];
+
+				columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
+			}
+
+			_alertsListColumnsSettings = columns;
+		}
 	}
 }
 
@@ -221,7 +233,7 @@ void Settings::Save() {
 	}
 
 	if (_transactionListFilterSettings.size() > 0) {
-		Value settingsJson(kArrayType);
+		Value filtersJson(kArrayType);
 
 		for (auto& settings : _transactionListFilterSettings)
 		{
@@ -241,13 +253,13 @@ void Settings::Save() {
 
 			filterJson.AddMember("ToDate", string, json.GetAllocator());
 
-			settingsJson.PushBack(filterJson, json.GetAllocator());
+			filtersJson.PushBack(filterJson, json.GetAllocator());
 		}
 
-		json.AddMember("TransactionsListFilters", settingsJson, json.GetAllocator());
+		json.AddMember("TransactionsListFilters", filtersJson, json.GetAllocator());
 	}
 
-	Value settingsJson(kArrayType);
+	Value transactionsColumnsJson(kArrayType);
 
 	for (const auto &value : _transactionsListColumnsSettings)
 	{
@@ -274,13 +286,13 @@ void Settings::Save() {
 		columnsTypeJson.AddMember("Type", value.first, json.GetAllocator());
 		columnsTypeJson.AddMember("Columns", columnsJson, json.GetAllocator());
 
-		settingsJson.PushBack(columnsTypeJson, json.GetAllocator());
+		transactionsColumnsJson.PushBack(columnsTypeJson, json.GetAllocator());
 	}
 
-	json.AddMember("TransactionsListColumns", settingsJson, json.GetAllocator());
+	json.AddMember("TransactionsListColumns", transactionsColumnsJson, json.GetAllocator());
 
 	if (_reportFilterSettings.size() > 0) {
-		Value settingsJson(kArrayType);
+		Value filtersJson(kArrayType);
 
 		for (auto& settings : _reportFilterSettings)
 		{
@@ -304,11 +316,32 @@ void Settings::Save() {
 			filterJson.AddMember("ToDate", string, json.GetAllocator());
 			filterJson.AddMember("Average", settings.average, json.GetAllocator());
 
-			settingsJson.PushBack(filterJson, json.GetAllocator());
+			filtersJson.PushBack(filterJson, json.GetAllocator());
 		}
 
-		json.AddMember("ReportFilters", settingsJson, json.GetAllocator());
+		json.AddMember("ReportFilters", filtersJson, json.GetAllocator());
 	}
+
+	Value alertsColumnsJson(kArrayType);
+
+	auto& columns = _alertsListColumnsSettings;	
+
+	for (auto& column : columns)
+	{
+		Value columnJson(kObjectType);
+
+		Value string(column.title.c_str(), json.GetAllocator());
+
+		columnJson.AddMember("Index", column.index, json.GetAllocator());
+		columnJson.AddMember("Order", column.order, json.GetAllocator());
+		columnJson.AddMember("Title", string, json.GetAllocator());
+		columnJson.AddMember("Width", column.width, json.GetAllocator());
+		columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
+
+		alertsColumnsJson.PushBack(columnJson, json.GetAllocator());
+	}
+
+	json.AddMember("AlertsListColumns", alertsColumnsJson, json.GetAllocator());
 
 	FILE *fp = fopen(_fileName.char_str(), "wb"); 
 	char writeBuffer[65536]{0};
@@ -367,6 +400,18 @@ void Settings::RestoreDefaultColumns() {
 	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Deposits)] = columns4;
+
+	std::vector<ListColumnsSettings> alertsColumns;
+
+	alertsColumns.push_back({ 0, 0, wxT("Name"), 100, true });
+	alertsColumns.push_back({ 1, 1, wxT("Message"), 100, false });
+	alertsColumns.push_back({ 2, 2, wxT("Type"), 100, false });
+	alertsColumns.push_back({ 3, 3, wxT("Period"), 100, false });
+	alertsColumns.push_back({ 4, 4, wxT("Condition"), 100, false });
+	alertsColumns.push_back({ 5, 5, wxT("Importance"), 100, false });
+	alertsColumns.push_back({ 6, 6, wxT("Amount"), 100, false });
+
+	_alertsListColumnsSettings = alertsColumns;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -482,6 +527,18 @@ bool Settings::IsMenuExpanded(int type) {
 	return false;
 }
 
+std::vector<Language> Settings::GetLanguages() {
+	return _languages;
+}
+
+int Settings::GetLanguage() {
+	return _language;
+}
+
+void Settings::SetLanguage(int id) {
+	_language = id;
+}
+
 void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {
 	bool found = false;
 
@@ -580,14 +637,14 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 	}
 }
 
-std::vector<Language> Settings::GetLanguages() {
-	return _languages;
+std::vector<ListColumnsSettings> Settings::GetAlertsListColumns() {
+	std::sort(_alertsListColumnsSettings.begin(), _alertsListColumnsSettings.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+		return v1.order < v2.order;
+	});
+
+	return _alertsListColumnsSettings;
 }
 
-int Settings::GetLanguage() {
-	return _language;
-}
-
-void Settings::SetLanguage(int id) {
-	_language = id;
+void Settings::SetAlertsListColumns(std::vector<ListColumnsSettings> columns) {
+	_alertsListColumnsSettings = columns;
 }

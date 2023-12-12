@@ -124,7 +124,7 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 			return new TagsPanel(_tabsPanel, _context);
 			break;
 		case TabType::Alerts:
-			return new AlertsPanel(_tabsPanel, _context);
+			return new AlertsListPanel(_tabsPanel, _context);
 			break;
 		case TabType::Trash:
 			return new TrashPanel(_tabsPanel, _context);

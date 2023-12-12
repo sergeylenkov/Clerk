@@ -11,7 +11,7 @@
 #include "../TrashPanel.h"
 #include "../Schedulers/SchedulersPanel.h"
 #include "../Goals/GoalsPanel.h"
-#include "../Alerts/AlertsPanel.h"
+#include "../Alerts/AlertsListPanel.h"
 #include "../TagsPanel.h"
 #include "../Reports/ReportExpensesByMonthPanel.h"
 #include "../Reports/ReportBalanceByMonthPanel.h"

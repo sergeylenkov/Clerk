@@ -54,6 +54,9 @@ public:
 	void AddExpandedMenu(int type);
 	void RemoveExpandedMenu(int type);
 	bool IsMenuExpanded(int type);	
+	std::vector<Language> GetLanguages();
+	int GetLanguage();
+	void SetLanguage(int id);
 	void SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate);
 	ListFilterSettings GetListFilterSettings(int type, int id);
 	std::vector<ListColumnsSettings> GetTransactionsListColumns(TransactionsListType type);
@@ -61,9 +64,8 @@ public:
 	ReportFilterSettings GetReportFilterSettings(int id);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);
-	std::vector<Language> GetLanguages();
-	int GetLanguage();
-	void SetLanguage(int id);
+	std::vector<ListColumnsSettings> GetAlertsListColumns();
+	void SetAlertsListColumns(std::vector<ListColumnsSettings> columns);		
 
 private:
 	wxString _fileName;
@@ -80,11 +82,12 @@ private:
 	std::vector<TabSettings> _tabs;
 	std::map<int, bool> _expandedMenu;
 	int _selectedTab;
+	std::vector<Language> _languages;
+	int _language;
 	std::vector<ListFilterSettings> _transactionListFilterSettings;
 	std::map<int, std::vector<ListColumnsSettings>> _transactionsListColumnsSettings;
 	std::vector<ReportFilterSettings> _reportFilterSettings;
-	std::vector<Language> _languages;
-	int _language;
+	std::vector<ListColumnsSettings> _alertsListColumnsSettings;
 
 	void RestoreDefaultColumns();
 };

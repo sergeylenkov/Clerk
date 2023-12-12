@@ -162,7 +162,7 @@
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Alerts\AlertsPanel.cpp">
+    <ClCompile Include="UI\Alerts\AlertsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp">
@@ -605,7 +605,7 @@
     <ClInclude Include="UI\Alerts\AlertsListDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Alerts\AlertsPanel.h">
+    <ClInclude Include="UI\Alerts\AlertsListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h">

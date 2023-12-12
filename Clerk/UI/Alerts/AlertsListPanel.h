@@ -4,16 +4,17 @@
 #include "wx/dataview.h"
 #include "../PresentationModels/AlertPresentationModel.h"
 #include "../DataPanel.h"
+#include "../../Data/Settings.h"
 #include "AlertsListDataModel.h"
 #include "AlertContextMenu.h"
 
 using namespace Clerk::Data;
 
-class AlertsPanel : public DataPanel
+class AlertsListPanel : public DataPanel
 {
 public:	
-	AlertsPanel(wxWindow *parent, DataContext& context);
-	~AlertsPanel();
+	AlertsListPanel(wxWindow *parent, DataContext& context);
+	~AlertsListPanel();
 
 	void Update();
 
@@ -25,6 +26,8 @@ private:
 	unsigned int _subscriptionId;
 
 	std::shared_ptr<AlertPresentationModel> GetAlert();	
+	void CreateListColumns();
+	void SaveColumnsSettings();	
 	void OnListItemDoubleClick(wxDataViewEvent &event);
 	void OnRightClick(wxDataViewEvent &event);
 };

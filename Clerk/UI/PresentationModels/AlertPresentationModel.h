@@ -24,7 +24,7 @@ namespace Clerk {
 			AlertImportance importance;
 			float amount;
 			float balance;
-			wxDateTime date;
+			wxDateTime created;
 			wxString typeName;
 			wxString periodName;
 			wxString conditionName;

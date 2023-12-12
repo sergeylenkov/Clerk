@@ -114,7 +114,7 @@ shared_vector<SchedulerPresentationModel> DashboardViewModel::GetSchedulersForMo
 	wxDateTime today = wxDateTime::Now();
 	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
 
-	return _schedulersService.GetByPeriod(today, month);
+	return _schedulersService.GetActiveByPeriod(today, month);
 }
 
 shared_vector<AccountPresentationModel> DashboardViewModel::GetDepts() {

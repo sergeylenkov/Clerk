@@ -28,10 +28,10 @@ void DashboardSchedulersPanel::Update()
 		wxString date = scheduler->nextDate.FormatISODate();
 
 		if (_values[date]) {
-			_values[date] = _values[date] + scheduler->amount;
+			_values[date] = _values[date] + scheduler->toAmount;
 		}
 		else {
-			_values[date] = scheduler->amount;
+			_values[date] = scheduler->toAmount;
 		}
 
 		if (_values[date] > _maxValue) {

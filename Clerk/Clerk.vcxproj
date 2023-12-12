@@ -162,7 +162,7 @@
     <ClCompile Include="UI\Goals\GoalDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersConfirmDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerDialog.cpp" />
-    <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp" />
+    <ClCompile Include="UI\Schedulers\SchedulersListPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
     <ClCompile Include="UI\Tabs\TabsPanel.cpp" />
@@ -251,6 +251,7 @@
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
     <ClInclude Include="UI\Notifications\NotificationsPopup.h" />
     <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h" />
+    <ClInclude Include="UI\Schedulers\Enums.h" />
     <ClInclude Include="UI\TagsField\TagPanel.h" />
     <ClInclude Include="UI\TagsField\TagsField.h" />
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h" />
@@ -322,7 +323,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\Schedulers\SchedulersConfirmDialog.h" />
     <ClInclude Include="UI\Schedulers\SchedulerDialog.h" />
-    <ClInclude Include="UI\Schedulers\SchedulersPanel.h" />
+    <ClInclude Include="UI\Schedulers\SchedulersListPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
     <ClInclude Include="UI\Tabs\TabsPanel.h" />

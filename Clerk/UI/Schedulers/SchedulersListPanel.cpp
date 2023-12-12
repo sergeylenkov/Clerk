@@ -1,6 +1,6 @@
-#include "SchedulersPanel.h"
+#include "SchedulersListPanel.h"
 
-SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+SchedulersListPanel::SchedulersListPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	list->AppendTextColumn(_("Name"), static_cast<int>(SchedulersListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, 300, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
@@ -14,8 +14,8 @@ SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataP
 	model = new SchedulersListDataModel();
 	list->AssociateModel(model.get());	
 	
-	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &SchedulersPanel::OnListItemDoubleClick, this);
-	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &SchedulersPanel::OnRightClick, this);
+	list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &SchedulersListPanel::OnListItemDoubleClick, this);
+	list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &SchedulersListPanel::OnRightClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -25,7 +25,7 @@ SchedulersPanel::SchedulersPanel(wxWindow *parent, DataContext& context) : DataP
 	this->Layout();
 }
 
-std::shared_ptr<SchedulerPresentationModel> SchedulersPanel::GetScheduler() {
+std::shared_ptr<SchedulerPresentationModel> SchedulersListPanel::GetScheduler() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
@@ -36,25 +36,25 @@ std::shared_ptr<SchedulerPresentationModel> SchedulersPanel::GetScheduler() {
 	return nullptr;
 }
 
-void SchedulersPanel::Update() {
+void SchedulersListPanel::Update() {
 	schedulers = _context.GetSchedulersService().GetAll();
 	model.get()->SetItems(schedulers);
 }
 
-void SchedulersPanel::Add() {
+void SchedulersListPanel::Add() {
 	if (OnAdd) {
 		OnAdd();
 	}
 }
 
-void SchedulersPanel::Edit() {
+void SchedulersListPanel::Edit() {
 	if (OnEdit) {
 		auto scheduler = GetScheduler();
 		OnEdit(scheduler);
 	}
 }
 
-void SchedulersPanel::Delete() {
+void SchedulersListPanel::Delete() {
 	auto scheduler = GetScheduler();
 
 	if (scheduler) {		
@@ -63,7 +63,7 @@ void SchedulersPanel::Delete() {
 	}
 }
 
-void SchedulersPanel::Run() {
+void SchedulersListPanel::Run() {
 	auto scheduler = GetScheduler();
 
 	//TODO moved method to interactor
@@ -73,7 +73,7 @@ void SchedulersPanel::Run() {
 	Update();
 }
 
-void SchedulersPanel::Pause() {
+void SchedulersListPanel::Pause() {
 	auto scheduler = GetScheduler();
 
 	//TODO moved method to interactor
@@ -83,14 +83,14 @@ void SchedulersPanel::Pause() {
 	Update();
 }
 
-void SchedulersPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
+void SchedulersListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	Edit();
 }
 
-void SchedulersPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu *menu = new wxMenu;
+void SchedulersListPanel::OnRightClick(wxDataViewEvent &event) {
+	/*wxMenu* menu = new wxMenu;
 
-	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Add), _("Add..."));
+	wxMenuItem *addItem = new wxMenuItem(menu, static_cast<int>(SchedulerContextMenuTypes::Add), _("Add..."));
 	wxMenuItem *editItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Edit), _("Edit..."));
 	wxMenuItem *deleteItem = new wxMenuItem(menu, static_cast<int>(ContextMenuTypes::Delete), _("Delete"));
 
@@ -127,15 +127,15 @@ void SchedulersPanel::OnRightClick(wxDataViewEvent &event) {
 
 	menu->Append(deleteItem);
 
-	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersPanel::OnMenuSelect, this);
+	menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &SchedulersListPanel::OnMenuSelect, this);
 
 	list->PopupMenu(menu);
 	
-	delete menu;
+	delete menu;*/
 }
 
-void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
-	switch (static_cast<ContextMenuTypes>(event.GetId())) {
+void SchedulersListPanel::OnMenuSelect(wxCommandEvent &event) {
+	/*switch (static_cast<ContextMenuTypes>(event.GetId())) {
 		case ContextMenuTypes::Add:
 			Add();
 			break;
@@ -158,5 +158,5 @@ void SchedulersPanel::OnMenuSelect(wxCommandEvent &event) {
 
 		default:
 			break;
-	}
+	}*/
 }

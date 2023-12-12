@@ -21,10 +21,13 @@ TransactionPresentationModel::TransactionPresentationModel(TransactionModel& tra
 	fromAmount = transaction.fromAmount;
 	toAmount = transaction.toAmount;
 	note = wxString(transaction.note);
+
 	date = wxDateTime::Today(); 
 	date.ParseISODate(transaction.date);
+
 	created = wxDateTime::Now();
 	created.ParseISODate(transaction.created);
+
 	tagsString = wxString("");
 }
 
@@ -46,8 +49,7 @@ TransactionModel& TransactionPresentationModel::GetModel() {
 
 	std::transform(tags.begin(), tags.end(), std::back_inserter(model->tagsIds), [&](const std::shared_ptr<TagPresentationModel>& tag) {
 		return tag->id;
-	});
-	
+	});	
 
 	return *model;
 }

@@ -27,7 +27,7 @@ std::vector<SchedulerModel*> SchedulersRepository::GetAll() {
 SchedulerModel* SchedulersRepository::Load(int id) {
 	SchedulerModel* scheduler = nullptr;
 
-	char* sql = "SELECT s.id, s.name, s.type, s.day, s.week, s.month, s.from_account_id, s.to_account_id, s.from_account_amount, s.to_account_amount, s.tags, s.prev_date, s.next_date, s.active FROM schedulers s WHERE s.id = ?";
+	char* sql = "SELECT id, name, type, day, week, month, from_account_id, to_account_id, from_account_amount, to_account_amount, tags, prev_date, next_date, active, created_at FROM schedulers WHERE id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -46,10 +46,11 @@ SchedulerModel* SchedulersRepository::Load(int id) {
 			scheduler->toAccountId = sqlite3_column_int(statement, 7);
 			scheduler->fromAmount = static_cast<float>(sqlite3_column_double(statement, 8));
 			scheduler->toAmount = static_cast<float>(sqlite3_column_double(statement, 9));
-			scheduler->tags = std::wstring((wchar_t*)sqlite3_column_text16(statement, 10));
+			scheduler->tagsIds = std::wstring((wchar_t*)sqlite3_column_text16(statement, 10));
 			scheduler->previousDate = std::wstring((wchar_t*)sqlite3_column_text16(statement, 11));
 			scheduler->nextDate = std::wstring((wchar_t*)sqlite3_column_text16(statement, 12));
 			scheduler->active = sqlite3_column_int(statement, 13);
+			scheduler->created = std::wstring((wchar_t*)sqlite3_column_text16(statement, 14));
 		}
 	}
 
@@ -62,7 +63,7 @@ int SchedulersRepository::Save(const SchedulerModel& scheduler) {
 	int id = scheduler.id;
 
 	if (scheduler.id == -1) {
-		char* sql = "INSERT INTO schedulers (name, type, day, week, month, from_account_id, to_account_id, from_account_amount, to_account_amount, tags, prev_date, next_date, active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		char* sql = "INSERT INTO schedulers (name, type, day, week, month, from_account_id, to_account_id, from_account_amount, to_account_amount, tags, prev_date, next_date, active, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		sqlite3_stmt* statement;
 
 		if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -75,10 +76,11 @@ int SchedulersRepository::Save(const SchedulerModel& scheduler) {
 			sqlite3_bind_int(statement, 7, scheduler.toAccountId);
 			sqlite3_bind_double(statement, 8, scheduler.fromAmount);
 			sqlite3_bind_double(statement, 9, scheduler.toAmount);
-			sqlite3_bind_text16(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 10, scheduler.tagsIds.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text16(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text16(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 13, scheduler.active);
+			sqlite3_bind_text16(statement, 14, scheduler.created.c_str(), -1, SQLITE_TRANSIENT);
 
 			if (sqlite3_step(statement) == SQLITE_DONE) {
 				id = static_cast<int>(sqlite3_last_insert_rowid(_connection.GetConnection()));
@@ -101,7 +103,7 @@ int SchedulersRepository::Save(const SchedulerModel& scheduler) {
 			sqlite3_bind_int(statement, 7, scheduler.toAccountId);
 			sqlite3_bind_double(statement, 8, scheduler.fromAmount);
 			sqlite3_bind_double(statement, 9, scheduler.toAmount);
-			sqlite3_bind_text16(statement, 10, scheduler.tags.c_str(), -1, SQLITE_TRANSIENT);
+			sqlite3_bind_text16(statement, 10, scheduler.tagsIds.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text16(statement, 11, scheduler.previousDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_text16(statement, 12, scheduler.nextDate.c_str(), -1, SQLITE_TRANSIENT);
 			sqlite3_bind_int(statement, 13, scheduler.active);

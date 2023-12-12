@@ -22,10 +22,11 @@ namespace Clerk {
 			int toAccountId;
 			float fromAmount;
 			float toAmount;
-			std::wstring tags;
+			std::wstring tagsIds;
 			std::wstring previousDate;
 			std::wstring nextDate;
 			bool active;
+			std::wstring created;
 		};
 	}
 }

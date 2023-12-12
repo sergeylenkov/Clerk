@@ -9,7 +9,7 @@
 #include "../Transactions/TransactionsListPanel.h"
 #include "../Budgets/BudgetsPanel.h"
 #include "../TrashPanel.h"
-#include "../Schedulers/SchedulersPanel.h"
+#include "../Schedulers/SchedulersListPanel.h"
 #include "../Goals/GoalsPanel.h"
 #include "../Alerts/AlertsListPanel.h"
 #include "../TagsPanel.h"

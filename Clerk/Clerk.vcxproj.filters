@@ -120,7 +120,7 @@
     <ClCompile Include="UI\Goals\GoalsProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Schedulers\SchedulersPanel.cpp">
+    <ClCompile Include="UI\Schedulers\SchedulersListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp">
@@ -563,7 +563,7 @@
     <ClInclude Include="UI\Goals\GoalsProgressRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Schedulers\SchedulersPanel.h">
+    <ClInclude Include="UI\Schedulers\SchedulersListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h">
@@ -936,6 +936,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\AlertViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

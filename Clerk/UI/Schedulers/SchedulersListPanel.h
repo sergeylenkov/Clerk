@@ -8,18 +8,10 @@
 
 using namespace Clerk::Data;
 
-class SchedulersPanel : public DataPanel
+class SchedulersListPanel : public DataPanel
 {
 public:
-	enum class ContextMenuTypes {
-		Add = 1,
-		Edit = 2,
-		Delete = 3,
-		Run = 4,
-		Pause = 5,
-	};
-
-	SchedulersPanel(wxWindow *parent, DataContext& context);
+	SchedulersListPanel(wxWindow *parent, DataContext& context);
 	
 	std::shared_ptr<SchedulerPresentationModel> GetScheduler();
 	void Update();	

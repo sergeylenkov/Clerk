@@ -6,7 +6,6 @@ AlertPresentationModel::AlertPresentationModel() {
 	id = -1;
 	name = wxString("");
 	message = wxString("");
-	date = wxDateTime();
 	type = AlertType::Balance;
 	period = AlertPeriod::Month;
 	condition = AlertCondition::Equal;
@@ -14,14 +13,13 @@ AlertPresentationModel::AlertPresentationModel() {
 	amount = 0;
 	balance = 0;
 	isDismissed = false;
-	date = wxDateTime::Today();
+	created = wxDateTime::Now();
 }
 
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	id = alert.id;
 	name = wxString(alert.name);
 	message = wxString(alert.message);
-	date = wxDateTime().ParseFormat(alert.created);
 	type = alert.type;
 	period = alert.period;
 	condition = alert.condition;
@@ -30,8 +28,9 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	accountsIds = String::Split(alert.accountIds, ',');
 	balance = 0;
 	isDismissed = false;
-	date = wxDateTime::Today();
-	date.ParseISODate(alert.created);
+	
+	created = wxDateTime::Now();
+	created.ParseISODate(alert.created);
 
 	switch (alert.type)
 	{
@@ -109,7 +108,7 @@ AlertModel& AlertPresentationModel::GetModel() {
 	model->condition = condition;
 	model->importance = importance;	
 	model->amount = amount;
-	model->created = date.FormatISODate();
+	model->created = created.FormatISOCombined(' ');
 
 	std::vector<std::string> res;
 

@@ -138,7 +138,7 @@ TransactionModel* TransactionsRepository::GetInitialTransactionForAccount(int ac
 TransactionModel* TransactionsRepository::Load(int id) {
 	TransactionModel* transaction = nullptr;
 
-	char* sql = "SELECT id, from_account_id, to_account_id, from_account_amount, to_account_amount, paid_at, note FROM transactions WHERE id = ?";
+	char* sql = "SELECT id, from_account_id, to_account_id, from_account_amount, to_account_amount, paid_at, note, created_at FROM transactions WHERE id = ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
@@ -154,6 +154,7 @@ TransactionModel* TransactionsRepository::Load(int id) {
 			transaction->toAmount = static_cast<float>(sqlite3_column_double(statement, 4));
 			transaction->date = std::wstring((wchar_t*)sqlite3_column_text16(statement, 5));
 			transaction->note = std::wstring((wchar_t*)sqlite3_column_text16(statement, 6));
+			transaction->created = std::wstring((wchar_t*)sqlite3_column_text16(statement, 7));
 		}
 	}
 

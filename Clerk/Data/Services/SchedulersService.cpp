@@ -1,11 +1,24 @@
 #include "SchedulersService.h"
 
-SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, CurrenciesService& currenciesService):
+SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, TagsService& tagsService):
 	_schedulersRepository(schedulersRepository),
 	_accountsService(accountsService),
-	_currenciesService(currenciesService)
+	_tagsService(tagsService)
 {
+	_eventEmitter = new EventEmitter();
 	_isLoading = false;
+}
+
+SchedulersService::~SchedulersService() {
+	delete _eventEmitter;
+}
+
+unsigned int SchedulersService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void SchedulersService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
@@ -19,12 +32,7 @@ std::shared_ptr<SchedulerPresentationModel> SchedulersService::GetById(int id) {
 
 	if (model) {
 		scheduler = std::make_shared<SchedulerPresentationModel>(*model);
-
-		auto account = _accountsService.GetById(model->toAccountId);
-		CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
-
-		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
-		scheduler->amount = model->toAmount * rate;
+		LoadDetails(scheduler, *model);
 
 		AddToHash(scheduler->id, scheduler);
 
@@ -41,17 +49,12 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
 		return GetHashList();
 	}
 
-	CurrencyPresentationModel& baseCurrency = *_currenciesService.GetBaseCurrency();
 	auto models = _schedulersRepository.GetAll();
 
 	for (auto& model : models) {
 		if (!GetFromHash(model->id)) {
 			auto scheduler = std::make_shared<SchedulerPresentationModel>(*model);
-
-			auto account = _accountsService.GetById(model->toAccountId);
-
-			float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
-			scheduler->amount = model->toAmount * rate;
+			LoadDetails(scheduler, *model);
 
 			AddToHash(scheduler->id, scheduler);
 		}
@@ -68,7 +71,7 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetAll() {
 	return GetHashList();
 }
 
-shared_vector<SchedulerPresentationModel> SchedulersService::GetByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
+shared_vector<SchedulerPresentationModel> SchedulersService::GetActiveByPeriod(wxDateTime& fromDate, wxDateTime& toDate) {
 	auto schedulers = GetAll();
 	shared_vector<SchedulerPresentationModel> result;
 
@@ -144,4 +147,43 @@ void SchedulersService::Execute(const SchedulerPresentationModel& scheduler) {
 	//transaction->Save();
 
 	delete transaction;*/
+}
+
+std::shared_ptr<SchedulerPresentationModel> SchedulersService::Save(SchedulerPresentationModel& scheduler) {
+	SchedulerModel& model = scheduler;
+
+	int id = _schedulersRepository.Save(model);
+
+	delete& model;
+
+	_eventEmitter->Emit();
+
+	RemoveFromHash(id);
+
+	return GetById(id);
+}
+
+void SchedulersService::Delete(SchedulerPresentationModel& scheduler) {
+	SchedulerModel& model = scheduler;
+
+	_schedulersRepository.Delete(model);
+
+	delete& model;
+
+	RemoveFromHash(scheduler.id);
+
+	_eventEmitter->Emit();
+}
+
+void SchedulersService::LoadDetails(std::shared_ptr<SchedulerPresentationModel> transaction, SchedulerModel& model) {
+	transaction->fromAccount = _accountsService.GetById(model.fromAccountId);
+	transaction->toAccount = _accountsService.GetById(model.toAccountId);
+
+	transaction->tags.clear();
+
+	for (auto& tagId : model.tagsIds) {
+		auto tag = _tagsService.GetById(tagId);
+
+		transaction->tags.push_back(tag);
+	}
 }

@@ -29,7 +29,7 @@ namespace Clerk {
 			wxString periodName;
 			wxString conditionName;
 			wxString importanceName;
-			std::vector<int> accountIds;
+			std::vector<int> accountsIds;
 			bool isDismissed;
 
 			operator AlertModel& ();

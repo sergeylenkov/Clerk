@@ -5,8 +5,10 @@
 #include "../PreferencesDialog.h"
 #include "../Transactions/TransactionDialog.h"
 #include "../AccountDialog.h"
+#include "../Alerts/AlertDialog.h"
 #include "../ViewModels/TransactionViewModel.h"
 #include "../ViewModels/AccountViewModel.h"
+#include "../ViewModels/AlertViewModel.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 
@@ -38,6 +40,8 @@ namespace Clerk {
 			wxSize GetAboutDialogSize();
 			wxSize GetTransactionDialogSize();
 			wxSize GetPreferencesDialogSize();
+			wxSize GetAccountDialogSize();
+			wxSize GetAlertDialogSize();
 		};
 	}
 }

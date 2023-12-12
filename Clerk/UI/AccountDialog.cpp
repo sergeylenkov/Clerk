@@ -4,7 +4,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)), _icons(icons) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 	
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	_mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -97,11 +97,11 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 
 	mainSizer->Add(_mainPanel, 1, wxEXPAND | wxALL, 0);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);	
-	this->SetDoubleBuffered(true);
+	Centre(wxBOTH);	
+	SetDoubleBuffered(true);
 
 	_typeList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnTypeSelect, this);
 	_iconList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnIconSelect, this);
@@ -113,7 +113,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	_okButton->Bind(wxEVT_BUTTON, &AccountDialog::OnOK, this);
 	_cancelButton->Bind(wxEVT_BUTTON, &AccountDialog::OnCancel, this);
 
-	this->Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
+	Bind(wxEVT_CHAR_HOOK, &AccountDialog::OnKeyDown, this);
 }
 
 AccountDialog::~AccountDialog() {

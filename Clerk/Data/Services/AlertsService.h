@@ -22,6 +22,9 @@ namespace Clerk {
 			shared_vector<AlertPresentationModel> GetActive();
 			void Reload();
 
+			std::shared_ptr<AlertPresentationModel> Save(AlertPresentationModel& alert);
+			void Delete(AlertPresentationModel& alert);
+
 			unsigned int Subscribe(std::function<void()> fn);
 			void Unsubscribe(unsigned int subscriptionId);
 

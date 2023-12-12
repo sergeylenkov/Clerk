@@ -97,3 +97,29 @@ void AlertsService::Reload() {
 
 	GetAll();
 }
+
+std::shared_ptr<AlertPresentationModel> AlertsService::Save(AlertPresentationModel& alert) {
+	AlertModel& model = alert;
+
+	int id = _alertsRepository.Save(model);
+
+	delete& model;
+
+	_eventEmitter->Emit();
+
+	RemoveFromHash(id);
+
+	return GetById(id);
+}
+
+void AlertsService::Delete(AlertPresentationModel& alert) {
+	AlertModel& model = alert;
+
+	_alertsRepository.Delete(model);
+
+	delete& model;
+
+	RemoveFromHash(alert.id);
+
+	_eventEmitter->Emit();
+}

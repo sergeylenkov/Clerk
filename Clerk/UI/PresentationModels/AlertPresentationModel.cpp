@@ -14,6 +14,7 @@ AlertPresentationModel::AlertPresentationModel() {
 	amount = 0;
 	balance = 0;
 	isDismissed = false;
+	date = wxDateTime::Today();
 }
 
 AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
@@ -26,9 +27,11 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	condition = alert.condition;
 	importance = alert.importance;
 	amount = alert.amount;
-	accountIds = String::Split(alert.accountIds, ',');
+	accountsIds = String::Split(alert.accountIds, ',');
 	balance = 0;
 	isDismissed = false;
+	date = wxDateTime::Today();
+	date.ParseISODate(alert.created);
 
 	switch (alert.type)
 	{
@@ -100,6 +103,23 @@ AlertModel& AlertPresentationModel::GetModel() {
 
 	model->id = id;
 	model->name = name;
+	model->message = message;
+	model->type = type;
+	model->period = period;
+	model->condition = condition;
+	model->importance = importance;	
+	model->amount = amount;
+	model->created = date.FormatISODate();
+
+	std::vector<std::string> res;
+
+	for (int id : accountsIds) {
+		res.push_back(std::to_string(id));
+	}
+
+	std::string ids = String::Join(res, ",");
+
+	model->accountIds = std::wstring(ids.begin(), ids.end());
 
 	return *model;
 }

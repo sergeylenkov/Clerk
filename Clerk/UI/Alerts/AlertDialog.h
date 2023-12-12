@@ -8,38 +8,45 @@
 #include <algorithm>
 #include "../PresentationModels/AlertPresentationModel.h"
 #include "../PresentationModels/AccountPresentationModel.h"
+#include "../ViewModels/AlertViewModel.h"
+#include "../Controls/AmountField.h"
+#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
+using namespace Clerk::Utils;
 
 class AlertDialog : public wxFrame
 {
 public:
-	AlertDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	AlertDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
+	~AlertDialog();
 
-	void SetAlert(std::shared_ptr<AlertPresentationModel> alert);
-	std::function<void()> OnClose;
+	void SetViewModel(AlertViewModel* viewModel);
 
 private:
-	wxPanel *mainPanel;
-	wxTextCtrl *nameField;	
-	wxStaticText *typeLabel;
-	wxComboBox *typeList;
-	wxStaticText *periodLabel;
-	wxComboBox *periodList;
-	wxStaticText *conditionLabel;
-	wxComboBox *conditionList;	
-	wxListCtrl *accountsList;
-	wxTextCtrl *amountField;
-	wxButton *okButton;
-	wxButton *cancelButton;
-	float amountValue = 0.0;
-	std::shared_ptr<AlertPresentationModel> alert;
-	std::vector<std::shared_ptr<AccountPresentationModel>> accounts;
+	AlertViewModel* _viewModel;
+	Icons& _icons;
+	wxTextCtrl* _nameField;
+	wxTextCtrl* _messageField;
+	wxComboBox* _typeList;
+	wxComboBox* _periodList;
+	wxComboBox* _conditionList;	
+	wxComboBox* _importanceList;
+	wxListCtrl* _accountsList;
+	AmountField* _amountField;
+	shared_vector<AccountPresentationModel> _accounts;
 
+	void Update();
 	void UpdateAccounts();
 	void OnTypeSelect(wxCommandEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);
+	void OnConditionSelect(wxCommandEvent& event);
+	void OnImportanceSelect(wxCommandEvent& event);
+	void OnAccountsChange(wxListEvent& event);
+	void OnNameKillFocus(wxFocusEvent& event);
+	void OnMessageKillFocus(wxFocusEvent& event);
+	void OnAmountKillFocus(wxFocusEvent& event);	
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnKeyDown(wxKeyEvent &event);

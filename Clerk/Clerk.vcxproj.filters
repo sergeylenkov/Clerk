@@ -447,6 +447,9 @@
     <ClCompile Include="Commands\EditAlertCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ViewModels\AlertViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -930,6 +933,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\EditAlertCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ViewModels\AlertViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

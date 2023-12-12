@@ -10,12 +10,14 @@ AccountViewModel::AccountViewModel(AccountsService& accountsService, CurrenciesS
 	_type = AccountType::Deposit;
 	_currency = _currenciesService.GetBaseCurrency();
 	_currencies = _currenciesService.GetAll();
+	_creditLimit = 0;
+	_iconId = -1;
 
-	_types.push_back("Receipt");
-	_types.push_back("Deposit");
-	_types.push_back("Expens");
-	_types.push_back("Debt");
-	_types.push_back("Virtual");
+	_types.push_back(_("Receipt"));
+	_types.push_back(_("Deposit"));
+	_types.push_back(_("Expens"));
+	_types.push_back(_("Debt"));
+	_types.push_back(_("Virtual"));
 }
 
 void AccountViewModel::SetAccountId(int id) {

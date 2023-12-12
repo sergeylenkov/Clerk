@@ -35,7 +35,7 @@ void AlertContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	switch (type)
 	{
 	case AlertContextMenuTypes::Add:
-		_commandsInvoker.NewAlert(id);
+		_commandsInvoker.NewAlert();
 		break;
 	case AlertContextMenuTypes::Edit:
 		_commandsInvoker.EditAlert(id);

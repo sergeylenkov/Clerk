@@ -92,7 +92,9 @@ void DialogsController::DeleteTransaction(int id) {
 }
 
 void DialogsController::ShowNewAccountDialog(AccountType type) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, 380, 400, _icons);
+	wxSize size = GetAccountDialogSize();
+
+	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetAccountType(type);
@@ -104,7 +106,9 @@ void DialogsController::ShowNewAccountDialog(AccountType type) {
 
 }
 void DialogsController::ShowEditAccountDialog(int id) {
-	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, 380, 400, _icons);
+	wxSize size = GetAccountDialogSize();
+
+	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
 	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
 	viewModel->SetAccountId(id);
@@ -116,7 +120,17 @@ void DialogsController::ShowEditAccountDialog(int id) {
 }
 
 void DialogsController::ShowEditAlertDialog(int id) {
+	wxSize size = GetAlertDialogSize();
 
+	AlertDialog* alertDialog = new AlertDialog(_parent, _("Alert"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+	
+	AlertViewModel* viewModel = new AlertViewModel(_context.GetAlertsService(), _context.GetAccountsService());
+	viewModel->SetAlertId(id);
+
+	alertDialog->SetViewModel(viewModel);
+
+	alertDialog->Show(true);
+	alertDialog->CenterOnParent();
 }
 
 wxSize DialogsController::GetAboutDialogSize() {
@@ -142,6 +156,24 @@ wxSize DialogsController::GetPreferencesDialogSize() {
 
 	size.SetWidth(_parent->FromDIP(400));
 	size.SetHeight(_parent->FromDIP(300));
+
+	return size;
+}
+
+wxSize DialogsController::GetAccountDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(380));
+	size.SetHeight(_parent->FromDIP(400));
+
+	return size;
+}
+
+wxSize DialogsController::GetAlertDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(400));
+	size.SetHeight(_parent->FromDIP(500));
 
 	return size;
 }

@@ -56,8 +56,8 @@ void CommandsInvoker::OpenAbout() {
 	_aboutCommand.Execute();
 }
 
-void CommandsInvoker::NewTransaction(int id) {
-	_newTransactionCommand.SetAccountId(id);	
+void CommandsInvoker::NewTransaction(int accountId) {
+	_newTransactionCommand.SetAccountId(accountId);
 	_newTransactionCommand.Execute();
 }
 
@@ -96,8 +96,8 @@ void CommandsInvoker::OpenTab(TabType type) {
 	_openTabCommand.Execute();
 }
 
-void CommandsInvoker::OpenAccountTab(int accountId) {
-	_openAccountTabCommand.SetAccountId(accountId);
+void CommandsInvoker::OpenAccountTab(int id) {
+	_openAccountTabCommand.SetAccountId(id);
 	_openAccountTabCommand.Execute();
 }
 
@@ -115,7 +115,7 @@ void CommandsInvoker::OpenReportTab(int id) {
 	_openReportTabCommand.Execute();
 }
 
-void CommandsInvoker::NewAlert(int id) {
+void CommandsInvoker::NewAlert() {
 
 }
 

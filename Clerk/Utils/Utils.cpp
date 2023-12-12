@@ -127,7 +127,7 @@ std::string String::Join(std::vector<std::string> const& vec, std::string delimi
 		return std::string();
 	}
 
-	return accumulate(vec.begin() + 1, vec.end(),
+	return std::accumulate(vec.begin() + 1, vec.end(),
 		vec[0],
 		[delimiter](const std::string& a, std::string b) {
 			return a + delimiter + b;

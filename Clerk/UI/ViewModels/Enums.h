@@ -21,5 +21,16 @@ namespace Clerk {
 			Currency = 5,
 			CreditLimit = 6,
 		};
+
+		enum class AlertViewModelField {
+			Name = 0,
+			Message = 1,
+			Type = 2,
+			Period = 3,
+			Condition = 4,
+			Importance = 5,
+			Amount = 6,
+			Accounts = 7
+		};
 	}
 }

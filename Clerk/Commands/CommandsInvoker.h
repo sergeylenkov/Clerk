@@ -35,7 +35,7 @@ namespace Clerk {
 			void Quit();
 			void OpenPreferences();
 			void OpenAbout();
-			void NewTransaction(int id);			
+			void NewTransaction(int accountId);			
 			void CopyTransaction(int id);
 			void SplitTransaction(int id);
 			void EditTransaction(int id);
@@ -47,7 +47,7 @@ namespace Clerk {
 			void OpenAccountsTab();
 			void OpenAccountsTab(AccountType type);
 			void OpenReportTab(int id);
-			void NewAlert(int id);
+			void NewAlert();
 			void EditAlert(int id);
 			void DeleteAlert(int id);
 

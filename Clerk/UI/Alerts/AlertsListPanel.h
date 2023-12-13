@@ -24,6 +24,8 @@ private:
 	std::vector<std::shared_ptr<AlertPresentationModel>> _alerts;
 	AlertsService* _alertsService;
 	unsigned int _subscriptionId;
+	int _sortBy;
+	bool _sortDesc;
 
 	std::shared_ptr<AlertPresentationModel> GetAlert();	
 	void CreateListColumns();

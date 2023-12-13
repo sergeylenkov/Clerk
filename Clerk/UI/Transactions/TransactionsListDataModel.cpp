@@ -4,10 +4,6 @@ TransactionsListDataModel::TransactionsListDataModel()
 {
 }
 
-TransactionsListDataModel::~TransactionsListDataModel()
-{
-}
-
 void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<TransactionPresentationModel>> transactions) {
 	_transactions = transactions;
 	Reset(_transactions.size());
@@ -27,18 +23,18 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 {
 	auto transaction = _transactions[row];
 
-	switch (static_cast<Columns>(column))
+	switch (static_cast<TransactionsListColumns>(column))
 	{
-		case Columns::Date:
-			variant = FormatDate(transaction->date);
+		case TransactionsListColumns::Date:
+			variant = Format::Date(transaction->date);
 			break;
-		case Columns::FromAccount:
+		case TransactionsListColumns::FromAccount:
 			variant = transaction->fromAccount->name;
 			break;
-		case Columns::ToAccount:
+		case TransactionsListColumns::ToAccount:
 			variant = transaction->toAccount->name;
 			break;
-		case Columns::Amount: {
+		case TransactionsListColumns::Amount: {
 			wxArrayString values;
 
 			wxString fromValue = Format::Amount(transaction->fromAmount);
@@ -54,7 +50,7 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 		}
 			
 			break;
-		case Columns::Tags: {
+		case TransactionsListColumns::Tags: {
 			wxArrayString tags;
 
 			for (auto &tag : transaction->tags) {
@@ -64,45 +60,65 @@ void TransactionsListDataModel::GetValueByRow(wxVariant &variant, unsigned int r
 			variant = tags;
 		}
 			break;
-		case Columns::Note:
+		case TransactionsListColumns::Note:
 			variant = transaction->note;
 			break;
 	}
 }
 
-bool TransactionsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr &attr) const
-{
+bool TransactionsListDataModel::SetValueByRow(const wxVariant& variant, unsigned int row, unsigned int column) {
 	return false;
 }
 
-bool TransactionsListDataModel::SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column)
-{
+int TransactionsListDataModel::Compare(const wxDataViewItem& item1, const wxDataViewItem& item2, unsigned int column, bool ascending) const {
+	wxUIntPtr index1 = wxPtrToUInt(item1.GetID()) - 1;
+	wxUIntPtr index2 = wxPtrToUInt(item2.GetID()) - 1;
+
+	auto v1 = _transactions[index1];
+	auto v2 = _transactions[index2];
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::Date) {
+		if (v1->date.IsEqualTo(v2->date)) {
+			return 0;
+		}
+
+		return (ascending == v1->date.IsLaterThan(v2->date)) ? 1 : -1;
+	}
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::FromAccount) {
+		return ascending ? v1->fromAccount->name.Cmp(v2->fromAccount->name) : v2->fromAccount->name.Cmp(v1->fromAccount->name);
+	}
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::ToAccount) {
+		return ascending ? v1->toAccount->name.Cmp(v2->toAccount->name) : v2->toAccount->name.Cmp(v1->toAccount->name);
+	}
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::Tags) {
+		wxString tag1 = v1->tagsString.Lower();
+		wxString tag2 = v2->tagsString.Lower();
+
+		return ascending ? tag1.CmpNoCase(tag2) : tag2.CmpNoCase(tag1);
+	}
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::Note) {		
+		return ascending ? v1->note.Cmp(v2->note) : v2->note.Cmp(v1->note);
+	}
+
+	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::Amount) {
+		if (v1->fromAmount == v2->fromAmount) {
+			return 0;
+		}
+
+		return ascending ? v1->fromAmount > v2->fromAmount : v2->fromAmount > v1->fromAmount;
+	}
+
+	return 0;
+}
+
+unsigned int TransactionsListDataModel::GetCount() const {
+	return _transactions.size();
+}
+
+bool TransactionsListDataModel::HasDefaultCompare() const {
 	return false;
-}
-
-wxString TransactionsListDataModel::FormatDate(const wxDateTime& date) const
-{
-	wxString dateFormat = date.Format("%B %e");
-
-	if (wxDateTime::Now().GetYear() != date.GetYear()) {
-		dateFormat = date.Format("%B %e, %Y");
-	}
-
-	return dateFormat;
-}
-
-wxString TransactionsListDataModel::FormatAmount(const TransactionPresentationModel& transaction) const {
-	wxString amount = "";
-
-	if (transaction.fromAmount != transaction.toAmount) {
-		wxString fromAmount = Format::Amount(transaction.fromAmount);
-		wxString toAmount = Format::Amount(transaction.toAmount);
-
-		amount = wxString::Format("%s %s", fromAmount, toAmount);
-	}
-	else {
-		amount = Format::Amount(transaction.toAmount);
-	}
-
-	return amount;
 }

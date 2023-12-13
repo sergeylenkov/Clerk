@@ -1,9 +1,10 @@
 #include "SchedulersService.h"
 
-SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, TagsService& tagsService):
+SchedulersService::SchedulersService(SchedulersRepository& schedulersRepository, AccountsService& accountsService, TagsService& tagsService, TransactionsService& transactionsService) :
 	_schedulersRepository(schedulersRepository),
 	_accountsService(accountsService),
-	_tagsService(tagsService)
+	_tagsService(tagsService),
+	_transactionsService(transactionsService)
 {
 	_eventEmitter = new EventEmitter();
 	_isLoading = false;
@@ -86,67 +87,43 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetActiveByPeriod(w
 	return result;
 }
 
-void SchedulersService::Run(const SchedulerPresentationModel& scheduler) {
-	auto nextDate = CalculateNextDate(scheduler);
+void SchedulersService::Run(SchedulerPresentationModel& scheduler) {
+	scheduler.previousDate = wxDateTime::Now();
+	scheduler.nextDate = wxDateTime::Now();
 
-	auto model = _schedulersRepository.GetById(scheduler.id);
+	scheduler.nextDate = CalculateNextDate(scheduler);
+	scheduler.isActive = true;
 
-	model->active = true;
-	model->previousDate = scheduler.nextDate.FormatISODate();
-	model->nextDate = nextDate.FormatISODate();
+	Save(scheduler);
 
-	_schedulersRepository.Save(*model);
+	_eventEmitter->Emit();
 }
 
-void SchedulersService::Pause(const SchedulerPresentationModel& scheduler) {
-	auto model = _schedulersRepository.GetById(scheduler.id);
-	model->active = false;
+void SchedulersService::Pause(SchedulerPresentationModel& scheduler) {
+	scheduler.isActive = false;
 
-	_schedulersRepository.Save(*model);
+	Save(scheduler);
+
+	_eventEmitter->Emit();
 }
 
-wxDateTime SchedulersService::CalculateNextDate(const SchedulerPresentationModel& scheduler) {
-	auto date = wxDateTime(scheduler.previousDate);
+void SchedulersService::Execute(SchedulerPresentationModel& scheduler) {
+	auto transaction = std::make_shared<TransactionPresentationModel>();
 
-	if (scheduler.type == SchedulerType::Daily) {
-		date.Add(wxDateSpan::Days(scheduler.day));
-	}
+	transaction->fromAccount = scheduler.fromAccount;
+	transaction->toAccount = scheduler.toAccount;
+	transaction->fromAmount = scheduler.fromAmount;
+	transaction->toAmount = scheduler.toAmount;
+	transaction->tags = scheduler.tags;
+	transaction->date = scheduler.nextDate;
 
-	if (scheduler.type == SchedulerType::Weekly) {
-		date.Add(wxDateSpan::Weeks(scheduler.week));
-		date.SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(scheduler.day));
-	}
+	_transactionsService.Save(*transaction);
 
-	if (scheduler.type == SchedulerType::Monthly) {
-		date.Add(wxDateSpan::Months(scheduler.month));
-		date.SetDay(scheduler.day);
-	}
+	scheduler.nextDate = CalculateNextDate(scheduler);
 
-	if (scheduler.type == SchedulerType::Yearly) {
-		date.SetDay(scheduler.day);
-		date.SetMonth(static_cast<wxDateTime::Month>(scheduler.month));
+	Save(scheduler);
 
-		if (date.IsEarlierThan(wxDateTime::Now())) {
-			date.SetYear(date.GetYear() + 1);
-		}
-	}
-
-	return date;
-}
-
-void SchedulersService::Execute(const SchedulerPresentationModel& scheduler) {
-	/*auto transaction = new Transaction();
-
-	transaction->fromAccount = fromAccount;
-	transaction->toAccount = toAccount;
-	transaction->fromAmount = fromAmount;
-	transaction->toAmount = toAmount;
-	//transaction->SetTagsString(*tags.get());
-	transaction->paidAt = nextDate;
-
-	//transaction->Save();
-
-	delete transaction;*/
+	_eventEmitter->Emit();
 }
 
 std::shared_ptr<SchedulerPresentationModel> SchedulersService::Save(SchedulerPresentationModel& scheduler) {
@@ -186,4 +163,35 @@ void SchedulersService::LoadDetails(std::shared_ptr<SchedulerPresentationModel> 
 
 		transaction->tags.push_back(tag);
 	}
+}
+
+wxDateTime SchedulersService::CalculateNextDate(SchedulerPresentationModel& scheduler) {
+	scheduler.previousDate = scheduler.nextDate;
+
+	auto date = wxDateTime(scheduler.previousDate);
+
+	if (scheduler.type == SchedulerType::Daily) {
+		date.Add(wxDateSpan::Days(scheduler.day));
+	}
+
+	if (scheduler.type == SchedulerType::Weekly) {
+		date.Add(wxDateSpan::Weeks(scheduler.week));
+		date.SetToNextWeekDay(static_cast<wxDateTime::WeekDay>(scheduler.day));
+	}
+
+	if (scheduler.type == SchedulerType::Monthly) {
+		date.Add(wxDateSpan::Months(scheduler.month));
+		date.SetDay(scheduler.day);
+	}
+
+	if (scheduler.type == SchedulerType::Yearly) {
+		date.SetDay(scheduler.day);
+		date.SetMonth(static_cast<wxDateTime::Month>(scheduler.month));
+
+		if (date.IsEarlierThan(wxDateTime::Now())) {
+			date.SetYear(date.GetYear() + 1);
+		}
+	}
+
+	return date;
 }

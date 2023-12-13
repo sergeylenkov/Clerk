@@ -12,6 +12,7 @@ struct ListColumnsSettings {
 	wxString title;
 	int width;
 	bool sorted;
+	bool sortedDesc;
 };
 
 struct ListFilterSettings {

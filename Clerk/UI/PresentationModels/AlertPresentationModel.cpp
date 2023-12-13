@@ -12,7 +12,6 @@ AlertPresentationModel::AlertPresentationModel() {
 	importance = AlertImportance::Medium;
 	amount = 0;
 	balance = 0;
-	isDismissed = false;
 	created = wxDateTime::Now();
 }
 
@@ -27,7 +26,6 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 	amount = alert.amount;
 	accountsIds = String::Split(alert.accountIds, ',');
 	balance = 0;
-	isDismissed = false;
 	
 	created = wxDateTime::Now();
 	created.ParseISODate(alert.created);

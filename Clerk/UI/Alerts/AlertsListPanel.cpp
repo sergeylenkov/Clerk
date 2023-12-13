@@ -16,6 +16,9 @@ AlertsListPanel::AlertsListPanel(wxWindow *parent, DataContext& context) : DataP
 	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsListPanel::OnListItemDoubleClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &AlertsListPanel::OnRightClick, this);
 
+	_sortBy = 0;
+	_sortDesc = false;
+
 	_alertsService = &_context.GetAlertsService();
 	_subscriptionId = _alertsService->Subscribe([&]() {
 		Update();
@@ -41,7 +44,7 @@ std::shared_ptr<AlertPresentationModel> AlertsListPanel::GetAlert() {
 	wxDataViewItem item = _list->GetSelection();
 
 	if (item.IsOk()) {
-		int index = reinterpret_cast<int>(item.GetID()) - 1;
+		int index = wxPtrToUInt(item.GetID()) - 1;
 
 		return _alerts[index];
 	}
@@ -79,6 +82,11 @@ void AlertsListPanel::CreateListColumns() {
 				_list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 		}
+
+		if (column.sorted) {
+			_sortBy = column.index;
+			_sortDesc = column.sortedDesc;
+		}
 	}
 
 	_list->AppendTextColumn("", static_cast<int>(AlertsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
@@ -93,6 +101,8 @@ void AlertsListPanel::SaveColumnsSettings() {
 		columns[i].index = _list->GetColumnIndex(column);
 		columns[i].order = _list->GetColumnPosition(column);
 		columns[i].width = column->GetWidth();
+		columns[i].sorted = i == _sortBy;
+		columns[i].sortedDesc = _sortDesc;
 	}
 
 	Settings::GetInstance().SetAlertsListColumns(columns);

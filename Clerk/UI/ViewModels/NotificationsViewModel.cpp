@@ -4,7 +4,7 @@ NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService, Tra
 	_alertsService(alertsService),
 	_transactionsService(transactionsService)
 {
-	_activeAlerts = _alertsService.GetActive();
+	UpdateNotifications();
 
 	_eventEmitter = new EventEmitter();
 
@@ -32,9 +32,19 @@ bool NotificationsViewModel::IsActive() {
 }
 
 void NotificationsViewModel::Dismiss(AlertPresentationModel& alert) {
-	alert.isDismissed = true;
+	_dismissiedAlerts.insert(alert.id);
 
-	_activeAlerts = _alertsService.GetActive();
+	UpdateNotifications();
 
 	_eventEmitter->Emit();
+}
+
+void NotificationsViewModel::UpdateNotifications() {
+	_activeAlerts.clear();
+
+	for (auto& alert : _alertsService.GetActive()) {
+		if (_dismissiedAlerts.count(alert->id) == 0) {
+			_activeAlerts.push_back(alert);
+		}
+	}
 }

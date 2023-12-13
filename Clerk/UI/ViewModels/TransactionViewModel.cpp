@@ -16,8 +16,6 @@ TransactionViewModel::TransactionViewModel(AccountsService& accountsService, Tra
 	_subscriptionId = _accountsService.Subscribe([&]() {
 		Update();
 	});
-
-	//Update();
 }
 
 TransactionViewModel::~TransactionViewModel() {
@@ -35,6 +33,7 @@ void TransactionViewModel::SetTransactionId(int id) {
 		_toAmount = transaction->toAmount;
 		_note = transaction->note;
 		_tags = transaction->tags;
+		_date = transaction->date;
 
 		Update();
 	}

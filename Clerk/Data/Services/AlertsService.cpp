@@ -73,7 +73,7 @@ shared_vector<AlertPresentationModel> AlertsService::GetActive() {
 	shared_vector<AlertPresentationModel> result;
 
 	for (auto& alert : GetAll()) {
-		if (!alert->isDismissed && alert->type == AlertType::Balance) {
+		if (alert->type == AlertType::Balance) {
 			if (alert->condition == AlertCondition::Equal && alert->balance == alert->amount) {
 				result.push_back(alert);
 			}

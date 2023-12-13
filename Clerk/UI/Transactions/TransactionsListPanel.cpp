@@ -8,6 +8,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &TransactionsListPanel::OnListItemDoubleClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &TransactionsListPanel::OnRightClick, this);
+	_list->Bind(wxEVT_DATAVIEW_COLUMN_SORTED, &TransactionsListPanel::OnListColumnClick, this);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -101,7 +102,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	_accountType = std::nullopt;
 	_balance = 0.0;
-	_sortBy = 2;
+	_sortBy = TransactionsListColumns::Date;
 	_sortDesc = false;
 
 	_transactionsService = &_context.GetTransactionsService();
@@ -150,34 +151,10 @@ void TransactionsListPanel::Update() {
 			_transactions = transactions;
 		}
 
-		Sort();
 		Filter();
 
 		GetEventHandler()->CallAfter(&TransactionsListPanel::UpdateList);
 	}).detach();
-}
-
-void TransactionsListPanel::Sort() {
-	std::sort(_transactions.begin(), _transactions.end(), [&](const std::shared_ptr<TransactionPresentationModel>& v1, const std::shared_ptr<TransactionPresentationModel>& v2) {
-		if (_sortBy == 0) {
-			return v1->fromAccount->name.Cmp(v2->fromAccount->name) == 0;
-		}
-		else if (_sortBy == 1) {
-			wxString s = v1->tagsString.Lower();
-			wxString s1 = v2->tagsString.Lower();
-			return s.CmpNoCase(s1) == 0;
-		}
-		else if (_sortBy == 2) {
-			return v1->date.GetMillisecond() < v2->date.GetMillisecond();
-		}
-		else {
-			return v1->fromAmount < v2->fromAmount;
-		}
-	});
-
-	if (_sortDesc) {
-		std::reverse(_transactions.begin(), _transactions.end());
-	}
 }
 
 void TransactionsListPanel::Filter() {
@@ -221,42 +198,71 @@ void TransactionsListPanel::CreateListColumns() {
 	auto& columns = Settings::GetInstance().GetTransactionsListColumns(listType);
 
 	for (auto& column : columns) {
-		switch (static_cast<TransactionsListDataModel::Columns>(column.index))
+		wxDataViewColumn* dataViewColumn = nullptr;
+
+		switch (static_cast<TransactionsListColumns>(column.index))
 		{
-			case TransactionsListDataModel::Columns::Date:
-				_list->AppendTextColumn(_("Date"), static_cast<int>(TransactionsListDataModel::Columns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListColumns::Date:
+				dataViewColumn = _list->AppendTextColumn(_("Date"), static_cast<int>(TransactionsListColumns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::FromAccount:
-				_list->AppendTextColumn(_("From Account"), static_cast<int>(TransactionsListDataModel::Columns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListColumns::FromAccount:
+				dataViewColumn = _list->AppendTextColumn(_("From Account"), static_cast<int>(TransactionsListColumns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::ToAccount:
-				_list->AppendTextColumn(_("To Account"), static_cast<int>(TransactionsListDataModel::Columns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListColumns::ToAccount:
+				dataViewColumn = _list->AppendTextColumn(_("To Account"), static_cast<int>(TransactionsListColumns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::Tags: {
+			case TransactionsListColumns::Tags: {
 				TransactionsTagsRender *render = new TransactionsTagsRender();
 
-				wxDataViewColumn *dataViewColumn = new wxDataViewColumn(_("Tags"), render, static_cast<int>(TransactionsListDataModel::Columns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				dataViewColumn = new wxDataViewColumn(_("Tags"), render, static_cast<int>(TransactionsListColumns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);
 				}
 				break;
-			case TransactionsListDataModel::Columns::Note:
-				_list->AppendTextColumn(_("Note"), static_cast<int>(TransactionsListDataModel::Columns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case TransactionsListColumns::Note:
+				dataViewColumn = _list->AppendTextColumn(_("Note"), static_cast<int>(TransactionsListColumns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case TransactionsListDataModel::Columns::Amount: {
+			case TransactionsListColumns::Amount: {
 				TransactionsAmountRender *render = new TransactionsAmountRender();
 
-				wxDataViewColumn *dataViewColumn = new wxDataViewColumn(_("Amount"), render, static_cast<int>(TransactionsListDataModel::Columns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				_list->AppendColumn(dataViewColumn);
+				dataViewColumn = new wxDataViewColumn(_("Amount"), render, static_cast<int>(TransactionsListColumns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendColumn(dataViewColumn);				
 				}
 				break;
 		}
+
+		if (column.sorted) {
+			_sortBy = static_cast<TransactionsListColumns>(column.index);
+			_sortDesc = column.sortedDesc;
+
+			if (dataViewColumn != nullptr) {
+				dataViewColumn->SetSortOrder(!_sortDesc);
+			}
+		}
 	}
 	
-	_list->AppendTextColumn("", static_cast<int>(TransactionsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+	_list->AppendTextColumn("", static_cast<int>(TransactionsListColumns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+}
+
+void TransactionsListPanel::SaveColumnsSettings() {
+	TransactionsListType listType = GetListType();
+
+	auto columns = Settings::GetInstance().GetTransactionsListColumns(listType);
+
+	for (unsigned int i = 0; i < columns.size(); i++) {
+		wxDataViewColumn* column = _list->GetColumn(i);
+
+		columns[i].index = _list->GetColumnIndex(column);
+		columns[i].order = _list->GetColumnPosition(column);
+		columns[i].width = column->GetWidth();
+		columns[i].sorted = columns[i].index == static_cast<int>(_sortBy);
+		columns[i].sortedDesc = _sortDesc;
+	}
+
+	Settings::GetInstance().SetTransactionsListColumns(listType, columns);
 }
 
 void TransactionsListPanel::UpdateList() {
-	_model.get()->SetItems(_filtered);
+	_model->SetItems(_filtered);
 	UpdateInfo();
 }
 
@@ -281,15 +287,12 @@ void TransactionsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	}
 }
 
-void TransactionsListPanel::OnListColumnClick(wxListEvent &event) {
-	if (_sortBy == event.GetColumn()) {
-		_sortDesc = !_sortDesc;
-	}
+void TransactionsListPanel::OnListColumnClick(wxDataViewEvent &event) {
+	int index = event.GetColumn();
+	wxDataViewColumn* column = event.GetDataViewColumn();
 
-	_sortBy = event.GetColumn();
-
-	Sort();
-	UpdateList();
+	_sortDesc = !column->IsSortOrderAscending();
+	_sortBy = static_cast<TransactionsListColumns>(index);
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
@@ -409,27 +412,11 @@ void TransactionsListPanel::SaveFilterSettings() {
 	Settings::GetInstance().SetListFilterSettings(accountType, accountId, _periodList->GetSelection(), _periodFromDate, _periodToDate);
 }
 
-void TransactionsListPanel::SaveColumnsSettings() {
-	TransactionsListType listType = GetListType();
-
-	auto columns = Settings::GetInstance().GetTransactionsListColumns(listType);
-
-	for (unsigned int i = 0; i < columns.size(); i++) {
-		wxDataViewColumn *column = _list->GetColumn(i);
-
-		columns[i].index = _list->GetColumnIndex(column);
-		columns[i].order = _list->GetColumnPosition(column);
-		columns[i].width = column->GetWidth();
-	}
-
-	Settings::GetInstance().SetTransactionsListColumns(listType, columns);
-}
-
 std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {
 	wxDataViewItem item = _list->GetSelection();
 
 	if (item.IsOk()) {
-		int index = reinterpret_cast<int>(item.GetID()) - 1;
+		int index = wxPtrToUInt(item.GetID()) - 1;
 		return _filtered[index];
 	}
 
@@ -447,7 +434,7 @@ std::vector<int> TransactionsListPanel::GetSelectedIds() {
 		wxDataViewItem item = selections[i];
 
 		if (item.IsOk()) {
-			int index = (int)item.GetID() - 1;
+			int index = wxPtrToUInt(item.GetID()) - 1;
 			result.push_back(_filtered[index]->id);
 		}
 	}

@@ -11,5 +11,16 @@ namespace Clerk {
 			Merge = 6,
 			Copy = 7,
 		};
+
+		enum class TransactionsListColumns
+		{
+			Date,
+			FromAccount,
+			ToAccount,
+			Tags,
+			Note,
+			Amount,
+			Last
+		};
 	}
 }

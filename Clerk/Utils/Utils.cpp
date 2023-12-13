@@ -13,6 +13,16 @@ wxString Format::Amount(float amount, wxString& sign) {
 	return wxString::Format("%s %s", number, sign);
 }
 
+wxString Format::Date(const wxDateTime& date) {
+	wxString dateFormat = date.Format("%B %e");
+
+	if (wxDateTime::Now().GetYear() != date.GetYear()) {
+		dateFormat = date.Format("%B %e, %Y");
+	}
+
+	return dateFormat;
+}
+
 wxColor Colors::ColorForBudget(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);

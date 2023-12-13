@@ -1,5 +1,6 @@
 #pragma once
 
+#include <set>
 #include "../../Data/Services/AlertsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../UI/PresentationModels/AlertPresentationModel.h"
@@ -26,6 +27,9 @@ namespace Clerk {
 			unsigned int _subscriptionId;
 
 			shared_vector<AlertPresentationModel> _activeAlerts;
+			std::set<int> _dismissiedAlerts;
+
+			void UpdateNotifications();
 		};
 	}
 }

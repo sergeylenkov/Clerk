@@ -17,8 +17,6 @@ using namespace Clerk::Utils;
 class Settings
 {
 public:
-	~Settings();
-
 	static Settings& GetInstance() {
 		static Settings instance;
 		return instance;
@@ -65,7 +63,9 @@ public:
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate);
 	void SetReportFilterSettings(int id, wxString accountIds, int period, wxDateTime fromDate, wxDateTime toDate, bool average);
 	std::vector<ListColumnsSettings> GetAlertsListColumns();
-	void SetAlertsListColumns(std::vector<ListColumnsSettings> columns);		
+	void SetAlertsListColumns(std::vector<ListColumnsSettings> columns);
+	std::vector<ListColumnsSettings> GetSchedulersListColumns();
+	void SetSchedulersListColumns(std::vector<ListColumnsSettings> columns);
 
 private:
 	wxString _fileName;
@@ -88,6 +88,9 @@ private:
 	std::map<int, std::vector<ListColumnsSettings>> _transactionsListColumnsSettings;
 	std::vector<ReportFilterSettings> _reportFilterSettings;
 	std::vector<ListColumnsSettings> _alertsListColumnsSettings;
+	std::vector<ListColumnsSettings> _schedulersListColumnsSettings;
 
 	void RestoreDefaultColumns();
+	std::vector<ListColumnsSettings> ReadColumnsFromJson(const Value& values);
+	Value WriteColumnsToJson(Document& json, std::vector<ListColumnsSettings> columns);
 };

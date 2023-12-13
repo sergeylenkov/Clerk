@@ -450,6 +450,9 @@
     <ClCompile Include="UI\ViewModels\AlertViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -939,6 +942,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulerContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

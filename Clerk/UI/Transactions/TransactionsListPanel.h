@@ -50,18 +50,17 @@ private:
 	shared_vector<TransactionPresentationModel> _transactions;
 	shared_vector<TransactionPresentationModel> _filtered;
 	float _balance;
-	int _sortBy;
+	TransactionsListColumns _sortBy;
 	bool _sortDesc;
 	wxDateTime _periodFromDate;
 	wxDateTime _periodToDate;
 	unsigned int _subscriptionId;		
 	
-	void Sort();
 	void Filter();
 	void CreateListColumns();
 	void UpdateList();
 	void UpdateInfo();
-	void OnListColumnClick(wxListEvent &event);
+	void OnListColumnClick(wxDataViewEvent &event);
 	void OnListItemDoubleClick(wxDataViewEvent &event);	
 	void OnRightClick(wxDataViewEvent &event);
 	void OnPeriodSelect(wxCommandEvent &event);

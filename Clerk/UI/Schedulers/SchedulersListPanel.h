@@ -4,7 +4,9 @@
 #include "wx/dataview.h"
 #include "../PresentationModels/SchedulerPresentationModel.h"
 #include "../DataPanel.h"
+#include "../../Data/Settings.h"
 #include "SchedulersListDataModel.h"
+#include "SchedulerContextMenu.h"
 
 using namespace Clerk::Data;
 
@@ -12,24 +14,22 @@ class SchedulersListPanel : public DataPanel
 {
 public:
 	SchedulersListPanel(wxWindow *parent, DataContext& context);
-	
-	std::shared_ptr<SchedulerPresentationModel> GetScheduler();
-	void Update();	
+	~SchedulersListPanel();
 
-	std::function<void(std::shared_ptr<SchedulerPresentationModel> scheduler)> OnEdit;
-	std::function<void()> OnAdd;
+	void Update();
 
 private:
-	wxDataViewCtrl *list;
-	wxObjectDataPtr<SchedulersListDataModel> model;
-	std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers;
+	wxDataViewCtrl *_list;
+	wxObjectDataPtr<SchedulersListDataModel> _model;
+	shared_vector<SchedulerPresentationModel> _schedulers;
+	SchedulersService* _schedulersService;
+	unsigned int _subscriptionId;
+	int _sortBy;
+	bool _sortDesc;
 
-	void Add();
-	void Edit();
-	void Delete();
-	void Run();
-	void Pause();
+	std::shared_ptr<SchedulerPresentationModel> GetScheduler();
+	void CreateListColumns();
+	void SaveColumnsSettings();
 	void OnListItemDoubleClick(wxDataViewEvent &event);
 	void OnRightClick(wxDataViewEvent &event);
-	void OnMenuSelect(wxCommandEvent &event);
 };

@@ -34,7 +34,7 @@ std::shared_ptr<BudgetPresentationModel> BudgetsPanel::GetBudget() {
 	wxDataViewItem item = list->GetSelection();
 
 	if (item.IsOk()) {
-		int index = reinterpret_cast<int>(item.GetID()) - 1;
+		int index = wxPtrToUInt(item.GetID()) - 1;
 		return _budgets[index];
 	}	
 

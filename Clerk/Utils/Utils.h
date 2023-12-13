@@ -22,6 +22,7 @@ namespace Clerk {
 		public:
 			static wxString Amount(float amount);
 			static wxString Amount(float amount, wxString& sign);
+			static wxString Date(const wxDateTime& date);
 		};
 
 		class Periods {

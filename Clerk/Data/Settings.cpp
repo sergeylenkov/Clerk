@@ -127,19 +127,9 @@ void Settings::Open(char *configName) {
 
 			for (SizeType i = 0; i < types.Size(); i++) {
 				const Value &type = types[i];
-
 				int columnsType = type["Type"].GetInt();
-				const Value &values = type["Columns"];
 
-				std::vector<ListColumnsSettings> columns;
-
-				for (SizeType i = 0; i < values.Size(); i++) {
-					const Value &value = values[i];
-
-					columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
-				}
-
-				_transactionsListColumnsSettings[columnsType] = columns;
+				_transactionsListColumnsSettings[columnsType] = ReadColumnsFromJson(type["Columns"]);
 			}
 		}
 
@@ -175,16 +165,11 @@ void Settings::Open(char *configName) {
 		}
 
 		if (json.HasMember("AlertsListColumns") && json["AlertsListColumns"].IsArray()) {
-			const Value& values = json["AlertsListColumns"];
-			std::vector<ListColumnsSettings> columns;
+			_alertsListColumnsSettings = ReadColumnsFromJson(json["AlertsListColumns"]);
+		}
 
-			for (SizeType i = 0; i < values.Size(); i++) {
-				const Value& value = values[i];
-
-				columns.push_back({ value["Index"].GetInt(), value["Order"].GetInt(), wxString::FromUTF8(value["Title"].GetString()), value["Width"].GetInt(), value["Sorted"].GetBool() });
-			}
-
-			_alertsListColumnsSettings = columns;
+		if (json.HasMember("SchedulersListColumns") && json["SchedulersListColumns"].IsArray()) {
+			_schedulersListColumnsSettings = ReadColumnsFromJson(json["SchedulersListColumns"]);
 		}
 	}
 }
@@ -262,29 +247,11 @@ void Settings::Save() {
 	Value transactionsColumnsJson(kArrayType);
 
 	for (const auto &value : _transactionsListColumnsSettings)
-	{
-		auto& columns = _transactionsListColumnsSettings[value.first];
-
+	{		
 		Value columnsTypeJson(kObjectType);
-		Value columnsJson(kArrayType);
-
-		for (auto& column : columns)
-		{
-			Value columnJson(kObjectType);
-
-			Value string(column.title.c_str(), json.GetAllocator());
-
-			columnJson.AddMember("Index", column.index, json.GetAllocator());
-			columnJson.AddMember("Order", column.order, json.GetAllocator());
-			columnJson.AddMember("Title", string, json.GetAllocator());
-			columnJson.AddMember("Width", column.width, json.GetAllocator());
-			columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
-
-			columnsJson.PushBack(columnJson, json.GetAllocator());
-		}
 
 		columnsTypeJson.AddMember("Type", value.first, json.GetAllocator());
-		columnsTypeJson.AddMember("Columns", columnsJson, json.GetAllocator());
+		columnsTypeJson.AddMember("Columns", WriteColumnsToJson(json, _transactionsListColumnsSettings[value.first]), json.GetAllocator());
 
 		transactionsColumnsJson.PushBack(columnsTypeJson, json.GetAllocator());
 	}
@@ -321,27 +288,9 @@ void Settings::Save() {
 
 		json.AddMember("ReportFilters", filtersJson, json.GetAllocator());
 	}
-
-	Value alertsColumnsJson(kArrayType);
-
-	auto& columns = _alertsListColumnsSettings;	
-
-	for (auto& column : columns)
-	{
-		Value columnJson(kObjectType);
-
-		Value string(column.title.c_str(), json.GetAllocator());
-
-		columnJson.AddMember("Index", column.index, json.GetAllocator());
-		columnJson.AddMember("Order", column.order, json.GetAllocator());
-		columnJson.AddMember("Title", string, json.GetAllocator());
-		columnJson.AddMember("Width", column.width, json.GetAllocator());
-		columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
-
-		alertsColumnsJson.PushBack(columnJson, json.GetAllocator());
-	}
-
-	json.AddMember("AlertsListColumns", alertsColumnsJson, json.GetAllocator());
+	
+	json.AddMember("SchedulersListColumns", WriteColumnsToJson(json, _alertsListColumnsSettings), json.GetAllocator());
+	json.AddMember("SchedulersListColumns", WriteColumnsToJson(json, _schedulersListColumnsSettings), json.GetAllocator());
 
 	FILE *fp = fopen(_fileName.char_str(), "wb"); 
 	char writeBuffer[65536]{0};
@@ -354,64 +303,112 @@ void Settings::Save() {
 	fclose(fp);
 }
 
-Settings::~Settings() {
-	
-}
-
 void Settings::RestoreDefaultColumns() {
 	std::vector<ListColumnsSettings> columns;
 
-	columns.push_back({ 0, 0, wxT("From Account"), 100, false });
-	columns.push_back({ 1, 1, wxT("To Account"), 100, false });
-	columns.push_back({ 2, 2, wxT("Tags"), 100, false });
-	columns.push_back({ 3, 3, wxT("Note"), 100, false });
-	columns.push_back({ 4, 4, wxT("Date"), 100, true });
-	columns.push_back({ 5, 5, wxT("Amount"), 100, false });
+	columns.push_back({ 0, 0, wxT("From Account"), 100, false, false });
+	columns.push_back({ 1, 1, wxT("To Account"), 100, false, false });
+	columns.push_back({ 2, 2, wxT("Tags"), 100, false, false });
+	columns.push_back({ 3, 3, wxT("Note"), 100, false, false });
+	columns.push_back({ 4, 4, wxT("Date"), 100, true, false });
+	columns.push_back({ 5, 5, wxT("Amount"), 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::All)] = columns;
 
 	std::vector<ListColumnsSettings> columns2;
 
-	columns2.push_back({ 0, 0, wxT("To Account"), 100, false });	
-	columns2.push_back({ 1, 1, wxT("Tags"), 100, false });
-	columns2.push_back({ 2, 2, wxT("Note"), 100, false });
-	columns2.push_back({ 3, 3, wxT("Date"), 100, true });
-	columns2.push_back({ 4, 4, wxT("Amount"), 100, false });
+	columns2.push_back({ 0, 0, wxT("To Account"), 100, false, false });
+	columns2.push_back({ 1, 1, wxT("Tags"), 100, false, false });
+	columns2.push_back({ 2, 2, wxT("Note"), 100, false, false });
+	columns2.push_back({ 3, 3, wxT("Date"), 100, true, false });
+	columns2.push_back({ 4, 4, wxT("Amount"), 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Receipts)] = columns2;
 
 	std::vector<ListColumnsSettings> columns3;
 
-	columns3.push_back({ 0, 0, wxT("From Account"), 100, false });
-	columns3.push_back({ 1, 1, wxT("Tags"), 100, false });
-	columns3.push_back({ 2, 2, wxT("Note"), 100, false });
-	columns3.push_back({ 3, 3, wxT("Date"), 100, true });
-	columns3.push_back({ 4, 4, wxT("Amount"), 100, false });
+	columns3.push_back({ 0, 0, wxT("From Account"), 100, false, false });
+	columns3.push_back({ 1, 1, wxT("Tags"), 100, false, false });
+	columns3.push_back({ 2, 2, wxT("Note"), 100, false, false });
+	columns3.push_back({ 3, 3, wxT("Date"), 100, true, false });
+	columns3.push_back({ 4, 4, wxT("Amount"), 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Expenses)] = columns3;
 
 	std::vector<ListColumnsSettings> columns4;
 
-	columns4.push_back({ 0, 0, wxT("From Account"), 100, false });
-	columns4.push_back({ 1, 1, wxT("To Account"), 100, false });
-	columns4.push_back({ 2, 2, wxT("Tags"), 100, false });
-	columns4.push_back({ 3, 3, wxT("Note"), 100, false });
-	columns4.push_back({ 4, 4, wxT("Date"), 100, true });
-	columns4.push_back({ 5, 5, wxT("Amount"), 100, false });
+	columns4.push_back({ 0, 0, wxT("From Account"), 100, false, false });
+	columns4.push_back({ 1, 1, wxT("To Account"), 100, false, false });
+	columns4.push_back({ 2, 2, wxT("Tags"), 100, false, false });
+	columns4.push_back({ 3, 3, wxT("Note"), 100, false, false });
+	columns4.push_back({ 4, 4, wxT("Date"), 100, true, false });
+	columns4.push_back({ 5, 5, wxT("Amount"), 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Deposits)] = columns4;
 
 	std::vector<ListColumnsSettings> alertsColumns;
 
-	alertsColumns.push_back({ 0, 0, wxT("Name"), 100, true });
-	alertsColumns.push_back({ 1, 1, wxT("Message"), 100, false });
-	alertsColumns.push_back({ 2, 2, wxT("Type"), 100, false });
-	alertsColumns.push_back({ 3, 3, wxT("Period"), 100, false });
-	alertsColumns.push_back({ 4, 4, wxT("Condition"), 100, false });
-	alertsColumns.push_back({ 5, 5, wxT("Importance"), 100, false });
-	alertsColumns.push_back({ 6, 6, wxT("Amount"), 100, false });
+	alertsColumns.push_back({ 0, 0, wxT("Name"), 100, true, false });
+	alertsColumns.push_back({ 1, 1, wxT("Message"), 100, false, false });
+	alertsColumns.push_back({ 2, 2, wxT("Type"), 100, false, false });
+	alertsColumns.push_back({ 3, 3, wxT("Period"), 100, false, false });
+	alertsColumns.push_back({ 4, 4, wxT("Condition"), 100, false, false });
+	alertsColumns.push_back({ 5, 5, wxT("Importance"), 100, false, false });
+	alertsColumns.push_back({ 6, 6, wxT("Amount"), 100, false, false });
 
 	_alertsListColumnsSettings = alertsColumns;
+
+	std::vector<ListColumnsSettings> schedulersColumns;
+
+	schedulersColumns.push_back({ 0, 0, wxT("Name"), 100, true, false });
+	schedulersColumns.push_back({ 1, 1, wxT("Type"), 100, false, false });
+	schedulersColumns.push_back({ 2, 2, wxT("Amount"), 100, false, false });
+	schedulersColumns.push_back({ 3, 3, wxT("Next Date"), 100, false, false });
+	schedulersColumns.push_back({ 4, 4, wxT("Days Left"), 100, false, false });
+	schedulersColumns.push_back({ 5, 5, wxT("Status"), 100, false, false });
+
+	_schedulersListColumnsSettings = schedulersColumns;
+}
+
+Value Settings::WriteColumnsToJson(Document& json, std::vector<ListColumnsSettings> columns) {
+	Value columnsJson(kArrayType);
+
+	for (auto& column : columns)
+	{
+		Value columnJson(kObjectType);
+
+		Value string(column.title.c_str(), json.GetAllocator());
+
+		columnJson.AddMember("Index", column.index, json.GetAllocator());
+		columnJson.AddMember("Order", column.order, json.GetAllocator());
+		columnJson.AddMember("Title", string, json.GetAllocator());
+		columnJson.AddMember("Width", column.width, json.GetAllocator());
+		columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
+		columnJson.AddMember("SortedDesc", column.sortedDesc, json.GetAllocator());
+
+		columnsJson.PushBack(columnJson, json.GetAllocator());
+	}
+
+	return columnsJson;
+}
+
+std::vector<ListColumnsSettings> Settings::ReadColumnsFromJson(const Value& values) {
+	std::vector<ListColumnsSettings> columns;
+
+	for (SizeType i = 0; i < values.Size(); i++) {
+		const Value& value = values[i];
+
+		columns.push_back({
+			value["Index"].GetInt(),
+			value["Order"].GetInt(),
+			wxString::FromUTF8(value["Title"].GetString()),
+			value["Width"].GetInt(),
+			value.HasMember("Sorted") ? value["Sorted"].GetBool() : false,
+			value.HasMember("SortedDesc") ? value["SortedDesc"].GetBool() : false
+		});
+	}
+
+	return columns;
 }
 
 int Settings::GetSelectedAccountId() {
@@ -580,7 +577,7 @@ ListFilterSettings Settings::GetListFilterSettings(int type, int id) {
 std::vector<ListColumnsSettings> Settings::GetTransactionsListColumns(TransactionsListType type) {
 	auto& columns = _transactionsListColumnsSettings[static_cast<int>(type)];
 
-	std::sort(columns.begin(), columns.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+	std::sort(columns.begin(), columns.end(), [](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;
 	});
 
@@ -638,7 +635,7 @@ void Settings::SetReportFilterSettings(int id, wxString accountIds, int period, 
 }
 
 std::vector<ListColumnsSettings> Settings::GetAlertsListColumns() {
-	std::sort(_alertsListColumnsSettings.begin(), _alertsListColumnsSettings.end(), [this](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+	std::sort(_alertsListColumnsSettings.begin(), _alertsListColumnsSettings.end(), [](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
 		return v1.order < v2.order;
 	});
 
@@ -647,4 +644,16 @@ std::vector<ListColumnsSettings> Settings::GetAlertsListColumns() {
 
 void Settings::SetAlertsListColumns(std::vector<ListColumnsSettings> columns) {
 	_alertsListColumnsSettings = columns;
+}
+
+std::vector<ListColumnsSettings> Settings::GetSchedulersListColumns() {
+	std::sort(_schedulersListColumnsSettings.begin(), _schedulersListColumnsSettings.end(), [](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+		return v1.order < v2.order;
+	});
+
+	return _schedulersListColumnsSettings;
+}
+
+void Settings::SetSchedulersListColumns(std::vector<ListColumnsSettings> columns) {
+	_schedulersListColumnsSettings = columns;
 }

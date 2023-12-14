@@ -114,7 +114,13 @@ shared_vector<SchedulerPresentationModel> DashboardViewModel::GetSchedulersForMo
 	wxDateTime today = wxDateTime::Now();
 	wxDateTime month = wxDateTime::Now().Add(wxDateSpan(0, 0, 0, 30));
 
-	return _schedulersService.GetActiveByPeriod(today, month);
+	auto result = _schedulersService.GetActiveByPeriod(today, month);
+
+	std::sort(result.begin(), result.end(), [](std::shared_ptr<SchedulerPresentationModel> a, std::shared_ptr<SchedulerPresentationModel> b) {
+		return a->nextDate.IsEarlierThan(b->nextDate);
+	});
+
+	return result;
 }
 
 shared_vector<AccountPresentationModel> DashboardViewModel::GetDepts() {

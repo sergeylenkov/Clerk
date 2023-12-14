@@ -95,6 +95,7 @@
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
+    <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsPopup.cpp" />
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp" />
@@ -161,7 +162,6 @@
     <ClCompile Include="UI\TagsPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalsPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalDialog.cpp" />
-    <ClCompile Include="UI\Schedulers\SchedulersConfirmDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersListPanel.cpp" />
     <ClCompile Include="UI\TrashPanel.cpp" />
@@ -250,6 +250,7 @@
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
+    <ClInclude Include="UI\Notifications\NotificationSchedulerPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsPopup.h" />
     <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h" />
     <ClInclude Include="UI\Schedulers\Enums.h" />
@@ -323,7 +324,6 @@
     <ClInclude Include="UI\Goals\GoalsPanel.h" />
     <ClInclude Include="UI\Goals\GoalDialog.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="UI\Schedulers\SchedulersConfirmDialog.h" />
     <ClInclude Include="UI\Schedulers\SchedulerDialog.h" />
     <ClInclude Include="UI\Schedulers\SchedulersListPanel.h" />
     <ClInclude Include="UI\TrashPanel.h" />

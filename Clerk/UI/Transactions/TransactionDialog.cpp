@@ -70,7 +70,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 		Layout();
 	};
 
-	horizontalSizer->Add(_tagsField, 1, wxEXPAND, indent);
+	horizontalSizer->Add(_tagsField, 1, wxEXPAND);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -80,7 +80,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	horizontalSizer->Add(noteLabel);
 
 	_noteField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE);
-	horizontalSizer->Add(_noteField, 1, wxEXPAND, indent);
+	horizontalSizer->Add(_noteField, 1, wxEXPAND);
 
 	panelSizer->Add(horizontalSizer, 1, wxEXPAND | wxBOTTOM, bottomIndent);
 	

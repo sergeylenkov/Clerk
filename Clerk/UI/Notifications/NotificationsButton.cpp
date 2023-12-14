@@ -10,8 +10,20 @@ NotificationsButton::NotificationsButton(NotificationsViewModel& viewModel, wxWi
 
 	_popup = new NotificationsPopup(this);
 
-	_popup->OnDismiss = [&](std::shared_ptr<AlertPresentationModel> alert) {
-		_viewModel.Dismiss(*alert);
+	_popup->OnDismissAlert = [&](std::shared_ptr<AlertPresentationModel> alert) {
+		_viewModel.DismissAlert(*alert);
+	};
+
+	_popup->OnDismissScheduler = [&](std::shared_ptr<SchedulerPresentationModel> scheduler) {
+		_viewModel.DismissScheduler(*scheduler);
+	};
+
+	_popup->OnExecScheduler = [&](std::shared_ptr<SchedulerPresentationModel> scheduler) {
+		_viewModel.ExecScheduler(*scheduler);
+	};
+
+	_popup->OnSkipScheduler = [&](std::shared_ptr<SchedulerPresentationModel> scheduler) {
+		_viewModel.SkipScheduler(*scheduler);
 	};
 
 	_viewModel.OnUpdate([&]() {
@@ -38,7 +50,7 @@ void NotificationsButton::Update()
 
 	if (_popup->IsShown()) {
 		if (_viewModel.IsActive()) {
-			_popup->Update(_viewModel.GetActiveAlerts());
+			_popup->Update(_viewModel.GetActiveAlerts(), _viewModel.GetActiveSchedulers());
 		} else {
 			_popup->Hide();
 		}
@@ -72,7 +84,7 @@ void NotificationsButton::OnClick(wxCommandEvent& event)
 	wxSize panelSize = wxSize(FromDIP(300), -1);
 
 	_popup->Position(wxPoint(position.x + size.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);
-	_popup->Update(_viewModel.GetActiveAlerts());
+	_popup->Update(_viewModel.GetActiveAlerts(), _viewModel.GetActiveSchedulers());
 	_popup->Show();
 
 }

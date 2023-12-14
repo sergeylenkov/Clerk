@@ -95,7 +95,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	_accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
 	_accountsList->SetImageList(_icons.GetImageList(), wxIMAGE_LIST_SMALL);
 
-	horizontalSizer->Add(_accountsList, 1, wxEXPAND, indent);
+	horizontalSizer->Add(_accountsList, 1, wxEXPAND);
 
 	panelSizer->Add(horizontalSizer, 1, wxEXPAND | wxBOTTOM, bottomIndent);
 

@@ -80,8 +80,19 @@ shared_vector<SchedulerPresentationModel> SchedulersService::GetActiveByPeriod(w
 		return scheduler->isActive && scheduler->nextDate.IsBetween(fromDate, toDate);
 	});
 
-	std::sort(result.begin(), result.end(), [](std::shared_ptr<SchedulerPresentationModel> a, std::shared_ptr<SchedulerPresentationModel> b) {
-		return a->nextDate.IsEarlierThan(b->nextDate);
+	return result;
+}
+
+shared_vector<SchedulerPresentationModel> SchedulersService::GetActiveOnDate(wxDateTime& date) {
+	auto schedulers = GetAll();
+	shared_vector<SchedulerPresentationModel> result;
+
+	std::copy_if(schedulers.begin(), schedulers.end(), std::back_inserter(result), [date](const std::shared_ptr<SchedulerPresentationModel>& scheduler) {
+		if (scheduler->isActive) {
+			return scheduler->nextDate.IsBetween(scheduler->previousDate, date);
+		}
+
+		return false;
 	});
 
 	return result;
@@ -119,6 +130,14 @@ void SchedulersService::Execute(SchedulerPresentationModel& scheduler) {
 
 	_transactionsService.Save(*transaction);
 
+	scheduler.nextDate = CalculateNextDate(scheduler);
+
+	Save(scheduler);
+
+	_eventEmitter->Emit();
+}
+
+void SchedulersService::Skip(SchedulerPresentationModel& scheduler) {
 	scheduler.nextDate = CalculateNextDate(scheduler);
 
 	Save(scheduler);

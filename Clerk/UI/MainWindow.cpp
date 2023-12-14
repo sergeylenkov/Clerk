@@ -26,7 +26,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	_statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
 	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
 	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
-	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService());
+	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService(), _context.GetSchedulersService());
 
 	_mainMenu = new MainMenu(*mainMenuViewModel, *_commandsInvoker, _icons);
 

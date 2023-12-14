@@ -27,7 +27,6 @@ public:
 private:
 	AccountViewModel* _viewModel;
 	Icons& _icons;
-	wxPanel* _mainPanel;
 	wxTextCtrl* _nameField;
 	wxComboBox* _typeList;
 	wxComboBox* _currencyList;
@@ -35,9 +34,6 @@ private:
 	AmountField* _amountField;
 	AmountField* _creditField;
 	wxTextCtrl* _noteField;
-	wxButton* _okButton;
-	wxButton* _cancelButton;
-	wxBoxSizer* _creditPanel;
 
 	void Update();
 	void OnOK(wxCommandEvent &event);

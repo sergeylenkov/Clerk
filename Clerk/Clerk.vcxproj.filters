@@ -153,9 +153,6 @@
     <ClCompile Include="UI\Schedulers\SchedulerDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Schedulers\SchedulersConfirmDialog.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Alerts\AlertDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -453,6 +450,9 @@
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -594,9 +594,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalDialog.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Schedulers\SchedulersConfirmDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\SchedulerDialog.h">
@@ -945,6 +942,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\SchedulerContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Notifications\NotificationSchedulerPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

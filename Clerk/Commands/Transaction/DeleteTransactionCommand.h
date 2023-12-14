@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Command.h"
-#include "ICommandsReceiver.h"
+#include "../Command.h"
+#include "../ICommandsReceiver.h"
 
 namespace Clerk {
 	namespace Commands {

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Command.h"
-#include "ICommandsReceiver.h"
-#include "../Data/Enums.h"
+#include "../Command.h"
+#include "../ICommandsReceiver.h"
+#include "../../Data/Enums.h"
 
 using namespace Clerk::Data;
 

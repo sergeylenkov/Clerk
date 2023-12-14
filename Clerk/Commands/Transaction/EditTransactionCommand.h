@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Command.h"
-#include "ICommandsReceiver.h"
+#include "../Command.h"
+#include "../ICommandsReceiver.h"
 
 namespace Clerk {
 	namespace Commands {
-		class SplitTransactionCommand : public Command {
+		class EditTransactionCommand : public Command {
 		public:
-			SplitTransactionCommand(ICommandsReceiver& _receiver);
+			EditTransactionCommand(ICommandsReceiver& _receiver);
 			void SetTransactionId(int id);
 			void Execute() override;
 

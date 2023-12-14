@@ -51,22 +51,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
-    <ClCompile Include="Commands\CopyTransactionCommand.cpp" />
-    <ClCompile Include="Commands\DeleteTransactionCommand.cpp" />
-    <ClCompile Include="Commands\EditAccountCommand.cpp" />
-    <ClCompile Include="Commands\EditAlertCommand.cpp" />
-    <ClCompile Include="Commands\EditTransactionCommand.cpp" />
-    <ClCompile Include="Commands\NewAccountCommand.cpp" />
+    <ClCompile Include="Commands\Transaction\CopyTransactionCommand.cpp" />
+    <ClCompile Include="Commands\Transaction\DeleteTransactionCommand.cpp" />
+    <ClCompile Include="Commands\Account\EditAccountCommand.cpp" />
+    <ClCompile Include="Commands\Alert\EditAlertCommand.cpp" />
+    <ClCompile Include="Commands\Transaction\EditTransactionCommand.cpp" />
+    <ClCompile Include="Commands\Account\NewAccountCommand.cpp" />
     <ClCompile Include="Commands\OpenAccountsTabCommand.cpp" />
     <ClCompile Include="Commands\OpenAccountTabCommand.cpp" />
     <ClCompile Include="Commands\OpenReportTabCommand.cpp" />
     <ClCompile Include="Commands\OpenTabCommand.cpp" />
-    <ClCompile Include="Commands\NewTransactionCommand.cpp" />
+    <ClCompile Include="Commands\Transaction\NewTransactionCommand.cpp" />
     <ClCompile Include="Commands\CommandsInvoker.cpp" />
     <ClCompile Include="Commands\CommandsReceiver.cpp" />
     <ClCompile Include="Commands\OpenPreferencesCommand.cpp" />
     <ClCompile Include="Commands\QuitCommand.cpp" />
-    <ClCompile Include="Commands\SplitTransactionCommand.cpp" />
+    <ClCompile Include="Commands\Transaction\SplitTransactionCommand.cpp" />
     <ClCompile Include="Data\DataConnection.cpp" />
     <ClCompile Include="Data\DataContext.cpp" />
     <ClCompile Include="Data\Repositories\AlertsRepository.cpp" />
@@ -199,24 +199,24 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
-    <ClInclude Include="Commands\CopyTransactionCommand.h" />
-    <ClInclude Include="Commands\DeleteTransactionCommand.h" />
-    <ClInclude Include="Commands\EditAccountCommand.h" />
-    <ClInclude Include="Commands\EditAlertCommand.h" />
-    <ClInclude Include="Commands\EditTransactionCommand.h" />
-    <ClInclude Include="Commands\NewAccountCommand.h" />
+    <ClInclude Include="Commands\Transaction\CopyTransactionCommand.h" />
+    <ClInclude Include="Commands\Transaction\DeleteTransactionCommand.h" />
+    <ClInclude Include="Commands\Account\EditAccountCommand.h" />
+    <ClInclude Include="Commands\Alert\EditAlertCommand.h" />
+    <ClInclude Include="Commands\Transaction\EditTransactionCommand.h" />
+    <ClInclude Include="Commands\Account\NewAccountCommand.h" />
     <ClInclude Include="Commands\OpenAccountsTabCommand.h" />
     <ClInclude Include="Commands\OpenAccountTabCommand.h" />
     <ClInclude Include="Commands\OpenReportTabCommand.h" />
     <ClInclude Include="Commands\OpenTabCommand.h" />
-    <ClInclude Include="Commands\NewTransactionCommand.h" />
+    <ClInclude Include="Commands\Transaction\NewTransactionCommand.h" />
     <ClInclude Include="Commands\Command.h" />
     <ClInclude Include="Commands\CommandsInvoker.h" />
     <ClInclude Include="Commands\CommandsReceiver.h" />
     <ClInclude Include="Commands\ICommandsReceiver.h" />
     <ClInclude Include="Commands\OpenPreferencesCommand.h" />
     <ClInclude Include="Commands\QuitCommand.h" />
-    <ClInclude Include="Commands\SplitTransactionCommand.h" />
+    <ClInclude Include="Commands\Transaction\SplitTransactionCommand.h" />
     <ClInclude Include="Commands\TransactionForAccount.h" />
     <ClInclude Include="Data\DataConnection.h" />
     <ClInclude Include="Data\DataContext.h" />

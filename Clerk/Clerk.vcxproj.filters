@@ -342,7 +342,7 @@
     <ClCompile Include="UI\ViewModels\TreeMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\NewTransactionCommand.cpp">
+    <ClCompile Include="Commands\Transaction\NewTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\ViewModels\TransactionViewModel.cpp">
@@ -351,13 +351,13 @@
     <ClCompile Include="Utils\EventEmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\CopyTransactionCommand.cpp">
+    <ClCompile Include="Commands\Transaction\CopyTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\EditAccountCommand.cpp">
+    <ClCompile Include="Commands\Account\EditAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\ViewModels\AccountViewModel.cpp">
@@ -366,7 +366,7 @@
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\NewAccountCommand.cpp">
+    <ClCompile Include="Commands\Account\NewAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp">
@@ -381,13 +381,13 @@
     <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\SplitTransactionCommand.cpp">
+    <ClCompile Include="Commands\Transaction\SplitTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\EditTransactionCommand.cpp">
+    <ClCompile Include="Commands\Transaction\EditTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\DeleteTransactionCommand.cpp">
+    <ClCompile Include="Commands\Transaction\DeleteTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Tabs\TabsContextMenu.cpp">
@@ -444,7 +444,7 @@
     <ClCompile Include="UI\Alerts\AlertContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\EditAlertCommand.cpp">
+    <ClCompile Include="Commands\Alert\EditAlertCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\ViewModels\AlertViewModel.cpp">
@@ -806,7 +806,7 @@
     <ClInclude Include="UI\ViewModels\TreeMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\NewTransactionCommand.h">
+    <ClInclude Include="Commands\Transaction\NewTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\TransactionViewModel.h">
@@ -818,13 +818,13 @@
     <ClInclude Include="Commands\TransactionForAccount.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\CopyTransactionCommand.h">
+    <ClInclude Include="Commands\Transaction\CopyTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\AccountContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\EditAccountCommand.h">
+    <ClInclude Include="Commands\Account\EditAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\AccountViewModel.h">
@@ -833,7 +833,7 @@
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\NewAccountCommand.h">
+    <ClInclude Include="Commands\Account\NewAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\DefaultContextMenu.h">
@@ -854,13 +854,13 @@
     <ClInclude Include="UI\Transactions\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\SplitTransactionCommand.h">
+    <ClInclude Include="Commands\Transaction\SplitTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\EditTransactionCommand.h">
+    <ClInclude Include="Commands\Transaction\EditTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\DeleteTransactionCommand.h">
+    <ClInclude Include="Commands\Transaction\DeleteTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Tabs\TabsContextMenu.h">
@@ -935,7 +935,7 @@
     <ClInclude Include="UI\Alerts\AlertContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\EditAlertCommand.h">
+    <ClInclude Include="Commands\Alert\EditAlertCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\AlertViewModel.h">

@@ -6,6 +6,9 @@
 #include <vector>
 #include <numeric>
 #include <sstream>
+#include "../Data/Enums.h"
+
+using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace Utils {
@@ -16,6 +19,7 @@ namespace Clerk {
 			static wxColor ColorForGoal(int percent);
 			static wxColor ColorForDebt(int percent);
 			static wxColor ColorForBalance(boolean isReceipt);
+			static wxColor ColorFoImportance(AlertImportance importance);
 		};
 
 		class Format {

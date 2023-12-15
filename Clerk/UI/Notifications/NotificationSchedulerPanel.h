@@ -23,8 +23,10 @@ private:
 	std::shared_ptr<SchedulerPresentationModel> _scheduler;
 
 	wxStaticText* _label;
+	AlertImportance _importance;
 
 	void Update();
+	void OnPaint(wxPaintEvent& event);
 	void OnDismissClick(wxCommandEvent& event);
 	void OnSkipClick(wxCommandEvent& event);
 	void OnExecClick(wxCommandEvent& event);

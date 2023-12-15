@@ -63,6 +63,17 @@ wxColor Colors::ColorForBalance(boolean isReceipt) {
 	return wxColor(242, 73, 101);
 }
 
+wxColor Colors::ColorFoImportance(AlertImportance importance) {
+	if (importance == AlertImportance::Medium) {
+		return wxColor(251, 175, 67);
+	}
+	else if (importance == AlertImportance::High) {
+		return wxColor(242, 73, 101);
+	}
+
+	return wxColor(10, 199, 117);
+}
+
 void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &toDate) {
 	switch (type)
 	{

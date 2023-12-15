@@ -23,6 +23,8 @@ NotificationAlertPanel::NotificationAlertPanel(wxWindow* parent, const wxPoint& 
 	Layout();
 
 	button->Bind(wxEVT_BUTTON, &NotificationAlertPanel::OnDismissClick, this);
+
+	Bind(wxEVT_PAINT, &NotificationAlertPanel::OnPaint, this);
 }
 
 void NotificationAlertPanel::SetAlert(std::shared_ptr<AlertPresentationModel> alert) {
@@ -40,6 +42,19 @@ void NotificationAlertPanel::Update() {
 
 	_label->SetLabel(label);
 	_label->Wrap(GetSize().GetWidth());
+}
+
+void NotificationAlertPanel::OnPaint(wxPaintEvent& event)
+{
+	wxPaintDC dc(this);
+	wxSize size = GetSize();
+
+	wxColor color = Colors::ColorFoImportance(_alert->importance);
+
+	dc.SetPen(wxPen(color, 1));
+	dc.SetBrush(wxBrush(color));
+
+	dc.DrawRectangle(0, 0, 3, size.GetHeight());
 }
 
 void NotificationAlertPanel::OnDismissClick(wxCommandEvent& event) {

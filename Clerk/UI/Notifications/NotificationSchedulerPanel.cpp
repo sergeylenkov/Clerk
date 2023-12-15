@@ -31,19 +31,44 @@ NotificationSchedulerPanel::NotificationSchedulerPanel(wxWindow* parent, const w
 	execButton->Bind(wxEVT_BUTTON, &NotificationSchedulerPanel::OnExecClick, this);
 	skipButton->Bind(wxEVT_BUTTON, &NotificationSchedulerPanel::OnSkipClick, this);
 	dismissButton->Bind(wxEVT_BUTTON, &NotificationSchedulerPanel::OnDismissClick, this);
+
+	Bind(wxEVT_PAINT, &NotificationSchedulerPanel::OnPaint, this);
 }
 
 void NotificationSchedulerPanel::SetScheduler(std::shared_ptr<SchedulerPresentationModel> scheduler) {
 	_scheduler = scheduler;
 
+	_importance = AlertImportance::Low;	
+
+	wxTimeSpan span = scheduler->nextDate - wxDateTime::Today();
+
+	if (span.GetDays() > 1 && span.GetDays() <= 7) {
+		_importance = AlertImportance::Medium;
+	} else if (span.GetDays() > 7) {
+		_importance = AlertImportance::High;
+	}
+
 	Update();
 }
 
 void NotificationSchedulerPanel::Update() {
-	wxString label = wxString::Format("%s %s", _scheduler->name, Format::Amount(_scheduler->toAmount));
+	wxString label = wxString::Format("%s: %s %s", _("Scheduled transaction"), _scheduler->name, Format::Amount(_scheduler->toAmount));
 
 	_label->SetLabel(label);
 	_label->Wrap(GetSize().GetWidth());
+}
+
+void NotificationSchedulerPanel::OnPaint(wxPaintEvent& event)
+{
+	wxPaintDC dc(this);
+	wxSize size = GetSize();
+
+	wxColor color = Colors::ColorFoImportance(_importance);
+	
+	dc.SetPen(wxPen(color, 1));
+	dc.SetBrush(wxBrush(color));
+
+	dc.DrawRectangle(0, 0, 3, size.GetHeight());
 }
 
 void NotificationSchedulerPanel::OnDismissClick(wxCommandEvent& event) {

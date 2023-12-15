@@ -33,7 +33,7 @@ shared_vector<SchedulerPresentationModel> NotificationsViewModel::GetActiveSched
 }
 
 bool NotificationsViewModel::IsActive() {
-	return _activeAlerts.size() > 0 && _activeSchedulers.size() > 0;
+	return _activeAlerts.size() > 0 || _activeSchedulers.size() > 0;
 }
 
 void NotificationsViewModel::DismissAlert(AlertPresentationModel& alert) {
@@ -54,10 +54,22 @@ void NotificationsViewModel::DismissScheduler(SchedulerPresentationModel& schedu
 
 void NotificationsViewModel::ExecScheduler(SchedulerPresentationModel& scheduler) {
 	_schedulersService.Execute(scheduler);
+
+	_dismissiedSchedulers.insert(scheduler.id);
+
+	UpdateNotifications();
+
+	_eventEmitter->Emit();
 }
 
 void NotificationsViewModel::SkipScheduler(SchedulerPresentationModel& scheduler) {
 	_schedulersService.Skip(scheduler);
+
+	_dismissiedSchedulers.insert(scheduler.id);
+
+	UpdateNotifications();
+
+	_eventEmitter->Emit();
 }
 
 void NotificationsViewModel::UpdateNotifications() {

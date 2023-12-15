@@ -23,5 +23,6 @@ private:
 	wxStaticText* _label;
 
 	void Update();
+	void OnPaint(wxPaintEvent& event);
 	void OnDismissClick(wxCommandEvent& event);
 };

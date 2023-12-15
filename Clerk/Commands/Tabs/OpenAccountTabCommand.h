@@ -1,8 +1,7 @@
 #pragma once
 
-#include "Command.h"
-#include "ICommandsReceiver.h"
-#include "../UI/Enums.h"
+#include "../Command.h"
+#include "../ICommandsReceiver.h"
 
 using namespace Clerk::UI;
 

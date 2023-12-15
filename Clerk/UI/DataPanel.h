@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../UI/Enums.h"
+#include "../UI/Tabs/Enums.h"
 #include "../Data/DataContext.h"
 #include "../Commands/CommandsInvoker.h"
 

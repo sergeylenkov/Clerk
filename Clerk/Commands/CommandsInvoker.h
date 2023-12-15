@@ -11,13 +11,13 @@
 #include "Account/NewAccountCommand.h"
 #include "Account/EditAccountCommand.h"
 #include "Alert/EditAlertCommand.h"
-#include "OpenTabCommand.h"
-#include "OpenAccountTabCommand.h"
-#include "OpenAccountsTabCommand.h"
-#include "OpenReportTabCommand.h"
+#include "Tabs/OpenTabCommand.h"
+#include "Tabs/OpenAccountTabCommand.h"
+#include "Tabs/OpenAccountsTabCommand.h"
+#include "Tabs/OpenReportTabCommand.h"
 #include "Scheduler/EditSchedulerCommand.h"
 #include "../Data/Enums.h"
-#include "../UI/Enums.h"
+#include "../UI/Tabs/Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

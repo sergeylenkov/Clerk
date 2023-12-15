@@ -369,9 +369,6 @@
     <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\OpenTabCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Controllers\TabsController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -397,12 +394,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\CurrenciesService.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands\OpenAccountTabCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Commands\OpenAccountsTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp">
@@ -432,9 +423,6 @@
     <ClCompile Include="UI\TreeMenu\ReportContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Commands\OpenReportTabCommand.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -454,6 +442,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\Scheduler\EditSchedulerCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Tabs\OpenAccountsTabCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Tabs\OpenAccountTabCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Tabs\OpenReportTabCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Tabs\OpenTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -839,12 +839,6 @@
     <ClInclude Include="UI\TreeMenu\DefaultContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\OpenTabCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Controllers\TabsController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -884,12 +878,6 @@
     <ClInclude Include="Data\Services\HashService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\OpenAccountTabCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\OpenAccountsTabCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -923,9 +911,6 @@
     <ClInclude Include="UI\TreeMenu\ReportContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\OpenReportTabCommand.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Reports\ReportReceiptsByMonthPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -951,6 +936,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Scheduler\EditSchedulerCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Tabs\OpenAccountsTabCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Tabs\OpenAccountTabCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Tabs\OpenReportTabCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Tabs\OpenTabCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -2,7 +2,7 @@
 
 #include <optional>
 #include "../Data/Enums.h"
-#include "../UI/Enums.h"
+#include "../UI/Tabs/Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

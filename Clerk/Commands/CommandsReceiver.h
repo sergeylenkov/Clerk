@@ -31,6 +31,7 @@ namespace Clerk {
 			void OpenAccountsTab(std::optional<AccountType> type) override;
 			void OpenReportTab(int id) override;
 			void OpenEditAlertDialog(int id) override;
+			void OpenEditSchedulerDialog(int id) override;
 
 		private:
 			wxFrame* _frame{};

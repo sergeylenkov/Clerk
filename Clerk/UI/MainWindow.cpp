@@ -150,7 +150,7 @@ void MainWindow::SetupCommands() {
 	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(*_commandsReceiver);
 	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(*_commandsReceiver);
 	EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(*_commandsReceiver);
-	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(*_commandsReceiver);
+	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_context.GetTransactionsService());
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(*_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
 	OpenTabCommand* openTabCommand = new OpenTabCommand(*_commandsReceiver);
@@ -158,12 +158,26 @@ void MainWindow::SetupCommands() {
 	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(*_commandsReceiver);
 	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(*_commandsReceiver);
 	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
+	EditSchedulerCommand* editSchedulerCommand = new EditSchedulerCommand(*_commandsReceiver);
 
-	_commandsInvoker = new CommandsInvoker(*quitCommand, *preferencesCommand, *aboutCommand,
-		                                   *newTransactionCommand, *copyTransactionCommand,
-										   *splitTransactionCommand, *editTransactionCommand, *deleteTransactionCommand,
-		                                   *newAccountCommand, *editAccountCommand, *openTabCommand, *openAccountTabCommand,
-										   *openAccountsTabCommand, *openReportTabCommand, *editAlertCommand);
+	_commandsInvoker = new CommandsInvoker(
+		*quitCommand,
+		*preferencesCommand,
+		*aboutCommand,
+		*newTransactionCommand, 
+		*copyTransactionCommand,
+		*splitTransactionCommand, 
+		*editTransactionCommand, 
+		*deleteTransactionCommand,
+		*newAccountCommand, 
+		*editAccountCommand, 
+		*openTabCommand, 
+		*openAccountTabCommand,
+		*openAccountsTabCommand, 
+		*openReportTabCommand, 
+		*editAlertCommand, 
+		*editSchedulerCommand
+	);
 
 	_context.SetCommandsInvoker(_commandsInvoker);
 }

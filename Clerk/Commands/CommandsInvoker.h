@@ -15,6 +15,7 @@
 #include "OpenAccountTabCommand.h"
 #include "OpenAccountsTabCommand.h"
 #include "OpenReportTabCommand.h"
+#include "Scheduler/EditSchedulerCommand.h"
 #include "../Data/Enums.h"
 #include "../UI/Enums.h"
 
@@ -25,11 +26,24 @@ namespace Clerk {
 	namespace Commands {
 		class CommandsInvoker {
 		public:
-			CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
-				           NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
-						   SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-				           NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& openTabCommand, OpenAccountTabCommand& openAccountTabCommand,
-						   OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand, EditAlertCommand& editAlertCommand);
+			CommandsInvoker(
+				QuitCommand& quitCommand,
+				OpenPreferencesCommand& preferencesCommand,
+				AboutCommand& aboutCommand,
+				NewTransactionCommand& newTransactionCommand,
+				CopyTransactionCommand& copyTransactionCommand,
+				SplitTransactionCommand& splitTransactionCommand,
+				EditTransactionCommand& editTransactionCommand,
+				DeleteTransactionCommand& deleteTransactionCommand,
+				NewAccountCommand& newAccountCommand,
+				EditAccountCommand& editAccountCommand,
+				OpenTabCommand& openTabCommand,
+				OpenAccountTabCommand& openAccountTabCommand,
+				OpenAccountsTabCommand& openAccountsTabCommand,
+				OpenReportTabCommand& openReportTabCommand,
+				EditAlertCommand& editAlertCommand,
+				EditSchedulerCommand& editSchedulerCommand
+			);
 			~CommandsInvoker();
 
 			void Quit();
@@ -50,6 +64,9 @@ namespace Clerk {
 			void NewAlert();
 			void EditAlert(int id);
 			void DeleteAlert(int id);
+			void NewScheduler();
+			void EditScheduler(int id);
+			void DeleteScheduler(int id);
 
 		private:
 			QuitCommand& _quitCommand;
@@ -67,6 +84,7 @@ namespace Clerk {
 			OpenAccountsTabCommand& _openAccountsTabCommand;
 			OpenReportTabCommand& _openReportTabCommand;
 			EditAlertCommand& _editAlertCommand;
+			EditSchedulerCommand& _editSchedulerCommand;
 		};
 	}
 }

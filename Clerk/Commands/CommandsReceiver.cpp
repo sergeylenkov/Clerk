@@ -71,3 +71,7 @@ void CommandsReceiver::OpenReportTab(int id) {
 void CommandsReceiver::OpenEditAlertDialog(int id) {
 	_dialogsController->ShowEditAlertDialog(id);
 }
+
+void CommandsReceiver::OpenEditSchedulerDialog(int id) {
+
+}

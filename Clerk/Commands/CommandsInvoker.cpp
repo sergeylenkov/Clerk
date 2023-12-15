@@ -2,11 +2,24 @@
 
 using namespace Clerk::Commands;
 
-CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesCommand& preferencesCommand, AboutCommand& aboutCommand,
-	NewTransactionCommand& newTransactionCommand, CopyTransactionCommand& copyTransactionCommand,
-	SplitTransactionCommand& splitTransactionCommand, EditTransactionCommand& editTransactionCommand, DeleteTransactionCommand& deleteTransactionCommand,
-	NewAccountCommand& newAccountCommand, EditAccountCommand& editAccountCommand, OpenTabCommand& openTabCommand, OpenAccountTabCommand& openAccountTabCommand,
-	OpenAccountsTabCommand& openAccountsTabCommand, OpenReportTabCommand& openReportTabCommand, EditAlertCommand& editAlertCommand) :
+CommandsInvoker::CommandsInvoker(
+	QuitCommand& quitCommand,
+	OpenPreferencesCommand& preferencesCommand, 
+	AboutCommand& aboutCommand,
+	NewTransactionCommand& newTransactionCommand, 
+	CopyTransactionCommand& copyTransactionCommand,
+	SplitTransactionCommand& splitTransactionCommand,
+	EditTransactionCommand& editTransactionCommand,
+	DeleteTransactionCommand& deleteTransactionCommand,
+	NewAccountCommand& newAccountCommand,
+	EditAccountCommand& editAccountCommand,
+	OpenTabCommand& openTabCommand,
+	OpenAccountTabCommand& openAccountTabCommand,
+	OpenAccountsTabCommand& openAccountsTabCommand,
+	OpenReportTabCommand& openReportTabCommand,
+	EditAlertCommand& editAlertCommand,
+	EditSchedulerCommand& editSchedulerCommand
+):
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
@@ -21,7 +34,8 @@ CommandsInvoker::CommandsInvoker(QuitCommand& quitCommand, OpenPreferencesComman
 	_openAccountTabCommand(openAccountTabCommand),
 	_openAccountsTabCommand(openAccountsTabCommand),
 	_openReportTabCommand(openReportTabCommand),
-	_editAlertCommand(editAlertCommand)
+	_editAlertCommand(editAlertCommand),
+	_editSchedulerCommand(editSchedulerCommand)
 {
 	
 }
@@ -42,6 +56,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _openAccountsTabCommand;
 	delete& _openReportTabCommand;
 	delete& _editAlertCommand;
+	delete& _editSchedulerCommand;
 }
 
 void CommandsInvoker::Quit() {
@@ -125,5 +140,17 @@ void CommandsInvoker::EditAlert(int id) {
 }
 
 void CommandsInvoker::DeleteAlert(int id) {
+
+}
+void CommandsInvoker::NewScheduler() {
+
+}
+
+void CommandsInvoker::EditScheduler(int id) {
+	_editSchedulerCommand.SetSchedulerId(id);
+	_editSchedulerCommand.Execute();
+}
+
+void CommandsInvoker::DeleteScheduler(int id) {
 
 }

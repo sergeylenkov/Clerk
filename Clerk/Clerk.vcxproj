@@ -51,6 +51,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
+    <ClCompile Include="Commands\Scheduler\EditSchedulerCommand.cpp" />
     <ClCompile Include="Commands\Transaction\CopyTransactionCommand.cpp" />
     <ClCompile Include="Commands\Transaction\DeleteTransactionCommand.cpp" />
     <ClCompile Include="Commands\Account\EditAccountCommand.cpp" />
@@ -199,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
+    <ClInclude Include="Commands\Scheduler\EditSchedulerCommand.h" />
     <ClInclude Include="Commands\Transaction\CopyTransactionCommand.h" />
     <ClInclude Include="Commands\Transaction\DeleteTransactionCommand.h" />
     <ClInclude Include="Commands\Account\EditAccountCommand.h" />

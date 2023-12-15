@@ -1,18 +1,18 @@
 #pragma once
 
 #include "../Command.h"
-#include "../ICommandsReceiver.h"
+#include "../../Data/Services/TransactionsService.h"
 
 namespace Clerk {
 	namespace Commands {
 		class DeleteTransactionCommand : public Command {
 		public:
-			DeleteTransactionCommand(ICommandsReceiver& _receiver);
+			DeleteTransactionCommand(TransactionsService& service);
 			void SetTransactionId(int id);
 			void Execute() override;
 
 		private:
-			ICommandsReceiver& _receiver;
+			TransactionsService& _service;
 			int _transactionId;
 		};
 	}

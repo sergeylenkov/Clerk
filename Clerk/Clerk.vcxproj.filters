@@ -453,6 +453,9 @@
     <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\Scheduler\EditSchedulerCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -945,6 +948,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Notifications\NotificationSchedulerPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Scheduler\EditSchedulerCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

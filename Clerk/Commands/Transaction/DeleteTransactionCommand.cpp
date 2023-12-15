@@ -2,9 +2,10 @@
 
 using namespace Clerk::Commands;
 
-DeleteTransactionCommand::DeleteTransactionCommand(ICommandsReceiver& receiver):
-	_receiver(receiver), 
-	_transactionId(-1) {
+DeleteTransactionCommand::DeleteTransactionCommand(TransactionsService& service):
+	_service(service),
+	_transactionId(-1)
+{
 }
 
 void DeleteTransactionCommand::SetTransactionId(int id) {
@@ -12,5 +13,9 @@ void DeleteTransactionCommand::SetTransactionId(int id) {
 }
 
 void DeleteTransactionCommand::Execute() {
-	_receiver.DeleteTransaction(_transactionId);
+	auto transaction = _service.GetById(_transactionId);
+
+	if (transaction) {
+		_service.Delete(*transaction);
+	}
 }

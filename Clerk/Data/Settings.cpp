@@ -289,7 +289,7 @@ void Settings::Save() {
 		json.AddMember("ReportFilters", filtersJson, json.GetAllocator());
 	}
 	
-	json.AddMember("SchedulersListColumns", WriteColumnsToJson(json, _alertsListColumnsSettings), json.GetAllocator());
+	json.AddMember("AlertsListColumns", WriteColumnsToJson(json, _alertsListColumnsSettings), json.GetAllocator());
 	json.AddMember("SchedulersListColumns", WriteColumnsToJson(json, _schedulersListColumnsSettings), json.GetAllocator());
 
 	FILE *fp = fopen(_fileName.char_str(), "wb"); 

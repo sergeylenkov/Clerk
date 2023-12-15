@@ -44,13 +44,13 @@ void SchedulerContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	switch (type)
 	{
 	case SchedulerContextMenuTypes::Add:
-		_commandsInvoker.NewAlert();
+		_commandsInvoker.NewScheduler();
 		break;
 	case SchedulerContextMenuTypes::Edit:
-		_commandsInvoker.EditAlert(id);
+		_commandsInvoker.EditScheduler(id);
 		break;
 	case SchedulerContextMenuTypes::Delete:
-		_commandsInvoker.DeleteAlert(id);
+		_commandsInvoker.DeleteScheduler(id);
 		break;
 	default:
 		break;

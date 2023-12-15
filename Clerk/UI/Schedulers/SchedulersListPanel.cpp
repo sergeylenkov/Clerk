@@ -108,10 +108,10 @@ void SchedulersListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	auto scheduler = GetScheduler();
 
 	if (scheduler) {
-		_context.GetCommandsInvoker().EditAlert(scheduler->id);
+		_context.GetCommandsInvoker().EditScheduler(scheduler->id);
 	}
 	else {
-		_context.GetCommandsInvoker().NewAlert();
+		_context.GetCommandsInvoker().NewScheduler();
 	}
 }
 

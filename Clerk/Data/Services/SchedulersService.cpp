@@ -177,7 +177,9 @@ void SchedulersService::LoadDetails(std::shared_ptr<SchedulerPresentationModel> 
 
 	transaction->tags.clear();
 
-	for (auto& tagId : model.tagsIds) {
+	std::vector<int> ids = String::Split(model.tagsIds, ',');
+
+	for (auto& tagId : ids) {
 		auto tag = _tagsService.GetById(tagId);
 
 		transaction->tags.push_back(tag);

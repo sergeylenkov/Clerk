@@ -17,10 +17,10 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& 
 	}
 	else {
 		item = Append(static_cast<int>(TreeContextMenuType::EditAccount), _("Edit Account..."));
-		item->SetBitmap(wxBitmap("ICON_EDIT", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Pencil));
 
 		item = Append(static_cast<int>(TreeContextMenuType::DeleteAccount), _("Move to Archive"));
-		item->SetBitmap(wxBitmap("ICON_DELETE", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Delete));
 
 		AppendSeparator();
 
@@ -29,7 +29,7 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& 
 			AppendSubMenu(recentsMenu, _("New Transaction"));
 
 			item = recentsMenu->Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
-			item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+			item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 
 			recentsMenu->AppendSeparator();
 
@@ -51,7 +51,7 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& 
 		}
 		else {
 			item = Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
-			item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+			item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 		}
 	}
 

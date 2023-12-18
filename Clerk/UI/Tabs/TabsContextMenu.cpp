@@ -2,10 +2,15 @@
 
 using namespace Clerk::UI;
 
-TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnabled, bool isCloseEnabled):
-	_tabId(tabId), _isLeftEnabled(isLeftEnabled), _isRightEnabled(isRightEnabled), _isCloseEnabled(isCloseEnabled) {
+TabsContextMenu::TabsContextMenu(Icons& icons, int tabId, bool isLeftEnabled, bool isRightEnabled, bool isCloseEnabled):
+	_icons(icons),
+	_tabId(tabId),
+	_isLeftEnabled(isLeftEnabled),
+	_isRightEnabled(isRightEnabled),
+	_isCloseEnabled(isCloseEnabled)
+{
 	wxMenuItem* item = Append(static_cast<int>(TabsContextMenuType::Left), _("Move to Left"));
-	item->SetBitmap(wxBitmap("ICON_ARROW_LEFT", wxBITMAP_TYPE_PNG_RESOURCE));
+	item->SetBitmap(_icons.GetIconByType(IconType::ArrowLeft));
 
 	if (!_isLeftEnabled) {
 		item->Enable(false);
@@ -13,7 +18,7 @@ TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnab
 	}
 
 	item = Append(static_cast<int>(TabsContextMenuType::Right), _("Move to Right"));	
-	item->SetBitmap(wxBitmap("ICON_ARROW_RIGHT", wxBITMAP_TYPE_PNG_RESOURCE));
+	item->SetBitmap(_icons.GetIconByType(IconType::ArrowRight));
 
 	if (!_isRightEnabled) {
 		item->Enable(false);
@@ -23,7 +28,7 @@ TabsContextMenu::TabsContextMenu(int tabId, bool isLeftEnabled, bool isRightEnab
 	AppendSeparator();
 
 	item = Append(static_cast<int>(TabsContextMenuType::Close), _("Close"));
-	item->SetBitmap(wxBitmap("ICON_CLOSE_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
+	item->SetBitmap(_icons.GetIconByType(IconType::TabRemove));
 
 	if (!_isCloseEnabled) {
 		item->Enable(false);

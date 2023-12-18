@@ -118,7 +118,7 @@ void SchedulersListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 }
 
 void SchedulersListPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu* menu = new SchedulerContextMenu(_context.GetCommandsInvoker(), GetScheduler());
+	wxMenu* menu = new SchedulerContextMenu(_context.GetCommandsInvoker(), _icons, GetScheduler());
 
 	_list->PopupMenu(menu);
 

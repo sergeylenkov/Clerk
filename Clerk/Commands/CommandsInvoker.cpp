@@ -81,6 +81,10 @@ void CommandsInvoker::CopyTransaction(int id) {
 	_copyTransactionCommand.Execute();
 }
 
+void CommandsInvoker::DuplicateTransaction(int id) {
+
+}
+
 void CommandsInvoker::SplitTransaction(int id) {
 	_splitTransactionCommand.SetTransactionId(id);
 	_splitTransactionCommand.Execute();

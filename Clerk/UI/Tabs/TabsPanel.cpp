@@ -81,7 +81,7 @@ void TabsPanel::OnTabClick(wxMouseEvent &event) {
 	bool isLeftEnable = isCloseEnable && tabId > 0;
 	bool isRightEnable = isCloseEnable && tabId < _notebook->GetPageCount() - 1;
 
-	TabsContextMenu* menu = new TabsContextMenu(tabId, isLeftEnable, isRightEnable, isCloseEnable);
+	TabsContextMenu* menu = new TabsContextMenu(_icons, tabId, isLeftEnable, isRightEnable, isCloseEnable);
 
 	menu->OnClose = [&](int tabId) {
 		RemoveTab(tabId);

@@ -1,24 +1,25 @@
 #include "AlertContextMenu.h"
 
-AlertContextMenu::AlertContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<AlertPresentationModel> alert):
+AlertContextMenu::AlertContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, std::shared_ptr<AlertPresentationModel> alert):
 	_commandsInvoker(commandsInvoker),
+	_icons(icons),
 	_alert(alert)
 {
 	if (alert) {
 		wxMenuItem* item = Append(static_cast<int>(AlertContextMenuTypes::Add), _("Add..."));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 
 		item = Append(static_cast<int>(AlertContextMenuTypes::Edit), _("Edit..."));
-		item->SetBitmap(wxBitmap("ICON_EDIT", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Pencil));
 
 		AppendSeparator();
 
 		item = Append(static_cast<int>(AlertContextMenuTypes::Delete), _("Delete"));
-		item->SetBitmap(wxBitmap("ICON_DELETE", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Delete));
 	}
 	else {
 		wxMenuItem* item = Append(static_cast<int>(AlertContextMenuTypes::Add), _("Add..."));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 	}
 
 	Bind(wxEVT_COMMAND_MENU_SELECTED, &AlertContextMenu::OnMenuSelect, this);

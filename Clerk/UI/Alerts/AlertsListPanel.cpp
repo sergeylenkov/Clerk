@@ -122,7 +122,7 @@ void AlertsListPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
 }
 
 void AlertsListPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu* menu = new AlertContextMenu(_context.GetCommandsInvoker(), GetAlert());
+	wxMenu* menu = new AlertContextMenu(_context.GetCommandsInvoker(), _icons, GetAlert());
 
 	_list->PopupMenu(menu);
 

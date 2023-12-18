@@ -51,6 +51,7 @@ namespace Clerk {
 			void OpenAbout();
 			void NewTransaction(int accountId);			
 			void CopyTransaction(int id);
+			void DuplicateTransaction(int id);
 			void SplitTransaction(int id);
 			void EditTransaction(int id);
 			void DeleteTransaction(int id);

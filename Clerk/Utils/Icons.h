@@ -8,7 +8,17 @@ namespace Clerk {
 	namespace Utils {
 		enum class IconType {
 			Plus,
-			Tab
+			Tab,
+			Pencil,
+			Copy,
+			Delete,
+			Split,
+			Pause,
+			Play,
+			Duplicate,
+			TabRemove,
+			ArrowRight,
+			ArrowLeft
 		};
 
 		class Icons {

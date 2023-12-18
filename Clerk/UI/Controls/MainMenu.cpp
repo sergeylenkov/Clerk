@@ -55,14 +55,14 @@ void MainMenu::Update() {
 
 	if (transactions.size() == 0) {
 		wxMenuItem* item = _menuFile->Insert(0, menuId, _("New Transaction...\tCtrl+T"));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 	}
 	else {
 		wxMenu* menu = new wxMenu();
 		menu->Bind(wxEVT_COMMAND_MENU_SELECTED, &MainMenu::OnTransactionSelect, this);
 
 		wxMenuItem* item = menu->Append(menuId, _("New Transaction...\tCtrl+T"));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 
 		menu->AppendSeparator();
 

@@ -2,12 +2,12 @@
 
 const int reportOffset = 1000;
 
-ReportContextMenu::ReportContextMenu(CommandsInvoker& commandsInvoker, ReportPresentationModel& report):
-	TreeContextMenu(commandsInvoker),
+ReportContextMenu::ReportContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, ReportPresentationModel& report):
+	TreeContextMenu(commandsInvoker, icons),
 	_report(report)
 {
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
-	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));	
+	item->SetBitmap(_icons.GetIconByType(IconType::Tab));
 
 	Bind(wxEVT_COMMAND_MENU_SELECTED, &ReportContextMenu::OnMenuSelect, this);
 }

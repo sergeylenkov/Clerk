@@ -4,9 +4,7 @@
 #include "Enums.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../PresentationModels/AccountPresentationModel.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "TreeContextMenu.h"
-#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
@@ -17,11 +15,10 @@ namespace Clerk {
 	namespace UI {
 		class AccountContextMenu : public TreeContextMenu {
 		public:
-			AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions, Icons& icons);
+			AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions);
 
 		private:
 			AccountPresentationModel& _account;
-			Icons& _icons;
 			void OnMenuSelect(wxCommandEvent& event);
 		};
 	}

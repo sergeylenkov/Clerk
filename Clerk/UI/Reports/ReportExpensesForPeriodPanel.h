@@ -17,7 +17,7 @@ using namespace Clerk::Utils;
 class ReportExpensesForPeriodPanel : public DataPanel
 {
 public:
-	ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context);
+	ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~ReportExpensesForPeriodPanel();
 
 	void Update();

@@ -1,10 +1,11 @@
 #include "AccountsContextMenu.h"
 
-AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type) : TreeContextMenu(commandsInvoker) {
-	_type = type;
-
+AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type):
+	TreeContextMenu(commandsInvoker, icons),
+	_type(type)
+{
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
-	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
+	item->SetBitmap(_icons.GetIconByType(IconType::Tab));
 
 	AppendSeparator();
 

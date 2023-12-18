@@ -18,7 +18,7 @@ public:
 		Delete = 3,
 	};
 
-	GoalsPanel(wxWindow *parent, DataContext& context);
+	GoalsPanel(wxWindow *parent, DataContext& context, Icons& icons);
 
 	std::shared_ptr<GoalPresentationModel> GetGoal();
 	void Update();

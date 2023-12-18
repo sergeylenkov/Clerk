@@ -106,28 +106,28 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 	switch (type)
 	{
 		case TabType::Dashboard:
-			return new DashboardPanel(_tabsPanel, _context);
+			return new DashboardPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Transactions:
-			return new TransactionsListPanel(_tabsPanel, _context);
+			return new TransactionsListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Budgets:
-			return new BudgetsPanel(_tabsPanel, _context);
+			return new BudgetsPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Schedulers:
-			return new SchedulersListPanel(_tabsPanel, _context);
+			return new SchedulersListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Goals:
-			return new GoalsPanel(_tabsPanel, _context);
+			return new GoalsPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Tags:
-			return new TagsPanel(_tabsPanel, _context);
+			return new TagsPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Alerts:
-			return new AlertsListPanel(_tabsPanel, _context);
+			return new AlertsListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Trash:
-			return new TrashPanel(_tabsPanel, _context);
+			return new TrashPanel(_tabsPanel, _context, _icons);
 			break;
 		default:
 			break;
@@ -236,13 +236,13 @@ DataPanel* TabsController::GetReportPanelById(int id) {
 	switch (id)
 	{
 		case 1:
-			return new ReportExpensesByMonthPanel(_tabsPanel, _context);
+			return new ReportExpensesByMonthPanel(_tabsPanel, _context, _icons);
 		case 2:
-			return new ReportExpensesForPeriodPanel(_tabsPanel, _context);
+			return new ReportExpensesForPeriodPanel(_tabsPanel, _context, _icons);
 		case 3:
-			return new ReportBalanceByMonthPanel(_tabsPanel, _context);
+			return new ReportBalanceByMonthPanel(_tabsPanel, _context, _icons);
 		case 4:
-			return new ReportReceiptsByMonthPanel(_tabsPanel, _context);
+			return new ReportReceiptsByMonthPanel(_tabsPanel, _context, _icons);
 		default:
 			break;
 	}

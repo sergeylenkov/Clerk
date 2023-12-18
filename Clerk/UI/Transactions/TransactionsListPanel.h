@@ -26,7 +26,7 @@ using namespace Clerk::Utils;
 class TransactionsListPanel : public DataPanel
 {
 public:
-	TransactionsListPanel(wxWindow *parent, DataContext& context);
+	TransactionsListPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~TransactionsListPanel();
 
 	void Update();

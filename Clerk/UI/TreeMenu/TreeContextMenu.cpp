@@ -2,5 +2,8 @@
 
 using namespace Clerk::UI;
 
-TreeContextMenu::TreeContextMenu(CommandsInvoker& commandsInvoker): _commandsInvoker(commandsInvoker) {
+TreeContextMenu::TreeContextMenu(CommandsInvoker& commandsInvoker, Icons& icons):
+	_commandsInvoker(commandsInvoker),
+	_icons(icons)
+{
 }

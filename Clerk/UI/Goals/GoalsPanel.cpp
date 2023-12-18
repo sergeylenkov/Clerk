@@ -1,6 +1,8 @@
 #include "GoalsPanel.h"
 
-GoalsPanel::GoalsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+GoalsPanel::GoalsPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons)
+{
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	model = new GoalsListDataModel();

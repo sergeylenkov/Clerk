@@ -1,6 +1,8 @@
 #include "TrashPanel.h"
 
-TrashPanel::TrashPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+TrashPanel::TrashPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons)
+{
 	transactionsList = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxBORDER_NONE);
 	transactionsList->Bind(wxEVT_LIST_ITEM_RIGHT_CLICK, &TrashPanel::OnListItemClick, this);
 

@@ -18,7 +18,7 @@ public:
 		Delete = 3,
 	};
 
-	BudgetsPanel(wxWindow *parent, DataContext& context);
+	BudgetsPanel(wxWindow *parent, DataContext& context, Icons& icons);
 
 	std::shared_ptr<BudgetPresentationModel> GetBudget();
 	void Update();	

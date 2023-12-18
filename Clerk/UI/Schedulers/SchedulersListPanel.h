@@ -13,7 +13,7 @@ using namespace Clerk::Data;
 class SchedulersListPanel : public DataPanel
 {
 public:
-	SchedulersListPanel(wxWindow *parent, DataContext& context);
+	SchedulersListPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~SchedulersListPanel();
 
 	void Update();

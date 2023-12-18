@@ -12,6 +12,7 @@ Icons::Icons() {
 
 	LoadMenuIcons();
 	LoadAccountsIcons();
+	LoadSvgIcons();
 }
 
 Icons::~Icons() {
@@ -44,6 +45,10 @@ wxBitmap* Icons::GetAccountIcon(int index) {
 	return _images[iconIndex];
 }
 
+wxBitmapBundle Icons::GetIconByType(IconType type) {
+	return _icons[type];
+}
+
 void Icons::LoadMenuIcons() {
 	for (int i = 0; i < _menuIconsCount; i++) {
 		wxString path = wxString::Format("Resources\\Menu Icons\\%d.png", i);
@@ -70,4 +75,11 @@ void Icons::LoadAccountsIcons() {
 			_images.push_back(bitmap);
 		}
 	}
+}
+
+void Icons::LoadSvgIcons() {
+	_icons.clear();
+
+	_icons[IconType::Plus] = wxBitmapBundle::FromSVGResource("PLUS_SVG", wxSize(16, 16));
+	_icons[IconType::Tab] = wxBitmapBundle::FromSVGResource("TAB_SVG", wxSize(16, 16));
 }

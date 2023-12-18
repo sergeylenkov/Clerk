@@ -1,6 +1,8 @@
 #include "BudgetsPanel.h"
 
-BudgetsPanel::BudgetsPanel(wxWindow *parent, DataContext& context): DataPanel(parent, context) {
+BudgetsPanel::BudgetsPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons)
+{
 	list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
 
 	model = new BudgetsListDataModel();

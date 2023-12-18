@@ -229,22 +229,22 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 		if (account) {
 			auto transactions = _viewModel.GetRecentsTransactions(*account);
-			menu = new AccountContextMenu(_commandsInvoker, *account, transactions, _icons);
+			menu = new AccountContextMenu(_commandsInvoker, _icons, *account, transactions);
 		}
 	}
 	else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
 		|| item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
-		menu = new AccountsContextMenu(_commandsInvoker, item->type);
+		menu = new AccountsContextMenu(_commandsInvoker, _icons, item->type);
 	}
 	else if (item->type == TreeMenuItemType::Report) {
 		auto report = GetContextMenuReport();
 
 		if (report) {
-			menu = new ReportContextMenu(_commandsInvoker, *report);
+			menu = new ReportContextMenu(_commandsInvoker, _icons, *report);
 		}
 	}
 	else if (item->type != TreeMenuItemType::Reports) {
-		menu = new DefaultContextMenu(_commandsInvoker, item->type);
+		menu = new DefaultContextMenu(_commandsInvoker, _icons, item->type);
 	}
 
 	if (menu != nullptr) {

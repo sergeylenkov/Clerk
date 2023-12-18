@@ -21,7 +21,7 @@ using namespace Clerk::UI;
 class ReportBalanceByMonthPanel : public DataPanel
 {
 public:
-	ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context);
+	ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~ReportBalanceByMonthPanel();
 
 	void Update();

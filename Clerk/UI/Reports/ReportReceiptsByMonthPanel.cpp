@@ -1,6 +1,7 @@
 #include "ReportReceiptsByMonthPanel.h"
 
-ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataContext& context) : DataPanel(parent, context) {
+ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons) {
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 

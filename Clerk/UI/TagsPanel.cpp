@@ -1,7 +1,8 @@
 #include "TagsPanel.h"
 
-TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
-	this->editedIndex = 0;
+TagsPanel::TagsPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons) {
+	editedIndex = 0;
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -31,8 +32,8 @@ TagsPanel::TagsPanel(wxWindow *parent, DataContext& context) : DataPanel(parent,
 
 	mainSizer->Add(list, 1, wxEXPAND | wxALL, 5);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 }
 
 TagsPanel::~TagsPanel() {
@@ -45,7 +46,7 @@ void TagsPanel::Update() {
 		tags = _context.GetTagsService().GetAll();
 		Filter();
 
-		this->GetEventHandler()->CallAfter(&TagsPanel::UpdateList);
+		GetEventHandler()->CallAfter(&TagsPanel::UpdateList);
 	}).detach();
 }
 

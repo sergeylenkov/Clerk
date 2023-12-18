@@ -2,11 +2,12 @@
 
 const int transactionsOffset = 1000;
 
-AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions, Icons& icons): TreeContextMenu(commandsInvoker),
-	_account(account), _icons(icons) {
-
-	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
-	item->SetBitmap(wxBitmap("ICON_NEW_TAB", wxBITMAP_TYPE_PNG_RESOURCE));
+AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions):
+	TreeContextMenu(commandsInvoker, icons),
+	_account(account)
+{
+	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));	
+	item->SetBitmap(_icons.GetIconByType(IconType::Tab));
 
 	AppendSeparator();
 

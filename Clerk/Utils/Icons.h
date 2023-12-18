@@ -1,9 +1,16 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <vector>
+#include <map>
 
 namespace Clerk {
 	namespace Utils {
+		enum class IconType {
+			Plus,
+			Tab
+		};
+
 		class Icons {
 		public:
 			Icons();
@@ -13,6 +20,7 @@ namespace Clerk {
 			int GetIconIndexForAccount(int index);
 			int GetAccountIconsCount();
 			wxBitmap* GetAccountIcon(int index);
+			wxBitmapBundle GetIconByType(IconType type);
 
 		private:
 			wxImageList* _imageList;
@@ -20,9 +28,11 @@ namespace Clerk {
 			int _accountIconsCount;
 			int _defaultAccountIcon;
 			std::vector<wxBitmap *> _images;
+			std::map<IconType, wxBitmapBundle> _icons;
 
 			void LoadMenuIcons();
 			void LoadAccountsIcons();
+			void LoadSvgIcons();
 		};
 	}
 }

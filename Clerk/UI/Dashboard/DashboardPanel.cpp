@@ -1,6 +1,8 @@
 #include "DashboardPanel.h"
 
-DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+DashboardPanel::DashboardPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons)
+{
 	wxBoxSizer *mainSizer= new wxBoxSizer(wxVERTICAL);
 
 	SetBackgroundColour(*wxWHITE);

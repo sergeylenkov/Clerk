@@ -2,7 +2,6 @@
 
 #include <wx/wx.h>
 #include "Enums.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "TreeContextMenu.h"
 
 using namespace Clerk::Data;
@@ -13,10 +12,11 @@ namespace Clerk {
 	namespace UI {
 		class DefaultContextMenu : public TreeContextMenu {
 		public:
-			DefaultContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type);
+			DefaultContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type);
 
 		private:
 			TreeMenuItemType _type;
+
 			void OnMenuSelect(wxCommandEvent& event);
 		};
 	}

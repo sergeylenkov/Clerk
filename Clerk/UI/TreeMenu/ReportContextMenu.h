@@ -3,9 +3,7 @@
 #include <wx/wx.h>
 #include "Enums.h"
 #include "../PresentationModels/ReportPresentationModel.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "TreeContextMenu.h"
-#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
@@ -16,7 +14,7 @@ namespace Clerk {
 	namespace UI {
 		class ReportContextMenu : public TreeContextMenu {
 		public:
-			ReportContextMenu(CommandsInvoker& commandsInvoker, ReportPresentationModel& report);
+			ReportContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, ReportPresentationModel& report);
 
 		private:
 			ReportPresentationModel& _report;

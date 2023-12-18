@@ -1,10 +1,14 @@
 #include "TransactionContextMenu.h"
 
-TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, std::shared_ptr<TransactionPresentationModel> transaction, std::vector<int> selectedIds):
-	_commandsInvoker(commandsInvoker), _transaction(transaction), _selectedIds(selectedIds) {
+TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, std::shared_ptr<TransactionPresentationModel> transaction, std::vector<int> selectedIds):
+	_commandsInvoker(commandsInvoker),
+	_icons(icons),
+	_transaction(transaction),
+	_selectedIds(selectedIds)
+{
 	if (transaction) {
 		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 
 		item = Append(static_cast<int>(TransactionContextMenuType::Edit), _("Edit..."));
 		item->SetBitmap(wxBitmap("ICON_EDIT", wxBITMAP_TYPE_PNG_RESOURCE));
@@ -25,13 +29,13 @@ TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker,
 	}
 	else if (_selectedIds.size() > 0) {
 		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Tab));
 
 		item = Append(static_cast<int>(TransactionContextMenuType::Merge), _("Merge"));
 		item->SetBitmap(wxBitmap("ICON_MERGE", wxBITMAP_TYPE_PNG_RESOURCE));
 	} else {
 		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
-		item->SetBitmap(wxBitmap("ICON_ADD", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Tab));
 	}
 
 	Bind(wxEVT_COMMAND_MENU_SELECTED, &TransactionContextMenu::OnMenuSelect, this);

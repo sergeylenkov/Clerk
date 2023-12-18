@@ -17,7 +17,7 @@ enum class TrashPanelMenuTypes {
 class TrashPanel : public DataPanel
 {
 public:
-	TrashPanel(wxWindow *parent, DataContext& context);
+	TrashPanel(wxWindow *parent, DataContext& context, Icons& icons);
 
 	std::shared_ptr<TransactionPresentationModel> GetTransaction();
 	void Update();

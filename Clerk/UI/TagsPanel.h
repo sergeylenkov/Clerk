@@ -18,7 +18,7 @@ enum class TagsPanelMenuTypes {
 class TagsPanel : public DataPanel
 {
 public:
-	TagsPanel(wxWindow *parent, DataContext& context);
+	TagsPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~TagsPanel();
 
 	void Update();

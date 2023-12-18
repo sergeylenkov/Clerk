@@ -18,7 +18,7 @@ using namespace Clerk::Data;
 class DashboardPanel : public DataPanel
 {
 public:
-	DashboardPanel(wxWindow *parent, DataContext& context);
+	DashboardPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~DashboardPanel();
 
 	void Update();

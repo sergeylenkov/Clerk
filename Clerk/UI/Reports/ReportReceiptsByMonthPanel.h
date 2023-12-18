@@ -24,7 +24,7 @@ using namespace Clerk::UI;
 class ReportReceiptsByMonthPanel : public DataPanel
 {
 public:
-	ReportReceiptsByMonthPanel(wxWindow* paren, DataContext& context);
+	ReportReceiptsByMonthPanel(wxWindow* paren, DataContext& context, Icons& icons);
 	~ReportReceiptsByMonthPanel();
 
 	void Update();

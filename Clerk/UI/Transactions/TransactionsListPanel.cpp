@@ -1,6 +1,7 @@
 ﻿#include "TransactionsListPanel.h"
 
-TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context) : DataPanel(parent, context) {
+TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& context, Icons& icons):
+	DataPanel(parent, context, icons) {
 	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE | wxBORDER_NONE);
 
 	_model = new TransactionsListDataModel();
@@ -296,7 +297,7 @@ void TransactionsListPanel::OnListColumnClick(wxDataViewEvent &event) {
 }
 
 void TransactionsListPanel::OnRightClick(wxDataViewEvent &event) {
-	wxMenu *menu = new TransactionContextMenu(_context.GetCommandsInvoker(), GetTransaction(), GetSelectedIds());	
+	wxMenu *menu = new TransactionContextMenu(_context.GetCommandsInvoker(), _icons, GetTransaction(), GetSelectedIds());	
 
 	_list->PopupMenu(menu);
 

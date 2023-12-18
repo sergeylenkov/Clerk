@@ -29,12 +29,28 @@ namespace Clerk {
 	namespace Data {
 		class DataContext {
 		public:
-			DataContext(AccountsRepository& accountsRepository, ReportsRepository& reportsRepository, BudgetsRepository& budgetsRepository,
-				GoalsRepository& goalsRepository, AlertsRepository& alertsRepository, SchedulersRepository& schedulersRepository,
-				TransactionsRepository& transactionsRepository, TagsRepository& tagsRepository, CurrenciesRepository& currenciesRepository,
-				ReportingRepository& reportingRepository, AccountingService& accountingService, AccountsService& accountsService, SchedulersService& schedulersService, 
-				BudgetsService& budgetsService, TransactionsService& transactionsService, TagsService& tagsService, ReportsService& reportsService, 
-				AlertsService& alertsService, GoalsService& goalsService, ReportingService& reportingService, CurrenciesService& currenciesService);
+			DataContext(AccountsRepository& accountsRepository,
+				ReportsRepository& reportsRepository,
+				BudgetsRepository& budgetsRepository,
+				GoalsRepository& goalsRepository,
+				AlertsRepository& alertsRepository,
+				SchedulersRepository& schedulersRepository,
+				TransactionsRepository& transactionsRepository,
+				TagsRepository& tagsRepository,
+				CurrenciesRepository& currenciesRepository,
+				ReportingRepository& reportingRepository,
+				AccountingService& accountingService,
+				AccountsService& accountsService,
+				SchedulersService& schedulersService, 
+				BudgetsService& budgetsService,
+				TransactionsService& transactionsService,
+				TagsService& tagsService, 
+				ReportsService& reportsService, 
+				AlertsService& alertsService,
+				GoalsService& goalsService,
+				ReportingService& reportingService,
+				CurrenciesService& currenciesService
+			);
 			~DataContext();
 
 			AccountsRepository& GetAccountsRepository();

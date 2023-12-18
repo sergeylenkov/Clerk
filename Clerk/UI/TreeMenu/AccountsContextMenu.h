@@ -4,7 +4,6 @@
 #include "./Enums.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../PresentationModels/AccountPresentationModel.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "./TreeContextMenu.h"
 
 using namespace Clerk::Data;
@@ -15,7 +14,7 @@ namespace Clerk {
 	namespace UI {
 		class AccountsContextMenu : public TreeContextMenu {
 		public:
-			AccountsContextMenu(CommandsInvoker& commandsInvoker, TreeMenuItemType type);
+			AccountsContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type);
 
 		private:
 			TreeMenuItemType _type;

@@ -13,7 +13,7 @@ using namespace Clerk::Data;
 class AlertsListPanel : public DataPanel
 {
 public:	
-	AlertsListPanel(wxWindow *parent, DataContext& context);
+	AlertsListPanel(wxWindow *parent, DataContext& context, Icons& icons);
 	~AlertsListPanel();
 
 	void Update();

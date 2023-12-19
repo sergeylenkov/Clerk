@@ -25,6 +25,7 @@ namespace Clerk {
 			virtual void OpenReportTab(int id) = 0;
 			virtual void OpenEditAlertDialog(int id) = 0;
 			virtual void OpenEditSchedulerDialog(int id) = 0;
+			virtual void OpenEditBudgetDialog(int id) = 0;
 		};
 	}
 }

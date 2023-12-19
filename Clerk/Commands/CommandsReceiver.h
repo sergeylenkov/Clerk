@@ -29,6 +29,7 @@ namespace Clerk {
 			void OpenReportTab(int id) override;
 			void OpenEditAlertDialog(int id) override;
 			void OpenEditSchedulerDialog(int id) override;
+			void OpenEditBudgetDialog(int id) override;
 
 		private:
 			DialogsController* _dialogsController;

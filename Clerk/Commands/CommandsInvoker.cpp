@@ -6,25 +6,37 @@ CommandsInvoker::CommandsInvoker(
 	QuitCommand& quitCommand,
 	OpenPreferencesCommand& preferencesCommand, 
 	AboutCommand& aboutCommand,
+	OpenTabCommand& openTabCommand,
+	OpenAccountTabCommand& openAccountTabCommand,
+	OpenAccountsTabCommand& openAccountsTabCommand,
+	OpenReportTabCommand& openReportTabCommand,
 	NewTransactionCommand& newTransactionCommand, 
 	CopyTransactionCommand& copyTransactionCommand,
 	SplitTransactionCommand& splitTransactionCommand,
 	EditTransactionCommand& editTransactionCommand,
 	DeleteTransactionCommand& deleteTransactionCommand,
 	DuplicateTransactionCommand& duplicateTransactionCommand,
-	NewAccountCommand& newAccountCommand,
-	EditAccountCommand& editAccountCommand,
-	OpenTabCommand& openTabCommand,
-	OpenAccountTabCommand& openAccountTabCommand,
-	OpenAccountsTabCommand& openAccountsTabCommand,
-	OpenReportTabCommand& openReportTabCommand,
+	NewAccountCommand& newAccountCommand,	
+	EditAccountCommand& editAccountCommand,	
+	NewAlertCommand& newAlertCommand,
 	EditAlertCommand& editAlertCommand,
 	DeleteAlertCommand& deleteAlertCommand,
-	EditSchedulerCommand& editSchedulerCommand
+	NewBudgetCommand& newBudgetCommand,
+	EditBudgetCommand& editBudgetCommand,
+	DeleteBudgetCommand& deleteBudgetCommand,
+	NewSchedulerCommand& newSchedulerCommand,
+	EditSchedulerCommand& editSchedulerCommand,
+	DeleteSchedulerCommand& deleteSchedulerCommand,
+	RunSchedulerCommand& runSchedulerCommand,
+	PauseSchedulerCommand& pauseSchedulerCommand
 ):
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
 	_aboutCommand(aboutCommand),
+	_openTabCommand(openTabCommand),
+	_openAccountTabCommand(openAccountTabCommand),
+	_openAccountsTabCommand(openAccountsTabCommand),
+	_openReportTabCommand(openReportTabCommand),
 	_newTransactionCommand(newTransactionCommand),
 	_copyTransactionCommand(copyTransactionCommand),
 	_splitTransactionCommand(splitTransactionCommand),
@@ -32,14 +44,18 @@ CommandsInvoker::CommandsInvoker(
 	_deleteTransactionCommand(deleteTransactionCommand),
 	_duplicateTransactionCommand(duplicateTransactionCommand),
 	_newAccountCommand(newAccountCommand),
-	_editAccountCommand(editAccountCommand),
-	_openTabCommand(openTabCommand),
-	_openAccountTabCommand(openAccountTabCommand),
-	_openAccountsTabCommand(openAccountsTabCommand),
-	_openReportTabCommand(openReportTabCommand),
+	_editAccountCommand(editAccountCommand),	
+	_newAlertCommand(newAlertCommand),
 	_editAlertCommand(editAlertCommand),
 	_deleteAlertCommand(deleteAlertCommand),
-	_editSchedulerCommand(editSchedulerCommand)
+	_newBudgetCommand(newBudgetCommand),
+	_editBudgetCommand(editBudgetCommand),
+	_deleteBudgetCommand(deleteBudgetCommand),
+	_newSchedulerCommand(newSchedulerCommand),
+	_editSchedulerCommand(editSchedulerCommand),
+	_deleteSchedulerCommand(deleteSchedulerCommand),
+	_runSchedulerCommand(runSchedulerCommand),
+	_pauseSchedulerCommand(pauseSchedulerCommand)
 {
 	
 }
@@ -48,6 +64,10 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _quitCommand;
 	delete& _preferencesCommand;
 	delete& _aboutCommand;
+	delete& _openTabCommand;
+	delete& _openAccountTabCommand;
+	delete& _openAccountsTabCommand;
+	delete& _openReportTabCommand;
 	delete& _newTransactionCommand;
 	delete& _copyTransactionCommand;
 	delete& _splitTransactionCommand;
@@ -55,14 +75,18 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _deleteTransactionCommand;
 	delete& _duplicateTransactionCommand;
 	delete& _newAccountCommand;
-	delete& _editAccountCommand;
-	delete& _openTabCommand;
-	delete& _openAccountTabCommand;
-	delete& _openAccountsTabCommand;
-	delete& _openReportTabCommand;
+	delete& _editAccountCommand;	
+	delete& _newAlertCommand;
 	delete& _editAlertCommand;
 	delete& _deleteAlertCommand;
+	delete& _newBudgetCommand;
+	delete& _editBudgetCommand;
+	delete& _deleteBudgetCommand;
+	delete& _newSchedulerCommand;
 	delete& _editSchedulerCommand;
+	delete& _deleteSchedulerCommand;
+	delete& _runSchedulerCommand;
+	delete& _pauseSchedulerCommand;
 }
 
 void CommandsInvoker::Quit() {
@@ -147,7 +171,7 @@ void CommandsInvoker::OpenReportTab(int id) {
 }
 
 void CommandsInvoker::NewAlert() {
-
+	_newAlertCommand.Execute();
 }
 
 void CommandsInvoker::EditAlert(int id) {
@@ -160,8 +184,22 @@ void CommandsInvoker::DeleteAlert(int id) {
 	_deleteAlertCommand.Execute();
 }
 
-void CommandsInvoker::NewScheduler() {
+void CommandsInvoker::NewBudget() {
+	_newBudgetCommand.Execute();
+}
 
+void CommandsInvoker::EditBudget(int id) {
+	_editBudgetCommand.SetBudgetId(id);
+	_editBudgetCommand.Execute();
+}
+
+void CommandsInvoker::DeleteBudget(int id) {
+	_deleteBudgetCommand.SetBudgetId(id);
+	_deleteBudgetCommand.Execute();
+}
+
+void CommandsInvoker::NewScheduler() {
+	_newSchedulerCommand.Execute();
 }
 
 void CommandsInvoker::EditScheduler(int id) {
@@ -170,17 +208,16 @@ void CommandsInvoker::EditScheduler(int id) {
 }
 
 void CommandsInvoker::DeleteScheduler(int id) {
-
+	_deleteSchedulerCommand.SetSchedulerId(id);
+	_deleteSchedulerCommand.Execute();
 }
 
-void CommandsInvoker::NewBudget() {
-
+void CommandsInvoker::RunScheduler(int id) {
+	_runSchedulerCommand.SetSchedulerId(id);
+	_runSchedulerCommand.Execute();
 }
 
-void CommandsInvoker::EditBudget(int id) {
-
-}
-
-void CommandsInvoker::DeleteBudget(int id) {
-
+void CommandsInvoker::PauseScheduler(int id) {
+	_pauseSchedulerCommand.SetSchedulerId(id);
+	_pauseSchedulerCommand.Execute();
 }

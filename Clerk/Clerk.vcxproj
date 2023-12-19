@@ -52,7 +52,15 @@
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
     <ClCompile Include="Commands\Alert\DeleteAlertCommand.cpp" />
+    <ClCompile Include="Commands\Alert\NewAlertCommand.cpp" />
+    <ClCompile Include="Commands\Budget\DeleteBudgetCommand.cpp" />
+    <ClCompile Include="Commands\Budget\EditBudgetCommand.cpp" />
+    <ClCompile Include="Commands\Budget\NewBudgetCommand.cpp" />
+    <ClCompile Include="Commands\Scheduler\PauseSchedulerCommand.cpp" />
+    <ClCompile Include="Commands\Scheduler\RunSchedulerCommand.cpp" />
+    <ClCompile Include="Commands\Scheduler\DeleteSchedulerCommand.cpp" />
     <ClCompile Include="Commands\Scheduler\EditSchedulerCommand.cpp" />
+    <ClCompile Include="Commands\Scheduler\NewSchedulerCommand.cpp" />
     <ClCompile Include="Commands\Tabs\OpenAccountsTabCommand.cpp" />
     <ClCompile Include="Commands\Tabs\OpenAccountTabCommand.cpp" />
     <ClCompile Include="Commands\Tabs\OpenReportTabCommand.cpp" />
@@ -204,7 +212,15 @@
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
     <ClInclude Include="Commands\Alert\DeleteAlertCommand.h" />
+    <ClInclude Include="Commands\Alert\NewAlertCommand.h" />
+    <ClInclude Include="Commands\Budget\DeleteBudgetCommand.h" />
+    <ClInclude Include="Commands\Budget\EditBudgetCommand.h" />
+    <ClInclude Include="Commands\Budget\NewBudgetCommand.h" />
+    <ClInclude Include="Commands\Scheduler\PauseSchedulerCommand.h" />
+    <ClInclude Include="Commands\Scheduler\RunSchedulerCommand.h" />
+    <ClInclude Include="Commands\Scheduler\DeleteSchedulerCommand.h" />
     <ClInclude Include="Commands\Scheduler\EditSchedulerCommand.h" />
+    <ClInclude Include="Commands\Scheduler\NewSchedulerCommand.h" />
     <ClInclude Include="Commands\Tabs\OpenAccountsTabCommand.h" />
     <ClInclude Include="Commands\Tabs\OpenAccountTabCommand.h" />
     <ClInclude Include="Commands\Tabs\OpenReportTabCommand.h" />

@@ -68,3 +68,7 @@ void CommandsReceiver::OpenEditAlertDialog(int id) {
 void CommandsReceiver::OpenEditSchedulerDialog(int id) {
 
 }
+
+void CommandsReceiver::OpenEditBudgetDialog(int id) {
+
+}

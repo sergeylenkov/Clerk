@@ -55,6 +55,12 @@ void SchedulerContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	case SchedulerContextMenuTypes::Delete:
 		_commandsInvoker.DeleteScheduler(id);
 		break;
+	case SchedulerContextMenuTypes::Run:
+		_commandsInvoker.RunScheduler(id);
+		break;
+	case SchedulerContextMenuTypes::Pause:
+		_commandsInvoker.PauseScheduler(id);
+		break;
 	default:
 		break;
 	}

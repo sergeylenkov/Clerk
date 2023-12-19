@@ -146,6 +146,10 @@ void MainWindow::SetupCommands() {
 	QuitCommand* quitCommand = new QuitCommand(*this);
 	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(*_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(*_commandsReceiver);
+	OpenTabCommand* openTabCommand = new OpenTabCommand(*_commandsReceiver);
+	OpenAccountTabCommand* openAccountTabCommand = new OpenAccountTabCommand(*_commandsReceiver);
+	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(*_commandsReceiver);
+	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(*_commandsReceiver);
 	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(*_commandsReceiver);
 	CopyTransactionCommand* copyTransactionCommand = new CopyTransactionCommand(*_commandsReceiver);
 	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(*_commandsReceiver);
@@ -153,19 +157,27 @@ void MainWindow::SetupCommands() {
 	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_context.GetTransactionsService());
 	DuplicateTransactionCommand* duplicateTransactionCommand = new DuplicateTransactionCommand(_context.GetTransactionsService());
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(*_commandsReceiver);
-	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
-	OpenTabCommand* openTabCommand = new OpenTabCommand(*_commandsReceiver);
-	OpenAccountTabCommand* openAccountTabCommand = new OpenAccountTabCommand(*_commandsReceiver);
-	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(*_commandsReceiver);
-	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(*_commandsReceiver);
+	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);	
+	NewAlertCommand* newAlertCommand = new NewAlertCommand(*_commandsReceiver);
 	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
 	DeleteAlertCommand* deleteAlertCommand = new DeleteAlertCommand(_context.GetAlertsService());
+	NewBudgetCommand* newBudgetCommand = new NewBudgetCommand(*_commandsReceiver);
+	EditBudgetCommand* editBudgetCommand = new EditBudgetCommand(*_commandsReceiver);
+	DeleteBudgetCommand* deleteBudgetCommand = new DeleteBudgetCommand(_context.GetBudgetsService());
+	NewSchedulerCommand* newSchedulerCommand = new NewSchedulerCommand(*_commandsReceiver);
 	EditSchedulerCommand* editSchedulerCommand = new EditSchedulerCommand(*_commandsReceiver);
+	DeleteSchedulerCommand* deleteSchedulerCommand = new DeleteSchedulerCommand(_context.GetSchedulersService());
+	RunSchedulerCommand* runSchedulerCommand = new RunSchedulerCommand(_context.GetSchedulersService());
+	PauseSchedulerCommand* pauseSchedulerCommand = new PauseSchedulerCommand(_context.GetSchedulersService());
 
 	_commandsInvoker = new CommandsInvoker(
 		*quitCommand,
 		*preferencesCommand,
 		*aboutCommand,
+		*openTabCommand,
+		*openAccountTabCommand,
+		*openAccountsTabCommand,
+		*openReportTabCommand,		
 		*newTransactionCommand, 
 		*copyTransactionCommand,
 		*splitTransactionCommand, 
@@ -174,13 +186,17 @@ void MainWindow::SetupCommands() {
 		*duplicateTransactionCommand,
 		*newAccountCommand, 
 		*editAccountCommand, 
-		*openTabCommand, 
-		*openAccountTabCommand,
-		*openAccountsTabCommand, 
-		*openReportTabCommand, 
-		*editAlertCommand, 
+		*newAlertCommand,
+		*editAlertCommand,
 		*deleteAlertCommand,
-		*editSchedulerCommand
+		*newBudgetCommand,
+		*editBudgetCommand,
+		*deleteBudgetCommand,
+		*newSchedulerCommand,
+		*editSchedulerCommand,
+		*deleteSchedulerCommand,
+		*runSchedulerCommand,
+		*pauseSchedulerCommand
 	);
 
 	_context.SetCommandsInvoker(_commandsInvoker);

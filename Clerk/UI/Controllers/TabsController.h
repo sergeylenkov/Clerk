@@ -7,7 +7,7 @@
 #include "../../Utils/Icons.h"
 #include "../Dashboard/DashboardPanel.h"
 #include "../Transactions/TransactionsListPanel.h"
-#include "../Budgets/BudgetsPanel.h"
+#include "../Budgets/BudgetsListPanel.h"
 #include "../TrashPanel.h"
 #include "../Schedulers/SchedulersListPanel.h"
 #include "../Goals/GoalsPanel.h"

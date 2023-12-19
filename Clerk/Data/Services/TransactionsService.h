@@ -7,7 +7,7 @@
 #include "../Services/TagsService.h"
 #include "../../Utils/EventEmitter.h"
 #include "../../Utils/Types.h"
-#include "./HashService.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

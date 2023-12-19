@@ -172,3 +172,15 @@ void CommandsInvoker::EditScheduler(int id) {
 void CommandsInvoker::DeleteScheduler(int id) {
 
 }
+
+void CommandsInvoker::NewBudget() {
+
+}
+
+void CommandsInvoker::EditBudget(int id) {
+
+}
+
+void CommandsInvoker::DeleteBudget(int id) {
+
+}

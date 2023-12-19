@@ -4,26 +4,25 @@ BudgetsProgressRender::BudgetsProgressRender() : wxDataViewCustomRenderer("strin
 {
 }
 
-BudgetsProgressRender::~BudgetsProgressRender()
-{
-}
-
 bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 {
-	int percentWidth = (rect.GetWidth() / 100.0) * _value;
+	int x = rect.GetX() + 5;
+	int width = rect.GetWidth() - 10;
+
+	int percentWidth = (width / 100.0) * _value;
 	int y = (rect.GetHeight() - 4) / 2;
 
 	dc->SetPen(wxPen(wxColor(216, 216, 216), 1));
 	dc->SetBrush(wxBrush(wxColor(216, 216, 216)));
 
-	dc->DrawRectangle(rect.GetX(), rect.GetY() + y, rect.GetWidth(), 4);
+	dc->DrawRectangle(x, rect.GetY() + y, width, 4);
 
 	wxColor color = Colors::ColorForBudget(_value);
 
 	dc->SetPen(wxPen(color, 1));
 	dc->SetBrush(wxBrush(color));
 
-	dc->DrawRectangle(rect.GetX(), rect.GetY() + y, percentWidth, 4);
+	dc->DrawRectangle(x, rect.GetY() + y, percentWidth, 4);
 
 	return true;
 }

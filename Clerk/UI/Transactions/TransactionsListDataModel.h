@@ -3,6 +3,7 @@
 #include <wx/dataview.h>
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Utils.h"
+#include "../../Utils/Types.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
@@ -13,7 +14,7 @@ class TransactionsListDataModel : public wxDataViewIndexListModel
 public:
 	TransactionsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<TransactionPresentationModel>> transactions);
+	void SetItems(shared_vector<TransactionPresentationModel> transactions);
 
 	unsigned int GetColumnCount() const;
 	wxString GetColumnType(unsigned int column) const;
@@ -24,6 +25,6 @@ public:
 	unsigned int GetCount() const override;
 
 private:
-	std::vector<std::shared_ptr<TransactionPresentationModel>> _transactions;
+	shared_vector<TransactionPresentationModel> _transactions;
 };
 

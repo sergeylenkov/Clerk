@@ -73,6 +73,9 @@ namespace Clerk {
 			void NewScheduler();
 			void EditScheduler(int id);
 			void DeleteScheduler(int id);
+			void NewBudget();
+			void EditBudget(int id);
+			void DeleteBudget(int id);
 
 		private:
 			QuitCommand& _quitCommand;

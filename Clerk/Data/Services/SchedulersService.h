@@ -8,7 +8,7 @@
 #include "../../UI/PresentationModels/SchedulerPresentationModel.h"
 #include "../../UI/PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Types.h"
-#include "./HashService.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

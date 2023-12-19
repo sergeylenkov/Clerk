@@ -18,7 +18,7 @@ AlertsListPanel::AlertsListPanel(wxWindow *parent, DataContext& context, Icons& 
 	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsListPanel::OnListItemDoubleClick, this);
 	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &AlertsListPanel::OnRightClick, this);
 
-	_sortBy = 0;
+	_sortBy = AlertsListColumns::Name;
 	_sortDesc = false;
 
 	_alertsService = &_context.GetAlertsService();
@@ -60,38 +60,44 @@ void AlertsListPanel::CreateListColumns() {
 	auto& columns = Settings::GetInstance().GetAlertsListColumns();
 
 	for (auto& column : columns) {
-		switch (static_cast<AlertsListDataModel::Columns>(column.index))
+		wxDataViewColumn* dataViewColumn = nullptr;
+
+		switch (static_cast<AlertsListColumns>(column.index))
 		{
-			case AlertsListDataModel::Columns::Name:
-				_list->AppendTextColumn(_("Name"), static_cast<int>(AlertsListDataModel::Columns::Name), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Name:
+				dataViewColumn = _list->AppendTextColumn(_("Name"), static_cast<int>(AlertsListColumns::Name), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Message:
-				_list->AppendTextColumn(_("Message"), static_cast<int>(AlertsListDataModel::Columns::Message), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Message:
+				dataViewColumn = _list->AppendTextColumn(_("Message"), static_cast<int>(AlertsListColumns::Message), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Type:
-				_list->AppendTextColumn(_("Type"), static_cast<int>(AlertsListDataModel::Columns::Type), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Type:
+				dataViewColumn = _list->AppendTextColumn(_("Type"), static_cast<int>(AlertsListColumns::Type), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Period:
-				_list->AppendTextColumn(_("Period"), static_cast<int>(AlertsListDataModel::Columns::Period), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Period:
+				dataViewColumn = _list->AppendTextColumn(_("Period"), static_cast<int>(AlertsListColumns::Period), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Condition:
-				_list->AppendTextColumn(_("Condition"), static_cast<int>(AlertsListDataModel::Columns::Condition), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Condition:
+				dataViewColumn = _list->AppendTextColumn(_("Condition"), static_cast<int>(AlertsListColumns::Condition), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Importance:
-				_list->AppendTextColumn(_("Importance"), static_cast<int>(AlertsListDataModel::Columns::Importance), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Importance:
+				dataViewColumn = _list->AppendTextColumn(_("Importance"), static_cast<int>(AlertsListColumns::Importance), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
-			case AlertsListDataModel::Columns::Amount:
-				_list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListDataModel::Columns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+			case AlertsListColumns::Amount:
+				dataViewColumn = _list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListColumns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 		}
 
 		if (column.sorted) {
-			_sortBy = column.index;
+			_sortBy = static_cast<AlertsListColumns>(column.index);
 			_sortDesc = column.sortedDesc;
+
+			if (dataViewColumn != nullptr) {
+				dataViewColumn->SetSortOrder(!_sortDesc);
+			}
 		}
 	}
 
-	_list->AppendTextColumn("", static_cast<int>(AlertsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+	_list->AppendTextColumn("", static_cast<int>(AlertsListColumns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
 }
 
 void AlertsListPanel::SaveColumnsSettings() {
@@ -103,7 +109,7 @@ void AlertsListPanel::SaveColumnsSettings() {
 		columns[i].index = _list->GetColumnIndex(column);
 		columns[i].order = _list->GetColumnPosition(column);
 		columns[i].width = column->GetWidth();
-		columns[i].sorted = i == _sortBy;
+		columns[i].sorted = columns[i].index == static_cast<int>(_sortBy);
 		columns[i].sortedDesc = _sortDesc;
 	}
 

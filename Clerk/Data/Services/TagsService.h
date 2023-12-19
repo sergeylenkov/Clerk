@@ -3,7 +3,7 @@
 #include "../Repositories/TagsRepository.h"
 #include "../../UI/PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
-#include "./HashService.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

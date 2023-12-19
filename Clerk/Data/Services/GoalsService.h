@@ -3,7 +3,7 @@
 #include "../Repositories/GoalsRepository.h"
 #include "../../UI/PresentationModels/GoalPresentationModel.h"
 #include "../../Utils/Types.h"
-#include "./HashService.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

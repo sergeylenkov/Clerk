@@ -3,8 +3,8 @@
 #include "../Repositories/CurrenciesRepository.h"
 #include "../../UI/PresentationModels/CurrencyPresentationModel.h"
 #include "../../Utils/Types.h"
-#include "./HashService.h"
 #include "../ExchangeRates/CBRRatesLoader.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

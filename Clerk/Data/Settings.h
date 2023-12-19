@@ -66,6 +66,8 @@ public:
 	void SetAlertsListColumns(std::vector<ListColumnsSettings> columns);
 	std::vector<ListColumnsSettings> GetSchedulersListColumns();
 	void SetSchedulersListColumns(std::vector<ListColumnsSettings> columns);
+	std::vector<ListColumnsSettings> GetBudgetsListColumns();
+	void SetBudgetsListColumns(std::vector<ListColumnsSettings> columns);
 
 private:
 	wxString _fileName;
@@ -89,6 +91,7 @@ private:
 	std::vector<ReportFilterSettings> _reportFilterSettings;
 	std::vector<ListColumnsSettings> _alertsListColumnsSettings;
 	std::vector<ListColumnsSettings> _schedulersListColumnsSettings;
+	std::vector<ListColumnsSettings> _budgetsListColumnsSettings;
 
 	void RestoreDefaultColumns();
 	std::vector<ListColumnsSettings> ReadColumnsFromJson(const Value& values);

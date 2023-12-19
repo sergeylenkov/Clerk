@@ -2,8 +2,23 @@
 
 using namespace Clerk::Data;
 
-BudgetsService::BudgetsService(BudgetsRepository& budgetsRepository) : _budgetsRepository(budgetsRepository) {
+BudgetsService::BudgetsService(BudgetsRepository& budgetsRepository):
+	_budgetsRepository(budgetsRepository)
+{
+	_eventEmitter = new EventEmitter();
 	_isLoading = false;
+}
+
+BudgetsService::~BudgetsService() {
+	delete _eventEmitter;
+}
+
+unsigned int BudgetsService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void BudgetsService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 std::shared_ptr<BudgetPresentationModel> BudgetsService::GetById(int id) {
@@ -17,7 +32,10 @@ std::shared_ptr<BudgetPresentationModel> BudgetsService::GetById(int id) {
 
 	if (model) {
 		budget = std::make_shared<BudgetPresentationModel>(*model);
-		budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+
+		budget->balance = GetExpenses(*budget, budget->periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
+		budget->remainAmount = budget->amount - budget->balance;
+		budget->remainPercent = budget->balance / (budget->amount / 100.0);
 
 		AddToHash(budget->id, budget);
 
@@ -40,7 +58,9 @@ shared_vector<BudgetPresentationModel> BudgetsService::GetAll() {
 		if (!GetFromHash(model->id)) {
 			auto budget = std::make_shared<BudgetPresentationModel>(*model);
 
-			budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+			budget->balance = GetExpenses(*budget, budget->periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
+			budget->remainAmount = budget->amount - budget->balance;
+			budget->remainPercent = budget->balance / (budget->amount / 100.0);
 
 			AddToHash(budget->id, budget);
 		}
@@ -59,10 +79,42 @@ shared_vector<BudgetPresentationModel> BudgetsService::GetAll() {
 
 void BudgetsService::UpdateBalance() {
 	for (auto& budget : GetHashList()) {
-		budget->balance = GetExpenses(*budget, std::string(budget->periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+		budget->balance = GetExpenses(*budget, budget->periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
 	}
 }
 
 float BudgetsService::GetExpenses(BudgetPresentationModel& budget, std::string& fromDate, std::string& toDate) {	
-	return _budgetsRepository.GetExpenses(budget.GetAccountsIdsString().ToStdString(), std::string(budget.periodDate.FormatISODate().ToUTF8()), std::string(wxDateTime::Now().FormatISODate().ToUTF8()));
+	std::vector<std::string> res;
+
+	for (int id : budget.accountsIds) {
+		res.push_back(std::to_string(id));
+	}
+
+	return _budgetsRepository.GetExpenses(String::Join(res, ","), budget.periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
+}
+
+std::shared_ptr<BudgetPresentationModel> BudgetsService::Save(BudgetPresentationModel& budget) {
+	BudgetModel& model = budget;
+
+	int id = _budgetsRepository.Save(model);
+
+	delete& model;
+
+	_eventEmitter->Emit();
+
+	RemoveFromHash(id);
+
+	return GetById(id);
+}
+
+void BudgetsService::Delete(BudgetPresentationModel& budget) {
+	BudgetModel& model = budget;
+
+	_budgetsRepository.Delete(model);
+
+	delete& model;
+
+	RemoveFromHash(budget.id);
+
+	_eventEmitter->Emit();
 }

@@ -2,38 +2,31 @@
 
 #include <wx/dataview.h>
 #include "../../Utils/Utils.h"
+#include "../../Utils/Types.h"
 #include "../PresentationModels/BudgetPresentationModel.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
 using namespace Clerk::UI;
 
-class BudgetsListDataModel : public wxDataViewListStore
+class BudgetsListDataModel : public wxDataViewIndexListModel
 {
 public:
-	enum class Columns
-	{
-		Name,
-		Period,
-		Limit,
-		Current,
-		Remain,
-		Progress,
-		Last
-	};
-
 	BudgetsListDataModel();
-	~BudgetsListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<BudgetPresentationModel>> budgets);
+	void SetItems(shared_vector<BudgetPresentationModel> budgets);
 	
-	virtual unsigned int GetColumnCount() const;
-	virtual wxString GetColumnType(unsigned int column) const;
-	virtual void GetValueByRow(wxVariant &variant, unsigned int row, unsigned int column) const;
-	virtual bool GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr &attr) const;
-	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
+	unsigned int GetColumnCount() const;
+	wxString GetColumnType(unsigned int column) const;
+	virtual void GetValueByRow(wxVariant& variant, unsigned int row, unsigned int column) const;
+	virtual bool SetValueByRow(const wxVariant& variant, unsigned int row, unsigned int column);
+	virtual bool GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr& attr) const;
+	virtual int Compare(const wxDataViewItem& item1, const wxDataViewItem& item2, unsigned int column, bool	ascending) const;
+	virtual bool HasDefaultCompare() const;
+	unsigned int GetCount() const override;
 
 private:
-	std::vector<std::shared_ptr<BudgetPresentationModel>> _budgets;
+	shared_vector<BudgetPresentationModel> _budgets;
 };
 

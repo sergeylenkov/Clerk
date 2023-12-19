@@ -10,7 +10,6 @@ class BudgetsProgressRender : public wxDataViewCustomRenderer
 {
 public:
 	BudgetsProgressRender();
-	~BudgetsProgressRender();
 
 	virtual bool Render(wxRect rect, wxDC *dc, int state) wxOVERRIDE;
 	virtual wxSize GetSize() const wxOVERRIDE;

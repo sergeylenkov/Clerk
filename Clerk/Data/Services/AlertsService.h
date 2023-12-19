@@ -1,11 +1,11 @@
 #pragma once
 
 #include "../Repositories/AlertsRepository.h"
-#include "AccountsService.h"
 #include "../../UI/PresentationModels/AlertPresentationModel.h"
-#include "./HashService.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/EventEmitter.h"
+#include "AccountsService.h"
+#include "HashService.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

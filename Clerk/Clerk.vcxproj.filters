@@ -108,7 +108,7 @@
     <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Budgets\BudgetsPanel.cpp">
+    <ClCompile Include="UI\Budgets\BudgetsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Goals\GoalsListDataModel.cpp">
@@ -462,6 +462,9 @@
     <ClCompile Include="Commands\Alert\DeleteAlertCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -563,7 +566,7 @@
     <ClInclude Include="UI\Budgets\BudgetsProgressRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Budgets\BudgetsPanel.h">
+    <ClInclude Include="UI\Budgets\BudgetsListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalsListDataModel.h">
@@ -960,6 +963,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Alert\DeleteAlertCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Budgets\BudgetContextMenu.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Budgets\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -112,7 +112,7 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 			return new TransactionsListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Budgets:
-			return new BudgetsPanel(_tabsPanel, _context, _icons);
+			return new BudgetsListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Schedulers:
 			return new SchedulersListPanel(_tabsPanel, _context, _icons);

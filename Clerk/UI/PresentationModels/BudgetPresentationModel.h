@@ -1,10 +1,11 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <sstream>
 #include "../../Data/Models/BudgetModel.h"
+#include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {
@@ -21,10 +22,11 @@ namespace Clerk {
 			wxDateTime periodDate;
 			wxDateTime date;
 			std::vector<int> accountsIds;
+			float remainAmount;
+			float remainPercent;
 
 			operator BudgetModel& ();
 
-			wxString GetAccountsIdsString();
 		private:
 			BudgetModel& GetModel();
 		};

@@ -2,23 +2,21 @@
 
 namespace Clerk {
 	namespace UI {
-		enum class AlertContextMenuTypes {
+		enum class BudgetContextMenuTypes {
 			Add = 1,
 			Edit = 2,
 			Delete = 3,
 		};
 
-		enum class AlertsListColumns
+		enum class BudgetsListColumns
 		{
 			Name,
-			Message,
-			Type,
 			Period,
-			Condition,
-			Importance,
-			Amount,
+			Limit,
+			Current,
+			Remain,
+			Progress,
 			Last
 		};
 	}
 }
-

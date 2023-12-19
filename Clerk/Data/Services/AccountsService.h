@@ -32,6 +32,8 @@ namespace Clerk {
 			std::shared_ptr<AccountPresentationModel> GetPairAccount(const AccountPresentationModel& account);
 			std::shared_ptr<AccountPresentationModel> GetLastUsedAccount();
 			float GetInitialAmount(const AccountPresentationModel& account);
+			void Archive(AccountPresentationModel& account);
+			void Restore(AccountPresentationModel& account);
 
 			std::shared_ptr<AccountPresentationModel> Save(AccountPresentationModel& account);
 			void Delete(AccountPresentationModel& account);

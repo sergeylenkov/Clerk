@@ -15,6 +15,8 @@
 #include "Transaction/DuplicateTransactionCommand.h"
 #include "Account/NewAccountCommand.h"
 #include "Account/EditAccountCommand.h"
+#include "Account/ArchiveAccountCommand.h"
+#include "Account/RestoreAccountCommand.h"
 #include "Alert//NewAlertCommand.h"
 #include "Alert/EditAlertCommand.h"
 #include "Alert/DeleteAlertCommand.h"
@@ -51,7 +53,9 @@ namespace Clerk {
 				DeleteTransactionCommand& deleteTransactionCommand,
 				DuplicateTransactionCommand& duplicateTransactionCommand,
 				NewAccountCommand& newAccountCommand,
-				EditAccountCommand& editAccountCommand,				
+				EditAccountCommand& editAccountCommand,
+				ArchiveAccountCommand& archiveAccountCommand,
+				RestoreAccountCommand& restoreAccountCommand,
 				NewAlertCommand& newAlertCommand,
 				EditAlertCommand& editAlertCommand,
 				DeleteAlertCommand& deleteAlertCommand,
@@ -69,6 +73,11 @@ namespace Clerk {
 			void Quit();
 			void OpenPreferences();
 			void OpenAbout();
+			void OpenTab(TabType type);
+			void OpenAccountTab(int id);
+			void OpenAccountsTab();
+			void OpenAccountsTab(AccountType type);
+			void OpenReportTab(int id);
 			void NewTransaction(int accountId);			
 			void CopyTransaction(int id);
 			void DuplicateTransaction(int id);
@@ -78,11 +87,8 @@ namespace Clerk {
 			void DuplicateTransactio(int id);
 			void NewAccount(AccountType type);
 			void EditAccount(int id);
-			void OpenTab(TabType type);
-			void OpenAccountTab(int id);
-			void OpenAccountsTab();
-			void OpenAccountsTab(AccountType type);
-			void OpenReportTab(int id);
+			void ArchiveAccount(int id);
+			void RestoreAccount(int id);
 			void NewAlert();
 			void EditAlert(int id);
 			void DeleteAlert(int id);			
@@ -110,7 +116,9 @@ namespace Clerk {
 			DeleteTransactionCommand& _deleteTransactionCommand;
 			DuplicateTransactionCommand& _duplicateTransactionCommand;
 			NewAccountCommand& _newAccountCommand;
-			EditAccountCommand& _editAccountCommand;						
+			EditAccountCommand& _editAccountCommand;
+			ArchiveAccountCommand& _archiveAccountCommand;
+			RestoreAccountCommand& _restoreAccountCommand;
 			NewAlertCommand& _newAlertCommand;
 			EditAlertCommand& _editAlertCommand;
 			DeleteAlertCommand& _deleteAlertCommand;

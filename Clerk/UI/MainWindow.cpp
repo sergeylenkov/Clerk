@@ -157,7 +157,9 @@ void MainWindow::SetupCommands() {
 	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_context.GetTransactionsService());
 	DuplicateTransactionCommand* duplicateTransactionCommand = new DuplicateTransactionCommand(_context.GetTransactionsService());
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(*_commandsReceiver);
-	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);	
+	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
+	ArchiveAccountCommand* archiveAccountCommand = new ArchiveAccountCommand(_context.GetAccountsService());
+	RestoreAccountCommand* restoreAccountCommand = new RestoreAccountCommand(_context.GetAccountsService());
 	NewAlertCommand* newAlertCommand = new NewAlertCommand(*_commandsReceiver);
 	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
 	DeleteAlertCommand* deleteAlertCommand = new DeleteAlertCommand(_context.GetAlertsService());
@@ -185,7 +187,9 @@ void MainWindow::SetupCommands() {
 		*deleteTransactionCommand,
 		*duplicateTransactionCommand,
 		*newAccountCommand, 
-		*editAccountCommand, 
+		*editAccountCommand,
+		*archiveAccountCommand,
+		*restoreAccountCommand,
 		*newAlertCommand,
 		*editAlertCommand,
 		*deleteAlertCommand,

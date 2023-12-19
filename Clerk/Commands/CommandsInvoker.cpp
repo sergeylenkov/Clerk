@@ -18,6 +18,8 @@ CommandsInvoker::CommandsInvoker(
 	DuplicateTransactionCommand& duplicateTransactionCommand,
 	NewAccountCommand& newAccountCommand,	
 	EditAccountCommand& editAccountCommand,	
+	ArchiveAccountCommand& archiveAccountCommand,
+	RestoreAccountCommand& restoreAccountCommand,
 	NewAlertCommand& newAlertCommand,
 	EditAlertCommand& editAlertCommand,
 	DeleteAlertCommand& deleteAlertCommand,
@@ -44,7 +46,9 @@ CommandsInvoker::CommandsInvoker(
 	_deleteTransactionCommand(deleteTransactionCommand),
 	_duplicateTransactionCommand(duplicateTransactionCommand),
 	_newAccountCommand(newAccountCommand),
-	_editAccountCommand(editAccountCommand),	
+	_editAccountCommand(editAccountCommand),
+	_archiveAccountCommand(archiveAccountCommand),
+	_restoreAccountCommand(restoreAccountCommand),
 	_newAlertCommand(newAlertCommand),
 	_editAlertCommand(editAlertCommand),
 	_deleteAlertCommand(deleteAlertCommand),
@@ -76,6 +80,8 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _duplicateTransactionCommand;
 	delete& _newAccountCommand;
 	delete& _editAccountCommand;	
+	delete& _archiveAccountCommand;
+	delete& _restoreAccountCommand;
 	delete& _newAlertCommand;
 	delete& _editAlertCommand;
 	delete& _deleteAlertCommand;
@@ -99,6 +105,30 @@ void CommandsInvoker::OpenPreferences() {
 
 void CommandsInvoker::OpenAbout() {
 	_aboutCommand.Execute();
+}
+
+void CommandsInvoker::OpenTab(TabType type) {
+	_openTabCommand.SetType(type);
+	_openTabCommand.Execute();
+}
+
+void CommandsInvoker::OpenAccountTab(int id) {
+	_openAccountTabCommand.SetAccountId(id);
+	_openAccountTabCommand.Execute();
+}
+
+void CommandsInvoker::OpenAccountsTab() {
+	_openAccountsTabCommand.Execute();
+}
+
+void CommandsInvoker::OpenAccountsTab(AccountType type) {
+	_openAccountsTabCommand.SetAccountType(type);
+	_openAccountsTabCommand.Execute();
+}
+
+void CommandsInvoker::OpenReportTab(int id) {
+	_openReportTabCommand.SetReportId(id);
+	_openReportTabCommand.Execute();
 }
 
 void CommandsInvoker::NewTransaction(int accountId) {
@@ -146,28 +176,14 @@ void CommandsInvoker::EditAccount(int id) {
 	_editAccountCommand.Execute();
 }
 
-void CommandsInvoker::OpenTab(TabType type) {
-	_openTabCommand.SetType(type);
-	_openTabCommand.Execute();
+void CommandsInvoker::ArchiveAccount(int id) {
+	_archiveAccountCommand.SetAccountId(id);
+	_archiveAccountCommand.Execute();
 }
 
-void CommandsInvoker::OpenAccountTab(int id) {
-	_openAccountTabCommand.SetAccountId(id);
-	_openAccountTabCommand.Execute();
-}
-
-void CommandsInvoker::OpenAccountsTab() {
-	_openAccountsTabCommand.Execute();
-}
-
-void CommandsInvoker::OpenAccountsTab(AccountType type) {
-	_openAccountsTabCommand.SetAccountType(type);
-	_openAccountsTabCommand.Execute();
-}
-
-void CommandsInvoker::OpenReportTab(int id) {
-	_openReportTabCommand.SetReportId(id);
-	_openReportTabCommand.Execute();
+void CommandsInvoker::RestoreAccount(int id) {
+	_restoreAccountCommand.SetAccountId(id);
+	_restoreAccountCommand.Execute();
 }
 
 void CommandsInvoker::NewAlert() {

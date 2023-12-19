@@ -10,7 +10,7 @@ namespace Clerk {
 	namespace Commands {
 		class NewAccountCommand : public Command {
 		public:
-			NewAccountCommand(ICommandsReceiver& _receiver);
+			NewAccountCommand(ICommandsReceiver& receiver);
 			void SetAccountType(AccountType type);
 			void Execute() override;
 

@@ -242,6 +242,20 @@ float AccountsService::GetInitialAmount(const AccountPresentationModel& account)
 	return _accountsRepository.GetInitialAmount(account.id, account.type);
 }
 
+void AccountsService::Archive(AccountPresentationModel& account) {
+	account.isActive = false;
+	Save(account);
+
+	_eventEmitter->Emit();
+}
+
+void AccountsService::Restore(AccountPresentationModel& account) {
+	account.isActive = true;
+	Save(account);
+
+	_eventEmitter->Emit();
+}
+
 std::shared_ptr<AccountPresentationModel> AccountsService::Save(AccountPresentationModel& account) {
 	AccountModel& model = account;
 

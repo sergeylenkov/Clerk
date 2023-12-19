@@ -51,6 +51,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
+    <ClCompile Include="Commands\Account\ArchiveAccountCommand.cpp" />
+    <ClCompile Include="Commands\Account\RestoreAccountCommand.cpp" />
     <ClCompile Include="Commands\Alert\DeleteAlertCommand.cpp" />
     <ClCompile Include="Commands\Alert\NewAlertCommand.cpp" />
     <ClCompile Include="Commands\Budget\DeleteBudgetCommand.cpp" />
@@ -211,6 +213,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
+    <ClInclude Include="Commands\Account\ArchiveAccountCommand.h" />
+    <ClInclude Include="Commands\Account\RestoreAccountCommand.h" />
     <ClInclude Include="Commands\Alert\DeleteAlertCommand.h" />
     <ClInclude Include="Commands\Alert\NewAlertCommand.h" />
     <ClInclude Include="Commands\Budget\DeleteBudgetCommand.h" />

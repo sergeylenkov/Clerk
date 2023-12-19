@@ -19,7 +19,7 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& 
 		item = Append(static_cast<int>(TreeContextMenuType::EditAccount), _("Edit Account..."));
 		item->SetBitmap(_icons.GetIconByType(IconType::Pencil));
 
-		item = Append(static_cast<int>(TreeContextMenuType::DeleteAccount), _("Move to Archive"));
+		item = Append(static_cast<int>(TreeContextMenuType::ArchiveAccount), _("Move to Archive"));
 		item->SetBitmap(_icons.GetIconByType(IconType::Delete));
 
 		AppendSeparator();
@@ -63,12 +63,25 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 
 	if (id >= transactionsOffset) {
 		_commandsInvoker.CopyTransaction(id - transactionsOffset);
-	} else if (id == static_cast<int>(TreeContextMenuType::NewTransaction)) {
-		_commandsInvoker.NewTransaction(_account.id);
-	}
-	else if (id == static_cast<int>(TreeContextMenuType::EditAccount)) {
-		_commandsInvoker.EditAccount(_account.id);
-	} else if (id == static_cast<int>(TreeContextMenuType::NewTab)) {
-		_commandsInvoker.OpenAccountTab(_account.id);
+	} else {
+		switch (static_cast<TreeContextMenuType>(id))
+		{
+			case TreeContextMenuType::NewTransaction:
+				_commandsInvoker.NewTransaction(_account.id);
+				break;
+			case TreeContextMenuType::EditAccount:
+				_commandsInvoker.EditAccount(_account.id);
+				break;
+			case TreeContextMenuType::NewTab:
+				_commandsInvoker.OpenAccountTab(_account.id);
+			case TreeContextMenuType::ArchiveAccount:
+				_commandsInvoker.ArchiveAccount(_account.id);
+				break;
+			case TreeContextMenuType::RestoreAccount:
+				_commandsInvoker.RestoreAccount(_account.id);
+				break;
+			default:
+				break;
+		}		
 	}
 }

@@ -26,7 +26,7 @@ namespace Clerk {
 			NewTab = 1,
 			NewAccount = 2,
 			EditAccount = 3,
-			DeleteAccount = 4,
+			ArchiveAccount = 4,
 			NewTransaction = 5,
 			NewBudget = 6,
 			NewScheduler = 7,

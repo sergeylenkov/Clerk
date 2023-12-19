@@ -98,8 +98,6 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	Centre(wxBOTH);	
 
-	_treeMenu->RestoreState();
-
 	_dialogsController->SetMainWindow(this);
 	_tabsController->SetTabsPanel(_tabsPanel);
 

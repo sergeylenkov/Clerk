@@ -9,7 +9,7 @@ NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService, Tra
 
 	_eventEmitter = new EventEmitter();
 
-	unsigned int _subscriptionId = _transactionsService.Subscribe([&]() {
+	_subscriptionId = _transactionsService.Subscribe([&]() {
 		_alertsService.Reload();
 		_eventEmitter->Emit();
 	});

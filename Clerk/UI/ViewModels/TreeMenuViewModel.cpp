@@ -7,7 +7,20 @@ TreeMenuViewModel::TreeMenuViewModel(AccountsService& accountsService, ReportsSe
 	_reportsService(reportsService),
 	_transactionsService(transactionsService)
 {
+	_eventEmitter = new EventEmitter();
 
+	_subscriptionId = _accountsService.Subscribe([&]() {
+		_eventEmitter->Emit();
+	});
+}
+
+TreeMenuViewModel::~TreeMenuViewModel() {
+	_accountsService.Unsubscribe(_subscriptionId);
+	delete _eventEmitter;
+}
+
+void TreeMenuViewModel::OnUpdate(std::function<void()> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 shared_vector<AccountPresentationModel> TreeMenuViewModel::GetReceiptsAccounts() {

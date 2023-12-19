@@ -7,6 +7,7 @@
 #include "../PresentationModels/ReportPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Types.h"
+#include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::UI;
 
@@ -15,6 +16,7 @@ namespace Clerk {
 		class TreeMenuViewModel {
 		public:
 			TreeMenuViewModel(AccountsService& accountsService, ReportsService& reportsService, TransactionsService& transactionsService);
+			~TreeMenuViewModel();
 
 			shared_vector<AccountPresentationModel> GetReceiptsAccounts();
 			shared_vector<AccountPresentationModel> GetDepositsAccounts();
@@ -26,10 +28,15 @@ namespace Clerk {
 			shared_vector<TransactionPresentationModel> GetRecentsTransactions(const AccountPresentationModel& account);
 			bool IsTrashEmpty();
 
+			void OnUpdate(std::function<void()> fn);
+
 		private:
 			AccountsService& _accountsService;
 			TransactionsService& _transactionsService;
 			ReportsService& _reportsService;
+			EventEmitter* _eventEmitter;
+
+			unsigned int _subscriptionId;
 		};
 	}
 }

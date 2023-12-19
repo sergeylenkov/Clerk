@@ -22,6 +22,7 @@ TreeMenu::TreeMenu(TreeMenuViewModel& viewModel, CommandsInvoker& commandsInvoke
 
 	CreateMenu();
 	Update();
+	RestoreState();
 
 	_treeMenu->Bind(wxEVT_TREE_SEL_CHANGED, &TreeMenu::OnTreeItemSelect, this);
 	_treeMenu->Bind(wxEVT_TREE_ITEM_MENU, &TreeMenu::OnTreeSpecItemMenu, this);
@@ -29,6 +30,10 @@ TreeMenu::TreeMenu(TreeMenuViewModel& viewModel, CommandsInvoker& commandsInvoke
 	_treeMenu->Bind(wxEVT_TREE_ITEM_COLLAPSED, &TreeMenu::OnTreeItemCollapsed, this);
 	_treeMenu->Bind(wxEVT_TREE_BEGIN_DRAG, &TreeMenu::OnBeginDrag, this);
 	_treeMenu->Bind(wxEVT_TREE_END_DRAG, &TreeMenu::OnEndDrag, this);
+
+	_viewModel.OnUpdate([&]() {
+		Update();
+	});
 }
 
 TreeMenu::~TreeMenu() {
@@ -114,7 +119,7 @@ void TreeMenu::CreateMenu() {
 	_trashItem = _treeMenu->AppendItem(rootItem, _("Trash"), 0, 0, itemData);
 }
 
-void TreeMenu::Update() {
+void TreeMenu::Update() {	
 	for (auto& account : _viewModel.GetReceiptsAccounts())
 	{
 		AddAccountItem(_receiptsItem, account);

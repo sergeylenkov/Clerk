@@ -14,7 +14,7 @@ DashboardViewModel::DashboardViewModel(AccountingService& accountingService, Tra
 {
 	_eventEmitter = new EventEmitter();
 
-	unsigned int _subscriptionId = _transactionsService.Subscribe([&]() {
+	_subscriptionId = _transactionsService.Subscribe([&]() {
 		_eventEmitter->Emit();
 	});
 }

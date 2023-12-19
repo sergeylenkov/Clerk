@@ -13,7 +13,7 @@ AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& 
 
 	if (!account.isActive) {	
 		item = Append(static_cast<int>(TreeContextMenuType::RestoreAccount), _("Restore from Archive"));
-		item->SetBitmap(wxBitmap("ICON_UNDO", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Undo));
 	}
 	else {
 		item = Append(static_cast<int>(TreeContextMenuType::EditAccount), _("Edit Account..."));

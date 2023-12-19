@@ -1,18 +1,18 @@
 #pragma once
 
+#include <wx/wx.h>
 #include "Command.h"
-#include "ICommandsReceiver.h"
 
 namespace Clerk {
 	namespace Commands {
 		class QuitCommand : public Command {
 		public:
-			QuitCommand(ICommandsReceiver& _receiver);
+			QuitCommand(wxFrame& frame);
 
 			void Execute() override;
 
 		private:
-			ICommandsReceiver& _receiver;
+			wxFrame& _frame;
 		};
 	}
 }

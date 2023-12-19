@@ -8,9 +8,11 @@
 #include "Transaction/SplitTransactionCommand.h"
 #include "Transaction/EditTransactionCommand.h"
 #include "Transaction/DeleteTransactionCommand.h"
+#include "Transaction/DuplicateTransactionCommand.h"
 #include "Account/NewAccountCommand.h"
 #include "Account/EditAccountCommand.h"
 #include "Alert/EditAlertCommand.h"
+#include "Alert/DeleteAlertCommand.h"
 #include "Tabs/OpenTabCommand.h"
 #include "Tabs/OpenAccountTabCommand.h"
 #include "Tabs/OpenAccountsTabCommand.h"
@@ -35,6 +37,7 @@ namespace Clerk {
 				SplitTransactionCommand& splitTransactionCommand,
 				EditTransactionCommand& editTransactionCommand,
 				DeleteTransactionCommand& deleteTransactionCommand,
+				DuplicateTransactionCommand& duplicateTransactionCommand,
 				NewAccountCommand& newAccountCommand,
 				EditAccountCommand& editAccountCommand,
 				OpenTabCommand& openTabCommand,
@@ -42,6 +45,7 @@ namespace Clerk {
 				OpenAccountsTabCommand& openAccountsTabCommand,
 				OpenReportTabCommand& openReportTabCommand,
 				EditAlertCommand& editAlertCommand,
+				DeleteAlertCommand& deleteAlertCommand,
 				EditSchedulerCommand& editSchedulerCommand
 			);
 			~CommandsInvoker();
@@ -55,6 +59,7 @@ namespace Clerk {
 			void SplitTransaction(int id);
 			void EditTransaction(int id);
 			void DeleteTransaction(int id);
+			void DuplicateTransactio(int id);
 			void NewAccount(AccountType type);
 			void EditAccount(int id);
 			void OpenTab(TabType type);
@@ -78,6 +83,7 @@ namespace Clerk {
 			SplitTransactionCommand& _splitTransactionCommand;
 			EditTransactionCommand& _editTransactionCommand;
 			DeleteTransactionCommand& _deleteTransactionCommand;
+			DuplicateTransactionCommand& _duplicateTransactionCommand;
 			NewAccountCommand& _newAccountCommand;
 			EditAccountCommand& _editAccountCommand;			
 			OpenTabCommand& _openTabCommand;
@@ -85,6 +91,7 @@ namespace Clerk {
 			OpenAccountsTabCommand& _openAccountsTabCommand;
 			OpenReportTabCommand& _openReportTabCommand;
 			EditAlertCommand& _editAlertCommand;
+			DeleteAlertCommand& _deleteAlertCommand;
 			EditSchedulerCommand& _editSchedulerCommand;
 		};
 	}

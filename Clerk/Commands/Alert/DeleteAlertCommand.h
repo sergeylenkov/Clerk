@@ -1,18 +1,18 @@
 #pragma once
 
 #include "../Command.h"
-#include "../ICommandsReceiver.h"
+#include "../../Data/Services/AlertsService.h"
 
 namespace Clerk {
 	namespace Commands {
-		class EditAlertCommand : public Command {
+		class DeleteAlertCommand : public Command {
 		public:
-			EditAlertCommand(ICommandsReceiver& receiver);
+			DeleteAlertCommand(AlertsService& service);
 			void SetAlertId(int id);
 			void Execute() override;
 
 		private:
-			ICommandsReceiver& _receiver;
+			AlertsService& _service;
 			int _alertId;
 		};
 	}

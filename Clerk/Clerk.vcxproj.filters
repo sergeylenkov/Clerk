@@ -456,6 +456,12 @@
     <ClCompile Include="Commands\Tabs\OpenTabCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Commands\Transaction\DuplicateTransactionCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Commands\Alert\DeleteAlertCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -948,6 +954,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Tabs\OpenTabCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Transaction\DuplicateTransactionCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Alert\DeleteAlertCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

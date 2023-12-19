@@ -83,14 +83,6 @@ void DialogsController::ShowEditTransactionDialog(int id) {
 	transactionDialog->CenterOnParent();
 }
 
-void DialogsController::DeleteTransaction(int id) {
-	auto transaction = _context.GetTransactionsService().GetById(id);
-
-	if (transaction) {
-		_context.GetTransactionsService().Delete(*transaction);
-	}
-}
-
 void DialogsController::ShowNewAccountDialog(AccountType type) {
 	wxSize size = GetAccountDialogSize();
 

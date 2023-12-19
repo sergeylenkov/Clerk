@@ -51,7 +51,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	horizontalSizer->Add(_newTransactionButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
 	horizontalSizer->Add(0, 1, wxEXPAND);
 
-	_notificationButton = new NotificationsButton(*notificationsViewModel, _toolbar, wxDefaultPosition, FromDIP(wxSize(34, 34)));
+	_notificationButton = new NotificationsButton(*notificationsViewModel, _icons, _toolbar, wxDefaultPosition, FromDIP(wxSize(34, 34)));
 	horizontalSizer->Add(_notificationButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, FromDIP(2));
 
 	_toolbar->SetSizer(horizontalSizer);
@@ -87,7 +87,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
-	_statusbar = new Statusbar(*_statusViewModel, this, wxDefaultPosition, FromDIP(wxSize(-1, 20)));
+	_statusbar = new Statusbar(*_statusViewModel, _icons, this, wxDefaultPosition, FromDIP(wxSize(-1, 20)));
 
 	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
 
@@ -141,9 +141,9 @@ void MainWindow::SetupCommands() {
 	_dialogsController = new DialogsController(_context, _icons);
 	_tabsController = new TabsController(_context, _icons);
 
-	_commandsReceiver = new CommandsReceiver(this, _dialogsController, _tabsController);
+	_commandsReceiver = new CommandsReceiver(_dialogsController, _tabsController);
 
-	QuitCommand* quitCommand = new QuitCommand(*_commandsReceiver);
+	QuitCommand* quitCommand = new QuitCommand(*this);
 	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(*_commandsReceiver);
 	AboutCommand* aboutCommand = new AboutCommand(*_commandsReceiver);
 	NewTransactionCommand* newTransactionCommand = new NewTransactionCommand(*_commandsReceiver);
@@ -151,6 +151,7 @@ void MainWindow::SetupCommands() {
 	SplitTransactionCommand* splitTransactionCommand = new SplitTransactionCommand(*_commandsReceiver);
 	EditTransactionCommand* editTransactionCommand = new EditTransactionCommand(*_commandsReceiver);
 	DeleteTransactionCommand* deleteTransactionCommand = new DeleteTransactionCommand(_context.GetTransactionsService());
+	DuplicateTransactionCommand* duplicateTransactionCommand = new DuplicateTransactionCommand(_context.GetTransactionsService());
 	NewAccountCommand* newAccountCommand = new NewAccountCommand(*_commandsReceiver);
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
 	OpenTabCommand* openTabCommand = new OpenTabCommand(*_commandsReceiver);
@@ -158,6 +159,7 @@ void MainWindow::SetupCommands() {
 	OpenAccountsTabCommand* openAccountsTabCommand = new OpenAccountsTabCommand(*_commandsReceiver);
 	OpenReportTabCommand* openReportTabCommand = new OpenReportTabCommand(*_commandsReceiver);
 	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
+	DeleteAlertCommand* deleteAlertCommand = new DeleteAlertCommand(_context.GetAlertsService());
 	EditSchedulerCommand* editSchedulerCommand = new EditSchedulerCommand(*_commandsReceiver);
 
 	_commandsInvoker = new CommandsInvoker(
@@ -169,6 +171,7 @@ void MainWindow::SetupCommands() {
 		*splitTransactionCommand, 
 		*editTransactionCommand, 
 		*deleteTransactionCommand,
+		*duplicateTransactionCommand,
 		*newAccountCommand, 
 		*editAccountCommand, 
 		*openTabCommand, 
@@ -176,6 +179,7 @@ void MainWindow::SetupCommands() {
 		*openAccountsTabCommand, 
 		*openReportTabCommand, 
 		*editAlertCommand, 
+		*deleteAlertCommand,
 		*editSchedulerCommand
 	);
 

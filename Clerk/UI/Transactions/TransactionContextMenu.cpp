@@ -33,8 +33,10 @@ TransactionContextMenu::TransactionContextMenu(CommandsInvoker& commandsInvoker,
 		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
 		item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 
+		AppendSeparator();
+
 		item = Append(static_cast<int>(TransactionContextMenuType::Merge), _("Merge"));
-		item->SetBitmap(wxBitmap("ICON_MERGE", wxBITMAP_TYPE_PNG_RESOURCE));
+		item->SetBitmap(_icons.GetIconByType(IconType::Merge));
 	} else {
 		wxMenuItem* item = Append(static_cast<int>(TransactionContextMenuType::Add), _("Add..."));
 		item->SetBitmap(_icons.GetIconByType(IconType::Plus));

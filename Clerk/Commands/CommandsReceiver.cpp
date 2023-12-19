@@ -6,14 +6,11 @@ CommandsReceiver::CommandsReceiver() {
 
 }
 
-CommandsReceiver::CommandsReceiver(wxFrame* frame, DialogsController* dialogsController, TabsController* tabsController) {
-	_frame = frame;
-	_dialogsController = dialogsController;
-	_tabsController = tabsController;
-}
-
-void CommandsReceiver::Quit() {
-	_frame->Close(TRUE);
+CommandsReceiver::CommandsReceiver(DialogsController* dialogsController, TabsController* tabsController):
+	_dialogsController( dialogsController),
+	_tabsController(tabsController)
+{
+	
 }
 
 void CommandsReceiver::OpenPreferencesDialog() {
@@ -38,10 +35,6 @@ void CommandsReceiver::SplitTransaction(int id) {
 
 void CommandsReceiver::EditTransaction(int id) {
 	_dialogsController->ShowEditTransactionDialog(id);
-}
-
-void CommandsReceiver::DeleteTransaction(int id) {
-	_dialogsController->DeleteTransaction(id);
 }
 
 void CommandsReceiver::OpenNewAccountDialog(AccountType type) {

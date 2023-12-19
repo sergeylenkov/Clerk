@@ -2,12 +2,11 @@
 
 using namespace Clerk::UI;
 
-NotificationsButton::NotificationsButton(NotificationsViewModel& viewModel, wxWindow* parent, const wxPoint& pos, const wxSize& size):
+NotificationsButton::NotificationsButton(NotificationsViewModel& viewModel, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size):
 	ToolbarButton(parent, wxID_ANY, pos, size), 
-	_viewModel(viewModel)
+	_viewModel(viewModel),
+	_icons(icons)
 {
-	_image = wxBitmap(wxT("ICON_BELL"), wxBITMAP_TYPE_PNG_RESOURCE);
-
 	_popup = new NotificationsPopup(this);
 
 	_popup->OnDismissAlert = [&](std::shared_ptr<AlertPresentationModel> alert) {
@@ -43,9 +42,9 @@ NotificationsButton::~NotificationsButton() {
 void NotificationsButton::Update()
 {
 	if (_viewModel.IsActive()) {
-		_image = wxBitmap(wxT("ICON_BELL_ACTIVE"), wxBITMAP_TYPE_PNG_RESOURCE);
+		_image = _icons.GetIconByType(IconType::BellActive).GetBitmap(wxSize(24, 24));
 	} else {
-		_image = wxBitmap(wxT("ICON_BELL"), wxBITMAP_TYPE_PNG_RESOURCE);
+		_image = _icons.GetIconByType(IconType::Bell).GetBitmap(wxSize(24, 24));
 	}
 
 	if (_popup->IsShown()) {

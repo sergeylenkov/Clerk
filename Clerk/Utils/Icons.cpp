@@ -82,14 +82,23 @@ void Icons::LoadSvgIcons() {
 
 	_icons[IconType::Plus] = wxBitmapBundle::FromSVGResource("PLUS_SVG", wxSize(16, 16));
 	_icons[IconType::Tab] = wxBitmapBundle::FromSVGResource("TAB_SVG", wxSize(16, 16));
+	_icons[IconType::TabRemove] = wxBitmapBundle::FromSVGResource("TAB_REMOVE_SVG", wxSize(16, 16));
 	_icons[IconType::Pencil] = wxBitmapBundle::FromSVGResource("PENCIL_SVG", wxSize(16, 16));
 	_icons[IconType::Copy] = wxBitmapBundle::FromSVGResource("COPY_SVG", wxSize(16, 16));	
 	_icons[IconType::Delete] = wxBitmapBundle::FromSVGResource("DELETE_SVG", wxSize(16, 16));
 	_icons[IconType::Split] = wxBitmapBundle::FromSVGResource("SPLIT_SVG", wxSize(16, 16));
 	_icons[IconType::Pause] = wxBitmapBundle::FromSVGResource("PAUSE_SVG", wxSize(16, 16));
 	_icons[IconType::Play] = wxBitmapBundle::FromSVGResource("PLAY_SVG", wxSize(16, 16));
-	_icons[IconType::Duplicate] = wxBitmapBundle::FromSVGResource("DUPLICATE_SVG", wxSize(16, 16));
-	_icons[IconType::TabRemove] = wxBitmapBundle::FromSVGResource("TAB_REMOVE_SVG", wxSize(16, 16));
+	_icons[IconType::Duplicate] = wxBitmapBundle::FromSVGResource("DUPLICATE_SVG", wxSize(16, 16));	
 	_icons[IconType::ArrowRight] = wxBitmapBundle::FromSVGResource("ARROW_RIGHT_SVG", wxSize(16, 16));
 	_icons[IconType::ArrowLeft] = wxBitmapBundle::FromSVGResource("ARROW_LEFT_SVG", wxSize(16, 16));
+	_icons[IconType::ArrowUp] = wxBitmapBundle::FromSVGResource("ARROW_UP_SVG", wxSize(16, 16));
+	_icons[IconType::ArrowDown] = wxBitmapBundle::FromSVGResource("ARROW_DOWN_SVG", wxSize(16, 16));
+	_icons[IconType::Wallet] = wxBitmapBundle::FromSVGResource("WALLET_SVG", wxSize(16, 16));	
+	_icons[IconType::CalendarMonth] = wxBitmapBundle::FromSVGResource("CALENDAR_MONTH_SVG", wxSize(16, 16));
+	_icons[IconType::Cached] = wxBitmapBundle::FromSVGResource("CACHED_SVG", wxSize(16, 16));
+	_icons[IconType::Bell] = wxBitmapBundle::FromSVGResource("BELL_SVG", wxSize(16, 16));
+	_icons[IconType::BellActive] = wxBitmapBundle::FromSVGResource("BELL_ACTIVE_SVG", wxSize(16, 16));
+	_icons[IconType::Merge] = wxBitmapBundle::FromSVGResource("MERGE_SVG", wxSize(16, 16));
+	_icons[IconType::Undo] = wxBitmapBundle::FromSVGResource("UNDO_SVG", wxSize(16, 16));
 }

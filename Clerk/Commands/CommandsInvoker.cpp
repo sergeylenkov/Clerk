@@ -11,6 +11,7 @@ CommandsInvoker::CommandsInvoker(
 	SplitTransactionCommand& splitTransactionCommand,
 	EditTransactionCommand& editTransactionCommand,
 	DeleteTransactionCommand& deleteTransactionCommand,
+	DuplicateTransactionCommand& duplicateTransactionCommand,
 	NewAccountCommand& newAccountCommand,
 	EditAccountCommand& editAccountCommand,
 	OpenTabCommand& openTabCommand,
@@ -18,6 +19,7 @@ CommandsInvoker::CommandsInvoker(
 	OpenAccountsTabCommand& openAccountsTabCommand,
 	OpenReportTabCommand& openReportTabCommand,
 	EditAlertCommand& editAlertCommand,
+	DeleteAlertCommand& deleteAlertCommand,
 	EditSchedulerCommand& editSchedulerCommand
 ):
 	_quitCommand(quitCommand),
@@ -28,6 +30,7 @@ CommandsInvoker::CommandsInvoker(
 	_splitTransactionCommand(splitTransactionCommand),
 	_editTransactionCommand(editTransactionCommand),
 	_deleteTransactionCommand(deleteTransactionCommand),
+	_duplicateTransactionCommand(duplicateTransactionCommand),
 	_newAccountCommand(newAccountCommand),
 	_editAccountCommand(editAccountCommand),
 	_openTabCommand(openTabCommand),
@@ -35,6 +38,7 @@ CommandsInvoker::CommandsInvoker(
 	_openAccountsTabCommand(openAccountsTabCommand),
 	_openReportTabCommand(openReportTabCommand),
 	_editAlertCommand(editAlertCommand),
+	_deleteAlertCommand(deleteAlertCommand),
 	_editSchedulerCommand(editSchedulerCommand)
 {
 	
@@ -49,6 +53,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _splitTransactionCommand;
 	delete& _editTransactionCommand;
 	delete& _deleteTransactionCommand;
+	delete& _duplicateTransactionCommand;
 	delete& _newAccountCommand;
 	delete& _editAccountCommand;
 	delete& _openTabCommand;
@@ -56,6 +61,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _openAccountsTabCommand;
 	delete& _openReportTabCommand;
 	delete& _editAlertCommand;
+	delete& _deleteAlertCommand;
 	delete& _editSchedulerCommand;
 }
 
@@ -82,7 +88,8 @@ void CommandsInvoker::CopyTransaction(int id) {
 }
 
 void CommandsInvoker::DuplicateTransaction(int id) {
-
+	_duplicateTransactionCommand.SetTransactionId(id);
+	_duplicateTransactionCommand.Execute();
 }
 
 void CommandsInvoker::SplitTransaction(int id) {
@@ -98,6 +105,11 @@ void CommandsInvoker::EditTransaction(int id) {
 void CommandsInvoker::DeleteTransaction(int id) {
 	_deleteTransactionCommand.SetTransactionId(id);
 	_deleteTransactionCommand.Execute();
+}
+
+void CommandsInvoker::DuplicateTransactio(int id) {
+	_duplicateTransactionCommand.SetTransactionId(id);
+	_duplicateTransactionCommand.Execute();
 }
 
 void CommandsInvoker::NewAccount(AccountType type) {
@@ -144,8 +156,10 @@ void CommandsInvoker::EditAlert(int id) {
 }
 
 void CommandsInvoker::DeleteAlert(int id) {
-
+	_deleteAlertCommand.SetAlertId(id);
+	_deleteAlertCommand.Execute();
 }
+
 void CommandsInvoker::NewScheduler() {
 
 }

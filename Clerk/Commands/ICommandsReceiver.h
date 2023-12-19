@@ -10,15 +10,13 @@ using namespace Clerk::UI;
 namespace Clerk {
 	namespace Commands {
 		class ICommandsReceiver {
-		public:
-			virtual void Quit() = 0;			
+		public:	
 			virtual void OpenPreferencesDialog() = 0;
 			virtual void OpenAboutDialog() = 0;
 			virtual void NewTransaction(int id) = 0;
 			virtual void CopyTransaction(int id) = 0;
 			virtual void SplitTransaction(int id) = 0;
 			virtual void EditTransaction(int id) = 0;
-			virtual void DeleteTransaction(int id) = 0;
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;
 			virtual void OpenTab(TabType type) = 0;

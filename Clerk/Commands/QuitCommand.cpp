@@ -2,9 +2,10 @@
 
 using namespace Clerk::Commands;
 
-QuitCommand::QuitCommand(ICommandsReceiver& receiver): _receiver(receiver) {	
+QuitCommand::QuitCommand(wxFrame& frame):
+	_frame(frame) {
 }
 
 void QuitCommand::Execute() {
-	_receiver.Quit();
+	_frame.Close();
 }

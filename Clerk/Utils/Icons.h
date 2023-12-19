@@ -9,16 +9,25 @@ namespace Clerk {
 		enum class IconType {
 			Plus,
 			Tab,
+			TabRemove,
 			Pencil,
 			Copy,
 			Delete,
 			Split,
 			Pause,
 			Play,
-			Duplicate,
-			TabRemove,
+			Duplicate,			
 			ArrowRight,
-			ArrowLeft
+			ArrowLeft,
+			ArrowDown,
+			ArrowUp,
+			Wallet,
+			CalendarMonth,
+			Cached,
+			Bell,
+			BellActive,
+			Merge,
+			Undo
 		};
 
 		class Icons {

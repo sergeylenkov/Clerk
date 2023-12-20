@@ -2,19 +2,33 @@
 
 using namespace Clerk::UI;
 
-BudgetPresentationModel::BudgetPresentationModel(BudgetModel& budget) {
-	id = budget.id;
-	name = budget.name;
-	date = wxDateTime();
+BudgetPresentationModel::BudgetPresentationModel() {
+	id = -1;
+	name = wxString("");
+	period = BudgetPeriod::Month;
+	date = wxDateTime::Today();
 	periodDate = wxDateTime::Today();
-	amount = budget.amount;
-	date.ParseISODate(budget.date);
+	amount = 0;
+	balance = 0;
 	remainAmount = 0;
 	remainPercent = 0;
+	created = wxDateTime::Now();
+}
 
-	accountsIds = String::Split(budget.accountsIds, ',');
+BudgetPresentationModel::BudgetPresentationModel(BudgetModel& model) {
+	id = model.id;
+	name = model.name;
+	period = model.period;
+	date = wxDateTime::Today().ParseISODate(model.date);
+	periodDate = wxDateTime::Today();
+	amount = model.amount;
+	balance = 0;
+	remainAmount = 0;
+	remainPercent = 0;	
+	accountsIds = String::Split(model.accountsIds, ',');
+	created = wxDateTime::Now().ParseISODate(model.created);
 
-	switch (budget.period)
+	switch (model.period)
 	{
 		case BudgetPeriod::Week:
 			periodName = wxString("Week");
@@ -54,6 +68,7 @@ BudgetModel& BudgetPresentationModel::GetModel() {
 	model->amount = amount;
 	model->period = period;
 	model->date = date.FormatISODate();
+	model->created = created.FormatISOCombined(' ');
 
 	std::vector<std::string> res;
 

@@ -123,6 +123,7 @@
     <ClCompile Include="UI\PresentationModels\AlertPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\BudgetPresentationModel.cpp" />
     <ClCompile Include="UI\ViewModels\AlertViewModel.cpp" />
+    <ClCompile Include="UI\ViewModels\BudgetViewModel.cpp" />
     <ClCompile Include="UI\ViewModels\DashboardViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\GoalPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\ReportPresentationModel.cpp" />
@@ -294,6 +295,7 @@
     <ClInclude Include="UI\PresentationModels\AlertPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\BudgetPresentationModel.h" />
     <ClInclude Include="UI\ViewModels\AlertViewModel.h" />
+    <ClInclude Include="UI\ViewModels\BudgetViewModel.h" />
     <ClInclude Include="UI\ViewModels\DashboardViewModel.h" />
     <ClInclude Include="UI\ViewModels\Enums.h" />
     <ClInclude Include="UI\PresentationModels\GoalPresentationModel.h" />

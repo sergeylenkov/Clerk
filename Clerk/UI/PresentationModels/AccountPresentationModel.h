@@ -13,7 +13,7 @@ namespace Clerk {
 		class AccountPresentationModel {
 		public:
 			AccountPresentationModel();
-			AccountPresentationModel(AccountModel& account);
+			AccountPresentationModel(AccountModel& model);
 
 			int id;
 			wxString name;

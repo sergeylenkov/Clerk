@@ -14,20 +14,15 @@ TransactionPresentationModel::TransactionPresentationModel() {
 	tagsString = wxString("");
 }
 
-TransactionPresentationModel::TransactionPresentationModel(TransactionModel& transaction) {
-	id = transaction.id;
+TransactionPresentationModel::TransactionPresentationModel(TransactionModel& model) {
+	id = model.id;
 	fromAccount = nullptr;
 	toAccount = nullptr;
-	fromAmount = transaction.fromAmount;
-	toAmount = transaction.toAmount;
-	note = wxString(transaction.note);
-
-	date = wxDateTime::Today(); 
-	date.ParseISODate(transaction.date);
-
-	created = wxDateTime::Now();
-	created.ParseISODate(transaction.created);
-
+	fromAmount = model.fromAmount;
+	toAmount = model.toAmount;
+	note = wxString(model.note);
+	date = wxDateTime::Today().ParseISODate(model.date);
+	created = wxDateTime::Now().ParseISODate(model.created);
 	tagsString = wxString("");
 }
 

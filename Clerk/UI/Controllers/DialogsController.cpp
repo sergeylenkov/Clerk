@@ -125,6 +125,20 @@ void DialogsController::ShowEditAlertDialog(int id) {
 	alertDialog->CenterOnParent();
 }
 
+void DialogsController::ShowEditBudgetDialog(int id) {
+	wxSize size = GetBudgetDialogSize();
+
+	BudgetDialog* budgetDialog = new BudgetDialog(_parent, _("Budget"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+
+	BudgetViewModel* viewModel = new BudgetViewModel(_context.GetBudgetsService(), _context.GetAccountsService());
+	viewModel->SetBudgetId(id);
+
+	budgetDialog->SetViewModel(viewModel);
+
+	budgetDialog->Show(true);
+	budgetDialog->CenterOnParent();
+}
+
 wxSize DialogsController::GetAboutDialogSize() {
 	wxSize size = wxSize();
 
@@ -166,6 +180,15 @@ wxSize DialogsController::GetAlertDialogSize() {
 
 	size.SetWidth(_parent->FromDIP(400));
 	size.SetHeight(_parent->FromDIP(500));
+
+	return size;
+}
+
+wxSize DialogsController::GetBudgetDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(400));
+	size.SetHeight(_parent->FromDIP(400));
 
 	return size;
 }

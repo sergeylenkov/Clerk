@@ -3,15 +3,15 @@
 using namespace Clerk::UI;
 
 CurrencyPresentationModel::CurrencyPresentationModel() {
-	this->id = -1;
-	this->name = "";
-	this->shortName = "";
-	this->sign = "";
+	id = -1;
+	name = wxString("");
+	shortName = wxString("");
+	sign = wxString("");
 }
 
-CurrencyPresentationModel::CurrencyPresentationModel(CurrencyModel& currency) {
-	this->id = currency.id;
-	this->name = currency.name;
-	this->shortName = currency.shortName;
-	this->sign = currency.sign;
+CurrencyPresentationModel::CurrencyPresentationModel(CurrencyModel& model) {
+	id = model.id;
+	name = wxString(model.name);
+	shortName = wxString(model.shortName);
+	sign = wxString(model.sign);
 }

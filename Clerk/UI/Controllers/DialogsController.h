@@ -6,9 +6,7 @@
 #include "../Transactions/TransactionDialog.h"
 #include "../AccountDialog.h"
 #include "../Alerts/AlertDialog.h"
-#include "../ViewModels/TransactionViewModel.h"
-#include "../ViewModels/AccountViewModel.h"
-#include "../ViewModels/AlertViewModel.h"
+#include "../Budgets/BudgetDialog.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 
@@ -30,6 +28,7 @@ namespace Clerk {
 			void ShowNewAccountDialog(AccountType type);
 			void ShowEditAccountDialog(int id);
 			void ShowEditAlertDialog(int id);
+			void ShowEditBudgetDialog(int id);
 
 		private:
 			wxFrame* _parent;
@@ -41,6 +40,7 @@ namespace Clerk {
 			wxSize GetPreferencesDialogSize();
 			wxSize GetAccountDialogSize();
 			wxSize GetAlertDialogSize();
+			wxSize GetBudgetDialogSize();
 		};
 	}
 }

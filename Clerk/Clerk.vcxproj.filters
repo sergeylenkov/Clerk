@@ -495,6 +495,9 @@
     <ClCompile Include="Commands\Account\RestoreAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\ViewModels\BudgetViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -1029,6 +1032,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Account\RestoreAccountCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\ViewModels\BudgetViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -10,7 +10,7 @@ namespace Clerk {
 		class CurrencyPresentationModel {
 		public:
 			CurrencyPresentationModel();
-			CurrencyPresentationModel(CurrencyModel& tag);
+			CurrencyPresentationModel(CurrencyModel& model);
 
 			int id;
 			wxString name;

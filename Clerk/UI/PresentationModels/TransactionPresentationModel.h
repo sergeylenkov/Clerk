@@ -13,7 +13,7 @@ namespace Clerk {
 		class TransactionPresentationModel {
 		public:
 			TransactionPresentationModel();
-			TransactionPresentationModel(TransactionModel& transaction);
+			TransactionPresentationModel(TransactionModel& model);
 
 			int id;
 			std::shared_ptr<AccountPresentationModel> fromAccount;

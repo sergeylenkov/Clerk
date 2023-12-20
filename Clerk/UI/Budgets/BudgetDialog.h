@@ -1,44 +1,40 @@
 #include <wx/wx.h>
 #include <wx/bmpcbox.h>
-#include <wx/valnum.h>
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include <set>
-#include "../PresentationModels/BudgetPresentationModel.h"
-#include "../../Data/Models/AccountModel.h"
+#include "../ViewModels/BudgetViewModel.h"
+#include "../Controls/AmountField.h"
+#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
+using namespace Clerk::Utils;
 
 class BudgetDialog : public wxFrame
 {
 public:
-	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);	
+	BudgetDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons);
+	~BudgetDialog();
 
-	void SetBudget(std::shared_ptr<BudgetPresentationModel> budget);
-	std::function<void()> OnClose;
+	void SetViewModel(BudgetViewModel* viewModel);
 
 private:
-	wxPanel *mainPanel;
-	wxStaticText *nameLabel;
-	wxTextCtrl *nameField;	
-	wxStaticText *periodLabel;
-	wxComboBox *periodList;
-	wxDatePickerCtrl *datePicker;
-	wxListCtrl *accountsList;
-	wxStaticText *amountLabel;
-	wxTextCtrl *amountField;
-	wxButton *okButton;
-	wxButton *cancelButton;
-	float amountValue = 0.0;
-	std::shared_ptr<BudgetPresentationModel> _budget;
-	std::vector<std::shared_ptr<AccountModel>> accounts;
+	BudgetViewModel* _viewModel;	
+	Icons& _icons;
+	wxTextCtrl *_nameField;		
+	wxComboBox *_periodList;
+	wxDatePickerCtrl *_datePicker;
+	wxListCtrl* _accountsList;	
+	AmountField* _amountField;
+	float amountValue = 0.0;	
+	shared_vector<AccountPresentationModel> _accounts;
 
+	void Update();
 	void UpdateAccounts();
+	void OnAccountsChange(wxListEvent& event);
 	void OnPeriodSelect(wxCommandEvent &event);
+	void OnNameKillFocus(wxFocusEvent& event);	
+	void OnAmountKillFocus(wxFocusEvent& event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnKeyDown(wxKeyEvent &event);

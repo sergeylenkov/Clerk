@@ -18,21 +18,20 @@ AccountPresentationModel::AccountPresentationModel() {
 	date = wxDateTime::Today();
 }
 
-AccountPresentationModel::AccountPresentationModel(AccountModel& account) {
-	id = account.id;
-	name = wxString(account.name);
-	note = wxString(account.note);
-	type = account.type;
-	icon = account.iconId;
-	order = account.orderId;
-	creditLimit = account.creditLimit;
-	isCredit = account.creditLimit > 0;
+AccountPresentationModel::AccountPresentationModel(AccountModel& model) {
+	id = model.id;
+	name = wxString(model.name);
+	note = wxString(model.note);
+	type = model.type;
+	icon = model.iconId;
+	order = model.orderId;
+	creditLimit = model.creditLimit;
+	isCredit = model.creditLimit > 0;
 	balance = 0;
 	expenses = 0;
 	receipts = 0;
-	isActive = account.isActive;
-	date = wxDateTime::Today();
-	date.ParseISODate(account.created);
+	isActive = model.isActive;
+	date = wxDateTime::Today().ParseISODate(model.created);
 }
 
 AccountPresentationModel::operator AccountModel &() {

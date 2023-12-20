@@ -15,22 +15,20 @@ AlertPresentationModel::AlertPresentationModel() {
 	created = wxDateTime::Now();
 }
 
-AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
-	id = alert.id;
-	name = wxString(alert.name);
-	message = wxString(alert.message);
-	type = alert.type;
-	period = alert.period;
-	condition = alert.condition;
-	importance = alert.importance;
-	amount = alert.amount;
-	accountsIds = String::Split(alert.accountIds, ',');
-	balance = 0;
-	
-	created = wxDateTime::Now();
-	created.ParseISODate(alert.created);
+AlertPresentationModel::AlertPresentationModel(AlertModel& model) {
+	id = model.id;
+	name = wxString(model.name);
+	message = wxString(model.message);
+	type = model.type;
+	period = model.period;
+	condition = model.condition;
+	importance = model.importance;
+	amount = model.amount;
+	accountsIds = String::Split(model.accountIds, ',');
+	balance = 0;	
+	created = wxDateTime::Now().ParseISODate(model.created);
 
-	switch (alert.type)
+	switch (model.type)
 	{
 		case AlertType::Expense:
 			typeName = _("Expense");
@@ -45,7 +43,7 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 			break;
 	}
 
-	switch (alert.period)
+	switch (model.period)
 	{
 		case AlertPeriod::Week:
 			periodName = _("Week");
@@ -60,7 +58,7 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 			break;
 	}
 
-	switch (alert.condition)
+	switch (model.condition)
 	{
 		case AlertCondition::Less:
 			conditionName = _("Less");
@@ -75,7 +73,7 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& alert) {
 			break;
 	}
 
-	switch (alert.importance)
+	switch (model.importance)
 	{
 		case AlertImportance::Low:
 			importanceName = _("Low");

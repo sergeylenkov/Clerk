@@ -11,7 +11,8 @@ namespace Clerk {
 	namespace UI {
 		class BudgetPresentationModel {
 		public:
-			BudgetPresentationModel(BudgetModel& budget);
+			BudgetPresentationModel();
+			BudgetPresentationModel(BudgetModel& model);
 
 			int id;
 			wxString name;
@@ -24,6 +25,7 @@ namespace Clerk {
 			std::vector<int> accountsIds;
 			float remainAmount;
 			float remainPercent;
+			wxDateTime created;
 
 			operator BudgetModel& ();
 

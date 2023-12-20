@@ -74,7 +74,13 @@ shared_vector<AccountPresentationModel> TreeMenuViewModel::GetVirtualsAccounts()
 }
 
 shared_vector<AccountPresentationModel> TreeMenuViewModel::GetArchiveAccounts() {
-	return _accountsService.GetArchive();
+	auto accounts = _accountsService.GetArchive();
+
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
+		return a->id < b->id;
+	});
+
+	return accounts;
 }
 
 shared_vector<ReportPresentationModel> TreeMenuViewModel::GetReports() {

@@ -119,7 +119,15 @@ void TreeMenu::CreateMenu() {
 	_trashItem = _treeMenu->AppendItem(rootItem, _("Trash"), 0, 0, itemData);
 }
 
-void TreeMenu::Update() {	
+void TreeMenu::Update() {
+	_treeMenu->DeleteChildren(_receiptsItem);
+	_treeMenu->DeleteChildren(_depositsItem);
+	_treeMenu->DeleteChildren(_expensesItem);
+	_treeMenu->DeleteChildren(_debtsItem);
+	_treeMenu->DeleteChildren(_virtualItem);	
+	_treeMenu->DeleteChildren(_archiveItem);
+	_treeMenu->DeleteChildren(_reportsItem);
+
 	for (auto& account : _viewModel.GetReceiptsAccounts())
 	{
 		AddAccountItem(_receiptsItem, account);
@@ -140,9 +148,14 @@ void TreeMenu::Update() {
 		AddAccountItem(_debtsItem, account);
 	}
 
-	for (auto& account : _viewModel.GetVirtualsAccounts())
-	{
-		AddAccountItem(_virtualItem, account);
+	auto accounts = _viewModel.GetVirtualsAccounts();
+
+	if (accounts.size() == 0) {
+		_treeMenu->Delete(_virtualItem);
+	}else {
+		for (auto& account : accounts) {
+			AddAccountItem(_virtualItem, account);
+		}
 	}
 
 	for (auto& account : _viewModel.GetArchiveAccounts())

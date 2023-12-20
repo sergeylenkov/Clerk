@@ -74,6 +74,7 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 				break;
 			case TreeContextMenuType::NewTab:
 				_commandsInvoker.OpenAccountTab(_account.id);
+				break;
 			case TreeContextMenuType::ArchiveAccount:
 				_commandsInvoker.ArchiveAccount(_account.id);
 				break;

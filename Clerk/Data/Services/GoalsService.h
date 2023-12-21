@@ -19,6 +19,9 @@ namespace Clerk {
 			std::shared_ptr<GoalPresentationModel> GetById(int id);
 			shared_vector<GoalPresentationModel> GetAll();
 
+			std::shared_ptr<GoalPresentationModel> Save(GoalPresentationModel& budget);
+			void Delete(GoalPresentationModel& budget);
+
 			unsigned int Subscribe(std::function<void()> fn);
 			void Unsubscribe(unsigned int subscriptionId);
 

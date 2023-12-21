@@ -1,122 +1,122 @@
 #include "GoalDialog.h"
 
-GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons):
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
+	_icons(icons)
+{
 	SetBackgroundColour(wxColor(*wxWHITE));
 
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 
-	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
-	wxArrayString chars(13, allowedChars);
-	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
-	amountValidator.SetIncludes(chars);
+	int indent = FromDIP(5);
+	int bottomIndent = FromDIP(15);
+	wxSize labelSize = FromDIP(wxSize(70, -1));
+	wxSize listSize = FromDIP(wxSize(100, -1));
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *nameText = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, wxSize(50, -1), 0);
-	horizontalSizer->Add(nameText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText *nameLabel = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_nameField = new wxTextCtrl(mainPanel, wxID_ANY);
+	horizontalSizer->Add(_nameField, 1, wxEXPAND);
 
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *periodText = new wxStaticText(mainPanel, wxID_ANY, _("Date:"), wxDefaultPosition, wxSize(50, -1), 0);
-	horizontalSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText *periodLabel = new wxStaticText(mainPanel, wxID_ANY, _("Date:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(periodLabel, 0, wxALIGN_CENTER_VERTICAL);
 	
-	datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-	horizontalSizer->Add(datePicker, 0, wxALL, 5);
+	_datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
+	horizontalSizer->Add(_datePicker);
 
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Amount:"), wxDefaultPosition, wxSize(50, -1), 0);
-	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText *amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Amount:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	amountField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(90, -1), wxTE_RIGHT, amountValidator);
-	horizontalSizer->Add(amountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_amountField = new AmountField(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, listSize);
+	horizontalSizer->Add(_amountField);
 
-	panelSizer->Add(horizontalSizer, 1, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxVERTICAL);
 
-	wxStaticText *accountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Accounts:"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(accountLabel, 0, wxALL, 5);
+	wxStaticText* accountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Accounts:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(accountLabel);
 
-	panelSizer->Add(horizontalSizer, 0, wxLEFT | wxRIGHT | wxTOP, 5);
+	_accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
+	_accountsList->SetImageList(_icons.GetImageList(), wxIMAGE_LIST_SMALL);
 
-	wxBoxSizer *verticalSizer = new wxBoxSizer(wxVERTICAL);
+	horizontalSizer->Add(_accountsList, 1, wxEXPAND);
 
-	accountsList = new wxListCtrl(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_NO_HEADER);
-	verticalSizer->Add(accountsList, 1, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 1, wxEXPAND | wxBOTTOM, bottomIndent);
 
-	//accountsList->SetImageList(DataHelper::GetInstance().accountsImageList, wxIMAGE_LIST_SMALL);
+	wxButton* okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	panelSizer->Add(verticalSizer, 1, wxBOTTOM | wxEXPAND | wxLEFT | wxRIGHT, 5);
+	wxButton* cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"));
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL);
 
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	okButton = new wxButton(mainPanel, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
+	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT);
 
 	mainPanel->SetSizer(panelSizer);
 	mainPanel->Layout();
 
 	panelSizer->Fit(mainPanel);
 
-	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, 0);
+	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);
+	Centre(wxBOTH);
 
-	UpdateAccounts();
+	_accountsList->Bind(wxEVT_LIST_ITEM_CHECKED, &GoalDialog::OnAccountsChange, this);
+	_accountsList->Bind(wxEVT_LIST_ITEM_UNCHECKED, &GoalDialog::OnAccountsChange, this);
+
+	_nameField->Bind(wxEVT_KILL_FOCUS, &GoalDialog::OnNameKillFocus, this);
+	_amountField->Bind(wxEVT_KILL_FOCUS, &GoalDialog::OnAmountKillFocus, this);
+	_datePicker->Bind(wxEVT_DATE_CHANGED, &GoalDialog::OnDateChanged, this);
 
 	okButton->Bind(wxEVT_BUTTON, &GoalDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &GoalDialog::OnCancel, this);
+
 	Bind(wxEVT_CHAR_HOOK, &GoalDialog::OnKeyDown, this);
 }
 
-void GoalDialog::SetGoal(std::shared_ptr<GoalPresentationModel> goal) {
-	this->goal = goal;
+GoalDialog::~GoalDialog() {
+	delete _viewModel;
+}
 
-	nameField->SetValue(this->goal->name);	
-	amountField->SetValue(wxString::Format("%.2f", this->goal->amount));
-	datePicker->SetValue(goal->date);
+void GoalDialog::SetViewModel(GoalViewModel* viewModel) {
+	_viewModel = viewModel;
 
-	/*int i = 0;
+	_viewModel->OnUpdate = [&](GoalViewModelField field) {
+		
+	};
 
-	for (auto& account : accounts)
-	{
-		auto it = std::find(goal->accountIds.begin(), goal->accountIds.end(), account->id);
+	Update();
+}
 
-		bool checked = it != goal->accountIds.end();
-		accountsList->CheckItem(i, checked);
+void GoalDialog::Update() {
+	_nameField->SetValue(_viewModel->GetName());
+	_datePicker->SetValue(_viewModel->GetDate());
+	_amountField->SetValue(Format::Amount(_viewModel->GetAmount()));
 
-		i++;
-	}*/
+	UpdateAccounts();
 }
 
 void GoalDialog::UpdateAccounts() {
-	accountsList->ClearAll();
-	accountsList->EnableCheckBoxes(true);
-
-	/*accounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Deposit);
-	auto virtualAccounts = DataHelper::GetInstance().GetAccountsByType(Account::Type::Virtual);
-
-	accounts.insert(accounts.end(), virtualAccounts.begin(), virtualAccounts.end());*/
+	_accountsList->ClearAll();
+	_accountsList->EnableCheckBoxes(true);
 
 	wxListItem column;
 
@@ -124,69 +124,81 @@ void GoalDialog::UpdateAccounts() {
 	column.SetText(_("Name"));
 	column.SetWidth(280);
 
-	accountsList->InsertColumn(0, column);
+	_accountsList->InsertColumn(0, column);
 
 	int i = 0;
+	auto selectedIds = _viewModel->GetAccountsIds();
+	_accounts = _viewModel->GetAccounts();
 
-	for (auto &account : accounts)
+	for (auto& account : _accounts)
 	{
 		wxListItem listItem;
 
 		listItem.SetId(i);
 		listItem.SetData(account->id);
 
-		accountsList->InsertItem(listItem);
-		//accountsList->SetItem(i, 0, *account->name);
+		_accountsList->InsertItem(listItem);
+		_accountsList->SetItem(i, 0, account->name);
 
-		//accountsList->SetItemImage(listItem, account->iconId);
+		_accountsList->SetItemImage(listItem, _icons.GetIconIndexForAccount(account->icon));
+
+		if (std::find(selectedIds.begin(), selectedIds.end(), account->id) != selectedIds.end()) {
+			_accountsList->CheckItem(i, true);
+		}
 
 		i++;
 	}
 }
 
-void GoalDialog::OnOK(wxCommandEvent &event) {
-	double val;
-
-	amountField->GetValue().ToDouble(&val);
-	amountValue = val;
-
-	/*goal->name = nameField->GetValue();
-	goal->date = datePicker->GetValue();
-	goal->amount = amountValue;
-	goal->accountIds.clear();
-	
+void GoalDialog::OnAccountsChange(wxListEvent& event) {
 	long itemIndex = -1;
+	std::vector<int> selectedIds;
 
 	for (;;) {
-		itemIndex = accountsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
+		itemIndex = _accountsList->GetNextItem(itemIndex, wxLIST_NEXT_ALL, wxLIST_STATE_DONTCARE);
 
 		if (itemIndex == -1) {
 			break;
 		}
 
-		bool checked = accountsList->IsItemChecked(itemIndex);
+		bool checked = _accountsList->IsItemChecked(itemIndex);
 
 		if (checked) {
-			auto account = accounts[itemIndex];
-			goal->accountIds.push_back(account->id);
+			auto account = _accounts[itemIndex];
+			selectedIds.push_back(account->id);
 		}
-	}*/
-
-	//TODO: add data context
-	//goal->Save();
-
-	Close();
-
-	if (OnClose) {
-		OnClose();
 	}
+
+	_viewModel->SetAccountsIds(selectedIds);
 }
 
-void GoalDialog::OnCancel(wxCommandEvent &event) {
+void GoalDialog::OnNameKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetName(_nameField->GetValue());
+}
+
+void GoalDialog::OnAmountKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetAmount(_amountField->GetFloatValue());
+}
+
+void GoalDialog::OnDateChanged(wxDateEvent& event) {
+	_viewModel->SetDate(_datePicker->GetValue());
+}
+
+void GoalDialog::OnOK(wxCommandEvent& event) {
+	_viewModel->Save();
+
 	Close();
 }
 
-void GoalDialog::OnKeyDown(wxKeyEvent &event) {
+void GoalDialog::OnCancel(wxCommandEvent& event) {
+	Close();
+}
+
+void GoalDialog::OnKeyDown(wxKeyEvent& event) {
 	if ((int)event.GetKeyCode() == 27) {
 		event.StopPropagation();
 		Close();

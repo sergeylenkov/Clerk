@@ -3,15 +3,15 @@
 using namespace Clerk::UI;
 
 TagPresentationModel::TagPresentationModel() {
-	this->id = -1;
-	this->name = "";
-	this->count = 0;
+	id = -1;
+	name = "";
+	count = 0;
 }
 
 TagPresentationModel::TagPresentationModel(TagModel& tag) {
-	this->id = tag.id;
-	this->name = wxString(tag.name);
-	this->count = 0;
+	id = tag.id;
+	name = wxString(tag.name);
+	count = 0;
 }
 
 TagPresentationModel::operator TagModel& () {

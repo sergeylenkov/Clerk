@@ -42,7 +42,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	horizontalSizer->Add(dateLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_datePicker = new wxDatePickerCtrl(mainPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-	horizontalSizer->Add(_datePicker, 0);
+	horizontalSizer->Add(_datePicker);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -55,8 +55,6 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 	horizontalSizer->Add(_amountField);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
-
-	horizontalSizer = new wxBoxSizer(wxVERTICAL);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -103,6 +101,7 @@ BudgetDialog::BudgetDialog(wxFrame *parent, const wxChar *title, int x, int y, i
 
 	_nameField->Bind(wxEVT_KILL_FOCUS, &BudgetDialog::OnNameKillFocus, this);
 	_amountField->Bind(wxEVT_KILL_FOCUS, &BudgetDialog::OnAmountKillFocus, this);
+	_datePicker->Bind(wxEVT_DATE_CHANGED, &BudgetDialog::OnDateChanged, this);
 
 	okButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &BudgetDialog::OnCancel, this);
@@ -218,6 +217,10 @@ void BudgetDialog::OnAmountKillFocus(wxFocusEvent& event) {
 	event.Skip();
 
 	_viewModel->SetAmount(_amountField->GetFloatValue());
+}
+
+void BudgetDialog::OnDateChanged(wxDateEvent& event) {
+	_viewModel->SetDate(_datePicker->GetValue());
 }
 
 void BudgetDialog::OnOK(wxCommandEvent &event) {

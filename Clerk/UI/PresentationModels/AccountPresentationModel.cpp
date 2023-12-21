@@ -31,7 +31,9 @@ AccountPresentationModel::AccountPresentationModel(AccountModel& model) {
 	expenses = 0;
 	receipts = 0;
 	isActive = model.isActive;
-	date = wxDateTime::Today().ParseISODate(model.created);
+
+	date = wxDateTime::Today();
+	date.ParseISODate(model.created);
 }
 
 AccountPresentationModel::operator AccountModel &() {

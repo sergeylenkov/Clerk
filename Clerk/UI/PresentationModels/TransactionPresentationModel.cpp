@@ -21,8 +21,13 @@ TransactionPresentationModel::TransactionPresentationModel(TransactionModel& mod
 	fromAmount = model.fromAmount;
 	toAmount = model.toAmount;
 	note = wxString(model.note);
-	date = wxDateTime::Today().ParseISODate(model.date);
-	created = wxDateTime::Now().ParseISODate(model.created);
+
+	date = wxDateTime::Today();
+	date.ParseISODate(model.date);
+
+	created = wxDateTime::Now();
+	created.ParseISODate(model.created);
+
 	tagsString = wxString("");
 }
 

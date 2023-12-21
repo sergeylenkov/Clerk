@@ -19,14 +19,19 @@ BudgetPresentationModel::BudgetPresentationModel(BudgetModel& model) {
 	id = model.id;
 	name = model.name;
 	period = model.period;
-	date = wxDateTime::Today().ParseISODate(model.date);
+
+	date = wxDateTime::Today();
+	date.ParseISODate(model.date);
+
 	periodDate = wxDateTime::Today();
 	amount = model.amount;
 	balance = 0;
 	remainAmount = 0;
 	remainPercent = 0;	
 	accountsIds = String::Split(model.accountsIds, ',');
-	created = wxDateTime::Now().ParseISODate(model.created);
+
+	created = wxDateTime::Now();
+	created.ParseISODate(model.created);
 
 	switch (model.period)
 	{

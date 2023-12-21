@@ -40,5 +40,12 @@ namespace Clerk {
 			Amount = 3,
 			Accounts = 4
 		};
+
+		enum class GoalViewModelField {
+			Name = 0,
+			Date = 1,
+			Amount = 2,
+			Accounts = 3
+		};
 	}
 }

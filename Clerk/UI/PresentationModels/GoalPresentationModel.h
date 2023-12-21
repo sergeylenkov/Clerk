@@ -23,6 +23,11 @@ namespace Clerk {
 			std::vector<int> accountsIds;
 			float remainAmount;
 			float remainPercent;
+
+			operator GoalModel& ();
+
+		private:
+			GoalModel& GetModel();
 		};
 	}
 }

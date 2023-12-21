@@ -58,6 +58,9 @@
     <ClCompile Include="Commands\Budget\DeleteBudgetCommand.cpp" />
     <ClCompile Include="Commands\Budget\EditBudgetCommand.cpp" />
     <ClCompile Include="Commands\Budget\NewBudgetCommand.cpp" />
+    <ClCompile Include="Commands\Goal\DeleteGoalCommand.cpp" />
+    <ClCompile Include="Commands\Goal\EditGoalCommand.cpp" />
+    <ClCompile Include="Commands\Goal\NewGoalCommand.cpp" />
     <ClCompile Include="Commands\Scheduler\PauseSchedulerCommand.cpp" />
     <ClCompile Include="Commands\Scheduler\RunSchedulerCommand.cpp" />
     <ClCompile Include="Commands\Scheduler\DeleteSchedulerCommand.cpp" />
@@ -129,6 +132,7 @@
     <ClCompile Include="UI\PresentationModels\GoalPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\ReportPresentationModel.cpp" />
     <ClCompile Include="UI\PresentationModels\SchedulerPresentationModel.cpp" />
+    <ClCompile Include="UI\ViewModels\GoalViewModel.cpp" />
     <ClCompile Include="UI\ViewModels\NotificationsViewModel.cpp" />
     <ClCompile Include="UI\ViewModels\StatusViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp" />
@@ -222,6 +226,9 @@
     <ClInclude Include="Commands\Budget\DeleteBudgetCommand.h" />
     <ClInclude Include="Commands\Budget\EditBudgetCommand.h" />
     <ClInclude Include="Commands\Budget\NewBudgetCommand.h" />
+    <ClInclude Include="Commands\Goal\DeleteGoalCommand.h" />
+    <ClInclude Include="Commands\Goal\EditGoalCommand.h" />
+    <ClInclude Include="Commands\Goal\NewGoalCommand.h" />
     <ClInclude Include="Commands\Scheduler\PauseSchedulerCommand.h" />
     <ClInclude Include="Commands\Scheduler\RunSchedulerCommand.h" />
     <ClInclude Include="Commands\Scheduler\DeleteSchedulerCommand.h" />
@@ -304,6 +311,7 @@
     <ClInclude Include="UI\PresentationModels\GoalPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\ReportPresentationModel.h" />
     <ClInclude Include="UI\PresentationModels\SchedulerPresentationModel.h" />
+    <ClInclude Include="UI\ViewModels\GoalViewModel.h" />
     <ClInclude Include="UI\ViewModels\NotificationsViewModel.h" />
     <ClInclude Include="UI\ViewModels\StatusViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TagPresentationModel.h" />

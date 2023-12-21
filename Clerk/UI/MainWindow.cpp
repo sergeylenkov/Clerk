@@ -169,6 +169,9 @@ void MainWindow::SetupCommands() {
 	DeleteSchedulerCommand* deleteSchedulerCommand = new DeleteSchedulerCommand(_context.GetSchedulersService());
 	RunSchedulerCommand* runSchedulerCommand = new RunSchedulerCommand(_context.GetSchedulersService());
 	PauseSchedulerCommand* pauseSchedulerCommand = new PauseSchedulerCommand(_context.GetSchedulersService());
+	NewGoalCommand* newGoalCommand = new NewGoalCommand(*_commandsReceiver);
+	EditGoalCommand* editGoalCommand = new EditGoalCommand(*_commandsReceiver);
+	DeleteGoalCommand* deleteGoalCommand = new DeleteGoalCommand(_context.GetGoalsService());
 
 	_commandsInvoker = new CommandsInvoker(
 		*quitCommand,
@@ -198,7 +201,10 @@ void MainWindow::SetupCommands() {
 		*editSchedulerCommand,
 		*deleteSchedulerCommand,
 		*runSchedulerCommand,
-		*pauseSchedulerCommand
+		*pauseSchedulerCommand,
+		*newGoalCommand,
+		*editGoalCommand,
+		*deleteGoalCommand
 	);
 
 	_context.SetCommandsInvoker(_commandsInvoker);

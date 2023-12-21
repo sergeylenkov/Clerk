@@ -25,8 +25,10 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& model) {
 	importance = model.importance;
 	amount = model.amount;
 	accountsIds = String::Split(model.accountIds, ',');
-	balance = 0;	
-	created = wxDateTime::Now().ParseISODate(model.created);
+	balance = 0;
+
+	created = wxDateTime::Now();
+	created.ParseISODate(model.created);
 
 	switch (model.type)
 	{

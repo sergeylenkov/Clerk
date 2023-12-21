@@ -2,6 +2,7 @@
 #include <wx/bmpcbox.h>
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
+#include <wx/dateevt.h>
 #include "../ViewModels/BudgetViewModel.h"
 #include "../Controls/AmountField.h"
 #include "../../Utils/Icons.h"
@@ -35,6 +36,7 @@ private:
 	void OnPeriodSelect(wxCommandEvent &event);
 	void OnNameKillFocus(wxFocusEvent& event);	
 	void OnAmountKillFocus(wxFocusEvent& event);
+	void OnDateChanged(wxDateEvent& event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnKeyDown(wxKeyEvent &event);

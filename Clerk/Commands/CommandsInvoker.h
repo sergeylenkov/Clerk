@@ -28,6 +28,9 @@
 #include "Scheduler/DeleteSchedulerCommand.h"
 #include "Scheduler/RunSchedulerCommand.h"
 #include "Scheduler/PauseSchedulerCommand.h"
+#include "Goal/NewGoalCommand.h"
+#include "Goal/EditGoalCommand.h"
+#include "Goal/DeleteGoalCommand.h"
 #include "../Data/Enums.h"
 #include "../UI/Tabs/Enums.h"
 
@@ -66,7 +69,10 @@ namespace Clerk {
 				EditSchedulerCommand& editSchedulerCommand,
 				DeleteSchedulerCommand& deleteSchedulerCommand,
 				RunSchedulerCommand& runSchedulerCommand,
-				PauseSchedulerCommand& pauseSchedulerCommand
+				PauseSchedulerCommand& pauseSchedulerCommand,
+				NewGoalCommand& newGoalCommand,
+				EditGoalCommand& editGoalCommand,
+				DeleteGoalCommand& deleteGoalCommand
 			);
 			~CommandsInvoker();
 
@@ -133,6 +139,9 @@ namespace Clerk {
 			DeleteSchedulerCommand& _deleteSchedulerCommand;
 			RunSchedulerCommand& _runSchedulerCommand;
 			PauseSchedulerCommand& _pauseSchedulerCommand;
+			NewGoalCommand& _newGoalCommand;
+			EditGoalCommand& _editGoalCommand;
+			DeleteGoalCommand& _deleteGoalCommand;
 		};
 	}
 }

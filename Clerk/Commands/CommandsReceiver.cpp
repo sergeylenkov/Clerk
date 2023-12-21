@@ -72,3 +72,7 @@ void CommandsReceiver::OpenEditSchedulerDialog(int id) {
 void CommandsReceiver::OpenEditBudgetDialog(int id) {
 	_dialogsController->ShowEditBudgetDialog(id);
 }
+
+void CommandsReceiver::OpenEditGoalDialog(int id) {
+	_dialogsController->ShowEditGoalDialog(id);
+}

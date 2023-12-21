@@ -7,6 +7,7 @@
 #include "../AccountDialog.h"
 #include "../Alerts/AlertDialog.h"
 #include "../Budgets/BudgetDialog.h"
+#include "../Goals/GoalDialog.h"
 #include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 
@@ -29,6 +30,7 @@ namespace Clerk {
 			void ShowEditAccountDialog(int id);
 			void ShowEditAlertDialog(int id);
 			void ShowEditBudgetDialog(int id);
+			void ShowEditGoalDialog(int id);
 
 		private:
 			wxFrame* _parent;
@@ -41,6 +43,7 @@ namespace Clerk {
 			wxSize GetAccountDialogSize();
 			wxSize GetAlertDialogSize();
 			wxSize GetBudgetDialogSize();
+			wxSize GetGoalDialogSize();
 		};
 	}
 }

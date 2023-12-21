@@ -30,7 +30,10 @@ CommandsInvoker::CommandsInvoker(
 	EditSchedulerCommand& editSchedulerCommand,
 	DeleteSchedulerCommand& deleteSchedulerCommand,
 	RunSchedulerCommand& runSchedulerCommand,
-	PauseSchedulerCommand& pauseSchedulerCommand
+	PauseSchedulerCommand& pauseSchedulerCommand,
+	NewGoalCommand& newGoalCommand,
+	EditGoalCommand& editGoalCommand,
+	DeleteGoalCommand& deleteGoalCommand
 ):
 	_quitCommand(quitCommand),
 	_preferencesCommand(preferencesCommand),
@@ -59,7 +62,10 @@ CommandsInvoker::CommandsInvoker(
 	_editSchedulerCommand(editSchedulerCommand),
 	_deleteSchedulerCommand(deleteSchedulerCommand),
 	_runSchedulerCommand(runSchedulerCommand),
-	_pauseSchedulerCommand(pauseSchedulerCommand)
+	_pauseSchedulerCommand(pauseSchedulerCommand),
+	_newGoalCommand(newGoalCommand),
+	_editGoalCommand(editGoalCommand),
+	_deleteGoalCommand(deleteGoalCommand)
 {
 	
 }
@@ -93,6 +99,9 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _deleteSchedulerCommand;
 	delete& _runSchedulerCommand;
 	delete& _pauseSchedulerCommand;
+	delete& _newGoalCommand;
+	delete& _editGoalCommand;
+	delete& _deleteGoalCommand;
 }
 
 void CommandsInvoker::Quit() {
@@ -239,13 +248,15 @@ void CommandsInvoker::PauseScheduler(int id) {
 }
 
 void CommandsInvoker::NewGoal() {
-
+	_newGoalCommand.Execute();
 }
 
 void CommandsInvoker::EditGoal(int id) {
-
+	_editGoalCommand.SetGoalId(id);
+	_editGoalCommand.Execute();
 }
 
 void CommandsInvoker::DeleteGoal(int id) {
-
+	_deleteGoalCommand.SetGoalId(id);
+	_deleteGoalCommand.Execute();
 }

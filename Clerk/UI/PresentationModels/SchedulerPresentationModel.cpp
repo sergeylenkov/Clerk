@@ -9,8 +9,8 @@ SchedulerPresentationModel::SchedulerPresentationModel() {
 	day = 1;
 	month = 1;
 	week = 1;
-	previousDate = wxDateTime();
-	nextDate = wxDateTime();
+	previousDate = wxDateTime::Today();
+	nextDate = wxDateTime::Today();
 	isActive = false;
 	fromAccount = nullptr;
 	toAccount = nullptr;

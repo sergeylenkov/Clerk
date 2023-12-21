@@ -139,6 +139,20 @@ void DialogsController::ShowEditBudgetDialog(int id) {
 	budgetDialog->CenterOnParent();
 }
 
+void DialogsController::ShowEditGoalDialog(int id) {
+	wxSize size = GetGoalDialogSize();
+
+	GoalDialog* goalDialog = new GoalDialog(_parent, _("Goal"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+
+	GoalViewModel* viewModel = new GoalViewModel(_context.GetGoalsService(), _context.GetAccountsService());
+	viewModel->SetGoalId(id);
+
+	goalDialog->SetViewModel(viewModel);
+
+	goalDialog->Show(true);
+	goalDialog->CenterOnParent();
+}
+
 wxSize DialogsController::GetAboutDialogSize() {
 	wxSize size = wxSize();
 
@@ -185,6 +199,15 @@ wxSize DialogsController::GetAlertDialogSize() {
 }
 
 wxSize DialogsController::GetBudgetDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(400));
+	size.SetHeight(_parent->FromDIP(400));
+
+	return size;
+}
+
+wxSize DialogsController::GetGoalDialogSize() {
 	wxSize size = wxSize();
 
 	size.SetWidth(_parent->FromDIP(400));

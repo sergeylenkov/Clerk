@@ -49,12 +49,11 @@ void BudgetsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, u
 bool BudgetsListDataModel::GetAttrByRow(unsigned int row, unsigned int column,	wxDataViewItemAttr &attr) const
 {
 	auto budget = _budgets[row];
-	float percent = budget->balance / (budget->amount / 100.0);
 
 	switch (static_cast<BudgetsListColumns>(column))
 	{
 		case BudgetsListColumns::Remain:
-			attr.SetColour(Colors::ColorForBudget(percent));
+			attr.SetColour(Colors::ColorForBudget(budget->remainPercent));
 			return true;			
 			break;
 	}

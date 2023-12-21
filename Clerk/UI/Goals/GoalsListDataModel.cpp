@@ -4,11 +4,7 @@ GoalsListDataModel::GoalsListDataModel()
 {
 }
 
-GoalsListDataModel::~GoalsListDataModel()
-{
-}
-
-void GoalsListDataModel::SetItems(std::vector<std::shared_ptr<GoalPresentationModel>> goals) {
+void GoalsListDataModel::SetItems(shared_vector<GoalPresentationModel> goals) {
 	_goals = goals;
 	Reset(_goals.size());
 }
@@ -27,31 +23,28 @@ void GoalsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, uns
 {
 	auto goal = _goals[row];
 
-	float remainAmount = goal->amount - goal->balance;
-	float remainPercent = goal->balance / (goal->amount / 100.0);
-
-	switch (static_cast<Columns>(column))
+	switch (static_cast<GoalsListColumns>(column))
 	{
-		case Columns::Name:
+		case GoalsListColumns::Name:
 			variant = goal->name;
 			break;
-		case Columns::DueDate:			
-			variant = FormatDate(goal->date);
+		case GoalsListColumns::DueDate:
+			variant = Format::Date(goal->date);
 			break;
-		case Columns::DaysRemain:
-			variant = FormatDaysRemain(goal->date);
+		case GoalsListColumns::DaysRemain:
+			variant = Format::DaysRemain(goal->date);
 			break;
-		case Columns::Goal:
+		case GoalsListColumns::Goal:
 			variant = Format::Amount(goal->amount);
 			break;
-		case Columns::Current:
+		case GoalsListColumns::Current:
 			variant = Format::Amount(goal->balance);
 			break;
-		case Columns::Remain:
-			variant = Format::Amount(remainAmount);
+		case GoalsListColumns::Remain:
+			variant = Format::Amount(goal->remainAmount);
 			break;
-		case Columns::Progress:
-			variant = wxString::Format("%f", remainPercent);
+		case GoalsListColumns::Progress:
+			variant = wxString::Format("%f", goal->remainPercent);
 			break;
 	}
 }
@@ -59,15 +52,14 @@ void GoalsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, uns
 bool GoalsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr &attr) const
 {
 	auto goal = _goals[row];
-	float percent = goal->balance / (goal->amount / 100.0);
 
-	switch (static_cast<Columns>(column))
+	switch (static_cast<GoalsListColumns>(column))
 	{
-		case Columns::Remain:
-			attr.SetColour(Colors::ColorForGoal(percent));
+		case GoalsListColumns::Remain:
+			attr.SetColour(Colors::ColorForGoal(goal->remainPercent));
 			return true;			
 			break;
-		case Columns::DaysRemain:
+		case GoalsListColumns::DaysRemain:
 			if (goal->date.DiffAsDateSpan(wxDateTime::Now()).GetTotalDays() < 0) {
 				attr.SetColour(wxColor(242, 73, 101));
 				return true;
@@ -83,26 +75,72 @@ bool GoalsListDataModel::SetValueByRow(const wxVariant &variant, unsigned int ro
 	return false;
 }
 
-wxString GoalsListDataModel::FormatDate(wxDateTime& date) const
-{
-	wxString dateFormat = date.Format("%B %e");
+int GoalsListDataModel::Compare(const wxDataViewItem& item1, const wxDataViewItem& item2, unsigned int column, bool ascending) const {
+	wxUIntPtr index1 = wxPtrToUInt(item1.GetID()) - 1;
+	wxUIntPtr index2 = wxPtrToUInt(item2.GetID()) - 1;
 
-	if (wxDateTime::Now().GetYear() != date.GetYear()) {
-		dateFormat = date.Format("%B %e, %Y");
+	auto v1 = _goals[index1];
+	auto v2 = _goals[index2];
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::Name) {
+		return ascending ? v1->name.Cmp(v2->name) : v2->name.Cmp(v1->name);
 	}
 
-	return dateFormat;
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::Goal) {
+		if (v1->amount == v2->amount) {
+			return 0;
+		}
+
+		return ascending ? v1->amount > v2->amount : v2->amount > v1->amount;
+	}
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::Current) {
+		if (v1->balance == v2->balance) {
+			return 0;
+		}
+
+		return ascending ? v1->balance > v2->balance : v2->balance > v1->balance;
+	}
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::DueDate) {
+		if (v1->date.IsEqualTo(v2->date)) {
+			return 0;
+		}
+
+		return (ascending == v1->date.IsLaterThan(v2->date)) ? 1 : -1;
+	}
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::DaysRemain) {
+		if (v1->date.IsEqualTo(v2->date)) {
+			return 0;
+		}
+
+		return (ascending == v1->date.IsLaterThan(v2->date)) ? 1 : -1;
+	}
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::Remain) {
+		if (v1->remainAmount == v2->remainAmount) {
+			return 0;
+		}
+
+		return ascending ? v1->remainAmount > v2->remainAmount : v2->remainAmount > v1->remainAmount;
+	}
+
+	if (static_cast<GoalsListColumns>(column) == GoalsListColumns::Progress) {
+		if (v1->remainPercent == v2->remainPercent) {
+			return 0;
+		}
+
+		return ascending ? v1->remainPercent > v2->remainPercent : v2->remainPercent > v1->remainPercent;
+	}
+
+	return 0;
 }
 
-wxString GoalsListDataModel::FormatDaysRemain(wxDateTime& date) const {
-	wxDateSpan diff = date.DiffAsDateSpan(wxDateTime::Now());
-	
-	int days = diff.GetTotalDays();
-	int months = diff.GetTotalMonths();
+unsigned int GoalsListDataModel::GetCount() const {
+	return _goals.size();
+}
 
-	if (months > 0) {
-		return wxString::Format("%d months", months);
-	}
-
-	return wxString::Format("%d days", days);
+bool GoalsListDataModel::HasDefaultCompare() const {
+	return false;
 }

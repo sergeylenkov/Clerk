@@ -23,6 +23,19 @@ wxString Format::Date(const wxDateTime& date) {
 	return dateFormat;
 }
 
+wxString Format::DaysRemain(wxDateTime& date) {
+	wxDateSpan diff = date.DiffAsDateSpan(wxDateTime::Now());
+
+	int days = diff.GetTotalDays();
+	int months = diff.GetTotalMonths();
+
+	if (months > 0) {
+		return wxString::Format("%d months", months);
+	}
+
+	return wxString::Format("%d days", days);
+}
+
 wxColor Colors::ColorForBudget(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);

@@ -15,7 +15,7 @@ namespace Clerk {
 
 			GoalModel* GetById(int id);
 			std::vector<GoalModel*> GetAll();			
-			float GetBalance(std::vector<int> accountIds);
+			float GetBalance(std::string accountsIds);
 
 			int Save(const GoalModel& goal);
 			void Delete(const GoalModel& goal);

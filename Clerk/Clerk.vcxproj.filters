@@ -114,7 +114,7 @@
     <ClCompile Include="UI\Goals\GoalsListDataModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Goals\GoalsPanel.cpp">
+    <ClCompile Include="UI\Goals\GoalsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Goals\GoalsProgressRender.cpp">
@@ -498,6 +498,9 @@
     <ClCompile Include="UI\ViewModels\BudgetViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Goals\GoalContextMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -605,7 +608,7 @@
     <ClInclude Include="UI\Goals\GoalsListDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Goals\GoalsPanel.h">
+    <ClInclude Include="UI\Goals\GoalsListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalsProgressRender.h">
@@ -1035,6 +1038,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\ViewModels\BudgetViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Goals\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Goals\GoalContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

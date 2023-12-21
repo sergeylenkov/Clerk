@@ -10,7 +10,7 @@
 #include "../Budgets/BudgetsListPanel.h"
 #include "../TrashPanel.h"
 #include "../Schedulers/SchedulersListPanel.h"
-#include "../Goals/GoalsPanel.h"
+#include "../Goals/GoalsListPanel.h"
 #include "../Alerts/AlertsListPanel.h"
 #include "../TagsPanel.h"
 #include "../Reports/ReportExpensesByMonthPanel.h"

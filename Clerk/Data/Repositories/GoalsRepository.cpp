@@ -25,26 +25,17 @@ std::vector<GoalModel*> GoalsRepository::GetAll() {
 }
 
 
-float GoalsRepository::GetBalance(std::vector<int> accountIds) {
+float GoalsRepository::GetBalance(std::string accountsIds) {
 	float total = 0.0;
 	float receipt_sum = 0.0;
 	float expense_sum = 0.0;
-
-	std::string ids = "";
-
-	for (const auto& id : accountIds) {
-		ids += id + ",";
-	}
-
-	std::string sql = "";
-
-	sql.append("SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(");
-	sql.append(ids);
-	sql.append(") AND deleted = 0");
-
+	
+	char sql[512];
 	sqlite3_stmt* statement;
 
-	if (sqlite3_prepare_v2(_connection.GetConnection(), sql.c_str(), -1, &statement, NULL) == SQLITE_OK) {
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(to_account_amount) FROM transactions WHERE to_account_id IN(%s) AND deleted = 0", accountsIds.c_str());	
+
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			receipt_sum = sqlite3_column_double(statement, 0);
 		}
@@ -52,13 +43,9 @@ float GoalsRepository::GetBalance(std::vector<int> accountIds) {
 
 	sqlite3_reset(statement);
 
-	sql = "";
+	snprintf(sql, sizeof(sql), "SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(%s) AND deleted = 0", accountsIds.c_str());
 
-	sql.append("SELECT TOTAL(from_account_amount) FROM transactions WHERE from_account_id IN(");
-	sql.append(ids);
-	sql.append(") AND deleted = 0");
-
-	if (sqlite3_prepare_v2(_connection.GetConnection(), sql.c_str(), -1, &statement, NULL) == SQLITE_OK) {
+	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {
 		if (sqlite3_step(statement) == SQLITE_ROW) {
 			expense_sum = sqlite3_column_double(statement, 0);
 		}

@@ -237,3 +237,15 @@ void CommandsInvoker::PauseScheduler(int id) {
 	_pauseSchedulerCommand.SetSchedulerId(id);
 	_pauseSchedulerCommand.Execute();
 }
+
+void CommandsInvoker::NewGoal() {
+
+}
+
+void CommandsInvoker::EditGoal(int id) {
+
+}
+
+void CommandsInvoker::DeleteGoal(int id) {
+
+}

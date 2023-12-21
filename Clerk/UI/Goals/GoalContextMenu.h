@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
-#include "../PresentationModels/BudgetPresentationModel.h"
+#include "../PresentationModels/GoalPresentationModel.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
@@ -13,14 +13,14 @@ using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {
-		class BudgetContextMenu : public wxMenu {
+		class GoalContextMenu : public wxMenu {
 		public:
-			BudgetContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, std::shared_ptr<BudgetPresentationModel> budget);
+			GoalContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, std::shared_ptr<GoalPresentationModel> goal);
 
 		private:
 			CommandsInvoker& _commandsInvoker;
 			Icons& _icons;
-			std::shared_ptr<BudgetPresentationModel> _budget;
+			std::shared_ptr<GoalPresentationModel> _goal;
 
 			void OnMenuSelect(wxCommandEvent& event);
 		};

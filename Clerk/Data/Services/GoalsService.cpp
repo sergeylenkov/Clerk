@@ -2,9 +2,25 @@
 
 using namespace Clerk::Data;
 
-GoalsService::GoalsService(GoalsRepository& goalsRepository) : _goalsRepository(goalsRepository) {
+GoalsService::GoalsService(GoalsRepository& goalsRepository):
+	_goalsRepository(goalsRepository)
+{
+	_eventEmitter = new EventEmitter();
 	_isLoading = false;
 }
+
+GoalsService::~GoalsService() {
+	delete _eventEmitter;
+}
+
+unsigned int GoalsService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void GoalsService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
+}
+
 
 std::shared_ptr<GoalPresentationModel> GoalsService::GetById(int id) {
 	auto goal = GetFromHash(id);
@@ -17,7 +33,9 @@ std::shared_ptr<GoalPresentationModel> GoalsService::GetById(int id) {
 
 	if (model) {
 		goal = std::make_shared<GoalPresentationModel>(*model);
-		goal->balance = _goalsRepository.GetBalance(goal->accountIds);
+		goal->balance = GetBalance(*goal);
+		goal->remainAmount = goal->amount - goal->balance;
+		goal->remainPercent = goal->balance / (goal->amount / 100.0);
 
 		AddToHash(goal->id, goal);
 
@@ -39,7 +57,9 @@ shared_vector<GoalPresentationModel> GoalsService::GetAll() {
 	for (auto& model : models) {
 		if (!GetFromHash(model->id)) {
 			auto goal = std::make_shared<GoalPresentationModel>(*model);
-			goal->balance = _goalsRepository.GetBalance(goal->accountIds);
+			goal->balance = GetBalance(*goal);
+			goal->remainAmount = goal->amount - goal->balance;
+			goal->remainPercent = goal->balance / (goal->amount / 100.0);
 
 			AddToHash(goal->id, goal);
 		}
@@ -54,4 +74,14 @@ shared_vector<GoalPresentationModel> GoalsService::GetAll() {
 	_isLoading = true;
 
 	return GetHashList();
+}
+
+float GoalsService::GetBalance(GoalPresentationModel& goal) {
+	std::vector<std::string> res;
+
+	for (int id : goal.accountsIds) {
+		res.push_back(std::to_string(id));
+	}
+
+	return _goalsRepository.GetBalance(String::Join(res, ","));
 }

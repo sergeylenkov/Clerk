@@ -175,6 +175,10 @@ void Settings::Open(char *configName) {
 		if (json.HasMember("BudgetsListColumns") && json["BudgetsListColumns"].IsArray()) {
 			_budgetsListColumnsSettings = ReadColumnsFromJson(json["BudgetsListColumns"]);
 		}
+
+		if (json.HasMember("GoalsListColumns") && json["GoalsListColumns"].IsArray()) {
+			_goalsListColumnsSettings = ReadColumnsFromJson(json["GoalsListColumns"]);
+		}
 	}
 }
 
@@ -296,6 +300,7 @@ void Settings::Save() {
 	json.AddMember("AlertsListColumns", WriteColumnsToJson(json, _alertsListColumnsSettings), json.GetAllocator());
 	json.AddMember("SchedulersListColumns", WriteColumnsToJson(json, _schedulersListColumnsSettings), json.GetAllocator());
 	json.AddMember("BudgetsListColumns", WriteColumnsToJson(json, _budgetsListColumnsSettings), json.GetAllocator());
+	json.AddMember("GoalsListColumns", WriteColumnsToJson(json, _goalsListColumnsSettings), json.GetAllocator());
 
 	FILE *fp = fopen(_fileName.char_str(), "wb"); 
 	char writeBuffer[65536]{0};
@@ -378,6 +383,16 @@ void Settings::RestoreDefaultColumns() {
 	_budgetsListColumnsSettings.push_back({ 3, 3, wxT("Limit"), 100, false, false });
 	_budgetsListColumnsSettings.push_back({ 4, 4, wxT("Current"), 100, false, false });
 	_budgetsListColumnsSettings.push_back({ 5, 5, wxT("Remain"), 100, false, false });
+
+	_goalsListColumnsSettings.clear();
+
+	_goalsListColumnsSettings.push_back({ 0, 0, wxT("Name"), 100, true, false });
+	_goalsListColumnsSettings.push_back({ 1, 1, wxT("Due Date"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ 2, 2, wxT("Days Remain"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ 3, 3, wxT("Progress"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ 4, 4, wxT("Goal"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ 5, 5, wxT("Current"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ 6, 6, wxT("Remain"), 100, false, false });
 }
 
 Value Settings::WriteColumnsToJson(Document& json, std::vector<ListColumnsSettings> columns) {
@@ -678,4 +693,16 @@ std::vector<ListColumnsSettings> Settings::GetBudgetsListColumns() {
 
 void Settings::SetBudgetsListColumns(std::vector<ListColumnsSettings> columns) {
 	_budgetsListColumnsSettings = columns;
+}
+
+std::vector<ListColumnsSettings> Settings::GetGoalsListColumns() {
+	std::sort(_goalsListColumnsSettings.begin(), _goalsListColumnsSettings.end(), [](const ListColumnsSettings& v1, const ListColumnsSettings& v2) {
+		return v1.order < v2.order;
+	});
+
+	return _goalsListColumnsSettings;
+}
+
+void Settings::SetGoalsListColumns(std::vector<ListColumnsSettings> columns) {
+	_goalsListColumnsSettings = columns;
 }

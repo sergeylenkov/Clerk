@@ -118,7 +118,7 @@ DataPanel* TabsController::CreatePanel(TabType type) {
 			return new SchedulersListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Goals:
-			return new GoalsPanel(_tabsPanel, _context, _icons);
+			return new GoalsListPanel(_tabsPanel, _context, _icons);
 			break;
 		case TabType::Tags:
 			return new TagsPanel(_tabsPanel, _context, _icons);

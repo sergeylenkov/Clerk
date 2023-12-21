@@ -107,6 +107,7 @@
     <ClCompile Include="UI\Alerts\AlertContextMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp" />
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
+    <ClCompile Include="UI\Goals\GoalContextMenu.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp" />
@@ -175,7 +176,7 @@
     <ClCompile Include="Data\Models\GoalModel.cpp" />
     <ClCompile Include="Data\Models\TagModel.cpp" />
     <ClCompile Include="UI\TagsPanel.cpp" />
-    <ClCompile Include="UI\Goals\GoalsPanel.cpp" />
+    <ClCompile Include="UI\Goals\GoalsListPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerDialog.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersListPanel.cpp" />
@@ -278,6 +279,8 @@
     <ClInclude Include="UI\Budgets\BudgetContextMenu.h" />
     <ClInclude Include="UI\Budgets\Enums.h" />
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
+    <ClInclude Include="UI\Goals\GoalContextMenu.h" />
+    <ClInclude Include="UI\Goals\Enums.h" />
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
     <ClInclude Include="UI\Notifications\NotificationSchedulerPanel.h" />
@@ -351,7 +354,7 @@
     <ClInclude Include="Data\Models\GoalModel.h" />
     <ClInclude Include="Data\Models\TagModel.h" />
     <ClInclude Include="UI\TagsPanel.h" />
-    <ClInclude Include="UI\Goals\GoalsPanel.h" />
+    <ClInclude Include="UI\Goals\GoalsListPanel.h" />
     <ClInclude Include="UI\Goals\GoalDialog.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="UI\Schedulers\SchedulerDialog.h" />

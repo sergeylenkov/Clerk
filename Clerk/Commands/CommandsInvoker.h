@@ -100,6 +100,9 @@ namespace Clerk {
 			void DeleteScheduler(int id);
 			void RunScheduler(int id);
 			void PauseScheduler(int id);
+			void NewGoal();
+			void EditGoal(int id);
+			void DeleteGoal(int id);
 
 		private:
 			QuitCommand& _quitCommand;

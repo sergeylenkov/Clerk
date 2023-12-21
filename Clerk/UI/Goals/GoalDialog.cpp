@@ -96,7 +96,7 @@ void GoalDialog::SetGoal(std::shared_ptr<GoalPresentationModel> goal) {
 	amountField->SetValue(wxString::Format("%.2f", this->goal->amount));
 	datePicker->SetValue(goal->date);
 
-	int i = 0;
+	/*int i = 0;
 
 	for (auto& account : accounts)
 	{
@@ -106,7 +106,7 @@ void GoalDialog::SetGoal(std::shared_ptr<GoalPresentationModel> goal) {
 		accountsList->CheckItem(i, checked);
 
 		i++;
-	}
+	}*/
 }
 
 void GoalDialog::UpdateAccounts() {
@@ -150,7 +150,7 @@ void GoalDialog::OnOK(wxCommandEvent &event) {
 	amountField->GetValue().ToDouble(&val);
 	amountValue = val;
 
-	goal->name = nameField->GetValue();
+	/*goal->name = nameField->GetValue();
 	goal->date = datePicker->GetValue();
 	goal->amount = amountValue;
 	goal->accountIds.clear();
@@ -170,7 +170,7 @@ void GoalDialog::OnOK(wxCommandEvent &event) {
 			auto account = accounts[itemIndex];
 			goal->accountIds.push_back(account->id);
 		}
-	}
+	}*/
 
 	//TODO: add data context
 	//goal->Save();

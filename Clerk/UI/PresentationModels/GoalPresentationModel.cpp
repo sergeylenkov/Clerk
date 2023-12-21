@@ -2,23 +2,25 @@
 
 using namespace Clerk::UI;
 
-GoalPresentationModel::GoalPresentationModel(GoalModel& goal) {
-	this->id = goal.id;
-	this->name = goal.name;
-	this->amount = goal.amount;
-	this->created = wxDateTime::Today();	
-	this->date.ParseISODate(goal.date);
+GoalPresentationModel::GoalPresentationModel() {
+	id = -1;
+	name = wxString("");
+	amount = 0;	
+	date = wxDateTime::Today();	
+	balance = 0;
+	remainAmount = 0;
+	remainPercent = 0;
+	created = wxDateTime::Now();
+}
 
-	std::wstringstream ss(goal.accountIds);
-
-	int i;
-
-	while (ss >> i)
-	{
-		this->accountIds.push_back(i);
-
-		if (ss.peek() == ',') {
-			ss.ignore();
-		}
-	}
+GoalPresentationModel::GoalPresentationModel(GoalModel& model) {
+	id = model.id;
+	name = model.name;
+	amount = model.amount;
+	date = wxDateTime::Today().ParseISODate(model.date);
+	balance = 0;
+	remainAmount = 0;
+	remainPercent = 0;
+	accountsIds = String::Split(model.accountIds, ',');
+	created = wxDateTime::Now().ParseISODate(model.created);
 }

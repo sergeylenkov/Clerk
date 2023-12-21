@@ -1,15 +1,17 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <sstream>
 #include "../../Data/Models/GoalModel.h"
+#include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {
 		class GoalPresentationModel {
 		public:
+			GoalPresentationModel();
 			GoalPresentationModel(GoalModel& goal);
 
 			int id;
@@ -18,7 +20,9 @@ namespace Clerk {
 			float balance;			
 			wxDateTime created;
 			wxDateTime date;
-			std::vector<int> accountIds;
+			std::vector<int> accountsIds;
+			float remainAmount;
+			float remainPercent;
 		};
 	}
 }

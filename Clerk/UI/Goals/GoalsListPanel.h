@@ -5,8 +5,8 @@
 #include "../../Data/Settings.h"
 #include "../DataPanel.h"
 #include "../PresentationModels/GoalPresentationModel.h"
+#include "../Controls/DataViewProgressRender.h"
 #include "GoalsListDataModel.h"
-#include "GoalsProgressRender.h"
 #include "GoalContextMenu.h"
 #include "Enums.h"
 

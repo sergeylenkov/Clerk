@@ -56,7 +56,7 @@ bool GoalsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxD
 	switch (static_cast<GoalsListColumns>(column))
 	{
 		case GoalsListColumns::Remain:
-			attr.SetColour(Colors::ColorForGoal(goal->remainPercent));
+			attr.SetColour(Colors::ColorForProgress(goal->remainPercent, false));
 			return true;			
 			break;
 		case GoalsListColumns::DaysRemain:

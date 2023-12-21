@@ -6,11 +6,10 @@
 
 using namespace Clerk::Utils;
 
-class GoalsProgressRender : public wxDataViewCustomRenderer
+class DataViewProgressRender : public wxDataViewCustomRenderer
 {
 public:
-	GoalsProgressRender();
-	~GoalsProgressRender();
+	DataViewProgressRender(bool isReverse);
 
 	virtual bool Render(wxRect rect, wxDC *dc, int state) wxOVERRIDE;
 	virtual wxSize GetSize() const wxOVERRIDE;
@@ -19,5 +18,5 @@ public:
 
 private:
 	float _value{};
+	bool _isReverse;
 };
-

@@ -111,6 +111,19 @@ void DialogsController::ShowEditAccountDialog(int id) {
 	accountDialog->CenterOnParent();
 }
 
+void DialogsController::ShowNewAlertDialog() {
+	wxSize size = GetAlertDialogSize();
+
+	AlertDialog* alertDialog = new AlertDialog(_parent, _("Alert"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+
+	AlertViewModel* viewModel = new AlertViewModel(_context.GetAlertsService(), _context.GetAccountsService());
+
+	alertDialog->SetViewModel(viewModel);
+
+	alertDialog->Show(true);
+	alertDialog->CenterOnParent();
+}
+
 void DialogsController::ShowEditAlertDialog(int id) {
 	wxSize size = GetAlertDialogSize();
 
@@ -125,6 +138,19 @@ void DialogsController::ShowEditAlertDialog(int id) {
 	alertDialog->CenterOnParent();
 }
 
+void DialogsController::ShowNewBudgetDialog() {
+	wxSize size = GetBudgetDialogSize();
+
+	BudgetDialog* budgetDialog = new BudgetDialog(_parent, _("Budget"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+
+	BudgetViewModel* viewModel = new BudgetViewModel(_context.GetBudgetsService(), _context.GetAccountsService());	
+
+	budgetDialog->SetViewModel(viewModel);
+
+	budgetDialog->Show(true);
+	budgetDialog->CenterOnParent();
+}
+
 void DialogsController::ShowEditBudgetDialog(int id) {
 	wxSize size = GetBudgetDialogSize();
 
@@ -137,6 +163,19 @@ void DialogsController::ShowEditBudgetDialog(int id) {
 
 	budgetDialog->Show(true);
 	budgetDialog->CenterOnParent();
+}
+
+void DialogsController::ShowNewGoalDialog() {
+	wxSize size = GetGoalDialogSize();
+
+	GoalDialog* goalDialog = new GoalDialog(_parent, _("Goal"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
+
+	GoalViewModel* viewModel = new GoalViewModel(_context.GetGoalsService(), _context.GetAccountsService());
+
+	goalDialog->SetViewModel(viewModel);
+
+	goalDialog->Show(true);
+	goalDialog->CenterOnParent();
 }
 
 void DialogsController::ShowEditGoalDialog(int id) {
@@ -211,7 +250,7 @@ wxSize DialogsController::GetGoalDialogSize() {
 	wxSize size = wxSize();
 
 	size.SetWidth(_parent->FromDIP(400));
-	size.SetHeight(_parent->FromDIP(400));
+	size.SetHeight(_parent->FromDIP(350));
 
 	return size;
 }

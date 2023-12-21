@@ -1,10 +1,12 @@
-#include "BudgetsProgressRender.h"
+#include "DataViewProgressRender.h"
 
-BudgetsProgressRender::BudgetsProgressRender() : wxDataViewCustomRenderer("string", wxDATAVIEW_CELL_INERT, wxDVR_DEFAULT_ALIGNMENT)
+DataViewProgressRender::DataViewProgressRender(bool isReverse):
+	wxDataViewCustomRenderer("string", wxDATAVIEW_CELL_INERT, wxDVR_DEFAULT_ALIGNMENT),
+	_isReverse(isReverse)
 {
 }
 
-bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
+bool DataViewProgressRender::Render(wxRect rect, wxDC *dc, int state)
 {
 	int x = rect.GetX() + 5;
 	int width = rect.GetWidth() - 10;
@@ -17,7 +19,7 @@ bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 
 	dc->DrawRectangle(x, rect.GetY() + y, width, 4);
 
-	wxColor color = Colors::ColorForBudget(_value);
+	wxColor color = Colors::ColorForProgress(_value, _isReverse);
 
 	dc->SetPen(wxPen(color, 1));
 	dc->SetBrush(wxBrush(color));
@@ -27,12 +29,12 @@ bool BudgetsProgressRender::Render(wxRect rect, wxDC *dc, int state)
 	return true;
 }
 
-wxSize BudgetsProgressRender::GetSize() const
+wxSize DataViewProgressRender::GetSize() const
 {
 	return wxDefaultSize;
 }
 
-bool BudgetsProgressRender::SetValue(const wxVariant &value)
+bool DataViewProgressRender::SetValue(const wxVariant &value)
 {
 	_value = value.GetDouble();
 
@@ -46,7 +48,6 @@ bool BudgetsProgressRender::SetValue(const wxVariant &value)
 	return true;
 }
 
-bool BudgetsProgressRender::GetValue(wxVariant &WXUNUSED(value)) const
-{
+bool DataViewProgressRender::GetValue(wxVariant &WXUNUSED(value)) const {
 	return true;
 }

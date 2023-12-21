@@ -109,6 +109,7 @@
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
     <ClCompile Include="UI\Alerts\AlertContextMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp" />
+    <ClCompile Include="UI\Controls\DataViewProgressRender.cpp" />
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
     <ClCompile Include="UI\Goals\GoalContextMenu.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
@@ -157,9 +158,7 @@
     <ClCompile Include="UI\Transactions\TransactionsTagsRender.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListDataModel.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulersListDataModel.cpp" />
-    <ClCompile Include="UI\Goals\GoalsProgressRender.cpp" />
     <ClCompile Include="UI\Goals\GoalsListDataModel.cpp" />
-    <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp" />
     <ClCompile Include="UI\Budgets\BudgetsListDataModel.cpp" />
     <ClCompile Include="Data\ExchangeRates\CBRRatesLoader.cpp" />
     <ClCompile Include="Data\ExchangeRates\ExchangeRatesLoader.cpp" />
@@ -285,6 +284,7 @@
     <ClInclude Include="UI\Alerts\Enums.h" />
     <ClInclude Include="UI\Budgets\BudgetContextMenu.h" />
     <ClInclude Include="UI\Budgets\Enums.h" />
+    <ClInclude Include="UI\Controls\DataViewProgressRender.h" />
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
     <ClInclude Include="UI\Goals\GoalContextMenu.h" />
     <ClInclude Include="UI\Goals\Enums.h" />
@@ -339,9 +339,7 @@
     <ClInclude Include="UI\Transactions\TransactionsTagsRender.h" />
     <ClInclude Include="UI\Transactions\TransactionsListDataModel.h" />
     <ClInclude Include="UI\Schedulers\SchedulersListDataModel.h" />
-    <ClInclude Include="UI\Goals\GoalsProgressRender.h" />
     <ClInclude Include="UI\Goals\GoalsListDataModel.h" />
-    <ClInclude Include="UI\Budgets\BudgetsProgressRender.h" />
     <ClInclude Include="UI\Budgets\BudgetsListDataModel.h" />
     <ClInclude Include="Data\ExchangeRates\CBRRatesLoader.h" />
     <ClInclude Include="Data\ExchangeRates\ExchangeRatesLoader.h" />

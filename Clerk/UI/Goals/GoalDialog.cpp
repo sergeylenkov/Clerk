@@ -47,7 +47,7 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
-	horizontalSizer = new wxBoxSizer(wxVERTICAL);
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* accountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Accounts:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(accountLabel);
@@ -58,6 +58,8 @@ GoalDialog::GoalDialog(wxFrame *parent, const wxChar *title, int x, int y, int w
 	horizontalSizer->Add(_accountsList, 1, wxEXPAND);
 
 	panelSizer->Add(horizontalSizer, 1, wxEXPAND | wxBOTTOM, bottomIndent);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxButton* okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
 	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);

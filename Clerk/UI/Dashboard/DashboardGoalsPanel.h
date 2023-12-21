@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/numformatter.h>
 #include "../PresentationModels/Types.h"
 #include "../PresentationModels/GoalPresentationModel.h"
 #include "../ViewModels/DashboardViewModel.h"

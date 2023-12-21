@@ -28,10 +28,7 @@ void DashboardGoalsPanel::Update()
 	_values.clear();
 
 	for (auto& goal : _goals) {
-		float remainAmount = goal->amount - goal->balance;
-		float remainPercent = goal->balance / (goal->amount / 100.0);
-
-		_values.push_back({ goal->name, wxNumberFormatter::ToString(goal->amount, 2), wxNumberFormatter::ToString(goal->balance, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+		_values.push_back({ goal->name, Format::Amount(goal->amount), Format::Amount(goal->balance),  Format::Amount(goal->remainAmount), goal->remainPercent });
 	}
 
 	int height = 170 + (_goals.size() * 30);
@@ -139,7 +136,7 @@ void DashboardGoalsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Colors::ColorForGoal(value.percent);
+		wxColor color = Colors::ColorForProgress(value.percent, false);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));		

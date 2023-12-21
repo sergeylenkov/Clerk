@@ -28,8 +28,11 @@ namespace Clerk {
 			void ShowEditTransactionDialog(int id);
 			void ShowNewAccountDialog(AccountType type);
 			void ShowEditAccountDialog(int id);
+			void ShowNewAlertDialog();
 			void ShowEditAlertDialog(int id);
+			void ShowNewBudgetDialog();
 			void ShowEditBudgetDialog(int id);
+			void ShowNewGoalDialog();
 			void ShowEditGoalDialog(int id);
 
 		private:

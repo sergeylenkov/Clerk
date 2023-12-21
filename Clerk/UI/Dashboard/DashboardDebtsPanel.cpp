@@ -29,7 +29,7 @@ void DashboardDebtsPanel::Update()
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
-			_values.push_back({ account->name, wxNumberFormatter::ToString(account->creditLimit, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(abs(amount), 2), remainPercent });
+			_values.push_back({ account->name, Format::Amount(account->creditLimit), Format::Amount(currentAmount),  Format::Amount(abs(amount)), remainPercent });
 
 			_totalValue = _totalValue + abs(amount);
 		}
@@ -39,7 +39,7 @@ void DashboardDebtsPanel::Update()
 			float remainAmount = amount - currentAmount;
 			float remainPercent = (currentAmount / amount) * 100.0;
 
-			_values.push_back({ account->name, wxNumberFormatter::ToString(amount, 2), wxNumberFormatter::ToString(currentAmount, 2),  wxNumberFormatter::ToString(remainAmount, 2), remainPercent });
+			_values.push_back({ account->name, Format::Amount(amount), Format::Amount(currentAmount),  Format::Amount(remainAmount), remainPercent });
 
 			_totalValue = _totalValue + remainAmount;
 		}
@@ -154,7 +154,7 @@ void DashboardDebtsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Colors::ColorForDebt(value.percent);
+		wxColor color = Colors::ColorForProgress(value.percent, true);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));

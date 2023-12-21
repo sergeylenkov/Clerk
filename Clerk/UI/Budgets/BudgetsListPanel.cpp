@@ -70,7 +70,7 @@ void BudgetsListPanel::CreateListColumns() {
 				dataViewColumn = _list->AppendTextColumn(_("Period"), static_cast<int>(BudgetsListColumns::Period), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 			case BudgetsListColumns::Progress: {
-				BudgetsProgressRender* render = new BudgetsProgressRender();
+				DataViewProgressRender* render = new DataViewProgressRender(true);
 
 				dataViewColumn = new wxDataViewColumn(_("Progress"), render, static_cast<int>(BudgetsListColumns::Progress), column.width, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);

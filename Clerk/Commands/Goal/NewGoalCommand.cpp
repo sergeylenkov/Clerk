@@ -7,5 +7,5 @@ NewGoalCommand::NewGoalCommand(ICommandsReceiver& receiver):
 }
 
 void NewGoalCommand::Execute() {
-	//
+	_receiver.OpenNewGoalDialog();
 }

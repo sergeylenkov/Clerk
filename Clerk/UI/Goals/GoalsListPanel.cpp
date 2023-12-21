@@ -8,17 +8,6 @@ GoalsListPanel::GoalsListPanel(wxWindow *parent, DataContext& context, Icons& ic
 	_model = new GoalsListDataModel();
 	_list->AssociateModel(_model.get());
 
-	/*
-	
-	
-
-	
-
-	
-	
-	
-	list->AppendTextColumn("", static_cast<int>(GoalsListDataModel::Columns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);*/
-
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 
 	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
@@ -84,7 +73,7 @@ void GoalsListPanel::CreateListColumns() {
 			dataViewColumn = _list->AppendTextColumn(_("Days Remain"), static_cast<int>(GoalsListColumns::DaysRemain), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 			break;
 		case GoalsListColumns::Progress: {
-				GoalsProgressRender* render = new GoalsProgressRender();
+			DataViewProgressRender* render = new DataViewProgressRender(false);
 
 				dataViewColumn = new wxDataViewColumn(_("Progress"), render, static_cast<int>(GoalsListColumns::Progress), column.width, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);

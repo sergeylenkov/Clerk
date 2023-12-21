@@ -69,13 +69,13 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 			columnWidth0 = size.GetWidth();
 		}
 
-		size = dc.GetTextExtent(wxNumberFormatter::ToString(budget->amount, 2));
+		size = dc.GetTextExtent(Format::Amount(budget->amount));
 
 		if (size.GetWidth() > columnWidth1) {
 			columnWidth1 = size.GetWidth();
 		}
 
-		size = dc.GetTextExtent(wxNumberFormatter::ToString(remainAmount, 2));
+		size = dc.GetTextExtent(Format::Amount(remainAmount));
 
 		if (size.GetWidth() > columnWidth2) {
 			columnWidth2 = size.GetWidth();
@@ -138,7 +138,7 @@ void DashboardBudgetsPanel::Draw(wxPaintDC &dc) {
 
 		dc.DrawRectangle(progressX, progressY, progressWidth, 4);
 
-		wxColor color = Colors::ColorForBudget(remainPercent);
+		wxColor color = Colors::ColorForProgress(remainPercent, true);
 
 		dc.SetPen(wxPen(color, 1));
 		dc.SetBrush(wxBrush(color));

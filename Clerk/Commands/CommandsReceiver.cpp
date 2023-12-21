@@ -21,6 +21,22 @@ void CommandsReceiver::OpenAboutDialog() {
 	_dialogsController->ShowAboutDialog();
 }
 
+void CommandsReceiver::OpenTab(TabType type) {
+	_tabsController->OpenTab(type);
+}
+
+void CommandsReceiver::OpenAccountTab(int id) {
+	_tabsController->OpenAccountTab(id);
+}
+
+void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
+	_tabsController->OpenAccountsTab(type);
+}
+
+void CommandsReceiver::OpenReportTab(int id) {
+	_tabsController->OpenReportTab(id);
+}
+
 void CommandsReceiver::NewTransaction(int id) {
 	_dialogsController->ShowNewTransactionDialog(id);
 }
@@ -45,20 +61,8 @@ void CommandsReceiver::OpenEditAccountDialog(int id) {
 	_dialogsController->ShowEditAccountDialog(id);
 }
 
-void CommandsReceiver::OpenTab(TabType type) {
-	_tabsController->OpenTab(type);
-}
-
-void CommandsReceiver::OpenAccountTab(int id) {
-	_tabsController->OpenAccountTab(id);
-}
-
-void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
-	_tabsController->OpenAccountsTab(type);
-}
-
-void CommandsReceiver::OpenReportTab(int id) {
-	_tabsController->OpenReportTab(id);
+void CommandsReceiver::OpenNewAlertDialog() {
+	_dialogsController->ShowNewAlertDialog();
 }
 
 void CommandsReceiver::OpenEditAlertDialog(int id) {
@@ -69,8 +73,16 @@ void CommandsReceiver::OpenEditSchedulerDialog(int id) {
 
 }
 
+void CommandsReceiver::OpenNewBudgetDialog() {
+	_dialogsController->ShowNewBudgetDialog();
+}
+
 void CommandsReceiver::OpenEditBudgetDialog(int id) {
 	_dialogsController->ShowEditBudgetDialog(id);
+}
+
+void CommandsReceiver::OpenNewGoalDialog() {
+	_dialogsController->ShowNewGoalDialog();
 }
 
 void CommandsReceiver::OpenEditGoalDialog(int id) {

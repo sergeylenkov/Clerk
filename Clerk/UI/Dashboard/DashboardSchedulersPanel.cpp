@@ -16,7 +16,6 @@ void DashboardSchedulersPanel::SetViewModel(DashboardViewModel* viewModel) {
 	Update();
 }
 
-
 void DashboardSchedulersPanel::Update()
 {
 	_values.clear();
@@ -169,7 +168,7 @@ void DashboardSchedulersPanel::DrawTable(wxPaintDC &dc) {
 		y = y + padding;
 
 		wxString date = scheduler->nextDate.Format("%a, %b %d");
-		wxString amount = wxNumberFormatter::ToString(scheduler->toAmount, 2);
+		wxString amount = Format::Amount(scheduler->toAmount);
 
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.SetFont(font);

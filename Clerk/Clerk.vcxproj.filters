@@ -105,9 +105,6 @@
     <ClCompile Include="UI\Budgets\BudgetsListDataModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Budgets\BudgetsProgressRender.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Budgets\BudgetsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -115,9 +112,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Goals\GoalsListPanel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="UI\Goals\GoalsProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Schedulers\SchedulersListPanel.cpp">
@@ -513,6 +507,9 @@
     <ClCompile Include="Commands\Goal\NewGoalCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Controls\DataViewProgressRender.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -611,9 +608,6 @@
     <ClInclude Include="UI\Budgets\BudgetsListDataModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Budgets\BudgetsProgressRender.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="UI\Budgets\BudgetsListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -621,9 +615,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\GoalsListPanel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Goals\GoalsProgressRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\SchedulersListPanel.h">
@@ -1068,6 +1059,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Goal\NewGoalCommand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\DataViewProgressRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

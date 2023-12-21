@@ -35,6 +35,11 @@ std::shared_ptr<GoalPresentationModel> GoalsService::GetById(int id) {
 		goal = std::make_shared<GoalPresentationModel>(*model);
 		goal->balance = GetBalance(*goal);
 		goal->remainAmount = goal->amount - goal->balance;
+
+		if (goal->remainAmount < 0) {
+			goal->remainAmount = 0;
+		}
+
 		goal->remainPercent = goal->balance / (goal->amount / 100.0);
 
 		AddToHash(goal->id, goal);
@@ -59,6 +64,11 @@ shared_vector<GoalPresentationModel> GoalsService::GetAll() {
 			auto goal = std::make_shared<GoalPresentationModel>(*model);
 			goal->balance = GetBalance(*goal);
 			goal->remainAmount = goal->amount - goal->balance;
+
+			if (goal->remainAmount < 0) {
+				goal->remainAmount = 0;
+			}
+
 			goal->remainPercent = goal->balance / (goal->amount / 100.0);
 
 			AddToHash(goal->id, goal);

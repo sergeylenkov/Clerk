@@ -77,7 +77,7 @@ std::vector<int> GoalViewModel::GetAccountsIds() {
 }
 
 shared_vector<AccountPresentationModel> GoalViewModel::GetAccounts() {
-	return _accountsService.GetExpenses();
+	return _accountsService.GetDepositsAndVirtuals();
 }
 
 void GoalViewModel::Save() {

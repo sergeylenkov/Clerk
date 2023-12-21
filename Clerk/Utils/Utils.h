@@ -15,9 +15,7 @@ namespace Clerk {
 		class Colors
 		{
 		public:			
-			static wxColor ColorForBudget(int percent);
-			static wxColor ColorForGoal(int percent);
-			static wxColor ColorForDebt(int percent);
+			static wxColor ColorForProgress(int percent, bool isReverse);
 			static wxColor ColorForBalance(boolean isReceipt);
 			static wxColor ColorFoImportance(AlertImportance importance);
 		};

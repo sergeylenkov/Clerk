@@ -7,5 +7,5 @@ NewBudgetCommand::NewBudgetCommand(ICommandsReceiver& receiver):
 }
 
 void NewBudgetCommand::Execute() {
-	//
+	_receiver.OpenNewBudgetDialog();
 }

@@ -53,7 +53,7 @@ bool BudgetsListDataModel::GetAttrByRow(unsigned int row, unsigned int column,	w
 	switch (static_cast<BudgetsListColumns>(column))
 	{
 		case BudgetsListColumns::Remain:
-			attr.SetColour(Colors::ColorForBudget(budget->remainPercent));
+			attr.SetColour(Colors::ColorForProgress(budget->remainPercent, true));
 			return true;			
 			break;
 	}

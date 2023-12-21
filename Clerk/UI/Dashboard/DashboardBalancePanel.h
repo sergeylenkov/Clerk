@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/numformatter.h>
 #include <wx/graphics.h>
 #include "../../Utils/Utils.h"
 #include "../PresentationModels/Types.h"

@@ -36,28 +36,18 @@ wxString Format::DaysRemain(wxDateTime& date) {
 	return wxString::Format("%d days", days);
 }
 
-wxColor Colors::ColorForBudget(int percent) {
-	if (percent > 50 && percent < 90) {
-		return wxColor(251, 175, 67);
-	} else if (percent >= 90) {
-		return wxColor(242, 73, 101);
-	}
+wxColor Colors::ColorForProgress(int percent, bool isReverse) {
+	if (isReverse) {
+		if (percent > 50 && percent < 90) {
+			return wxColor(251, 175, 67);
+		}
+		else if (percent >= 90) {
+			return wxColor(242, 73, 101);
+		}
 
-	return wxColor(10, 199, 117);
-}
-
-wxColor Colors::ColorForGoal(int percent) {
-	if (percent > 50 && percent < 90) {
-		return wxColor(251, 175, 67);
-	}
-	else if (percent >= 90) {
 		return wxColor(10, 199, 117);
 	}
 
-	return wxColor(242, 73, 101);
-}
-
-wxColor Colors::ColorForDebt(int percent) {
 	if (percent > 50 && percent < 90) {
 		return wxColor(251, 175, 67);
 	}

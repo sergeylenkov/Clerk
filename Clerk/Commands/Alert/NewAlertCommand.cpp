@@ -7,5 +7,5 @@ NewAlertCommand::NewAlertCommand(ICommandsReceiver& receiver):
 }
 
 void NewAlertCommand::Execute() {
-	//
+	_receiver.OpenNewAlertDialog();
 }

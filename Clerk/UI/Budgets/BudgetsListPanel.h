@@ -7,8 +7,8 @@
 #include "../../Data/Settings.h"
 #include "../PresentationModels/BudgetPresentationModel.h"
 #include "../DataPanel.h"
+#include "../Controls/DataViewProgressRender.h"
 #include "BudgetsListDataModel.h"
-#include "BudgetsProgressRender.h"
 #include "BudgetContextMenu.h"
 
 using namespace Clerk::Data;

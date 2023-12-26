@@ -1,43 +1,26 @@
 #include "GoalsListPanel.h"
 
 GoalsListPanel::GoalsListPanel(wxWindow *parent, DataContext& context, Icons& icons):
-	DataPanel(parent, context, icons)
+	DataListPanel(parent, context, icons)
 {
-	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
-
 	_model = new GoalsListDataModel();
 	_list->AssociateModel(_model.get());
-
-	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
-
-	SetSizer(mainSizer);
-	Layout();
-
-	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &GoalsListPanel::OnListItemDoubleClick, this);
-	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &GoalsListPanel::OnRightClick, this);
-
-	_sortBy = GoalsListColumns::Name;
-	_sortDesc = false;
 
 	_goalsService = &_context.GetGoalsService();
 	_subscriptionId = _goalsService->Subscribe([&]() {
 		Update();
 	});
 
+	CreateListColumns();
 	Update();
 }
 
 GoalsListPanel::~GoalsListPanel() {
 	_goalsService->Unsubscribe(_subscriptionId);
-
 	SaveColumnsSettings();
 }
 
 void GoalsListPanel::Update() {
-	CreateListColumns();
-
 	_goals = _goalsService->GetAll();
 	_model.get()->SetItems(_goals);
 }
@@ -89,37 +72,21 @@ void GoalsListPanel::CreateListColumns() {
 			dataViewColumn = _list->AppendTextColumn(_("Remain"), static_cast<int>(GoalsListColumns::Remain), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 			break;
 		}
-
-		if (column.sorted) {
-			_sortBy = static_cast<GoalsListColumns>(column.index);
-			_sortDesc = column.sortedDesc;
-
-			if (dataViewColumn != nullptr) {
-				dataViewColumn->SetSortOrder(!_sortDesc);
-			}
-		}
 	}
 
 	_list->AppendTextColumn("", static_cast<int>(GoalsListColumns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+
+	RestoreSorting(columns);
 }
 
 void GoalsListPanel::SaveColumnsSettings() {
 	auto columns = Settings::GetInstance().GetGoalsListColumns();
-
-	for (unsigned int i = 0; i < columns.size(); i++) {
-		wxDataViewColumn* column = _list->GetColumn(i);
-
-		columns[i].index = _list->GetColumnIndex(column);
-		columns[i].order = _list->GetColumnPosition(column);
-		columns[i].width = column->GetWidth();
-		columns[i].sorted = columns[i].index == static_cast<int>(_sortBy);;
-		columns[i].sortedDesc = _sortDesc;
-	}
+	columns = UpdateColumnsSettings(columns);
 
 	Settings::GetInstance().SetGoalsListColumns(columns);
 }
 
-void GoalsListPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
+void GoalsListPanel::EditSelectedItem() {
 	auto goal = GetGoal();
 
 	if (goal) {
@@ -130,7 +97,7 @@ void GoalsListPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
 	}
 }
 
-void GoalsListPanel::OnRightClick(wxDataViewEvent& event) {
+void GoalsListPanel::ShowContextMenu() {
 	wxMenu* menu = new GoalContextMenu(_context.GetCommandsInvoker(), _icons, GetGoal());
 
 	_list->PopupMenu(menu);

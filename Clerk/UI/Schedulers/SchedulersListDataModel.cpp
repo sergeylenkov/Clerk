@@ -4,11 +4,7 @@ SchedulersListDataModel::SchedulersListDataModel()
 {
 }
 
-SchedulersListDataModel::~SchedulersListDataModel()
-{
-}
-
-void SchedulersListDataModel::SetItems(std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers) {
+void SchedulersListDataModel::SetItems(shared_vector<SchedulerPresentationModel> schedulers) {
 	_schedulers = schedulers;
 	Reset(_schedulers.size());
 }
@@ -27,24 +23,24 @@ void SchedulersListDataModel::GetValueByRow(wxVariant &variant, unsigned int row
 {
 	auto scheduler = _schedulers[row];
 
-	switch (static_cast<Columns>(column))
+	switch (static_cast<SchedulersListColumns>(column))
 	{
-		case Columns::Name:
+		case SchedulersListColumns::Name:
 			variant = scheduler->name;
 			break;
-		case Columns::Type:
+		case SchedulersListColumns::Type:
 			variant = scheduler->typeName;
 			break;
-		case Columns::NextDate:
-			variant = FormatDate(scheduler->nextDate);
+		case SchedulersListColumns::NextDate:
+			variant = Format::Date(scheduler->nextDate);
 			break;
-		case Columns::DaysLeft:
-			variant = FormatDaysLeft(scheduler->nextDate);
+		case SchedulersListColumns::DaysLeft:
+			variant = Format::DaysRemain(scheduler->nextDate);
 			break;
-		case Columns::Amount:
+		case SchedulersListColumns::Amount:
 			variant = Format::Amount(scheduler->fromAmount);
 			break;
-		case Columns::Status:
+		case SchedulersListColumns::Status:
 			if (scheduler->isActive) {
 				variant = _("Active");
 			}
@@ -59,9 +55,9 @@ bool SchedulersListDataModel::GetAttrByRow(unsigned int row, unsigned int column
 {
 	auto scheduler = _schedulers[row];
 
-	switch (static_cast<Columns>(column))
+	switch (static_cast<SchedulersListColumns>(column))
 	{
-		case Columns::Status:
+		case SchedulersListColumns::Status:
 			if (!scheduler->isActive) {
 				attr.SetColour(wxColor(110, 110, 110));
 				return true;
@@ -77,27 +73,64 @@ bool SchedulersListDataModel::SetValueByRow(const wxVariant &variant, unsigned i
 	return false;
 }
 
+int SchedulersListDataModel::Compare(const wxDataViewItem& item1, const wxDataViewItem& item2, unsigned int column, bool ascending) const {
+	wxUIntPtr index1 = wxPtrToUInt(item1.GetID()) - 1;
+	wxUIntPtr index2 = wxPtrToUInt(item2.GetID()) - 1;
 
-wxString SchedulersListDataModel::FormatDate(const wxDateTime& date) const
-{
-	wxString dateFormat = date.Format("%B %e");
+	auto v1 = _schedulers[index1];
+	auto v2 = _schedulers[index2];
 
-	if (wxDateTime::Now().GetYear() != date.GetYear()) {
-		dateFormat = date.Format("%B %e, %Y");
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::Name) {
+		return ascending ? v1->name.Cmp(v2->name) : v2->name.Cmp(v1->name);
 	}
 
-	return dateFormat;
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::Type) {
+		if (v1->type == v2->type) {
+			return 0;
+		}
+
+		return ascending ? v1->type > v2->type : v2->type > v1->type;
+	}
+
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::Amount) {
+		if (v1->fromAmount == v2->fromAmount) {
+			return 0;
+		}
+
+		return ascending ? v1->fromAmount > v2->fromAmount : v2->fromAmount > v1->fromAmount;
+	}
+
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::NextDate) {
+		if (v1->nextDate.IsEqualTo(v2->nextDate)) {
+			return 0;
+		}
+
+		return (ascending == v1->nextDate.IsLaterThan(v2->nextDate)) ? 1 : -1;
+	}
+
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::DaysLeft) {
+		if (v1->nextDate.IsEqualTo(v2->nextDate)) {
+			return 0;
+		}
+
+		return (ascending == v1->nextDate.IsLaterThan(v2->nextDate)) ? 1 : -1;
+	}
+
+	if (static_cast<SchedulersListColumns>(column) == SchedulersListColumns::Status) {
+		if (v1->isActive == v2->isActive) {
+			return 0;
+		}
+
+		return ascending ? v1->isActive > v2->isActive : v2->isActive > v1->isActive;
+	}
+
+	return 0;
 }
 
-wxString SchedulersListDataModel::FormatDaysLeft(const wxDateTime& date) const {
-	wxDateSpan diff = date.DiffAsDateSpan(wxDateTime::Now());
+unsigned int SchedulersListDataModel::GetCount() const {
+	return _schedulers.size();
+}
 
-	int days = diff.GetTotalDays();
-	int months = diff.GetTotalMonths();
-
-	if (months > 0) {
-		return wxString::Format("%d months", months);
-	}
-
-	return wxString::Format("%d days", days);
+bool SchedulersListDataModel::HasDefaultCompare() const {
+	return false;
 }

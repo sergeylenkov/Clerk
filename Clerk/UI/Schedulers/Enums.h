@@ -9,6 +9,17 @@ namespace Clerk {
 			Run = 4,
 			Pause = 5
 		};
+
+		enum class SchedulersListColumns
+		{
+			Name,
+			Type,
+			Amount,
+			NextDate,
+			DaysLeft,
+			Status,
+			Last
+		};
 	}
 }
 

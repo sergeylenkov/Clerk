@@ -1,43 +1,26 @@
 #include "BudgetsListPanel.h"
 
 BudgetsListPanel::BudgetsListPanel(wxWindow *parent, DataContext& context, Icons& icons):
-	DataPanel(parent, context, icons)
+	DataListPanel(parent, context, icons)
 {
-	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
-
 	_model = new BudgetsListDataModel();
 	_list->AssociateModel(_model.get());
-
-	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
-
-	SetSizer(mainSizer);
-	Layout();
-
-	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &BudgetsListPanel::OnListItemDoubleClick, this);
-	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &BudgetsListPanel::OnRightClick, this);
-
-	_sortBy = BudgetsListColumns::Name;
-	_sortDesc = false;
 
 	_budgetsService = &_context.GetBudgetsService();
 	_subscriptionId = _budgetsService->Subscribe([&]() {
 		Update();
 	});
 
+	CreateListColumns();
 	Update();
 }
 
 BudgetsListPanel::~BudgetsListPanel() {
 	_budgetsService->Unsubscribe(_subscriptionId);
-
 	SaveColumnsSettings();
 }
 
 void BudgetsListPanel::Update() {
-	CreateListColumns();
-
 	_budgets = _budgetsService->GetAll();
 	_model.get()->SetItems(_budgets);
 }
@@ -86,37 +69,21 @@ void BudgetsListPanel::CreateListColumns() {
 				dataViewColumn = _list->AppendTextColumn(_("Remain"), static_cast<int>(BudgetsListColumns::Remain), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 		}
-
-		if (column.sorted) {
-			_sortBy = static_cast<BudgetsListColumns>(column.index);
-			_sortDesc = column.sortedDesc;
-
-			if (dataViewColumn != nullptr) {
-				dataViewColumn->SetSortOrder(!_sortDesc);
-			}
-		}
 	}
 
 	_list->AppendTextColumn("", static_cast<int>(BudgetsListColumns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+
+	RestoreSorting(columns);
 }
 
 void BudgetsListPanel::SaveColumnsSettings() {
 	auto columns = Settings::GetInstance().GetBudgetsListColumns();
-
-	for (unsigned int i = 0; i < columns.size(); i++) {
-		wxDataViewColumn* column = _list->GetColumn(i);
-
-		columns[i].index = _list->GetColumnIndex(column);
-		columns[i].order = _list->GetColumnPosition(column);
-		columns[i].width = column->GetWidth();
-		columns[i].sorted = columns[i].index == static_cast<int>(_sortBy);;
-		columns[i].sortedDesc = _sortDesc;
-	}
+	columns = UpdateColumnsSettings(columns);
 
 	Settings::GetInstance().SetBudgetsListColumns(columns);
 }
 
-void BudgetsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
+void BudgetsListPanel::EditSelectedItem() {
 	auto budget = GetBudget();
 
 	if (budget) {
@@ -127,7 +94,7 @@ void BudgetsListPanel::OnListItemDoubleClick(wxDataViewEvent &event) {
 	}
 }
 
-void BudgetsListPanel::OnRightClick(wxDataViewEvent &event) {
+void BudgetsListPanel::ShowContextMenu() {
 	wxMenu* menu = new BudgetContextMenu(_context.GetCommandsInvoker(), _icons, GetBudget());
 
 	_list->PopupMenu(menu);

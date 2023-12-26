@@ -27,6 +27,6 @@ public:
 	unsigned int GetCount() const override;
 
 private:
-	std::vector<std::shared_ptr<GoalPresentationModel>> _goals;	
+	shared_vector<GoalPresentationModel> _goals;	
 };
 

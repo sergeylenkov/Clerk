@@ -1,43 +1,26 @@
 #include "AlertsListPanel.h"
 
 AlertsListPanel::AlertsListPanel(wxWindow *parent, DataContext& context, Icons& icons):
-	DataPanel(parent, context, icons)
+	DataListPanel(parent, context, icons)
 {
-	_list = new wxDataViewCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_SINGLE | wxBORDER_NONE);
-
 	_model = new AlertsListDataModel();
 	_list->AssociateModel(_model.get());
-
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	mainSizer->Add(_list, 1, wxALL | wxEXPAND, 0);
-
-	SetSizer(mainSizer);
-	Layout();
-
-	_list->Bind(wxEVT_DATAVIEW_ITEM_ACTIVATED, &AlertsListPanel::OnListItemDoubleClick, this);
-	_list->Bind(wxEVT_DATAVIEW_ITEM_CONTEXT_MENU, &AlertsListPanel::OnRightClick, this);
-
-	_sortBy = AlertsListColumns::Name;
-	_sortDesc = false;
 
 	_alertsService = &_context.GetAlertsService();
 	_subscriptionId = _alertsService->Subscribe([&]() {
 		Update();
 	});
 
+	CreateListColumns();
 	Update();
 }
 
 AlertsListPanel::~AlertsListPanel() {
 	_alertsService->Unsubscribe(_subscriptionId);
-
 	SaveColumnsSettings();
 }
 
 void AlertsListPanel::Update() {
-	CreateListColumns();
-
 	_alerts = _alertsService->GetAll();
 	_model.get()->SetItems(_alerts);
 }
@@ -86,37 +69,21 @@ void AlertsListPanel::CreateListColumns() {
 				dataViewColumn = _list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListColumns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
 		}
-
-		if (column.sorted) {
-			_sortBy = static_cast<AlertsListColumns>(column.index);
-			_sortDesc = column.sortedDesc;
-
-			if (dataViewColumn != nullptr) {
-				dataViewColumn->SetSortOrder(!_sortDesc);
-			}
-		}
 	}
 
 	_list->AppendTextColumn("", static_cast<int>(AlertsListColumns::Last), wxDATAVIEW_CELL_INERT, 10, wxALIGN_RIGHT, wxDATAVIEW_COL_RESIZABLE);
+
+	RestoreSorting(columns);
 }
 
 void AlertsListPanel::SaveColumnsSettings() {
 	auto columns = Settings::GetInstance().GetAlertsListColumns();
-
-	for (unsigned int i = 0; i < columns.size(); i++) {
-		wxDataViewColumn* column = _list->GetColumn(i);
-
-		columns[i].index = _list->GetColumnIndex(column);
-		columns[i].order = _list->GetColumnPosition(column);
-		columns[i].width = column->GetWidth();
-		columns[i].sorted = columns[i].index == static_cast<int>(_sortBy);
-		columns[i].sortedDesc = _sortDesc;
-	}
+	columns = UpdateColumnsSettings(columns);
 
 	Settings::GetInstance().SetAlertsListColumns(columns);
 }
 
-void AlertsListPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
+void AlertsListPanel::EditSelectedItem() {
 	auto alert = GetAlert();
 
 	if (alert) {
@@ -127,7 +94,7 @@ void AlertsListPanel::OnListItemDoubleClick(wxDataViewEvent& event) {
 	}
 }
 
-void AlertsListPanel::OnRightClick(wxDataViewEvent &event) {
+void AlertsListPanel::ShowContextMenu() {
 	wxMenu* menu = new AlertContextMenu(_context.GetCommandsInvoker(), _icons, GetAlert());
 
 	_list->PopupMenu(menu);

@@ -510,6 +510,9 @@
     <ClCompile Include="UI\Controls\DataViewProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\DataListPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -1062,6 +1065,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\DataViewProgressRender.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\DataListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

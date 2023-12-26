@@ -111,6 +111,7 @@
     <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp" />
     <ClCompile Include="UI\Controls\DataViewProgressRender.cpp" />
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
+    <ClCompile Include="UI\DataListPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalContextMenu.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
@@ -286,6 +287,7 @@
     <ClInclude Include="UI\Budgets\Enums.h" />
     <ClInclude Include="UI\Controls\DataViewProgressRender.h" />
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
+    <ClInclude Include="UI\DataListPanel.h" />
     <ClInclude Include="UI\Goals\GoalContextMenu.h" />
     <ClInclude Include="UI\Goals\Enums.h" />
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />

@@ -94,7 +94,7 @@ shared_vector<AlertPresentationModel> AlertsService::GetActive() {
 void AlertsService::Reload() {
 	_isLoading = false;
 	_hash.clear();
-
+	
 	GetAll();
 }
 
@@ -105,9 +105,9 @@ std::shared_ptr<AlertPresentationModel> AlertsService::Save(AlertPresentationMod
 
 	delete& model;
 
-	_eventEmitter->Emit();
-
 	RemoveFromHash(id);
+
+	_eventEmitter->Emit();
 
 	return GetById(id);
 }

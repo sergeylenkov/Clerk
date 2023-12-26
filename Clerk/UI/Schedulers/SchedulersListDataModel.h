@@ -1,41 +1,32 @@
 #pragma once
 
 #include <wx/dataview.h>
-#include "../PresentationModels/SchedulerPresentationModel.h"
 #include "../../Utils/Utils.h"
+#include "../../Utils/Types.h"
+#include "../PresentationModels/SchedulerPresentationModel.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
 using namespace Clerk::UI;
 
-class SchedulersListDataModel : public wxDataViewListStore
+class SchedulersListDataModel : public wxDataViewIndexListModel
 {
 public:
-	enum class Columns
-	{
-		Name,
-		Type,
-		Amount,
-		NextDate,
-		DaysLeft,
-		Status,
-		Last
-	};
-
 	SchedulersListDataModel();
-	~SchedulersListDataModel();
 
-	void SetItems(std::vector<std::shared_ptr<SchedulerPresentationModel>> schedulers);
+	void SetItems(shared_vector<SchedulerPresentationModel> schedulers);
 
-	virtual unsigned int GetColumnCount() const;
-	virtual wxString GetColumnType(unsigned int column) const;
-	virtual void GetValueByRow(wxVariant &variant, unsigned int row, unsigned int column) const;
-	virtual bool GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr &attr) const;
-	virtual bool SetValueByRow(const wxVariant &variant, unsigned int row, unsigned int column);
+	unsigned int GetColumnCount() const;
+	wxString GetColumnType(unsigned int column) const;
+	virtual void GetValueByRow(wxVariant& variant, unsigned int row, unsigned int column) const;
+	virtual bool SetValueByRow(const wxVariant& variant, unsigned int row, unsigned int column);
+	virtual bool GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr& attr) const;
+	virtual int Compare(const wxDataViewItem& item1, const wxDataViewItem& item2, unsigned int column, bool	ascending) const;
+	virtual bool HasDefaultCompare() const;
+	unsigned int GetCount() const override;
 
 private:
-	std::vector<std::shared_ptr<SchedulerPresentationModel>> _schedulers;
-	wxString FormatDate(const wxDateTime& date) const;
-	wxString FormatDaysLeft(const wxDateTime& date) const;
+	shared_vector<SchedulerPresentationModel> _schedulers;
 };
 

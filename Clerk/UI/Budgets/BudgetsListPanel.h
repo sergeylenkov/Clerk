@@ -1,12 +1,8 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "wx/dataview.h"
-#include "../../Utils/Utils.h"
-#include "../../Utils/Types.h"
-#include "../../Data/Settings.h"
+#include "../DataListPanel.h"
 #include "../PresentationModels/BudgetPresentationModel.h"
-#include "../DataPanel.h"
 #include "../Controls/DataViewProgressRender.h"
 #include "BudgetsListDataModel.h"
 #include "BudgetContextMenu.h"
@@ -15,7 +11,7 @@ using namespace Clerk::Data;
 using namespace Clerk::Utils;
 using namespace Clerk::UI;
 
-class BudgetsListPanel : public DataPanel
+class BudgetsListPanel : public DataListPanel
 {
 public:
 	BudgetsListPanel(wxWindow *parent, DataContext& context, Icons& icons);
@@ -24,17 +20,14 @@ public:
 	void Update();	
 
 private:
-	wxDataViewCtrl *_list;
 	wxObjectDataPtr<BudgetsListDataModel> _model;
 	shared_vector<BudgetPresentationModel> _budgets;
 	BudgetsService* _budgetsService;
 	unsigned int _subscriptionId;
-	BudgetsListColumns _sortBy;
-	bool _sortDesc;
 
 	std::shared_ptr<BudgetPresentationModel> GetBudget();
-	void CreateListColumns();
-	void SaveColumnsSettings();
-	void OnListItemDoubleClick(wxDataViewEvent &event);
-	void OnRightClick(wxDataViewEvent &event);
+	void CreateListColumns() override;
+	void SaveColumnsSettings() override;
+	void ShowContextMenu() override;
+	void EditSelectedItem() override;
 };

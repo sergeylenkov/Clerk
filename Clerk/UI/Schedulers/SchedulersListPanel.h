@@ -1,16 +1,14 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "wx/dataview.h"
+#include "../DataListPanel.h"
 #include "../PresentationModels/SchedulerPresentationModel.h"
-#include "../DataPanel.h"
-#include "../../Data/Settings.h"
 #include "SchedulersListDataModel.h"
 #include "SchedulerContextMenu.h"
 
 using namespace Clerk::Data;
 
-class SchedulersListPanel : public DataPanel
+class SchedulersListPanel : public DataListPanel
 {
 public:
 	SchedulersListPanel(wxWindow *parent, DataContext& context, Icons& icons);
@@ -18,18 +16,15 @@ public:
 
 	void Update();
 
-private:
-	wxDataViewCtrl *_list;
+private:	
 	wxObjectDataPtr<SchedulersListDataModel> _model;
 	shared_vector<SchedulerPresentationModel> _schedulers;
 	SchedulersService* _schedulersService;
 	unsigned int _subscriptionId;
-	int _sortBy;
-	bool _sortDesc;
 
 	std::shared_ptr<SchedulerPresentationModel> GetScheduler();
-	void CreateListColumns();
-	void SaveColumnsSettings();
-	void OnListItemDoubleClick(wxDataViewEvent &event);
-	void OnRightClick(wxDataViewEvent &event);
+	void CreateListColumns() override;
+	void SaveColumnsSettings() override;
+	void ShowContextMenu() override;
+	void EditSelectedItem() override;
 };

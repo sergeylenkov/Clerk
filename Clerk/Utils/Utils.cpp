@@ -157,3 +157,17 @@ std::string String::Join(std::vector<std::string> const& vec, std::string delimi
 			return a + delimiter + b;
 		});
 }
+
+bool String::Search(wxString str, wxString search) {
+	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
+
+	std::wstring strW = str.ToStdWstring();
+	f.tolower(&strW[0], &strW[0] + strW.size());
+
+	std::wstring searchW = search.ToStdWstring();
+	f.tolower(&searchW[0], &searchW[0] + searchW.size());
+
+	std::size_t found = strW.find(searchW);
+
+	return found != std::string::npos;
+}

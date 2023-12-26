@@ -60,17 +60,8 @@ shared_vector<TagPresentationModel> TagsService::GetAll() {
 shared_vector<TagPresentationModel> TagsService::GetBySearch(wxString search) {
 	shared_vector<TagPresentationModel> result;
 
-	std::wstring wSearch = search.ToStdWstring();
-	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
-	f.tolower(&wSearch[0], &wSearch[0] + wSearch.size());
-
 	for (auto& tag : GetAll()) {
-		std::wstring tagName = tag->name;
-		f.tolower(&tagName[0], &tagName[0] + tagName.size());
-
-		std::size_t found = tagName.find(wSearch);
-
-		if (found != std::string::npos) {
+		if (String::Search(tag->name, search)) {
 			result.push_back(tag);
 		}
 	}

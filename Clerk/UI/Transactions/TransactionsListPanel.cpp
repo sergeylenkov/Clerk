@@ -153,24 +153,14 @@ void TransactionsListPanel::Filter() {
 	if (_searchField->GetValue().Length() > 0) {
 		wxString search = _searchField->GetValue();
 
-		auto &f = std::use_facet<std::ctype<wchar_t>>(std::locale());
-
-		std::wstring searchW = search.ToStdWstring();
-		f.tolower(&searchW[0], &searchW[0] + searchW.size());
-
 		for (auto& transaction : _transactions)
 		{		
 			wxString tags = transaction->tagsString;
 			wxString note = transaction->note;			
 
-			wxString searchString = transaction->fromAccount->name + " " + transaction->toAccount->name + " " + tags + " " + note;
+			wxString rowString = transaction->fromAccount->name + " " + transaction->toAccount->name + " " + tags + " " + note;
 
-			std::wstring searchStringW = searchString.ToStdWstring();
-			f.tolower(&searchStringW[0], &searchStringW[0] + searchStringW.size());
-
-			std::size_t found = searchStringW.find(searchW);
-
-			if (found != std::string::npos) {
+			if (String::Search(rowString, search)) {
 				_filtered.push_back(transaction);
 			}
 		}

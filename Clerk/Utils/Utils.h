@@ -46,6 +46,7 @@ namespace Clerk {
 		public:
 			static std::vector<int> Split(std::wstring string, char delimiter);
 			static std::string Join(std::vector<std::string> const& vec, std::string delimiter);
+			static bool Search(wxString str, wxString search);
 		};
 	}
 }

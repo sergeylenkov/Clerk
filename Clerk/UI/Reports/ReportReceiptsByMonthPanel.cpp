@@ -61,19 +61,20 @@ ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataCon
 	SetSizer(mainSizer);
 
 	auto account = std::make_shared<AccountPresentationModel>();
-	account->name = wxString("All");
+	account->name = _("All");
 	account->id = -1;
 	account->icon = -1;
 
 	_accounts.push_back(account);
 
 	auto accounts = _context.GetAccountsService().GetReceipts();
-	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
 
-	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
+	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
 		return a->order < b->order;
 	});
 
+	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
+	
 	_chartPopup = new ExpensesTooltipPopup(this);
 
 	_accountsComboBox->OnChange = std::bind(&ReportReceiptsByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
@@ -166,24 +167,11 @@ void ReportReceiptsByMonthPanel::UpdatePopup(int x, int y, int index) {
 }
 
 void ReportReceiptsByMonthPanel::RestoreFilterSettings() {
-	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(4);
+	std::vector<int> ids = String::Split(settings.accountIds.ToStdWstring(), ',');
 
-	_selectedIds = {};
-
-	std::string str = settings.accountIds.mb_str();
-
-	std::stringstream ss(str);
-
-	int i;
-
-	while (ss >> i)
-	{
-		_selectedIds.insert(i);
-
-		if (ss.peek() == ',') {
-			ss.ignore();
-		}
-	}
+	std::set<int> s(ids.begin(), ids.end());
+	_selectedIds = s;
 
 	_periodList->SetSelection(settings.period);
 
@@ -249,15 +237,13 @@ void ReportReceiptsByMonthPanel::CalculatePeriod() {
 }
 
 wxString ReportReceiptsByMonthPanel::GetSelectedAccounsIds() {
-	wxString ids = "";
+	std::vector<string> ids;
 
 	for (auto& account : _accounts) {
 		if (_selectedIds.count(account->id) > 0) {
-			ids = ids + wxString::Format("%i,", account->id);
+			ids.push_back(std::to_string(account->id));
 		}
 	}
 
-	ids.RemoveLast();
-
-	return ids;
+	return String::Join(ids, ",");
 }

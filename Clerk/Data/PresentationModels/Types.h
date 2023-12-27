@@ -2,10 +2,10 @@
 
 #include <wx/wx.h>
 #include <wx/datetime.h>
-#include "../PresentationModels/CurrencyPresentationModel.h"
+#include "CurrencyPresentationModel.h"
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		struct DashboardProgressValue
 		{
 			wxString name;

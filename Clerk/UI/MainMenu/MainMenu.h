@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
 #include "Enums.h"

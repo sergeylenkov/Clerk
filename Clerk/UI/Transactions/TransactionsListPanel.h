@@ -9,13 +9,13 @@
 #include <algorithm>
 #include <string> 
 #include <optional> 
+#include "../../Data/PresentationModels/TransactionPresentationModel.h"
+#include "../../Data/PresentationModels/AccountPresentationModel.h"
 #include "../DataListPanel.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "./TransactionsListDataModel.h"
-#include "./TransactionsTagsRender.h"
-#include "./TransactionsAmountRender.h"
-#include "./TransactionContextMenu.h"
+#include "TransactionsListDataModel.h"
+#include "TransactionsTagsRender.h"
+#include "TransactionsAmountRender.h"
+#include "TransactionContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

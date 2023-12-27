@@ -2,7 +2,6 @@
 
 #include <wx/wx.h>
 #include "../DataListPanel.h"
-#include "../PresentationModels/GoalPresentationModel.h"
 #include "../Controls/DataViewProgressRender.h"
 #include "GoalsListDataModel.h"
 #include "GoalContextMenu.h"

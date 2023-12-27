@@ -3,14 +3,12 @@
 #include <set>
 #include <sstream>
 #include <wx/datetime.h>
+#include "../../Utils/Utils.h"
 #include "../Repositories/ReportingRepository.h"
 #include "../Services/CurrenciesService.h"
-#include "../../UI/PresentationModels/Types.h"
-#include "../../UI/PresentationModels/AccountPresentationModel.h"
-#include "../../Utils/Utils.h"
+#include "../PresentationModels/Types.h"
+#include "../PresentationModels/AccountPresentationModel.h"
 
-using namespace Clerk::Data;
-using namespace Clerk::UI;
 using namespace Clerk::Utils;
 
 namespace Clerk {

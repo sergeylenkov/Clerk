@@ -1,6 +1,6 @@
 #include "AlertPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 AlertPresentationModel::AlertPresentationModel() {
 	id = -1;

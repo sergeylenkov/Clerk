@@ -1,13 +1,12 @@
 #pragma once
 
 #include "wx/wx.h"
-#include "../PresentationModels/SchedulerPresentationModel.h"
+#include "../../Data/PresentationModels/SchedulerPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
-using namespace Clerk::UI;
 
 class NotificationSchedulerPanel : public wxPanel
 {

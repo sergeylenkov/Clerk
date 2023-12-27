@@ -1,11 +1,10 @@
 #pragma once
 
 #include "wx/wx.h"
-#include "../PresentationModels/TagPresentationModel.h"
+#include "../../Data/PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 class TagPanel : public wxPanel
 {

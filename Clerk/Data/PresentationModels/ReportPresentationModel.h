@@ -1,12 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/ReportModel.h"
-
-using namespace Clerk::Data;
+#include "../Models/ReportModel.h"
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class ReportPresentationModel {
 		public:
 			ReportPresentationModel(ReportModel& report);

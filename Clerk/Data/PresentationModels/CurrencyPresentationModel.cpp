@@ -1,6 +1,6 @@
 #include "CurrencyPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 CurrencyPresentationModel::CurrencyPresentationModel() {
 	id = -1;

@@ -1,10 +1,9 @@
 #pragma once
 
-#include "../PresentationModels/CurrencyPresentationModel.h"
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/CurrenciesService.h"
-#include "./Enums.h"
 #include "../../Utils/Types.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 

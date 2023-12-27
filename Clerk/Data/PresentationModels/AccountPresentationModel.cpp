@@ -1,6 +1,6 @@
 #include "AccountPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 AccountPresentationModel::AccountPresentationModel() {
 	id = -1;

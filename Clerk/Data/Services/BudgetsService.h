@@ -1,13 +1,10 @@
 #pragma once
 
-#include "../Repositories/BudgetsRepository.h"
-#include "../../UI/PresentationModels/BudgetPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/EventEmitter.h"
+#include "../Repositories/BudgetsRepository.h"
+#include "../PresentationModels/BudgetPresentationModel.h"
 #include "HashService.h"
-
-using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {

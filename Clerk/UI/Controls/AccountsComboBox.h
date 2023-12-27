@@ -3,12 +3,11 @@
 #include <set>
 #include <wx/wx.h>
 #include <wx/combo.h>
-#include "./CheckboxComboPopup.h"
-#include "../PresentationModels/AccountPresentationModel.h"
+#include "../../Data/PresentationModels/AccountPresentationModel.h"
 #include "../../Utils/Types.h"
+#include "CheckboxComboPopup.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 class AccountsComboBox : public wxComboCtrl
 {

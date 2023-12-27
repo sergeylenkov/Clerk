@@ -6,10 +6,10 @@
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
-#include "../DataPanel.h"
-#include "../Charts/BarChart.h"
-#include "../PresentationModels/Types.h"
+#include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Settings/Settings.h"
+#include "../Charts/BarChart.h"
+#include "../DataPanel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

@@ -1,10 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "./Enums.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "./TreeContextMenu.h"
+#include "../../Data/PresentationModels/TransactionPresentationModel.h"
+#include "../../Data/PresentationModels/AccountPresentationModel.h"
+#include "Enums.h"
+#include "TreeContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;

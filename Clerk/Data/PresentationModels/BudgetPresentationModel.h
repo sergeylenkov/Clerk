@@ -1,14 +1,13 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/BudgetModel.h"
 #include "../../Utils/Utils.h"
+#include "../Models/BudgetModel.h"
 
-using namespace Clerk::Data;
 using namespace Clerk::Utils;
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class BudgetPresentationModel {
 		public:
 			BudgetPresentationModel();

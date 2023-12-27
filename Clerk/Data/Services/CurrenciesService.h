@@ -1,13 +1,10 @@
 #pragma once
 
-#include "../Repositories/CurrenciesRepository.h"
-#include "../../UI/PresentationModels/CurrencyPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "../ExchangeRates/CBRRatesLoader.h"
+#include "../Repositories/CurrenciesRepository.h"
+#include "../PresentationModels/CurrencyPresentationModel.h"
 #include "HashService.h"
-
-using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {

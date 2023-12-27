@@ -1,8 +1,8 @@
 #pragma once
 
 #include <wx/wx.h>
+#include "../../Data/PresentationModels/ReportPresentationModel.h"
 #include "Enums.h"
-#include "../PresentationModels/ReportPresentationModel.h"
 #include "TreeContextMenu.h"
 
 using namespace Clerk::Data;

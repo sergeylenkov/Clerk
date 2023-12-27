@@ -1,8 +1,8 @@
 #pragma once
 
 #include <wx/datetime.h>
-#include "./AccountsService.h"
-#include "./CurrenciesService.h"
+#include "AccountsService.h"
+#include "CurrenciesService.h"
 #include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::Data;

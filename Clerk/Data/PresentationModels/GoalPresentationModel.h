@@ -1,14 +1,13 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/GoalModel.h"
 #include "../../Utils/Utils.h"
+#include "../Models/GoalModel.h"
 
-using namespace Clerk::Data;
 using namespace Clerk::Utils;
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class GoalPresentationModel {
 		public:
 			GoalPresentationModel();

@@ -2,11 +2,12 @@
 
 #include <wx/wx.h>
 #include "../../Utils/Utils.h"
-#include "../PresentationModels/BudgetPresentationModel.h"
+#include "../../Data/PresentationModels/BudgetPresentationModel.h"
 #include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class DashboardBudgetsPanel : public wxPanel
 {

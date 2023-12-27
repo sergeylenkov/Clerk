@@ -1,17 +1,14 @@
 #pragma once
 
 #include <wx/datetime.h>
+#include "../../Utils/Types.h"
 #include "../Repositories/SchedulersRepository.h"
 #include "../Services/AccountsService.h"
 #include "../Services/TagsService.h"
 #include "../Services/TransactionsService.h"
-#include "../../UI/PresentationModels/SchedulerPresentationModel.h"
-#include "../../UI/PresentationModels/TransactionPresentationModel.h"
-#include "../../Utils/Types.h"
+#include "../PresentationModels/SchedulerPresentationModel.h"
+#include "../PresentationModels/TransactionPresentationModel.h"
 #include "HashService.h"
-
-using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Data {

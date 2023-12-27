@@ -1,15 +1,12 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../PresentationModels/CurrencyPresentationModel.h"
-#include "../../Data/Models/AccountModel.h"
-#include "../../Data/Enums.h"
-
-using namespace Clerk::Data;
-using namespace Clerk::UI;
+#include "CurrencyPresentationModel.h"
+#include "../Models/AccountModel.h"
+#include "../Enums.h"
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class AccountPresentationModel {
 		public:
 			AccountPresentationModel();

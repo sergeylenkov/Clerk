@@ -1,6 +1,6 @@
 #include "GoalPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 GoalPresentationModel::GoalPresentationModel() {
 	id = -1;

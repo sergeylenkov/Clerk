@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
-#include "../PresentationModels/BudgetPresentationModel.h"
+#include "../../Data/PresentationModels/BudgetPresentationModel.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;

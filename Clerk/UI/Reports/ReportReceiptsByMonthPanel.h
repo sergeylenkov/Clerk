@@ -11,7 +11,7 @@
 #include "../DataPanel.h"
 #include "../Charts/LineChart.h"
 #include "../Controls/AccountsComboBox.h"
-#include "../PresentationModels/Types.h"
+#include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/Settings/Settings.h"
 #include "ExpensesTooltipPopup.h"

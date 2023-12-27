@@ -3,11 +3,13 @@
 #include <wx/wx.h>
 #include "../../Utils/Utils.h"
 #include "../../Utils/Types.h"
-#include "../PresentationModels/Types.h"
+#include "../../Data/PresentationModels/Types.h"
+#include "../../Data/PresentationModels/AccountPresentationModel.h"
 #include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class DashboardExpensesPanel : public wxPanel
 {

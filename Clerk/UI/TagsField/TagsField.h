@@ -2,13 +2,11 @@
 
 #include "wx/wx.h"
 #include "../../Data/Services/TagsService.h"
-#include "../PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "TagsPopup.h"
 #include "TagPanel.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 class TagsField : public wxPanel
 {

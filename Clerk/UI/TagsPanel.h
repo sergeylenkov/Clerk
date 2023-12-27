@@ -4,8 +4,8 @@
 #include <wx/listctrl.h>
 #include <thread>
 #include <memory>
+#include "../../Data/PresentationModels/TagPresentationModel.h"
 #include "DataPanel.h"
-#include "./PresentationModels/TagPresentationModel.h"
 
 using namespace Clerk::Data;
 

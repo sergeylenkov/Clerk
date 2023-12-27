@@ -1,6 +1,6 @@
 #include "ReportPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 ReportPresentationModel::ReportPresentationModel(ReportModel& report) {
 	this->id = report.id;

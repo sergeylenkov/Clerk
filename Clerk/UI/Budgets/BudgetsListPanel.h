@@ -2,7 +2,6 @@
 
 #include <wx/wx.h>
 #include "../DataListPanel.h"
-#include "../PresentationModels/BudgetPresentationModel.h"
 #include "../Controls/DataViewProgressRender.h"
 #include "BudgetsListDataModel.h"
 #include "BudgetContextMenu.h"

@@ -1,5 +1,7 @@
 #include "NotificationsViewModel.h"
 
+using namespace Clerk::UI;
+
 NotificationsViewModel::NotificationsViewModel(AlertsService& alertsService, TransactionsService& transactionsService, SchedulersService& schedulersService):
 	_alertsService(alertsService),
 	_transactionsService(transactionsService),

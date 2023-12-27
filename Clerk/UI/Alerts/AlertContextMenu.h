@@ -3,12 +3,11 @@
 #include <wx/wx.h>
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
-#include "../PresentationModels/AlertPresentationModel.h"
+#include "../../Data/PresentationModels/AlertPresentationModel.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
-using namespace Clerk::UI;
 using namespace Clerk::Utils;
 
 namespace Clerk {

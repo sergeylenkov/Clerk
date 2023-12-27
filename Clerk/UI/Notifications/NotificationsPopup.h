@@ -7,8 +7,6 @@
 #include "NotificationAlertPanel.h"
 #include "NotificationSchedulerPanel.h"
 
-using namespace Clerk::UI;
-
 class NotificationsPopup : public wxPopupTransientWindow
 {
 public:

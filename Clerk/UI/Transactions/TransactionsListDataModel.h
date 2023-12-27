@@ -1,13 +1,14 @@
 #pragma once
 
 #include <wx/dataview.h>
-#include "../PresentationModels/TransactionPresentationModel.h"
+#include "../../Data/PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Utils.h"
 #include "../../Utils/Types.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class TransactionsListDataModel : public wxDataViewIndexListModel
 {

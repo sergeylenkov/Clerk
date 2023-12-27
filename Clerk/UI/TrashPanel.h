@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 #include <wx/listctrl.h>
 #include "DataPanel.h"
-#include "./PresentationModels/TransactionPresentationModel.h"
+#include "../Data/PresentationModels/TransactionPresentationModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

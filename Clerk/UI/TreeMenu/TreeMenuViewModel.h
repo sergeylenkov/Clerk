@@ -3,13 +3,8 @@
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/ReportsService.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../PresentationModels/ReportPresentationModel.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/EventEmitter.h"
-
-using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace UI {

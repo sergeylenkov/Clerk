@@ -1,6 +1,6 @@
 #include "TagPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 TagPresentationModel::TagPresentationModel() {
 	id = -1;

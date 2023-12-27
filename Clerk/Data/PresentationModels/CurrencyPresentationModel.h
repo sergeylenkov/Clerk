@@ -1,12 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/CurrencyModel.h"
-
-using namespace Clerk::Data;
+#include "../Models/CurrencyModel.h"
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class CurrencyPresentationModel {
 		public:
 			CurrencyPresentationModel();

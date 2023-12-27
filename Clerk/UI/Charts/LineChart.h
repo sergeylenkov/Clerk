@@ -7,10 +7,9 @@
 #include <map>
 #include <functional>
 #include <numeric>
-#include "../PresentationModels/Types.h"
+#include "../../Data/PresentationModels/Types.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 class LineChart : public wxPanel
 {

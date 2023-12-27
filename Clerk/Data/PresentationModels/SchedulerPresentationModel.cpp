@@ -1,6 +1,6 @@
 #include "SchedulerPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 SchedulerPresentationModel::SchedulerPresentationModel() {
 	id = -1;

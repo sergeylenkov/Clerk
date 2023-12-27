@@ -231,13 +231,13 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\AccountPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\AccountPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\SchedulerPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\SchedulerPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\TransactionPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\TransactionPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\TransactionsService.cpp">
@@ -249,7 +249,7 @@
     <ClCompile Include="Data\Models\BudgetModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\BudgetPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\BudgetPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\BudgetsService.cpp">
@@ -267,7 +267,7 @@
     <ClCompile Include="UI\TreeMenu\TreeContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\TagPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Models\TagModel.cpp">
@@ -291,19 +291,19 @@
     <ClCompile Include="Commands\CommandsReceiver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\ReportPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\ReportPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\ReportsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\AlertPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\AlertPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\AlertsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\GoalPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\GoalPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\GoalsService.cpp">
@@ -384,7 +384,7 @@
     <ClCompile Include="UI\MainMenu\MainMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp">
+    <ClCompile Include="Data\PresentationModels\CurrencyPresentationModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Data\Services\CurrenciesService.cpp">
@@ -740,13 +740,13 @@
     <ClInclude Include="Data\Services\SchedulersService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\AccountPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\AccountPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\SchedulerPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\SchedulerPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\TransactionPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\TransactionPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\TransactionsService.h">
@@ -761,13 +761,13 @@
     <ClInclude Include="Data\Models\BudgetModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\BudgetPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\BudgetPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\BudgetsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\Types.h">
+    <ClInclude Include="Data\PresentationModels\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Icons.h">
@@ -788,7 +788,7 @@
     <ClInclude Include="UI\TreeMenu\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\TagPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\TagPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Models\TagModel.h">
@@ -815,19 +815,19 @@
     <ClInclude Include="Commands\CommandsReceiver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\ReportPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\ReportPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\ReportsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\AlertPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\AlertPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\AlertsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\GoalPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\GoalPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\GoalsService.h">
@@ -923,7 +923,7 @@
     <ClInclude Include="UI\Account\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h">
+    <ClInclude Include="Data\PresentationModels\CurrencyPresentationModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Data\Services\CurrenciesService.h">

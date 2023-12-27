@@ -1,14 +1,14 @@
 #pragma once
+
 #include <wx/wx.h>
 #include <wx/popupwin.h>
 #include <wx/listctrl.h>
 #include <vector>
 #include <memory>
-#include "../PresentationModels/TagPresentationModel.h"
+#include "../../Data/PresentationModels/TagPresentationModel.h"
 #include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 
 class TagsPopup : public wxPopupWindow
 {

@@ -3,7 +3,7 @@
 #include <wx/dataview.h>
 #include "../../Utils/Utils.h"
 #include "../../Utils/Types.h"
-#include "../PresentationModels/AlertPresentationModel.h"
+#include "../../Data/PresentationModels/AlertPresentationModel.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;

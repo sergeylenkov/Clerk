@@ -1,15 +1,13 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/TransactionModel.h"
-#include "./TagPresentationModel.h"
-#include "./AccountPresentationModel.h"
 #include "../../Utils/Types.h"
-
-using namespace Clerk::Data;
+#include "../Models/TransactionModel.h"
+#include "TagPresentationModel.h"
+#include "AccountPresentationModel.h"
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class TransactionPresentationModel {
 		public:
 			TransactionPresentationModel();

@@ -1,17 +1,16 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Data/Models/SchedulerModel.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/Utils.h"
-#include "./TagPresentationModel.h"
-#include "./AccountPresentationModel.h"
+#include "../Models/SchedulerModel.h"
+#include "TagPresentationModel.h"
+#include "AccountPresentationModel.h"
 
-using namespace Clerk::Data;
 using namespace Clerk::Utils;
 
 namespace Clerk {
-	namespace UI {
+	namespace Data {
 		class SchedulerPresentationModel {
 		public:
 			SchedulerPresentationModel();

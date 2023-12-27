@@ -1,6 +1,6 @@
 #include "BudgetPresentationModel.h"
 
-using namespace Clerk::UI;
+using namespace Clerk::Data;
 
 BudgetPresentationModel::BudgetPresentationModel() {
 	id = -1;

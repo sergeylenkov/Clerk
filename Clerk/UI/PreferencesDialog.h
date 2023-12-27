@@ -2,15 +2,13 @@
 
 #include <wx/wx.h>
 #include <utility>
-#include <array>
-#include "../UI/PresentationModels/CurrencyPresentationModel.h"
-#include "../Data/Settings.h"
 #include "../Data/DataContext.h"
-#include "../Data/Settings.h"
 #include "../Utils/Types.h"
+#include "../Utils/Settings/Settings.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
+using namespace Clerk::Utils;
 
 class PreferencesDialog : public wxFrame
 {

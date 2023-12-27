@@ -3,14 +3,13 @@
 #include <wx/wx.h>
 #include <wx/notebook.h>
 #include <memory>
-#include "../../Defines.h"
-#include "../../Data/Settings.h"
 #include "../../Data/DataContext.h"
 #include "../../Commands/CommandsInvoker.h"
-#include "Enums.h"
-#include "./TabsContextMenu.h"
 #include "../../Utils/Icons.h"
-#include "../TagsPanel.h"
+#include "../../Utils/Settings/Settings.h"
+#include "../DataPanel.h"
+#include "Enums.h"
+#include "TabsContextMenu.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;

@@ -2,7 +2,7 @@
 
 using namespace Clerk::UI;
 
-NewTransactionButton::NewTransactionButton(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size):
+NewTransactionButton::NewTransactionButton(NewTransactionViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size):
 	DropDownButton(parent, icons.GetIconByType(IconType::Plus).GetBitmap(wxSize(24, 24)), _("Add Transaction"), pos, size),
 	_viewModel(viewModel),
 	_commandsInvoker(commandsInvoker),

@@ -9,10 +9,10 @@
 #include <map>
 #include "../DataPanel.h"
 #include "../Charts/LineChart.h"
-#include "ExpensesTooltipPopup.h"
-#include "../../Data/Settings.h"
 #include "../PresentationModels/Types.h"
 #include "../../Utils/Types.h"
+#include "../../Utils/Settings/Settings.h"
+#include "ExpensesTooltipPopup.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

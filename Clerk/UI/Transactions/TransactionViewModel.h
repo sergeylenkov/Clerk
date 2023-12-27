@@ -1,15 +1,12 @@
 #pragma once
 
-#include <wx/tokenzr.h>
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../PresentationModels/TagPresentationModel.h"
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/TagsService.h"
 #include "../../Data/Services/CurrenciesService.h"
-#include "../../Data/Settings.h"
-#include "./Enums.h"
+#include "../../Utils/Settings/Settings.h"
 #include "../../Utils/Types.h"
+#include "./Enums.h"
 
 using namespace Clerk::Data;
 

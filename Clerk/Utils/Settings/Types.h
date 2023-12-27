@@ -1,6 +1,5 @@
 #pragma once
 
-
 struct TabSettings {
 	int type;
 	int id;

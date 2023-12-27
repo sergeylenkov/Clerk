@@ -7,11 +7,11 @@
 #include <wx/valnum.h>
 #include <wx/defs.h>
 #include <functional>
-#include "../../Data/Settings.h"
 #include "../../Data/DataContext.h"
 #include "../Controls/AmountField.h"
 #include "../TagsField/TagsField.h"
 #include "../../Utils/Icons.h"
+#include "../../Utils/Settings/Settings.h"
 #include "TransactionViewModel.h"
 
 using namespace Clerk::Data;

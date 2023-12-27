@@ -7,19 +7,19 @@
 #include <wx/dataview.h>
 #include <wx/display.h>
 #include <memory>
-#include "../Data/DataContext.h"
 #include "../Defines.h"
-#include "../Data/Settings.h"
-#include "TreeMenu/TreeMenu.h"
-#include "Controls/NewTransactionButton.h"
-#include "Statusbar/Statusbar.h"
-#include "MainMenu/MainMenu.h"
-#include "Notifications/NotificationsButton.h"
+#include "../Data/DataContext.h"
+#include "../Utils/Settings/Settings.h"
 #include "../Utils/Icons.h"
 #include "../Commands/CommandsInvoker.h"
 #include "../Commands/CommandsReceiver.h"
 #include "Controllers/DialogsController.h"
 #include "Controllers/TabsController.h"
+#include "TreeMenu/TreeMenu.h"
+#include "NewTransactionButton/NewTransactionButton.h"
+#include "Statusbar/Statusbar.h"
+#include "MainMenu/MainMenu.h"
+#include "Notifications/NotificationsButton.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

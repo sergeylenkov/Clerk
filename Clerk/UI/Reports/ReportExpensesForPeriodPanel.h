@@ -8,8 +8,8 @@
 #include <map>
 #include "../DataPanel.h"
 #include "../Charts/BarChart.h"
-#include "../../Data/Settings.h"
 #include "../PresentationModels/Types.h"
+#include "../../Utils/Settings/Settings.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

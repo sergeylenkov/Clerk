@@ -8,14 +8,13 @@
 #include <algorithm>
 #include <map>
 #include <set>
-#include <sstream>
 #include "../DataPanel.h"
 #include "../Charts/LineChart.h"
-#include "ExpensesTooltipPopup.h"
-#include "../../Data/Settings.h"
 #include "../Controls/AccountsComboBox.h"
 #include "../PresentationModels/Types.h"
 #include "../../Utils/Types.h"
+#include "../../Utils/Settings/Settings.h"
+#include "ExpensesTooltipPopup.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

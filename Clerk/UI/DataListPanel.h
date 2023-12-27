@@ -1,8 +1,8 @@
 #pragma once
 
 #include "wx/dataview.h"
-#include "./DataPanel.h"
-#include "../Data/Settings.h"
+#include "DataPanel.h"
+#include "../Utils/Settings/Settings.h"
 
 class DataListPanel : public DataPanel
 {

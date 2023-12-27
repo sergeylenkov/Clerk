@@ -3,9 +3,7 @@
 #include <wx/wx.h>
 #include <wx/treectrl.h>
 #include <memory>
-#include "../../Data/Settings.h"
-#include "../../Utils/Icons.h"
-#include "../../Commands/CommandsInvoker.h"
+#include "../../Utils/Settings/Settings.h"
 #include "TreeMenuItemData.h"
 #include "AccountContextMenu.h"
 #include "AccountsContextMenu.h"

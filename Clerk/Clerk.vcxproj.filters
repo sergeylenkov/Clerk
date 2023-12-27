@@ -57,7 +57,7 @@
     <ClCompile Include="UI\TagsField\TagsPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Data\Settings.cpp">
+    <ClCompile Include="Utils\Settings\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controls\DropDownButton.cpp">
@@ -276,10 +276,10 @@
     <ClCompile Include="Data\Services\TagsService.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\NewTransactionButton.cpp">
+    <ClCompile Include="UI\NewTransactionButton\NewTransactionButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\MainMenu.cpp">
+    <ClCompile Include="UI\MainMenu\MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\QuitCommand.cpp">
@@ -381,7 +381,7 @@
     <ClCompile Include="UI\Tabs\TabsContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\TransactionsMenuViewModel.cpp">
+    <ClCompile Include="UI\MainMenu\MainMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\PresentationModels\CurrencyPresentationModel.cpp">
@@ -513,6 +513,9 @@
     <ClCompile Include="UI\DataListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\NewTransactionButton\NewTransactionViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -563,7 +566,7 @@
     <ClInclude Include="UI\TagsField\TagsPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Settings.h">
+    <ClInclude Include="Utils\Settings\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\DropDownButton.h">
@@ -794,10 +797,10 @@
     <ClInclude Include="Data\Services\TagsService.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\NewTransactionButton.h">
+    <ClInclude Include="UI\NewTransactionButton\NewTransactionButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\MainMenu.h">
+    <ClInclude Include="UI\MainMenu\MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Command.h">
@@ -914,7 +917,7 @@
     <ClInclude Include="UI\Tabs\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\TransactionsMenuViewModel.h">
+    <ClInclude Include="UI\MainMenu\MainMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Account\Enums.h">
@@ -935,7 +938,7 @@
     <ClInclude Include="UI\Dashboard\DashboardReceiptsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Data\Types.h">
+    <ClInclude Include="Utils\Settings\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TagsField\TagsField.h">
@@ -1068,6 +1071,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\DataListPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\MainMenu\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\NewTransactionButton\NewTransactionViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

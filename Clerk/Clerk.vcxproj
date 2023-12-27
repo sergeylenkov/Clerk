@@ -113,6 +113,7 @@
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
     <ClCompile Include="UI\DataListPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalContextMenu.cpp" />
+    <ClCompile Include="UI\NewTransactionButton\NewTransactionViewModel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp" />
@@ -139,12 +140,12 @@
     <ClCompile Include="UI\Statusbar\StatusbarViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TagPresentationModel.cpp" />
     <ClCompile Include="UI\Transactions\TransactionViewModel.cpp" />
-    <ClCompile Include="UI\ViewModels\TransactionsMenuViewModel.cpp" />
+    <ClCompile Include="UI\MainMenu\MainMenuViewModel.cpp" />
     <ClCompile Include="UI\PresentationModels\TransactionPresentationModel.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
     <ClCompile Include="UI\Controllers\TabsController.cpp" />
-    <ClCompile Include="UI\Controls\NewTransactionButton.cpp" />
+    <ClCompile Include="UI\NewTransactionButton\NewTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
     <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp" />
@@ -152,7 +153,7 @@
     <ClCompile Include="UI\Alerts\AlertDialog.cpp" />
     <ClCompile Include="UI\Alerts\AlertsListDataModel.cpp" />
     <ClCompile Include="UI\Alerts\AlertsListPanel.cpp" />
-    <ClCompile Include="UI\Controls\MainMenu.cpp" />
+    <ClCompile Include="UI\MainMenu\MainMenu.cpp" />
     <ClCompile Include="UI\Tabs\TabsContextMenu.cpp" />
     <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsAmountRender.cpp" />
@@ -206,7 +207,7 @@
     <ClCompile Include="UI\Charts\PieChart.cpp" />
     <ClCompile Include="Data\Models\ReportModel.cpp" />
     <ClCompile Include="UI\Reports\ReportExpensesByMonthPanel.cpp" />
-    <ClCompile Include="Data\Settings.cpp" />
+    <ClCompile Include="Utils\Settings\Settings.cpp" />
     <ClCompile Include="UI\TagsField\TagsPopup.cpp" />
     <ClCompile Include="Data\Models\TransactionModel.cpp" />
     <ClCompile Include="Clerk.cpp" />
@@ -280,7 +281,7 @@
     <ClInclude Include="Data\Services\SchedulersService.h" />
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
-    <ClInclude Include="Data\Types.h" />
+    <ClInclude Include="Utils\Settings\Types.h" />
     <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
     <ClInclude Include="UI\Alerts\Enums.h" />
     <ClInclude Include="UI\Budgets\BudgetContextMenu.h" />
@@ -290,6 +291,8 @@
     <ClInclude Include="UI\DataListPanel.h" />
     <ClInclude Include="UI\Goals\GoalContextMenu.h" />
     <ClInclude Include="UI\Goals\Enums.h" />
+    <ClInclude Include="UI\MainMenu\Enums.h" />
+    <ClInclude Include="UI\NewTransactionButton\NewTransactionViewModel.h" />
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h" />
     <ClInclude Include="UI\Notifications\NotificationsButton.h" />
     <ClInclude Include="UI\Notifications\NotificationSchedulerPanel.h" />
@@ -318,13 +321,13 @@
     <ClInclude Include="UI\Statusbar\StatusbarViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TagPresentationModel.h" />
     <ClInclude Include="UI\Transactions\TransactionViewModel.h" />
-    <ClInclude Include="UI\ViewModels\TransactionsMenuViewModel.h" />
+    <ClInclude Include="UI\MainMenu\MainMenuViewModel.h" />
     <ClInclude Include="UI\PresentationModels\TransactionPresentationModel.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenuViewModel.h" />
     <ClInclude Include="UI\PresentationModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
     <ClInclude Include="UI\Controllers\TabsController.h" />
-    <ClInclude Include="UI\Controls\NewTransactionButton.h" />
+    <ClInclude Include="UI\NewTransactionButton\NewTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />
     <ClInclude Include="UI\Controls\CheckboxComboPopup.h" />
@@ -332,7 +335,7 @@
     <ClInclude Include="UI\Alerts\AlertDialog.h" />
     <ClInclude Include="UI\Alerts\AlertsListDataModel.h" />
     <ClInclude Include="UI\Alerts\AlertsListPanel.h" />
-    <ClInclude Include="UI\Controls\MainMenu.h" />
+    <ClInclude Include="UI\MainMenu\MainMenu.h" />
     <ClInclude Include="UI\Tabs\Enums.h" />
     <ClInclude Include="UI\Tabs\TabsContextMenu.h" />
     <ClInclude Include="UI\Transactions\Enums.h" />
@@ -391,7 +394,7 @@
     <ClInclude Include="UI\Charts\PieChart.h" />
     <ClInclude Include="Data\Models\ReportModel.h" />
     <ClInclude Include="UI\Reports\ReportExpensesByMonthPanel.h" />
-    <ClInclude Include="Data\Settings.h" />
+    <ClInclude Include="Utils\Settings\Settings.h" />
     <ClInclude Include="UI\TagsField\TagsPopup.h" />
     <ClInclude Include="Data\Models\TransactionModel.h" />
     <ClInclude Include="Clerk.h" />

@@ -1,5 +1,7 @@
 ﻿#include "Settings.h"
 
+using namespace Clerk::Utils;
+
 void Settings::Open(char *configName) {
 	wxFileName path(wxStandardPaths::Get().GetUserDataDir(), configName);
 	_fileName = path.GetFullPath();

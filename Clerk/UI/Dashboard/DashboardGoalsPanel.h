@@ -2,9 +2,8 @@
 
 #include <wx/wx.h>
 #include "../PresentationModels/Types.h"
-#include "../PresentationModels/GoalPresentationModel.h"
-#include "../ViewModels/DashboardViewModel.h"
 #include "../../Utils/Utils.h"
+#include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

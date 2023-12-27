@@ -1,24 +1,26 @@
 #pragma once
 
-#include "../PresentationModels/GoalPresentationModel.h"
+#include "../PresentationModels/BudgetPresentationModel.h"
 #include "../PresentationModels/AccountPresentationModel.h"
-#include "../../Data/Services/GoalsService.h"
+#include "../../Data/Services/BudgetsService.h"
 #include "../../Data/Services/AccountsService.h"
-#include "./Enums.h"
 #include "../../Utils/Types.h"
+#include "./Enums.h"
 
 using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace UI {
-		class GoalViewModel {
+		class BudgetViewModel {
 		public:
-			GoalViewModel(GoalsService& goalsService, AccountsService& accountsService);
+			BudgetViewModel(BudgetsService& budgetService, AccountsService& accountsService);
 
-			void SetGoalId(int id);
+			void SetBudgetId(int id);
 			bool IsNew();
 			void SetName(wxString name);
 			wxString GetName();
+			void SetPeriod(BudgetPeriod period);
+			BudgetPeriod GetPeriod();
 			void SetDate(wxDateTime date);
 			wxDateTime GetDate();
 			void SetAmount(float amount);
@@ -28,10 +30,10 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> GetAccounts();
 
 			void Save();
-			std::function<void(GoalViewModelField field)> OnUpdate;
+			std::function<void(BudgetViewModelField field)> OnUpdate;
 
 		private:
-			GoalsService& _goalsService;
+			BudgetsService& _budgetsService;
 			AccountsService& _accountsService;
 
 			int _id;

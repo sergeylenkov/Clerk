@@ -23,9 +23,9 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	SetupCommands();
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
-	_statusViewModel = new StatusViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
-	TransactionsMenuViewModel* mainMenuViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
-	TransactionsMenuViewModel* addButtonViewModel = new TransactionsMenuViewModel(_context.GetTransactionsService());
+	_statusViewModel = new StatusbarViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
+	MainMenuViewModel* mainMenuViewModel = new MainMenuViewModel(_context.GetTransactionsService());
+	MainMenuViewModel* addButtonViewModel = new MainMenuViewModel(_context.GetTransactionsService());
 	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService(), _context.GetSchedulersService());
 
 	_mainMenu = new MainMenu(*mainMenuViewModel, *_commandsInvoker, _icons);
@@ -72,7 +72,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_treeMenu = new TreeMenu(*treeViewModel, *_commandsInvoker, _icons, splitterLeftPanel);
 
-	boxSizer->Add(_treeMenu, 1, wxEXPAND | wxALL);
+	boxSizer->Add(_treeMenu, 1, wxEXPAND);
 	splitterLeftPanel->SetSizer(boxSizer);		
 
 	wxPanel* splitterRightPanel = new wxPanel(_splitter);
@@ -82,14 +82,14 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_tabsPanel = new TabsPanel(splitterRightPanel, _context, *_commandsInvoker, _icons);
 
-	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND | wxALL);
+	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND);
 	rightPanelSizer->Layout();
 
 	_splitter->SplitVertically(splitterLeftPanel, splitterRightPanel, 1);	
 
 	_statusbar = new Statusbar(*_statusViewModel, _icons, this, wxDefaultPosition, FromDIP(wxSize(-1, 20)));
 
-	mainSizer->Add(_statusbar, 0, wxEXPAND, 0);
+	mainSizer->Add(_statusbar, 0, wxEXPAND);
 
 	_splitter->SetSashPosition(Settings::GetInstance().GetTreeMenuWidth());
 

@@ -3,7 +3,7 @@
 #include <wx/wx.h>
 #include "../../Utils/Utils.h"
 #include "../PresentationModels/BudgetPresentationModel.h"
-#include "../ViewModels/DashboardViewModel.h"
+#include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

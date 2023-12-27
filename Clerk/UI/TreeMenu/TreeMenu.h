@@ -4,18 +4,15 @@
 #include <wx/treectrl.h>
 #include <memory>
 #include "../../Data/Settings.h"
-#include "../ViewModels/TreeMenuViewModel.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../PresentationModels/ReportPresentationModel.h"
 #include "../../Utils/Icons.h"
+#include "../../Commands/CommandsInvoker.h"
 #include "TreeMenuItemData.h"
 #include "AccountContextMenu.h"
 #include "AccountsContextMenu.h"
 #include "DefaultContextMenu.h"
 #include "ReportContextMenu.h"
 #include "Enums.h"
-#include "../../Commands/CommandsInvoker.h"
+#include "TreeMenuViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

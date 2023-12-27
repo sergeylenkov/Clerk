@@ -3,14 +3,9 @@
 #include <wx/valnum.h>
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
-#include <sstream>
-#include <iostream>
-#include <algorithm>
-#include "../PresentationModels/AlertPresentationModel.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../ViewModels/AlertViewModel.h"
 #include "../Controls/AmountField.h"
 #include "../../Utils/Icons.h"
+#include "AlertViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

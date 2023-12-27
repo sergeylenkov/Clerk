@@ -22,5 +22,15 @@ namespace Clerk {
 			Amount,
 			Last
 		};
+
+		enum class TransactionViewModelField {
+			FromAccount = 0,
+			ToAccount = 1,
+			FromAmount = 2,
+			ToAmount = 3,
+			Date = 4,
+			Tags = 5,
+			Note = 6,
+		};
 	}
 }

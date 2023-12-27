@@ -3,11 +3,9 @@
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
-#include "../PresentationModels/GoalPresentationModel.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../ViewModels/GoalViewModel.h"
 #include "../Controls/AmountField.h"
 #include "../../Utils/Icons.h"
+#include "GoalViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

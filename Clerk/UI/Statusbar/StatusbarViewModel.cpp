@@ -1,8 +1,8 @@
-#include "StatusViewModel.h"
+#include "StatusbarViewModel.h"
 
 using namespace Clerk::UI;
 
-StatusViewModel::StatusViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates) :
+StatusbarViewModel::StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates) :
 	_accountingService(accountingService),
 	_currenciesService(currenciesService)
 {
@@ -16,19 +16,19 @@ StatusViewModel::StatusViewModel(AccountingService& accountingService, Currencie
 	});
 }
 
-StatusViewModel::~StatusViewModel() {
+StatusbarViewModel::~StatusbarViewModel() {
 	delete _eventEmitter;
 }
 
-void StatusViewModel::OnUpdate(std::function<void()> fn) {
+void StatusbarViewModel::OnUpdate(std::function<void()> fn) {
 	_eventEmitter->Subscribe(fn);
 }
 
-float StatusViewModel::GetBalance() {
+float StatusbarViewModel::GetBalance() {
 	return _accountingService.GetBalance();
 }
 
-float StatusViewModel::GetReceipts() {
+float StatusbarViewModel::GetReceipts() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
@@ -38,7 +38,7 @@ float StatusViewModel::GetReceipts() {
 	return _accountingService.GetReceipts(fromDate, toDate);
 }
 
-float StatusViewModel::GetExpenses() {
+float StatusbarViewModel::GetExpenses() {
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
@@ -48,7 +48,7 @@ float StatusViewModel::GetExpenses() {
 	return _accountingService.GetExpenses(fromDate, toDate);
 }
 
-wxString StatusViewModel::GetExchangeRates() {
+wxString StatusbarViewModel::GetExchangeRates() {
 	auto baseCurrency = _currenciesService.GetBaseCurrency();
 
 	wxString rates("");
@@ -57,21 +57,21 @@ wxString StatusViewModel::GetExchangeRates() {
 		auto currency = _currenciesService.GetById(id);
 		float rate = _currenciesService.GetExchangeRate(*currency, *baseCurrency);
 
-		rates = rates + wxNumberFormatter::ToString(rate, 2) + wxT(" ") + currency->sign + wxT("  ");
+		rates = rates + Format::Amount(rate) + wxT(" ") + currency->sign + wxT("  ");
 	}
 
 	return rates.Trim();
 }
 
-std::shared_ptr<CurrencyPresentationModel> StatusViewModel::GetBaseCurrency() {
+std::shared_ptr<CurrencyPresentationModel> StatusbarViewModel::GetBaseCurrency() {
 	return _currenciesService.GetBaseCurrency();
 }
 
-void StatusViewModel::SetIsExchangeRatesLoading(boolean isLoading) {
+void StatusbarViewModel::SetIsExchangeRatesLoading(boolean isLoading) {
 	_isExchangeRatesLoading = isLoading;
 	_eventEmitter->Emit();
 }
 
-boolean StatusViewModel::GetIsExchangeRatesLoading() {
+boolean StatusbarViewModel::GetIsExchangeRatesLoading() {
 	return _isExchangeRatesLoading;
 }

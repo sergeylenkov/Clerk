@@ -4,8 +4,6 @@
 #include "../../Data/Services/AlertsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/SchedulersService.h"
-#include "../../UI/PresentationModels/AlertPresentationModel.h"
-#include "../../UI/PresentationModels/SchedulerPresentationModel.h"
 #include "../../Utils/EventEmitter.h"
 #include "../../Utils/Types.h"
 

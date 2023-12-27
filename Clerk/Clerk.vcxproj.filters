@@ -30,7 +30,7 @@
     <ClCompile Include="UI\TrashPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\AccountDialog.cpp">
+    <ClCompile Include="UI\Account\AccountDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TagsPanel.cpp">
@@ -81,7 +81,7 @@
     <ClCompile Include="UI\Dashboard\DashboardGoalsPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controls\Statusbar.cpp">
+    <ClCompile Include="UI\Statusbar\Statusbar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\PreferencesDialog.cpp">
@@ -324,19 +324,19 @@
     <ClCompile Include="Commands\AboutCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\DashboardViewModel.cpp">
+    <ClCompile Include="UI\Dashboard\DashboardViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\StatusViewModel.cpp">
+    <ClCompile Include="UI\Statusbar\StatusbarViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\TreeMenuViewModel.cpp">
+    <ClCompile Include="UI\TreeMenu\TreeMenuViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\Transaction\NewTransactionCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\TransactionViewModel.cpp">
+    <ClCompile Include="UI\Transactions\TransactionViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Utils\EventEmitter.cpp">
@@ -351,7 +351,7 @@
     <ClCompile Include="Commands\Account\EditAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\AccountViewModel.cpp">
+    <ClCompile Include="UI\Account\AccountViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp">
@@ -408,7 +408,7 @@
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\NotificationsViewModel.cpp">
+    <ClCompile Include="UI\Notifications\NotificationsViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp">
@@ -426,7 +426,7 @@
     <ClCompile Include="Commands\Alert\EditAlertCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\AlertViewModel.cpp">
+    <ClCompile Include="UI\Alerts\AlertViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp">
@@ -489,13 +489,13 @@
     <ClCompile Include="Commands\Account\RestoreAccountCommand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\BudgetViewModel.cpp">
+    <ClCompile Include="UI\Budgets\BudgetViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Goals\GoalContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\ViewModels\GoalViewModel.cpp">
+    <ClCompile Include="UI\Goals\GoalViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\Goal\DeleteGoalCommand.cpp">
@@ -533,7 +533,7 @@
     <ClInclude Include="UI\TrashPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\AccountDialog.h">
+    <ClInclude Include="UI\Account\AccountDialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
@@ -587,7 +587,7 @@
     <ClInclude Include="UI\Dashboard\DashboardGoalsPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Controls\Statusbar.h">
+    <ClInclude Include="UI\Statusbar\Statusbar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\PreferencesDialog.h">
@@ -848,19 +848,19 @@
     <ClInclude Include="Commands\AboutCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\DashboardViewModel.h">
+    <ClInclude Include="UI\Dashboard\DashboardViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\StatusViewModel.h">
+    <ClInclude Include="UI\Statusbar\StatusbarViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\TreeMenuViewModel.h">
+    <ClInclude Include="UI\TreeMenu\TreeMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Transaction\NewTransactionCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\TransactionViewModel.h">
+    <ClInclude Include="UI\Transactions\TransactionViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Utils\EventEmitter.h">
@@ -878,7 +878,7 @@
     <ClInclude Include="Commands\Account\EditAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\AccountViewModel.h">
+    <ClInclude Include="UI\Account\AccountViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h">
@@ -917,7 +917,7 @@
     <ClInclude Include="UI\ViewModels\TransactionsMenuViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\Enums.h">
+    <ClInclude Include="UI\Account\Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\PresentationModels\CurrencyPresentationModel.h">
@@ -953,7 +953,7 @@
     <ClInclude Include="UI\Notifications\NotificationsButton.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\NotificationsViewModel.h">
+    <ClInclude Include="UI\Notifications\NotificationsViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Notifications\NotificationAlertPanel.h">
@@ -974,7 +974,7 @@
     <ClInclude Include="Commands\Alert\EditAlertCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\AlertViewModel.h">
+    <ClInclude Include="UI\Alerts\AlertViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\Enums.h">
@@ -1043,7 +1043,7 @@
     <ClInclude Include="Commands\Account\RestoreAccountCommand.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\BudgetViewModel.h">
+    <ClInclude Include="UI\Budgets\BudgetViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Goals\Enums.h">
@@ -1052,7 +1052,7 @@
     <ClInclude Include="UI\Goals\GoalContextMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\ViewModels\GoalViewModel.h">
+    <ClInclude Include="UI\Goals\GoalViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\Goal\DeleteGoalCommand.h">

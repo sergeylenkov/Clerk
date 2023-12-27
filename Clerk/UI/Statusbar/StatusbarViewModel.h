@@ -1,16 +1,17 @@
 #pragma once
 
-#include <wx/numformatter.h>
+#include "../../Utils/Utils.h"
 #include "../../Data/Services/AccountingService.h"
 #include "../../Data/Services/CurrenciesService.h"
-#include "../../UI/PresentationModels/CurrencyPresentationModel.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {
-		class StatusViewModel {
+		class StatusbarViewModel {
 		public:
-			StatusViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates);
-			~StatusViewModel();
+			StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates);
+			~StatusbarViewModel();
 
 			float GetBalance();
 			float GetReceipts();

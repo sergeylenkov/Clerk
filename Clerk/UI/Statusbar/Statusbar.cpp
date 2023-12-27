@@ -1,6 +1,6 @@
 #include "Statusbar.h"
 
-Statusbar::Statusbar(StatusViewModel& viewModel, Icons& icons, wxWindow *parent, const wxPoint &pos, const wxSize &size):
+Statusbar::Statusbar(StatusbarViewModel& viewModel, Icons& icons, wxWindow *parent, const wxPoint &pos, const wxSize &size):
 	wxPanel(parent, wxID_ANY, pos, size, wxBORDER_NONE | wxTAB_TRAVERSAL, ""),
 	_viewModel(viewModel),
 	_icons(icons)

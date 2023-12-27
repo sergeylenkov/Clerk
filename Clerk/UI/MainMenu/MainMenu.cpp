@@ -4,7 +4,7 @@ using namespace Clerk::UI;
 
 const int transactionsOffset = 1000;
 
-MainMenu::MainMenu(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons):
+MainMenu::MainMenu(MainMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons):
 	_viewModel(viewModel),
 	_commandsInvoker(commandsInvoker),
 	_icons(icons)

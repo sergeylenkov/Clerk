@@ -2,10 +2,10 @@
 
 #include <wx/wx.h>
 #include "../PresentationModels/TransactionPresentationModel.h"
-#include "../ViewModels/TransactionsMenuViewModel.h"
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
 #include "Enums.h"
+#include "MainMenuViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Commands;
@@ -16,11 +16,11 @@ namespace Clerk {
 	namespace UI {
 		class MainMenu : public wxMenuBar {
 		public:
-			MainMenu(TransactionsMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons);
+			MainMenu(MainMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons);
 			~MainMenu();
 
 		private:
-			TransactionsMenuViewModel& _viewModel;
+			MainMenuViewModel& _viewModel;
 			CommandsInvoker& _commandsInvoker;
 			Icons& _icons;			
 			wxMenu* _menuFile;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/numformatter.h>
 #include "../DataPanel.h"
 #include "./DashboardSchedulersPanel.h"
 #include "./DashboardBudgetsPanel.h"
@@ -11,7 +10,7 @@
 #include "./DashboardBalancePanel.h"
 #include "./DashboardGoalsPanel.h"
 #include "./DashboardDebtsPanel.h"
-#include "../ViewModels/DashboardViewModel.h"
+#include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 

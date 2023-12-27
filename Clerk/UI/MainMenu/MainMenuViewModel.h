@@ -1,17 +1,16 @@
 #pragma once
 
 #include "../../Data/Services/TransactionsService.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
 #include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
 
 namespace Clerk {
 	namespace UI {
-		class TransactionsMenuViewModel {
+		class MainMenuViewModel {
 		public:
-			TransactionsMenuViewModel(TransactionsService& transactionsService);
-			~TransactionsMenuViewModel();
+			MainMenuViewModel(TransactionsService& transactionsService);
+			~MainMenuViewModel();
 
 			shared_vector<TransactionPresentationModel> GetRecents();
 

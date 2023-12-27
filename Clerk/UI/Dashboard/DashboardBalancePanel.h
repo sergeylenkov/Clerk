@@ -4,7 +4,7 @@
 #include <wx/graphics.h>
 #include "../../Utils/Utils.h"
 #include "../PresentationModels/Types.h"
-#include "../ViewModels/DashboardViewModel.h"
+#include "DashboardViewModel.h"
 
 using namespace Clerk::Utils;
 using namespace Clerk::Data;

@@ -11,10 +11,8 @@
 #include "../../Data/DataContext.h"
 #include "../Controls/AmountField.h"
 #include "../TagsField/TagsField.h"
-#include "../PresentationModels/AccountPresentationModel.h"
-#include "../PresentationModels/TransactionPresentationModel.h"
-#include "../ViewModels/TransactionViewModel.h"
 #include "../../Utils/Icons.h"
+#include "TransactionViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

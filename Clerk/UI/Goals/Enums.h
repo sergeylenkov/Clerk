@@ -19,5 +19,12 @@ namespace Clerk {
 			Progress,
 			Last
 		};
+
+		enum class GoalViewModelField {
+			Name = 0,
+			Date = 1,
+			Amount = 2,
+			Accounts = 3
+		};
 	}
 }

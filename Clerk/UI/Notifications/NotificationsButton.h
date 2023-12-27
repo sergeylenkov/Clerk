@@ -1,10 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../ViewModels/NotificationsViewModel.h"
 #include "../Controls/ToolbarButton.h"
 #include "../../Utils/Icons.h"
 #include "NotificationsPopup.h"
+#include "NotificationsViewModel.h"
 
 using namespace Clerk::Utils;
 

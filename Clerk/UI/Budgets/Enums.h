@@ -18,5 +18,13 @@ namespace Clerk {
 			Progress,
 			Last
 		};
+
+		enum class BudgetViewModelField {
+			Name = 0,
+			Period = 1,
+			Date = 2,
+			Amount = 3,
+			Accounts = 4
+		};
 	}
 }

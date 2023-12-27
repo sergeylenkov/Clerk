@@ -3,9 +3,9 @@
 #include <wx/listctrl.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
-#include "../ViewModels/BudgetViewModel.h"
 #include "../Controls/AmountField.h"
 #include "../../Utils/Icons.h"
+#include "BudgetViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

@@ -2,8 +2,7 @@
 
 #include <wx/wx.h>
 #include <map>
-#include "../PresentationModels/SchedulerPresentationModel.h"
-#include "../ViewModels/DashboardViewModel.h"
+#include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
 

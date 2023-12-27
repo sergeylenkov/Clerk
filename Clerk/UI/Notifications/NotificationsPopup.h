@@ -4,8 +4,6 @@
 #include <vector>
 #include <memory>
 #include "../../Utils/Types.h"
-#include "../PresentationModels/AlertPresentationModel.h"
-#include "../PresentationModels/SchedulerPresentationModel.h"
 #include "NotificationAlertPanel.h"
 #include "NotificationSchedulerPanel.h"
 

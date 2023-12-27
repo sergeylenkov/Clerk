@@ -3,14 +3,10 @@
 #include <wx/wx.h>
 #include <wx/valnum.h>
 #include <wx/bmpcbox.h>
-#include <functional>
-#include "../Data/Settings.h"
-#include "./PresentationModels/CurrencyPresentationModel.h"
-#include "./PresentationModels/AccountPresentationModel.h"
-#include "./PresentationModels/TransactionPresentationModel.h"
-#include "./ViewModels/AccountViewModel.h"
-#include "../Utils/Icons.h"
-#include "./Controls/AmountField.h"
+#include "../../Utils/Icons.h"
+#include "../../Utils/Utils.h"
+#include "../Controls/AmountField.h"
+#include "AccountViewModel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

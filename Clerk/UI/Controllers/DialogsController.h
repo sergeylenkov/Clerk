@@ -4,7 +4,7 @@
 #include "../AboutDialog.h"
 #include "../PreferencesDialog.h"
 #include "../Transactions/TransactionDialog.h"
-#include "../AccountDialog.h"
+#include "../Account/AccountDialog.h"
 #include "../Alerts/AlertDialog.h"
 #include "../Budgets/BudgetDialog.h"
 #include "../Goals/GoalDialog.h"

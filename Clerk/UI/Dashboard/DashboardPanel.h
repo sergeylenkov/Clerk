@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../DataPanel.h"
+#include "../DataPanel/DataPanel.h"
 #include "./DashboardSchedulersPanel.h"
 #include "./DashboardBudgetsPanel.h"
 #include "./DashboardExpensesPanel.h"

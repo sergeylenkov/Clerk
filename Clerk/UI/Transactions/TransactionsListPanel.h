@@ -11,7 +11,7 @@
 #include <optional> 
 #include "../../Data/PresentationModels/TransactionPresentationModel.h"
 #include "../../Data/PresentationModels/AccountPresentationModel.h"
-#include "../DataListPanel.h"
+#include "../DataPanel/DataListPanel.h"
 #include "TransactionsListDataModel.h"
 #include "TransactionsTagsRender.h"
 #include "TransactionsAmountRender.h"

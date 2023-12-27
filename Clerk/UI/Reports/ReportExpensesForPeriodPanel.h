@@ -9,7 +9,7 @@
 #include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Settings/Settings.h"
 #include "../Charts/BarChart.h"
-#include "../DataPanel.h"
+#include "../DataPanel/DataPanel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

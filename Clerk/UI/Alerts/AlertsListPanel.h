@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../DataListPanel.h"
+#include "../DataPanel/DataListPanel.h"
 #include "AlertsListDataModel.h"
 #include "AlertContextMenu.h"
 

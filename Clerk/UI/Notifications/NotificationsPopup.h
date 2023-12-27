@@ -1,8 +1,6 @@
 #pragma once
 #include <wx/wx.h>
 #include <wx/popupwin.h>
-#include <vector>
-#include <memory>
 #include "../../Utils/Types.h"
 #include "NotificationAlertPanel.h"
 #include "NotificationSchedulerPanel.h"

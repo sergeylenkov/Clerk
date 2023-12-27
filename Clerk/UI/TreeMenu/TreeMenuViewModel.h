@@ -1,5 +1,6 @@
 #pragma once
 
+#include <functional>
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/ReportsService.h"

@@ -2,7 +2,7 @@
 
 #include <wx/wx.h>
 #include <wx/listctrl.h>
-#include "DataPanel.h"
+#include "DataPanel/DataPanel.h"
 #include "../Data/PresentationModels/TransactionPresentationModel.h"
 
 using namespace Clerk::Data;

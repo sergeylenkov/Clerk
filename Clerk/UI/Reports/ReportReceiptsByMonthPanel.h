@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <map>
 #include <set>
-#include "../DataPanel.h"
+#include "../DataPanel/DataPanel.h"
 #include "../Charts/LineChart.h"
 #include "../Controls/AccountsComboBox.h"
 #include "../../Data/PresentationModels/Types.h"

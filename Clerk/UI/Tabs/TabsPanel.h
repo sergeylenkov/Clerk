@@ -7,7 +7,7 @@
 #include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
 #include "../../Utils/Settings/Settings.h"
-#include "../DataPanel.h"
+#include "../DataPanel/DataPanel.h"
 #include "Enums.h"
 #include "TabsContextMenu.h"
 

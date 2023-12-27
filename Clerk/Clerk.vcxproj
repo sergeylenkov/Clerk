@@ -111,7 +111,7 @@
     <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp" />
     <ClCompile Include="UI\Controls\DataViewProgressRender.cpp" />
     <ClCompile Include="UI\Controls\ToolbarButton.cpp" />
-    <ClCompile Include="UI\DataListPanel.cpp" />
+    <ClCompile Include="UI\DataPanel\DataListPanel.cpp" />
     <ClCompile Include="UI\Goals\GoalContextMenu.cpp" />
     <ClCompile Include="UI\NewTransactionButton\NewTransactionViewModel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationAlertPanel.cpp" />
@@ -188,7 +188,7 @@
     <ClCompile Include="UI\TrashPanel.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardPanel.cpp" />
     <ClCompile Include="UI\Tabs\TabsPanel.cpp" />
-    <ClCompile Include="UI\DataPanel.cpp" />
+    <ClCompile Include="UI\DataPanel\DataPanel.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\AccountsContextMenu.cpp" />
     <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp" />
@@ -288,7 +288,7 @@
     <ClInclude Include="UI\Budgets\Enums.h" />
     <ClInclude Include="UI\Controls\DataViewProgressRender.h" />
     <ClInclude Include="UI\Controls\ToolbarButton.h" />
-    <ClInclude Include="UI\DataListPanel.h" />
+    <ClInclude Include="UI\DataPanel\DataListPanel.h" />
     <ClInclude Include="UI\Goals\GoalContextMenu.h" />
     <ClInclude Include="UI\Goals\Enums.h" />
     <ClInclude Include="UI\MainMenu\Enums.h" />
@@ -373,7 +373,7 @@
     <ClInclude Include="UI\TrashPanel.h" />
     <ClInclude Include="UI\Dashboard\DashboardPanel.h" />
     <ClInclude Include="UI\Tabs\TabsPanel.h" />
-    <ClInclude Include="UI\DataPanel.h" />
+    <ClInclude Include="UI\DataPanel\DataPanel.h" />
     <ClInclude Include="UI\TreeMenu\AccountContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\AccountsContextMenu.h" />
     <ClInclude Include="UI\TreeMenu\DefaultContextMenu.h" />

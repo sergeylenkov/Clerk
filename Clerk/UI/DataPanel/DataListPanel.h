@@ -2,7 +2,7 @@
 
 #include "wx/dataview.h"
 #include "DataPanel.h"
-#include "../Utils/Settings/Settings.h"
+#include "../../Utils/Settings/Settings.h"
 
 class DataListPanel : public DataPanel
 {

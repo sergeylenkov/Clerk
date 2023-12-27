@@ -5,7 +5,7 @@
 #include <thread>
 #include <memory>
 #include "../../Data/PresentationModels/TagPresentationModel.h"
-#include "DataPanel.h"
+#include "DataPanel/DataPanel.h"
 
 using namespace Clerk::Data;
 

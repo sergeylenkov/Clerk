@@ -1,10 +1,10 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../UI/Tabs/Enums.h"
-#include "../Data/DataContext.h"
-#include "../Commands/CommandsInvoker.h"
-#include "../Utils/Icons.h"
+#include "../Tabs/Enums.h"
+#include "../../Data/DataContext.h"
+#include "../../Commands/CommandsInvoker.h"
+#include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;

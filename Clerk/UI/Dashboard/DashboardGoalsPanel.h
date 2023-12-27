@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <vector>
 #include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Utils.h"
 #include "DashboardViewModel.h"

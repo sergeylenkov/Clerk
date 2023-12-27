@@ -1,8 +1,9 @@
 #pragma once
 
-#include <set>
 #include <wx/wx.h>
 #include <wx/combo.h>
+#include <set>
+#include <functional>
 #include "../../Data/PresentationModels/AccountPresentationModel.h"
 #include "../../Utils/Types.h"
 #include "CheckboxComboPopup.h"

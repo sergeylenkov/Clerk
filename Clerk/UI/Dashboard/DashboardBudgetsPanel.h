@@ -18,7 +18,7 @@ public:
 
 private:
 	DashboardViewModel* _viewModel{};
-	std::vector<std::shared_ptr<BudgetPresentationModel>> _budgets;
+	shared_vector<BudgetPresentationModel> _budgets;
 	int _daysCount = 0;
 	int _currentDay = 0;
 

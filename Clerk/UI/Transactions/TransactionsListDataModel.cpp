@@ -4,7 +4,7 @@ TransactionsListDataModel::TransactionsListDataModel()
 {
 }
 
-void TransactionsListDataModel::SetItems(std::vector<std::shared_ptr<TransactionPresentationModel>> transactions) {
+void TransactionsListDataModel::SetItems(shared_vector<TransactionPresentationModel> transactions) {
 	_transactions = transactions;
 	Reset(_transactions.size());
 }

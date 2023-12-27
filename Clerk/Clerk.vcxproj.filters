@@ -21,7 +21,7 @@
     <ClCompile Include="UI\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\DataPanel.cpp">
+    <ClCompile Include="UI\DataPanel\DataPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Tabs\TabsPanel.cpp">
@@ -510,7 +510,7 @@
     <ClCompile Include="UI\Controls\DataViewProgressRender.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\DataListPanel.cpp">
+    <ClCompile Include="UI\DataPanel\DataListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\NewTransactionButton\NewTransactionViewModel.cpp">
@@ -527,7 +527,7 @@
     <ClInclude Include="UI\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\DataPanel.h">
+    <ClInclude Include="UI\DataPanel\DataPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Tabs\TabsPanel.h">
@@ -1070,7 +1070,7 @@
     <ClInclude Include="UI\Controls\DataViewProgressRender.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\DataListPanel.h">
+    <ClInclude Include="UI\DataPanel\DataListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\MainMenu\Enums.h">

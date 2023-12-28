@@ -2,10 +2,10 @@
 
 using namespace Clerk::UI;
 
-TreeMenu::TreeMenu(TreeMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent):
+TreeMenu::TreeMenu(TreeMenuViewModel& viewModel, DataContext& context, Icons& icons, wxWindow* parent):
 	wxPanel(parent),
 	_viewModel(viewModel),
-	_commandsInvoker(commandsInvoker),
+	_context(context),
 	_icons(icons)
 {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
@@ -247,22 +247,22 @@ void TreeMenu::OnTreeSpecItemMenu(wxTreeEvent &event) {
 
 		if (account) {
 			auto transactions = _viewModel.GetRecentsTransactions(*account);
-			menu = new AccountContextMenu(_commandsInvoker, _icons, *account, transactions);
+			menu = new AccountContextMenu(_context, _icons, *account, transactions);
 		}
 	}
 	else if (item->type == TreeMenuItemType::Accounts || item->type == TreeMenuItemType::Deposits || item->type == TreeMenuItemType::Receipts
 		|| item->type == TreeMenuItemType::Expenses || item->type == TreeMenuItemType::Virtual || item->type == TreeMenuItemType::Debts) {
-		menu = new AccountsContextMenu(_commandsInvoker, _icons, item->type);
+		menu = new AccountsContextMenu(_context, _icons, item->type);
 	}
 	else if (item->type == TreeMenuItemType::Report) {
 		auto report = GetContextMenuReport();
 
 		if (report) {
-			menu = new ReportContextMenu(_commandsInvoker, _icons, *report);
+			menu = new ReportContextMenu(_context, _icons, *report);
 		}
 	}
 	else if (item->type != TreeMenuItemType::Reports) {
-		menu = new DefaultContextMenu(_commandsInvoker, _icons, item->type);
+		menu = new DefaultContextMenu(_context, _icons, item->type);
 	}
 
 	if (menu != nullptr) {

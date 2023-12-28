@@ -1,7 +1,7 @@
 #include "DefaultContextMenu.h"
 
-DefaultContextMenu::DefaultContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type):
-	TreeContextMenu(commandsInvoker, icons),
+DefaultContextMenu::DefaultContextMenu(DataContext& context, Icons& icons, TreeMenuItemType type):
+	TreeContextMenu(context, icons),
 	_type(type)
 {		
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
@@ -67,5 +67,5 @@ void DefaultContextMenu::OnMenuSelect(wxCommandEvent& event) {
 			break;
 	}
 
-	_commandsInvoker.OpenTab(tabType);
+	_context.GetCommandsInvoker().OpenTab(tabType);
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Commands/CommandsInvoker.h"
+#include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 
 using namespace Clerk::Commands;
@@ -11,10 +11,10 @@ namespace Clerk {
 	namespace UI {
 		class TreeContextMenu : public wxMenu {
 		public:
-			TreeContextMenu(CommandsInvoker& commandsInvoker, Icons& icons);
+			TreeContextMenu(DataContext& context, Icons& icons);
 			
 		protected:
-			CommandsInvoker& _commandsInvoker;
+			DataContext& _context;
 			Icons& _icons;
 		};
 	}

@@ -2,8 +2,8 @@
 
 const int reportOffset = 1000;
 
-ReportContextMenu::ReportContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, ReportPresentationModel& report):
-	TreeContextMenu(commandsInvoker, icons),
+ReportContextMenu::ReportContextMenu(DataContext& context, Icons& icons, ReportPresentationModel& report):
+	TreeContextMenu(context, icons),
 	_report(report)
 {
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
@@ -13,5 +13,5 @@ ReportContextMenu::ReportContextMenu(CommandsInvoker& commandsInvoker, Icons& ic
 }
 
 void ReportContextMenu::OnMenuSelect(wxCommandEvent& event) {
-	_commandsInvoker.OpenReportTab(_report.id);
+	_context.GetCommandsInvoker().OpenReportTab(_report.id);
 }

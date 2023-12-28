@@ -12,7 +12,7 @@ namespace Clerk {
 	namespace UI {
 		class DefaultContextMenu : public TreeContextMenu {
 		public:
-			DefaultContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type);
+			DefaultContextMenu(DataContext& context, Icons& icons, TreeMenuItemType type);
 
 		private:
 			TreeMenuItemType _type;

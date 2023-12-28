@@ -2,8 +2,8 @@
 
 const int transactionsOffset = 1000;
 
-AccountContextMenu::AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions):
-	TreeContextMenu(commandsInvoker, icons),
+AccountContextMenu::AccountContextMenu(DataContext& context, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions):
+	TreeContextMenu(context, icons),
 	_account(account)
 {
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));	
@@ -62,24 +62,24 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
-		_commandsInvoker.CopyTransaction(id - transactionsOffset);
+		_context.GetCommandsInvoker().CopyTransaction(id - transactionsOffset);
 	} else {
 		switch (static_cast<TreeContextMenuType>(id))
 		{
 			case TreeContextMenuType::NewTransaction:
-				_commandsInvoker.NewTransaction(_account.id);
+				_context.GetCommandsInvoker().NewTransaction(_account.id);
 				break;
 			case TreeContextMenuType::EditAccount:
-				_commandsInvoker.EditAccount(_account.id);
+				_context.GetCommandsInvoker().EditAccount(_account.id);
 				break;
 			case TreeContextMenuType::NewTab:
-				_commandsInvoker.OpenAccountTab(_account.id);
+				_context.GetCommandsInvoker().OpenAccountTab(_account.id);
 				break;
 			case TreeContextMenuType::ArchiveAccount:
-				_commandsInvoker.ArchiveAccount(_account.id);
+				_context.GetCommandsInvoker().ArchiveAccount(_account.id);
 				break;
 			case TreeContextMenuType::RestoreAccount:
-				_commandsInvoker.RestoreAccount(_account.id);
+				_context.GetCommandsInvoker().RestoreAccount(_account.id);
 				break;
 			default:
 				break;

@@ -12,8 +12,7 @@ namespace Clerk {
 	namespace Commands {
 		class CommandsReceiver: public ICommandsReceiver {
 		public:
-			CommandsReceiver();
-			CommandsReceiver(DialogsController* dialogsController, TabsPanel* tabsPanel);
+			CommandsReceiver(DialogsController& dialogsController, TabsPanel& tabsPanel);
 
 			void OpenTab(TabType type) override;
 			void OpenAccountTab(int idd) override;
@@ -36,8 +35,8 @@ namespace Clerk {
 			void OpenEditGoalDialog(int id) override;
 
 		private:
-			DialogsController* _dialogsController;
-			TabsPanel* _tabsPanel;
+			DialogsController& _dialogsController;
+			TabsPanel& _tabsPanel;
 		};
 	}
 }

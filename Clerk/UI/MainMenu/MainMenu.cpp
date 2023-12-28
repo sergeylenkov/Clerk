@@ -4,9 +4,9 @@ using namespace Clerk::UI;
 
 const int transactionsOffset = 1000;
 
-MainMenu::MainMenu(MainMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons):
+MainMenu::MainMenu(MainMenuViewModel& viewModel, DataContext& context, Icons& icons):
 	_viewModel(viewModel),
-	_commandsInvoker(commandsInvoker),
+	_context(context),
 	_icons(icons)
 {
 	_menuFile = new wxMenu();	
@@ -82,27 +82,31 @@ void MainMenu::OnMenuSelect(wxCommandEvent& event) {
 	switch (type)
 	{
 		case Clerk::UI::MainMenuType::NewTransaction:
-			_commandsInvoker.NewTransaction(-1);
+			_context.GetCommandsInvoker().NewTransaction(-1);
 			break;
 		case Clerk::UI::MainMenuType::NewAccount:
-			_commandsInvoker.NewAccount(AccountType::Deposit);
+			_context.GetCommandsInvoker().NewAccount(AccountType::Deposit);
 			break;
 		case Clerk::UI::MainMenuType::NewBudget:
+			_context.GetCommandsInvoker().NewBudget();
 			break;
 		case Clerk::UI::MainMenuType::NewScheduler:
+			_context.GetCommandsInvoker().NewScheduler();
 			break;
 		case Clerk::UI::MainMenuType::NewGoal:
+			_context.GetCommandsInvoker().NewGoal();
 			break;
 		case Clerk::UI::MainMenuType::NewAlert:
+			_context.GetCommandsInvoker().NewAlert();
 			break;
 		case Clerk::UI::MainMenuType::About:
-			_commandsInvoker.OpenAbout();
+			_context.GetCommandsInvoker().OpenAbout();
 			break;
 		case Clerk::UI::MainMenuType::Preferences:
-			_commandsInvoker.OpenPreferences();
+			_context.GetCommandsInvoker().OpenPreferences();
 			break;
 		case Clerk::UI::MainMenuType::Exit:
-			_commandsInvoker.Quit();
+			_context.GetCommandsInvoker().Quit();
 			break;
 		default:
 			break;
@@ -113,9 +117,9 @@ void MainMenu::OnTransactionSelect(wxCommandEvent& event) {
 	int id = event.GetId();
 
 	if (id >= transactionsOffset) {
-		_commandsInvoker.CopyTransaction(id - transactionsOffset);
+		_context.GetCommandsInvoker().CopyTransaction(id - transactionsOffset);
 	}
 	else if (id == static_cast<int>(MainMenuType::NewTransaction)) {
-		_commandsInvoker.NewTransaction(-1);
+		_context.GetCommandsInvoker().NewTransaction(-1);
 	}
 }

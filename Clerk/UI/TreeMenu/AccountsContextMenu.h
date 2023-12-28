@@ -14,7 +14,7 @@ namespace Clerk {
 	namespace UI {
 		class AccountsContextMenu : public TreeContextMenu {
 		public:
-			AccountsContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type);
+			AccountsContextMenu(DataContext& context, Icons& icons, TreeMenuItemType type);
 
 		private:
 			TreeMenuItemType _type;

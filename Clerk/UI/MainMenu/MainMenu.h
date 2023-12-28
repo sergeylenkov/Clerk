@@ -1,7 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
-#include "../../Commands/CommandsInvoker.h"
+#include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
 #include "Enums.h"
 #include "MainMenuViewModel.h"
@@ -15,12 +15,12 @@ namespace Clerk {
 	namespace UI {
 		class MainMenu : public wxMenuBar {
 		public:
-			MainMenu(MainMenuViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons);
+			MainMenu(MainMenuViewModel& viewModel, DataContext& context, Icons& icons);
 			~MainMenu();
 
 		private:
 			MainMenuViewModel& _viewModel;
-			CommandsInvoker& _commandsInvoker;
+			DataContext& _context;
 			Icons& _icons;			
 			wxMenu* _menuFile;
 

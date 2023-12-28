@@ -1,7 +1,7 @@
 #include "AccountsContextMenu.h"
 
-AccountsContextMenu::AccountsContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, TreeMenuItemType type):
-	TreeContextMenu(commandsInvoker, icons),
+AccountsContextMenu::AccountsContextMenu(DataContext& context, Icons& icons, TreeMenuItemType type):
+	TreeContextMenu(context, icons),
 	_type(type)
 {
 	wxMenuItem* item = Append(static_cast<int>(TreeContextMenuType::NewTab), _("Open in New Tab"));
@@ -20,15 +20,15 @@ void AccountsContextMenu::OnMenuSelect(wxCommandEvent& event) {
 
 	if (type == TreeContextMenuType::NewTab) {
 		if (_type == TreeMenuItemType::Accounts) {
-			_commandsInvoker.OpenAccountsTab();
+			_context.GetCommandsInvoker().OpenAccountsTab();
 		}
 		else {
-			_commandsInvoker.OpenAccountsTab(GetAccountTypeByMenuType(_type));
+			_context.GetCommandsInvoker().OpenAccountsTab(GetAccountTypeByMenuType(_type));
 		}
 	} else if (type == TreeContextMenuType::NewTransaction) {
-		_commandsInvoker.NewTransaction(-1);
+		_context.GetCommandsInvoker().NewTransaction(-1);
 	} else if (type == TreeContextMenuType::NewAccount) {
-		_commandsInvoker.NewAccount(GetAccountTypeByMenuType(_type));
+		_context.GetCommandsInvoker().NewAccount(GetAccountTypeByMenuType(_type));
 	}
 }
 

@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../Controls/DropDownButton.h"
-#include "../../Commands/CommandsInvoker.h"
+#include "../../Data/DataContext.h"
 #include "../../Utils/Icons.h"
+#include "../Controls/DropDownButton.h"
 #include "NewTransactionViewModel.h"
 
 using namespace Clerk::Data;
@@ -15,11 +15,11 @@ namespace Clerk {
 		class NewTransactionButton : public DropDownButton
 		{
 		public:
-			NewTransactionButton(NewTransactionViewModel& viewModel, CommandsInvoker& commandsInvoker, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size);
+			NewTransactionButton(NewTransactionViewModel& viewModel, DataContext& context, Icons& icons, wxWindow* parent, const wxPoint& pos, const wxSize& size);
 			~NewTransactionButton();
 
 		private:
-			CommandsInvoker& _commandsInvoker;
+			DataContext& _context;
 			NewTransactionViewModel& _viewModel;
 			Icons& _icons;
 

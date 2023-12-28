@@ -14,7 +14,7 @@ namespace Clerk {
 	namespace UI {
 		class ReportContextMenu : public TreeContextMenu {
 		public:
-			ReportContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, ReportPresentationModel& report);
+			ReportContextMenu(DataContext& context, Icons& icons, ReportPresentationModel& report);
 
 		private:
 			ReportPresentationModel& _report;

@@ -20,15 +20,14 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 		Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
 	}
 
-	SetupCommands();
-
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
+
 	_statusViewModel = new StatusbarViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
 	MainMenuViewModel* mainMenuViewModel = new MainMenuViewModel(_context.GetTransactionsService());
 	NewTransactionViewModel* newTransactionViewModel = new NewTransactionViewModel(_context.GetTransactionsService());
 	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService(), _context.GetSchedulersService());
 
-	_mainMenu = new MainMenu(*mainMenuViewModel, *_commandsInvoker, _icons);
+	_mainMenu = new MainMenu(*mainMenuViewModel, _context, _icons);
 
 	SetMenuBar(_mainMenu);
 
@@ -41,7 +40,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	_newTransactionButton = new NewTransactionButton(
 		*newTransactionViewModel,
-		*_commandsInvoker,
+		_context,
 		_icons,		
 		_toolbar,
 		wxDefaultPosition,
@@ -70,7 +69,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	
 	wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);	
 
-	_treeMenu = new TreeMenu(*treeViewModel, *_commandsInvoker, _icons, splitterLeftPanel);
+	_treeMenu = new TreeMenu(*treeViewModel, _context, _icons, splitterLeftPanel);
 
 	boxSizer->Add(_treeMenu, 1, wxEXPAND);
 	splitterLeftPanel->SetSizer(boxSizer);		
@@ -97,6 +96,8 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	Layout();
 
 	Centre(wxBOTH);	
+
+	SetupCommands();
 
 	_dialogsController->SetMainWindow(this);
 
@@ -134,7 +135,7 @@ MainWindow::~MainWindow()
 void MainWindow::SetupCommands() {
 	_dialogsController = new DialogsController(_context, _icons);
 
-	_commandsReceiver = new CommandsReceiver(_dialogsController, _tabsPanel);
+	_commandsReceiver = new CommandsReceiver(*_dialogsController, *_tabsPanel);
 
 	QuitCommand* quitCommand = new QuitCommand(*this);
 	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(*_commandsReceiver);

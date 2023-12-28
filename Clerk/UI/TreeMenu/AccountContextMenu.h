@@ -14,7 +14,7 @@ namespace Clerk {
 	namespace UI {
 		class AccountContextMenu : public TreeContextMenu {
 		public:
-			AccountContextMenu(CommandsInvoker& commandsInvoker, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions);
+			AccountContextMenu(DataContext& context, Icons& icons, AccountPresentationModel& account, std::vector<std::shared_ptr<TransactionPresentationModel>> transactions);
 
 		private:
 			AccountPresentationModel& _account;

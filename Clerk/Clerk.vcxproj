@@ -144,7 +144,6 @@
     <ClCompile Include="Data\PresentationModels\TransactionPresentationModel.cpp" />
     <ClCompile Include="UI\TreeMenu\TreeMenuViewModel.cpp" />
     <ClCompile Include="UI\Controllers\DialogsController.cpp" />
-    <ClCompile Include="UI\Controllers\TabsController.cpp" />
     <ClCompile Include="UI\NewTransactionButton\NewTransactionButton.cpp" />
     <ClCompile Include="UI\Controls\AmountField.cpp" />
     <ClCompile Include="UI\Controls\AccountsComboBox.cpp" />
@@ -326,7 +325,6 @@
     <ClInclude Include="UI\TreeMenu\TreeMenuViewModel.h" />
     <ClInclude Include="Data\PresentationModels\Types.h" />
     <ClInclude Include="UI\Controllers\DialogsController.h" />
-    <ClInclude Include="UI\Controllers\TabsController.h" />
     <ClInclude Include="UI\NewTransactionButton\NewTransactionButton.h" />
     <ClInclude Include="UI\Controls\AmountField.h" />
     <ClInclude Include="UI\Controls\AccountsComboBox.h" />

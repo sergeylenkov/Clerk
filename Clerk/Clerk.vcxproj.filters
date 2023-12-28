@@ -363,9 +363,6 @@
     <ClCompile Include="UI\TreeMenu\DefaultContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Controllers\TabsController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="UI\Transactions\TransactionContextMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -891,9 +888,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\TreeMenu\DefaultContextMenu.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="UI\Controllers\TabsController.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Transactions\TransactionContextMenu.h">

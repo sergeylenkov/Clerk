@@ -3,7 +3,7 @@
 #include <optional>
 #include "ICommandsReceiver.h"
 #include "../UI/Controllers/DialogsController.h"
-#include "../UI/Controllers/TabsController.h"
+#include "../UI/Tabs/TabsPanel.h"
 
 using namespace Clerk::UI;
 using namespace Clerk::Data;
@@ -13,14 +13,14 @@ namespace Clerk {
 		class CommandsReceiver: public ICommandsReceiver {
 		public:
 			CommandsReceiver();
-			CommandsReceiver(DialogsController* dialogsController, TabsController* tabsController);
+			CommandsReceiver(DialogsController* dialogsController, TabsPanel* tabsPanel);
 
-			void OpenPreferencesDialog() override;
-			void OpenAboutDialog() override;
 			void OpenTab(TabType type) override;
 			void OpenAccountTab(int idd) override;
 			void OpenAccountsTab(std::optional<AccountType> type) override;
 			void OpenReportTab(int id) override;
+			void OpenPreferencesDialog() override;
+			void OpenAboutDialog() override;			
 			void NewTransaction(int id) override;
 			void CopyTransaction(int id) override;
 			void SplitTransaction(int id) override;
@@ -37,7 +37,7 @@ namespace Clerk {
 
 		private:
 			DialogsController* _dialogsController;
-			TabsController* _tabsController;
+			TabsPanel* _tabsPanel;
 		};
 	}
 }

@@ -7,7 +7,6 @@
 #include "../Utils/Settings/Settings.h"
 
 using namespace Clerk::Data;
-using namespace Clerk::UI;
 using namespace Clerk::Utils;
 
 class PreferencesDialog : public wxFrame

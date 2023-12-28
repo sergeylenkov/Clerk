@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/wx.h>
+#include <functional>
 #include "../../Utils/Icons.h"
 #include "Enums.h"
 
@@ -13,8 +14,8 @@ namespace Clerk {
 		public:
 			TabsContextMenu(Icons& icons, int tabId, bool isLeftEnabled, bool isRightEnabled, bool isCloseEnabled);
 
-			std::function<void(int tabId)> OnLeft;
-			std::function<void(int tabId)> OnRight;
+			std::function<void(int tabId)> OnMoveLeft;
+			std::function<void(int tabId)> OnMoveRight;
 			std::function<void(int tabId)> OnClose;
 
 		private:

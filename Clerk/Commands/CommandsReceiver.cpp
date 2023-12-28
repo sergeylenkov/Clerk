@@ -6,11 +6,27 @@ CommandsReceiver::CommandsReceiver() {
 
 }
 
-CommandsReceiver::CommandsReceiver(DialogsController* dialogsController, TabsController* tabsController):
+CommandsReceiver::CommandsReceiver(DialogsController* dialogsController, TabsPanel* tabsPanel):
 	_dialogsController( dialogsController),
-	_tabsController(tabsController)
+	_tabsPanel(tabsPanel)
 {
 	
+}
+
+void CommandsReceiver::OpenTab(TabType type) {
+	_tabsPanel->OpenTab(type);
+}
+
+void CommandsReceiver::OpenAccountTab(int id) {
+	_tabsPanel->OpenAccountTab(id);
+}
+
+void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
+	_tabsPanel->OpenAccountsTab(type);
+}
+
+void CommandsReceiver::OpenReportTab(int id) {
+	_tabsPanel->OpenReportTab(id);
 }
 
 void CommandsReceiver::OpenPreferencesDialog() {
@@ -19,22 +35,6 @@ void CommandsReceiver::OpenPreferencesDialog() {
 
 void CommandsReceiver::OpenAboutDialog() {
 	_dialogsController->ShowAboutDialog();
-}
-
-void CommandsReceiver::OpenTab(TabType type) {
-	_tabsController->OpenTab(type);
-}
-
-void CommandsReceiver::OpenAccountTab(int id) {
-	_tabsController->OpenAccountTab(id);
-}
-
-void CommandsReceiver::OpenAccountsTab(std::optional<AccountType> type) {
-	_tabsController->OpenAccountsTab(type);
-}
-
-void CommandsReceiver::OpenReportTab(int id) {
-	_tabsController->OpenReportTab(id);
 }
 
 void CommandsReceiver::NewTransaction(int id) {

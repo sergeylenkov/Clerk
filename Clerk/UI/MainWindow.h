@@ -14,7 +14,7 @@
 #include "../Commands/CommandsInvoker.h"
 #include "../Commands/CommandsReceiver.h"
 #include "Controllers/DialogsController.h"
-#include "Controllers/TabsController.h"
+#include "Tabs/TabsPanel.h"
 #include "TreeMenu/TreeMenu.h"
 #include "NewTransactionButton/NewTransactionButton.h"
 #include "Statusbar/Statusbar.h"
@@ -46,7 +46,6 @@ private:
 	CommandsInvoker* _commandsInvoker;
 	CommandsReceiver* _commandsReceiver;
 	DialogsController* _dialogsController;
-	TabsController* _tabsController;
 	StatusbarViewModel* _statusViewModel;
 
 	void SetupCommands();

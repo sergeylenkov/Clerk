@@ -42,13 +42,13 @@ void TabsContextMenu::OnMenuSelect(wxCommandEvent& event) {
 	TabsContextMenuType type = static_cast<TabsContextMenuType>(event.GetId());
 
 	if (type == TabsContextMenuType::Left) {
-		if (OnLeft) {
-			OnLeft(_tabId);
+		if (OnMoveLeft) {
+			OnMoveLeft(_tabId);
 		}
 	}
 	else if (type == TabsContextMenuType::Right) {
-		if (OnRight) {
-			OnRight(_tabId);
+		if (OnMoveRight) {
+			OnMoveRight(_tabId);
 		}
 	}
 	else {

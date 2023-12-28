@@ -3,12 +3,10 @@
 #include <wx/wx.h>
 #include "../Tabs/Enums.h"
 #include "../../Data/DataContext.h"
-#include "../../Commands/CommandsInvoker.h"
 #include "../../Utils/Icons.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::UI;
-using namespace Clerk::Commands;
 using namespace Clerk::Utils;
 
 class DataPanel : public wxPanel

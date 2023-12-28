@@ -80,7 +80,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	wxBoxSizer* rightPanelSizer = new wxBoxSizer(wxVERTICAL);
 	splitterRightPanel->SetSizer(rightPanelSizer);
 
-	_tabsPanel = new TabsPanel(splitterRightPanel, _context, *_commandsInvoker, _icons);
+	_tabsPanel = new TabsPanel(splitterRightPanel, _context, _icons);
 
 	rightPanelSizer->Add(_tabsPanel, 1, wxEXPAND);
 	rightPanelSizer->Layout();
@@ -99,9 +99,6 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	Centre(wxBOTH);	
 
 	_dialogsController->SetMainWindow(this);
-	_tabsController->SetTabsPanel(_tabsPanel);
-
-	_tabsController->RestoreLastTabs();
 
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
 		_statusViewModel->SetIsExchangeRatesLoading(true);
@@ -124,7 +121,6 @@ MainWindow::~MainWindow()
 	delete _commandsReceiver;
 	delete _commandsInvoker;
 	delete _dialogsController;
-	delete _tabsController;
 
 	Settings::GetInstance().SetWindowWidth(GetSize().GetWidth());
 	Settings::GetInstance().SetWindowHeight(GetSize().GetHeight());
@@ -137,9 +133,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::SetupCommands() {
 	_dialogsController = new DialogsController(_context, _icons);
-	_tabsController = new TabsController(_context, _icons);
 
-	_commandsReceiver = new CommandsReceiver(_dialogsController, _tabsController);
+	_commandsReceiver = new CommandsReceiver(_dialogsController, _tabsPanel);
 
 	QuitCommand* quitCommand = new QuitCommand(*this);
 	OpenPreferencesCommand* preferencesCommand = new OpenPreferencesCommand(*_commandsReceiver);

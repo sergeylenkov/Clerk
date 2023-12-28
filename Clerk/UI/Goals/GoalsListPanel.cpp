@@ -44,7 +44,7 @@ void GoalsListPanel::CreateListColumns() {
 	for (auto& column : columns) {
 		wxDataViewColumn* dataViewColumn = nullptr;
 
-		switch (static_cast<GoalsListColumns>(column.index))
+		switch (static_cast<GoalsListColumns>(column.model))
 		{
 		case GoalsListColumns::Name:
 			dataViewColumn = _list->AppendTextColumn(_("Name"), static_cast<int>(GoalsListColumns::Name), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);

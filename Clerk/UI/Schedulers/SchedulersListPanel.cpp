@@ -44,7 +44,7 @@ void SchedulersListPanel::CreateListColumns() {
 	for (auto& column : columns) {
 		wxDataViewColumn* dataViewColumn = nullptr;
 
-		switch (static_cast<SchedulersListColumns>(column.index))
+		switch (static_cast<SchedulersListColumns>(column.model))
 		{
 		case SchedulersListColumns::Name:
 			dataViewColumn = _list->AppendTextColumn(_("Name"), static_cast<int>(SchedulersListColumns::Name), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);

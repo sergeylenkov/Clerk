@@ -180,7 +180,7 @@ void TransactionsListPanel::CreateListColumns() {
 	for (auto& column : columns) {
 		wxDataViewColumn* dataViewColumn = nullptr;
 
-		switch (static_cast<TransactionsListColumns>(column.index))
+		switch (static_cast<TransactionsListColumns>(column.model))
 		{
 			case TransactionsListColumns::Date:
 				dataViewColumn = _list->AppendTextColumn(_("Date"), static_cast<int>(TransactionsListColumns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
@@ -231,8 +231,27 @@ void TransactionsListPanel::UpdateList() {
 }
 
 void TransactionsListPanel::UpdateInfo() {
+	TransactionsListType listType = GetListType();
+
 	float income = 0;
 	float outcome = 0;
+
+	for (auto& transaction : _filtered) {
+		if (listType == TransactionsListType::Receipts) {
+			income = income + transaction->fromAmount;
+		} else if (listType == TransactionsListType::Expenses) {
+			outcome = outcome + transaction->toAmount;
+		}
+		else {
+			if (transaction->fromAccount->type == AccountType::Receipt || transaction->fromAccount->type == AccountType::Deposit) {
+				income = income + transaction->toAmount;
+			}
+
+			if (transaction->toAccount->type == AccountType::Expens || transaction->toAccount->type == AccountType::Debt) {
+				outcome = outcome + transaction->fromAmount;
+			}
+		}
+	}
 
 	_transactionLabel->SetLabel(wxString::Format("%d", static_cast<int>(_filtered.size())));
 	_incomeLabel->SetLabel(Format::Amount(income));

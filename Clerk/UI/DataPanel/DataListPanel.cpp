@@ -21,8 +21,8 @@ void DataListPanel::RestoreSorting(std::vector<ListColumnsSettings> columns) {
 		ListColumnsSettings column = columns[i];
 		wxDataViewColumn* dataViewColumn = _list->GetColumn(i);
 
-		if (column.sorted) {
-			dataViewColumn->SetSortOrder(!column.sortedDesc);
+		if (column.sorted) {			
+			dataViewColumn->SetSortOrder(column.sortedAscending);
 		}
 	}
 }
@@ -33,11 +33,11 @@ std::vector<ListColumnsSettings> DataListPanel::UpdateColumnsSettings(std::vecto
 	for (unsigned int i = 0; i < columns.size(); i++) {
 		wxDataViewColumn* column = _list->GetColumn(i);		
 
-		columns[i].index = _list->GetColumnIndex(column);
+		columns[i].model = column->GetModelColumn();
 		columns[i].order = _list->GetColumnPosition(column);
 		columns[i].width = column->GetWidth();
 		columns[i].sorted = column == sortingColumn;
-		columns[i].sortedDesc = column->IsSortOrderAscending();
+		columns[i].sortedAscending = column->IsSortOrderAscending();
 	}
 
 	return columns;

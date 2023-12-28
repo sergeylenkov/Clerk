@@ -318,83 +318,83 @@ void Settings::Save() {
 void Settings::RestoreDefaultColumns() {
 	std::vector<ListColumnsSettings> columnsAll;
 
-	columnsAll.push_back({ 0, 0, wxT("From Account"), 100, false, false });
-	columnsAll.push_back({ 1, 1, wxT("To Account"), 100, false, false });
-	columnsAll.push_back({ 2, 2, wxT("Tags"), 100, false, false });
-	columnsAll.push_back({ 3, 3, wxT("Note"), 100, false, false });
-	columnsAll.push_back({ 4, 4, wxT("Date"), 100, true, false });
-	columnsAll.push_back({ 5, 5, wxT("Amount"), 100, false, false });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::Date), 0, 100, true, true });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::FromAccount), 1, 100, false, false });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::ToAccount), 2, 100, false, false });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::Tags), 3, 100, false, false });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::Note), 4, 100, false, false });
+	columnsAll.push_back({ static_cast<int>(TransactionsListColumns::Amount), 5, 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::All)] = columnsAll;
 
 	std::vector<ListColumnsSettings> columnsReceipts;
 
-	columnsReceipts.push_back({ 0, 0, wxT("To Account"), 100, false, false });
-	columnsReceipts.push_back({ 1, 1, wxT("Tags"), 100, false, false });
-	columnsReceipts.push_back({ 2, 2, wxT("Note"), 100, false, false });
-	columnsReceipts.push_back({ 3, 3, wxT("Date"), 100, true, false });
-	columnsReceipts.push_back({ 4, 4, wxT("Amount"), 100, false, false });
+	columnsReceipts.push_back({ static_cast<int>(TransactionsListColumns::Date), 0, 100, true, true });
+	columnsReceipts.push_back({ static_cast<int>(TransactionsListColumns::ToAccount), 1, 100, false, false });
+	columnsReceipts.push_back({ static_cast<int>(TransactionsListColumns::Tags), 2, 100, false, false });
+	columnsReceipts.push_back({ static_cast<int>(TransactionsListColumns::Note), 3, 100, false, false });
+	columnsReceipts.push_back({ static_cast<int>(TransactionsListColumns::Amount), 4, 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Receipts)] = columnsReceipts;
 
 	std::vector<ListColumnsSettings> columnsExpenses;
 
-	columnsExpenses.push_back({ 0, 0, wxT("From Account"), 100, false, false });
-	columnsExpenses.push_back({ 1, 1, wxT("Tags"), 100, false, false });
-	columnsExpenses.push_back({ 2, 2, wxT("Note"), 100, false, false });
-	columnsExpenses.push_back({ 3, 3, wxT("Date"), 100, true, false });
-	columnsExpenses.push_back({ 4, 4, wxT("Amount"), 100, false, false });
+	columnsExpenses.push_back({ static_cast<int>(TransactionsListColumns::Date), 0, 100, true, true });
+	columnsExpenses.push_back({ static_cast<int>(TransactionsListColumns::FromAccount), 1, 100, false, false });
+	columnsExpenses.push_back({ static_cast<int>(TransactionsListColumns::Tags), 2, 100, false, false });
+	columnsExpenses.push_back({ static_cast<int>(TransactionsListColumns::Note), 3, 100, false, false });
+	columnsExpenses.push_back({ static_cast<int>(TransactionsListColumns::Amount), 4, 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Expenses)] = columnsExpenses;
 
 	std::vector<ListColumnsSettings> columnsDeposits;
 
-	columnsDeposits.push_back({ 0, 0, wxT("From Account"), 100, false, false });
-	columnsDeposits.push_back({ 1, 1, wxT("To Account"), 100, false, false });
-	columnsDeposits.push_back({ 2, 2, wxT("Tags"), 100, false, false });
-	columnsDeposits.push_back({ 3, 3, wxT("Note"), 100, false, false });
-	columnsDeposits.push_back({ 4, 4, wxT("Date"), 100, true, false });
-	columnsDeposits.push_back({ 5, 5, wxT("Amount"), 100, false, false });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::Date), 0, 100, true, true });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::FromAccount), 1,  100, false, false });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::ToAccount), 2, 100, false, false });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::Tags), 3, 100, false, false });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::Note), 4, 100, false, false });
+	columnsDeposits.push_back({ static_cast<int>(TransactionsListColumns::Amount), 5, 100, false, false });
 
 	_transactionsListColumnsSettings[static_cast<int>(TransactionsListType::Deposits)] = columnsDeposits;
 
 	_alertsListColumnsSettings.clear();
 
-	_alertsListColumnsSettings.push_back({ 0, 0, wxT("Name"), 100, true, false });
-	_alertsListColumnsSettings.push_back({ 1, 1, wxT("Message"), 100, false, false });
-	_alertsListColumnsSettings.push_back({ 2, 2, wxT("Type"), 100, false, false });
-	_alertsListColumnsSettings.push_back({ 3, 3, wxT("Period"), 100, false, false });
-	_alertsListColumnsSettings.push_back({ 4, 4, wxT("Condition"), 100, false, false });
-	_alertsListColumnsSettings.push_back({ 5, 5, wxT("Importance"), 100, false, false });
-	_alertsListColumnsSettings.push_back({ 6, 6, wxT("Amount"), 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Name), 0, 100, true, true });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Message), 1, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Type), 2, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Period), 3, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Condition), 4, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Importance), 5, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Amount), 6, 100, false, false });
 
 	_schedulersListColumnsSettings.clear();
 
-	_schedulersListColumnsSettings.push_back({ 0, 0, wxT("Name"), 100, true, false });
-	_schedulersListColumnsSettings.push_back({ 1, 1, wxT("Type"), 100, false, false });
-	_schedulersListColumnsSettings.push_back({ 2, 2, wxT("Amount"), 100, false, false });
-	_schedulersListColumnsSettings.push_back({ 3, 3, wxT("Next Date"), 100, false, false });
-	_schedulersListColumnsSettings.push_back({ 4, 4, wxT("Days Left"), 100, false, false });
-	_schedulersListColumnsSettings.push_back({ 5, 5, wxT("Status"), 100, false, false });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::Name), 0, 100, true, true });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::Type), 1, 100, false, false });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::Status), 2, 100, false, false });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::NextDate), 3, 100, false, false });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::DaysLeft), 4, 100, false, false });
+	_schedulersListColumnsSettings.push_back({ static_cast<int>(SchedulersListColumns::Amount), 5, 100, false, false });
 
 	_budgetsListColumnsSettings.clear();
 
-	_budgetsListColumnsSettings.push_back({ 0, 0, wxT("Name"), 100, true, false });
-	_budgetsListColumnsSettings.push_back({ 1, 1, wxT("Period"), 100, false, false });
-	_budgetsListColumnsSettings.push_back({ 2, 2, wxT("Progress"), 100, false, false });
-	_budgetsListColumnsSettings.push_back({ 3, 3, wxT("Limit"), 100, false, false });
-	_budgetsListColumnsSettings.push_back({ 4, 4, wxT("Current"), 100, false, false });
-	_budgetsListColumnsSettings.push_back({ 5, 5, wxT("Remain"), 100, false, false });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Name), 0, 100, true, true });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Period), 1, 100, false, false });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Limit), 2, 100, false, false });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Current), 3, 100, false, false });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Remain), 4, 100, false, false });
+	_budgetsListColumnsSettings.push_back({ static_cast<int>(BudgetsListColumns::Progress), 5, 100, false, false });
 
 	_goalsListColumnsSettings.clear();
 
-	_goalsListColumnsSettings.push_back({ 0, 0, wxT("Name"), 100, true, false });
-	_goalsListColumnsSettings.push_back({ 1, 1, wxT("Due Date"), 100, false, false });
-	_goalsListColumnsSettings.push_back({ 2, 2, wxT("Days Remain"), 100, false, false });
-	_goalsListColumnsSettings.push_back({ 3, 3, wxT("Progress"), 100, false, false });
-	_goalsListColumnsSettings.push_back({ 4, 4, wxT("Goal"), 100, false, false });
-	_goalsListColumnsSettings.push_back({ 5, 5, wxT("Current"), 100, false, false });
-	_goalsListColumnsSettings.push_back({ 6, 6, wxT("Remain"), 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::Name), 0, 100, true, true });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::DueDate), 1, 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::DaysRemain), 2, 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::Goal), 3, 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::Current), 4, 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::Remain), 5, 100, false, false });
+	_goalsListColumnsSettings.push_back({ static_cast<int>(GoalsListColumns::Progress), 6, 100, false, false });
 }
 
 Value Settings::WriteColumnsToJson(Document& json, std::vector<ListColumnsSettings> columns) {
@@ -404,14 +404,11 @@ Value Settings::WriteColumnsToJson(Document& json, std::vector<ListColumnsSettin
 	{
 		Value columnJson(kObjectType);
 
-		Value string(column.title.c_str(), json.GetAllocator());
-
-		columnJson.AddMember("Index", column.index, json.GetAllocator());
+		columnJson.AddMember("Model", column.model, json.GetAllocator());
 		columnJson.AddMember("Order", column.order, json.GetAllocator());
-		columnJson.AddMember("Title", string, json.GetAllocator());
 		columnJson.AddMember("Width", column.width, json.GetAllocator());
 		columnJson.AddMember("Sorted", column.sorted, json.GetAllocator());
-		columnJson.AddMember("SortedDesc", column.sortedDesc, json.GetAllocator());
+		columnJson.AddMember("SortedAscending", column.sortedAscending, json.GetAllocator());
 
 		columnsJson.PushBack(columnJson, json.GetAllocator());
 	}
@@ -426,12 +423,11 @@ std::vector<ListColumnsSettings> Settings::ReadColumnsFromJson(const Value& valu
 		const Value& value = values[i];
 
 		columns.push_back({
-			value["Index"].GetInt(),
+			value["Model"].GetInt(),
 			value["Order"].GetInt(),
-			wxString::FromUTF8(value["Title"].GetString()),
 			value["Width"].GetInt(),
 			value.HasMember("Sorted") ? value["Sorted"].GetBool() : false,
-			value.HasMember("SortedDesc") ? value["SortedDesc"].GetBool() : false
+			value.HasMember("SortedAscending") ? value["SortedAscending"].GetBool() : false
 		});
 	}
 

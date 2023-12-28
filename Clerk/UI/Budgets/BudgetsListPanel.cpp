@@ -44,7 +44,7 @@ void BudgetsListPanel::CreateListColumns() {
 	for (auto& column : columns) {
 		wxDataViewColumn* dataViewColumn = nullptr;
 
-		switch (static_cast<BudgetsListColumns>(column.index))
+		switch (static_cast<BudgetsListColumns>(column.model))
 		{
 			case BudgetsListColumns::Name:
 				dataViewColumn = _list->AppendTextColumn(_("Name"), static_cast<int>(BudgetsListColumns::Name), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);

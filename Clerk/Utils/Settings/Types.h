@@ -6,12 +6,11 @@ struct TabSettings {
 };
 
 struct ListColumnsSettings {
-	int index;
+	int model;
 	int order;
-	wxString title;
 	int width;
 	bool sorted;
-	bool sortedDesc;
+	bool sortedAscending;
 };
 
 struct ListFilterSettings {

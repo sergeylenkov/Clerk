@@ -8,10 +8,16 @@
 #include "rapidjson/filewritestream.h"
 #include "rapidjson/filereadstream.h"
 #include <rapidjson/writer.h>
+#include "../../UI/Transactions/Enums.h"
+#include "../../UI/Alerts/Enums.h"
+#include "../../UI/Budgets/Enums.h"
+#include "../../UI/Goals/Enums.h"
+#include "../../UI/Schedulers/Enums.h"
 #include "../Utils.h"
 #include "Types.h"
 
 using namespace rapidjson;
+using namespace Clerk::UI;
 
 namespace Clerk {
 	namespace Utils {

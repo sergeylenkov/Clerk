@@ -12,7 +12,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_periodFilterPanel = new PeriodFilterPanel(filterPanel);
+	_periodFilterPanel = new PeriodFilterPanel(filterPanel, PeriodFilterType::Report);
 	_periodFilterPanel->OnChange = [&]() {
 		Update();
 	};
@@ -157,29 +157,34 @@ void TransactionsListPanel::CreateListColumns() {
 		{
 			case TransactionsListColumns::Date:
 				dataViewColumn = _list->AppendTextColumn(_("Date"), static_cast<int>(TransactionsListColumns::Date), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_CENTER, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
 				break;
 			case TransactionsListColumns::FromAccount:
 				dataViewColumn = _list->AppendTextColumn(_("From Account"), static_cast<int>(TransactionsListColumns::FromAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
 				break;
 			case TransactionsListColumns::ToAccount:
 				dataViewColumn = _list->AppendTextColumn(_("To Account"), static_cast<int>(TransactionsListColumns::ToAccount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
 				break;
 			case TransactionsListColumns::Tags: {
-				TransactionsTagsRender *render = new TransactionsTagsRender();
+				TransactionsTagsRender* render = new TransactionsTagsRender();
+
 
 				dataViewColumn = new wxDataViewColumn(_("Tags"), render, static_cast<int>(TransactionsListColumns::Tags), column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				_list->AppendColumn(dataViewColumn);
-				}
+			}
 				break;
 			case TransactionsListColumns::Note:
 				dataViewColumn = _list->AppendTextColumn(_("Note"), static_cast<int>(TransactionsListColumns::Note), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+
 				break;
 			case TransactionsListColumns::Amount: {
-				TransactionsAmountRender *render = new TransactionsAmountRender();
+				TransactionsAmountRender* render = new TransactionsAmountRender();
 
 				dataViewColumn = new wxDataViewColumn(_("Amount"), render, static_cast<int>(TransactionsListColumns::Amount), column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				_list->AppendColumn(dataViewColumn);				
-				}
+				_list->AppendColumn(dataViewColumn);
+			}
 				break;
 		}
 	}

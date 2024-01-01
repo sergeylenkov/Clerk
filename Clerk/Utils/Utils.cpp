@@ -81,46 +81,70 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 	switch (type)
 	{
 	case Periods::Type::CurrentWeek:
-			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
-			toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+		fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+		toDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Sun);
+		
 		break;
 
 	case Periods::Type::PreviousWeek:
-			fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
-			fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
+		fromDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+		fromDate.SetToWeekDayInSameWeek(wxDateTime::WeekDay::Mon);
 
-			toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
-			break;		
+		toDate.SetToPrevWeekDay(wxDateTime::WeekDay::Sun);
+		
+		break;
 
 	case Periods::Type::CurrentMonth:
-			fromDate.SetDay(1);
-			toDate.SetToLastMonthDay();
-			break;
+		fromDate.SetDay(1);
+		toDate.SetToLastMonthDay();
+		
+		break;
 
 	case Periods::Type::PreviousMonth:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
-			fromDate.SetDay(1);
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+		fromDate.SetDay(1);
 
-			toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
-			toDate.SetToLastMonthDay();
-			break;
+		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+		toDate.SetToLastMonthDay();
+		
+		break;
+
+	case Periods::Type::ThreeMonths:
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));
+		fromDate.SetDay(1);
+
+		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+		toDate.SetToLastMonthDay();
+		
+		break;
+
+	case Periods::Type::SixMonths:
+		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0));
+		fromDate.SetDay(1);
+
+		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
+		toDate.SetToLastMonthDay();
+		
+		break;
 
 	case Periods::Type::CurrentYear:
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
-			toDate.SetMonth(wxDateTime::Month::Dec);
-			toDate.SetDay(31);
-			break;
+		fromDate.SetMonth(wxDateTime::Month::Jan);
+		fromDate.SetDay(1);
+		toDate.SetMonth(wxDateTime::Month::Dec);
+		toDate.SetDay(31);
+		
+		break;
 
 	case Periods::Type::PreviousYear:
-			fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
-			fromDate.SetMonth(wxDateTime::Month::Jan);
-			fromDate.SetDay(1);
+		fromDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+		fromDate.SetMonth(wxDateTime::Month::Jan);
+		fromDate.SetDay(1);
 
-			toDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
-			toDate.SetMonth(wxDateTime::Month::Dec);
-			toDate.SetToLastMonthDay(wxDateTime::Month::Dec);
-			break;
+		toDate.Subtract(wxDateSpan::wxDateSpan(1, 0, 0, 0));
+		toDate.SetMonth(wxDateTime::Month::Dec);
+		toDate.SetToLastMonthDay(wxDateTime::Month::Dec);
+
+		break;
 
 		default:
 			break;

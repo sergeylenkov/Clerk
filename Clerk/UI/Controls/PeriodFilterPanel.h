@@ -7,13 +7,15 @@
 #include <functional>
 #include "../../Utils/Types.h"
 #include "../../Utils/Utils.h"
+#include "Enums.h"
 
 using namespace Clerk::Utils;
+using namespace Clerk::UI;
 
 class PeriodFilterPanel : public wxPanel
 {
 public:
-	PeriodFilterPanel(wxWindow* parent);
+	PeriodFilterPanel(wxWindow* parent, PeriodFilterType type);
 
 	void SetPeriod(int period);
 	int GetPeriod();
@@ -30,6 +32,7 @@ private:
 	wxDatePickerCtrl* _toDatePicker;
 	wxDateTime _periodFromDate;
 	wxDateTime _periodToDate;
+	PeriodFilterType _type;
 
 	void CalculatePeriod();
 	void OnPeriodSelect(wxCommandEvent& event);

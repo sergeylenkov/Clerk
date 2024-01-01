@@ -1,19 +1,31 @@
 #include "PeriodFilterPanel.h"
 
-PeriodFilterPanel::PeriodFilterPanel(wxWindow* parent): wxPanel(parent) {
+PeriodFilterPanel::PeriodFilterPanel(wxWindow* parent, PeriodFilterType type):
+	wxPanel(parent),
+	_type(type)
+{
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* periodLabel = new wxStaticText(this, wxID_ANY, _("Period:"));
 
 	wxArrayString* values = new wxArrayString();
 
-	values->Add(_("Current Week"));
-	values->Add(_("Previous Week"));
-	values->Add(_("Current Month"));
-	values->Add(_("Previous Month"));
-	values->Add(_("Current Year"));
-	values->Add(_("Previous Year"));
-	values->Add(_("Custom"));
+	if (_type == PeriodFilterType::Report) {
+		values->Add(_("3 Months"));
+		values->Add(_("6 Months"));
+		values->Add(_("Current Year"));
+		values->Add(_("Previous Year"));
+		values->Add(_("Custom"));
+	}
+	else {
+		values->Add(_("Current Week"));
+		values->Add(_("Previous Week"));
+		values->Add(_("Current Month"));
+		values->Add(_("Previous Month"));
+		values->Add(_("Current Year"));
+		values->Add(_("Previous Year"));
+		values->Add(_("Custom"));
+	}
 
 	_periodList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
 
@@ -81,42 +93,69 @@ void PeriodFilterPanel::CalculatePeriod() {
 	_fromDatePicker->Disable();
 	_toDatePicker->Disable();
 
-	switch (index)
-	{
-	case 0:
-		Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
-		break;
+	if (_type == PeriodFilterType::Report) {
+		switch (index)
+		{
+		case 0:
+			Periods::Calculate(Periods::Type::ThreeMonths, fromDate, toDate);
+			break;
 
-	case 1:
-		Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
-		break;
+		case 1:
+			Periods::Calculate(Periods::Type::SixMonths, fromDate, toDate);
+			break;
 
-	case 2:
-		Periods::Calculate(Periods::Type::CurrentMonth, fromDate, toDate);
-		break;
+		case 2:
+			Periods::Calculate(Periods::Type::CurrentYear, fromDate, toDate);
+			break;
 
-	case 3:
-		Periods::Calculate(Periods::Type::PreviousMonth, fromDate, toDate);
-		break;
+		case 3:
+			Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
+			break;
 
-	case 4:
-		Periods::Calculate(Periods::Type::CurrentYear, fromDate, toDate);
-		break;
+		default:
+			fromDate = _periodFromDate;
+			toDate = _periodToDate;
 
-	case 5:
-		Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
-		break;
+			_fromDatePicker->Enable();
+			_toDatePicker->Enable();
+			break;
+		}
+	}
+	else {
+		switch (index)
+		{
+		case 0:
+			Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
+			break;
 
-	case 6:
-		fromDate = _periodFromDate;
-		toDate = _periodToDate;
+		case 1:
+			Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
+			break;
 
-		_fromDatePicker->Enable();
-		_toDatePicker->Enable();
-		break;
+		case 2:
+			Periods::Calculate(Periods::Type::CurrentMonth, fromDate, toDate);
+			break;
 
-	default:
-		break;
+		case 3:
+			Periods::Calculate(Periods::Type::PreviousMonth, fromDate, toDate);
+			break;
+
+		case 4:
+			Periods::Calculate(Periods::Type::CurrentYear, fromDate, toDate);
+			break;
+
+		case 5:
+			Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
+			break;
+
+		default:
+			fromDate = _periodFromDate;
+			toDate = _periodToDate;
+
+			_fromDatePicker->Enable();
+			_toDatePicker->Enable();
+			break;
+		}
 	}
 
 	_fromDatePicker->SetValue(fromDate);

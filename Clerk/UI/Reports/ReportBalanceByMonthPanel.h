@@ -1,9 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/listctrl.h>
-#include <wx/datectrl.h>
-#include <wx/dateevt.h>
 #include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
@@ -12,6 +9,8 @@
 #include "../../Utils/Settings/Settings.h"
 #include "../DataPanel/DataPanel.h"
 #include "../Charts/LineChart.h"
+#include "../Controls/AccountsComboBox.h"
+#include "../Controls/PeriodFilterPanel.h"
 #include "ExpensesTooltipPopup.h"
 
 using namespace Clerk::Data;
@@ -28,23 +27,18 @@ public:
 
 private:
 	LineChart *_chart;
-	wxBitmapComboBox *_accountList;
-	wxComboBox *_periodList;
-	wxDatePickerCtrl *_fromDatePicker;
-	wxDatePickerCtrl *_toDatePicker;
+	AccountsComboBox* _accountsComboBox;
+	PeriodFilterPanel* _periodFilterPanel;
 	shared_vector<AccountPresentationModel> _accounts;
 	ExpensesTooltipPopup *_chartPopup;
 	std::vector<DateValueViewModel> _values;
-	wxDateTime _periodFromDate;
-	wxDateTime _periodToDate;
+	std::set<int> _selectedIds;
 
-	void OnAccountSelect(wxCommandEvent &event);
-	void OnDateChanged(wxDateEvent &event);
-	void OnPeriodSelect(wxCommandEvent &event);
+	void OnAccountSelect(std::set<int> ids);
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
-	void CalculatePeriod();
+	wxString GetSelectedAccounsIds();
 };

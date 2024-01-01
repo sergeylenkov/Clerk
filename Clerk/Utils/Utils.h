@@ -35,8 +35,10 @@ namespace Clerk {
 				PreviousWeek = 2,
 				CurrentMonth = 3,
 				PreviousMonth = 4,
-				CurrentYear = 5,
-				PreviousYear = 6
+				ThreeMonths = 5,
+				SixMonths = 6,
+				CurrentYear = 7,
+				PreviousYear = 8
 			};
 
 			static void Calculate(Periods::Type type, wxDateTime& fromDate, wxDateTime& toDate);

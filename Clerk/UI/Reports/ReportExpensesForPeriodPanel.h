@@ -1,15 +1,13 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/datectrl.h>
-#include <wx/dateevt.h>
-#include <wx/bmpcbox.h>
 #include <algorithm>
 #include <map>
 #include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Settings/Settings.h"
 #include "../Charts/BarChart.h"
 #include "../DataPanel/DataPanel.h"
+#include "../Controls/PeriodFilterPanel.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;
@@ -23,18 +21,11 @@ public:
 	void Update();
 
 private:
-	BarChart *chart;
-	wxComboBox *periodList;
-	wxDatePickerCtrl *fromDatePicker;
-	wxDatePickerCtrl *toDatePicker;
-	std::vector<DateValueViewModel> values = {};
-	wxDateTime periodFromDate;
-	wxDateTime periodToDate;
-
-	void OnDateChanged(wxDateEvent &event);
-	void OnPeriodSelect(wxCommandEvent &event);
+	BarChart *_chart;
+	PeriodFilterPanel* _periodFilterPanel;
+	std::vector<DateValueViewModel> _values = {};
+	
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
-	void CalculatePeriod();
 };
 

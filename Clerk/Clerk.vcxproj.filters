@@ -513,6 +513,12 @@
     <ClCompile Include="UI\NewTransactionButton\NewTransactionViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Reports\ReportExpensesAndReceiptsByMonth.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UI\Controls\PeriodFilterPanel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -1071,6 +1077,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\NewTransactionButton\NewTransactionViewModel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Reports\ReportExpensesAndReceiptsByMonth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Controls\PeriodFilterPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -12,6 +12,7 @@
 #include "../../Data/PresentationModels/TransactionPresentationModel.h"
 #include "../../Data/PresentationModels/AccountPresentationModel.h"
 #include "../DataPanel/DataListPanel.h"
+#include "../Controls/PeriodFilterPanel.h"
 #include "TransactionsListDataModel.h"
 #include "TransactionsTagsRender.h"
 #include "TransactionsAmountRender.h"
@@ -33,9 +34,7 @@ public:
 private:
 	wxObjectDataPtr<TransactionsListDataModel> _model;
 	TransactionsService* _transactionsService;
-	wxComboBox *_periodList;
-	wxDatePickerCtrl *_fromDatePicker;
-	wxDatePickerCtrl *_toDatePicker;
+	PeriodFilterPanel* _periodFilterPanel;
 	wxTextCtrl *_searchField;
 	wxStaticText *_transactionLabel;
 	wxStaticText *_incomeLabel;
@@ -57,10 +56,7 @@ private:
 	void Filter();
 	void UpdateList();
 	void UpdateInfo();
-	void OnPeriodSelect(wxCommandEvent &event);
-	void OnDateChanged(wxDateEvent &event);
 	void OnSearchChanged(wxCommandEvent &event);	
-	void CalculatePeriod();
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
 	std::shared_ptr<TransactionPresentationModel> GetTransaction();

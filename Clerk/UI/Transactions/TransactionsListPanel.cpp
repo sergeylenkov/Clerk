@@ -6,42 +6,18 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	_model = new TransactionsListDataModel();
 	_list->AssociateModel(_model.get());
 
+	int indent = FromDIP(5);
+
 	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, FromDIP(wxSize(-1, 40)));
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
-	wxBoxSizer *periodSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *periodText = new wxStaticText(filterPanel, wxID_ANY, _("Period:"));
+	_periodFilterPanel = new PeriodFilterPanel(filterPanel);
+	_periodFilterPanel->OnChange = [&]() {
+		Update();
+	};
 
-	wxArrayString *values = new wxArrayString();
-
-	values->Add(_("Current Week"));
-	values->Add(_("Previous Week"));
-	values->Add(_("Current Month"));
-	values->Add(_("Previous Month"));	
-	values->Add(_("Current Year"));
-	values->Add(_("Previous Year"));
-	values->Add(_("Custom"));
-
-	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxDefaultPosition, FromDIP(wxSize(120, 20)), *values, wxCB_DROPDOWN | wxCB_READONLY);
-
-	delete values;
-
-	int indent = FromDIP(5);
-
-	wxStaticText *fromText = new wxStaticText(filterPanel, wxID_ANY, _("From:"));
-	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
-	wxStaticText *toText = new wxStaticText(filterPanel, wxID_ANY, _("To:"));
-	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxDefaultPosition, FromDIP(wxSize(100, 20)), wxDP_DROPDOWN);
-
-	periodSizer->Add(periodText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
-	periodSizer->Add(_periodList, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
-	periodSizer->Add(fromText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
-	periodSizer->Add(_fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
-	periodSizer->Add(toText, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent * 2);
-	periodSizer->Add(_toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
-
-	filterSizer->Add(periodSizer, 1, wxALIGN_CENTER_VERTICAL);
+	filterSizer->Add(_periodFilterPanel, 1, wxALIGN_CENTER_VERTICAL);
 
 	wxBoxSizer *searchSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -86,12 +62,6 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	Layout();
 
-	_periodList->Bind(wxEVT_COMBOBOX, &TransactionsListPanel::OnPeriodSelect, this);
-	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
-	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &TransactionsListPanel::OnDateChanged, this);
-
-	_periodList->Select(0);	
-
 	_accountType = std::nullopt;
 	_balance = 0.0;
 
@@ -100,6 +70,9 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 	_subscriptionId = _transactionsService->Subscribe([&]() {
 		Update();
 	});
+
+	RestoreFilterSettings();
+	CreateListColumns();
 }
 
 TransactionsListPanel::~TransactionsListPanel() {
@@ -111,22 +84,22 @@ TransactionsListPanel::~TransactionsListPanel() {
 
 void TransactionsListPanel::SetAccount(std::shared_ptr<AccountPresentationModel> account) {
 	_account = account;
+
+	CreateListColumns();
 }
 
 void TransactionsListPanel::SetAccountType(AccountType type) {
 	_accountType = type;
+
+	CreateListColumns();
 }
 
 void TransactionsListPanel::Update() {
-	RestoreFilterSettings();
-	CalculatePeriod();	
-	CreateListColumns();
-
 	std::thread([&]()
 	{
 		_transactions.clear();
 
-		auto transactions = _transactionsService->GetForPeriod(_fromDatePicker->GetValue(), _toDatePicker->GetValue());
+		auto transactions = _transactionsService->GetForPeriod(_periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 
 		if (_account) {
 			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
@@ -278,75 +251,9 @@ void TransactionsListPanel::ShowContextMenu() {
 	delete menu;
 }
 
-void TransactionsListPanel::OnPeriodSelect(wxCommandEvent &event) {
-	SaveFilterSettings();
-
-	CalculatePeriod();
-	Update();
-}
-
-void TransactionsListPanel::OnDateChanged(wxDateEvent &event) {
-	_periodFromDate = _fromDatePicker->GetValue();
-	_periodToDate = _toDatePicker->GetValue();
-
-	SaveFilterSettings();
-	Update();
-}
-
 void TransactionsListPanel::OnSearchChanged(wxCommandEvent &event) {
 	Filter();
 	UpdateList();
-}
-
-void TransactionsListPanel::CalculatePeriod() {
-	int index = _periodList->GetSelection();
-
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
-
-	_fromDatePicker->Disable();
-	_toDatePicker->Disable();
-
-	switch (index)
-	{
-		case 0:
-			Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
-			break;
-
-		case 1:
-			Periods::Calculate(Periods::Type::CurrentWeek, fromDate, toDate);
-			break;
-
-		case 2:
-			Periods::Calculate(Periods::Type::CurrentMonth, fromDate, toDate);
-			break;
-
-		case 3:
-			Periods::Calculate(Periods::Type::PreviousMonth, fromDate, toDate);
-			break;
-
-		case 4:
-			Periods::Calculate(Periods::Type::CurrentYear, fromDate, toDate);
-			break;
-
-		case 5:
-			Periods::Calculate(Periods::Type::PreviousYear, fromDate, toDate);
-			break;
-
-		case 6:
-			fromDate = _periodFromDate;
-			toDate = _periodToDate;
-
-			_fromDatePicker->Enable();
-			_toDatePicker->Enable();
-			break;
-
-		default:
-			break;
-	}
-
-	_fromDatePicker->SetValue(fromDate);
-	_toDatePicker->SetValue(toDate);
 }
 
 void TransactionsListPanel::RestoreFilterSettings() {
@@ -363,12 +270,9 @@ void TransactionsListPanel::RestoreFilterSettings() {
 
 	ListFilterSettings settings = Settings::GetInstance().GetListFilterSettings(accountType, accountId);
 
-	_periodFromDate = settings.fromDate;
-	_periodToDate = settings.toDate;
-
-	_periodList->SetSelection(settings.period);
-
-	CalculatePeriod();
+	_periodFilterPanel->SetFromDate(settings.fromDate);
+	_periodFilterPanel->SetToDate(settings.toDate);
+	_periodFilterPanel->SetPeriod(settings.period);
 }
 
 void TransactionsListPanel::SaveFilterSettings() {
@@ -384,7 +288,7 @@ void TransactionsListPanel::SaveFilterSettings() {
 		accountType = static_cast<int>(_accountType.value());
 	}
 
-	Settings::GetInstance().SetListFilterSettings(accountType, accountId, _periodList->GetSelection(), _periodFromDate, _periodToDate);
+	Settings::GetInstance().SetListFilterSettings(accountType, accountId, _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 }
 
 std::shared_ptr<TransactionPresentationModel> TransactionsListPanel::GetTransaction() {

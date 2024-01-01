@@ -27,16 +27,16 @@ public:
 	void Update();
 
 private:
-	LineChart *chart;
-	wxBitmapComboBox *accountList;
-	wxComboBox *periodList;
-	wxDatePickerCtrl *fromDatePicker;
-	wxDatePickerCtrl *toDatePicker;
+	LineChart *_chart;
+	wxBitmapComboBox *_accountList;
+	wxComboBox *_periodList;
+	wxDatePickerCtrl *_fromDatePicker;
+	wxDatePickerCtrl *_toDatePicker;
 	shared_vector<AccountPresentationModel> _accounts;
-	ExpensesTooltipPopup *chartPopup;
-	std::vector<DateValueViewModel> values;
-	wxDateTime periodFromDate;
-	wxDateTime periodToDate;
+	ExpensesTooltipPopup *_chartPopup;
+	std::vector<DateValueViewModel> _values;
+	wxDateTime _periodFromDate;
+	wxDateTime _periodToDate;
 
 	void OnAccountSelect(wxCommandEvent &event);
 	void OnDateChanged(wxDateEvent &event);

@@ -3,7 +3,7 @@
 ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context, Icons& icons):
 	DataPanel(parent, context, icons)
 {
-	chart = new LineChart(this, wxID_ANY);
+	_chart = new LineChart(this, wxID_ANY);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -12,7 +12,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	wxStaticText *st3 = new wxStaticText(filterPanel, wxID_ANY, wxT("Account:"));
 
-	accountList = new wxBitmapComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20), 0, NULL, wxCB_READONLY);
+	_accountList = new wxBitmapComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(200, 20), 0, NULL, wxCB_READONLY);
 
 	wxStaticText *st4 = new wxStaticText(filterPanel, wxID_ANY, wxT("Period:"));
 
@@ -24,23 +24,23 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	values->Add(wxT("Previous Year"));
 	values->Add(wxT("Custom"));
 
-	periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
+	_periodList = new wxComboBox(filterPanel, wxID_ANY, "", wxPoint(0, 0), wxSize(120, 20), *values, wxCB_DROPDOWN | wxCB_READONLY);
 	delete values;
 
 	wxStaticText *st1 = new wxStaticText(filterPanel, wxID_ANY, wxT("From:"));
-	fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
+	_fromDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
 	wxStaticText *st2 = new wxStaticText(filterPanel, wxID_ANY, wxT("To:"));
-	toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
+	_toDatePicker = new wxDatePickerCtrl(filterPanel, wxID_ANY, wxDefaultDateTime, wxPoint(0, 0), wxSize(100, 20), wxDP_DROPDOWN);
 
 	filterSizer->Add(st3, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(accountList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(_accountList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st4, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(_periodList, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st1, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(_fromDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 	filterSizer->Add(st2, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-	filterSizer->Add(toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	filterSizer->Add(_toDatePicker, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	filterPanel->SetSizer(filterSizer);
 	filterPanel->Layout();
@@ -51,10 +51,10 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	chart->SetMinSize(wxSize(-1, 600));
-	chart->SetMaxSize(wxSize(-1, 600));
+	_chart->SetMinSize(wxSize(-1, 600));
+	_chart->SetMaxSize(wxSize(-1, 600));
 
-	chartSizer->Add(chart, 1, wxALIGN_CENTER_VERTICAL | wxALL, 10);
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL | wxALL, 10);
 
 	chartPanel->SetSizer(chartSizer);
 	chartPanel->Layout();
@@ -63,41 +63,24 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	this->SetSizer(mainSizer);
 
-	/*auto account = std::make_shared<AccountViewModel>();
-	account->name = wxString("All");
-	account->id = -1;
-	account->icon = -1;
-
-	_accounts.push_back(account);*/
-
 	for (auto &account : _context.GetAccountsService().GetByType(AccountType::Deposit))
 	{
 		_accounts.push_back(account);
 	}
 
-	/*for (auto &account : _accounts) {
-		int iconId = 0;
+	_chartPopup = new ExpensesTooltipPopup(this);
 
-		if (account->icon < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-			iconId = account->icon;
-		}
+	_accountList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnAccountSelect, this);
+	_periodList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnPeriodSelect, this);
+	_fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
+	_toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
 
-		accountList->Append(account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-	}*/
+	_chart->OnShowPopup = std::bind(&ReportBalanceByMonthPanel::ShowPopup, this);
+	_chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
+	_chart->OnUpdatePopup = std::bind(&ReportBalanceByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	chartPopup = new ExpensesTooltipPopup(this);
-
-	accountList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnAccountSelect, this);
-	periodList->Bind(wxEVT_COMBOBOX, &ReportBalanceByMonthPanel::OnPeriodSelect, this);
-	fromDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
-	toDatePicker->Bind(wxEVT_DATE_CHANGED, &ReportBalanceByMonthPanel::OnDateChanged, this);
-
-	chart->OnShowPopup = std::bind(&ReportBalanceByMonthPanel::ShowPopup, this);
-	chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
-	chart->OnUpdatePopup = std::bind(&ReportBalanceByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-
-	accountList->Select(0);
-	periodList->Select(3);
+	_accountList->Select(0);
+	_periodList->Select(3);
 
 	RestoreFilterSettings();
 }
@@ -107,23 +90,23 @@ ReportBalanceByMonthPanel::~ReportBalanceByMonthPanel() {
 }
 
 void ReportBalanceByMonthPanel::Update() {
-	wxDateTime fromDate = fromDatePicker->GetValue();
-	wxDateTime toDate = toDatePicker->GetValue();
+	wxDateTime fromDate = _fromDatePicker->GetValue();
+	wxDateTime toDate = _toDatePicker->GetValue();
 
-	if (accountList->GetSelection() < _accounts.size()) {
-		auto account = _accounts[accountList->GetSelection()];
+	if (_accountList->GetSelection() < _accounts.size()) {
+		auto account = _accounts[_accountList->GetSelection()];
 
-		values = _context.GetReportingService().GetBalanceByMonth(*account, fromDate, toDate);
+		_values = _context.GetReportingService().GetBalanceByMonth(*account, fromDate, toDate);
 
 		std::vector<StringValueViewModel> chartValues;
 
-		for (auto& value : values)
+		for (auto& value : _values)
 		{
 			StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
 			chartValues.push_back(chartValue);
 		}
 
-		chart->SetValues(chartValues);
+		_chart->SetValues(chartValues);
 	}
 }
 
@@ -132,8 +115,8 @@ void ReportBalanceByMonthPanel::OnAccountSelect(wxCommandEvent &event) {
 }
 
 void ReportBalanceByMonthPanel::OnDateChanged(wxDateEvent &event) {
-	periodFromDate = fromDatePicker->GetValue();
-	periodToDate = toDatePicker->GetValue();
+	_periodFromDate = _fromDatePicker->GetValue();
+	_periodToDate = _toDatePicker->GetValue();
 
 	SaveFilterSettings();
 	Update();
@@ -147,26 +130,26 @@ void ReportBalanceByMonthPanel::OnPeriodSelect(wxCommandEvent &event) {
 }
 
 void ReportBalanceByMonthPanel::ShowPopup() {
-	chartPopup->Show();
+	_chartPopup->Show();
 }
 
 void ReportBalanceByMonthPanel::HidePopup() {
-	chartPopup->Hide();
+	_chartPopup->Hide();
 }
 
 void ReportBalanceByMonthPanel::UpdatePopup(int x, int y, int index) {
 	std::vector<StringValueViewModel> popupValues;
 
-	wxDateTime date = values[index].date;
+	wxDateTime date = _values[index].date;
 
-	StringValueViewModel value = { date.Format("%B"), values[index].value };
+	StringValueViewModel value = { date.Format("%B"), _values[index].value };
 
 	popupValues.push_back(value);
 
-	wxPoint pos = chart->ClientToScreen(wxPoint(x, y));
-	chartPopup->SetPosition(pos);
+	wxPoint pos = _chart->ClientToScreen(wxPoint(x, y));
+	_chartPopup->SetPosition(pos);
 
-	chartPopup->Update(date.Format("%B"), popupValues);
+	_chartPopup->Update(date.Format("%B"), popupValues);
 }
 
 void ReportBalanceByMonthPanel::RestoreFilterSettings() {
@@ -196,13 +179,13 @@ void ReportBalanceByMonthPanel::SaveFilterSettings() {
 }
 
 void ReportBalanceByMonthPanel::CalculatePeriod() {
-	int index = periodList->GetSelection();
+	int index = _periodList->GetSelection();
 
 	wxDateTime fromDate = wxDateTime::Now();
 	wxDateTime toDate = wxDateTime::Now();
 
-	fromDatePicker->Disable();
-	toDatePicker->Disable();
+	_fromDatePicker->Disable();
+	_toDatePicker->Disable();
 
 	switch (index)
 	{
@@ -226,17 +209,17 @@ void ReportBalanceByMonthPanel::CalculatePeriod() {
 		break;
 
 	case 4:
-		fromDate = periodFromDate;
-		toDate = periodToDate;
+		fromDate = _periodFromDate;
+		toDate = _periodToDate;
 
-		fromDatePicker->Enable();
-		toDatePicker->Enable();
+		_fromDatePicker->Enable();
+		_toDatePicker->Enable();
 		break;
 
 	default:
 		break;
 	}
 
-	fromDatePicker->SetValue(fromDate);
-	toDatePicker->SetValue(toDate);
+	_fromDatePicker->SetValue(fromDate);
+	_toDatePicker->SetValue(toDate);
 }

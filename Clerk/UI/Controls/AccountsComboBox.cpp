@@ -24,6 +24,10 @@ void AccountsComboBox::SetAccounts(shared_vector<AccountPresentationModel> accou
 void AccountsComboBox::SetSelection(std::set<int> ids) {
 	_selectedIds = ids;
 
+	if (_showAllButton && _selectedIds.size() == _accounts.size()) {
+		_allSelected = true;
+	}
+
 	UpdateNames();
 	UpdateSelection();
 }

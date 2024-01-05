@@ -15,7 +15,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	_periodFilterPanel = new PeriodFilterPanel(this, PeriodFilterType::Report);
 	_periodFilterPanel->OnChange = [&]() {
 		Update();
-		};
+	};
 
 	filterSizer->Add(_periodFilterPanel, 1, wxALIGN_CENTER_VERTICAL);
 

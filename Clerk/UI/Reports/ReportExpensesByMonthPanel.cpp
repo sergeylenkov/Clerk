@@ -130,7 +130,6 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
-
 	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), _averageCheckbox->IsChecked());
 }
 

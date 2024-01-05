@@ -23,7 +23,7 @@ wxString CheckboxComboPopup::GetStringValue() const {
 
 void CheckboxComboPopup::OnCheck(wxListEvent &event) {
     if (OnItemSelect) {
-        OnItemSelect(event.GetIndex());
+        OnItemSelect(event.GetItem());
     }
 }
 

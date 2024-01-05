@@ -6,7 +6,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 		
-	_accountsComboBox = new AccountsComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(200, 20)));
+	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
 	wxStaticText* periodLabel = new wxStaticText(this, wxID_ANY, _("Period:"));
@@ -34,22 +34,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
 
-	SetSizer(mainSizer);
-
-	auto account = std::make_shared<AccountPresentationModel>();
-	account->name = _("All");
-	account->id = -1;
-	account->icon = -1;
-
-	_accounts.push_back(account);
-
-	auto accounts = _context.GetAccountsService().GetReceipts();
-
-	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
-
-	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
+	SetSizer(mainSizer);	
 
 	_chartPopup = new ExpensesTooltipPopup(this);
 
@@ -59,9 +44,15 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	_chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
 	_chart->OnUpdatePopup = std::bind(&ReportBalanceByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	_accountsComboBox->SetAccounts(_accounts);
-
 	_selectedIds = {};
+
+	_accounts = _context.GetAccountsService().GetReceipts();
+
+	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	_accountsComboBox->SetAccounts(_accounts);
 
 	RestoreFilterSettings();
 }
@@ -138,10 +129,8 @@ void ReportBalanceByMonthPanel::SaveFilterSettings() {
 wxString ReportBalanceByMonthPanel::GetSelectedAccounsIds() {
 	std::vector<string> ids;
 
-	for (auto& account : _accounts) {
-		if (_selectedIds.count(account->id) > 0) {
-			ids.push_back(std::to_string(account->id));
-		}
+	for (int id : _selectedIds) {
+		ids.push_back(std::to_string(id));
 	}
 
 	return String::Join(ids, ",");

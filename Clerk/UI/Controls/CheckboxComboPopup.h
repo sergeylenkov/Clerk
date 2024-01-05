@@ -13,7 +13,7 @@ public:
     virtual void SetStringValue(const wxString &s) override;
     virtual wxString GetStringValue() const override;
     
-    std::function<void(int index)> OnItemSelect;
+    std::function<void(wxListItem item)> OnItemSelect;
 
 private:
     wxString _value;

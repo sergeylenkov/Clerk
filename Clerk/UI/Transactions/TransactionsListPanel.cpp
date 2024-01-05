@@ -12,7 +12,7 @@ TransactionsListPanel::TransactionsListPanel(wxWindow *parent, DataContext& cont
 
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_periodFilterPanel = new PeriodFilterPanel(filterPanel, PeriodFilterType::Report);
+	_periodFilterPanel = new PeriodFilterPanel(filterPanel, PeriodFilterType::Transactions);
 	_periodFilterPanel->OnChange = [&]() {
 		Update();
 	};

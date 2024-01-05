@@ -9,7 +9,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 	wxStaticText *accountsLabel = new wxStaticText(this, wxID_ANY, _("Accounts:"));
 	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
-	_accountsComboBox = new AccountsComboBox(this, wxID_ANY, wxEmptyString, wxDefaultPosition, FromDIP(wxSize(200, 20)));
+	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
 	_periodFilterPanel = new PeriodFilterPanel(this, PeriodFilterType::Report);
@@ -39,20 +39,6 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	SetSizer(mainSizer);
 
-	auto account = std::make_shared<AccountPresentationModel>();
-	account->name = wxString("All");
-	account->id = -1;
-	account->icon = -1;
-
-	_accounts.push_back(account);
-
-	auto accounts = _context.GetAccountsService().GetExpenses();
-	_accounts.insert(_accounts.end(), accounts.begin(), accounts.end());
-
-	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
-		return a->order < b->order;
-	});
-
 	_chartPopup = new ExpensesTooltipPopup(this);
 
 	_accountsComboBox->OnChange = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
@@ -62,9 +48,15 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 	_chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
 	_chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
 
-	_accountsComboBox->SetAccounts(_accounts);
-
 	_selectedIds = {};
+
+	_accounts = _context.GetAccountsService().GetExpenses();
+
+	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	_accountsComboBox->SetAccounts(_accounts);
 
 	RestoreFilterSettings();
 }
@@ -145,10 +137,8 @@ void ReportExpensesByMonthPanel::SaveFilterSettings() {
 wxString ReportExpensesByMonthPanel::GetSelectedAccounsIds() {
 	std::vector<std::string> ids;
 
-	for (auto &account : _accounts) {
-		if (_selectedIds.count(account->id) > 0) {
-			ids.push_back(std::to_string(account->id));
-		}
+	for (int id : _selectedIds) {
+		ids.push_back(std::to_string(id));
 	}
 
 	return String::Join(ids, ",");

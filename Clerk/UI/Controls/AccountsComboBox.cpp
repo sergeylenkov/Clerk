@@ -1,6 +1,9 @@
 #include "AccountsComboBox.h"
 
-AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxString& value, const wxPoint& pos, const wxSize& size) : wxComboCtrl(parent, id, value, pos, size, wxCB_READONLY) {
+AccountsComboBox::AccountsComboBox(wxWindow* parent, const wxPoint& pos, const wxSize& size, bool showAllButton):
+	wxComboCtrl(parent, wxID_ANY, "", pos, size, wxCB_READONLY),
+	_showAllButton(showAllButton)
+{
 	_accountsList = new CheckboxComboPopup();
 
 	SetPopupControl(_accountsList);
@@ -10,10 +13,7 @@ AccountsComboBox::AccountsComboBox(wxWindow* parent, wxWindowID id, const wxStri
 
 	_selectedIds = {};
 	_ignoreSelection = false;
-}
-
-AccountsComboBox::~AccountsComboBox() {
-	
+	_allSelected = false;
 }
 
 void AccountsComboBox::SetAccounts(shared_vector<AccountPresentationModel> accounts) {
@@ -39,14 +39,27 @@ void AccountsComboBox::UpdateList() {
 
 	int i = 0;
 
+	if (_showAllButton) {
+		wxListItem listItem;
+				
+		listItem.SetId(i);
+		listItem.SetText(_("All"));
+		listItem.SetData(-1);
+
+		_accountsList->InsertItem(listItem);
+
+		i++;
+	}
+
 	for (auto& account : _accounts)
 	{
 		wxListItem listItem;
 
 		listItem.SetId(i);
+		listItem.SetText(account->name);
 		listItem.SetData(account->id);
 		
-		_accountsList->InsertItem(i, account->name, account->icon);
+		_accountsList->InsertItem(listItem);
 
 		i++;
 	}
@@ -55,8 +68,8 @@ void AccountsComboBox::UpdateList() {
 void AccountsComboBox::UpdateNames() {
 	wxString names = "";
 
-	if (_selectedIds.count(-1) > 0) {
-		names = "All";
+	if (_allSelected) {
+		names = _("All");
 	} else {
 		for (auto& account : _accounts) {
 			if (_selectedIds.count(account->id) > 0) {
@@ -75,14 +88,14 @@ void AccountsComboBox::UpdateSelection() {
 	_ignoreSelection = true;
 	int i = 0;
 
+	if (_showAllButton) {
+		_accountsList->CheckItem(i, _allSelected);
+		i++;
+	}
+	
 	for (auto& account : _accounts)
 	{
 		bool checked = _selectedIds.count(account->id) > 0;
-
-		if (_selectedIds.count(-1) > 0) {
-			checked = true;
-		}
-
 		_accountsList->CheckItem(i, checked);
 
 		i++;
@@ -91,34 +104,35 @@ void AccountsComboBox::UpdateSelection() {
 	_ignoreSelection = false;
 }
 
-void AccountsComboBox::OnAccountSelect(int index) {
+void AccountsComboBox::OnAccountSelect(wxListItem item) {
 	if (_ignoreSelection) {
 		return;
 	}
+	
+	int accountId = item.GetData();
+	bool checked = _selectedIds.count(accountId) > 0;
 
-	auto account = _accounts[index];
+	if (_showAllButton && accountId == -1) {
+		_selectedIds.clear();
+		_allSelected = !_allSelected;
 
-	if (account->id == -1) {
-		if (_selectedIds.count(account->id) == 0) {
-			_selectedIds.clear();
-
-			for (auto& account : _accounts) {
+		if (_allSelected) {
+			for (auto& account : _accounts)
+			{
 				_selectedIds.insert(account->id);
 			}
-		} else {
-			_selectedIds.clear();
 		}
 	}
 	else {
-		_selectedIds.erase(-1);
+		_allSelected = false;
 
-		if (_selectedIds.count(account->id) == 0) {
-			_selectedIds.insert(account->id);
+		if (_selectedIds.count(accountId) == 0) {
+			_selectedIds.insert(accountId);
 		}
 		else {
-			_selectedIds.erase(account->id);
+			_selectedIds.erase(accountId);
 		}
-	}	
+	}
 
 	UpdateNames();
 	UpdateSelection();

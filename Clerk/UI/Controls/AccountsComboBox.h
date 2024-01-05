@@ -13,8 +13,7 @@ using namespace Clerk::Data;
 class AccountsComboBox : public wxComboCtrl
 {
 public:
-	AccountsComboBox(wxWindow* parent, wxWindowID id, const wxString& value = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxDefaultSize);
-	~AccountsComboBox();
+	AccountsComboBox(wxWindow* parent, const wxPoint& pos, const wxSize& size, bool showAllButton);
 
 	std::function<void(std::set<int> ids)> OnChange;
 
@@ -26,10 +25,12 @@ private:
 	shared_vector<AccountPresentationModel> _accounts;
 	std::set<int> _selectedIds;
 	bool _ignoreSelection;
+	bool _showAllButton;
+	bool _allSelected;
 
 	void UpdateList();
 	void UpdateNames();
 	void UpdateSelection();
-	void OnAccountSelect(int index);
+	void OnAccountSelect(wxListItem item);
 };
 

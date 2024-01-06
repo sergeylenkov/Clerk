@@ -33,6 +33,13 @@ std::vector<ReportModel*> ReportsRepository::GetAll() {
 
 	result.push_back(report);
 
+	report = new ReportModel();
+
+	report->id = 5;
+	report->name = std::wstring(L"Receipts And Expenses By Month");
+
+	result.push_back(report);
+
 	return result;
 }
 

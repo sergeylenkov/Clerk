@@ -7,7 +7,7 @@ namespace Clerk {
 			ExpensesByMonth = 1,
 			ExpensesForPeriod = 2,
 			BalanceByMonth = 3,
-			ExpensesAndReceiptsByMonth = 4
+			ReceiptsAndExpensesByMonth = 4
 		};
 	}
 }

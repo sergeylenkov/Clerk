@@ -20,6 +20,7 @@
 #include "../Reports/ReportBalanceByMonthPanel.h"
 #include "../Reports/ReportExpensesForPeriodPanel.h"
 #include "../Reports/ReportReceiptsByMonthPanel.h"
+#include "../Reports/ReportReceiptsAndExpensesByMonthPanel.h"
 #include "Enums.h"
 #include "TabsContextMenu.h"
 

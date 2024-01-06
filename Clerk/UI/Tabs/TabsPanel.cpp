@@ -324,6 +324,8 @@ DataPanel* TabsPanel::GetReportPanelById(int id) {
 		return new ReportBalanceByMonthPanel(this, _context, _icons);
 	case 4:
 		return new ReportReceiptsByMonthPanel(this, _context, _icons);
+	case 5:
+		return new ReportReceiptsAndExpensesByMonthPanel(this, _context, _icons);
 	default:
 		break;
 	}

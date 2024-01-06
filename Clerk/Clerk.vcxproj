@@ -119,7 +119,7 @@
     <ClCompile Include="UI\Notifications\NotificationsButton.cpp" />
     <ClCompile Include="UI\Notifications\NotificationSchedulerPanel.cpp" />
     <ClCompile Include="UI\Notifications\NotificationsPopup.cpp" />
-    <ClCompile Include="UI\Reports\ReportExpensesAndReceiptsByMonth.cpp" />
+    <ClCompile Include="UI\Reports\ReportReceiptsAndExpensesByMonthPanel.cpp" />
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp" />
     <ClCompile Include="UI\TagsField\TagPanel.cpp" />
@@ -285,7 +285,7 @@
     <ClInclude Include="UI\Controls\Enums.h" />
     <ClInclude Include="UI\Controls\PeriodFilterPanel.h" />
     <ClInclude Include="UI\Reports\Enums.h" />
-    <ClInclude Include="UI\Reports\ReportExpensesAndReceiptsByMonth.h" />
+    <ClInclude Include="UI\Reports\ReportReceiptsAndExpensesByMonthPanel.h" />
     <ClInclude Include="Utils\Settings\Types.h" />
     <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
     <ClInclude Include="UI\Alerts\Enums.h" />

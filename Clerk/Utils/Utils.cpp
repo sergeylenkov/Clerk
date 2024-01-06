@@ -182,6 +182,34 @@ std::string String::Join(std::vector<std::string> const& vec, std::string delimi
 		});
 }
 
+std::string String::Join(std::vector<int> const& vec, std::string delimiter) {
+	if (vec.empty()) {
+		return std::string();
+	}
+
+	std::vector<std::string> values;
+
+	for (int value : vec) {
+		values.push_back(std::to_string(value));
+	}
+
+	return String::Join(values, ",");
+}
+
+std::string String::Join(std::set<int> const& set, std::string delimiter) {
+	if (set.empty()) {
+		return std::string();
+	}
+
+	std::vector<std::string> values;
+
+	for (int value : set) {
+		values.push_back(std::to_string(value));
+	}
+
+	return String::Join(values, ",");
+}
+
 bool String::Search(wxString str, wxString search) {
 	auto& f = std::use_facet<std::ctype<wchar_t>>(std::locale());
 

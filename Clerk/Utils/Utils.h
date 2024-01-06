@@ -6,6 +6,7 @@
 #include <vector>
 #include <numeric>
 #include <sstream>
+#include <set>
 #include "../Data/Enums.h"
 
 using namespace Clerk::Data;
@@ -48,6 +49,8 @@ namespace Clerk {
 		public:
 			static std::vector<int> Split(std::wstring string, char delimiter);
 			static std::string Join(std::vector<std::string> const& vec, std::string delimiter);
+			static std::string Join(std::vector<int> const& vec, std::string delimiter);
+			static std::string Join(std::set<int> const& set, std::string delimiter);
 			static bool Search(wxString str, wxString search);
 		};
 	}

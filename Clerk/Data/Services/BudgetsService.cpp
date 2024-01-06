@@ -84,13 +84,7 @@ void BudgetsService::UpdateBalance() {
 }
 
 float BudgetsService::GetExpenses(BudgetPresentationModel& budget, std::string& fromDate, std::string& toDate) {	
-	std::vector<std::string> res;
-
-	for (int id : budget.accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	return _budgetsRepository.GetExpenses(String::Join(res, ","), budget.periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
+	return _budgetsRepository.GetExpenses(String::Join(budget.accountsIds, ","), budget.periodDate.FormatISODate().ToStdString(), wxDateTime::Now().FormatISODate().ToStdString());
 }
 
 std::shared_ptr<BudgetPresentationModel> BudgetsService::Save(BudgetPresentationModel& budget) {

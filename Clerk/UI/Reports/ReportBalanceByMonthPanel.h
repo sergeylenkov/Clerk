@@ -40,5 +40,4 @@ private:
 	void UpdatePopup(int x, int y, int index);
 	void RestoreFilterSettings();
 	void SaveFilterSettings();
-	wxString GetSelectedAccounsIds();
 };

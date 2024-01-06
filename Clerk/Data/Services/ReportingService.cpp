@@ -19,13 +19,8 @@ std::vector<StringValueViewModel> ReportingService::GetExpensesByAccount(const w
 
 std::vector<StringValueViewModel> ReportingService::GetExpensesByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate) {
 	std::vector<StringValueViewModel> results;
-	std::vector<std::string> res;
 
-	for (int id : accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	auto expenses = _reportingRepository.GetExpensesByAccount(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto expenses = _reportingRepository.GetExpensesByAccount(String::Join(accountsIds, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto expense : expenses) {
 		results.push_back({ wxString(expense.first), expense.second });
@@ -36,13 +31,8 @@ std::vector<StringValueViewModel> ReportingService::GetExpensesByAccount(std::se
 
 std::vector<DateValueViewModel> ReportingService::GetExpensesByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate) {
 	std::vector<DateValueViewModel> results;
-	std::vector<std::string> res;
 
-	for (int id : accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	auto expenses = _reportingRepository.GetExpensesByMonth(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto expenses = _reportingRepository.GetExpensesByMonth(String::Join(accountsIds, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto expense : expenses) {
 		wxDateTime date = wxDateTime::Today();
@@ -54,21 +44,10 @@ std::vector<DateValueViewModel> ReportingService::GetExpensesByMonth(std::set<in
 	return results;
 }
 
-std::vector<DateValueViewModel> ReportingService::GetBalanceByMonth(const AccountPresentationModel& account, const wxDateTime& fromDate, const wxDateTime& toDate) {
-	std::vector<DateValueViewModel> results;
-
-	return results;
-}
-
 std::vector<DateValueViewModel> ReportingService::GetReceiptsByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate) {
 	std::vector<DateValueViewModel> results;
-	std::vector<std::string> res;
 
-	for (int id : accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	auto receipts = _reportingRepository.GetReceiptsByMonth(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto receipts = _reportingRepository.GetReceiptsByMonth(String::Join(accountsIds, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto receipt : receipts) {
 		wxDateTime date = wxDateTime::Today();
@@ -82,16 +61,30 @@ std::vector<DateValueViewModel> ReportingService::GetReceiptsByMonth(std::set<in
 
 std::vector<StringValueViewModel> ReportingService::GetReceiptsByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate) {
 	std::vector<StringValueViewModel> results;
-	std::vector<std::string> res;
 
-	for (int id : accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	auto receipts = _reportingRepository.GetReceiptsByAccount(String::Join(res, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
+	auto receipts = _reportingRepository.GetReceiptsByAccount(String::Join(accountsIds, ","), fromDate.FormatISODate().ToStdString(), toDate.FormatISODate().ToStdString());
 
 	for (auto receipt : receipts) {
 		results.push_back({ wxString(receipt.first), receipt.second });
+	}
+
+	return results;
+}
+
+std::vector<DateValueViewModel> ReportingService::GetBalanceByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate) {
+	std::vector<DateValueViewModel> results;
+
+	wxDateSpan diff = toDate.DiffAsDateSpan(fromDate);
+
+	for (int i = 0; i < diff.GetMonths(); i++) {
+		wxDateTime date = fromDate.Add(wxDateSpan(0, 1, 0, 0));
+
+		date.SetDay(1);
+		date.SetToLastMonthDay();
+
+		float balance = _reportingRepository.GetBalanceForDate(String::Join(accountsIds, ","), date.FormatISODate().ToStdString());
+
+		results.push_back({ date, balance });
 	}
 
 	return results;

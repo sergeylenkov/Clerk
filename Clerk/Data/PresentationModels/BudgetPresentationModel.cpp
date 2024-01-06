@@ -75,13 +75,7 @@ BudgetModel& BudgetPresentationModel::GetModel() {
 	model->date = date.FormatISODate();
 	model->created = created.FormatISOCombined(' ');
 
-	std::vector<std::string> res;
-
-	for (int id : accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	std::string ids = String::Join(res, ",");
+	std::string ids = String::Join(accountsIds, ",");
 
 	model->accountsIds = std::wstring(ids.begin(), ids.end());
 

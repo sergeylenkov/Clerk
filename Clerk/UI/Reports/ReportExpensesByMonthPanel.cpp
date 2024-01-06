@@ -130,15 +130,5 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(1, GetSelectedAccounsIds(), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), _averageCheckbox->IsChecked());
-}
-
-wxString ReportExpensesByMonthPanel::GetSelectedAccounsIds() {
-	std::vector<std::string> ids;
-
-	for (int id : _selectedIds) {
-		ids.push_back(std::to_string(id));
-	}
-
-	return String::Join(ids, ",");
+	Settings::GetInstance().SetReportFilterSettings(1, String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), _averageCheckbox->IsChecked());
 }

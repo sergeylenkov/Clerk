@@ -6,6 +6,9 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 		
+	wxStaticText* accountsLabel = new wxStaticText(this, wxID_ANY, _("Accounts:"));
+	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
+
 	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
@@ -46,7 +49,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	_selectedIds = {};
 
-	_accounts = _context.GetAccountsService().GetReceipts();
+	_accounts = _context.GetAccountsService().GetDeposits();
 
 	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
 		return a->order < b->order;
@@ -62,21 +65,17 @@ ReportBalanceByMonthPanel::~ReportBalanceByMonthPanel() {
 }
 
 void ReportBalanceByMonthPanel::Update() {
-	for (auto& account : _accounts) {
-		if (_selectedIds.count(account->id) > 0) {
-			_values = _context.GetReportingService().GetBalanceByMonth(*account, _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
+	_values = _context.GetReportingService().GetBalanceByMonth(_selectedIds, _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 
-			std::vector<StringValueViewModel> chartValues;
+	std::vector<StringValueViewModel> chartValues;
 
-			for (auto& value : _values)
-			{
-				StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
-				chartValues.push_back(chartValue);
-			}
-
-			_chart->SetValues(chartValues);
-		}
+	for (auto& value : _values)
+	{
+		StringValueViewModel chartValue = { value.date.Format("%B"), value.value };
+		chartValues.push_back(chartValue);
 	}
+
+	_chart->SetValues(chartValues);
 }
 
 void ReportBalanceByMonthPanel::OnAccountSelect(std::set<int> ids) {
@@ -123,15 +122,5 @@ void ReportBalanceByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportBalanceByMonthPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(2, GetSelectedAccounsIds(), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), false);
-}
-
-wxString ReportBalanceByMonthPanel::GetSelectedAccounsIds() {
-	std::vector<string> ids;
-
-	for (int id : _selectedIds) {
-		ids.push_back(std::to_string(id));
-	}
-
-	return String::Join(ids, ",");
+	Settings::GetInstance().SetReportFilterSettings(2, String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), false);
 }

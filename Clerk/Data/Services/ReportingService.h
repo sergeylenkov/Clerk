@@ -19,10 +19,10 @@ namespace Clerk {
 
 			std::vector<StringValueViewModel> GetExpensesByAccount(const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<StringValueViewModel> GetExpensesByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
-			std::vector<DateValueViewModel> GetExpensesByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
-			std::vector<DateValueViewModel> GetBalanceByMonth(const AccountPresentationModel& account, const wxDateTime& fromDate, const wxDateTime& toDate);			
+			std::vector<DateValueViewModel> GetExpensesByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);			
 			std::vector<DateValueViewModel> GetReceiptsByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
 			std::vector<StringValueViewModel> GetReceiptsByAccount(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
+			std::vector<DateValueViewModel> GetBalanceByMonth(std::set<int> accountsIds, const wxDateTime& fromDate, const wxDateTime& toDate);
 
 		private:
 			ReportingRepository& _reportingRepository;

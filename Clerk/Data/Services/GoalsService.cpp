@@ -87,13 +87,7 @@ shared_vector<GoalPresentationModel> GoalsService::GetAll() {
 }
 
 float GoalsService::GetBalance(GoalPresentationModel& goal) {
-	std::vector<std::string> res;
-
-	for (int id : goal.accountsIds) {
-		res.push_back(std::to_string(id));
-	}
-
-	return _goalsRepository.GetBalance(String::Join(res, ","));
+	return _goalsRepository.GetBalance(String::Join(goal.accountsIds, ","));
 }
 
 std::shared_ptr<GoalPresentationModel> GoalsService::Save(GoalPresentationModel& goal) {

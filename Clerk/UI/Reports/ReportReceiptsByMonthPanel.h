@@ -12,6 +12,7 @@
 #include "../../Utils/Types.h"
 #include "../../Utils/Settings/Settings.h"
 #include "ExpensesTooltipPopup.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

@@ -60,7 +60,7 @@ void LineChart::Draw() {
 	DoGetSize(&_width, &_height);
 		
 	int maxY = round(_maxValue);
-	int labelStepY = 10;
+	int labelStepY = FromDIP(10);
 
 	if (maxY <= 1000) {
 		maxY = ceil(_maxValue / 100) * 100;
@@ -89,15 +89,15 @@ void LineChart::Draw() {
 	wxString maxValueString = wxNumberFormatter::ToString(_maxValue, 2);
 	wxSize maxSize = dc.GetTextExtent(maxValueString);
 
-	_offsetX = maxSize.GetWidth() + 20;
-	_offsetY = 40;
+	_offsetX = maxSize.GetWidth() + FromDIP(20);
+	_offsetY = FromDIP(40);
 
 	wxSize size = dc.GetTextExtent(_values[_values.size() - 1].string);
 
-	_graphWidth = _width - _offsetX - (size.GetWidth() + 20);
+	_graphWidth = _width - _offsetX - (size.GetWidth() + FromDIP(20));
 
 	_stepX = 0;
-	_stepY = (_height - _offsetY - 10) / (float)maxY;
+	_stepY = (_height - _offsetY - FromDIP(10)) / (float)maxY;
 	
 	if (_values.size() > 1) {
 		_stepX = (float)_graphWidth / (_values.size() - 1);
@@ -123,14 +123,14 @@ void LineChart::Draw() {
 			int x = round(i * _stepX) + _offsetX;
 
 			wxSize size = dc.GetTextExtent(_values[i].string);
-			dc.DrawText(_values[i].string, wxPoint(x - (size.GetWidth() / 2), _height - 20));
+			dc.DrawText(_values[i].string, wxPoint(x - (size.GetWidth() / 2), _height - FromDIP(20)));
 		}
 	}
 	else {
 		int x = _offsetX + (_graphWidth / 2);
 
 		wxSize size = dc.GetTextExtent(_values[0].string);
-		dc.DrawText(_values[0].string, wxPoint(x - (size.GetWidth() / 2), _height - 20));
+		dc.DrawText(_values[0].string, wxPoint(x - (size.GetWidth() / 2), _height - FromDIP(20)));
 	}
 
 	if (_drawAverage) {
@@ -240,6 +240,11 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	if (index != _currentPopupIndex) {
 		_currentPopupIndex = index;
 		int x = _offsetX + (index * _stepX);
+
+		if (_values.size() == 1) {
+			x = _offsetX + (_graphWidth / 2);
+		}
+
 		int y = height - _offsetY - round(_values[index].value * _stepY);
 
 		if (OnUpdatePopup) {

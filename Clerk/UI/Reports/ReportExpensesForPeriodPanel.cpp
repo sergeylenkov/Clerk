@@ -4,9 +4,6 @@ ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, Dat
 	DataPanel(parent, context, icons)
 {
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	wxPanel *filterPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	_periodFilterPanel = new PeriodFilterPanel(this, PeriodFilterType::Report);
@@ -16,25 +13,15 @@ ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, Dat
 
 	filterSizer->Add(_periodFilterPanel, 1, wxALIGN_CENTER_VERTICAL);
 
-	filterPanel->SetSizer(filterSizer);
-	filterPanel->Layout();
+	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
-	filterSizer->Fit(filterPanel);
-	mainSizer->Add(filterPanel, 0, wxEXPAND | wxALL, 5);
-
-	wxPanel *reportPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
-	wxBoxSizer *reportSizer = new wxBoxSizer(wxVERTICAL);
-
-	_chart = new BarChart(reportPanel, wxID_ANY);
+	_chart = new BarChart(this, wxID_ANY);
 	
-	reportSizer->Add(_chart, 1, wxEXPAND | wxALL, 40);
+	wxBoxSizer* chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	reportPanel->SetSizer(reportSizer);
-	reportPanel->Layout();
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL | wxALL);
 
-	reportSizer->Fit(reportPanel);
-	mainSizer->Add(reportPanel, 1, wxEXPAND | wxALL, 0);
+	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
 
 	SetSizer(mainSizer);
 	Layout();
@@ -52,7 +39,7 @@ void ReportExpensesForPeriodPanel::Update() {
 }
 
 void ReportExpensesForPeriodPanel::RestoreFilterSettings() {
-	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(3);
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(static_cast<int>(ReportType::ExpensesForPeriod));
 
 	_periodFilterPanel->SetFromDate(settings.fromDate);
 	_periodFilterPanel->SetToDate(settings.toDate);
@@ -60,5 +47,5 @@ void ReportExpensesForPeriodPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesForPeriodPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(3, "", _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
+	Settings::GetInstance().SetReportFilterSettings(static_cast<int>(ReportType::ExpensesForPeriod), "", _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 }

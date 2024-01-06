@@ -8,6 +8,7 @@
 #include "../Charts/BarChart.h"
 #include "../DataPanel/DataPanel.h"
 #include "../Controls/PeriodFilterPanel.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

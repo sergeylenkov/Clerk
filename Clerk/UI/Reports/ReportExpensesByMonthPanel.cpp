@@ -3,6 +3,8 @@
 ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataContext& context, Icons& icons):
 	DataPanel(parent, context, icons)
 {
+	SetBackgroundColour(*wxWHITE);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);	
 
@@ -114,7 +116,7 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 }
 
 void ReportExpensesByMonthPanel::RestoreFilterSettings() {
-	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(1);
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(static_cast<int>(ReportType::ExpensesByMonth));
 
 	std::vector<int> ids = String::Split(settings.accountIds.ToStdWstring(), ',');
 
@@ -130,5 +132,5 @@ void ReportExpensesByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportExpensesByMonthPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(1, String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), _averageCheckbox->IsChecked());
+	Settings::GetInstance().SetReportFilterSettings(static_cast<int>(ReportType::ExpensesByMonth), String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), _averageCheckbox->IsChecked());
 }

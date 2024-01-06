@@ -12,6 +12,7 @@
 #include "../Controls/AccountsComboBox.h"
 #include "../Controls/PeriodFilterPanel.h"
 #include "ExpensesTooltipPopup.h"
+#include "Enums.h"
 
 using namespace Clerk::Data;
 using namespace Clerk::Utils;

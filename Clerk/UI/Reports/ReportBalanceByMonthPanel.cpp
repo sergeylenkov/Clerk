@@ -107,7 +107,7 @@ void ReportBalanceByMonthPanel::UpdatePopup(int x, int y, int index) {
 }
 
 void ReportBalanceByMonthPanel::RestoreFilterSettings() {
-	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(2);
+	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(static_cast<int>(ReportType::BalanceByMonth));
 
 	std::vector<int> ids = String::Split(settings.accountIds.ToStdWstring(), ',');
 
@@ -122,5 +122,5 @@ void ReportBalanceByMonthPanel::RestoreFilterSettings() {
 }
 
 void ReportBalanceByMonthPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(2, String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), false);
+	Settings::GetInstance().SetReportFilterSettings(static_cast<int>(ReportType::BalanceByMonth), String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate(), false);
 }

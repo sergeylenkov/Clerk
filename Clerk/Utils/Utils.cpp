@@ -113,7 +113,6 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 3, 0, 0));
 		fromDate.SetDay(1);
 
-		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
 		toDate.SetToLastMonthDay();
 		
 		break;
@@ -122,7 +121,6 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 		fromDate.Subtract(wxDateSpan::wxDateSpan(0, 6, 0, 0));
 		fromDate.SetDay(1);
 
-		toDate.Subtract(wxDateSpan::wxDateSpan(0, 1, 0, 0));
 		toDate.SetToLastMonthDay();
 		
 		break;
@@ -130,6 +128,7 @@ void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &to
 	case Periods::Type::CurrentYear:
 		fromDate.SetMonth(wxDateTime::Month::Jan);
 		fromDate.SetDay(1);
+
 		toDate.SetMonth(wxDateTime::Month::Dec);
 		toDate.SetDay(31);
 		

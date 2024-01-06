@@ -3,6 +3,8 @@
 ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataContext& context, Icons& icons):
 	DataPanel(parent, context, icons)
 {
+	SetBackgroundColour(*wxWHITE);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 		
@@ -26,14 +28,12 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	_chart = new LineChart(this, wxID_ANY);
 
-	wxPanel *chartPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-
 	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	_chart->SetMinSize(wxSize(-1, 600));
-	_chart->SetMaxSize(wxSize(-1, 600));
+	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
+	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
 
-	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL | wxALL);
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL);
 
 	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
 

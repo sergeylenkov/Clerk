@@ -1,7 +1,10 @@
 #include "ReportReceiptsByMonthPanel.h"
 
 ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataContext& context, Icons& icons):
-	DataPanel(parent, context, icons) {
+	DataPanel(parent, context, icons) 
+{
+	SetBackgroundColour(*wxWHITE);
+
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -27,12 +30,12 @@ ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataCon
 
 	_chart = new LineChart(this, wxID_ANY);
 
-	wxBoxSizer* chartSizer = new wxBoxSizer(wxHORIZONTAL);
-
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
 
-	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL | wxALL);
+	wxBoxSizer* chartSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL);
 
 	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
 

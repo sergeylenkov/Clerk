@@ -87,8 +87,8 @@ wxDateTime PeriodFilterPanel::GetToDate() {
 void PeriodFilterPanel::CalculatePeriod() {
 	int index = _periodList->GetSelection();
 
-	wxDateTime fromDate = wxDateTime::Now();
-	wxDateTime toDate = wxDateTime::Now();
+	wxDateTime fromDate = wxDateTime::Today();
+	wxDateTime toDate = wxDateTime::Today();
 
 	_fromDatePicker->Disable();
 	_toDatePicker->Disable();

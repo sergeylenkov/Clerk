@@ -78,14 +78,13 @@ std::vector<DateValueViewModel> ReportingService::GetBalanceByMonth(std::set<int
 	wxDateTime date = wxDateTime(fromDate);
 
 	for (int i = 0; i < diff.GetMonths(); i++) {
+		date = date.Add(wxDateSpan(0, 1, 0, 0));
 		date.SetDay(1);
 		date.SetToLastMonthDay();
 
 		float balance = _reportingRepository.GetBalanceForDate(String::Join(accountsIds, ","), date.FormatISODate().ToStdString());
 
 		results.push_back({ date, balance });
-
-		date = date.Add(wxDateSpan(0, 1, 0, 0));
 	}
 
 	return results;

@@ -3,6 +3,8 @@
 ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, DataContext& context, Icons& icons):
 	DataPanel(parent, context, icons)
 {
+	SetBackgroundColour(*wxWHITE);
+
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -17,9 +19,12 @@ ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, Dat
 
 	_chart = new BarChart(this, wxID_ANY);
 	
+	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
+	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
+
 	wxBoxSizer* chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL | wxALL);
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL);
 
 	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
 

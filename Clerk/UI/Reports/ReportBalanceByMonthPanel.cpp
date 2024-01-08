@@ -33,6 +33,19 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	_chart = new LineChart(this);
 
+
+	_chart->OnShowPopup = [&]() {
+		ShowPopup();
+	};
+
+	_chart->OnHidePopup = [&]() {
+		HidePopup();
+	};
+
+	_chart->OnUpdatePopup = [&](int x, int y, int index) {
+		UpdatePopup(x, y, index);
+	};
+
 	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
@@ -44,14 +57,9 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	SetSizer(mainSizer);	
 
-	_chartPopup = new ExpensesTooltipPopup(this);
-
-	_chart->OnShowPopup = std::bind(&ReportBalanceByMonthPanel::ShowPopup, this);
-	_chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
-	_chart->OnUpdatePopup = std::bind(&ReportBalanceByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	_chartPopup = new ReportChartTooltipPopup(this);
 
 	_selectedIds = {};
-
 	_accounts = _context.GetAccountsService().GetDeposits();
 
 	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
@@ -98,10 +106,20 @@ void ReportBalanceByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	popupValues.push_back(value);
 
-	wxPoint pos = _chart->ClientToScreen(wxPoint(x, y));
-	_chartPopup->SetPosition(pos);
+	float total = 0;
 
-	_chartPopup->Update(date.Format("%B"), popupValues);
+	for (unsigned int i = 0; i < popupValues.size(); i++) {
+		total = total + popupValues[i].value;
+	}
+
+	std::sort(popupValues.begin(), popupValues.end(), [](StringValueViewModel a, StringValueViewModel b) {
+		return a.value > b.value;
+	});
+
+	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
+	_chartPopup->SetPosition(position);
+
+	_chartPopup->Update(date.Format("%B"), total, popupValues);
 }
 
 void ReportBalanceByMonthPanel::RestoreFilterSettings() {

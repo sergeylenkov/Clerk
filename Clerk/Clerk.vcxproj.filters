@@ -156,7 +156,7 @@
     <ClCompile Include="UI\Alerts\AlertsListPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp">
+    <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UI\Controls\CheckboxComboPopup.cpp">
@@ -522,6 +522,9 @@
     <ClCompile Include="UI\Charts\GroupedBarChart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -671,7 +674,7 @@
     <ClInclude Include="UI\Alerts\AlertsListPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h">
+    <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Controls\CheckboxComboPopup.h">
@@ -1095,6 +1098,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Charts\GroupedBarChart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPopup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

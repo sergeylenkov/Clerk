@@ -122,6 +122,7 @@
     <ClCompile Include="UI\Notifications\NotificationsPopup.cpp" />
     <ClCompile Include="UI\Reports\ReportReceiptsAndExpensesByMonthPanel.cpp" />
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp" />
+    <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPopup.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp" />
     <ClCompile Include="UI\TagsField\TagPanel.cpp" />
     <ClCompile Include="UI\TagsField\TagsField.cpp" />
@@ -203,7 +204,7 @@
     <ClCompile Include="UI\Charts\BarChart.cpp" />
     <ClCompile Include="Data\Models\BudgetModel.cpp" />
     <ClCompile Include="Data\Models\CurrencyModel.cpp" />
-    <ClCompile Include="UI\Reports\ExpensesTooltipPopup.cpp" />
+    <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPanel.cpp" />
     <ClCompile Include="UI\Charts\LineChart.cpp" />
     <ClCompile Include="Data\Models\Model.cpp" />
     <ClCompile Include="UI\Charts\PieChart.cpp" />
@@ -288,6 +289,7 @@
     <ClInclude Include="UI\Controls\PeriodFilterPanel.h" />
     <ClInclude Include="UI\Reports\Enums.h" />
     <ClInclude Include="UI\Reports\ReportReceiptsAndExpensesByMonthPanel.h" />
+    <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPopup.h" />
     <ClInclude Include="Utils\Settings\Types.h" />
     <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
     <ClInclude Include="UI\Alerts\Enums.h" />
@@ -394,7 +396,7 @@
     <ClInclude Include="Data\Models\BudgetModel.h" />
     <ClInclude Include="Data\Models\CurrencyModel.h" />
     <ClInclude Include="Defines.h" />
-    <ClInclude Include="UI\Reports\ExpensesTooltipPopup.h" />
+    <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPanel.h" />
     <ClInclude Include="UI\Charts\LineChart.h" />
     <ClInclude Include="Data\Models\Model.h" />
     <ClInclude Include="UI\Charts\PieChart.h" />

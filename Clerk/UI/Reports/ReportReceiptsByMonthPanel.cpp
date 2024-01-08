@@ -35,6 +35,18 @@ ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataCon
 
 	_chart = new LineChart(this);
 
+	_chart->OnShowPopup = [&]() {
+		ShowPopup();
+	};
+
+	_chart->OnHidePopup = [&]() {
+		HidePopup();
+	};
+
+	_chart->OnUpdatePopup = [&](int x, int y, int index) {
+		UpdatePopup(x, y, index);
+	};
+
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
 
@@ -46,14 +58,10 @@ ReportReceiptsByMonthPanel::ReportReceiptsByMonthPanel(wxWindow* parent, DataCon
 
 	SetSizer(mainSizer);
 
-	_chartPopup = new ExpensesTooltipPopup(this);
+	_chartPopup = new ReportChartTooltipPopup(this);
 
 	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportReceiptsByMonthPanel::OnDrawAverageCheck, this);
-
-	_chart->OnShowPopup = std::bind(&ReportReceiptsByMonthPanel::ShowPopup, this);
-	_chart->OnHidePopup = std::bind(&ReportReceiptsByMonthPanel::HidePopup, this);
-	_chart->OnUpdatePopup = std::bind(&ReportReceiptsByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
-
+	
 	_selectedIds = {};
 
 	_accounts = _context.GetAccountsService().GetReceipts();
@@ -109,10 +117,20 @@ void ReportReceiptsByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	popupValues = _context.GetReportingService().GetReceiptsByAccount(_selectedIds, fromDate, toDate);
 
+	float total = 0;
+
+	for (unsigned int i = 0; i < popupValues.size(); i++) {
+		total = total + popupValues[i].value;
+	}
+
+	std::sort(popupValues.begin(), popupValues.end(), [](StringValueViewModel a, StringValueViewModel b) {
+		return a.value > b.value;
+	});
+
 	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
 	_chartPopup->SetPosition(position);
 
-	_chartPopup->Update(date.Format("%B"), popupValues);
+	_chartPopup->Update(date.Format("%B"), total, popupValues);
 }
 
 void ReportReceiptsByMonthPanel::RestoreFilterSettings() {

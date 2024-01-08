@@ -1,63 +1,28 @@
-#include "ExpensesTooltipPopup.h"
+#include "ReportChartTooltipPanel.h"
 
-ExpensesTooltipPopup::ExpensesTooltipPopup(wxWindow *parent) : wxPopupWindow(parent) {
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-
-	panel = new ExpensesTooltipPanel(this);
-	mainSizer->Add(panel, 1, wxEXPAND, 0);
-	
-	this->SetSizer(mainSizer);
-	this->Layout();
-}
-
-ExpensesTooltipPopup::~ExpensesTooltipPopup() {
-}
-
-void ExpensesTooltipPopup::Update(wxString title, std::vector<StringValueViewModel> values) {
-	float total = 0;
-
-	for (unsigned int i = 0; i < values.size(); i++) {
-		total = total + values[i].value;
-	}
-
-	std::sort(values.begin(), values.end(), [](StringValueViewModel a, StringValueViewModel b) {
-		return a.value > b.value;
-	});
-
-	
-	panel->SetTotal(total);
-	panel->SetTitle(title);
-	panel->SetValues(values);
-		
-	panel->Update();
-
-	SetClientSize(panel->GetMinSize());
-}
-
-ExpensesTooltipPanel::ExpensesTooltipPanel(wxWindow *parent) : wxPanel(parent) {
+ReportChartTooltipPanel::ReportChartTooltipPanel(wxWindow *parent) : wxPanel(parent) {
 	total = 0;
-	this->Bind(wxEVT_PAINT, &ExpensesTooltipPanel::OnPaint, this);
+	this->Bind(wxEVT_PAINT, &ReportChartTooltipPanel::OnPaint, this);
 }
 
-void ExpensesTooltipPanel::SetTitle(wxString title) {
+void ReportChartTooltipPanel::SetTitle(wxString title) {
 	this->title = title;
 }
 
-void ExpensesTooltipPanel::SetTotal(float total) {
+void ReportChartTooltipPanel::SetTotal(float total) {
 	this->total = total;
 }
 
-void ExpensesTooltipPanel::SetValues(std::vector<StringValueViewModel> values) {
+void ReportChartTooltipPanel::SetValues(std::vector<StringValueViewModel> values) {
 	this->values = values;	
 }
 
-void ExpensesTooltipPanel::Update()
+void ReportChartTooltipPanel::Update()
 {
 	int height = 0;
 	int width = 0;
 	int maxName = title.Length();
 	int maxValue = total;
-
 	
 	wxFont titleFont = this->GetFont();
 	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
@@ -91,7 +56,7 @@ void ExpensesTooltipPanel::Update()
 	Refresh();
 }
 
-void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
+void ReportChartTooltipPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
@@ -143,7 +108,7 @@ void ExpensesTooltipPanel::Draw(wxPaintDC &dc) {
 	}
 }
 
-void ExpensesTooltipPanel::OnPaint(wxPaintEvent& event) {
+void ReportChartTooltipPanel::OnPaint(wxPaintEvent& event) {
 	wxPaintDC dc(this);
 	Draw(dc);
 }

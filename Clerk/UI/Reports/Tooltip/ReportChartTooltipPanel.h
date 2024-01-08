@@ -1,7 +1,6 @@
 #pragma once
 
 #include <wx/wx.h>
-#include <wx/popupwin.h>
 #include <wx/listctrl.h>
 #include <wx/numformatter.h>
 #include <vector>
@@ -13,10 +12,10 @@
 using namespace Clerk::Utils;
 using namespace Clerk::Data;
 
-class ExpensesTooltipPanel : public wxPanel
+class ReportChartTooltipPanel : public wxPanel
 {
 public:
-	ExpensesTooltipPanel(wxWindow *parent);
+	ReportChartTooltipPanel(wxWindow *parent);
 
 	void SetTitle(wxString title);
 	void SetTotal(float total);
@@ -30,16 +29,4 @@ private:
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
-};
-
-class ExpensesTooltipPopup : public wxPopupWindow
-{
-public:
-	ExpensesTooltipPopup(wxWindow *parent);
-	~ExpensesTooltipPopup();
-
-	void Update(wxString title, std::vector<StringValueViewModel> values);
-
-private:	
-	ExpensesTooltipPanel *panel;
 };

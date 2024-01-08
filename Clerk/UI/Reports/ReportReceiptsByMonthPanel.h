@@ -11,7 +11,7 @@
 #include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/Settings/Settings.h"
-#include "ExpensesTooltipPopup.h"
+#include "Tooltip/ReportChartTooltipPopup.h"
 #include "Enums.h"
 
 using namespace Clerk::Data;
@@ -32,7 +32,7 @@ private:
 	PeriodFilterPanel* _periodFilterPanel;
 	wxCheckBox* _averageCheckbox;
 	shared_vector<AccountPresentationModel> _accounts;
-	ExpensesTooltipPopup* _chartPopup;
+	ReportChartTooltipPopup* _chartPopup;
 	std::vector<DateValueViewModel> _values = {};	
 	std::set<int> _selectedIds;
 

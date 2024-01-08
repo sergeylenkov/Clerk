@@ -53,7 +53,7 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 	SetSizer(mainSizer);
 	Layout();
 
-	_chartPopup = new ExpensesTooltipPopup(this);
+	_chartPopup = new ReportChartTooltipPopup(this);
 
 	_selectedIds = {};
 
@@ -96,10 +96,12 @@ void ReportReceiptsAndExpensesByMonthPanel::UpdatePopup(int x, int y, int index)
 
 	popupValues = { { _("Receipts"), receipt.value }, { _("Expenses"), expense.value } };
 
+	float balance = receipt.value - expense.value;
+
 	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
 	_chartPopup->SetPosition(position);
 
-	_chartPopup->Update(date.Format("%B"), popupValues);
+	_chartPopup->Update(date.Format("%B"), balance, popupValues);
 }
 
 ReportReceiptsAndExpensesByMonthPanel::~ReportReceiptsAndExpensesByMonthPanel() {

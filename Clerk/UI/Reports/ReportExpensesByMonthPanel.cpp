@@ -35,21 +35,6 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	_chart = new LineChart(this);
 
-	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
-	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
-
-	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL);
-
-	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
-
-	SetSizer(mainSizer);
-
-	_chartPopup = new ExpensesTooltipPopup(this);
-
-	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
-
 	_chart->OnShowPopup = [&]() {
 		ShowPopup();
 	};
@@ -62,8 +47,22 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 		UpdatePopup(x, y, index);
 	};
 
-	_selectedIds = {};
+	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
+	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
 
+	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	chartSizer->Add(_chart, 1, wxALIGN_CENTER_VERTICAL);
+
+	mainSizer->Add(chartSizer, 1, wxEXPAND | wxALL, FromDIP(10));
+
+	SetSizer(mainSizer);
+
+	_chartPopup = new ReportChartTooltipPopup(this);
+
+	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
+
+	_selectedIds = {};
 	_accounts = _context.GetAccountsService().GetExpenses();
 
 	std::sort(_accounts.begin(), _accounts.end(), [](auto a, auto b) {
@@ -116,10 +115,20 @@ void ReportExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
 
 	popupValues = _context.GetReportingService().GetExpensesByAccount(_selectedIds, fromDate, toDate);
 
+	float total = 0;
+
+	for (unsigned int i = 0; i < popupValues.size(); i++) {
+		total = total + popupValues[i].value;
+	}
+
+	std::sort(popupValues.begin(), popupValues.end(), [](StringValueViewModel a, StringValueViewModel b) {
+		return a.value > b.value;
+	});
+
 	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
 	_chartPopup->SetPosition(position);
 
-	_chartPopup->Update(date.Format("%B"), popupValues);
+	_chartPopup->Update(date.Format("%B"), total, popupValues);
 }
 
 void ReportExpensesByMonthPanel::RestoreFilterSettings() {

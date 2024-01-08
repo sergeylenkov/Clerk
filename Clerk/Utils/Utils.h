@@ -18,7 +18,8 @@ namespace Clerk {
 		public:			
 			static wxColor ColorForProgress(int percent, bool isReverse);
 			static wxColor ColorForBalance(boolean isReceipt);
-			static wxColor ColorFoImportance(AlertImportance importance);
+			static wxColor ColorForImportance(AlertImportance importance);
+			static wxColor ColorForBarIndex(int index);
 		};
 
 		class Format {

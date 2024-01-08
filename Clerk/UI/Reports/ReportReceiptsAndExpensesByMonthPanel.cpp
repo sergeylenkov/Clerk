@@ -8,6 +8,17 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* filterSizer = new wxBoxSizer(wxHORIZONTAL);
 
+	wxStaticText* accountsLabel = new wxStaticText(this, wxID_ANY, _("Accounts:"));
+	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
+
+	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
+	_accountsComboBox->OnChange = [&](std::set<int> ids) {
+		_selectedIds = ids;
+		Update();
+	};
+
+	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
+
 	_periodFilterPanel = new PeriodFilterPanel(this, PeriodFilterType::Report);
 	_periodFilterPanel->OnChange = [&]() {
 		Update();
@@ -17,7 +28,7 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
-	_chart = new BarChart(this, wxID_ANY);
+	_chart = new GroupedBarChart(this);
 
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
@@ -31,6 +42,26 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 	SetSizer(mainSizer);
 	Layout();
 
+	_selectedIds = {};
+
+	auto receipts = _context.GetAccountsService().GetReceipts();
+
+	std::sort(receipts.begin(), receipts.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	_accounts.insert(_accounts.end(), receipts.begin(), receipts.end());
+
+	auto expenses = _context.GetAccountsService().GetExpenses();
+
+	std::sort(expenses.begin(), expenses.end(), [](auto a, auto b) {
+		return a->order < b->order;
+	});
+
+	_accounts.insert(_accounts.end(), expenses.begin(), expenses.end());
+
+	_accountsComboBox->SetAccounts(_accounts);
+
 	RestoreFilterSettings();
 }
 
@@ -39,18 +70,35 @@ ReportReceiptsAndExpensesByMonthPanel::~ReportReceiptsAndExpensesByMonthPanel() 
 }
 
 void ReportReceiptsAndExpensesByMonthPanel::Update() {
-	std::vector<StringValueViewModel> values = _context.GetReportingService().GetExpensesByAccount(_periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
-	_chart->SetValues(values);
+	_receipts = _context.GetReportingService().GetReceiptsByMonth(_selectedIds, _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
+	_expenses = _context.GetReportingService().GetExpensesByMonth(_selectedIds, _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());	
+
+	std::vector<StringValuesViewModel> chartValues;
+
+	for (int i = 0; i < _receipts.size(); i++) {
+		auto receipt = _receipts[i];
+		auto expense = _expenses[i];
+
+		chartValues.push_back({ receipt.date.Format("%B"), { receipt.value, expense.value } });
+	}
+
+	_chart->SetValues(chartValues);
 }
 
 void ReportReceiptsAndExpensesByMonthPanel::RestoreFilterSettings() {
 	ReportFilterSettings settings = Settings::GetInstance().GetReportFilterSettings(static_cast<int>(ReportType::ReceiptsAndExpensesByMonth));
+	std::vector<int> ids = String::Split(settings.accountIds.ToStdWstring(), ',');
+
+	std::set<int> s(ids.begin(), ids.end());
+	_selectedIds = s;
 
 	_periodFilterPanel->SetFromDate(settings.fromDate);
 	_periodFilterPanel->SetToDate(settings.toDate);
 	_periodFilterPanel->SetPeriod(settings.period);
+
+	_accountsComboBox->SetSelection(_selectedIds);
 }
 
 void ReportReceiptsAndExpensesByMonthPanel::SaveFilterSettings() {
-	Settings::GetInstance().SetReportFilterSettings(static_cast<int>(ReportType::ReceiptsAndExpensesByMonth), "", _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
+	Settings::GetInstance().SetReportFilterSettings(static_cast<int>(ReportType::ReceiptsAndExpensesByMonth), String::Join(_selectedIds, ","), _periodFilterPanel->GetPeriod(), _periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 }

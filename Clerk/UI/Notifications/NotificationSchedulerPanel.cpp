@@ -63,7 +63,7 @@ void NotificationSchedulerPanel::OnPaint(wxPaintEvent& event)
 	wxPaintDC dc(this);
 	wxSize size = GetSize();
 
-	wxColor color = Colors::ColorFoImportance(_importance);
+	wxColor color = Colors::ColorForImportance(_importance);
 	
 	dc.SetPen(wxPen(color, 1));
 	dc.SetBrush(wxBrush(color));

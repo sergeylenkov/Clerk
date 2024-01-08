@@ -5,8 +5,9 @@
 #include <map>
 #include "../../Data/PresentationModels/Types.h"
 #include "../../Utils/Settings/Settings.h"
-#include "../Charts/BarChart.h"
+#include "../Charts/GroupedBarChart.h"
 #include "../DataPanel/DataPanel.h"
+#include "../Controls/AccountsComboBox.h"
 #include "../Controls/PeriodFilterPanel.h"
 #include "Enums.h"
 
@@ -22,9 +23,13 @@ public:
 	void Update();
 
 private:
-	BarChart* _chart;
-	PeriodFilterPanel* _periodFilterPanel;
-	std::vector<DateValueViewModel> _values = {};
+	GroupedBarChart* _chart;
+	AccountsComboBox* _accountsComboBox;
+	PeriodFilterPanel* _periodFilterPanel;	
+	shared_vector<AccountPresentationModel> _accounts;
+	std::vector<DateValueViewModel> _receipts = {};
+	std::vector<DateValueViewModel> _expenses = {};
+	std::set<int> _selectedIds;
 
 	void RestoreFilterSettings();
 	void SaveFilterSettings();

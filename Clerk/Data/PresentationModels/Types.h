@@ -27,7 +27,12 @@ namespace Clerk {
 
 		struct CurrencyValueViewModel {
 			CurrencyPresentationModel currency;
-			float value{};
+			float value;
+		};
+
+		struct StringValuesViewModel {
+			wxString string;
+			std::vector<float> values;
 		};
 	}
 }

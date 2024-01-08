@@ -1,23 +1,27 @@
-#include "LineChart.h"
+#include "GroupedBarChart.h"
 
-LineChart::LineChart(wxWindow *parent) : wxPanel(parent, wxID_ANY) {
+GroupedBarChart::GroupedBarChart(wxWindow* parent) : wxPanel(parent, wxID_ANY) {
 	_currentPopupIndex = -1;
-	_drawAverage = false;
 	_width = 0;
 	_height = 0;
 	_graphWidth = 0;
+	_barGraphWidth = 0;
 	_totalValue = 0.0f;
 	_maxValue = 0;
 	_stepX = 0;
 	_stepY = 0;
+	_barStepX = 0;
 	_offsetX = 0;
 	_offsetY = 0;
+	_barOffsetX = 0;
+	_barSize = FromDIP(10);
+	_barOffset = FromDIP(5);
 
-	Bind(wxEVT_PAINT, &LineChart::OnPaint, this);
-	Bind(wxEVT_MOTION, &LineChart::OnMouseMove, this);	
+	Bind(wxEVT_PAINT, &GroupedBarChart::OnPaint, this);
+	Bind(wxEVT_MOTION, &GroupedBarChart::OnMouseMove, this);
 }
 
-void LineChart::SetValues(std::vector<StringValueViewModel> values) {
+void GroupedBarChart::SetValues(std::vector<StringValuesViewModel> values) {
 	_currentPopupIndex = -1;
 	_values = values;
 
@@ -25,26 +29,27 @@ void LineChart::SetValues(std::vector<StringValueViewModel> values) {
 	_totalValue = 0;
 
 	if (_values.size() > 0) {
-		auto ptr = max_element(_values.begin(), _values.end(),
-			[](const StringValueViewModel p1, const StringValueViewModel p2) {
-			return p1.value < p2.value;
-		});
+		for (auto& value : _values) {
+			float max = 0;
 
-		_maxValue = ptr->value;
+			for (float val : value.values) {
+				if (val > _maxValue) {
+					_maxValue = val;
+				}
+
+				if (val > max) {
+					max = val;
+				}
+			}
+
+			_totalValue = _totalValue + max;
+		}
 	}
-
-	_totalValue = std::accumulate(_values.begin(), _values.end(), 0, [](float accumulator, StringValueViewModel b) {
-		return accumulator + b.value;
-	});
 
 	Draw();
 }
 
-void LineChart::SetDrawAverage(bool value) {
-	_drawAverage = value;
-}
-
-void LineChart::Draw() {
+void GroupedBarChart::Draw() {
 	wxClientDC dc(this);
 
 	dc.SetBackground(wxColor(255, 255, 255));
@@ -58,7 +63,7 @@ void LineChart::Draw() {
 	_height = 0;
 
 	DoGetSize(&_width, &_height);
-		
+
 	int maxY = round(_maxValue);
 	int labelStepY = 10;
 
@@ -73,7 +78,8 @@ void LineChart::Draw() {
 	else if (maxY > 10000 && maxY <= 100000) {
 		maxY = ceil(_maxValue / 10000) * 10000;
 		labelStepY = 10000;
-	} else if (maxY > 10000 && maxY <= 100000) {
+	}
+	else if (maxY > 10000 && maxY <= 100000) {
 		maxY = ceil(_maxValue / 100000) * 100000;
 		labelStepY = 20000;
 	}
@@ -98,7 +104,7 @@ void LineChart::Draw() {
 
 	_stepX = 0;
 	_stepY = (_height - _offsetY - FromDIP(10)) / (float)maxY;
-	
+
 	if (_values.size() > 1) {
 		_stepX = (float)_graphWidth / (_values.size() - 1);
 	}
@@ -113,14 +119,19 @@ void LineChart::Draw() {
 		wxSize size = dc.GetTextExtent(label);
 
 		int x = maxSize.GetWidth() - size.GetWidth();
-		
-		dc.DrawText(label, wxPoint(x, y - 10));		
+
+		dc.DrawText(label, wxPoint(x, y - 10));
 		dc.DrawLine(_offsetX, y, _offsetX + _graphWidth, y);
 	}
-	
+
 	if (_values.size() > 1) {
+		_barOffsetX = (_values[0].values.size() * (_barSize + _barOffset)) / 2;
+		_barOffsetX = _barOffsetX - _barOffset;
+		_barGraphWidth = _graphWidth - (_barOffsetX * 2);
+		_barStepX = (float)_barGraphWidth / (_values.size() - 1);
+
 		for (unsigned int i = 0; i < _values.size(); i++) {
-			int x = round(i * _stepX) + _offsetX;
+			int x = round(i * _barStepX) + _barOffsetX + _offsetX;
 
 			wxSize size = dc.GetTextExtent(_values[i].string);
 			dc.DrawText(_values[i].string, wxPoint(x - (size.GetWidth() / 2), _height - FromDIP(20)));
@@ -133,27 +144,10 @@ void LineChart::Draw() {
 		dc.DrawText(_values[0].string, wxPoint(x - (size.GetWidth() / 2), _height - FromDIP(20)));
 	}
 
-	if (_drawAverage) {
-		float average = _totalValue / _values.size();
-
-		int y = (_height - _offsetY) - round(average * _stepY);
-
-		wxString label = wxNumberFormatter::ToString(average, 0);
-		wxSize size = dc.GetTextExtent(label);
-
-		int x = maxSize.GetWidth() - size.GetWidth();
-
-		dc.SetTextForeground(wxColor(40, 167, 70));
-		dc.DrawText(label, wxPoint(x, y - 10));
-
-		dc.SetPen(wxPen(wxColor(40, 167, 70), 0));
-		dc.DrawLine(_offsetX, y, _offsetX + _graphWidth, y);
-	}
-
 	DrawGraph();
 }
 
-void LineChart::DrawGraph() {
+void GroupedBarChart::DrawGraph() {
 	wxClientDC dc(this);
 
 	dc.SetBrush(wxColor(10, 110, 170));
@@ -162,42 +156,45 @@ void LineChart::DrawGraph() {
 	_points.clear();
 
 	if (_values.size() > 1) {
-		int x = 0;
-		int y = 0;
-		int x2 = 0;
-		int y2 = 0;
-
-		for (unsigned int i = 0; i < _values.size() - 1; i++) {
-			x = _offsetX + (i * _stepX);
-			y = (_height - _offsetY) - round(_values[i].value * _stepY);
-			x2 = _offsetX + ((i + 1) * _stepX);
-			y2 = (_height - _offsetY) - round(_values[i + 1].value * _stepY);
-
-			dc.DrawLine(x, y, x2, y2);
-			dc.DrawCircle(x, y, 3);
-
-			_points.push_back(std::make_pair(x - (_stepX / 2), x + (_stepX / 2)));
+		for (unsigned int i = 0; i < _values.size(); i++) {
+			int x = round(i * _barStepX) + _barOffsetX + _offsetX;
+			
+			DrawBars(dc, _values[i].values, x);
 		}
-
-		dc.DrawCircle(x2, y2, 3);
-
-		_points.push_back(std::make_pair(x2 - (_stepX / 2), x2 + (_stepX / 2)));
 	}
 	else {
 		int x = _offsetX + (_graphWidth / 2);
-		int y = (_height - _offsetY) - round(_values[0].value * _stepY);
 
-		dc.DrawCircle(x, y, 3);
-
-		_points.push_back(std::make_pair(x - 20, x + 20));
+		DrawBars(dc, _values[0].values, x);
 	}
 }
 
-void LineChart::OnPaint(wxPaintEvent& event) {
+void GroupedBarChart::DrawBars(wxClientDC& dc, std::vector<float> values, int x) {
+	for (unsigned int i = 0; i < values.size(); i++) {		
+		int height = round(values[i] * _stepY);
+
+		if (height < 5) {
+			height = 5;
+		}
+
+		int y = (_height - _offsetY) - height;		
+
+		wxColor color = Colors::ColorForBarIndex(i);
+
+		dc.SetBrush(color);
+		dc.SetPen(wxPen(color, 0));
+
+		dc.DrawRectangle((x - _barOffsetX), y, _barSize, height);
+
+		x = x + _barSize + _barOffset;
+	}	
+}
+
+void GroupedBarChart::OnPaint(wxPaintEvent& event) {
 	Draw();
 }
 
-void LineChart::OnMouseMove(wxMouseEvent& event) {
+void GroupedBarChart::OnMouseMove(wxMouseEvent& event) {
 	int width = 0;
 	int height = 0;
 
@@ -217,9 +214,9 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 	if (OnShowPopup) {
 		OnShowPopup();
 	}
-	
+
 	unsigned int index = 0;
-	
+
 	for (unsigned int i = 0; i < _points.size(); i++) {
 		int x = _points[i].first;
 		int x2 = _points[i].second;
@@ -245,10 +242,10 @@ void LineChart::OnMouseMove(wxMouseEvent& event) {
 			x = _offsetX + (_graphWidth / 2);
 		}
 
-		int y = height - _offsetY - round(_values[index].value * _stepY);
+		int y = height - _offsetY - round(_values[index].values[0] * _stepY);
 
 		if (OnUpdatePopup) {
 			OnUpdatePopup(x, y, index);
 		}
-	}	
+	}
 }

@@ -35,7 +35,6 @@ private:
 	std::vector<DateValueViewModel> _values;
 	std::set<int> _selectedIds;
 
-	void OnAccountSelect(std::set<int> ids);
 	void ShowPopup();
 	void HidePopup();
 	void UpdatePopup(int x, int y, int index);

@@ -12,6 +12,11 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
 	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
+	_accountsComboBox->OnChange = [&](std::set<int> ids) {
+		_selectedIds = ids;
+		Update();
+	};
+
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
 	_periodFilterPanel = new PeriodFilterPanel(this, PeriodFilterType::Report);
@@ -28,7 +33,7 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
-	_chart = new LineChart(this, wxID_ANY);
+	_chart = new LineChart(this);
 
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
@@ -43,7 +48,6 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	_chartPopup = new ExpensesTooltipPopup(this);
 
-	_accountsComboBox->OnChange = std::bind(&ReportExpensesByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
 	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
 
 	_chart->OnShowPopup = std::bind(&ReportExpensesByMonthPanel::ShowPopup, this);
@@ -79,11 +83,6 @@ void ReportExpensesByMonthPanel::Update() {
 
 	_chart->SetDrawAverage(_averageCheckbox->IsChecked());
 	_chart->SetValues(chartValues);
-}
-
-void ReportExpensesByMonthPanel::OnAccountSelect(std::set<int> ids) {
-	_selectedIds = ids;
-	Update();
 }
 
 void ReportExpensesByMonthPanel::OnDrawAverageCheck(wxCommandEvent& event) {

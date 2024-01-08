@@ -49,7 +49,7 @@ void NotificationAlertPanel::OnPaint(wxPaintEvent& event)
 	wxPaintDC dc(this);
 	wxSize size = GetSize();
 
-	wxColor color = Colors::ColorFoImportance(_alert->importance);
+	wxColor color = Colors::ColorForImportance(_alert->importance);
 
 	dc.SetPen(wxPen(color, 1));
 	dc.SetBrush(wxBrush(color));

@@ -1,6 +1,6 @@
 #include "BarChart.h"
 
-BarChart::BarChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+BarChart::BarChart(wxWindow *parent) : wxPanel(parent, wxID_ANY) {
 	Bind(wxEVT_PAINT, &BarChart::OnPaint, this);
 }
 
@@ -65,11 +65,8 @@ void BarChart::Draw() {
 	wxString maxValueString = wxNumberFormatter::ToString(maxValue, 2);
 	wxSize maxSize = dc.GetTextExtent(maxValueString);
 
-	int offsetY = 20;
-	float stepY = (height - offsetY) / _values.size();
-	
-	//offsetY = 20;	
-	//stepY =  //(height - offsetY - 10) / (float)maxY;
+	int offsetY = FromDIP(20);
+	float stepY = (height - offsetY) / _values.size();	
 
 	int maxLabelWidth = 0;
 
@@ -81,7 +78,7 @@ void BarChart::Draw() {
 		}
 	}
 
-	int offsetX = maxLabelWidth + 10;
+	int offsetX = maxLabelWidth + FromDIP(10);
 	int barMaxWidth = width - offsetX;
 	float stepX = barMaxWidth / (float)maxX;
 
@@ -112,7 +109,7 @@ void BarChart::Draw() {
 	}
 
 	int y = offsetY;
-	int barSize = 10;
+	int barSize = FromDIP(10);
 
 	for (unsigned int i = 0; i < _values.size(); i++) {
 		wxSize size = dc.GetTextExtent(_values[i].string);
@@ -122,8 +119,10 @@ void BarChart::Draw() {
 		dc.SetPen(wxPen(wxColor(0, 0, 0), 0));
 		dc.DrawText(_values[i].string, wxPoint(x, y - (size.GetHeight() / 2) - 2));
 
-		dc.SetBrush(wxColor(10, 110, 170));
-		dc.SetPen(wxPen(wxColor(10, 110, 170), 0));
+		wxColor color = Colors::ColorForBarIndex(0);
+
+		dc.SetBrush(color);
+		dc.SetPen(wxPen(color, 0));
 
 		int barWidth = round(_values[i].value * stepX);
 

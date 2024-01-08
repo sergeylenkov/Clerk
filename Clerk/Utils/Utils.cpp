@@ -66,7 +66,7 @@ wxColor Colors::ColorForBalance(boolean isReceipt) {
 	return wxColor(242, 73, 101);
 }
 
-wxColor Colors::ColorFoImportance(AlertImportance importance) {
+wxColor Colors::ColorForImportance(AlertImportance importance) {
 	if (importance == AlertImportance::Medium) {
 		return wxColor(251, 175, 67);
 	}
@@ -75,6 +75,24 @@ wxColor Colors::ColorFoImportance(AlertImportance importance) {
 	}
 
 	return wxColor(10, 199, 117);
+}
+
+wxColor Colors::ColorForBarIndex(int index) {
+	switch (index)
+	{
+	case 1:
+		return wxColor(112, 173, 71);
+		break;
+	case 2:
+		return wxColor(251, 175, 67);
+		break;
+	case 3:
+		return wxColor(242, 73, 101);
+		break;
+	default:
+		return wxColor(10, 110, 170);
+		break;
+	}
 }
 
 void Periods::Calculate(Periods::Type type, wxDateTime &fromDate, wxDateTime &toDate) {

@@ -36,7 +36,6 @@ private:
 	std::vector<DateValueViewModel> _values = {};
 	std::set<int> _selectedIds;
 
-	void OnAccountSelect(std::set<int> ids);
 	void OnDrawAverageCheck(wxCommandEvent& event);
 	void ShowPopup();
 	void HidePopup();

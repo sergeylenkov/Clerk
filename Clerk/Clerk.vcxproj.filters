@@ -519,6 +519,9 @@
     <ClCompile Include="UI\Controls\PeriodFilterPanel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Charts\GroupedBarChart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -1089,6 +1092,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\Enums.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Charts\GroupedBarChart.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

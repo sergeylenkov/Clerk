@@ -1,6 +1,6 @@
 #include "PieChart.h"
 
-PieChart::PieChart(wxWindow *parent, wxWindowID id) : wxPanel(parent, id) {
+PieChart::PieChart(wxWindow *parent) : wxPanel(parent, wxID_ANY) {
 	Connect(wxEVT_PAINT, wxPaintEventHandler(PieChart::OnPaint));
 }
 
@@ -8,7 +8,7 @@ PieChart::~PieChart() {
 
 }
 
-void PieChart::SetValues(map<wxString, float> values) {
+void PieChart::SetValues(std::map<wxString, float> values) {
 	_values = values;
 	Draw();
 }
@@ -39,15 +39,15 @@ void PieChart::Draw() {
 		items.push_back(std::pair<wxString, float>(it->first, it->second));
 	}
 
-	sort(items.begin(), items.end(), [](std::pair<wxString, float> const &a, std::pair<wxString, float> const &b) {
-			return a.second > b.second;
-		});
+	std::sort(items.begin(), items.end(), [](std::pair<wxString, float> const &a, std::pair<wxString, float> const &b) {
+		return a.second > b.second;
+	});
 
 	float step = 360 / sum;
 
 	int centerX = width / 2;
 	int centerY = height / 2;
-	int radius = min(centerX, centerY);
+	int radius = std::min(centerX, centerY);
 
 	int startAngle = 0;
 	int color = 0;

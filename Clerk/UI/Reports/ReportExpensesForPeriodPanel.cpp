@@ -17,7 +17,7 @@ ReportExpensesForPeriodPanel::ReportExpensesForPeriodPanel(wxWindow *parent, Dat
 
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
-	_chart = new BarChart(this, wxID_ANY);
+	_chart = new BarChart(this);
 	
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));

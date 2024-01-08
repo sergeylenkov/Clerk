@@ -8,38 +8,44 @@
 #include <functional>
 #include <numeric>
 #include "../../Data/PresentationModels/Types.h"
+#include "../../Utils/Utils.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
-class LineChart : public wxPanel
+class GroupedBarChart : public wxPanel
 {
 public:
-	LineChart(wxWindow *parent);
+	GroupedBarChart(wxWindow* parent);
 
-	void SetValues(std::vector<StringValueViewModel> values);
-	void SetDrawAverage(bool value);
+	void SetValues(std::vector<StringValuesViewModel> values);
 	void Draw();
 
 	std::function<void()> OnShowPopup;
 	std::function<void()> OnHidePopup;
-	std::function<void(int x, int y , int index)> OnUpdatePopup;
+	std::function<void(int x, int y, int index)> OnUpdatePopup;
 
 private:
-	std::vector<StringValueViewModel> _values;
+	std::vector<StringValuesViewModel> _values;
 	std::vector<std::pair<int, int>> _points;
 	float _maxValue;
 	float _totalValue;
 	int _width;
 	int _height;
 	int _graphWidth;
+	int _barGraphWidth;
 	float _stepX;
 	float _stepY;
+	float _barStepX;
 	int _offsetX;
 	int _offsetY;
+	int _barOffsetX;
 	int _currentPopupIndex;
-	bool _drawAverage;
+	int _barSize;
+	int _barOffset;
 
 	void DrawGraph();
+	void DrawBars(wxClientDC& dc, std::vector<float> values, int x);
 	void OnPaint(wxPaintEvent& event);
-	void OnMouseMove(wxMouseEvent& event);	
+	void OnMouseMove(wxMouseEvent& event);
 };

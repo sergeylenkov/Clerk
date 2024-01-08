@@ -12,6 +12,11 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	filterSizer->Add(accountsLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(5));
 
 	_accountsComboBox = new AccountsComboBox(this, wxDefaultPosition, FromDIP(wxSize(200, 20)), true);
+	_accountsComboBox->OnChange = [&](std::set<int> ids) {
+		_selectedIds = ids;
+		Update();
+	};
+
 	filterSizer->Add(_accountsComboBox, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, FromDIP(10));
 
 	wxStaticText* periodLabel = new wxStaticText(this, wxID_ANY, _("Period:"));
@@ -26,7 +31,7 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
-	_chart = new LineChart(this, wxID_ANY);
+	_chart = new LineChart(this);
 
 	wxBoxSizer *chartSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -40,8 +45,6 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 	SetSizer(mainSizer);	
 
 	_chartPopup = new ExpensesTooltipPopup(this);
-
-	_accountsComboBox->OnChange = std::bind(&ReportBalanceByMonthPanel::OnAccountSelect, this, std::placeholders::_1);
 
 	_chart->OnShowPopup = std::bind(&ReportBalanceByMonthPanel::ShowPopup, this);
 	_chart->OnHidePopup = std::bind(&ReportBalanceByMonthPanel::HidePopup, this);
@@ -76,11 +79,6 @@ void ReportBalanceByMonthPanel::Update() {
 	}
 
 	_chart->SetValues(chartValues);
-}
-
-void ReportBalanceByMonthPanel::OnAccountSelect(std::set<int> ids) {
-	_selectedIds = ids;
-	Update();
 }
 
 void ReportBalanceByMonthPanel::ShowPopup() {

@@ -4,17 +4,15 @@
 #include <map>
 #include <numeric>
 
-using namespace std;
-
 class PieChart : public wxPanel {
 public:
-	PieChart(wxWindow *parent, wxWindowID id);
+	PieChart(wxWindow *parent);
 	~PieChart();
 
-	void SetValues(map<wxString, float> values);
+	void SetValues(std::map<wxString, float> values);
 	void Draw();
 
 private:
-	map<wxString, float> _values;
+	std::map<wxString, float> _values;
 	void OnPaint(wxPaintEvent& event);
 };

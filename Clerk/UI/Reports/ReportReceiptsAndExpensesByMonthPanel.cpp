@@ -29,6 +29,17 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 	mainSizer->Add(filterSizer, 0, wxEXPAND | wxALL, FromDIP(10));
 
 	_chart = new GroupedBarChart(this);
+	_chart->OnShowPopup = [&]() {
+		ShowPopup();
+	};
+
+	_chart->OnHidePopup = [&]() {
+		HidePopup();
+	};
+
+	_chart->OnUpdatePopup = [&](int x, int y, int index) {
+		UpdatePopup(x, y, index);
+	};
 
 	_chart->SetMinSize(FromDIP(wxSize(-1, 600)));
 	_chart->SetMaxSize(FromDIP(wxSize(-1, 600)));
@@ -41,6 +52,8 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 
 	SetSizer(mainSizer);
 	Layout();
+
+	_chartPopup = new ExpensesTooltipPopup(this);
 
 	_selectedIds = {};
 
@@ -63,6 +76,30 @@ ReportReceiptsAndExpensesByMonthPanel::ReportReceiptsAndExpensesByMonthPanel(wxW
 	_accountsComboBox->SetAccounts(_accounts);
 
 	RestoreFilterSettings();
+}
+
+void ReportReceiptsAndExpensesByMonthPanel::ShowPopup() {
+	_chartPopup->Show();
+}
+
+void ReportReceiptsAndExpensesByMonthPanel::HidePopup() {
+	_chartPopup->Hide();
+}
+
+void ReportReceiptsAndExpensesByMonthPanel::UpdatePopup(int x, int y, int index) {
+	auto receipt = _receipts[index];
+	auto expense = _expenses[index];
+
+	wxDateTime date = receipt.date;
+
+	std::vector<StringValueViewModel> popupValues;
+
+	popupValues = { { _("Receipts"), receipt.value }, { _("Expenses"), expense.value } };
+
+	wxPoint position = _chart->ClientToScreen(wxPoint(x, y));
+	_chartPopup->SetPosition(position);
+
+	_chartPopup->Update(date.Format("%B"), popupValues);
 }
 
 ReportReceiptsAndExpensesByMonthPanel::~ReportReceiptsAndExpensesByMonthPanel() {

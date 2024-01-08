@@ -50,9 +50,17 @@ ReportExpensesByMonthPanel::ReportExpensesByMonthPanel(wxWindow *parent, DataCon
 
 	_averageCheckbox->Bind(wxEVT_CHECKBOX, &ReportExpensesByMonthPanel::OnDrawAverageCheck, this);
 
-	_chart->OnShowPopup = std::bind(&ReportExpensesByMonthPanel::ShowPopup, this);
-	_chart->OnHidePopup = std::bind(&ReportExpensesByMonthPanel::HidePopup, this);
-	_chart->OnUpdatePopup = std::bind(&ReportExpensesByMonthPanel::UpdatePopup, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
+	_chart->OnShowPopup = [&]() {
+		ShowPopup();
+	};
+
+	_chart->OnHidePopup = [&]() {
+		HidePopup();
+	};
+
+	_chart->OnUpdatePopup = [&](int x, int y, int index) {
+		UpdatePopup(x, y, index);
+	};
 
 	_selectedIds = {};
 

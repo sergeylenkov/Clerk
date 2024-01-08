@@ -170,6 +170,9 @@ void GroupedBarChart::DrawGraph() {
 }
 
 void GroupedBarChart::DrawBars(wxClientDC& dc, std::vector<float> values, int x) {
+	int pointX = x;
+	int pointY = _height;	
+
 	for (unsigned int i = 0; i < values.size(); i++) {		
 		int height = round(values[i] * _stepY);
 
@@ -179,6 +182,10 @@ void GroupedBarChart::DrawBars(wxClientDC& dc, std::vector<float> values, int x)
 
 		int y = (_height - _offsetY) - height;		
 
+		if (y < pointY) {
+			pointY = y;
+		}
+
 		wxColor color = Colors::ColorForBarIndex(i);
 
 		dc.SetBrush(color);
@@ -187,7 +194,9 @@ void GroupedBarChart::DrawBars(wxClientDC& dc, std::vector<float> values, int x)
 		dc.DrawRectangle((x - _barOffsetX), y, _barSize, height);
 
 		x = x + _barSize + _barOffset;
-	}	
+	}
+
+	_points.push_back({ pointX, pointY });
 }
 
 void GroupedBarChart::OnPaint(wxPaintEvent& event) {
@@ -211,38 +220,36 @@ void GroupedBarChart::OnMouseMove(wxMouseEvent& event) {
 		return;
 	}
 
-	if (OnShowPopup) {
-		OnShowPopup();
-	}
-
-	unsigned int index = 0;
+	unsigned int index = -1;
 
 	for (unsigned int i = 0; i < _points.size(); i++) {
 		int x = _points[i].first;
-		int x2 = _points[i].second;
+		int y = _points[i].second;
 
-		if (mouseX >= x && mouseX <= x2) {
+		if (mouseX >= x - _barOffsetX && mouseX <= x + _barOffsetX
+			&& mouseY >= y && mouseY <= height - _offsetY) {
 			index = i;
 			break;
 		}
 	}
 
-	if (index < 0) {
-		index = 0;
+	if (index < 0 || index >= _values.size()) {
+		if (OnHidePopup) {
+			OnHidePopup();
+		}
+
+		return;
 	}
-	else if (index >= _values.size()) {
-		index = _values.size() - 1;
+
+	if (OnShowPopup) {
+		OnShowPopup();
 	}
 
 	if (index != _currentPopupIndex) {
 		_currentPopupIndex = index;
-		int x = _offsetX + (index * _stepX);
-
-		if (_values.size() == 1) {
-			x = _offsetX + (_graphWidth / 2);
-		}
-
-		int y = height - _offsetY - round(_values[index].values[0] * _stepY);
+		
+		int x = _points[index].first;
+		int y = _points[index].second;
 
 		if (OnUpdatePopup) {
 			OnUpdatePopup(x, y, index);

@@ -6,7 +6,7 @@ AboutDialog::AboutDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	wxString version = wxString::Format(_("Version %s"), APP_VERSION);
 
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 
 	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -41,8 +41,8 @@ AboutDialog::AboutDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, this->FromDIP(10));
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);
+	Centre(wxBOTH);
 }

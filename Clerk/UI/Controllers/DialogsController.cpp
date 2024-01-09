@@ -214,7 +214,7 @@ wxSize DialogsController::GetPreferencesDialogSize() {
 	wxSize size = wxSize();
 
 	size.SetWidth(_parent->FromDIP(400));
-	size.SetHeight(_parent->FromDIP(340));
+	size.SetHeight(_parent->FromDIP(380));
 
 	return size;
 }

@@ -5,24 +5,35 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	_context(context) {
 	SetBackgroundColour(wxColor(*wxWHITE));
 
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 
-	int indent = this->FromDIP(5);
-	int bottomIndent = this->FromDIP(15);
+	int indent = FromDIP(5);
+	int bottomIndent = FromDIP(15);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 
+	wxBoxSizer* staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("General")), wxVERTICAL);
+
+	_showCreditFundsCheckBox = new wxCheckBox(this, wxID_ANY, _("Show credit funds in balance"));
+	staticBoxSizer->Add(_showCreditFundsCheckBox, 0, wxALL, indent);
+
+	verticalSizer->Add(staticBoxSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
+
+	staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Language")), wxVERTICAL);
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* languageLabel = new wxStaticText(this, wxID_ANY, _("Language:"));
 	horizontalSizer->Add(languageLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	_languagesList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
+	_languagesList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, FromDIP(wxSize(100, -1)), 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	horizontalSizer->Add(_languagesList, 1, wxALIGN_CENTER_VERTICAL);
 
-	verticalSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
+	staticBoxSizer->Add(horizontalSizer, 0, wxALL, indent);
 
+	verticalSizer->Add(staticBoxSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
+
+	staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Currencies")), wxVERTICAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* currencyLabel = new wxStaticText(this, wxID_ANY, _("Base Currency:"));
@@ -31,35 +42,21 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 	_currenciesList = new wxComboBox(this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_DROPDOWN | wxCB_READONLY);
 	horizontalSizer->Add(_currenciesList, 1, wxALIGN_CENTER_VERTICAL);
 
-	verticalSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	_convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert amount by exchange rate"));
-	horizontalSizer->Add(_convertCurrenciesCheckBox);
-
-	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	staticBoxSizer->Add(horizontalSizer, 0, wxEXPAND | wxALL, indent);
 
 	_loadExchangeRatesCheckBox = new wxCheckBox(this, wxID_ANY, _("Load exchange rates on start"));
-	horizontalSizer->Add(_loadExchangeRatesCheckBox);
 
-	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
+	staticBoxSizer->Add(_loadExchangeRatesCheckBox, 0, wxALL, indent);
 
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	_convertCurrenciesCheckBox = new wxCheckBox(this, wxID_ANY, _("Convert amount by exchange rate"));
 
-	_showCreditFundsCheckBox = new wxCheckBox(this, wxID_ANY, _("Show credit funds in balance"));
-	horizontalSizer->Add(_showCreditFundsCheckBox);
-
-	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+	staticBoxSizer->Add(_convertCurrenciesCheckBox, 0, wxALL, indent);
 
 	_showBaseCurrencyAmountCheckBox = new wxCheckBox(this, wxID_ANY, _("Show amount in base currency"));
-	horizontalSizer->Add(_showBaseCurrencyAmountCheckBox);
 
-	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
+	staticBoxSizer->Add(_showBaseCurrencyAmountCheckBox, 0, wxALL, indent);
+
+	verticalSizer->Add(staticBoxSizer, 0, wxEXPAND);
 
 	mainSizer->Add(verticalSizer, 1, wxEXPAND | wxALL, indent * 2);
 

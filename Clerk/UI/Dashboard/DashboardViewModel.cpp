@@ -29,7 +29,13 @@ void DashboardViewModel::OnUpdate(std::function<void()> fn) {
 }
 
 float DashboardViewModel::GetTotalFunds() {
-	return _accountingService.GetBalance() + _accountingService.GetCredit();
+	float result = _accountingService.GetBalance();
+
+	if (Settings::GetInstance().IsShowCreditFunds()) {
+		result = result + _accountingService.GetCredit();
+	}
+
+	return result;
 }
 
 float DashboardViewModel::GetOwnFunds() {
@@ -133,4 +139,9 @@ shared_vector<GoalPresentationModel> DashboardViewModel::GetGoals() {
 
 void DashboardViewModel::UpdateBudgets() {
 	_budgetsService.UpdateBalance();
+}
+
+float DashboardViewModel::ConvertAmountToBaseCurrency(const CurrencyPresentationModel& currency, float amount) {
+	float rate = _currenciesService.GetExchangeRate(currency, *_currenciesService.GetBaseCurrency());
+	return amount * rate;
 }

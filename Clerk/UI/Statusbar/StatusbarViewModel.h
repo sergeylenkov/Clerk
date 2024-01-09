@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Utils/Utils.h"
+#include "../../Utils/Settings/Settings.h"
 #include "../../Data/Services/AccountingService.h"
 #include "../../Data/Services/CurrenciesService.h"
 

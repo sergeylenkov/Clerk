@@ -47,6 +47,20 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
 
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	_showCreditFundsCheckBox = new wxCheckBox(this, wxID_ANY, _("Show credit funds in balance"));
+	horizontalSizer->Add(_showCreditFundsCheckBox);
+
+	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	_showBaseCurrencyAmountCheckBox = new wxCheckBox(this, wxID_ANY, _("Show amount in base currency"));
+	horizontalSizer->Add(_showBaseCurrencyAmountCheckBox);
+
+	verticalSizer->Add(horizontalSizer, 0, wxBOTTOM, bottomIndent);
+
 	mainSizer->Add(verticalSizer, 1, wxEXPAND | wxALL, indent * 2);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -106,6 +120,8 @@ PreferencesDialog::PreferencesDialog(wxFrame *parent, const wxChar *title, int x
 
 	_convertCurrenciesCheckBox->SetValue(Settings::GetInstance().IsConvertCurrency());
 	_loadExchangeRatesCheckBox->SetValue(Settings::GetInstance().IsLoadExchangeRates());
+	_showCreditFundsCheckBox ->SetValue(Settings::GetInstance().IsShowCreditFunds());
+	_showBaseCurrencyAmountCheckBox->SetValue(Settings::GetInstance().IsShowBaseCurrencyAmount());
 
 	okButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &PreferencesDialog::OnCancel, this);
@@ -123,6 +139,8 @@ void PreferencesDialog::OnOK(wxCommandEvent &event) {
 
 	Settings::GetInstance().SetConvertCurrency(_convertCurrenciesCheckBox->IsChecked());
 	Settings::GetInstance().SetLoadExchangeRates(_loadExchangeRatesCheckBox->IsChecked());
+	Settings::GetInstance().SetShowCreditFunds(_showCreditFundsCheckBox->IsChecked());
+	Settings::GetInstance().SetShowBaseCurrencyAmount(_showBaseCurrencyAmountCheckBox->IsChecked());
 
 	Close();
 }

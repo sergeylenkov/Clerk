@@ -23,6 +23,8 @@ private:
 	wxComboBox *_currenciesList;
 	wxCheckBox *_convertCurrenciesCheckBox;
 	wxCheckBox *_loadExchangeRatesCheckBox;	
+	wxCheckBox* _showCreditFundsCheckBox;
+	wxCheckBox* _showBaseCurrencyAmountCheckBox;
 
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);

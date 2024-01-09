@@ -4,6 +4,7 @@
 #include "../../Utils/Utils.h"
 #include "../../Utils/Types.h"
 #include "../../Data/PresentationModels/AccountPresentationModel.h"
+#include "../../Data/Services/CurrenciesService.h"
 #include "DashboardViewModel.h"
 
 using namespace Clerk::Data;
@@ -20,10 +21,13 @@ public:
 private:
 	DashboardViewModel* _viewModel{};
 	shared_vector<AccountPresentationModel> _accounts;
-	float _total = 0.0;
+	float _total;
+	int _width;
+	int _height;
 
 	void Update();
 
 	void Draw(wxPaintDC &dc);
 	void OnPaint(wxPaintEvent& event);
+	void DrawValue(wxPaintDC& dc, wxString value, int y);
 };

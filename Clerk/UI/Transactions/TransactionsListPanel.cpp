@@ -85,12 +85,14 @@ TransactionsListPanel::~TransactionsListPanel() {
 void TransactionsListPanel::SetAccount(std::shared_ptr<AccountPresentationModel> account) {
 	_account = account;
 
+	RestoreFilterSettings();
 	CreateListColumns();
 }
 
 void TransactionsListPanel::SetAccountType(AccountType type) {
 	_accountType = type;
 
+	RestoreFilterSettings();
 	CreateListColumns();
 }
 

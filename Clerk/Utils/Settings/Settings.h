@@ -50,6 +50,10 @@ namespace Clerk {
 			void SetConvertCurrency(bool convert);
 			bool IsLoadExchangeRates();
 			void SetLoadExchangeRates(bool load);
+			bool IsShowCreditFunds();
+			void SetShowCreditFunds(bool show);
+			bool IsShowBaseCurrencyAmount();
+			void SetShowBaseCurrencyAmount(bool show);
 			std::vector<int> GetSelectedExchangeRates();
 			void ClearTabs();
 			void AddTab(int type, int accountId);
@@ -89,6 +93,8 @@ namespace Clerk {
 			int _baseCurrencyId;
 			bool _convertCurrency;
 			bool _loadExchangeRates;
+			bool _showCreditFunds;
+			bool _showBaseCurrencyAmount;
 			std::vector<int> _selectedExchangeRates;
 			std::vector<TabSettings> _tabs;
 			std::map<int, bool> _expandedMenu;

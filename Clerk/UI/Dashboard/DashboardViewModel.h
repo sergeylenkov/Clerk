@@ -1,5 +1,8 @@
 #pragma once
 
+#include "../../Utils/EventEmitter.h"
+#include "../../Utils/Types.h"
+#include "../../Utils/Settings/Settings.h"
 #include "../../Data/Services/AccountingService.h"
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/AccountsService.h"
@@ -7,8 +10,6 @@
 #include "../../Data/Services/SchedulersService.h"
 #include "../../Data/Services/GoalsService.h"
 #include "../../Data/Models/CurrencyModel.h"
-#include "../../Utils/EventEmitter.h"
-#include "../../Utils/Types.h"
 
 namespace Clerk {
 	namespace UI {
@@ -32,6 +33,7 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> GetDepts();
 			shared_vector<GoalPresentationModel> GetGoals();
 			void UpdateBudgets();
+			float ConvertAmountToBaseCurrency(const CurrencyPresentationModel& currency, float amount);
 
 			void OnUpdate(std::function<void()> fn);
 

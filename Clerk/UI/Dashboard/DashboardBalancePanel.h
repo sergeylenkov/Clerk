@@ -14,7 +14,6 @@ class DashboardBalancePanel : public wxPanel
 {
 public:
 	DashboardBalancePanel(wxWindow *parent);
-	~DashboardBalancePanel();
 
 	void SetViewModel(DashboardViewModel* viewModel);
 

@@ -25,7 +25,13 @@ void StatusbarViewModel::OnUpdate(std::function<void()> fn) {
 }
 
 float StatusbarViewModel::GetBalance() {
-	return _accountingService.GetBalance();
+	float result = _accountingService.GetBalance();
+
+	if (Settings::GetInstance().IsShowCreditFunds()) {
+		result = result + _accountingService.GetCredit();
+	}
+
+	return result;
 }
 
 float StatusbarViewModel::GetReceipts() {

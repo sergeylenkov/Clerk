@@ -4,6 +4,10 @@ DashboardAccountsPanel::DashboardAccountsPanel(wxWindow *parent) : wxPanel(paren
 	SetDoubleBuffered(true);
 	SetBackgroundStyle(wxBG_STYLE_CUSTOM);
 
+	_total = 0.0;
+	_width = 0;
+	_height = 0;
+
 	Bind(wxEVT_PAINT, &DashboardAccountsPanel::OnPaint, this);
 }
 
@@ -29,72 +33,80 @@ void DashboardAccountsPanel::Update()
 }
 
 void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
-	int width = 0;
-	int height = 0;
-
-	DoGetSize(&width, &height);
+	DoGetSize(&_width, &_height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
 
+	wxFont font = GetFont();
+
 	wxFont titleFont = GetFont();
 	titleFont.SetPointSize(12);
 
+	wxFont hintFont = GetFont();
+	hintFont.SetPointSize(8);
+
 	dc.SetFont(titleFont);
-	dc.DrawText(_("Accounts"), wxPoint(0, 0));
+	dc.DrawText(_("Accounts"), wxPoint(0, 0));	
 
-	wxFont accountFont = GetFont();
-	wxFont amountFont = GetFont();
-
-	dc.SetFont(amountFont);
+	dc.SetFont(font);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
 	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	wxSize size = dc.GetTextExtent(value);
 
-	dc.DrawText(value, wxPoint(width - size.GetWidth(), 5));
+	dc.DrawText(value, wxPoint(_width - size.GetWidth(), 5));
 
 	int y = FromDIP(40);
 
 	for (auto& account : _accounts) {
-		dc.SetFont(accountFont);
+		dc.SetFont(font);
 		dc.SetTextForeground(wxColor(0, 0, 0));
 		dc.DrawText(account->name, wxPoint(0, y));
-
-		dc.SetFont(amountFont);
 		
 		auto sign = account->currency->sign;
 
 		if (account->isCredit) {
 			if (account->balance == 0) {
-				wxString value = Format::Amount(account->creditLimit, sign);
-				wxSize size = dc.GetTextExtent(value);
-		
-				dc.SetTextForeground(wxColor(60, 60, 60));
-				dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
+				DrawValue(dc, Format::Amount(account->creditLimit, sign), y);
 			} else {
-				float amount = account->creditLimit + account->balance;
-
 				wxString value = Format::Amount(account->balance, sign);
 				wxSize size = dc.GetTextExtent(value);				
-				int x = width - size.GetWidth();
+				int x = _width - size.GetWidth();
 				
-				dc.SetTextForeground(wxColor(60, 60, 60));
-				dc.DrawText(value, wxPoint(x, y));
+				DrawValue(dc, value, y);
+
+				float amount = account->creditLimit + account->balance;
+
+				dc.SetFont(hintFont);
 
 				value = Format::Amount(amount);
 				size = dc.GetTextExtent(value);
 
 				dc.SetTextForeground(wxColor(127, 127, 127));
-				dc.DrawText(value, wxPoint(x - size.GetWidth() - 10, y));
-			}
-			
+				dc.DrawText(value, wxPoint(x - size.GetWidth() - FromDIP(10), y + FromDIP(2)));
+			}			
 		} else {
-			wxString value = Format::Amount(account->balance, sign);
-			wxSize size = dc.GetTextExtent(value);
+			if (Settings::GetInstance().IsShowBaseCurrencyAmount() && account->currency->id != _viewModel->GetCurrency()->id) {				
+				wxString value = Format::Amount(account->balance, sign);
+				wxSize size = dc.GetTextExtent(value);
+				int x = _width - size.GetWidth();
 
-			dc.SetTextForeground(wxColor(60, 60, 60));
-			dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
+				DrawValue(dc, value, y);
+
+				float amount = _viewModel->ConvertAmountToBaseCurrency(*account->currency, account->balance);
+
+				dc.SetFont(hintFont);
+
+				value = Format::Amount(amount, _viewModel->GetCurrency()->sign);
+				size = dc.GetTextExtent(value);
+
+				dc.SetTextForeground(wxColor(127, 127, 127));
+				dc.DrawText(value, wxPoint(x - size.GetWidth() - FromDIP(10), y + FromDIP(2)));
+			}
+			else {
+				DrawValue(dc, Format::Amount(account->balance, sign), y);
+			}
 		}
 
 		y = y + FromDIP(24);
@@ -104,4 +116,11 @@ void DashboardAccountsPanel::Draw(wxPaintDC &dc) {
 void DashboardAccountsPanel::OnPaint(wxPaintEvent& event) {
 	wxPaintDC dc(this);
 	Draw(dc);
+}
+
+void DashboardAccountsPanel::DrawValue(wxPaintDC& dc, wxString value, int y) {
+	wxSize size = dc.GetTextExtent(value);
+
+	dc.SetTextForeground(wxColor(60, 60, 60));
+	dc.DrawText(value, wxPoint(_width - size.GetWidth(), y));
 }

@@ -16,7 +16,9 @@ void Settings::Open(char *configName) {
 	_baseCurrencyId = 180;
 	_convertCurrency = false;
 	_loadExchangeRates = true;
-	
+	_showCreditFunds = false;
+	_showBaseCurrencyAmount = false;
+
 	_selectedExchangeRates.push_back(180);
 	_selectedExchangeRates.push_back(62);
 
@@ -83,6 +85,14 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("Language") && json["Language"].IsInt()) {
 			_language = json["Language"].GetInt();
+		}
+
+		if (json.HasMember("ShowCreditFunds") && json["ShowCreditFunds"].IsBool()) {
+			_showCreditFunds = json["ShowCreditFunds"].GetBool();
+		}
+
+		if (json.HasMember("ShowBaseCurrencyAmount") && json["ShowBaseCurrencyAmount"].IsBool()) {
+			_showBaseCurrencyAmount = json["ShowBaseCurrencyAmount"].GetBool();
 		}
 
 		if (json.HasMember("ExpandedMenu") && json["ExpandedMenu"].IsArray()) {
@@ -200,6 +210,8 @@ void Settings::Save() {
 	json.AddMember("ConvertCurrency", _convertCurrency, json.GetAllocator());
 	json.AddMember("LoadExchangeRates", _loadExchangeRates, json.GetAllocator());
 	json.AddMember("Language", _language, json.GetAllocator());
+	json.AddMember("ShowCreditFunds", _showCreditFunds, json.GetAllocator());
+	json.AddMember("ShowBaseCurrencyAmount", _showBaseCurrencyAmount, json.GetAllocator());
 
 	Value menuJson(kArrayType);
 
@@ -557,6 +569,22 @@ int Settings::GetLanguage() {
 
 void Settings::SetLanguage(int id) {
 	_language = id;
+}
+
+bool Settings::IsShowCreditFunds() {
+	return _showCreditFunds;
+}
+
+void Settings::SetShowCreditFunds(bool show) {
+	_showCreditFunds = show;
+}
+
+bool Settings::IsShowBaseCurrencyAmount() {
+	return _showBaseCurrencyAmount;
+}
+
+void Settings::SetShowBaseCurrencyAmount(bool show) {
+	_showBaseCurrencyAmount = show;
 }
 
 void Settings::SetListFilterSettings(int type, int id, int period, wxDateTime fromDate, wxDateTime toDate) {

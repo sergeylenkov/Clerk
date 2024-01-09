@@ -7,9 +7,6 @@ DashboardBalancePanel::DashboardBalancePanel(wxWindow *parent) : wxPanel(parent)
 	Bind(wxEVT_PAINT, &DashboardBalancePanel::OnPaint, this);
 }
 
-DashboardBalancePanel::~DashboardBalancePanel() {
-}
-
 void DashboardBalancePanel::SetViewModel(DashboardViewModel* viewModel) {
 	_viewModel = viewModel;
 
@@ -26,7 +23,13 @@ void DashboardBalancePanel::Update()
 	_ownFunds = _viewModel->GetOwnFunds();
 	_creditFunds = _viewModel->GetCreditFunds();
 
-	SetMinSize(FromDIP(wxSize(-1, 130)));
+	if (Settings::GetInstance().IsShowCreditFunds()) {
+		SetMinSize(FromDIP(wxSize(-1, 130)));
+	}
+	else {
+		SetMinSize(FromDIP(wxSize(-1, 70)));
+	}
+
 	Refresh();
 }
 
@@ -59,38 +62,40 @@ void DashboardBalancePanel::Draw(wxPaintDC &dc) {
 	wxString value = Format::Amount(_total, _viewModel->GetCurrency()->sign);
 	dc.DrawText(value, wxPoint(0, y));
 
-	y = FromDIP(60);
+	if (Settings::GetInstance().IsShowCreditFunds()) {
+		y = FromDIP(60);
 
-	dc.SetFont(font);
+		dc.SetFont(font);
 
-	dc.SetTextForeground(wxColor(127, 127, 127));
-	dc.DrawText(_("Own funds"), wxPoint(0, y));
-	
-	y = y + FromDIP(25);
+		dc.SetTextForeground(wxColor(127, 127, 127));
+		dc.DrawText(_("Own funds"), wxPoint(0, y));
 
-	value = Format::Amount(_ownFunds, _viewModel->GetCurrency()->sign);
-	wxSize size = dc.GetTextExtent(value);
-	
-	dc.SetTextForeground(wxColor(0, 0, 0));
-	dc.DrawText(value, wxPoint(0, y));
-	
-	if (size.GetWidth() > columnWidth) {
-		columnWidth = size.GetWidth();
+		y = y + FromDIP(25);
+
+		value = Format::Amount(_ownFunds, _viewModel->GetCurrency()->sign);
+		wxSize size = dc.GetTextExtent(value);
+
+		dc.SetTextForeground(wxColor(0, 0, 0));
+		dc.DrawText(value, wxPoint(0, y));
+
+		if (size.GetWidth() > columnWidth) {
+			columnWidth = size.GetWidth();
+		}
+
+		y = FromDIP(60);
+		int x = columnWidth + FromDIP(80);
+
+		dc.SetTextForeground(wxColor(127, 127, 127));
+		dc.DrawText(_("Credit funds"), wxPoint(x, y));
+
+		y = y + FromDIP(25);
+
+		value = Format::Amount(_creditFunds, _viewModel->GetCurrency()->sign);
+		size = dc.GetTextExtent(value);
+
+		dc.SetTextForeground(wxColor(0, 0, 0));
+		dc.DrawText(value, wxPoint(x, y));
 	}
-
-	y = FromDIP(60);
-	int x = columnWidth + FromDIP(80);
-
-	dc.SetTextForeground(wxColor(127, 127, 127));
-	dc.DrawText(_("Credit funds"), wxPoint(x, y));
-
-	y = y + FromDIP(25);
-
-	value = Format::Amount(_creditFunds, _viewModel->GetCurrency()->sign);
-	size = dc.GetTextExtent(value);
-
-	dc.SetTextForeground(wxColor(0, 0, 0));
-	dc.DrawText(value, wxPoint(x, y));
 }
 
 void DashboardBalancePanel::OnPaint(wxPaintEvent& event) {

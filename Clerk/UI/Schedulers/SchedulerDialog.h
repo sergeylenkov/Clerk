@@ -5,24 +5,29 @@
 #include <wx/statline.h>
 #include <wx/valnum.h>
 #include <wx/wrapsizer.h>
-#include <wx/tokenzr.h>
-#include "../../Data/Models/SchedulerModel.h"
-#include "../../Data/Models/AccountModel.h"
+#include "../../Utils/Icons.h"
+#include "../../Data/DataContext.h"
+#include "../Controls/AmountField.h"
+#include "../TagsField/TagsField.h"
+#include "SchedulerViewModel.h"
+
+using namespace Clerk::Data;
+using namespace Clerk::UI;
+using namespace Clerk::Utils;
 
 class SchedulerDialog : public wxFrame
 {
 public:
-	SchedulerDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height);
+	SchedulerDialog(wxFrame *parent, const wxChar *title, int xpos, int ypos, int width, int height, Icons& icons, DataContext& context);
 	~SchedulerDialog();
 
-	void SetScheduler(std::shared_ptr<SchedulerModel> scheduler);
+	void SetViewModel(SchedulerViewModel* viewModel);
 
-	std::function<void()> OnClose;
-
-private:	
-	wxPanel *mainPanel;
-	wxStaticText *nameLabel;
-	wxTextCtrl *nameField;
+private:
+	SchedulerViewModel* _viewModel;
+	Icons& _icons;
+	DataContext& _context;
+	wxTextCtrl *_nameField;
 	wxRadioButton *dailyButton;
 	wxRadioButton *weeklyButton;
 	wxRadioButton *monthlyButton;
@@ -38,22 +43,16 @@ private:
 	wxTextCtrl *monthlyDayField;
 	wxTextCtrl *monthlyMonthField;
 	wxComboBox *yearlyMonthChoice;
-	wxTextCtrl *yearlyDayField;
-	wxStaticText *fromLabel;
-	wxStaticText *toLabel;
-	wxBitmapComboBox *fromList;
-	wxBitmapComboBox *toList;
-	wxButton *okButton;
-	wxButton *cancelButton;
-	wxStaticText *tagsLabel;
-	wxTextCtrl *tagsField;
+	wxTextCtrl *yearlyDayField;	
+	wxBitmapComboBox *_fromList;
+	wxBitmapComboBox *_toList;
+	TagsField* _tagsField;
 	wxStaticText *noteLabel;
 	wxTextCtrl *noteField;
-	wxStaticText *dateLabel;
-	wxStaticText *fromAmountLabel;
-	wxTextCtrl *fromAmountField;
-	wxStaticText *toAmountLabel;
-	wxTextCtrl *toAmountField;
+	wxStaticText * _fromCurrencyLabel;
+	AmountField* _fromAmountField;
+	wxStaticText * _toCurrencyLabel;
+	AmountField* _toAmountField;
 	wxRadioButton *mondayCheckBox;
 	wxRadioButton *tuesdayCheckBox;
 	wxRadioButton *wednesdayCheckBox;
@@ -62,28 +61,19 @@ private:
 	wxRadioButton *saturdayCheckBox;
 	wxRadioButton *sundayCheckBox;
 	
-	float fromValue = 0.0;
-	float toValue = 0.0;
 	SchedulerType type;
-	std::vector<std::shared_ptr<AccountModel>> accounts;
-	std::vector<std::shared_ptr<AccountModel>> fromAccounts;
-	std::vector<std::shared_ptr<AccountModel>> toAccounts;
-	std::shared_ptr<SchedulerModel> scheduler;
-	std::shared_ptr<AccountModel> fromAccount;
-	std::shared_ptr<AccountModel> toAccount;
 
+	void Update();
+	void UpdateToList();
+	void UpdateFromList();
 	void SelectFromAccount(int index);
 	void SelectToAccount(int index);
-	void SelectToAccount(std::shared_ptr<AccountModel> account);
-	void UpdateFromList();
-	void UpdateToList(std::shared_ptr<AccountModel> account);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnFromAccountSelect(wxCommandEvent &event);
 	void OnToAccountSelect(wxCommandEvent &event);
 	void OnFromAmountKillFocus(wxFocusEvent &event);
 	void OnToAmountKillFocus(wxFocusEvent &event);
-	wxString ClearAmountValue(wxString &value);	
 	void OnPatternSelect(wxCommandEvent& event);
 	void SelectPatternType(SchedulerType type);
 	void SelectWeekday(int day);

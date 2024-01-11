@@ -124,6 +124,7 @@
     <ClCompile Include="UI\Reports\ReportReceiptsByMonthPanel.cpp" />
     <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPopup.cpp" />
     <ClCompile Include="UI\Schedulers\SchedulerContextMenu.cpp" />
+    <ClCompile Include="UI\Schedulers\SchedulerViewModel.cpp" />
     <ClCompile Include="UI\TagsField\TagPanel.cpp" />
     <ClCompile Include="UI\TagsField\TagsField.cpp" />
     <ClCompile Include="UI\Dashboard\DashboardReceiptsPanel.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="UI\Reports\Enums.h" />
     <ClInclude Include="UI\Reports\ReportReceiptsAndExpensesByMonthPanel.h" />
     <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPopup.h" />
+    <ClInclude Include="UI\Schedulers\SchedulerViewModel.h" />
     <ClInclude Include="Utils\Settings\Types.h" />
     <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
     <ClInclude Include="UI\Alerts\Enums.h" />

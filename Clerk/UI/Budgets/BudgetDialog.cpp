@@ -142,6 +142,8 @@ void BudgetDialog::Update() {
 	}
 
 	UpdateAccounts();
+
+	_nameField->SetFocus();
 }
 
 void BudgetDialog::UpdateAccounts() {

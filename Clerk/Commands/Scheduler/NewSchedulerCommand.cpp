@@ -7,5 +7,5 @@ NewSchedulerCommand::NewSchedulerCommand(ICommandsReceiver& receiver):
 }
 
 void NewSchedulerCommand::Execute() {
-	//
+	_receiver.OpenNewSchedulerDialog();
 }

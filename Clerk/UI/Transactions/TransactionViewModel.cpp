@@ -2,11 +2,12 @@
 
 using namespace Clerk::UI;
 
-TransactionViewModel::TransactionViewModel(AccountsService& accountsService, TransactionsService& transactionsService, CurrenciesService& currenciesService, TagsService& tagsService):
-	_accountsService(accountsService),
+TransactionViewModel::TransactionViewModel(TransactionsService& transactionsService, AccountsService& accountsService, CurrenciesService& currenciesService, TagsService& tagsService):
 	_transactionsService(transactionsService),
+	_accountsService(accountsService),	
 	_currenciesService(currenciesService),
-	_tagsService(tagsService) {
+	_tagsService(tagsService)
+{
 	_splitId = -1;
 	_id = -1;
 	_fromAmount = 0;

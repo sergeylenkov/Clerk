@@ -65,10 +65,6 @@ void CommandsReceiver::OpenEditAlertDialog(int id) {
 	_dialogsController.ShowEditAlertDialog(id);
 }
 
-void CommandsReceiver::OpenEditSchedulerDialog(int id) {
-
-}
-
 void CommandsReceiver::OpenNewBudgetDialog() {
 	_dialogsController.ShowNewBudgetDialog();
 }
@@ -83,4 +79,12 @@ void CommandsReceiver::OpenNewGoalDialog() {
 
 void CommandsReceiver::OpenEditGoalDialog(int id) {
 	_dialogsController.ShowEditGoalDialog(id);
+}
+
+void CommandsReceiver::OpenNewSchedulerDialog() {
+	_dialogsController.ShowNewSchedulerDialog();
+}
+
+void CommandsReceiver::OpenEditSchedulerDialog(int id) {
+	_dialogsController.ShowEditSchedulerDialog(id);
 }

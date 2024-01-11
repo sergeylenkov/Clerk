@@ -20,7 +20,15 @@ namespace Clerk {
 			Status,
 			Last
 		};
+
+		enum class SchedulerViewModelField {
+			Name = 0,
+			FromAccount = 1,
+			ToAccount = 2,
+			FromAmount = 3,
+			ToAmount = 4,
+			Tags = 5,
+			Type = 6
+		};
 	}
 }
-
-#pragma once

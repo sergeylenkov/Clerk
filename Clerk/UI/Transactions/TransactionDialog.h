@@ -4,14 +4,13 @@
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/bmpcbox.h>
-#include <wx/valnum.h>
 #include <wx/defs.h>
 #include <functional>
+#include "../../Utils/Icons.h"
+#include "../../Utils/Settings/Settings.h"
 #include "../../Data/DataContext.h"
 #include "../Controls/AmountField.h"
 #include "../TagsField/TagsField.h"
-#include "../../Utils/Icons.h"
-#include "../../Utils/Settings/Settings.h"
 #include "TransactionViewModel.h"
 
 using namespace Clerk::Data;
@@ -39,8 +38,6 @@ private:
 	wxStaticText *_toCurrencyLabel;
 	AmountField *_toAmountField;
 	TagsField *_tagsField;
-	std::shared_ptr<TransactionPresentationModel> _transaction;
-	std::shared_ptr<TransactionPresentationModel> _splitTransaction;
 
 	void Update();
 	void UpdateToList();

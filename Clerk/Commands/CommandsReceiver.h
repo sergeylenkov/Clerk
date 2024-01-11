@@ -27,12 +27,13 @@ namespace Clerk {
 			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;			
 			void OpenNewAlertDialog() override;
-			void OpenEditAlertDialog(int id) override;
-			void OpenEditSchedulerDialog(int id) override;
+			void OpenEditAlertDialog(int id) override;			
 			void OpenNewBudgetDialog() override;
 			void OpenEditBudgetDialog(int id) override;
 			void OpenNewGoalDialog() override;
 			void OpenEditGoalDialog(int id) override;
+			void OpenNewSchedulerDialog() override;
+			void OpenEditSchedulerDialog(int id) override;
 
 		private:
 			DialogsController& _dialogsController;

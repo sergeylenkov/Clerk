@@ -525,6 +525,9 @@
     <ClCompile Include="UI\Reports\Tooltip\ReportChartTooltipPopup.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI\Schedulers\SchedulerViewModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Clerk.h">
@@ -1101,6 +1104,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Reports\Tooltip\ReportChartTooltipPopup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI\Schedulers\SchedulerViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

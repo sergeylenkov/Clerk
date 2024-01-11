@@ -32,7 +32,7 @@ void DialogsController::ShowNewTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 	
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(),  _context.GetCurrenciesService(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetTransactionsService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetAccountId(id);
 	
 	transactionDialog->SetViewModel(viewModel);
@@ -46,7 +46,7 @@ void DialogsController::ShowCopyTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetTransactionsService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetCopyTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -60,7 +60,7 @@ void DialogsController::ShowSplitTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetTransactionsService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetSplitTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -74,7 +74,7 @@ void DialogsController::ShowEditTransactionDialog(int id) {
 
 	TransactionDialog* transactionDialog = new TransactionDialog(_parent, _("Transaction"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
 
-	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetAccountsService(), _context.GetTransactionsService(), _context.GetCurrenciesService(), _context.GetTagsService());
+	TransactionViewModel* viewModel = new TransactionViewModel(_context.GetTransactionsService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
 	viewModel->SetTransactionId(id);
 
 	transactionDialog->SetViewModel(viewModel);
@@ -192,6 +192,33 @@ void DialogsController::ShowEditGoalDialog(int id) {
 	goalDialog->CenterOnParent();
 }
 
+void DialogsController::ShowNewSchedulerDialog() {
+	wxSize size = GetSchedulerDialogSize();
+
+	SchedulerDialog* schedulerDialog = new SchedulerDialog(_parent, _("Scheduler"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+
+	SchedulerViewModel* viewModel = new SchedulerViewModel(_context.GetSchedulersService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
+
+	schedulerDialog->SetViewModel(viewModel);
+
+	schedulerDialog->Show(true);
+	schedulerDialog->CenterOnParent();
+}
+
+void DialogsController::ShowEditSchedulerDialog(int id) {
+	wxSize size = GetSchedulerDialogSize();
+
+	SchedulerDialog* schedulerDialog = new SchedulerDialog(_parent, _("Scheduler"), 0, 0, size.GetWidth(), size.GetHeight(), _icons, _context);
+
+	SchedulerViewModel* viewModel = new SchedulerViewModel(_context.GetSchedulersService(), _context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTagsService());
+	viewModel->SetSchedulerId(id);
+
+	schedulerDialog->SetViewModel(viewModel);
+
+	schedulerDialog->Show(true);
+	schedulerDialog->CenterOnParent();
+}
+
 wxSize DialogsController::GetAboutDialogSize() {
 	wxSize size = wxSize();
 
@@ -251,6 +278,15 @@ wxSize DialogsController::GetGoalDialogSize() {
 
 	size.SetWidth(_parent->FromDIP(400));
 	size.SetHeight(_parent->FromDIP(350));
+
+	return size;
+}
+
+wxSize DialogsController::GetSchedulerDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(450));
+	size.SetHeight(_parent->FromDIP(500));
 
 	return size;
 }

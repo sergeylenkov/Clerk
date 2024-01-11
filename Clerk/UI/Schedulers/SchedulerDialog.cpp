@@ -1,15 +1,19 @@
 #include "SchedulerDialog.h"
 
-SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height) : wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)) {
+SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, int y, int width, int height, Icons& icons, DataContext& context):
+	wxFrame(parent, -1, title, wxPoint(x, y), wxSize(width, height), wxDEFAULT_FRAME_STYLE & ~(wxRESIZE_BORDER | wxMAXIMIZE_BOX)),
+	_icons(icons),
+	_context(context)
+{
 	SetBackgroundColour(wxColor(*wxWHITE));
 
-	this->SetSizeHints(wxDefaultSize, wxDefaultSize);
-	this->SetIcon(wxICON(APP_ICON));
+	SetIcon(wxICON(APP_ICON));
 
-	wxString allowedChars[13] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ".", ",", " " };
-	wxArrayString chars(13, allowedChars);
-	wxTextValidator amountValidator(wxFILTER_INCLUDE_CHAR_LIST);
-	amountValidator.SetIncludes(chars);
+	int indent = FromDIP(5);
+	int bottomIndent = FromDIP(15);
+	wxSize labelSize = FromDIP(wxSize(40, -1));
+	wxSize listSize = FromDIP(wxSize(100, -1));
+	wxSize amountSize = FromDIP(wxSize(80, -1));
 
 	int daysValue;
 	int dayValue;
@@ -29,18 +33,18 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	monthValidator.SetRange(1, 12);
 
 	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
-	mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	nameLabel = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, wxSize(40, -1), 0);
-	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText* nameLabel = new wxStaticText(mainPanel, wxID_ANY, _("Name:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(nameLabel, 0, wxALIGN_CENTER_VERTICAL);
 
-	nameField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(nameField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_nameField = new wxTextCtrl(mainPanel, wxID_ANY);
+	horizontalSizer->Add(_nameField, 1, wxEXPAND);
 
-	panelSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
+	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	wxBoxSizer *staticBoxSizer = new wxStaticBoxSizer(new wxStaticBox(mainPanel, wxID_ANY, _("Recurrence pattern")), wxHORIZONTAL);
 
@@ -48,16 +52,16 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	wxBoxSizer *buttonsSizer = new wxBoxSizer(wxVERTICAL);
 
-	dailyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Daily"), wxDefaultPosition, wxDefaultSize, 0);
+	dailyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Daily"));
 	buttonsSizer->Add(dailyButton, 0, wxALL, 5);
 
-	weeklyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Weekly"), wxDefaultPosition, wxDefaultSize, 0);
+	weeklyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Weekly"));
 	buttonsSizer->Add(weeklyButton, 0, wxALL, 5);
 
-	monthlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Monthly"), wxDefaultPosition, wxDefaultSize, 0);
+	monthlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Monthly"));
 	buttonsSizer->Add(monthlyButton, 0, wxALL, 5);
 
-	yearlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Yearly"), wxDefaultPosition, wxDefaultSize, 0);
+	yearlyButton = new wxRadioButton(buttonsPanel, wxID_ANY, _("Yearly"));
 	buttonsSizer->Add(yearlyButton, 0, wxALL, 5);
 
 	buttonsPanel->SetSizer(buttonsSizer);
@@ -84,58 +88,52 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	fromLabel = new wxStaticText(mainPanel, wxID_ANY, _("From:"), wxDefaultPosition, wxSize(40, -1), 0);
+	wxStaticText* fromLabel = new wxStaticText(mainPanel, wxID_ANY, _("From:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(fromLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(fromList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(_fromList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	fromAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.0", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	horizontalSizer->Add(fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromAmountField = new AmountField(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, amountSize);
+	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	fromAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(fromAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_fromCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
+	horizontalSizer->Add(_fromCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	toLabel = new wxStaticText(mainPanel, wxID_ANY, _("To:"), wxDefaultPosition, wxSize(40, -1), 0);
-	toLabel->Wrap(-1);
+	wxStaticText* toLabel = new wxStaticText(mainPanel, wxID_ANY, _("To:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(toLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-	toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
-	horizontalSizer->Add(toList, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_toList = new wxBitmapComboBox(mainPanel, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_READONLY);
+	horizontalSizer->Add(_toList, 1, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent * 2);
 
-	toAmountField = new wxTextCtrl(mainPanel, wxID_ANY, "0.0", wxDefaultPosition, wxSize(80, -1), wxTE_RIGHT, amountValidator);
-	horizontalSizer->Add(toAmountField, 0, wxALL, 5);
+	_toAmountField = new AmountField(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, amountSize);
+	horizontalSizer->Add(_toAmountField, 0, wxALL, 5);
 
-	toAmountLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(toAmountLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_toCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
+	horizontalSizer->Add(_toCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	tagsLabel = new wxStaticText(mainPanel, wxID_ANY, _("Tags:"), wxDefaultPosition, wxSize(40, -1), 0);
-	horizontalSizer->Add(tagsLabel, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	wxStaticText* tagsLabel = new wxStaticText(mainPanel, wxID_ANY, _("Tags:"), wxDefaultPosition, labelSize);
+	horizontalSizer->Add(tagsLabel);
 
-	tagsField = new wxTextCtrl(mainPanel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(tagsField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+	_tagsField = new TagsField(mainPanel, context.GetTagsService());
+	_tagsField->OnChange = [&]() {
+		_viewModel->SetTags(_tagsField->GetTags());
+		Layout();
+	};
+
+	horizontalSizer->Add(_tagsField, 1, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
 	staticBoxSizer->Add(horizontalSizer, 0, wxALL | wxEXPAND, 5);
 
 	panelSizer->Add(staticBoxSizer, 1, wxEXPAND | wxALL, 10);
-
-	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
-
-	okButton = new wxButton(mainPanel, wxID_ANY, _("OK"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
-	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
-
-	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT | wxALL, 5);
 
 	//
 
@@ -143,13 +141,13 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *dailyPatternLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, _("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *dailyPatternLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, _("Every"));
 	horizontalSizer->Add(dailyPatternLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	dailyDayField = new wxTextCtrl(dailyPatternPanel, wxID_ANY, "1", wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, daysValidator);
 	horizontalSizer->Add(dailyDayField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	wxStaticText *daysLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, _("days"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *daysLabel = new wxStaticText(dailyPatternPanel, wxID_ANY, _("days"));
 	horizontalSizer->Add(daysLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	dailyPatternPanel->SetSizer(horizontalSizer);
@@ -157,7 +155,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer->Fit(dailyPatternPanel);
 
-	patternSizer->Add(dailyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
+	patternSizer->Add(dailyPatternPanel, 0, wxALIGN_TOP);
 
 	//
 
@@ -166,55 +164,55 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	wxBoxSizer *verticalSizer = new wxBoxSizer(wxVERTICAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *m_staticText1011 = new wxStaticText(weeklyPatternPanel, wxID_ANY, _("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *m_staticText1011 = new wxStaticText(weeklyPatternPanel, wxID_ANY, _("Every"));
 	horizontalSizer->Add(m_staticText1011, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	weeklyWeekField = new wxTextCtrl(weeklyPatternPanel, wxID_ANY, "1", wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, weekValidator);
 	horizontalSizer->Add(weeklyWeekField, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
-	wxStaticText *m_staticText911 = new wxStaticText(weeklyPatternPanel, wxID_ANY, _("weeks on:"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *m_staticText911 = new wxStaticText(weeklyPatternPanel, wxID_ANY, _("weeks on:"));
 	horizontalSizer->Add(m_staticText911, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	verticalSizer->Add(horizontalSizer, 0, wxALIGN_TOP | wxBOTTOM, 5);
 
 	wxWrapSizer *wrapSizer = new wxWrapSizer(wxHORIZONTAL, wxWRAPSIZER_DEFAULT_FLAGS);
 
-	mondayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Monday"), wxDefaultPosition, wxDefaultSize, 0);
+	mondayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Monday"));
 	wrapSizer->Add(mondayCheckBox, 0, wxALL, 5);
 
-	tuesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Tuesday"), wxDefaultPosition, wxDefaultSize, 0);
+	tuesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Tuesday"));
 	wrapSizer->Add(tuesdayCheckBox, 0, wxALL, 5);
 
-	wednesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Wednesday"), wxDefaultPosition, wxDefaultSize, 0);
+	wednesdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Wednesday"));
 	wrapSizer->Add(wednesdayCheckBox, 0, wxALL, 5);
 
-	thursdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Thursday"), wxDefaultPosition, wxDefaultSize, 0);
+	thursdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Thursday"));
 	wrapSizer->Add(thursdayCheckBox, 0, wxALL, 5);
 
-	fridayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Friday"), wxDefaultPosition, wxDefaultSize, 0);
+	fridayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Friday"));
 	wrapSizer->Add(fridayCheckBox, 0, wxALL, 5);
 
-	saturdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Saturday"), wxDefaultPosition, wxDefaultSize, 0);
+	saturdayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Saturday"));
 	wrapSizer->Add(saturdayCheckBox, 0, wxALL, 5);
 
-	sundayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Sunday"), wxDefaultPosition, wxDefaultSize, 0);
+	sundayCheckBox = new wxRadioButton(weeklyPatternPanel, wxID_ANY, _("Sunday"));
 	wrapSizer->Add(sundayCheckBox, 0, wxALL, 5);
 
-	verticalSizer->Add(wrapSizer, 1, wxEXPAND, 5);
+	verticalSizer->Add(wrapSizer, 1, wxEXPAND);
 
 	weeklyPatternPanel->SetSizer(verticalSizer);
 	weeklyPatternPanel->Layout();
 
 	wrapSizer->Fit(weeklyPatternPanel);
 
-	patternSizer->Add(weeklyPatternPanel, 1, wxEXPAND | wxALL, 0);
+	patternSizer->Add(weeklyPatternPanel, 1, wxEXPAND);
 
 	//
 
 	monthlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *m_staticText912 = new wxStaticText(monthlyPatternPanel, wxID_ANY, _("Day"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *m_staticText912 = new wxStaticText(monthlyPatternPanel, wxID_ANY, _("Day"));
 	horizontalSizer->Add(m_staticText912, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	monthlyDayField = new wxTextCtrl(monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, dayValidator);
@@ -234,14 +232,14 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer->Fit(monthlyPatternPanel);
 	
-	patternSizer->Add(monthlyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
+	patternSizer->Add(monthlyPatternPanel, 0, wxALIGN_TOP);
 
 	//
 
 	yearlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTAB_TRAVERSAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText *m_staticText913 = new wxStaticText(yearlyPatternPanel, wxID_ANY, _("Every"), wxDefaultPosition, wxDefaultSize, 0);
+	wxStaticText *m_staticText913 = new wxStaticText(yearlyPatternPanel, wxID_ANY, _("Every"));
 	horizontalSizer->Add(m_staticText913, 0, wxALIGN_CENTER_VERTICAL | wxLEFT | wxRIGHT, 5);
 
 	yearlyDayField = new wxTextCtrl(yearlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, wxSize(40, -1), wxTE_RIGHT, dayValidator);
@@ -258,80 +256,86 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	horizontalSizer->Fit(yearlyPatternPanel);
 	
-	patternSizer->Add(yearlyPatternPanel, 0, wxALIGN_TOP | wxALL, 0);
+	patternSizer->Add(yearlyPatternPanel, 0, wxALIGN_TOP);
+
+	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
+
+	wxButton* okButton = new wxButton(mainPanel, wxID_ANY, _("OK"));
+	horizontalSizer->Add(okButton, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+
+	wxButton* cancelButton = new wxButton(mainPanel, wxID_ANY, _("Cancel"));
+	horizontalSizer->Add(cancelButton, 0, wxALIGN_CENTER_VERTICAL);
+
+	panelSizer->Add(horizontalSizer, 0, wxALIGN_RIGHT);
 
 	mainPanel->SetSizer(panelSizer);
 	mainPanel->Layout();
 
 	panelSizer->Fit(mainPanel);
 
-	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, 0);
+	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
-	this->SetSizer(mainSizer);
-	this->Layout();
+	SetSizer(mainSizer);
+	Layout();
 
-	this->Centre(wxBOTH);
+	Centre(wxBOTH);
 
 	okButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnCancel, this);
 
-	fromList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnFromAccountSelect, this);
-	toList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnToAccountSelect, this);
-	fromAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnFromAmountKillFocus, this);
-	toAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnToAmountKillFocus, this);	
+	_fromList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnFromAccountSelect, this);
+	_toList->Bind(wxEVT_COMBOBOX, &SchedulerDialog::OnToAccountSelect, this);
+	_fromAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnFromAmountKillFocus, this);
+	_toAmountField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnToAmountKillFocus, this);
 	dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 	weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 	monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 	yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerDialog::OnPatternSelect, this);
 
 	Bind(wxEVT_CHAR_HOOK, &SchedulerDialog::OnKeyDown, this);
+}
 
-	fromValue = 0;
-	toValue = 0;
+SchedulerDialog::~SchedulerDialog() {
+	delete _viewModel;
+}
 
-	/*for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Receipt))
-	{
-		accounts.push_back(account);
-	}
+void SchedulerDialog::SetViewModel(SchedulerViewModel* viewModel) {
+	_viewModel = viewModel;
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Deposit))
-	{
-		accounts.push_back(account);
-	}
+	_viewModel->OnUpdate = [&](SchedulerViewModelField field) {
+		if (field == SchedulerViewModelField::FromAmount || field == SchedulerViewModelField::ToAmount) {
+			_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+			_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+		}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Virtual))
-	{
-		accounts.push_back(account);
-	}
+		if (field == SchedulerViewModelField::FromAccount) {
+			UpdateToList();
+			SelectToAccount(_viewModel->GetToAccountIndex());
+		}
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Expens))
-	{
-		accounts.push_back(account);
-	}
+		if (field == SchedulerViewModelField::ToAccount) {
+			UpdateFromList();
+			SelectFromAccount(_viewModel->GetFromAccountIndex());
+		}
+	};
 
-	for (auto account : DataHelper::GetInstance().GetAccountsByType(AccountType::Debt))
-	{
-		accounts.push_back(account);
-	}*/
+	Update();
 
+	_nameField->SetFocus();
+}
+
+void SchedulerDialog::Update() {
 	UpdateFromList();
-	SelectFromAccount(0);
+	UpdateToList();
 
-	UpdateToList(fromAccount);
-	SelectToAccount(0);
-	
-	SelectPatternType(SchedulerType::Daily);
-	SelectWeekday(1);
+	SelectFromAccount(_viewModel->GetFromAccountIndex());
+	SelectToAccount(_viewModel->GetToAccountIndex());
 
-	nameField->SetFocus();
+	_nameField->SetValue(_viewModel->GetName());
+	_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
+	_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
+	_tagsField->SetTags(_viewModel->GetTags());
 }
-
-SchedulerDialog::~SchedulerDialog() {	
-	//
-}
-
-void SchedulerDialog::SetScheduler(std::shared_ptr<SchedulerModel> scheduler) {
-	this->scheduler = scheduler;
 
 	/*nameField->SetValue(*scheduler->name);
 	fromAmountField->SetValue(wxString::Format("%.2f", scheduler->fromAmount));
@@ -389,101 +393,61 @@ void SchedulerDialog::SetScheduler(std::shared_ptr<SchedulerModel> scheduler) {
 	}
 
 	nameField->SetFocus();*/
-}
 
 void SchedulerDialog::UpdateFromList() {
-	/*for (auto account : accounts) {
-		if (account->type == Account::Type::Receipt || account->type == Account::Type::Deposit || account->type == Account::Type::Virtual) {
-			int iconId = 0;
+	auto accounts = _viewModel->GetFromAccounts();
 
-			if (account->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-				iconId = account->iconId;
-			}
+	_fromList->Clear();
 
-			//fromList->Append(*account->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-
-			fromAccounts.push_back(account);
-		}
-	}*/
+	for (auto& account : accounts) {
+		_fromList->Append(account->name, *_icons.GetAccountIcon(account->icon));
+	}
 }
 
-void SchedulerDialog::UpdateToList(std::shared_ptr<AccountModel> account) {
-	toList->Clear();
-	toAccounts.clear();
+void SchedulerDialog::UpdateToList() {
+	auto accounts = _viewModel->GetToAccounts();
 
-	/*for (auto toAccount : accounts)
-	{
-		if (account->id == toAccount->id) {
-			continue;
-		}
+	_toList->Clear();
 
-		if (account->type == Account::Type::Receipt) {
-			if (toAccount->type == Account::Type::Deposit) {
-				int iconId = 0;
-
-				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-					iconId = toAccount->iconId;
-				}
-
-				//toList->Append(*toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-
-				toAccounts.push_back(toAccount);
-			}
-		}
-		else if (account->type == Account::Type::Deposit || account->type == Account::Type::Virtual) {
-			if (toAccount->type == Account::Type::Deposit || toAccount->type == Account::Type::Expens
-				|| toAccount->type == Account::Type::Debt ||	toAccount->type == Account::Type::Virtual) {
-				int iconId = 0;
-
-				if (toAccount->iconId < DataHelper::GetInstance().accountsImageList->GetImageCount()) {
-					iconId = toAccount->iconId;
-				}
-
-				toList->Append(toAccount->name, DataHelper::GetInstance().accountsImageList->GetBitmap(iconId));
-
-				toAccounts.push_back(toAccount);
-			}
-		}
-	}*/
+	for (auto& account : accounts) {
+		_toList->Append(account->name, *_icons.GetAccountIcon(account->icon));
+	}
 }
 
 void SchedulerDialog::SelectFromAccount(int index) {
-	auto account = fromAccounts[index];
+	auto account = _viewModel->GetFromAccounts()[index];
 
-	fromList->Select(index);
-	//fromAmountLabel->SetLabel(account->currency->shortName);
-	fromAccount = account;
+	_fromList->Select(index);
+	_fromCurrencyLabel->SetLabel(account->currency->shortName);
 }
 
-void SchedulerDialog::SelectToAccount(int id) {
-	auto account = toAccounts[id];
+void SchedulerDialog::SelectToAccount(int index) {
+	auto account = _viewModel->GetToAccounts()[index];
 
-	toList->Select(id);
-	//toAmountLabel->SetLabel(*account->currency->shortName);
-
-	toAccount = account;
+	_toList->Select(index);
+	_toCurrencyLabel->SetLabel(account->currency->shortName);
 }
 
-void SchedulerDialog::SelectToAccount(std::shared_ptr<AccountModel> account) {
-	for (unsigned int i = 0; i < toAccounts.size(); i++) {
-		if (toAccounts[i]->id == account->id) {
-			SelectToAccount(i);
-			return;
-		}
-	}
-
-	SelectToAccount(0);
+void SchedulerDialog::OnFromAccountSelect(wxCommandEvent& event) {
+	int index = _fromList->GetSelection();
+	_viewModel->SetFromAccount(index);
 }
 
-void SchedulerDialog::OnFromAccountSelect(wxCommandEvent &event) {
-	SelectFromAccount(fromList->GetSelection());
-
-	UpdateToList(fromAccount);
-	SelectToAccount(toAccount);
+void SchedulerDialog::OnToAccountSelect(wxCommandEvent& event) {
+	int index = _toList->GetSelection();
+	_viewModel->SetToAccount(index);
 }
 
-void SchedulerDialog::OnToAccountSelect(wxCommandEvent &event) {
-	SelectToAccount(toList->GetSelection());
+void SchedulerDialog::OnFromAmountKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetFromAmount(_fromAmountField->GetFloatValue());
+}
+
+void SchedulerDialog::OnToAmountKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetToAmount(_toAmountField->GetFloatValue());
 }
 
 void SchedulerDialog::OnOK(wxCommandEvent &event) {
@@ -574,43 +538,13 @@ void SchedulerDialog::OnOK(wxCommandEvent &event) {
 	if (OnClose) {
 		OnClose();
 	}*/
+	_viewModel->Save();
+
+	Close();
 }
 
 void SchedulerDialog::OnCancel(wxCommandEvent &event) {
 	Close();
-}
-
-void SchedulerDialog::OnFromAmountKillFocus(wxFocusEvent &event) {
-	event.Skip();
-
-	/*wxString stringAmount = this->ClearAmountValue(fromAmountField->GetValue());
-	fromAmountField->SetValue(stringAmount);
-
-	int fromCurrencyId = fromAccounts[fromList->GetSelection()]->currency->id;
-	int toCurrencyId = toAccounts[toList->GetSelection()]->currency->id;
-	double val;
-
-	toAmountField->GetValue().ToDouble(&val);
-
-	if (val == 0 && fromCurrencyId == toCurrencyId) {
-		toAmountField->SetValue(fromAmountField->GetValue());
-	}*/
-}
-
-void SchedulerDialog::OnToAmountKillFocus(wxFocusEvent &event) {
-	event.Skip();
-
-	wxString stringAmount = this->ClearAmountValue(toAmountField->GetValue());
-	toAmountField->SetValue(stringAmount);
-}
-
-wxString SchedulerDialog::ClearAmountValue(wxString &value) {
-	value.Trim(true);
-	value.Trim(false);
-	value.Replace(",", ".", true);
-	value.Replace(" ", "", true);
-
-	return value;
 }
 
 void SchedulerDialog::OnPatternSelect(wxCommandEvent &event) {
@@ -632,7 +566,7 @@ void SchedulerDialog::OnPatternSelect(wxCommandEvent &event) {
 }
 
 void SchedulerDialog::SelectPatternType(SchedulerType type) {
-	this->type = type;
+	type = type;
 
 	dailyPatternPanel->Hide();
 	weeklyPatternPanel->Hide();

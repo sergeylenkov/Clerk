@@ -24,12 +24,13 @@ namespace Clerk {
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;			
 			virtual void OpenNewAlertDialog() = 0;
-			virtual void OpenEditAlertDialog(int id) = 0;
-			virtual void OpenEditSchedulerDialog(int id) = 0;
+			virtual void OpenEditAlertDialog(int id) = 0;			
 			virtual void OpenNewBudgetDialog() = 0;
 			virtual void OpenEditBudgetDialog(int id) = 0;
 			virtual void OpenNewGoalDialog() = 0;
 			virtual void OpenEditGoalDialog(int id) = 0;
+			virtual void OpenNewSchedulerDialog() = 0;
+			virtual void OpenEditSchedulerDialog(int id) = 0;
 		};
 	}
 }

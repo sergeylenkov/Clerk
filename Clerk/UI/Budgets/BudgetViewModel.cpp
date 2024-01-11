@@ -7,21 +7,22 @@ BudgetViewModel::BudgetViewModel(BudgetsService& budgetsService, AccountsService
 	_accountsService(accountsService)
 {
 	_id = -1;
+	_name = "";
 	_period = BudgetPeriod::Month;
 	_date = wxDateTime::Today();
 	_amount = 0;
 }
 
 void BudgetViewModel::SetBudgetId(int id) {
-	auto alert = _budgetsService.GetById(id);
+	auto budget = _budgetsService.GetById(id);
 
-	if (alert) {
-		_id = alert->id;
-		_name = alert->name;
-		_period = alert->period;
-		_date = alert->date;
-		_amount = alert->amount;
-		_accountsIds = alert->accountsIds;
+	if (budget) {
+		_id = budget->id;
+		_name = budget->name;
+		_period = budget->period;
+		_date = budget->date;
+		_amount = budget->amount;
+		_accountsIds = budget->accountsIds;
 	}
 }
 

@@ -12,7 +12,7 @@ AccountsService::~AccountsService() {
 	delete _eventEmitter;
 }
 
-unsigned int AccountsService::Subscribe(std::function<void()> fn) {
+unsigned int AccountsService::Subscribe(std::function<void(void)> fn) {
 	return _eventEmitter->Subscribe(fn);
 }
 

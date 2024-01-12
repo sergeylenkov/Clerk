@@ -1,5 +1,7 @@
 #include "EventEmitter.h"
 
+using namespace Clerk::Utils;
+
 EventEmitter::EventEmitter() {
 	_subscribeId = 1;
 }

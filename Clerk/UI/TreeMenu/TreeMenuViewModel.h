@@ -5,7 +5,9 @@
 #include "../../Data/Services/TransactionsService.h"
 #include "../../Data/Services/ReportsService.h"
 #include "../../Utils/Types.h"
-#include "../../Utils/EventEmitter.h"
+#include "../../Utils/EventEmitter/EventEmitter.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {

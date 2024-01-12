@@ -70,7 +70,7 @@ SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxP
 void SchedulerTransactionPanel::SetViewModel(SchedulerViewModel* viewModel) {
 	_viewModel = viewModel;
 
-	_viewModel->OnUpdate = [&](SchedulerViewModelField field) {
+	_viewModel->OnUpdate([&](SchedulerViewModelField field) {
 		if (field == SchedulerViewModelField::FromAmount || field == SchedulerViewModelField::ToAmount) {
 			_fromAmountField->SetValue(Format::Amount(_viewModel->GetFromAmount()));
 			_toAmountField->SetValue(Format::Amount(_viewModel->GetToAmount()));
@@ -85,7 +85,7 @@ void SchedulerTransactionPanel::SetViewModel(SchedulerViewModel* viewModel) {
 			UpdateFromList();
 			SelectFromAccount(_viewModel->GetFromAccountIndex());
 		}
-	};
+	});
 
 	Update();
 }

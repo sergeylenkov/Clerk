@@ -1,11 +1,12 @@
 #pragma once
 
 #include <wx/datetime.h>
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "AccountsService.h"
 #include "CurrenciesService.h"
-#include "../../Utils/EventEmitter.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace Data {

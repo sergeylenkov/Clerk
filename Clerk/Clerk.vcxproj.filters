@@ -339,7 +339,7 @@
     <ClCompile Include="UI\Transactions\TransactionViewModel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Utils\EventEmitter.cpp">
+    <ClCompile Include="Utils\EventEmitter\EventEmitter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Commands\Transaction\CopyTransactionCommand.cpp">
@@ -884,7 +884,7 @@
     <ClInclude Include="UI\Transactions\TransactionViewModel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\EventEmitter.h">
+    <ClInclude Include="Utils\EventEmitter\EventEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Commands\TransactionForAccount.h">
@@ -1119,6 +1119,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="UI\Schedulers\SchedulerPatternPanel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\EventEmitter\DataEventEmitter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

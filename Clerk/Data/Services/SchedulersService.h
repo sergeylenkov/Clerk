@@ -1,6 +1,7 @@
 #pragma once
 
 #include <wx/datetime.h>
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Types.h"
 #include "../Repositories/SchedulersRepository.h"
 #include "../Services/AccountsService.h"
@@ -9,6 +10,8 @@
 #include "../PresentationModels/SchedulerPresentationModel.h"
 #include "../PresentationModels/TransactionPresentationModel.h"
 #include "HashService.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace Data {

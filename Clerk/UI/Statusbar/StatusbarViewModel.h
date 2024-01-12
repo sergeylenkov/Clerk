@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Utils.h"
 #include "../../Utils/Settings/Settings.h"
 #include "../../Data/Services/AccountingService.h"

@@ -1,9 +1,11 @@
 #pragma once
 
 #include "../../Data/Services/TransactionsService.h"
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Types.h"
 
 using namespace Clerk::Data;
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {

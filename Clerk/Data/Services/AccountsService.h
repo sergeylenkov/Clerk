@@ -1,11 +1,13 @@
 #pragma once
 
-#include "../../Utils/EventEmitter.h"
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Types.h"
 #include "../Repositories/AccountsRepository.h"
 #include "../PresentationModels/AccountPresentationModel.h"
 #include "HashService.h"
 #include "CurrenciesService.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace Data {

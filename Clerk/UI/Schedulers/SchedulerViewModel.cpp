@@ -8,6 +8,8 @@ SchedulerViewModel::SchedulerViewModel(SchedulersService& schedulersService, Acc
 	_currenciesService(currenciesService),
 	_tagsService(tagsService)
 {
+	_eventEmitter = new DataEventEmitter<SchedulerViewModelField>();
+
 	_id = -1;
 	_name = "";
 	_fromAmount = 0;
@@ -16,6 +18,14 @@ SchedulerViewModel::SchedulerViewModel(SchedulersService& schedulersService, Acc
 	_day = 1;
 	_week = 1;
 	_month = 1;
+}
+
+SchedulerViewModel::~SchedulerViewModel() {
+	delete _eventEmitter;
+}
+
+void SchedulerViewModel::OnUpdate(std::function<void(SchedulerViewModelField field)> fn) {
+	_eventEmitter->Subscribe(fn);
 }
 
 void SchedulerViewModel::SetSchedulerId(int id) {
@@ -45,9 +55,7 @@ bool SchedulerViewModel::IsNew() {
 void SchedulerViewModel::SetName(wxString name) {
 	_name = name;
 
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Name);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Name);
 }
 
 wxString SchedulerViewModel::GetName() {
@@ -120,19 +128,19 @@ void SchedulerViewModel::UpdateToAccounts() {
 
 	std::sort(deposits.begin(), deposits.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	std::sort(virtuals.begin(), virtuals.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	std::sort(expenses.begin(), expenses.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	std::sort(debts.begin(), debts.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	_toAccounts.clear();
 
@@ -183,10 +191,7 @@ void SchedulerViewModel::SetFromAccount(int index) {
 
 	if (result != _toAccounts.end()) {
 		UpdateToAccounts();
-
-		if (OnUpdate) {
-			OnUpdate(SchedulerViewModelField::FromAccount);
-		}
+		_eventEmitter->Emit(SchedulerViewModelField::FromAccount);	
 	}
 }
 
@@ -209,10 +214,7 @@ void SchedulerViewModel::SetToAccount(int index) {
 
 	if (result != _fromAccounts.end()) {
 		UpdateFromAccounts();
-
-		if (OnUpdate) {
-			OnUpdate(SchedulerViewModelField::ToAccount);
-		}
+		_eventEmitter->Emit(SchedulerViewModelField::ToAccount);
 	}
 }
 
@@ -233,9 +235,7 @@ void SchedulerViewModel::SetFromAmount(float amount) {
 		_toAmount = _fromAmount * rate;
 	}
 
-	if (_fromAmount == amount && OnUpdate) {
-		OnUpdate(SchedulerViewModelField::FromAmount);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::FromAmount);
 }
 
 float SchedulerViewModel::GetToAmount() {
@@ -244,10 +244,7 @@ float SchedulerViewModel::GetToAmount() {
 
 void SchedulerViewModel::SetToAmount(float amount) {
 	_toAmount = amount;
-
-	if (_toAmount == amount && OnUpdate) {
-		OnUpdate(SchedulerViewModelField::ToAmount);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::ToAmount);
 }
 
 shared_vector<TagPresentationModel> SchedulerViewModel::GetTags() {
@@ -256,10 +253,7 @@ shared_vector<TagPresentationModel> SchedulerViewModel::GetTags() {
 
 void SchedulerViewModel::SetTags(shared_vector<TagPresentationModel> tags) {
 	_tags = tags;
-
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Tags);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Tags);
 }
 
 SchedulerType SchedulerViewModel::GetType() {
@@ -268,10 +262,7 @@ SchedulerType SchedulerViewModel::GetType() {
 
 void SchedulerViewModel::SetType(SchedulerType type) {
 	_type = type;
-
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Type);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Type);
 }
 
 int SchedulerViewModel::GetDay() {
@@ -280,10 +271,7 @@ int SchedulerViewModel::GetDay() {
 
 void SchedulerViewModel::SetDay(int day) {
 	_day = day;
-
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Day);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Day);
 }
 
 int SchedulerViewModel::GetWeek() {
@@ -292,10 +280,7 @@ int SchedulerViewModel::GetWeek() {
 
 void SchedulerViewModel::SetWeek(int week) {
 	_week = week;
-
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Week);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Week);
 }
 
 int SchedulerViewModel::GetMonth() {
@@ -304,8 +289,5 @@ int SchedulerViewModel::GetMonth() {
 
 void SchedulerViewModel::SetMonth(int month) {
 	_month = month;
-
-	if (OnUpdate) {
-		OnUpdate(SchedulerViewModelField::Month);
-	}
+	_eventEmitter->Emit(SchedulerViewModelField::Month);
 }

@@ -220,7 +220,7 @@
     <ClCompile Include="UI\MainWindow.cpp" />
     <ClCompile Include="UI\Transactions\TransactionDialog.cpp" />
     <ClCompile Include="UI\Transactions\TransactionsListPanel.cpp" />
-    <ClCompile Include="Utils\EventEmitter.cpp" />
+    <ClCompile Include="Utils\EventEmitter\EventEmitter.cpp" />
     <ClCompile Include="Utils\Icons.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
   </ItemGroup>
@@ -296,6 +296,7 @@
     <ClInclude Include="UI\Schedulers\SchedulerPatternPanel.h" />
     <ClInclude Include="UI\Schedulers\SchedulerTransactionPanel.h" />
     <ClInclude Include="UI\Schedulers\SchedulerViewModel.h" />
+    <ClInclude Include="Utils\EventEmitter\DataEventEmitter.h" />
     <ClInclude Include="Utils\Settings\Types.h" />
     <ClInclude Include="UI\Alerts\AlertContextMenu.h" />
     <ClInclude Include="UI\Alerts\Enums.h" />
@@ -416,7 +417,7 @@
     <ClInclude Include="UI\Transactions\TransactionDialog.h" />
     <ClInclude Include="UI\Transactions\TransactionsListPanel.h" />
     <ClInclude Include="UI\TreeMenu\TreeMenuItemData.h" />
-    <ClInclude Include="Utils\EventEmitter.h" />
+    <ClInclude Include="Utils\EventEmitter\EventEmitter.h" />
     <ClInclude Include="Utils\Icons.h" />
     <ClInclude Include="Utils\Types.h" />
     <ClInclude Include="Utils\Utils.h" />

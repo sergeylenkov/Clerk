@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Utils/EventEmitter.h"
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Types.h"
 #include "../../Utils/Settings/Settings.h"
 #include "../../Data/Services/AccountingService.h"
@@ -10,6 +10,8 @@
 #include "../../Data/Services/SchedulersService.h"
 #include "../../Data/Services/GoalsService.h"
 #include "../../Data/Models/CurrencyModel.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace UI {

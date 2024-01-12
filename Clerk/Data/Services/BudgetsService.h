@@ -1,10 +1,12 @@
 #pragma once
 
+#include "../../Utils/EventEmitter/EventEmitter.h"
 #include "../../Utils/Types.h"
-#include "../../Utils/EventEmitter.h"
 #include "../Repositories/BudgetsRepository.h"
 #include "../PresentationModels/BudgetPresentationModel.h"
 #include "HashService.h"
+
+using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace Data {
@@ -20,7 +22,7 @@ namespace Clerk {
 			std::shared_ptr<BudgetPresentationModel> Save(BudgetPresentationModel& budget);
 			void Delete(BudgetPresentationModel& budget);
 
-			unsigned int Subscribe(std::function<void()> fn);
+			unsigned int Subscribe(std::function<void(void)> fn);
 			void Unsubscribe(unsigned int subscriptionId);
 
 		private:

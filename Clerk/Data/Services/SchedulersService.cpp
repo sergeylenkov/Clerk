@@ -14,7 +14,7 @@ SchedulersService::~SchedulersService() {
 	delete _eventEmitter;
 }
 
-unsigned int SchedulersService::Subscribe(std::function<void()> fn) {
+unsigned int SchedulersService::Subscribe(std::function<void(void)> fn) {
 	return _eventEmitter->Subscribe(fn);
 }
 

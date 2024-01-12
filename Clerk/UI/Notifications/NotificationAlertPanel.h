@@ -11,7 +11,7 @@ using namespace Clerk::Utils;
 class NotificationAlertPanel : public wxPanel
 {
 public:
-	NotificationAlertPanel(wxWindow* parent, const wxPoint& position = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+	NotificationAlertPanel(wxWindow* parent, const wxPoint& position, const wxSize& size);
 
 	void SetAlert(std::shared_ptr<AlertPresentationModel> alert);
 	std::function<void(std::shared_ptr<AlertPresentationModel>)> OnDismiss;

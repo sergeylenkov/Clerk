@@ -14,9 +14,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	wxSize labelSize = FromDIP(wxSize(40, -1));
 	wxSize amountSize = FromDIP(wxSize(80, -1));
 
-	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -100,6 +98,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 
 	panelSizer->Fit(mainPanel);
 
+	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
 	SetSizer(mainSizer);

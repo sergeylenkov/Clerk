@@ -13,6 +13,9 @@ SchedulerViewModel::SchedulerViewModel(SchedulersService& schedulersService, Acc
 	_fromAmount = 0;
 	_toAmount = 0;
 	_type = SchedulerType::Monthly;
+	_day = 1;
+	_week = 1;
+	_month = 1;
 }
 
 void SchedulerViewModel::SetSchedulerId(int id) {
@@ -27,6 +30,9 @@ void SchedulerViewModel::SetSchedulerId(int id) {
 		_toAmount = scheduler->toAmount;
 		_tags = scheduler->tags;
 		_type = scheduler->type;
+		_day = scheduler->day;
+		_week = scheduler->week;
+		_month = scheduler->month;
 
 		Update();
 	}
@@ -79,11 +85,11 @@ void SchedulerViewModel::UpdateFromAccounts() {
 
 	std::sort(receipts.begin(), receipts.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	std::sort(deposits.begin(), deposits.end(), [](auto a, auto b) {
 		return a->order < b->order;
-		});
+	});
 
 	_fromAccounts.clear();
 
@@ -256,14 +262,50 @@ void SchedulerViewModel::SetTags(shared_vector<TagPresentationModel> tags) {
 	}
 }
 
-SchedulerType SchedulerViewModel::GetSchedulerType() {
+SchedulerType SchedulerViewModel::GetType() {
 	return _type;
 }
 
-void SchedulerViewModel::SetSchedulerType(SchedulerType type) {
+void SchedulerViewModel::SetType(SchedulerType type) {
 	_type = type;
 
 	if (OnUpdate) {
 		OnUpdate(SchedulerViewModelField::Type);
+	}
+}
+
+int SchedulerViewModel::GetDay() {
+	return _day;
+}
+
+void SchedulerViewModel::SetDay(int day) {
+	_day = day;
+
+	if (OnUpdate) {
+		OnUpdate(SchedulerViewModelField::Day);
+	}
+}
+
+int SchedulerViewModel::GetWeek() {
+	return _week;
+}
+
+void SchedulerViewModel::SetWeek(int week) {
+	_week = week;
+
+	if (OnUpdate) {
+		OnUpdate(SchedulerViewModelField::Week);
+	}
+}
+
+int SchedulerViewModel::GetMonth() {
+	return _month;
+}
+
+void SchedulerViewModel::SetMonth(int month) {
+	_month = month;
+
+	if (OnUpdate) {
+		OnUpdate(SchedulerViewModelField::Month);
 	}
 }

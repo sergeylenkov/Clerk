@@ -11,7 +11,7 @@ using namespace Clerk::Utils;
 class NotificationSchedulerPanel : public wxPanel
 {
 public:
-	NotificationSchedulerPanel(wxWindow* parent, const wxPoint& position = wxDefaultPosition, const wxSize& size = wxDefaultSize);
+	NotificationSchedulerPanel(wxWindow* parent, const wxPoint& position, const wxSize& size);
 
 	void SetScheduler(std::shared_ptr<SchedulerPresentationModel> scheduler);
 	std::function<void(std::shared_ptr<SchedulerPresentationModel>)> OnDismiss;

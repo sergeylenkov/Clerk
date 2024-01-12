@@ -28,7 +28,10 @@ namespace Clerk {
 			FromAmount = 3,
 			ToAmount = 4,
 			Tags = 5,
-			Type = 6
+			Type = 6,
+			Day = 7,
+			Week = 8,
+			Month = 9
 		};
 	}
 }

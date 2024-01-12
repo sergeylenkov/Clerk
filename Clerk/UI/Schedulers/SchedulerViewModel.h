@@ -32,8 +32,14 @@ namespace Clerk {
 			void SetToAmount(float amount);
 			shared_vector<TagPresentationModel> GetTags();
 			void SetTags(shared_vector<TagPresentationModel> tags);
-			SchedulerType GetSchedulerType();
-			void SetSchedulerType(SchedulerType type);
+			SchedulerType GetType();
+			void SetType(SchedulerType type);
+			int GetDay();
+			void SetDay(int day);
+			int GetWeek();
+			void SetWeek(int week);
+			int GetMonth();
+			void SetMonth(int month);
 
 			void Save();
 			std::function<void(SchedulerViewModelField field)> OnUpdate;
@@ -49,10 +55,13 @@ namespace Clerk {
 			shared_vector<AccountPresentationModel> _toAccounts;
 			std::shared_ptr<AccountPresentationModel> _fromAccount;
 			std::shared_ptr<AccountPresentationModel> _toAccount;
-			float _fromAmount = 0.0;
-			float _toAmount = 0.0;
+			float _fromAmount;
+			float _toAmount;
 			shared_vector<TagPresentationModel> _tags;
 			SchedulerType _type;
+			int _day;
+			int _week;
+			int _month;
 
 			void Update();
 			void UpdateFromAccounts();

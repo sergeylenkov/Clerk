@@ -12,10 +12,8 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 	int bottomIndent = FromDIP(15);
 	wxSize labelSize = FromDIP(wxSize(70, -1));
 	wxSize listSize = FromDIP(wxSize(100, -1));
-
-	wxBoxSizer *mainSizer = new wxBoxSizer(wxVERTICAL);
+		
 	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
 	wxBoxSizer *horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -114,6 +112,7 @@ AlertDialog::AlertDialog(wxFrame *parent, const wxChar *title, int x, int y, int
 
 	panelSizer->Fit(mainPanel);
 
+	wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
 	mainSizer->Add(mainPanel, 1, wxEXPAND | wxALL, indent * 2);
 
 	SetSizer(mainSizer);

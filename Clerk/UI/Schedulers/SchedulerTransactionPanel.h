@@ -2,7 +2,7 @@
 
 #include "wx/wx.h"
 #include <wx/bmpcbox.h>
-#include "../../Data/DataContext.h"
+#include "../../Data/Services/TagsService.h"
 #include "../../Utils/Icons.h"
 #include "../Controls/AmountField.h"
 #include "../TagsField/TagsField.h"
@@ -14,14 +14,14 @@ using namespace Clerk::Utils;
 class SchedulerTransactionPanel : public wxPanel
 {
 public:
-	SchedulerTransactionPanel(wxWindow* parent, const wxPoint& position, const wxSize& size, Icons& icons, DataContext& context);
+	SchedulerTransactionPanel(wxWindow* parent, const wxPoint& position, const wxSize& size, Icons& icons, TagsService& tagsService);
 
 	void SetViewModel(SchedulerViewModel* viewModel);
 
 private:
 	SchedulerViewModel* _viewModel;
 	Icons& _icons;
-	DataContext& _context;
+	TagsService& _tagsService;
 	wxBitmapComboBox* _fromList;
 	wxBitmapComboBox* _toList;
 	TagsField* _tagsField;

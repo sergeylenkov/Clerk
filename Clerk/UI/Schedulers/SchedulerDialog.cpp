@@ -28,7 +28,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	_schedulerPatternPanel = new SchedulerPatternPanel(mainPanel, wxDefaultPosition, wxDefaultSize);
 	panelSizer->Add(_schedulerPatternPanel, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
-	_schedulerTransactionPanel = new SchedulerTransactionPanel(mainPanel, wxDefaultPosition, wxDefaultSize, _icons, _context);
+	_schedulerTransactionPanel = new SchedulerTransactionPanel(mainPanel, wxDefaultPosition, wxDefaultSize, _icons, _context.GetTagsService());
 	panelSizer->Add(_schedulerTransactionPanel, 1, wxEXPAND | wxBOTTOM, bottomIndent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -72,6 +72,7 @@ void SchedulerDialog::SetViewModel(SchedulerViewModel* viewModel) {
 
 	Update();
 
+	_nameField->SetValue(_viewModel->GetName());
 	_nameField->SetFocus();
 }
 

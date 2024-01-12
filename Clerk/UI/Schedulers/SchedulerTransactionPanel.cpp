@@ -1,15 +1,16 @@
 #include "SchedulerTransactionPanel.h"
 
-SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxPoint& position, const wxSize& size, Icons& icons, DataContext& context):
+SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxPoint& position, const wxSize& size, Icons& icons, TagsService& tagsService):
 	wxPanel(parent, wxID_ANY, position, size),
 	_icons(icons),
-	_context(context)
+	_tagsService(tagsService)
 {
 	int indent = FromDIP(5);
+	int bottomIndent = FromDIP(15);
 	wxSize labelSize = FromDIP(wxSize(40, -1));
 	wxSize amountSize = FromDIP(wxSize(80, -1));
 
-	wxStaticBoxSizer* mainSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Transaction")), wxHORIZONTAL);
+	wxStaticBoxSizer* mainSizer = new wxStaticBoxSizer(new wxStaticBox(this, wxID_ANY, _("Transaction")), wxVERTICAL);
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* fromLabel = new wxStaticText(this, wxID_ANY, _("From:"), wxDefaultPosition, labelSize);
@@ -24,7 +25,7 @@ SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxP
 	_fromCurrencyLabel = new wxStaticText(this, wxID_ANY, "RUB");
 	horizontalSizer->Add(_fromCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, indent);
+	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxALL, indent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -40,14 +41,14 @@ SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxP
 	_toCurrencyLabel = new wxStaticText(this, wxID_ANY, "RUB");
 	horizontalSizer->Add(_toCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
-	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, indent);
+	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxALL, indent);
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	wxStaticText* tagsLabel = new wxStaticText(this, wxID_ANY, _("Tags:"), wxDefaultPosition, labelSize);
-	horizontalSizer->Add(tagsLabel);
+	horizontalSizer->Add(tagsLabel, 0);
 
-	_tagsField = new TagsField(this, _context.GetTagsService());
+	_tagsField = new TagsField(this, _tagsService);
 	_tagsField->OnChange = [&]() {
 		_viewModel->SetTags(_tagsField->GetTags());
 		Layout();
@@ -55,7 +56,7 @@ SchedulerTransactionPanel::SchedulerTransactionPanel(wxWindow* parent, const wxP
 
 	horizontalSizer->Add(_tagsField, 1, wxEXPAND);
 
-	mainSizer->Add(horizontalSizer, 0);
+	mainSizer->Add(horizontalSizer, 0, wxEXPAND | wxALL, indent);
 
 	SetSizer(mainSizer);
 	Layout();

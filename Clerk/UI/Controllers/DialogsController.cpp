@@ -286,7 +286,7 @@ wxSize DialogsController::GetSchedulerDialogSize() {
 	wxSize size = wxSize();
 
 	size.SetWidth(_parent->FromDIP(450));
-	size.SetHeight(_parent->FromDIP(500));
+	size.SetHeight(_parent->FromDIP(420));
 
 	return size;
 }

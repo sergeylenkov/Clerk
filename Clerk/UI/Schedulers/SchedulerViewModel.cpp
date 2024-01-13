@@ -52,28 +52,6 @@ bool SchedulerViewModel::IsNew() {
 	return _id == -1;
 }
 
-void SchedulerViewModel::SetName(wxString name) {
-	_name = name;
-
-	_eventEmitter->Emit(SchedulerViewModelField::Name);
-}
-
-wxString SchedulerViewModel::GetName() {
-	return _name;
-}
-
-void SchedulerViewModel::Save() {
-	auto scheduler = _schedulersService.GetById(_id);
-
-	if (!scheduler) {
-		scheduler = std::make_shared<SchedulerPresentationModel>();
-	}
-
-	scheduler->name = _name;
-
-	_schedulersService.Save(*scheduler);
-}
-
 void SchedulerViewModel::Update() {
 	UpdateFromAccounts();
 	UpdateToAccounts();
@@ -162,6 +140,16 @@ void SchedulerViewModel::UpdateToAccounts() {
 			_toAccounts.push_back(account);
 		}
 	}
+}
+
+void SchedulerViewModel::SetName(wxString name) {
+	_name = name;
+
+	_eventEmitter->Emit(SchedulerViewModelField::Name);
+}
+
+wxString SchedulerViewModel::GetName() {
+	return _name;
 }
 
 shared_vector<AccountPresentationModel> SchedulerViewModel::GetFromAccounts() {
@@ -290,4 +278,25 @@ int SchedulerViewModel::GetMonth() {
 void SchedulerViewModel::SetMonth(int month) {
 	_month = month;
 	_eventEmitter->Emit(SchedulerViewModelField::Month);
+}
+
+void SchedulerViewModel::Save() {
+	auto scheduler = _schedulersService.GetById(_id);
+
+	if (!scheduler) {
+		scheduler = std::make_shared<SchedulerPresentationModel>();
+	}
+
+	scheduler->name = _name;
+	scheduler->fromAccount = _fromAccount;
+	scheduler->toAccount = _toAccount;
+	scheduler->fromAmount = _fromAmount;
+	scheduler->toAmount = _toAmount;
+	scheduler->tags = _tags;
+	scheduler->type = _type;
+	scheduler->day = _day;
+	scheduler->week = _week;
+	scheduler->month = _month;
+
+	_schedulersService.Save(*scheduler);
 }

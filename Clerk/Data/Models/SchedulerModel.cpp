@@ -8,6 +8,8 @@ SchedulerModel::SchedulerModel()
 	day = 1;
 	week = 1;
 	month = 1;
+	fromAccountId = -1;
+	toAccountId = -1;	
 	fromAmount = 0;
 	toAmount = 0;
 	tagsIds = std::wstring();

@@ -97,29 +97,26 @@ void TransactionsListPanel::SetAccountType(AccountType type) {
 }
 
 void TransactionsListPanel::Update() {
-	std::thread([&]()
-	{
-		_transactions.clear();
+	_transactions.clear();
 
-		auto transactions = _transactionsService->GetForPeriod(_periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
+	auto transactions = _transactionsService->GetForPeriod(_periodFilterPanel->GetFromDate(), _periodFilterPanel->GetToDate());
 
-		if (_account) {
-			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
-				return transaction->toAccount->id == _account->id || transaction->fromAccount->id == _account->id;
+	if (_account) {
+		std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
+			return transaction->toAccount->id == _account->id || transaction->fromAccount->id == _account->id;
 			});
-		} else if (_accountType.has_value()) {		
-			std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
-				return transaction->toAccount->type == _accountType || transaction->fromAccount->type == _accountType;
+	}
+	else if (_accountType.has_value()) {
+		std::copy_if(transactions.begin(), transactions.end(), std::back_inserter(_transactions), [&](const std::shared_ptr<TransactionPresentationModel>& transaction) {
+			return transaction->toAccount->type == _accountType || transaction->fromAccount->type == _accountType;
 			});
-		}
-		else {
-			_transactions = transactions;
-		}
+	}
+	else {
+		_transactions = transactions;
+	}
 
-		Filter();
-
-		GetEventHandler()->CallAfter(&TransactionsListPanel::UpdateList);
-	}).detach();
+	Filter();
+	UpdateList();
 }
 
 void TransactionsListPanel::Filter() {

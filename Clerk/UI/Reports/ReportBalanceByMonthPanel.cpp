@@ -33,7 +33,6 @@ ReportBalanceByMonthPanel::ReportBalanceByMonthPanel(wxWindow *parent, DataConte
 
 	_chart = new LineChart(this);
 
-
 	_chart->OnShowPopup = [&]() {
 		ShowPopup();
 	};

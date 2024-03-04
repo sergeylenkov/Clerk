@@ -2,7 +2,7 @@
 
 ReportChartTooltipPanel::ReportChartTooltipPanel(wxWindow *parent) : wxPanel(parent) {
 	total = 0;
-	this->Bind(wxEVT_PAINT, &ReportChartTooltipPanel::OnPaint, this);
+	Bind(wxEVT_PAINT, &ReportChartTooltipPanel::OnPaint, this);
 }
 
 void ReportChartTooltipPanel::SetTitle(wxString title) {
@@ -24,7 +24,7 @@ void ReportChartTooltipPanel::Update()
 	int maxName = title.Length();
 	int maxValue = total;
 	
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	wxClientDC dc(this);
@@ -36,7 +36,7 @@ void ReportChartTooltipPanel::Update()
 	width = nameSize.GetWidth() + valueSize.GetWidth() + 20;
 	height = height + nameSize.GetHeight() + 10;
 
-	dc.SetFont(this->GetFont());
+	dc.SetFont(GetFont());
 
 	for (auto &value : values) {
 		nameSize = dc.GetTextExtent(value.string);
@@ -51,7 +51,7 @@ void ReportChartTooltipPanel::Update()
 		height = height + nameSize.GetHeight() + 5;
 	}
 
-	this->SetMinSize(wxSize(width, height));
+	SetMinSize(wxSize(width, height));
 
 	Refresh();
 }
@@ -60,7 +60,7 @@ void ReportChartTooltipPanel::Draw(wxPaintDC &dc) {
 	int width = 0;
 	int height = 0;
 
-	this->DoGetSize(&width, &height);
+	DoGetSize(&width, &height);
 
 	dc.SetBackground(wxColor(255, 255, 255));
 	dc.Clear();
@@ -68,15 +68,15 @@ void ReportChartTooltipPanel::Draw(wxPaintDC &dc) {
 	dc.SetPen(wxPen(wxColor(200, 200, 200)));
 	dc.DrawRectangle(0, 0, width, height);
 
-	wxFont accountFont = this->GetFont();
-	wxFont amountFont = this->GetFont();
+	wxFont accountFont = GetFont();
+	wxFont amountFont = GetFont();
 
 	dc.SetFont(amountFont);
 	dc.SetTextForeground(wxColor(120, 120, 120));
 
 	int y = 5;
 
-	wxFont titleFont = this->GetFont();
+	wxFont titleFont = GetFont();
 	titleFont.SetWeight(wxFONTWEIGHT_BOLD);
 
 	dc.SetFont(titleFont);

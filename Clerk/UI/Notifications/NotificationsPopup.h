@@ -10,7 +10,6 @@ class NotificationsPopup : public wxPopupTransientWindow
 public:
 	NotificationsPopup(wxWindow* parent);
 
-	void Position(wxPoint position, wxSize size);
 	void Update(shared_vector<AlertPresentationModel> alerts, shared_vector<SchedulerPresentationModel> schedulers);
 	std::function<void(std::shared_ptr<AlertPresentationModel>)> OnDismissAlert;
 	std::function<void(std::shared_ptr<SchedulerPresentationModel>)> OnDismissScheduler;

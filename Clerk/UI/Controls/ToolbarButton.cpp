@@ -106,11 +106,7 @@ bool ToolbarButton::Enable(bool enable)
 }
 
 void ToolbarButton::ProcessClick() {
-	wxEvtHandler* eventHandler = GetEventHandler();
-
-	eventHandler->CallAfter([=]() {
-		wxCommandEvent evt(wxEVT_BUTTON, this->GetId());
-		evt.SetEventObject(this);
-		GetEventHandler()->ProcessEvent(evt);
-	});
+	wxCommandEvent event(wxEVT_BUTTON, GetId());
+	event.SetEventObject(this);
+	GetEventHandler()->ProcessEvent(event);
 }

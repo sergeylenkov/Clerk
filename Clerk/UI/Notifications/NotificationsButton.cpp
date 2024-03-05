@@ -82,8 +82,9 @@ void NotificationsButton::OnClick(wxCommandEvent& event)
 	wxSize size = GetSize();
 	wxSize panelSize = wxSize(FromDIP(300), -1);
 
-	_popup->Position(wxPoint(position.x + size.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()), panelSize);
+	_popup->SetPosition(wxPoint((position.x - panelSize.GetWidth()) + size.GetWidth(), (position.y - panelSize.GetHeight()) + size.GetHeight()));
+	_popup->SetSize(panelSize);
 	_popup->Update(_viewModel.GetActiveAlerts(), _viewModel.GetActiveSchedulers());
-	_popup->Show();
+	_popup->Popup();
 
 }

@@ -17,13 +17,6 @@ NotificationsPopup::NotificationsPopup(wxWindow* parent) : wxPopupTransientWindo
 	Layout();
 }
 
-void NotificationsPopup::Position(wxPoint position, wxSize size) {
-	wxPopupWindow::Position(position, size);
-
-	SetSize(size);
-	Layout();
-}
-
 void NotificationsPopup::Update(shared_vector<AlertPresentationModel> alerts, shared_vector<SchedulerPresentationModel> schedulers) {
 	_notificationsSizer->Clear(true);
 
@@ -76,6 +69,7 @@ void NotificationsPopup::Update(shared_vector<AlertPresentationModel> alerts, sh
 	}
 
 	_notificationsSizer->Layout();
+
 	wxSize popupSize = _notificationsSizer->GetSize();
 
 	if (popupSize.GetHeight() > FromDIP(300)) {
@@ -83,6 +77,5 @@ void NotificationsPopup::Update(shared_vector<AlertPresentationModel> alerts, sh
 	}
 
 	SetSize(popupSize);
-
 	Layout();
 }

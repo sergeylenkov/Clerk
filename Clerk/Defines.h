@@ -2,7 +2,7 @@
 #define Defines_h
 
 constexpr auto APP_NAME = "Clerk";
-constexpr auto APP_VERSION = "0.6.1";
+constexpr auto APP_VERSION = "0.6.2";
 
 #ifdef _DEBUG
 	#define DBG_NEW new ( _NORMAL_BLOCK , __FILE__ , __LINE__ )

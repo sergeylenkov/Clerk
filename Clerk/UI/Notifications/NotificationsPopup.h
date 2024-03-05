@@ -18,5 +18,7 @@ public:
 
 private:
 	wxScrolledWindow* _panel;	
-	wxBoxSizer* _notificationsSizer;
+	wxBoxSizer* _notificationsSizer;	
+
+	void UpdatePositionAndSize();
 };

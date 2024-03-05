@@ -104,7 +104,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	if (Settings::GetInstance().IsLoadExchangeRates()) {
 		_statusViewModel->SetIsExchangeRatesLoading(true);
 
-		std::thread([this]()
+		std::thread([&]()
 		{
 			_context.GetCurrenciesService().UpdatedExchangeRates();
 

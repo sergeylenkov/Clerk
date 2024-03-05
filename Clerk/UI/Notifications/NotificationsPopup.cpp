@@ -68,14 +68,24 @@ void NotificationsPopup::Update(shared_vector<AlertPresentationModel> alerts, sh
 		_notificationsSizer->Add(alertPanel);
 	}
 
-	_notificationsSizer->Layout();
+	Layout();
 
+	UpdatePositionAndSize();
+}
+
+void NotificationsPopup::UpdatePositionAndSize() {
 	wxSize popupSize = _notificationsSizer->GetSize();
+	wxSize size = GetSize();
+
+	size.SetHeight(popupSize.GetHeight());
 
 	if (popupSize.GetHeight() > FromDIP(300)) {
-		popupSize.SetHeight(FromDIP(300));
+		size.SetHeight(FromDIP(300));
 	}
 
-	SetSize(popupSize);
-	Layout();
+	wxPoint point = GetPosition();
+	point.x = point.x - size.GetWidth();
+
+	SetPosition(point);
+	SetSize(size);
 }

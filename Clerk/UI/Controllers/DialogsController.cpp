@@ -231,7 +231,7 @@ wxSize DialogsController::GetAboutDialogSize() {
 wxSize DialogsController::GetTransactionDialogSize() {
 	wxSize size = wxSize();
 
-	size.SetWidth(_parent->FromDIP(450));
+	size.SetWidth(_parent->FromDIP(460));
 	size.SetHeight(_parent->FromDIP(350));
 
 	return size;

@@ -13,6 +13,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	int bottomIndent = FromDIP(15);
 	wxSize labelSize = FromDIP(wxSize(40, -1));
 	wxSize amountSize = FromDIP(wxSize(80, -1));
+	wxSize currencySize = FromDIP(wxSize(25, -1));
 
 	wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
@@ -27,7 +28,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_fromAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, amountSize);
 	horizontalSizer->Add(_fromAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_fromCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
+	_fromCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, currencySize, wxALIGN_RIGHT);
 	horizontalSizer->Add(_fromCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
@@ -43,7 +44,7 @@ TransactionDialog::TransactionDialog(wxFrame *parent, const wxChar *title, int x
 	_toAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, amountSize);
 	horizontalSizer->Add(_toAmountField, 0, wxALIGN_CENTER_VERTICAL);
 
-	_toCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB");
+	_toCurrencyLabel = new wxStaticText(mainPanel, wxID_ANY, "RUB", wxDefaultPosition, currencySize, wxALIGN_RIGHT);
 	horizontalSizer->Add(_toCurrencyLabel, 0, wxALIGN_CENTER_VERTICAL | wxLEFT, indent);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
@@ -133,13 +134,16 @@ void TransactionDialog::SetViewModel(TransactionViewModel* viewModel) {
 		}
 
 		if (field == TransactionViewModelField::FromAccount) {
-			UpdateToList();
-			SelectToAccount(_viewModel->GetToAccountIndex());
+			UpdateToList();			
 		}
 
 		if (field == TransactionViewModelField::ToAccount) {
-			UpdateFromList();
+			UpdateFromList();			
+		}
+
+		if (field == TransactionViewModelField::FromAccount || field == TransactionViewModelField::ToAccount) {
 			SelectFromAccount(_viewModel->GetFromAccountIndex());
+			SelectToAccount(_viewModel->GetToAccountIndex());
 		}
 	};
 

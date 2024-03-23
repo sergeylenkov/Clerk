@@ -79,7 +79,7 @@ int TransactionsListDataModel::Compare(const wxDataViewItem& item1, const wxData
 
 	if (static_cast<TransactionsListColumns>(column) == TransactionsListColumns::Date) {
 		if (v1->date.IsEqualTo(v2->date)) {
-			return 0;
+			return ascending ? v1->id > v2->id : v2->id > v1->id;
 		}
 
 		return (ascending == v1->date.IsLaterThan(v2->date)) ? 1 : -1;

@@ -22,7 +22,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
 
-	_statusViewModel = new StatusbarViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), Settings::GetInstance().GetSelectedExchangeRates());
+	_statusViewModel = new StatusbarViewModel(_context.GetAccountingService(), _context.GetCurrenciesService(), _context.GetTransactionsService(), Settings::GetInstance().GetSelectedExchangeRates());
 	MainMenuViewModel* mainMenuViewModel = new MainMenuViewModel(_context.GetTransactionsService());
 	NewTransactionViewModel* newTransactionViewModel = new NewTransactionViewModel(_context.GetTransactionsService());
 	NotificationsViewModel* notificationsViewModel = new NotificationsViewModel(_context.GetAlertsService(), _context.GetTransactionsService(), _context.GetSchedulersService());

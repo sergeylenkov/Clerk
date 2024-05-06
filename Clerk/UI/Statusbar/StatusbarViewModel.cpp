@@ -2,21 +2,23 @@
 
 using namespace Clerk::UI;
 
-StatusbarViewModel::StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates) :
+StatusbarViewModel::StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, TransactionsService& transactionsService, std::vector<int> selectedRates):
 	_accountingService(accountingService),
-	_currenciesService(currenciesService)
+	_currenciesService(currenciesService),
+	_transactionsService(transactionsService)
 {
 	_selectedRates = selectedRates;
 	_isExchangeRatesLoading = false;
 
 	_eventEmitter = new EventEmitter();
 
-	_accountingService.OnUpdate([&]() {
+	_subscriptionId = _transactionsService.Subscribe([&]() {
 		_eventEmitter->Emit();
 	});
 }
 
 StatusbarViewModel::~StatusbarViewModel() {
+	_transactionsService.Unsubscribe(_subscriptionId);
 	delete _eventEmitter;
 }
 

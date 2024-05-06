@@ -20,7 +20,8 @@ namespace Clerk {
 			float GetBalance();
 			float GetCredit();			
 
-			void OnUpdate(std::function<void()> fn);
+			unsigned int Subscribe(std::function<void()> fn);
+			void Unsubscribe(unsigned int subscriptionId);
 
 		private:
 			AccountsService& _accountsService;

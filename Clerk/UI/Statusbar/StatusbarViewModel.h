@@ -5,6 +5,7 @@
 #include "../../Utils/Settings/Settings.h"
 #include "../../Data/Services/AccountingService.h"
 #include "../../Data/Services/CurrenciesService.h"
+#include "../../Data/Services/TransactionsService.h"
 
 using namespace Clerk::Utils;
 
@@ -12,7 +13,7 @@ namespace Clerk {
 	namespace UI {
 		class StatusbarViewModel {
 		public:
-			StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, std::vector<int> selectedRates);
+			StatusbarViewModel(AccountingService& accountingService, CurrenciesService& currenciesService, TransactionsService& transactionsService, std::vector<int> selectedRates);
 			~StatusbarViewModel();
 
 			float GetBalance();
@@ -27,10 +28,12 @@ namespace Clerk {
 		private:
 			AccountingService& _accountingService;
 			CurrenciesService& _currenciesService;
+			TransactionsService& _transactionsService;
 
 			std::vector<int> _selectedRates;
 			boolean _isExchangeRatesLoading;
 			EventEmitter* _eventEmitter;
+			unsigned int _subscriptionId;
 		};
 	}
 }

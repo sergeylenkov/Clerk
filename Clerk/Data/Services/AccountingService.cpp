@@ -11,8 +11,12 @@ AccountingService::~AccountingService() {
 	delete _eventEmitter;
 }
 
-void AccountingService::OnUpdate(std::function<void()> fn) {
-	_eventEmitter->Subscribe(fn);
+unsigned int AccountingService::Subscribe(std::function<void()> fn) {
+	return _eventEmitter->Subscribe(fn);
+}
+
+void AccountingService::Unsubscribe(unsigned int subscriptionId) {
+	_eventEmitter->Unsubscribe(subscriptionId);
 }
 
 float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTime& toDate) {

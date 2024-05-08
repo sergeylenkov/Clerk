@@ -4,7 +4,6 @@
 #include <curl/curl.h>
 #include <rapidxml/rapidxml.hpp>
 
-using namespace std;
 using namespace rapidxml;
 
 class CBRRatesLoader : public ExchangeRatesLoader
@@ -14,6 +13,6 @@ public:
 	void Load();
 
 private:
-	string _url;
-	void Parse(string *data);
+	std::string _url;
+	void Parse(std::string *data);
 };

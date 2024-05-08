@@ -34,7 +34,7 @@ void CBRRatesLoader::Load() {
 		curl = curl_easy_init();
 
 		if (curl) {
-			string buffer;
+			std::string buffer;
 
 			curl_easy_setopt(curl, CURLOPT_URL, _url.c_str());
 			curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
@@ -52,7 +52,7 @@ void CBRRatesLoader::Load() {
 	}
 }
 
-void CBRRatesLoader::Parse(string *data) {
+void CBRRatesLoader::Parse(std::string *data) {
 	xml_document<> document;
 	document.parse<0>((char *)data->c_str());
 
@@ -74,15 +74,15 @@ void CBRRatesLoader::Parse(string *data) {
 		char *rateValue = rateNode->value();
 		char *countValue = countNode->value();
 
-		string valueStr(rateValue);
+		std::string valueStr(rateValue);
 
 		std::replace(valueStr.begin(), valueStr.end(), ',', '.');
 
 		float rate = atof(valueStr.c_str());
 		int count = atoi(countValue);
 
-		string to("RUB");
-		string from(codeValue);
+		std::string to("RUB");
+		std::string from(codeValue);
 
 		UpdateValue(&date, &from, &to, rate, count);
 	}

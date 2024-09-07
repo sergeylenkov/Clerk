@@ -263,11 +263,12 @@ std::shared_ptr<AccountPresentationModel> AccountsService::Save(AccountPresentat
 	
 	delete& model;
 
+	RemoveFromHash(id);
+	auto result = GetById(id);
+
 	_eventEmitter->Emit();
 
-	RemoveFromHash(id);
-
-	return GetById(id);
+	return result;
 }
 
 void AccountsService::Delete(AccountPresentationModel& account) {

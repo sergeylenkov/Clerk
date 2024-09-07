@@ -152,11 +152,12 @@ std::shared_ptr<SchedulerPresentationModel> SchedulersService::Save(SchedulerPre
 
 	delete& model;
 
+	RemoveFromHash(id);
+	auto result = GetById(id);
+
 	_eventEmitter->Emit();
 
-	RemoveFromHash(id);
-
-	return GetById(id);
+	return result;
 }
 
 void SchedulersService::Delete(SchedulerPresentationModel& scheduler) {

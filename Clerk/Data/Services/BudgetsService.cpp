@@ -92,13 +92,14 @@ std::shared_ptr<BudgetPresentationModel> BudgetsService::Save(BudgetPresentation
 
 	int id = _budgetsRepository.Save(model);
 
-	delete& model;
+	delete& model;	
+
+	RemoveFromHash(id);
+	auto result = GetById(id);
 
 	_eventEmitter->Emit();
 
-	RemoveFromHash(id);
-
-	return GetById(id);
+	return result;
 }
 
 void BudgetsService::Delete(BudgetPresentationModel& budget) {

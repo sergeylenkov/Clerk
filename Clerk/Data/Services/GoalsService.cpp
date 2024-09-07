@@ -97,11 +97,12 @@ std::shared_ptr<GoalPresentationModel> GoalsService::Save(GoalPresentationModel&
 
 	delete& model;
 
+	RemoveFromHash(id);
+	auto result = GetById(id);
+
 	_eventEmitter->Emit();
 
-	RemoveFromHash(id);
-
-	return GetById(id);
+	return result;
 }
 
 void GoalsService::Delete(GoalPresentationModel& goal) {

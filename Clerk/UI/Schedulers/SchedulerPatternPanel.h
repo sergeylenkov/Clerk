@@ -44,4 +44,9 @@ private:
 	void SelectWeekday(int day);
 	void UpdatePatternType(SchedulerType type);
 	void OnPatternSelect(wxCommandEvent& event);
+	void OnDailyDayKillFocus(wxFocusEvent& event);
+	void OnWeeklyWeekKillFocus(wxFocusEvent& event);
+	void OnMonthlyDayKillFocus(wxFocusEvent& event);
+	void OnMonthlyMonthKillFocus(wxFocusEvent& event);
+	void OnYearlyDayKillFocus(wxFocusEvent& event);
 };

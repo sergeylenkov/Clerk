@@ -18,6 +18,10 @@ SchedulerViewModel::SchedulerViewModel(SchedulersService& schedulersService, Acc
 	_day = 1;
 	_week = 1;
 	_month = 1;
+	_fromAccount = _accountsService.GetLastUsedAccount();
+	_toAccount = _accountsService.GetPairAccount(*_fromAccount);
+
+	Update();
 }
 
 SchedulerViewModel::~SchedulerViewModel() {

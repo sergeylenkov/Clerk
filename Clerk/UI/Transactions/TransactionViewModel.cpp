@@ -39,6 +39,7 @@ void TransactionViewModel::SetTransactionId(int id) {
 		Update();
 	}
 }
+
 void TransactionViewModel::SetSplitTransactionId(int id) {
 	auto transaction = _transactionsService.GetById(id);
 

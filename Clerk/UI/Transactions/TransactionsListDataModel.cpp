@@ -109,7 +109,7 @@ int TransactionsListDataModel::Compare(const wxDataViewItem& item1, const wxData
 			return 0;
 		}
 
-		return ascending ? v1->fromAmount > v2->fromAmount : v2->fromAmount > v1->fromAmount;
+		return (ascending == v1->fromAmount > v2->fromAmount) ? 1 : -1;
 	}
 
 	return 0;

@@ -54,6 +54,8 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 
 	Centre(wxBOTH);
 
+	_nameField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnNameKillFocus, this);
+
 	okButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnOK, this);
 	cancelButton->Bind(wxEVT_BUTTON, &SchedulerDialog::OnCancel, this);	
 
@@ -70,14 +72,14 @@ void SchedulerDialog::SetViewModel(SchedulerViewModel* viewModel) {
 	_schedulerPatternPanel->SetViewModel(_viewModel);
 	_schedulerTransactionPanel->SetViewModel(_viewModel);
 
-	Update();
-
 	_nameField->SetValue(_viewModel->GetName());
 	_nameField->SetFocus();
 }
 
-void SchedulerDialog::Update() {
-	
+void SchedulerDialog::OnNameKillFocus(wxFocusEvent& event) {
+	event.Skip();
+
+	_viewModel->SetName(_nameField->GetValue());
 }
 
 void SchedulerDialog::OnOK(wxCommandEvent &event) {

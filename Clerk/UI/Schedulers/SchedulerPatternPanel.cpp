@@ -182,6 +182,12 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	_weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
 	_monthlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
 	_yearlyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
+
+	_dailyDayField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnDailyDayKillFocus, this);
+	_weeklyWeekField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnWeeklyWeekKillFocus, this);
+	_monthlyDayField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnMonthlyDayKillFocus, this);
+	_monthlyMonthField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnMonthlyMonthKillFocus, this);
+	_yearlyDayField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnYearlyDayKillFocus, this);
 }
 
 void SchedulerPatternPanel::SetViewModel(SchedulerViewModel* viewModel) {
@@ -298,4 +304,44 @@ void SchedulerPatternPanel::OnPatternSelect(wxCommandEvent& event) {
 	if (_yearlyButton->GetValue()) {
 		_viewModel->SetType(SchedulerType::Yearly);
 	}
+}
+
+void SchedulerPatternPanel::OnDailyDayKillFocus(wxFocusEvent& event) {
+	int day = 1;
+
+	_monthlyDayField->GetValue().ToInt(&day);
+
+	_viewModel->SetDay(day);
+}
+
+void SchedulerPatternPanel::OnWeeklyWeekKillFocus(wxFocusEvent& event) {
+	int week = 1;
+
+	_monthlyDayField->GetValue().ToInt(&week);
+
+	_viewModel->SetWeek(week);
+}
+
+void SchedulerPatternPanel::OnMonthlyDayKillFocus(wxFocusEvent& event) {
+	int day = 1;
+
+	_monthlyDayField->GetValue().ToInt(&day);
+
+	_viewModel->SetDay(day);
+}
+
+void SchedulerPatternPanel::OnMonthlyMonthKillFocus(wxFocusEvent& event) {
+	int month = 1;
+
+	_monthlyMonthField->GetValue().ToInt(&month);
+
+	_viewModel->SetMonth(month);
+}
+
+void SchedulerPatternPanel::OnYearlyDayKillFocus(wxFocusEvent& event) {
+	int day = 1;
+
+	_monthlyDayField->GetValue().ToInt(&day);
+
+	_viewModel->SetDay(day);
 }

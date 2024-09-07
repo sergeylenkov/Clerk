@@ -145,10 +145,11 @@ std::shared_ptr<TransactionPresentationModel> TransactionsService::Save(Transact
 	delete& model;
 
 	RemoveFromHash(id);
+	auto result = GetById(id);
 
 	_eventEmitter->Emit();
 
-	return GetById(id);
+	return result;
 }
 
 void TransactionsService::Delete(TransactionPresentationModel& transaction) {

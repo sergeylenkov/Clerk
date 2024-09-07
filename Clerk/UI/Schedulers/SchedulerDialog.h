@@ -27,7 +27,7 @@ private:
 	SchedulerPatternPanel* _schedulerPatternPanel;
 	SchedulerTransactionPanel* _schedulerTransactionPanel;
 
-	void Update();	
+	void OnNameKillFocus(wxFocusEvent& event);
 	void OnOK(wxCommandEvent &event);
 	void OnCancel(wxCommandEvent &event);
 	void OnKeyDown(wxKeyEvent &event);

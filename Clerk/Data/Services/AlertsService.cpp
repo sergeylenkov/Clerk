@@ -106,10 +106,11 @@ std::shared_ptr<AlertPresentationModel> AlertsService::Save(AlertPresentationMod
 	delete& model;
 
 	RemoveFromHash(id);
+	auto result = GetById(id);
 
 	_eventEmitter->Emit();
 
-	return GetById(id);
+	return result;
 }
 
 void AlertsService::Delete(AlertPresentationModel& alert) {

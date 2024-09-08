@@ -188,6 +188,16 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	_monthlyDayField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnMonthlyDayKillFocus, this);
 	_monthlyMonthField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnMonthlyMonthKillFocus, this);
 	_yearlyDayField->Bind(wxEVT_KILL_FOCUS, &SchedulerPatternPanel::OnYearlyDayKillFocus, this);
+
+	_mondayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnMondayChecked, this);
+	_tuesdayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnTuesdayChecked, this);
+	_wednesdayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnWednesdayChecked, this);
+	_thursdayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnThursdayChecked, this);
+	_fridayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnFridayChecked, this);
+	_saturdayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnSaturdayChecked, this);
+	_sundayCheckBox->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnSundayChecked, this);
+
+	_yearlyMonthChoice->Bind(wxEVT_COMBOBOX, &SchedulerPatternPanel::OnMonthSelect, this);
 }
 
 void SchedulerPatternPanel::SetViewModel(SchedulerViewModel* viewModel) {
@@ -344,4 +354,36 @@ void SchedulerPatternPanel::OnYearlyDayKillFocus(wxFocusEvent& event) {
 	_monthlyDayField->GetValue().ToInt(&day);
 
 	_viewModel->SetDay(day);
+}
+
+void SchedulerPatternPanel::OnMondayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(1);
+}
+
+void SchedulerPatternPanel::OnTuesdayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(2);
+}
+
+void SchedulerPatternPanel::OnWednesdayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(3);
+}
+
+void SchedulerPatternPanel::OnThursdayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(4);
+}
+
+void SchedulerPatternPanel::OnFridayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(5);
+}
+
+void SchedulerPatternPanel::OnSaturdayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(6);
+}
+
+void SchedulerPatternPanel::OnSundayChecked(wxCommandEvent& event) {
+	_viewModel->SetDay(7);
+}
+
+void SchedulerPatternPanel::OnMonthSelect(wxCommandEvent& event) {
+	_viewModel->SetMonth(_yearlyMonthChoice->GetSelection());
 }

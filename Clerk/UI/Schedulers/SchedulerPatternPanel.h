@@ -49,4 +49,12 @@ private:
 	void OnMonthlyDayKillFocus(wxFocusEvent& event);
 	void OnMonthlyMonthKillFocus(wxFocusEvent& event);
 	void OnYearlyDayKillFocus(wxFocusEvent& event);
+	void OnMondayChecked(wxCommandEvent& event);
+	void OnTuesdayChecked(wxCommandEvent& event);
+	void OnWednesdayChecked(wxCommandEvent& event);
+	void OnThursdayChecked(wxCommandEvent& event);
+	void OnFridayChecked(wxCommandEvent& event);
+	void OnSaturdayChecked(wxCommandEvent& event);
+	void OnSundayChecked(wxCommandEvent& event);
+	void OnMonthSelect(wxCommandEvent& event);
 };

@@ -68,6 +68,16 @@ void AlertsListPanel::CreateListColumns() {
 			case AlertsListColumns::Amount:
 				dataViewColumn = _list->AppendTextColumn(_("Amount"), static_cast<int>(AlertsListColumns::Amount), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
+			case AlertsListColumns::Remain:
+				dataViewColumn = _list->AppendTextColumn(_("Remain"), static_cast<int>(AlertsListColumns::Remain), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				break;
+			case AlertsListColumns::Progress: {
+				DataViewProgressRender* render = new DataViewProgressRender(false);
+
+				dataViewColumn = new wxDataViewColumn(_("Progress"), render, static_cast<int>(AlertsListColumns::Progress), column.width, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendColumn(dataViewColumn);
+			}
+			break;
 		}
 	}
 

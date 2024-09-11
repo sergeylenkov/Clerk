@@ -17,6 +17,8 @@ namespace Clerk {
 			Condition,
 			Importance,
 			Amount,
+			Remain,
+			Progress,
 			Last
 		};
 

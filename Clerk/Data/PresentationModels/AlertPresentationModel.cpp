@@ -12,6 +12,8 @@ AlertPresentationModel::AlertPresentationModel() {
 	importance = AlertImportance::Medium;
 	amount = 0;
 	balance = 0;
+	remainAmount = 0;
+	remainPercent = 0;
 	created = wxDateTime::Now();
 }
 
@@ -26,6 +28,8 @@ AlertPresentationModel::AlertPresentationModel(AlertModel& model) {
 	amount = model.amount;
 	accountsIds = String::Split(model.accountIds, ',');
 	balance = 0;
+	remainAmount = 0;
+	remainPercent = 0;
 
 	created = wxDateTime::Now();
 	created.ParseISODate(model.created);

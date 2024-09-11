@@ -2,6 +2,7 @@
 
 #include <wx/wx.h>
 #include "../DataPanel/DataListPanel.h"
+#include "../Controls/DataViewProgressRender.h"
 #include "AlertsListDataModel.h"
 #include "AlertContextMenu.h"
 

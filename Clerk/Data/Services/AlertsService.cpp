@@ -53,6 +53,22 @@ shared_vector<AlertPresentationModel> AlertsService::GetAll() {
 		if (!GetFromHash(model->id)) {
 			auto alert = std::make_shared<AlertPresentationModel>(*model);
 			alert->balance = _alertsRepository.GetBalance(model->accountIds);
+			alert->remainPercent = alert->balance / (alert->amount / 100.0);
+
+			if (alert->condition == AlertCondition::Equal)
+			{
+				alert->remainAmount = alert->amount - alert->balance;				
+			}
+
+			if (alert->condition == AlertCondition::Less)
+			{
+				alert->remainAmount = alert->balance - alert->amount;
+			}
+
+			if (alert->condition == AlertCondition::More)
+			{
+				alert->remainAmount = alert->amount - alert->balance;
+			}
 
 			AddToHash(alert->id, alert);
 		}

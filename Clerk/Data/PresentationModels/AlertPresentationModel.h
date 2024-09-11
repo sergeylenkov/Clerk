@@ -23,6 +23,8 @@ namespace Clerk {
 			AlertImportance importance;
 			float amount;
 			float balance;
+			float remainAmount;
+			float remainPercent;
 			wxDateTime created;
 			wxString typeName;
 			wxString periodName;

@@ -23,9 +23,6 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 {
 	auto alert = _alerts[row];
 
-	float remainAmount = 0;
-	float remainPercent = 0;
-
 	switch (static_cast<AlertsListColumns>(column))
 	{
 		case AlertsListColumns::Name:
@@ -49,8 +46,30 @@ void AlertsListDataModel::GetValueByRow(wxVariant &variant, unsigned int row, un
 		case AlertsListColumns::Amount:
 			variant = Format::Amount(alert->amount);
 			break;
+		case AlertsListColumns::Remain:
+			variant = Format::Amount(alert->remainAmount);
+			break;
+		case AlertsListColumns::Progress:
+			variant = wxString::Format("%f", alert->remainPercent);
+			break;
 	}	
 }
+
+bool AlertsListDataModel::GetAttrByRow(unsigned int row, unsigned int column, wxDataViewItemAttr& attr) const
+{
+	auto alert = _alerts[row];
+
+	switch (static_cast<AlertsListColumns>(column))
+	{
+	case AlertsListColumns::Remain:
+		attr.SetColour(Colors::ColorForProgress(alert->remainPercent, false));
+		return true;
+		break;
+	}
+
+	return false;
+}
+
 
 bool AlertsListDataModel::SetValueByRow(const wxVariant& variant, unsigned int row, unsigned int column) {
 	return false;
@@ -109,6 +128,22 @@ int AlertsListDataModel::Compare(const wxDataViewItem& item1, const wxDataViewIt
 		}
 
 		return ascending ? v1->amount > v2->amount : v2->amount > v1->amount;
+	}
+
+	if (static_cast<AlertsListColumns>(column) == AlertsListColumns::Remain) {
+		if (v1->remainAmount == v2->remainAmount) {
+			return 0;
+		}
+
+		return ascending ? v1->remainAmount > v2->remainAmount : v2->remainAmount > v1->remainAmount;
+	}
+
+	if (static_cast<AlertsListColumns>(column) == AlertsListColumns::Progress) {
+		if (v1->remainPercent == v2->remainPercent) {
+			return 0;
+		}
+
+		return ascending ? v1->remainPercent > v2->remainPercent : v2->remainPercent > v1->remainPercent;
 	}
 
 	return 0;

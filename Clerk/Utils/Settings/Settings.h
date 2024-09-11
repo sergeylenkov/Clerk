@@ -110,7 +110,7 @@ namespace Clerk {
 			std::vector<ListColumnsSettings> _goalsListColumnsSettings;
 
 			void RestoreDefaultColumns();
-			std::vector<ListColumnsSettings> ReadColumnsFromJson(const Value& values);
+			void ReadColumnsFromJson(std::vector<ListColumnsSettings>& defaultColumns, const Value& values);
 			Value WriteColumnsToJson(Document& json, std::vector<ListColumnsSettings> columns);
 		};
 	}

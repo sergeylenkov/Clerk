@@ -141,7 +141,7 @@ void Settings::Open(char *configName) {
 				const Value &type = types[i];
 				int columnsType = type["Type"].GetInt();
 
-				_transactionsListColumnsSettings[columnsType] = ReadColumnsFromJson(type["Columns"]);
+				ReadColumnsFromJson(_transactionsListColumnsSettings[columnsType], type["Columns"]);
 			}
 		}
 
@@ -177,19 +177,19 @@ void Settings::Open(char *configName) {
 		}
 
 		if (json.HasMember("AlertsListColumns") && json["AlertsListColumns"].IsArray()) {
-			_alertsListColumnsSettings = ReadColumnsFromJson(json["AlertsListColumns"]);
+			ReadColumnsFromJson(_alertsListColumnsSettings, json["AlertsListColumns"]);
 		}
 
 		if (json.HasMember("SchedulersListColumns") && json["SchedulersListColumns"].IsArray()) {
-			_schedulersListColumnsSettings = ReadColumnsFromJson(json["SchedulersListColumns"]);
+			ReadColumnsFromJson(_schedulersListColumnsSettings, json["SchedulersListColumns"]);
 		}
 
 		if (json.HasMember("BudgetsListColumns") && json["BudgetsListColumns"].IsArray()) {
-			_budgetsListColumnsSettings = ReadColumnsFromJson(json["BudgetsListColumns"]);
+			ReadColumnsFromJson(_budgetsListColumnsSettings, json["BudgetsListColumns"]);
 		}
 
 		if (json.HasMember("GoalsListColumns") && json["GoalsListColumns"].IsArray()) {
-			_goalsListColumnsSettings = ReadColumnsFromJson(json["GoalsListColumns"]);
+			ReadColumnsFromJson(_goalsListColumnsSettings, json["GoalsListColumns"]);
 		}
 	}
 }
@@ -379,6 +379,8 @@ void Settings::RestoreDefaultColumns() {
 	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Condition), 4, 100, false, false });
 	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Importance), 5, 100, false, false });
 	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Amount), 6, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Remain), 7, 100, false, false });
+	_alertsListColumnsSettings.push_back({ static_cast<int>(AlertsListColumns::Progress), 8, 100, false, false });
 
 	_schedulersListColumnsSettings.clear();
 
@@ -428,7 +430,7 @@ Value Settings::WriteColumnsToJson(Document& json, std::vector<ListColumnsSettin
 	return columnsJson;
 }
 
-std::vector<ListColumnsSettings> Settings::ReadColumnsFromJson(const Value& values) {
+void Settings::ReadColumnsFromJson(std::vector<ListColumnsSettings>& defaultColumns, const Value& values) {
 	std::vector<ListColumnsSettings> columns;
 
 	for (SizeType i = 0; i < values.Size(); i++) {
@@ -443,7 +445,15 @@ std::vector<ListColumnsSettings> Settings::ReadColumnsFromJson(const Value& valu
 		});
 	}
 
-	return columns;
+	for (int i = 0; i < defaultColumns.size(); i++) {
+		for (auto& column : columns)
+		{
+			if (defaultColumns[i].model == column.model)
+			{
+				defaultColumns[i] = column;
+			}
+		}
+	}
 }
 
 int Settings::GetSelectedAccountId() {

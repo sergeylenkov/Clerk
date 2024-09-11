@@ -51,14 +51,7 @@ void BudgetsListPanel::CreateListColumns() {
 				break;
 			case BudgetsListColumns::Period:
 				dataViewColumn = _list->AppendTextColumn(_("Period"), static_cast<int>(BudgetsListColumns::Period), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_NOT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				break;
-			case BudgetsListColumns::Progress: {
-				DataViewProgressRender* render = new DataViewProgressRender(true);
-
-				dataViewColumn = new wxDataViewColumn(_("Progress"), render, static_cast<int>(BudgetsListColumns::Progress), column.width, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
-				_list->AppendColumn(dataViewColumn);
-				}
-				break;
+				break;			
 			case BudgetsListColumns::Limit:
 				dataViewColumn = _list->AppendTextColumn(_("Limit"), static_cast<int>(BudgetsListColumns::Limit), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
 				break;
@@ -67,6 +60,13 @@ void BudgetsListPanel::CreateListColumns() {
 				break;
 			case BudgetsListColumns::Remain:
 				dataViewColumn = _list->AppendTextColumn(_("Remain"), static_cast<int>(BudgetsListColumns::Remain), wxDATAVIEW_CELL_INERT, column.width, wxALIGN_RIGHT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				break;
+			case BudgetsListColumns::Progress: {
+				DataViewProgressRender* render = new DataViewProgressRender(true);
+
+				dataViewColumn = new wxDataViewColumn(_("Progress"), render, static_cast<int>(BudgetsListColumns::Progress), column.width, wxALIGN_LEFT, wxDATAVIEW_COL_SORTABLE | wxDATAVIEW_COL_RESIZABLE | wxDATAVIEW_COL_REORDERABLE);
+				_list->AppendColumn(dataViewColumn);
+			}
 				break;
 		}
 	}

@@ -170,7 +170,7 @@ shared_vector<AccountPresentationModel> AccountsService::GetReceipts(const wxDat
 }
 
 shared_vector<AccountPresentationModel> AccountsService::GetExpenses() {
-	auto accounts = GetByType(AccountType::Expens);
+	auto accounts = GetByType(AccountType::Expense);
 	auto debts = GetByType(AccountType::Debt);
 
 	accounts.insert(accounts.end(), debts.begin(), debts.end());
@@ -179,7 +179,7 @@ shared_vector<AccountPresentationModel> AccountsService::GetExpenses() {
 }
 
 shared_vector<AccountPresentationModel> AccountsService::GetExpenses(const wxDateTime& fromDate, const wxDateTime& toDate) {
-	auto accounts = GetByType(AccountType::Expens);
+	auto accounts = GetByType(AccountType::Expense);
 	auto debts = GetByType(AccountType::Debt);
 
 	accounts.insert(accounts.end(), debts.begin(), debts.end());

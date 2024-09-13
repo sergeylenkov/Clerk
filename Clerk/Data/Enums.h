@@ -5,7 +5,7 @@ namespace Clerk {
 		enum class AccountType {
 			Receipt = 0,
 			Deposit = 1,
-			Expens = 2,
+			Expense = 2,
 			Debt = 3,
 			Virtual = 4,
 		};

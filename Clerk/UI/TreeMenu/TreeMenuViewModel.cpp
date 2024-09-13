@@ -44,7 +44,7 @@ shared_vector<AccountPresentationModel> TreeMenuViewModel::GetDepositsAccounts()
 }
 
 shared_vector<AccountPresentationModel> TreeMenuViewModel::GetExpensesAccounts() {
-	auto accounts = _accountsService.GetByType(AccountType::Expens);
+	auto accounts = _accountsService.GetByType(AccountType::Expense);
 
 	std::sort(accounts.begin(), accounts.end(), [](auto a, auto b) {
 		return a->order < b->order;

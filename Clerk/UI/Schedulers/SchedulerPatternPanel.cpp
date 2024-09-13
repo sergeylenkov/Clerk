@@ -43,7 +43,7 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	wxStaticLine* staticLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
 	mainSizer->Add(staticLine, 0, wxEXPAND | wxLEFT | wxRIGHT, indent);
 
-	wxPanel* patternPanel = new wxPanel(this, wxID_ANY);
+	wxPanel* patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	mainSizer->Add(patternPanel, 1, wxEXPAND);
 
 	wxBoxSizer* patternSizer = new wxBoxSizer(wxVERTICAL);
@@ -59,14 +59,14 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* label = new wxStaticText(_dailyPatternPanel, wxID_ANY, _("Every"));
+	wxStaticText* label = new wxStaticText(_dailyPatternPanel, wxID_ANY, _("Repeat every"));
 	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	_dailyDayField = new wxTextCtrl(_dailyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, daysValidator);
 	horizontalSizer->Add(_dailyDayField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	label = new wxStaticText(_dailyPatternPanel, wxID_ANY, _("days"));
-	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL);
+	_dailyDayLabel = new wxStaticText(_dailyPatternPanel, wxID_ANY, _("day"));
+	horizontalSizer->Add(_dailyDayLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_dailyPatternPanel->SetSizer(horizontalSizer);
 	_dailyPatternPanel->Layout();
@@ -82,7 +82,7 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	label = new wxStaticText(_weeklyPatternPanel, wxID_ANY, _("Every"));
+	label = new wxStaticText(_weeklyPatternPanel, wxID_ANY, _("Repeat every"));
 	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	_weeklyWeekField = new wxTextCtrl(_weeklyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, weekValidator);
@@ -130,20 +130,20 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	_monthlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	label = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("Day"));
-	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
-
-	_monthlyDayField = new wxTextCtrl(_monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, dayValidator);
-	horizontalSizer->Add(_monthlyDayField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
-
-	label = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("every"));
+	label = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("Repeat every"));
 	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	_monthlyMonthField = new wxTextCtrl(_monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, monthValidator);
 	horizontalSizer->Add(_monthlyMonthField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	label = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("month(s)"));
-	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL);
+	_monthlyMonthLabel = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("month on"));
+	horizontalSizer->Add(_monthlyMonthLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+
+	_monthlyDayField = new wxTextCtrl(_monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, dayValidator);
+	horizontalSizer->Add(_monthlyDayField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+
+	_monthlyDayLabel = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("day"));
+	horizontalSizer->Add(_monthlyDayLabel, 0, wxALIGN_CENTER_VERTICAL);
 
 	_monthlyPatternPanel->SetSizer(horizontalSizer);
 	_monthlyPatternPanel->Layout();
@@ -157,11 +157,14 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	_yearlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	label = new wxStaticText(_yearlyPatternPanel, wxID_ANY, _("Every"));
+	label = new wxStaticText(_yearlyPatternPanel, wxID_ANY, _("Repeat every"));
 	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	_yearlyDayField = new wxTextCtrl(_yearlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, dayValidator);
-	horizontalSizer->Add(_yearlyDayField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
+	horizontalSizer->Add(_yearlyDayField, 0, wxALIGN_CENTER_VERTICAL);
+
+	_yearlyDayLabel = new wxStaticText(_yearlyPatternPanel, wxID_ANY, _("st"));
+	horizontalSizer->Add(_yearlyDayLabel, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	wxString months[] = { _("January"), _("February"), _("March"), _("April"), _("May"), _("June"), _("Jule"), _("August"), _("September"), _("October"), _("November"), _("December") };
 
@@ -177,6 +180,8 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	SetSizer(mainSizer);
 	Layout();
+
+	SetDoubleBuffered(true);
 
 	_dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
 	_weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
@@ -206,10 +211,18 @@ void SchedulerPatternPanel::SetViewModel(SchedulerViewModel* viewModel) {
 	_viewModel->OnUpdate([&](SchedulerViewModelField field) {
 		if (field == SchedulerViewModelField::Type) {
 			UpdatePatternType(_viewModel->GetType());
+			UpdateTypo();
+		}
+		else if (field == SchedulerViewModelField::Day) {
+			UpdateTypo();
+		}
+		else if (field == SchedulerViewModelField::Month) {
+			UpdateTypo();
 		}
 	});
 
 	Update();
+	UpdateTypo();
 }
 
 void SchedulerPatternPanel::Update() {
@@ -251,6 +264,40 @@ void SchedulerPatternPanel::UpdatePatternType(SchedulerType type) {
 	}
 
 	Layout();
+}
+
+void SchedulerPatternPanel::UpdateTypo() {
+	if (_viewModel->GetType() == SchedulerType::Daily) {
+		_dailyDayLabel->SetLabel(_viewModel->GetDay() == 1 ? _("day") : _("days"));
+	}
+
+	if (_viewModel->GetType() == SchedulerType::Monthly) {
+		_monthlyDayLabel->SetLabel(_viewModel->GetDay() == 1 ? _("day") : _("days"));
+		_monthlyMonthLabel->SetLabel(_viewModel->GetMonth() == 1 ? _("month on") : _("months on"));
+	}
+
+	if (_viewModel->GetType() == SchedulerType::Yearly) {
+		if (_viewModel->GetDay() >= 4 && _viewModel->GetDay() <= 20) {
+			_yearlyDayLabel->SetLabel(_("th"));
+		}
+		else {
+			int lastNumber = (_viewModel->GetDay() % 10);
+
+			switch (lastNumber)			
+			{
+			case 1:
+				_yearlyDayLabel->SetLabel(_("st"));
+			case 2:
+				_yearlyDayLabel->SetLabel(_("nd"));
+				break;
+			case 3:
+				_yearlyDayLabel->SetLabel(_("rd"));
+			default:
+				_yearlyDayLabel->SetLabel(_("th"));
+				break;
+			}
+		}
+	}
 }
 
 void SchedulerPatternPanel::SelectWeekday(int day) {

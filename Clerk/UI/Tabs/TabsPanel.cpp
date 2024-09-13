@@ -260,7 +260,7 @@ wxString TabsPanel::GetTabTitleByAccountType(AccountType type) {
 	case AccountType::Receipt:
 		return _("Receipts");
 		break;
-	case AccountType::Expens:
+	case AccountType::Expense:
 		return _("Expenses");
 		break;
 	case AccountType::Debt:

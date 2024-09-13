@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Clerk\n"
-"POT-Creation-Date: 2023-12-11 17:27+0300\n"
-"PO-Revision-Date: 2023-12-11 17:28+0300\n"
+"POT-Creation-Date: 2024-09-13 17:27+0300\n"
+"PO-Revision-Date: 2024-09-13 17:27+0300\n"
 "Last-Translator: Sergey Lenkov <serglazy@gmail.com>\n"
 "Language-Team: Sergey Lenkov\n"
 "Language: en\n"
@@ -17,13 +17,11 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPath-1: UI\n"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:18
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:18
+#: UI/Controls/PeriodFilterPanel.cpp:14
 msgid "3 Months"
 msgstr "3 Month"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:19
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:19
+#: UI/Controls/PeriodFilterPanel.cpp:15
 msgid "6 Months"
 msgstr "6 Month"
 
@@ -31,127 +29,138 @@ msgstr "6 Month"
 msgid "About"
 msgstr "About"
 
-#: UI/Controls/MainMenu.cpp:28
+#: UI/MainMenu/MainMenu.cpp:28
 msgid "About..."
 msgstr "About..."
 
-#: UI/Controllers/DialogsController.cpp:95
-#: UI/Controllers/DialogsController.cpp:107
+#: UI/Controllers/DialogsController.cpp:89
+#: UI/Controllers/DialogsController.cpp:103
 msgid "Account"
 msgstr "Account"
 
-#: UI/Dashboard/DashboardAccountsPanel.cpp:44 UI/TreeMenu/TreeMenu.cpp:49
+#: UI/Dashboard/DashboardAccountsPanel.cpp:50 UI/TreeMenu/TreeMenu.cpp:54
 msgid "Accounts"
 msgstr "Accounts"
 
-#: UI/Alerts/AlertDialog.cpp:61 UI/Budgets/BudgetDialog.cpp:52
-#: UI/Goals/GoalDialog.cpp:49 UI/Reports/ReportExpensesByMonthPanel.cpp:7
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:7
+#: UI/Alerts/AlertDialog.cpp:90 UI/Budgets/BudgetDialog.cpp:59
+#: UI/Goals/GoalDialog.cpp:50 UI/Reports/ReportBalanceByMonthPanel.cpp:11
+#: UI/Reports/ReportExpensesByMonthPanel.cpp:11
+#: UI/Reports/ReportReceiptsAndExpensesByMonthPanel.cpp:11
+#: UI/Reports/ReportReceiptsByMonthPanel.cpp:11
 msgid "Accounts:"
 msgstr "Accounts:"
 
-#: UI/Schedulers/SchedulersListDataModel.cpp:49
+#: UI/Account/AccountDialog.cpp:85
+msgid "Accrue"
+msgstr "Accrue"
+
+#: UI/Account/AccountDialog.cpp:99 UI/Account/AccountDialog.cpp:109
+msgid "Accrue interest every"
+msgstr "Accrue interest every"
+
+#: UI/Schedulers/SchedulersListDataModel.cpp:45
 msgid "Active"
 msgstr "Active"
 
-#: UI/Controls/NewTransactionButton.cpp:6
+#: UI/NewTransactionButton/NewTransactionButton.cpp:6
 msgid "Add Transaction"
 msgstr "Add Transaction"
 
-#: UI/Alerts/AlertsPanel.cpp:76 UI/Budgets/BudgetsPanel.cpp:82
-#: UI/Goals/GoalsPanel.cpp:84 UI/Schedulers/SchedulersPanel.cpp:93
-#: UI/Transactions/TransactionContextMenu.cpp:6
-#: UI/Transactions/TransactionContextMenu.cpp:27
+#: UI/Alerts/AlertContextMenu.cpp:9 UI/Alerts/AlertContextMenu.cpp:21
+#: UI/Budgets/BudgetContextMenu.cpp:9 UI/Budgets/BudgetContextMenu.cpp:21
+#: UI/Goals/GoalContextMenu.cpp:9 UI/Goals/GoalContextMenu.cpp:21
+#: UI/Schedulers/SchedulerContextMenu.cpp:9
+#: UI/Schedulers/SchedulerContextMenu.cpp:32
+#: UI/Transactions/TransactionContextMenu.cpp:10
 #: UI/Transactions/TransactionContextMenu.cpp:33
+#: UI/Transactions/TransactionContextMenu.cpp:41
 msgid "Add..."
 msgstr "Add..."
 
-#: UI/Controllers/TabsController.cpp:161 UI/TreeMenu/TreeMenu.cpp:104
+#: UI/Controllers/DialogsController.cpp:117
+#: UI/Controllers/DialogsController.cpp:130
+msgid "Alert"
+msgstr "Alert"
+
+#: UI/Tabs/TabsPanel.cpp:242 UI/TreeMenu/TreeMenu.cpp:109
 msgid "Alerts"
 msgstr "Alerts"
 
-#: UI/Alerts/AlertsConfirmDialog.cpp:11
-msgid "Alerts:"
-msgstr "Alerts:"
+#: UI/Controls/AccountsComboBox.cpp:50 UI/Controls/AccountsComboBox.cpp:76
+msgid "All"
+msgstr "All"
 
-#: UI/Alerts/AlertsPanel.cpp:13 UI/Schedulers/SchedulersConfirmDialog.cpp:72
-#: UI/Schedulers/SchedulersPanel.cpp:8
-#: UI/Transactions/TransactionsListPanel.cpp:248
+#: UI/Alerts/AlertsListPanel.cpp:69 UI/Schedulers/SchedulersListPanel.cpp:56
+#: UI/Transactions/TransactionsListPanel.cpp:184
 msgid "Amount"
 msgstr "Amount"
 
-#: UI/AccountDialog.cpp:55 UI/Alerts/AlertDialog.cpp:51
-#: UI/Budgets/BudgetDialog.cpp:42 UI/Goals/GoalDialog.cpp:39
+#: UI/Account/AccountDialog.cpp:65 UI/Alerts/AlertDialog.cpp:80
+#: UI/Budgets/BudgetDialog.cpp:49 UI/Goals/GoalDialog.cpp:40
 msgid "Amount:"
 msgstr "Amount:"
 
-#: UI/Schedulers/SchedulersConfirmDialog.cpp:28
-msgid "Apply All"
-msgstr "Apply All"
-
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "April"
 msgstr "April"
 
-#: UI/TreeMenu/TreeMenu.cpp:79
+#: UI/TreeMenu/TreeMenu.cpp:84
 msgid "Archive"
 msgstr "Archive"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "August"
 msgstr "August"
 
-#: UI/Alerts/AlertDialog.cpp:99 UI/Dashboard/DashboardBalancePanel.cpp:46
-#: UI/PresentationModels/AlertPresentationModel.cpp:40
+#: Data/PresentationModels/AlertPresentationModel.cpp:46
+#: UI/Alerts/AlertDialog.cpp:125 UI/Dashboard/DashboardBalancePanel.cpp:49
 msgid "Balance"
 msgstr "Balance"
 
-#: UI/PreferencesDialog.cpp:28
+#: UI/PreferencesDialog.cpp:39
 msgid "Base Currency:"
 msgstr "Base Currency:"
 
+#: UI/Controllers/DialogsController.cpp:144
+#: UI/Controllers/DialogsController.cpp:157
 #: UI/Dashboard/DashboardBudgetsPanel.cpp:91
 #: UI/Dashboard/DashboardBudgetsPanel.cpp:92
 msgid "Budget"
 msgstr "Budget"
 
-#: UI/Controllers/TabsController.cpp:149
-#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/TreeMenu/TreeMenu.cpp:89
+#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/Tabs/TabsPanel.cpp:230
+#: UI/TreeMenu/TreeMenu.cpp:94
 msgid "Budgets"
 msgstr "Budgets"
 
-#: UI/AccountDialog.cpp:88 UI/Alerts/AlertDialog.cpp:80
-#: UI/Budgets/BudgetDialog.cpp:71 UI/Goals/GoalDialog.cpp:68
-#: UI/PreferencesDialog.cpp:57 UI/Schedulers/SchedulerDialog.cpp:135
+#: UI/Account/AccountDialog.cpp:142 UI/Alerts/AlertDialog.cpp:105
+#: UI/Budgets/BudgetDialog.cpp:74 UI/Goals/GoalDialog.cpp:65
+#: UI/PreferencesDialog.cpp:68 UI/Schedulers/SchedulerDialog.cpp:39
 #: UI/Transactions/TransactionDialog.cpp:92
 msgid "Cancel"
 msgstr "Cancel"
 
-#: UI/TrashPanel.cpp:150
+#: UI/TrashPanel.cpp:152
 msgid "Clear All..."
 msgstr "Clear All..."
 
-#: UI/Tabs/TabsContextMenu.cpp:25
+#: UI/Tabs/TabsContextMenu.cpp:30
 msgid "Close"
 msgstr "Close"
 
-#: UI/Alerts/AlertsPanel.cpp:12
+#: UI/Alerts/AlertsListPanel.cpp:63
 msgid "Condition"
 msgstr "Condition"
 
-#: UI/Alerts/AlertDialog.cpp:45
+#: UI/Alerts/AlertDialog.cpp:60
 msgid "Condition:"
 msgstr "Condition:"
 
-#: UI/Schedulers/SchedulersConfirmDialog.cpp:11
-msgid "Confirm scheduler transactions:"
-msgstr "Confirm scheduler transactions:"
-
-#: UI/PreferencesDialog.cpp:38
+#: UI/PreferencesDialog.cpp:51
 msgid "Convert amount by exchange rate"
 msgstr "Convert amount by exchange rate"
 
-#: UI/Transactions/TransactionContextMenu.cpp:12
+#: UI/Transactions/TransactionContextMenu.cpp:16
 msgid "Copy..."
 msgstr "Copy..."
 
@@ -159,391 +168,419 @@ msgstr "Copy..."
 msgid "Copyright"
 msgstr "Copyright © 2024 Sergey Lenkov"
 
-#: UI/AccountDialog.cpp:65
+#: UI/Account/AccountDialog.cpp:75
 msgid "Credit Limit:"
 msgstr "Credit Limit:"
 
-#: UI/Dashboard/DashboardBalancePanel.cpp:85
+#: UI/Dashboard/DashboardBalancePanel.cpp:89
 msgid "Credit funds"
 msgstr "Credit funds"
 
-#: UI/AccountDialog.cpp:35
+#: UI/PreferencesDialog.cpp:36
+msgid "Currencies"
+msgstr "Currencies"
+
+#: UI/Account/AccountDialog.cpp:45
 msgid "Currency:"
 msgstr "Currency:"
 
-#: UI/Budgets/BudgetsPanel.cpp:18 UI/Goals/GoalsPanel.cpp:19
+#: UI/Budgets/BudgetsListPanel.cpp:59 UI/Goals/GoalsListPanel.cpp:69
 msgid "Current"
 msgstr "Current"
 
-#: UI/Transactions/TransactionsListPanel.cpp:25
+#: UI/Controls/PeriodFilterPanel.cpp:23
 msgid "Current Month"
 msgstr "Current Month"
 
-#: UI/Transactions/TransactionsListPanel.cpp:23
+#: UI/Controls/PeriodFilterPanel.cpp:21
 msgid "Current Week"
 msgstr "Current Week"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:20
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:20
-#: UI/Transactions/TransactionsListPanel.cpp:27
+#: UI/Controls/PeriodFilterPanel.cpp:16 UI/Controls/PeriodFilterPanel.cpp:25
 msgid "Current Year"
 msgstr "Current Year"
 
-#: UI/Budgets/BudgetDialog.cpp:91 UI/Reports/ReportExpensesByMonthPanel.cpp:22
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:22
-#: UI/Transactions/TransactionsListPanel.cpp:29
+#: UI/Budgets/BudgetDialog.cpp:95 UI/Controls/PeriodFilterPanel.cpp:18
+#: UI/Controls/PeriodFilterPanel.cpp:27
 msgid "Custom"
 msgstr "Custom"
 
-#: UI/Schedulers/SchedulerDialog.cpp:51
+#: Data/PresentationModels/SchedulerPresentationModel.cpp:50
+#: UI/Schedulers/SchedulerPatternPanel.cpp:29
 msgid "Daily"
 msgstr "Daily"
 
-#: UI/Controllers/TabsController.cpp:143 UI/TreeMenu/TreeMenu.cpp:44
+#: UI/Tabs/TabsPanel.cpp:224 UI/TreeMenu/TreeMenu.cpp:49
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: UI/Transactions/TransactionsListPanel.cpp:227 UI/TrashPanel.cpp:56
+#: UI/Transactions/TransactionsListPanel.cpp:158 UI/TrashPanel.cpp:58
 msgid "Date"
 msgstr "Date"
 
-#: UI/Goals/GoalDialog.cpp:29 UI/Transactions/TransactionDialog.cpp:54
+#: UI/Budgets/BudgetDialog.cpp:39 UI/Goals/GoalDialog.cpp:30
+#: UI/Transactions/TransactionDialog.cpp:54
 msgid "Date:"
 msgstr "Date:"
 
-#: UI/Schedulers/SchedulerDialog.cpp:217
-msgid "Day"
-msgstr "Day"
-
-#: UI/Schedulers/SchedulersPanel.cpp:10
+#: UI/Schedulers/SchedulersListPanel.cpp:62
 msgid "Days Left"
 msgstr "Days Left"
 
-#: UI/Goals/GoalsPanel.cpp:11
+#: UI/Goals/GoalsListPanel.cpp:56
 msgid "Days Remain"
 msgstr "Days Remain"
 
-#: UI/Dashboard/DashboardDebtsPanel.cpp:114
+#: UI/Account/AccountViewModel.cpp:19 UI/Dashboard/DashboardDebtsPanel.cpp:114
 #: UI/Dashboard/DashboardDebtsPanel.cpp:115
 msgid "Debt"
 msgstr "Debt"
 
-#: UI/Controllers/TabsController.cpp:186
-#: UI/Dashboard/DashboardDebtsPanel.cpp:67 UI/TreeMenu/TreeMenu.cpp:74
+#: UI/Dashboard/DashboardDebtsPanel.cpp:67 UI/Tabs/TabsPanel.cpp:267
+#: UI/TreeMenu/TreeMenu.cpp:79
 msgid "Debts"
 msgstr "Debts"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "December"
 msgstr "December"
 
-#: UI/Alerts/AlertsPanel.cpp:78 UI/Budgets/BudgetsPanel.cpp:84
-#: UI/Goals/GoalsPanel.cpp:86 UI/Schedulers/SchedulersPanel.cpp:95
-#: UI/Transactions/TransactionContextMenu.cpp:23
+#: UI/Alerts/AlertContextMenu.cpp:17 UI/Budgets/BudgetContextMenu.cpp:17
+#: UI/Goals/GoalContextMenu.cpp:17 UI/Schedulers/SchedulerContextMenu.cpp:28
+#: UI/Transactions/TransactionContextMenu.cpp:29
 msgid "Delete"
 msgstr "Delete"
 
-#: UI/TagsPanel.cpp:161
+#: UI/TagsPanel.cpp:152
 msgid "Delete tag"
 msgstr "Delete tag"
 
-#: UI/TagsPanel.cpp:161
+#: UI/TagsPanel.cpp:152
 msgid "Delete tag confirm"
 msgstr "Are you sure want to delete tag"
 
-#: UI/TagsPanel.cpp:244 UI/TrashPanel.cpp:149
+#: UI/TagsPanel.cpp:235 UI/TrashPanel.cpp:151
 msgid "Delete..."
 msgstr "Delete..."
 
-#: UI/Controllers/TabsController.cpp:177 UI/TreeMenu/TreeMenu.cpp:59
+#: UI/Account/AccountViewModel.cpp:17
+msgid "Deposit"
+msgstr "Deposit"
+
+#: UI/Tabs/TabsPanel.cpp:258 UI/TreeMenu/TreeMenu.cpp:64
 msgid "Deposits"
 msgstr "Deposits"
 
 #: UI/Notifications/NotificationAlertPanel.cpp:17
+#: UI/Notifications/NotificationSchedulerPanel.cpp:23
 msgid "Dismiss"
 msgstr "Dismiss"
 
-#: UI/Transactions/TransactionContextMenu.cpp:15
+#: UI/Transactions/TransactionContextMenu.cpp:19
 msgid "Dublicate"
 msgstr "Dublicate"
 
-#: UI/Goals/GoalsPanel.cpp:10
+#: UI/Goals/GoalsListPanel.cpp:53
 msgid "Due Date"
 msgstr "Due Date"
 
-#: UI/TreeMenu/AccountContextMenu.cpp:18
+#: UI/TreeMenu/AccountContextMenu.cpp:19
 msgid "Edit Account..."
 msgstr "Edit Account..."
 
-#: UI/Alerts/AlertsPanel.cpp:77 UI/Budgets/BudgetsPanel.cpp:83
-#: UI/Goals/GoalsPanel.cpp:85 UI/Schedulers/SchedulersPanel.cpp:94
-#: UI/Transactions/TransactionContextMenu.cpp:9
+#: UI/Alerts/AlertContextMenu.cpp:12 UI/Budgets/BudgetContextMenu.cpp:12
+#: UI/Goals/GoalContextMenu.cpp:12 UI/Schedulers/SchedulerContextMenu.cpp:12
+#: UI/Transactions/TransactionContextMenu.cpp:13
 msgid "Edit..."
 msgstr "Edit..."
 
-#: UI/Alerts/AlertDialog.cpp:111
-#: UI/PresentationModels/AlertPresentationModel.cpp:70
+#: Data/PresentationModels/AlertPresentationModel.cpp:76
+#: UI/Alerts/AlertDialog.cpp:133
 msgid "Equal"
 msgstr "Equal"
 
-#: UI/Schedulers/SchedulerDialog.cpp:146 UI/Schedulers/SchedulerDialog.cpp:169
-#: UI/Schedulers/SchedulerDialog.cpp:244
-msgid "Every"
-msgstr "Every"
+#: UI/Notifications/NotificationSchedulerPanel.cpp:17
+msgid "Execute"
+msgstr ""
 
-#: UI/Controls/MainMenu.cpp:23
+#: UI/MainMenu/MainMenu.cpp:23
 msgid "Exit\tCtrl+W"
 msgstr "Exit\tCtrl+W"
 
-#: UI/Alerts/AlertDialog.cpp:98
-#: UI/PresentationModels/AlertPresentationModel.cpp:34
+#: Data/PresentationModels/AlertPresentationModel.cpp:40
+#: UI/Account/AccountViewModel.cpp:18 UI/Alerts/AlertDialog.cpp:124
 msgid "Expense"
 msgstr "Expense"
 
-#: UI/Controllers/TabsController.cpp:183
-#: UI/Dashboard/DashboardExpensesPanel.cpp:57 UI/TreeMenu/TreeMenu.cpp:69
+#: UI/Dashboard/DashboardExpensesPanel.cpp:57
+#: UI/Reports/ReportReceiptsAndExpensesByMonthPanel.cpp:97
+#: UI/Tabs/TabsPanel.cpp:264 UI/TreeMenu/TreeMenu.cpp:74
 msgid "Expenses"
 msgstr "Expenses"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "February"
 msgstr "February"
 
-#: UI/Controls/MainMenu.cpp:25
+#: UI/MainMenu/MainMenu.cpp:25
 msgid "File"
 msgstr "File"
 
-#: UI/Schedulers/SchedulerDialog.cpp:194
+#: UI/Schedulers/SchedulerPatternPanel.cpp:110
 msgid "Friday"
 msgstr "Friday"
 
-#: UI/Transactions/TransactionsListPanel.cpp:230 UI/TrashPanel.cpp:22
+#: UI/Transactions/TransactionsListPanel.cpp:162 UI/TrashPanel.cpp:24
 msgid "From Account"
 msgstr "From Account"
 
-#: UI/TrashPanel.cpp:38
+#: UI/TrashPanel.cpp:40
 msgid "From Amount"
 msgstr "From Amount"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:29
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:29
-#: UI/Schedulers/SchedulerDialog.cpp:87
+#: UI/Controls/PeriodFilterPanel.cpp:36
+#: UI/Schedulers/SchedulerTransactionPanel.cpp:16
 #: UI/Transactions/TransactionDialog.cpp:22
-#: UI/Transactions/TransactionsListPanel.cpp:37
 msgid "From:"
 msgstr "From:"
 
-#: UI/Dashboard/DashboardGoalsPanel.cpp:67
-#: UI/Dashboard/DashboardGoalsPanel.cpp:99
-#: UI/Dashboard/DashboardGoalsPanel.cpp:100 UI/Goals/GoalsPanel.cpp:18
+#: UI/PreferencesDialog.cpp:16
+msgid "General"
+msgstr "General"
+
+#: UI/Controllers/DialogsController.cpp:171
+#: UI/Controllers/DialogsController.cpp:184
+#: UI/Dashboard/DashboardGoalsPanel.cpp:64
+#: UI/Dashboard/DashboardGoalsPanel.cpp:96
+#: UI/Dashboard/DashboardGoalsPanel.cpp:97 UI/Goals/GoalsListPanel.cpp:66
 msgid "Goal"
 msgstr "Goal"
 
-#: UI/Controllers/TabsController.cpp:155
-#: UI/Dashboard/DashboardGoalsPanel.cpp:56 UI/TreeMenu/TreeMenu.cpp:94
+#: UI/Dashboard/DashboardGoalsPanel.cpp:53 UI/Tabs/TabsPanel.cpp:236
+#: UI/TreeMenu/TreeMenu.cpp:99
 msgid "Goals"
 msgstr "Goals"
 
-#: UI/Controls/MainMenu.cpp:30
+#: UI/MainMenu/MainMenu.cpp:30
 msgid "Help"
 msgstr "Help"
 
-#: UI/PresentationModels/AlertPresentationModel.cpp:85
+#: Data/PresentationModels/AlertPresentationModel.cpp:91
+#: UI/Alerts/AlertDialog.cpp:137
 msgid "High"
 msgstr "High"
 
-#: UI/AccountDialog.cpp:45
+#: UI/Account/AccountDialog.cpp:55
 msgid "Icon:"
 msgstr "Icon:"
 
-#: UI/Transactions/TransactionsListPanel.cpp:74
+#: UI/Alerts/AlertsListPanel.cpp:66
+msgid "Importance"
+msgstr "Importance"
+
+#: UI/Alerts/AlertDialog.cpp:70
+msgid "Importance:"
+msgstr "Importance:"
+
+#: UI/Transactions/TransactionsListPanel.cpp:45
 msgid "Income:"
 msgstr "Income:"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "January"
 msgstr "January"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "Jule"
 msgstr "Jule"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "June"
 msgstr "June"
 
-#: UI/PreferencesDialog.cpp:18
+#: UI/PreferencesDialog.cpp:23
+msgid "Language"
+msgstr "Language"
+
+#: UI/PreferencesDialog.cpp:26
 msgid "Language:"
 msgstr "Language:"
 
-#: UI/Alerts/AlertDialog.cpp:109
-#: UI/PresentationModels/AlertPresentationModel.cpp:64
+#: Data/PresentationModels/AlertPresentationModel.cpp:70
+#: UI/Alerts/AlertDialog.cpp:131
 msgid "Less"
 msgstr "Less"
 
-#: UI/Budgets/BudgetsPanel.cpp:17
+#: UI/Budgets/BudgetsListPanel.cpp:56
 msgid "Limit"
 msgstr "Limit"
 
-#: UI/PreferencesDialog.cpp:45
+#: UI/PreferencesDialog.cpp:47
 msgid "Load exchange rates on start"
 msgstr "Load exchange rates on start"
 
-#: UI/PresentationModels/AlertPresentationModel.cpp:79
+#: Data/PresentationModels/AlertPresentationModel.cpp:85
+#: UI/Alerts/AlertDialog.cpp:135
 msgid "Low"
 msgstr "Low"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "March"
 msgstr "March"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "May"
 msgstr "May"
 
-#: UI/PresentationModels/AlertPresentationModel.cpp:82
+#: Data/PresentationModels/AlertPresentationModel.cpp:88
+#: UI/Alerts/AlertDialog.cpp:136
 msgid "Medium"
 msgstr "Medium"
 
-#: UI/Transactions/TransactionContextMenu.cpp:30
+#: UI/Transactions/TransactionContextMenu.cpp:38
 msgid "Merge"
 msgstr "Merge"
 
-#: UI/Schedulers/SchedulerDialog.cpp:182
+#: UI/Alerts/AlertsListPanel.cpp:54
+msgid "Message"
+msgstr "Message"
+
+#: UI/Alerts/AlertDialog.cpp:30
+msgid "Message:"
+msgstr "Message:"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:98
 msgid "Monday"
 msgstr "Monday"
 
-#: UI/Alerts/AlertDialog.cpp:104 UI/Budgets/BudgetDialog.cpp:89
-#: UI/PresentationModels/AlertPresentationModel.cpp:52
+#: Data/PresentationModels/AlertPresentationModel.cpp:58
+#: UI/Alerts/AlertDialog.cpp:128 UI/Budgets/BudgetDialog.cpp:93
 msgid "Month"
 msgstr "Month"
 
-#: UI/Schedulers/SchedulerDialog.cpp:57
+#: Data/PresentationModels/SchedulerPresentationModel.cpp:56
+#: UI/Schedulers/SchedulerPatternPanel.cpp:35
 msgid "Monthly"
 msgstr "Monthly"
 
-#: UI/Alerts/AlertDialog.cpp:110
-#: UI/PresentationModels/AlertPresentationModel.cpp:67
+#: Data/PresentationModels/AlertPresentationModel.cpp:73
+#: UI/Alerts/AlertDialog.cpp:132
 msgid "More"
 msgstr "More"
 
-#: UI/TreeMenu/AccountContextMenu.cpp:21
+#: UI/TreeMenu/AccountContextMenu.cpp:22
 msgid "Move to Archive"
 msgstr "Move to Archive"
 
-#: UI/Tabs/TabsContextMenu.cpp:7
+#: UI/Tabs/TabsContextMenu.cpp:12
 msgid "Move to Left"
 msgstr "Move to Left"
 
-#: UI/Tabs/TabsContextMenu.cpp:15
+#: UI/Tabs/TabsContextMenu.cpp:20
 msgid "Move to Right"
 msgstr "Move to Right"
 
-#: UI/Alerts/AlertDialog.cpp:161 UI/Alerts/AlertsConfirmDialog.cpp:54
-#: UI/Alerts/AlertsPanel.cpp:9 UI/Budgets/BudgetDialog.cpp:157
-#: UI/Budgets/BudgetsPanel.cpp:9 UI/Controls/AccountsComboBox.cpp:35
-#: UI/Goals/GoalDialog.cpp:124 UI/Goals/GoalsPanel.cpp:9
-#: UI/Schedulers/SchedulersConfirmDialog.cpp:64
-#: UI/Schedulers/SchedulersPanel.cpp:6
+#: UI/Alerts/AlertDialog.cpp:191 UI/Alerts/AlertsListPanel.cpp:51
+#: UI/Budgets/BudgetDialog.cpp:155 UI/Budgets/BudgetsListPanel.cpp:50
+#: UI/Controls/AccountsComboBox.cpp:39 UI/Goals/GoalDialog.cpp:125
+#: UI/Goals/GoalsListPanel.cpp:50 UI/Schedulers/SchedulersListPanel.cpp:50
 msgid "Name"
 msgstr "Name"
 
-#: UI/AccountDialog.cpp:15 UI/Alerts/AlertDialog.cpp:19
-#: UI/Budgets/BudgetDialog.cpp:19 UI/Goals/GoalDialog.cpp:19
-#: UI/Schedulers/SchedulerDialog.cpp:37
+#: UI/Account/AccountDialog.cpp:25 UI/Alerts/AlertDialog.cpp:20
+#: UI/Budgets/BudgetDialog.cpp:19 UI/Goals/GoalDialog.cpp:20
+#: UI/Schedulers/SchedulerDialog.cpp:20
 msgid "Name:"
 msgstr "Name:"
 
-#: UI/Controls/MainMenu.cpp:15 UI/TreeMenu/AccountsContextMenu.cpp:11
+#: UI/MainMenu/MainMenu.cpp:15 UI/TreeMenu/AccountsContextMenu.cpp:12
 msgid "New Account..."
 msgstr "New Account..."
 
-#: UI/Controls/MainMenu.cpp:19
+#: UI/MainMenu/MainMenu.cpp:19
 msgid "New Alert..."
 msgstr "New Alert..."
 
-#: UI/Controls/MainMenu.cpp:16
+#: UI/MainMenu/MainMenu.cpp:16
 msgid "New Budget..."
 msgstr "New Budget..."
 
-#: UI/Controls/MainMenu.cpp:17
+#: UI/MainMenu/MainMenu.cpp:17
 msgid "New Goal..."
 msgstr "New Goal..."
 
-#: UI/Controls/MainMenu.cpp:18
+#: UI/MainMenu/MainMenu.cpp:18
 msgid "New Scheduler..."
 msgstr "New Scheduler..."
 
-#: UI/Controls/MainMenu.cpp:75 UI/TreeMenu/AccountContextMenu.cpp:28
+#: UI/MainMenu/MainMenu.cpp:75 UI/TreeMenu/AccountContextMenu.cpp:29
 msgid "New Transaction"
 msgstr "New Transaction"
 
-#: UI/TreeMenu/AccountContextMenu.cpp:30 UI/TreeMenu/AccountContextMenu.cpp:52
-#: UI/TreeMenu/AccountsContextMenu.cpp:12
+#: UI/TreeMenu/AccountContextMenu.cpp:31 UI/TreeMenu/AccountContextMenu.cpp:53
+#: UI/TreeMenu/AccountsContextMenu.cpp:13
 msgid "New Transaction..."
 msgstr "New Transaction..."
 
-#: UI/Controls/MainMenu.cpp:57 UI/Controls/MainMenu.cpp:64
+#: UI/MainMenu/MainMenu.cpp:57 UI/MainMenu/MainMenu.cpp:64
 msgid "New Transaction...\tCtrl+T"
 msgstr "New Transaction...\tCtrl+T"
 
-#: UI/Schedulers/SchedulersPanel.cpp:9
+#: UI/Schedulers/SchedulersListPanel.cpp:59
 msgid "Next Date"
 msgstr "Next Date"
 
-#: UI/Transactions/TransactionsListPanel.cpp:243
+#: UI/Transactions/TransactionsListPanel.cpp:178
 msgid "Note"
 msgstr "Note"
 
-#: UI/AccountDialog.cpp:75 UI/Transactions/TransactionDialog.cpp:79
+#: UI/Account/AccountDialog.cpp:129 UI/Transactions/TransactionDialog.cpp:79
 msgid "Note:"
 msgstr "Note:"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "November"
 msgstr "November"
 
-#: UI/AccountDialog.cpp:85 UI/Alerts/AlertDialog.cpp:77
-#: UI/Alerts/AlertsConfirmDialog.cpp:20 UI/Budgets/BudgetDialog.cpp:68
-#: UI/Goals/GoalDialog.cpp:65 UI/PreferencesDialog.cpp:54
-#: UI/Schedulers/SchedulerDialog.cpp:132
+#: UI/Account/AccountDialog.cpp:139 UI/Alerts/AlertDialog.cpp:102
+#: UI/Budgets/BudgetDialog.cpp:71 UI/Goals/GoalDialog.cpp:62
+#: UI/PreferencesDialog.cpp:65 UI/Schedulers/SchedulerDialog.cpp:36
 #: UI/Transactions/TransactionDialog.cpp:89
 msgid "OK"
 msgstr "OK"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "October"
 msgstr "October"
 
-#: UI/TreeMenu/AccountContextMenu.cpp:8 UI/TreeMenu/AccountsContextMenu.cpp:6
-#: UI/TreeMenu/DefaultContextMenu.cpp:6 UI/TreeMenu/ReportContextMenu.cpp:9
+#: UI/TreeMenu/AccountContextMenu.cpp:9 UI/TreeMenu/AccountsContextMenu.cpp:7
+#: UI/TreeMenu/DefaultContextMenu.cpp:7 UI/TreeMenu/ReportContextMenu.cpp:9
 msgid "Open in New Tab"
 msgstr "Open in New Tab"
 
-#: UI/Transactions/TransactionsListPanel.cpp:80
+#: UI/Transactions/TransactionsListPanel.cpp:51
 msgid "Outcome:"
 msgstr "Outcome:"
 
-#: UI/Dashboard/DashboardBalancePanel.cpp:67
+#: UI/Dashboard/DashboardBalancePanel.cpp:71
 msgid "Own funds"
 msgstr "Own funds"
 
-#: UI/Schedulers/SchedulersPanel.cpp:117
+#: UI/Schedulers/SchedulerContextMenu.cpp:18
 msgid "Pause"
 msgstr "Pause"
 
-#: UI/Schedulers/SchedulersListDataModel.cpp:52
+#: UI/Schedulers/SchedulersListDataModel.cpp:48
 msgid "Paused"
 msgstr "Paused"
 
-#: UI/Alerts/AlertsPanel.cpp:11 UI/Budgets/BudgetsPanel.cpp:10
+#: UI/Alerts/AlertsListPanel.cpp:60 UI/Budgets/BudgetsListPanel.cpp:53
 msgid "Period"
 msgstr "Period"
 
-#: UI/Alerts/AlertDialog.cpp:35 UI/Budgets/BudgetDialog.cpp:29
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:13
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:13
-#: UI/Transactions/TransactionsListPanel.cpp:19
+#: UI/Alerts/AlertDialog.cpp:50 UI/Budgets/BudgetDialog.cpp:29
+#: UI/Controls/PeriodFilterPanel.cpp:9
+#: UI/Reports/ReportBalanceByMonthPanel.cpp:22
 msgid "Period:"
 msgstr "Period:"
 
@@ -551,180 +588,200 @@ msgstr "Period:"
 msgid "Preferences"
 msgstr "Preferences"
 
-#: UI/Controls/MainMenu.cpp:21
+#: UI/MainMenu/MainMenu.cpp:21
 msgid "Preferences...\tCtrl+P"
 msgstr "Preferences...\tCtrl+P"
 
-#: UI/Transactions/TransactionsListPanel.cpp:26
+#: UI/Controls/PeriodFilterPanel.cpp:24
 msgid "Previous Month"
 msgstr "Previous Month"
 
-#: UI/Transactions/TransactionsListPanel.cpp:24
+#: UI/Controls/PeriodFilterPanel.cpp:22
 msgid "Previous Week"
 msgstr "Previous Week"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:21
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:21
-#: UI/Transactions/TransactionsListPanel.cpp:28
+#: UI/Controls/PeriodFilterPanel.cpp:17 UI/Controls/PeriodFilterPanel.cpp:26
 msgid "Previous Year"
 msgstr "Previous Year"
 
-#: UI/Budgets/BudgetsPanel.cpp:14 UI/Goals/GoalsPanel.cpp:15
+#: UI/Alerts/AlertsListPanel.cpp:77 UI/Budgets/BudgetsListPanel.cpp:67
+#: UI/Goals/GoalsListPanel.cpp:61
 msgid "Progress"
 msgstr "Progress"
 
-#: UI/Alerts/AlertDialog.cpp:97
-#: UI/PresentationModels/AlertPresentationModel.cpp:37
+#: Data/PresentationModels/AlertPresentationModel.cpp:43
+#: UI/Account/AccountViewModel.cpp:16 UI/Alerts/AlertDialog.cpp:123
 msgid "Receipt"
 msgstr "Receipt"
 
-#: UI/Controllers/TabsController.cpp:180
-#: UI/Dashboard/DashboardReceiptsPanel.cpp:57 UI/TreeMenu/TreeMenu.cpp:54
+#: UI/Dashboard/DashboardReceiptsPanel.cpp:57
+#: UI/Reports/ReportReceiptsAndExpensesByMonthPanel.cpp:97
+#: UI/Tabs/TabsPanel.cpp:261 UI/TreeMenu/TreeMenu.cpp:59
 msgid "Receipts"
 msgstr "Receipts"
 
-#: UI/Schedulers/SchedulerDialog.cpp:45
+#: UI/Schedulers/SchedulerPatternPanel.cpp:26
 msgid "Recurrence pattern"
 msgstr "Recurrence pattern"
 
-#: UI/Budgets/BudgetsPanel.cpp:19 UI/Dashboard/DashboardBudgetsPanel.cpp:94
+#: UI/Alerts/AlertsListPanel.cpp:72 UI/Budgets/BudgetsListPanel.cpp:62
+#: UI/Dashboard/DashboardBudgetsPanel.cpp:94
 #: UI/Dashboard/DashboardBudgetsPanel.cpp:95
 #: UI/Dashboard/DashboardDebtsPanel.cpp:117
 #: UI/Dashboard/DashboardDebtsPanel.cpp:118
-#: UI/Dashboard/DashboardGoalsPanel.cpp:70
-#: UI/Dashboard/DashboardGoalsPanel.cpp:102
-#: UI/Dashboard/DashboardGoalsPanel.cpp:103 UI/Goals/GoalsPanel.cpp:20
+#: UI/Dashboard/DashboardGoalsPanel.cpp:67
+#: UI/Dashboard/DashboardGoalsPanel.cpp:99
+#: UI/Dashboard/DashboardGoalsPanel.cpp:100 UI/Goals/GoalsListPanel.cpp:72
 msgid "Remain"
 msgstr "Remain"
 
-#: UI/TagsPanel.cpp:243
+#: UI/TagsPanel.cpp:234
 msgid "Rename"
 msgstr "Rename"
 
-#: UI/TreeMenu/TreeMenu.cpp:84
+#: UI/Schedulers/SchedulerPatternPanel.cpp:62
+#: UI/Schedulers/SchedulerPatternPanel.cpp:85
+#: UI/Schedulers/SchedulerPatternPanel.cpp:133
+#: UI/Schedulers/SchedulerPatternPanel.cpp:160
+msgid "Repeat every"
+msgstr "Repeat every"
+
+#: UI/TreeMenu/TreeMenu.cpp:89
 msgid "Reports"
 msgstr "Reports"
 
-#: UI/TrashPanel.cpp:147
+#: UI/TrashPanel.cpp:149
 msgid "Restore"
 msgstr "Restore"
 
-#: UI/TreeMenu/AccountContextMenu.cpp:14
+#: UI/TreeMenu/AccountContextMenu.cpp:15
 msgid "Restore from Archive"
 msgstr "Restore from Archive"
 
-#: UI/Schedulers/SchedulersPanel.cpp:121
+#: UI/Schedulers/SchedulerContextMenu.cpp:22
 msgid "Run"
 msgstr "Run"
 
-#: UI/Schedulers/SchedulerDialog.cpp:197
+#: UI/Schedulers/SchedulerPatternPanel.cpp:113
 msgid "Saturday"
 msgstr "Saturday"
 
-#: UI/Controllers/TabsController.cpp:152
-#: UI/Dashboard/DashboardSchedulersPanel.cpp:56 UI/TreeMenu/TreeMenu.cpp:99
+#: UI/Notifications/NotificationSchedulerPanel.cpp:55
+msgid "Scheduled transaction"
+msgstr "Scheduled transaction"
+
+#: UI/Controllers/DialogsController.cpp:198
+#: UI/Controllers/DialogsController.cpp:211
+msgid "Scheduler"
+msgstr "Scheduler"
+
+#: UI/Dashboard/DashboardSchedulersPanel.cpp:55 UI/Tabs/TabsPanel.cpp:233
+#: UI/TreeMenu/TreeMenu.cpp:104
 msgid "Schedulers"
 msgstr "Schedulers"
 
-#: UI/TagsPanel.cpp:12 UI/Transactions/TransactionsListPanel.cpp:53
+#: UI/TagsPanel.cpp:13 UI/Transactions/TransactionsListPanel.cpp:24
 msgid "Search:"
 msgstr "Search:"
 
-#: UI/Schedulers/SchedulerDialog.cpp:250
+#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
 msgid "September"
 msgstr "September"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:43
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:43
-msgid "Show average"
-msgstr ""
+#: UI/PreferencesDialog.cpp:55
+msgid "Show amount in base currency"
+msgstr "Show amount in base currency"
 
-#: UI/TagsPanel.cpp:241
+#: UI/Reports/ReportExpensesByMonthPanel.cpp:30
+#: UI/Reports/ReportReceiptsByMonthPanel.cpp:30
+msgid "Show average"
+msgstr "Show average"
+
+#: UI/PreferencesDialog.cpp:18
+msgid "Show credit funds in balance"
+msgstr "Show credit funds in balance"
+
+#: UI/TagsPanel.cpp:232
 msgid "Show transactions"
 msgstr "Show transactions"
 
-#: UI/Schedulers/SchedulersConfirmDialog.cpp:23
+#: UI/Notifications/NotificationSchedulerPanel.cpp:20
 msgid "Skip"
 msgstr "Skip"
 
-#: UI/Schedulers/SchedulersConfirmDialog.cpp:20
-msgid "Skip All"
-msgstr "Skip All"
-
-#: UI/Transactions/TransactionContextMenu.cpp:18
+#: UI/Transactions/TransactionContextMenu.cpp:24
 msgid "Split..."
 msgstr "Split..."
 
-#: UI/Schedulers/SchedulersPanel.cpp:11
+#: UI/Schedulers/SchedulersListPanel.cpp:65
 msgid "Status"
 msgstr "Status"
 
-#: UI/Schedulers/SchedulerDialog.cpp:200
+#: UI/Schedulers/SchedulerPatternPanel.cpp:116
 msgid "Sunday"
 msgstr "Sunday"
 
-#: UI/Controllers/TabsController.cpp:158
-#: UI/Transactions/TransactionsListPanel.cpp:238 UI/TreeMenu/TreeMenu.cpp:109
+#: UI/Tabs/TabsPanel.cpp:239 UI/Transactions/TransactionsListPanel.cpp:173
+#: UI/TreeMenu/TreeMenu.cpp:114
 msgid "Tags"
 msgstr "Tags"
 
-#: UI/Schedulers/SchedulerDialog.cpp:120
+#: UI/Schedulers/SchedulerTransactionPanel.cpp:48
 #: UI/Transactions/TransactionDialog.cpp:64
 msgid "Tags:"
 msgstr "Tags:"
 
-#: UI/Schedulers/SchedulerDialog.cpp:191
+#: UI/Schedulers/SchedulerPatternPanel.cpp:107
 msgid "Thursday"
 msgstr "Thursday"
 
-#: UI/Transactions/TransactionsListPanel.cpp:233 UI/TrashPanel.cpp:30
+#: UI/Transactions/TransactionsListPanel.cpp:166 UI/TrashPanel.cpp:32
 msgid "To Account"
 msgstr "To Account"
 
-#: UI/TrashPanel.cpp:47
+#: UI/TrashPanel.cpp:49
 msgid "To Amount"
 msgstr "To Amount"
 
-#: UI/Reports/ReportExpensesByMonthPanel.cpp:35
-#: UI/Reports/ReportReceiptsByMonthPanel.cpp:35
-#: UI/Schedulers/SchedulerDialog.cpp:103
+#: UI/Controls/PeriodFilterPanel.cpp:38
+#: UI/Schedulers/SchedulerTransactionPanel.cpp:32
 #: UI/Transactions/TransactionDialog.cpp:38
-#: UI/Transactions/TransactionsListPanel.cpp:39
 msgid "To:"
 msgstr "To:"
 
 #: UI/Controllers/DialogsController.cpp:33
 #: UI/Controllers/DialogsController.cpp:47
 #: UI/Controllers/DialogsController.cpp:61
-#: UI/Controllers/DialogsController.cpp:75 UI/Schedulers/SchedulerDialog.cpp:83
+#: UI/Controllers/DialogsController.cpp:75
+#: UI/Schedulers/SchedulerTransactionPanel.cpp:13
 msgid "Transaction"
 msgstr "Transaction"
 
-#: UI/Controllers/TabsController.cpp:79 UI/Controllers/TabsController.cpp:146
+#: UI/Tabs/TabsPanel.cpp:134 UI/Tabs/TabsPanel.cpp:227
 msgid "Transactions"
 msgstr "Transactions"
 
-#: UI/Transactions/TransactionsListPanel.cpp:68
+#: UI/Transactions/TransactionsListPanel.cpp:39
 msgid "Transactions:"
 msgstr "Transactions:"
 
-#: UI/Controllers/TabsController.cpp:164 UI/TreeMenu/TreeMenu.cpp:114
+#: UI/Tabs/TabsPanel.cpp:245 UI/TreeMenu/TreeMenu.cpp:119
 msgid "Trash"
 msgstr "Trash"
 
-#: UI/Schedulers/SchedulerDialog.cpp:185
+#: UI/Schedulers/SchedulerPatternPanel.cpp:101
 msgid "Tuesday"
 msgstr "Tuesday"
 
-#: UI/Alerts/AlertsPanel.cpp:10 UI/Schedulers/SchedulersPanel.cpp:7
+#: UI/Alerts/AlertsListPanel.cpp:57 UI/Schedulers/SchedulersListPanel.cpp:53
 msgid "Type"
 msgstr "Type"
 
-#: UI/AccountDialog.cpp:25 UI/Alerts/AlertDialog.cpp:29
+#: UI/Account/AccountDialog.cpp:35 UI/Alerts/AlertDialog.cpp:40
 msgid "Type:"
 msgstr "Type:"
 
-#: UI/Controls/Statusbar.cpp:84
+#: UI/Statusbar/Statusbar.cpp:86
 msgid "Updating..."
 msgstr "Updating..."
 
@@ -733,48 +790,113 @@ msgstr "Updating..."
 msgid "Version %s"
 msgstr "Version %s"
 
-#: UI/TreeMenu/TreeMenu.cpp:64
+#: UI/Account/AccountViewModel.cpp:20 UI/TreeMenu/TreeMenu.cpp:69
 msgid "Virtual"
 msgstr "Virtual"
 
-#: UI/Controllers/TabsController.cpp:189
+#: UI/Tabs/TabsPanel.cpp:270
 msgid "Virtuals"
 msgstr "Virtuals"
 
-#: UI/Schedulers/SchedulerDialog.cpp:188
+#: UI/Schedulers/SchedulerPatternPanel.cpp:104
 msgid "Wednesday"
 msgstr "Wednesday"
 
-#: UI/Alerts/AlertDialog.cpp:103 UI/Budgets/BudgetDialog.cpp:88
-#: UI/PresentationModels/AlertPresentationModel.cpp:49
+#: Data/PresentationModels/AlertPresentationModel.cpp:55
+#: UI/Alerts/AlertDialog.cpp:127 UI/Budgets/BudgetDialog.cpp:92
 msgid "Week"
 msgstr "Week"
 
-#: UI/Schedulers/SchedulerDialog.cpp:54
+#: Data/PresentationModels/SchedulerPresentationModel.cpp:53
+#: UI/Schedulers/SchedulerPatternPanel.cpp:32
 msgid "Weekly"
 msgstr "Weekly"
 
-#: UI/Alerts/AlertDialog.cpp:105 UI/Budgets/BudgetDialog.cpp:90
-#: UI/PresentationModels/AlertPresentationModel.cpp:55
+#: Data/PresentationModels/AlertPresentationModel.cpp:61
+#: UI/Alerts/AlertDialog.cpp:129 UI/Budgets/BudgetDialog.cpp:94
 msgid "Year"
 msgstr "Year"
 
-#: UI/Schedulers/SchedulerDialog.cpp:60
+#: Data/PresentationModels/SchedulerPresentationModel.cpp:59
+#: UI/Schedulers/SchedulerPatternPanel.cpp:38
 msgid "Yearly"
 msgstr "Yearly"
 
-#: UI/Schedulers/SchedulerDialog.cpp:152
+#: UI/Account/AccountDialog.cpp:160
+msgid "daily"
+msgstr "daily"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:68
+#: UI/Schedulers/SchedulerPatternPanel.cpp:145
+#: UI/Schedulers/SchedulerPatternPanel.cpp:271
+#: UI/Schedulers/SchedulerPatternPanel.cpp:275
+msgid "day"
+msgstr "day"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:271
+#: UI/Schedulers/SchedulerPatternPanel.cpp:275
 msgid "days"
 msgstr "days"
 
-#: UI/Schedulers/SchedulerDialog.cpp:223
-msgid "every"
-msgstr "every"
+#: UI/Schedulers/SchedulerPatternPanel.cpp:139
+#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+msgid "month on"
+msgstr "month on"
 
-#: UI/Schedulers/SchedulerDialog.cpp:229
-msgid "month(s)"
-msgstr "month(s)"
+#: UI/Account/AccountDialog.cpp:161
+msgid "monthly"
+msgstr "monthly"
 
-#: UI/Schedulers/SchedulerDialog.cpp:175
+#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+msgid "months on"
+msgstr "months on"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:291
+msgid "nd"
+msgstr "nd"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:294
+msgid "rd"
+msgstr "rd"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:166
+#: UI/Schedulers/SchedulerPatternPanel.cpp:289
+msgid "st"
+msgstr "st"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:281
+#: UI/Schedulers/SchedulerPatternPanel.cpp:296
+msgid "th"
+msgstr "th"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:91
 msgid "weeks on:"
 msgstr "weeks on:"
+
+#: UI/Account/AccountDialog.cpp:162
+msgid "yearly"
+msgstr "yearly"
+
+#~ msgid "dayly"
+#~ msgstr "daily"
+
+#~ msgid "Alerts:"
+#~ msgstr "Alerts:"
+
+#~ msgid "Apply All"
+#~ msgstr "Apply All"
+
+#~ msgid "Confirm scheduler transactions:"
+#~ msgstr "Confirm scheduler transactions:"
+
+#~ msgid "Day"
+#~ msgstr "Day"
+
+#~ msgid "Every"
+#~ msgstr "Every"
+
+#~ msgid "Skip All"
+#~ msgstr "Skip All"
+
+#~ msgid "every"
+#~ msgstr "every"

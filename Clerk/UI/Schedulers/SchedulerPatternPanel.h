@@ -26,12 +26,16 @@ private:
 	wxPanel* _weeklyPatternPanel;
 	wxPanel* _monthlyPatternPanel;
 	wxPanel* _yearlyPatternPanel;
+	wxStaticText* _dailyDayLabel;
 	wxTextCtrl* _dailyDayField;
 	wxTextCtrl* _weeklyWeekField;
 	wxTextCtrl* _monthlyDayField;
 	wxTextCtrl* _monthlyMonthField;
+	wxStaticText* _monthlyDayLabel;
+	wxStaticText* _monthlyMonthLabel;
 	wxComboBox* _yearlyMonthChoice;
 	wxTextCtrl* _yearlyDayField;
+	wxStaticText* _yearlyDayLabel;
 	wxRadioButton* _mondayCheckBox;
 	wxRadioButton* _tuesdayCheckBox;
 	wxRadioButton* _wednesdayCheckBox;
@@ -43,6 +47,7 @@ private:
 	void Update();
 	void SelectWeekday(int day);
 	void UpdatePatternType(SchedulerType type);
+	void UpdateTypo();
 	void OnPatternSelect(wxCommandEvent& event);
 	void OnDailyDayKillFocus(wxFocusEvent& event);
 	void OnWeeklyWeekKillFocus(wxFocusEvent& event);

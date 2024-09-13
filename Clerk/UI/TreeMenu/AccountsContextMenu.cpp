@@ -44,7 +44,7 @@ AccountType AccountsContextMenu::GetAccountTypeByMenuType(TreeMenuItemType type)
 			accountType = AccountType::Receipt;
 			break;
 		case TreeMenuItemType::Expenses:
-			accountType = AccountType::Expens;
+			accountType = AccountType::Expense;
 			break;
 		case TreeMenuItemType::Debts:
 			accountType = AccountType::Debt;

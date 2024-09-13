@@ -56,7 +56,7 @@ float AccountsRepository::GetBalance(int accountId, AccountType type)
 
 	float total;
 
-	if (type == AccountType::Receipt || type == AccountType::Expens) {
+	if (type == AccountType::Receipt || type == AccountType::Expense) {
 		total = expense - receipt;
 	}
 	else {
@@ -99,7 +99,7 @@ float AccountsRepository::GetBalanceForDate(int accountId, AccountType type, std
 
 	float total;
 
-	if (type == AccountType::Receipt || type == AccountType::Expens) {
+	if (type == AccountType::Receipt || type == AccountType::Expense) {
 		total = expense - receipt;
 	}
 	else {
@@ -197,7 +197,7 @@ float AccountsRepository::GetInitialAmount(int accountId, AccountType type) {
 	if (type == AccountType::Deposit || type == AccountType::Virtual) {
 		sql = "SELECT TOTAL(to_account_amount) FROM transactions WHERE from_account_id = -1 AND to_account_id = ? AND deleted = 0";
 	}
-	else if (type == AccountType::Expens || type == AccountType::Debt) {
+	else if (type == AccountType::Expense || type == AccountType::Debt) {
 		sql = "SELECT TOTAL(from_account_amount) FROM transactions WHERE to_account_id = -1 AND from_account_id = ? AND deleted = 0";
 	}
 
@@ -221,7 +221,7 @@ int AccountsRepository::GetPairAccountId(int accountId, AccountType type, std::s
 	if (type == AccountType::Deposit || type == AccountType::Receipt || type == AccountType::Virtual) {
 		sql = "SELECT t.to_account_id, COUNT(*) FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
-	else if (type == AccountType::Expens || type == AccountType::Debt) {
+	else if (type == AccountType::Expense || type == AccountType::Debt) {
 		sql = "SELECT t.from_account_id, COUNT(*) FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 AND t.paid_at >= ? GROUP BY t.to_account_id ORDER BY COUNT(*) DESC LIMIT 1";
 	}
 
@@ -242,7 +242,7 @@ int AccountsRepository::GetPairAccountId(int accountId, AccountType type, std::s
 		if (type == AccountType::Deposit || type == AccountType::Receipt || type == AccountType::Virtual) {
 			sql = "SELECT t.to_account_id FROM transactions t WHERE t.from_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
-		else if (type == AccountType::Expens || type == AccountType::Debt) {
+		else if (type == AccountType::Expense || type == AccountType::Debt) {
 			sql = "SELECT t.from_account_id FROM transactions t WHERE t.to_account_id = ? AND t.deleted = 0 ORDER BY t.paid_at DESC LIMIT 1";
 		}
 

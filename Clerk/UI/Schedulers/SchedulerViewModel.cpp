@@ -105,7 +105,7 @@ void SchedulerViewModel::UpdateFromAccounts() {
 void SchedulerViewModel::UpdateToAccounts() {
 	auto deposits = _accountsService.GetByType(AccountType::Deposit);
 	auto virtuals = _accountsService.GetByType(AccountType::Virtual);
-	auto expenses = _accountsService.GetByType(AccountType::Expens);
+	auto expenses = _accountsService.GetByType(AccountType::Expense);
 	auto debts = _accountsService.GetByType(AccountType::Debt);
 
 	std::sort(deposits.begin(), deposits.end(), [](auto a, auto b) {

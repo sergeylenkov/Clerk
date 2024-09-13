@@ -15,7 +15,7 @@ AccountViewModel::AccountViewModel(AccountsService& accountsService, CurrenciesS
 
 	_types.push_back(_("Receipt"));
 	_types.push_back(_("Deposit"));
-	_types.push_back(_("Expens"));
+	_types.push_back(_("Expense"));
 	_types.push_back(_("Debt"));
 	_types.push_back(_("Virtual"));
 }

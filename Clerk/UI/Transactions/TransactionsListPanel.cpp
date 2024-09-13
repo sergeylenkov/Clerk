@@ -224,7 +224,7 @@ void TransactionsListPanel::UpdateInfo() {
 				income = income + transaction->toAmount;
 			}
 
-			if (transaction->toAccount->type == AccountType::Expens || transaction->toAccount->type == AccountType::Debt) {
+			if (transaction->toAccount->type == AccountType::Expense || transaction->toAccount->type == AccountType::Debt) {
 				outcome = outcome + transaction->fromAmount;
 			}
 		}
@@ -337,7 +337,7 @@ TransactionsListType TransactionsListPanel::GetListType() {
 		case AccountType::Deposit:
 			type = TransactionsListType::Deposits;
 			break;
-		case AccountType::Expens:
+		case AccountType::Expense:
 			type = TransactionsListType::Expenses;
 			break;
 		case AccountType::Debt:
@@ -359,7 +359,7 @@ TransactionsListType TransactionsListPanel::GetListType() {
 		case AccountType::Deposit:
 			type = TransactionsListType::Deposits;
 			break;
-		case AccountType::Expens:
+		case AccountType::Expense:
 			type = TransactionsListType::Expenses;
 			break;
 		case AccountType::Debt:

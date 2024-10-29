@@ -43,19 +43,13 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 	wxStaticLine* staticLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_VERTICAL);
 	mainSizer->Add(staticLine, 0, wxEXPAND | wxLEFT | wxRIGHT, indent);
 
-	wxPanel* patternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-	mainSizer->Add(patternPanel, 1, wxEXPAND);
-
+	
 	wxBoxSizer* patternSizer = new wxBoxSizer(wxVERTICAL);
-
-	patternPanel->SetSizer(patternSizer);
-	patternPanel->Layout();
-
-	patternSizer->Fit(patternPanel);
+	mainSizer->Add(patternSizer, 1, wxEXPAND);
 
 	// Daily
 
-	_dailyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	_dailyPatternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 	wxBoxSizer* horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
@@ -77,7 +71,7 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	// Weekly
 
-	_weeklyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	_weeklyPatternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 	wxBoxSizer* verticalSizer = new wxBoxSizer(wxVERTICAL);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -127,13 +121,13 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	// Monthly
 
-	_monthlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	_monthlyPatternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("Repeat every"));
 	horizontalSizer->Add(label, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
-	_monthlyMonthField = new wxTextCtrl(_monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT, monthValidator);
+	_monthlyMonthField = new wxTextCtrl(_monthlyPatternPanel, wxID_ANY, "1", wxDefaultPosition, inputSize, wxTE_RIGHT);
 	horizontalSizer->Add(_monthlyMonthField, 0, wxALIGN_CENTER_VERTICAL | wxRIGHT, indent);
 
 	_monthlyMonthLabel = new wxStaticText(_monthlyPatternPanel, wxID_ANY, _("month on"));
@@ -154,7 +148,7 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	// Yearly
 
-	_yearlyPatternPanel = new wxPanel(patternPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+	_yearlyPatternPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
 	label = new wxStaticText(_yearlyPatternPanel, wxID_ANY, _("Repeat every"));
@@ -180,8 +174,6 @@ SchedulerPatternPanel::SchedulerPatternPanel(wxWindow* parent, const wxPoint& po
 
 	SetSizer(mainSizer);
 	Layout();
-
-	SetDoubleBuffered(true);
 
 	_dailyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
 	_weeklyButton->Bind(wxEVT_RADIOBUTTON, &SchedulerPatternPanel::OnPatternSelect, this);
@@ -364,40 +356,45 @@ void SchedulerPatternPanel::OnPatternSelect(wxCommandEvent& event) {
 }
 
 void SchedulerPatternPanel::OnDailyDayKillFocus(wxFocusEvent& event) {
-	int day = 1;
+	event.Skip();
 
+	int day = 1;
 	_monthlyDayField->GetValue().ToInt(&day);
 
 	_viewModel->SetDay(day);
 }
 
 void SchedulerPatternPanel::OnWeeklyWeekKillFocus(wxFocusEvent& event) {
-	int week = 1;
+	event.Skip();
 
+	int week = 1;
 	_monthlyDayField->GetValue().ToInt(&week);
 
 	_viewModel->SetWeek(week);
 }
 
 void SchedulerPatternPanel::OnMonthlyDayKillFocus(wxFocusEvent& event) {
-	int day = 1;
+	event.Skip();
 
+	int day = 1;
 	_monthlyDayField->GetValue().ToInt(&day);
 
 	_viewModel->SetDay(day);
 }
 
 void SchedulerPatternPanel::OnMonthlyMonthKillFocus(wxFocusEvent& event) {
-	int month = 1;
+	event.Skip();
 
+	int month = 1;
 	_monthlyMonthField->GetValue().ToInt(&month);
 
 	_viewModel->SetMonth(month);
 }
 
 void SchedulerPatternPanel::OnYearlyDayKillFocus(wxFocusEvent& event) {
-	int day = 1;
+	event.Skip();
 
+	int day = 1;
 	_monthlyDayField->GetValue().ToInt(&day);
 
 	_viewModel->SetDay(day);

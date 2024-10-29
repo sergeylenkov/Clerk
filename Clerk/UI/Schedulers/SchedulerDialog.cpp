@@ -53,6 +53,7 @@ SchedulerDialog::SchedulerDialog(wxFrame *parent, const wxChar *title, int x, in
 	Layout();
 
 	Centre(wxBOTH);
+	SetDoubleBuffered(true);
 
 	_nameField->Bind(wxEVT_KILL_FOCUS, &SchedulerDialog::OnNameKillFocus, this);
 

@@ -6,40 +6,7 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 {
 	SetIcon(wxICON(APP_ICON));
 	
-	if (!Settings::GetInstance().GetWindowIsMaximized())
-	{
-		wxPoint position = Settings::GetInstance().GetWindowPosition();
-
-		if (position.x == -1 && position.y == -1) {
-			Centre(wxBOTH);
-		}
-		else {
-			SetPosition(position);
-		}
-
-		wxSize size = Settings::GetInstance().GetWindowSize();
-
-		if (size.GetWidth() == -1 && size.GetHeight() == -1) {
-			size = CalculateInitialSize();
-		}
-
-		SetSize(size);		
-	}
-	else {
-		Maximize();
-	}
-
-	int activeDisplay = Settings::GetInstance().GetActiveDisplay();
-
-	if (activeDisplay > 0 && activeDisplay < wxDisplay::GetCount()) {
-		Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
-	}
-	else if (activeDisplay > 0 && activeDisplay > wxDisplay::GetCount() - 1 && !Settings::GetInstance().GetWindowIsMaximized()) {		
-		wxDisplay currentDisplay = wxDisplay(wxDisplay::GetFromWindow(this));
-
-		Move(currentDisplay.GetClientArea().GetPosition());
-		SetSize(CalculateInitialSize());
-	}
+	RestorePosition();
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
 
@@ -228,6 +195,39 @@ void MainWindow::SetupCommands() {
 
 void MainWindow::UpdateStatus() {
 	_statusViewModel->SetIsExchangeRatesLoading(false);
+}
+
+void MainWindow::RestorePosition() {
+	int activeDisplay = Settings::GetInstance().GetActiveDisplay();
+	bool isDisplayCountIsChanged = activeDisplay > 0 && activeDisplay > wxDisplay::GetCount() - 1;
+
+	if (!Settings::GetInstance().GetWindowIsMaximized())
+	{
+		wxPoint position = Settings::GetInstance().GetWindowPosition();
+
+		if (position.x == -1 && position.y == -1) {
+			Centre(wxBOTH);
+		}
+		else {
+			Move(position);
+		}
+
+		wxSize size = Settings::GetInstance().GetWindowSize();
+
+		if ((size.GetWidth() == -1 && size.GetHeight() == -1) || isDisplayCountIsChanged) {
+			size = CalculateInitialSize();
+		}
+
+		SetSize(size);
+	}
+	else {
+		if (isDisplayCountIsChanged) {
+			wxDisplay currentDisplay = wxDisplay(wxDisplay::GetFromWindow(this));
+			Move(currentDisplay.GetClientArea().GetPosition());
+		}
+
+		Maximize();
+	}
 }
 
 wxSize MainWindow::CalculateInitialSize() {

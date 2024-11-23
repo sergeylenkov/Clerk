@@ -50,4 +50,5 @@ private:
 
 	void SetupCommands();
 	void UpdateStatus();
+	wxSize CalculateInitialSize();
 };

@@ -34,10 +34,10 @@ namespace Clerk {
 
 			int GetSelectedAccountId();
 			void SetSelectedAccountId(int id);
-			int GetWindowWidth();
-			void SetWindowWidth(int width);
-			int GetWindowHeight();
-			void SetWindowHeight(int height);
+			void SetWindowSize(wxSize size);
+			wxSize GetWindowSize();
+			void SetWindowPosition(wxPoint point);
+			wxPoint GetWindowPosition();
 			bool GetWindowIsMaximized();
 			void SetWindowIsMaximized(bool maximized);
 			int GetActiveDisplay();
@@ -85,6 +85,8 @@ namespace Clerk {
 		private:
 			wxString _fileName;
 			int _selectedAccountId;
+			int _windowX = -1;
+			int _windowY = -1;
 			int _windowWidth;
 			int _windowHeight;
 			bool _windowIsMaximized;

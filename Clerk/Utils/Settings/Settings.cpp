@@ -8,8 +8,10 @@ void Settings::Open(char *configName) {
 
 	_selectedAccountId = -1;
 	_selectedTab = 0;
-	_windowWidth = 1000;
-	_windowHeight = 800;
+	_windowX = -1;
+	_windowY = -1;
+	_windowWidth = -1;
+	_windowHeight = -1;
 	_windowIsMaximized = false;
 	_activeDisplay = 0;
 	_treeMenuWidth = 300;
@@ -49,6 +51,14 @@ void Settings::Open(char *configName) {
 
 		if (json.HasMember("SelectedTab") && json["SelectedTab"].IsInt()) {
 			_selectedTab = json["SelectedTab"].GetInt();
+		}
+
+		if (json.HasMember("WindowX") && json["WindowX"].IsInt()) {
+			_windowX = json["WindowX"].GetInt();
+		}
+
+		if (json.HasMember("WindowY") && json["WindowY"].IsInt()) {
+			_windowY = json["WindowY"].GetInt();
 		}
 
 		if (json.HasMember("WindowWidth") && json["WindowWidth"].IsInt()) {
@@ -199,6 +209,8 @@ void Settings::Save() {
 
 	json.SetObject();
 
+	json.AddMember("WindowX", _windowX, json.GetAllocator());
+	json.AddMember("WindowY", _windowY, json.GetAllocator());
 	json.AddMember("WindowWidth", _windowWidth, json.GetAllocator());
 	json.AddMember("WindowHeight", _windowHeight, json.GetAllocator());
 	json.AddMember("WindowIsMaximized", _windowIsMaximized, json.GetAllocator());	
@@ -464,20 +476,22 @@ void Settings::SetSelectedAccountId(int id) {
 	_selectedAccountId = id;
 }
 
-int Settings::GetWindowWidth() {
-	return _windowWidth;
+void Settings::SetWindowSize(wxSize size) {
+	_windowWidth = size.GetWidth();
+	_windowHeight = size.GetHeight();
 }
 
-int Settings::GetWindowHeight() {
-	return _windowHeight;
+wxSize Settings::GetWindowSize() {
+	return wxSize(_windowWidth, _windowHeight);
 }
 
-void Settings::SetWindowWidth(int width) {
-	_windowWidth = width;
+void Settings::SetWindowPosition(wxPoint point) {
+	_windowX = point.x;
+	_windowY = point.y;
 }
 
-void Settings::SetWindowHeight(int height) {
-	_windowHeight = height;
+wxPoint Settings::GetWindowPosition() {
+	return wxPoint(_windowX, _windowY);
 }
 
 bool Settings::GetWindowIsMaximized() {

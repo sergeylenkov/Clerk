@@ -8,7 +8,22 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	
 	if (!Settings::GetInstance().GetWindowIsMaximized())
 	{
-		SetSize(wxSize(Settings::GetInstance().GetWindowWidth(), Settings::GetInstance().GetWindowHeight()));		
+		wxPoint position = Settings::GetInstance().GetWindowPosition();
+
+		if (position.x == -1 && position.y == -1) {
+			Centre(wxBOTH);
+		}
+		else {
+			SetPosition(position);
+		}
+
+		wxSize size = Settings::GetInstance().GetWindowSize();
+
+		if (size.GetWidth() == -1 && size.GetHeight() == -1) {
+			size = CalculateInitialSize();
+		}
+
+		SetSize(size);		
 	}
 	else {
 		Maximize();
@@ -16,8 +31,14 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 
 	int activeDisplay = Settings::GetInstance().GetActiveDisplay();
 
-	if (activeDisplay != 0 && activeDisplay < wxDisplay::GetCount()) {
+	if (activeDisplay > 0 && activeDisplay < wxDisplay::GetCount()) {
 		Move(wxDisplay(activeDisplay).GetClientArea().GetPosition());
+	}
+	else if (activeDisplay > 0 && activeDisplay > wxDisplay::GetCount() - 1 && !Settings::GetInstance().GetWindowIsMaximized()) {		
+		wxDisplay currentDisplay = wxDisplay(wxDisplay::GetFromWindow(this));
+
+		Move(currentDisplay.GetClientArea().GetPosition());
+		SetSize(CalculateInitialSize());
 	}
 
 	TreeMenuViewModel* treeViewModel = new TreeMenuViewModel(_context.GetAccountsService(), _context.GetReportsService(), _context.GetTransactionsService());
@@ -95,8 +116,6 @@ MainWindow::MainWindow(DataContext& context, Icons& icons): wxFrame((wxFrame *)N
 	SetSizer(mainSizer);
 	Layout();
 
-	Centre(wxBOTH);	
-
 	SetupCommands();
 
 	_dialogsController->SetMainWindow(this);
@@ -123,8 +142,9 @@ MainWindow::~MainWindow()
 	delete _commandsInvoker;
 	delete _dialogsController;
 
-	Settings::GetInstance().SetWindowWidth(GetSize().GetWidth());
-	Settings::GetInstance().SetWindowHeight(GetSize().GetHeight());
+	
+	Settings::GetInstance().SetWindowPosition(GetPosition());
+	Settings::GetInstance().SetWindowSize(GetSize());
 	Settings::GetInstance().SetWindowIsMaximized(IsMaximized());
 	Settings::GetInstance().SetActiveDisplay(wxDisplay::GetFromWindow(this));
 	Settings::GetInstance().SetTreeMenuWidth(_splitter->GetSashPosition());
@@ -208,4 +228,19 @@ void MainWindow::SetupCommands() {
 
 void MainWindow::UpdateStatus() {
 	_statusViewModel->SetIsExchangeRatesLoading(false);
+}
+
+wxSize MainWindow::CalculateInitialSize() {
+	wxDisplay currentDisplay = wxDisplay(wxDisplay::GetFromWindow(this));
+	wxSize size = currentDisplay.GetClientArea().GetSize();
+
+	if (size.GetWidth() > 1000) {
+		size.SetWidth(1000);
+	}
+	
+	if (size.GetHeight() > 800) {
+		size.SetHeight(800);
+	}
+
+	return size;
 }

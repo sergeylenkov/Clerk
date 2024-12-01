@@ -350,28 +350,6 @@ TransactionsListType TransactionsListPanel::GetListType() {
 			break;
 		}
 	}
-	else if (_accountType.has_value()) {
-		switch (_accountType.value())
-		{
-		case AccountType::Receipt:
-			type = TransactionsListType::Receipts;
-			break;
-		case AccountType::Deposit:
-			type = TransactionsListType::Deposits;
-			break;
-		case AccountType::Expense:
-			type = TransactionsListType::Expenses;
-			break;
-		case AccountType::Debt:
-			type = TransactionsListType::Expenses;
-			break;
-		case AccountType::Virtual:
-			type = TransactionsListType::Deposits;
-			break;
-		default:
-			break;
-		}
-	}
 
 	return type;
 }

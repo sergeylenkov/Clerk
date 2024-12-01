@@ -11,13 +11,18 @@ namespace Clerk {
 		enum class TabType {
 			Dashboard = 0,
 			Transactions = 1,
-			Reports = 3,
-			Budgets = 4,
-			Schedulers = 5,
-			Goals = 6,
-			Tags = 7,
-			Alerts = 8,
-			Trash = 9
+			Deposits = 2,
+			Receipts = 3,
+			Expenses = 4,
+			Debts = 5,
+			Virtual = 6,
+			Reports = 7,
+			Budgets = 8,
+			Schedulers = 9,
+			Goals = 10,
+			Tags = 11,
+			Alerts = 12,
+			Trash = 13
 		};
 	}
 }

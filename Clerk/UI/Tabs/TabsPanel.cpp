@@ -73,9 +73,35 @@ void TabsPanel::RestoreLastTabs() {
 	for (auto& tab : Settings::GetInstance().GetTabs()) {
 		TabType type = static_cast<TabType>(tab.type);
 
-		if (type == TabType::Transactions && tab.id != -1) {
-			OpenAccountTab(tab.id);
-		}
+		if (type == TabType::Transactions || type == TabType::Deposits || type == TabType::Receipts
+			|| type == TabType::Expenses || type == TabType::Debts || type == TabType::Virtual) {
+			if (tab.id != -1) {
+				OpenAccountTab(tab.id);
+			}
+			else {
+				switch (type)
+				{
+				case TabType::Deposits:
+					OpenAccountsTab(AccountType::Deposit);
+					break;
+				case TabType::Receipts:
+					OpenAccountsTab(AccountType::Receipt);
+					break;
+				case TabType::Expenses:
+					OpenAccountsTab(AccountType::Expense);
+					break;
+				case TabType::Debts:
+					OpenAccountsTab(AccountType::Debt);
+					break;
+				case TabType::Virtual:
+					OpenAccountsTab(AccountType::Virtual);
+					break;
+				default:
+					OpenAccountsTab(nullopt);
+					break;
+				}
+			}
+		}		
 		else if (type == TabType::Reports && tab.id != -1) {
 			OpenReportTab(tab.id);
 		}
@@ -121,17 +147,19 @@ void TabsPanel::OpenAccountsTab(std::optional<AccountType> type) {
 
 	if (tabPanel) {
 		tabPanel->id = -1;
-		tabPanel->type = TabType::Transactions;
+		tabPanel->type = GetTabTypeByAccountType(type.value());
+
+		wxString title = GetTabTitle(tabPanel->type);
 
 		if (type.has_value()) {
 			tabPanel->SetAccountType(type.value());
 			tabPanel->Update();
 
-			AddPanel(tabPanel, GetTabTitleByAccountType(type.value()), GetIconIndex(TabType::Transactions));
+			AddPanel(tabPanel, title, GetIconIndex(tabPanel->type));
 		}
 		else {
 			tabPanel->Update();
-			AddPanel(tabPanel, _("Transactions"), GetIconIndex(TabType::Transactions));
+			AddPanel(tabPanel, title, GetIconIndex(tabPanel->type));
 		}
 
 		SelectLastTab();
@@ -191,7 +219,7 @@ DataPanel* TabsPanel::CreatePanel(TabType type) {
 		break;
 	case TabType::Transactions:
 		return new TransactionsListPanel(this, _context, _icons);
-		break;
+		break;	
 	case TabType::Budgets:
 		return new BudgetsListPanel(this, _context, _icons);
 		break;
@@ -226,6 +254,21 @@ wxString TabsPanel::GetTabTitle(TabType type) {
 	case TabType::Transactions:
 		return _("Transactions");
 		break;
+	case TabType::Deposits:
+		return _("Deposits");
+		break;
+	case TabType::Receipts:
+		return _("Receipts");
+		break;
+	case TabType::Expenses:
+		return _("Expenses");
+		break;
+	case TabType::Debts:
+		return _("Debts");
+		break;
+	case TabType::Virtual:
+		return _("Virtual");
+		break;
 	case TabType::Budgets:
 		return _("Budgets");
 		break;
@@ -251,31 +294,6 @@ wxString TabsPanel::GetTabTitle(TabType type) {
 	return "";
 }
 
-wxString TabsPanel::GetTabTitleByAccountType(AccountType type) {
-	switch (type)
-	{
-	case AccountType::Deposit:
-		return _("Deposits");
-		break;
-	case AccountType::Receipt:
-		return _("Receipts");
-		break;
-	case AccountType::Expense:
-		return _("Expenses");
-		break;
-	case AccountType::Debt:
-		return _("Debts");
-		break;
-	case AccountType::Virtual:
-		return _("Virtuals");
-		break;
-	default:
-		break;
-	}
-
-	return "";
-}
-
 int TabsPanel::GetIconIndex(TabType type) {
 	switch (type)
 	{
@@ -284,6 +302,18 @@ int TabsPanel::GetIconIndex(TabType type) {
 		break;
 	case TabType::Transactions:
 		return 1;
+		break;
+	case TabType::Deposits:
+		return 2;
+		break;
+	case TabType::Receipts:
+		return 2;
+		break;
+	case TabType::Expenses:
+		return 2;
+		break;
+	case TabType::Debts:
+		return 2;
 		break;
 	case TabType::Reports:
 		return 5;
@@ -331,4 +361,29 @@ DataPanel* TabsPanel::GetReportPanelById(int id) {
 	}
 
 	return nullptr;
+}
+
+TabType TabsPanel::GetTabTypeByAccountType(AccountType type) {
+	switch (type)
+	{
+	case AccountType::Deposit:
+		return TabType::Deposits;
+		break;
+	case AccountType::Receipt:
+		return TabType::Receipts;
+		break;
+	case AccountType::Expense:
+		return TabType::Expenses;
+		break;
+	case AccountType::Debt:
+		return TabType::Debts;
+		break;
+	case AccountType::Virtual:
+		return TabType::Virtual;
+		break;
+	default:
+		break;
+	}
+
+	return TabType::Transactions;
 }

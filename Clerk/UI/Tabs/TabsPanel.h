@@ -50,10 +50,10 @@ private:
 
 	DataPanel* CreatePanel(TabType type);
 	wxString GetTabTitle(TabType type);
-	wxString GetTabTitleByAccountType(AccountType type);
-	int GetIconIndex(TabType type);
+	int GetIconIndex(TabType type);	
 	DataPanel* GetReportPanelById(int id);
 	void OnTabClick(wxMouseEvent &event);
 	void RemoveTab(int index);
+	TabType GetTabTypeByAccountType(AccountType type);
 };
 

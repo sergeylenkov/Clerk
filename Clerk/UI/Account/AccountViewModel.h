@@ -2,6 +2,7 @@
 
 #include "../../Data/Services/AccountsService.h"
 #include "../../Data/Services/CurrenciesService.h"
+#include "../../Data/Services/TransactionsService.h"
 #include "../../Utils/Types.h"
 #include "Enums.h"
 
@@ -11,7 +12,7 @@ namespace Clerk {
 	namespace UI {
 		class AccountViewModel {
 		public:
-			AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService);
+			AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService, TransactionsService& transactionsService);
 
 			void SetAccountId(int id);
 			void SetAccountType(AccountType type);
@@ -22,8 +23,8 @@ namespace Clerk {
 			wxString GetName();
 			void SetType(AccountType type);
 			AccountType GetType();
-			void SetAmount(float amount);
-			float GetAmount();	
+			void SetInitialAmount(float amount);
+			float GetInitialAmount();	
 			void SetCreditLimit(float amount);
 			float GetCreditLimit();
 			void SetCurrency(std::shared_ptr<CurrencyPresentationModel> currency);
@@ -40,13 +41,14 @@ namespace Clerk {
 		private:
 			AccountsService& _accountsService;
 			CurrenciesService& _currenciesService;
+			TransactionsService& _transactionsService;
 			int _id;
 			wxString _name;
 			AccountType _type;
 			int _iconId;
 			shared_vector<CurrencyPresentationModel> _currencies;
 			std::shared_ptr<CurrencyPresentationModel> _currency;
-			float _amount;
+			float _initialAmount;
 			float _creditLimit;
 			wxString _note;
 			std::vector<wxString> _types;

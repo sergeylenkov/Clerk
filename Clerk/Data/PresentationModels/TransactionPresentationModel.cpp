@@ -39,8 +39,17 @@ TransactionModel& TransactionPresentationModel::GetModel() {
 	TransactionModel* model = new TransactionModel();
 
 	model->id = id;
-	model->fromAccountId = fromAccount->id;
-	model->toAccountId = toAccount->id;
+	model->fromAccountId = -1;
+	model->toAccountId = -1;
+
+	if (fromAccount) {
+		model->fromAccountId = fromAccount->id;
+	}
+
+	if (toAccount) {
+		model->toAccountId = toAccount->id;
+	}
+
 	model->fromAmount = fromAmount;
 	model->toAmount = toAmount;
 	model->note = note;

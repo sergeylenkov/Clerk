@@ -88,7 +88,7 @@ void DialogsController::ShowNewAccountDialog(AccountType type) {
 
 	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
-	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
+	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTransactionsService());
 	viewModel->SetAccountType(type);
 
 	accountDialog->SetViewModel(viewModel);
@@ -102,13 +102,27 @@ void DialogsController::ShowEditAccountDialog(int id) {
 
 	AccountDialog* accountDialog = new AccountDialog(_parent, _("Account"), 0, 0, size.GetWidth(), size.GetHeight(), _icons);
 
-	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService());
+	AccountViewModel* viewModel = new AccountViewModel(_context.GetAccountsService(), _context.GetCurrenciesService(), _context.GetTransactionsService());
 	viewModel->SetAccountId(id);
 
 	accountDialog->SetViewModel(viewModel);
 
 	accountDialog->Show(true);
 	accountDialog->CenterOnParent();
+}
+
+void DialogsController::ShowInterestAccrualDialog(int id) {
+	wxSize size = GetInterestAccrualDialogSize();
+
+	InterestAccrualDialog* interestAccrualDialog = new InterestAccrualDialog(_parent, _("Interest Accrua"), 0, 0, size.GetWidth(), size.GetHeight());
+
+	InterestAccrualViewModel* viewModel = new InterestAccrualViewModel(_context.GetAccountsService(), _context.GetTransactionsService());
+	viewModel->SetAccountId(id);
+
+	interestAccrualDialog->SetViewModel(viewModel);
+
+	interestAccrualDialog->Show(true);
+	interestAccrualDialog->CenterOnParent();
 }
 
 void DialogsController::ShowNewAlertDialog() {
@@ -287,6 +301,15 @@ wxSize DialogsController::GetSchedulerDialogSize() {
 
 	size.SetWidth(_parent->FromDIP(450));
 	size.SetHeight(_parent->FromDIP(420));
+
+	return size;
+}
+
+wxSize DialogsController::GetInterestAccrualDialogSize() {
+	wxSize size = wxSize();
+
+	size.SetWidth(_parent->FromDIP(380));
+	size.SetHeight(_parent->FromDIP(200));
 
 	return size;
 }

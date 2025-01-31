@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Clerk\n"
-"POT-Creation-Date: 2024-09-13 17:27+0300\n"
-"PO-Revision-Date: 2024-09-13 17:27+0300\n"
+"POT-Creation-Date: 2025-01-29 17:05+0300\n"
+"PO-Revision-Date: 2025-01-29 17:05+0300\n"
 "Last-Translator: Sergey Lenkov <serglazy@gmail.com>\n"
 "Language-Team: Sergey Lenkov\n"
 "Language: en\n"
@@ -50,14 +50,6 @@ msgstr "Accounts"
 msgid "Accounts:"
 msgstr "Accounts:"
 
-#: UI/Account/AccountDialog.cpp:85
-msgid "Accrue"
-msgstr "Accrue"
-
-#: UI/Account/AccountDialog.cpp:99 UI/Account/AccountDialog.cpp:109
-msgid "Accrue interest every"
-msgstr "Accrue interest every"
-
 #: UI/Schedulers/SchedulersListDataModel.cpp:45
 msgid "Active"
 msgstr "Active"
@@ -82,7 +74,7 @@ msgstr "Add..."
 msgid "Alert"
 msgstr "Alert"
 
-#: UI/Tabs/TabsPanel.cpp:242 UI/TreeMenu/TreeMenu.cpp:109
+#: UI/Tabs/TabsPanel.cpp:285 UI/TreeMenu/TreeMenu.cpp:109
 msgid "Alerts"
 msgstr "Alerts"
 
@@ -95,12 +87,12 @@ msgstr "All"
 msgid "Amount"
 msgstr "Amount"
 
-#: UI/Account/AccountDialog.cpp:65 UI/Alerts/AlertDialog.cpp:80
+#: UI/Account/AccountDialog.cpp:58 UI/Alerts/AlertDialog.cpp:80
 #: UI/Budgets/BudgetDialog.cpp:49 UI/Goals/GoalDialog.cpp:40
 msgid "Amount:"
 msgstr "Amount:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "April"
 msgstr "April"
 
@@ -108,7 +100,7 @@ msgstr "April"
 msgid "Archive"
 msgstr "Archive"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "August"
 msgstr "August"
 
@@ -128,12 +120,12 @@ msgstr "Base Currency:"
 msgid "Budget"
 msgstr "Budget"
 
-#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/Tabs/TabsPanel.cpp:230
+#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/Tabs/TabsPanel.cpp:273
 #: UI/TreeMenu/TreeMenu.cpp:94
 msgid "Budgets"
 msgstr "Budgets"
 
-#: UI/Account/AccountDialog.cpp:142 UI/Alerts/AlertDialog.cpp:105
+#: UI/Account/AccountDialog.cpp:91 UI/Alerts/AlertDialog.cpp:105
 #: UI/Budgets/BudgetDialog.cpp:74 UI/Goals/GoalDialog.cpp:65
 #: UI/PreferencesDialog.cpp:68 UI/Schedulers/SchedulerDialog.cpp:39
 #: UI/Transactions/TransactionDialog.cpp:92
@@ -168,7 +160,7 @@ msgstr "Copy..."
 msgid "Copyright"
 msgstr "Copyright © 2024 Sergey Lenkov"
 
-#: UI/Account/AccountDialog.cpp:75
+#: UI/Account/AccountDialog.cpp:68
 msgid "Credit Limit:"
 msgstr "Credit Limit:"
 
@@ -180,7 +172,7 @@ msgstr "Credit funds"
 msgid "Currencies"
 msgstr "Currencies"
 
-#: UI/Account/AccountDialog.cpp:45
+#: UI/Account/AccountDialog.cpp:38
 msgid "Currency:"
 msgstr "Currency:"
 
@@ -210,7 +202,7 @@ msgstr "Custom"
 msgid "Daily"
 msgstr "Daily"
 
-#: UI/Tabs/TabsPanel.cpp:224 UI/TreeMenu/TreeMenu.cpp:49
+#: UI/Tabs/TabsPanel.cpp:252 UI/TreeMenu/TreeMenu.cpp:49
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -241,7 +233,7 @@ msgstr "Debt"
 msgid "Debts"
 msgstr "Debts"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "December"
 msgstr "December"
 
@@ -301,7 +293,7 @@ msgstr "Equal"
 
 #: UI/Notifications/NotificationSchedulerPanel.cpp:17
 msgid "Execute"
-msgstr ""
+msgstr "Execute"
 
 #: UI/MainMenu/MainMenu.cpp:23
 msgid "Exit\tCtrl+W"
@@ -318,7 +310,7 @@ msgstr "Expense"
 msgid "Expenses"
 msgstr "Expenses"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "February"
 msgstr "February"
 
@@ -326,7 +318,7 @@ msgstr "February"
 msgid "File"
 msgstr "File"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:110
+#: UI/Schedulers/SchedulerPatternPanel.cpp:104
 msgid "Friday"
 msgstr "Friday"
 
@@ -356,7 +348,7 @@ msgstr "General"
 msgid "Goal"
 msgstr "Goal"
 
-#: UI/Dashboard/DashboardGoalsPanel.cpp:53 UI/Tabs/TabsPanel.cpp:236
+#: UI/Dashboard/DashboardGoalsPanel.cpp:53 UI/Tabs/TabsPanel.cpp:279
 #: UI/TreeMenu/TreeMenu.cpp:99
 msgid "Goals"
 msgstr "Goals"
@@ -370,7 +362,7 @@ msgstr "Help"
 msgid "High"
 msgstr "High"
 
-#: UI/Account/AccountDialog.cpp:55
+#: UI/Account/AccountDialog.cpp:48
 msgid "Icon:"
 msgstr "Icon:"
 
@@ -386,15 +378,19 @@ msgstr "Importance:"
 msgid "Income:"
 msgstr "Income:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/TreeMenu/AccountContextMenu.cpp:60
+msgid "Interest Accrual..."
+msgstr "Interest Accrual"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "January"
 msgstr "January"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "Jule"
 msgstr "Jule"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "June"
 msgstr "June"
 
@@ -424,11 +420,11 @@ msgstr "Load exchange rates on start"
 msgid "Low"
 msgstr "Low"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "March"
 msgstr "March"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "May"
 msgstr "May"
 
@@ -449,7 +445,7 @@ msgstr "Message"
 msgid "Message:"
 msgstr "Message:"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:98
+#: UI/Schedulers/SchedulerPatternPanel.cpp:92
 msgid "Monday"
 msgstr "Monday"
 
@@ -487,7 +483,7 @@ msgstr "Move to Right"
 msgid "Name"
 msgstr "Name"
 
-#: UI/Account/AccountDialog.cpp:25 UI/Alerts/AlertDialog.cpp:20
+#: UI/Account/AccountDialog.cpp:18 UI/Alerts/AlertDialog.cpp:20
 #: UI/Budgets/BudgetDialog.cpp:19 UI/Goals/GoalDialog.cpp:20
 #: UI/Schedulers/SchedulerDialog.cpp:20
 msgid "Name:"
@@ -534,22 +530,22 @@ msgstr "Next Date"
 msgid "Note"
 msgstr "Note"
 
-#: UI/Account/AccountDialog.cpp:129 UI/Transactions/TransactionDialog.cpp:79
+#: UI/Account/AccountDialog.cpp:78 UI/Transactions/TransactionDialog.cpp:79
 msgid "Note:"
 msgstr "Note:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "November"
 msgstr "November"
 
-#: UI/Account/AccountDialog.cpp:139 UI/Alerts/AlertDialog.cpp:102
+#: UI/Account/AccountDialog.cpp:88 UI/Alerts/AlertDialog.cpp:102
 #: UI/Budgets/BudgetDialog.cpp:71 UI/Goals/GoalDialog.cpp:62
 #: UI/PreferencesDialog.cpp:65 UI/Schedulers/SchedulerDialog.cpp:36
 #: UI/Transactions/TransactionDialog.cpp:89
 msgid "OK"
 msgstr "OK"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "October"
 msgstr "October"
 
@@ -639,10 +635,10 @@ msgstr "Remain"
 msgid "Rename"
 msgstr "Rename"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:62
-#: UI/Schedulers/SchedulerPatternPanel.cpp:85
-#: UI/Schedulers/SchedulerPatternPanel.cpp:133
-#: UI/Schedulers/SchedulerPatternPanel.cpp:160
+#: UI/Schedulers/SchedulerPatternPanel.cpp:56
+#: UI/Schedulers/SchedulerPatternPanel.cpp:79
+#: UI/Schedulers/SchedulerPatternPanel.cpp:127
+#: UI/Schedulers/SchedulerPatternPanel.cpp:154
 msgid "Repeat every"
 msgstr "Repeat every"
 
@@ -662,7 +658,7 @@ msgstr "Restore from Archive"
 msgid "Run"
 msgstr "Run"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:113
+#: UI/Schedulers/SchedulerPatternPanel.cpp:107
 msgid "Saturday"
 msgstr "Saturday"
 
@@ -675,7 +671,7 @@ msgstr "Scheduled transaction"
 msgid "Scheduler"
 msgstr "Scheduler"
 
-#: UI/Dashboard/DashboardSchedulersPanel.cpp:55 UI/Tabs/TabsPanel.cpp:233
+#: UI/Dashboard/DashboardSchedulersPanel.cpp:55 UI/Tabs/TabsPanel.cpp:276
 #: UI/TreeMenu/TreeMenu.cpp:104
 msgid "Schedulers"
 msgstr "Schedulers"
@@ -684,7 +680,7 @@ msgstr "Schedulers"
 msgid "Search:"
 msgstr "Search:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "September"
 msgstr "September"
 
@@ -717,11 +713,11 @@ msgstr "Split..."
 msgid "Status"
 msgstr "Status"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:116
+#: UI/Schedulers/SchedulerPatternPanel.cpp:110
 msgid "Sunday"
 msgstr "Sunday"
 
-#: UI/Tabs/TabsPanel.cpp:239 UI/Transactions/TransactionsListPanel.cpp:173
+#: UI/Tabs/TabsPanel.cpp:282 UI/Transactions/TransactionsListPanel.cpp:173
 #: UI/TreeMenu/TreeMenu.cpp:114
 msgid "Tags"
 msgstr "Tags"
@@ -731,7 +727,7 @@ msgstr "Tags"
 msgid "Tags:"
 msgstr "Tags:"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:107
+#: UI/Schedulers/SchedulerPatternPanel.cpp:101
 msgid "Thursday"
 msgstr "Thursday"
 
@@ -757,7 +753,7 @@ msgstr "To:"
 msgid "Transaction"
 msgstr "Transaction"
 
-#: UI/Tabs/TabsPanel.cpp:134 UI/Tabs/TabsPanel.cpp:227
+#: UI/Tabs/TabsPanel.cpp:255
 msgid "Transactions"
 msgstr "Transactions"
 
@@ -765,11 +761,11 @@ msgstr "Transactions"
 msgid "Transactions:"
 msgstr "Transactions:"
 
-#: UI/Tabs/TabsPanel.cpp:245 UI/TreeMenu/TreeMenu.cpp:119
+#: UI/Tabs/TabsPanel.cpp:288 UI/TreeMenu/TreeMenu.cpp:119
 msgid "Trash"
 msgstr "Trash"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:101
+#: UI/Schedulers/SchedulerPatternPanel.cpp:95
 msgid "Tuesday"
 msgstr "Tuesday"
 
@@ -777,7 +773,7 @@ msgstr "Tuesday"
 msgid "Type"
 msgstr "Type"
 
-#: UI/Account/AccountDialog.cpp:35 UI/Alerts/AlertDialog.cpp:40
+#: UI/Account/AccountDialog.cpp:28 UI/Alerts/AlertDialog.cpp:40
 msgid "Type:"
 msgstr "Type:"
 
@@ -790,15 +786,12 @@ msgstr "Updating..."
 msgid "Version %s"
 msgstr "Version %s"
 
-#: UI/Account/AccountViewModel.cpp:20 UI/TreeMenu/TreeMenu.cpp:69
+#: UI/Account/AccountViewModel.cpp:20 UI/Tabs/TabsPanel.cpp:270
+#: UI/TreeMenu/TreeMenu.cpp:69
 msgid "Virtual"
 msgstr "Virtual"
 
-#: UI/Tabs/TabsPanel.cpp:270
-msgid "Virtuals"
-msgstr "Virtuals"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:104
+#: UI/Schedulers/SchedulerPatternPanel.cpp:98
 msgid "Wednesday"
 msgstr "Wednesday"
 
@@ -822,60 +815,66 @@ msgstr "Year"
 msgid "Yearly"
 msgstr "Yearly"
 
-#: UI/Account/AccountDialog.cpp:160
-msgid "daily"
-msgstr "daily"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:68
-#: UI/Schedulers/SchedulerPatternPanel.cpp:145
-#: UI/Schedulers/SchedulerPatternPanel.cpp:271
-#: UI/Schedulers/SchedulerPatternPanel.cpp:275
+#: UI/Schedulers/SchedulerPatternPanel.cpp:62
+#: UI/Schedulers/SchedulerPatternPanel.cpp:139
+#: UI/Schedulers/SchedulerPatternPanel.cpp:263
+#: UI/Schedulers/SchedulerPatternPanel.cpp:267
 msgid "day"
 msgstr "day"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:271
-#: UI/Schedulers/SchedulerPatternPanel.cpp:275
+#: UI/Schedulers/SchedulerPatternPanel.cpp:263
+#: UI/Schedulers/SchedulerPatternPanel.cpp:267
 msgid "days"
 msgstr "days"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:139
-#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+#: UI/Schedulers/SchedulerPatternPanel.cpp:133
+#: UI/Schedulers/SchedulerPatternPanel.cpp:268
 msgid "month on"
 msgstr "month on"
 
-#: UI/Account/AccountDialog.cpp:161
-msgid "monthly"
-msgstr "monthly"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+#: UI/Schedulers/SchedulerPatternPanel.cpp:268
 msgid "months on"
 msgstr "months on"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:291
+#: UI/Schedulers/SchedulerPatternPanel.cpp:283
 msgid "nd"
 msgstr "nd"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:294
+#: UI/Schedulers/SchedulerPatternPanel.cpp:286
 msgid "rd"
 msgstr "rd"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:166
-#: UI/Schedulers/SchedulerPatternPanel.cpp:289
+#: UI/Schedulers/SchedulerPatternPanel.cpp:160
+#: UI/Schedulers/SchedulerPatternPanel.cpp:281
 msgid "st"
 msgstr "st"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:281
-#: UI/Schedulers/SchedulerPatternPanel.cpp:296
+#: UI/Schedulers/SchedulerPatternPanel.cpp:273
+#: UI/Schedulers/SchedulerPatternPanel.cpp:288
 msgid "th"
 msgstr "th"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:91
+#: UI/Schedulers/SchedulerPatternPanel.cpp:85
 msgid "weeks on:"
 msgstr "weeks on:"
 
-#: UI/Account/AccountDialog.cpp:162
-msgid "yearly"
-msgstr "yearly"
+#~ msgid "Accrue"
+#~ msgstr "Accrue"
+
+#~ msgid "Accrue interest every"
+#~ msgstr "Accrue interest every"
+
+#~ msgid "Virtuals"
+#~ msgstr "Virtuals"
+
+#~ msgid "daily"
+#~ msgstr "daily"
+
+#~ msgid "monthly"
+#~ msgstr "monthly"
+
+#~ msgid "yearly"
+#~ msgstr "yearly"
 
 #~ msgid "dayly"
 #~ msgstr "daily"

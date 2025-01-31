@@ -12,7 +12,7 @@ using namespace Clerk::Utils;
 
 namespace Clerk {
 	namespace Data {
-		class TransactionsService : HashService< std::shared_ptr<TransactionPresentationModel>> {
+		class TransactionsService : HashService<std::shared_ptr<TransactionPresentationModel>> {
 		public:
 			TransactionsService(TransactionsRepository& transactionsRepository, AccountsService& accountsService, TagsService& tagsService);
 			~TransactionsService();

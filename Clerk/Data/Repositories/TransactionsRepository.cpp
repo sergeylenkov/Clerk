@@ -45,7 +45,7 @@ std::vector<TransactionModel*> TransactionsRepository::GetDeleted() {
 std::vector<TransactionModel*> TransactionsRepository::GetRecents(int count) {
 	std::vector<TransactionModel*> result;
 
-	char* sql = "SELECT MAX(paid_at), id FROM transactions GROUP BY from_account_id, to_account_id ORDER BY paid_at DESC LIMIT ?";
+	char* sql = "SELECT MAX(paid_at), id FROM transactions WHERE from_account_id != -1 AND to_account_id != -1 GROUP BY from_account_id, to_account_id ORDER BY paid_at DESC LIMIT ?";
 	sqlite3_stmt* statement;
 
 	if (sqlite3_prepare_v2(_connection.GetConnection(), sql, -1, &statement, NULL) == SQLITE_OK) {

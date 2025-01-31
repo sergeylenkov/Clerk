@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Clerk\n"
-"POT-Creation-Date: 2024-09-13 17:27+0300\n"
-"PO-Revision-Date: 2024-09-13 17:31+0300\n"
+"POT-Creation-Date: 2025-01-29 17:06+0300\n"
+"PO-Revision-Date: 2025-01-29 17:07+0300\n"
 "Last-Translator: Sergey Lenkov <serglazy@gmail.com>\n"
 "Language-Team: Sergey Lenkov\n"
 "Language: ru_RU\n"
@@ -52,14 +52,6 @@ msgstr "Счета"
 msgid "Accounts:"
 msgstr "Счета:"
 
-#: UI/Account/AccountDialog.cpp:85
-msgid "Accrue"
-msgstr "Начислять"
-
-#: UI/Account/AccountDialog.cpp:99 UI/Account/AccountDialog.cpp:109
-msgid "Accrue interest every"
-msgstr "Начислять проценты каждый"
-
 #: UI/Schedulers/SchedulersListDataModel.cpp:45
 msgid "Active"
 msgstr "Активный"
@@ -84,7 +76,7 @@ msgstr "Добавить..."
 msgid "Alert"
 msgstr "Предупреждение"
 
-#: UI/Tabs/TabsPanel.cpp:242 UI/TreeMenu/TreeMenu.cpp:109
+#: UI/Tabs/TabsPanel.cpp:285 UI/TreeMenu/TreeMenu.cpp:109
 msgid "Alerts"
 msgstr "Предупреждения"
 
@@ -97,12 +89,12 @@ msgstr "Все"
 msgid "Amount"
 msgstr "Сумма"
 
-#: UI/Account/AccountDialog.cpp:65 UI/Alerts/AlertDialog.cpp:80
+#: UI/Account/AccountDialog.cpp:58 UI/Alerts/AlertDialog.cpp:80
 #: UI/Budgets/BudgetDialog.cpp:49 UI/Goals/GoalDialog.cpp:40
 msgid "Amount:"
 msgstr "Сумма:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "April"
 msgstr "Апрель"
 
@@ -110,7 +102,7 @@ msgstr "Апрель"
 msgid "Archive"
 msgstr "Архив"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "August"
 msgstr "Август"
 
@@ -130,12 +122,12 @@ msgstr "Основная валюта:"
 msgid "Budget"
 msgstr "Бюджет"
 
-#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/Tabs/TabsPanel.cpp:230
+#: UI/Dashboard/DashboardBudgetsPanel.cpp:52 UI/Tabs/TabsPanel.cpp:273
 #: UI/TreeMenu/TreeMenu.cpp:94
 msgid "Budgets"
 msgstr "Бюджеты"
 
-#: UI/Account/AccountDialog.cpp:142 UI/Alerts/AlertDialog.cpp:105
+#: UI/Account/AccountDialog.cpp:91 UI/Alerts/AlertDialog.cpp:105
 #: UI/Budgets/BudgetDialog.cpp:74 UI/Goals/GoalDialog.cpp:65
 #: UI/PreferencesDialog.cpp:68 UI/Schedulers/SchedulerDialog.cpp:39
 #: UI/Transactions/TransactionDialog.cpp:92
@@ -170,7 +162,7 @@ msgstr "Копировать..."
 msgid "Copyright"
 msgstr "Copyright © 2024 Сергей Леньков"
 
-#: UI/Account/AccountDialog.cpp:75
+#: UI/Account/AccountDialog.cpp:68
 msgid "Credit Limit:"
 msgstr "Кредитный лимит:"
 
@@ -182,7 +174,7 @@ msgstr "Кредитные средства"
 msgid "Currencies"
 msgstr "Валюты"
 
-#: UI/Account/AccountDialog.cpp:45
+#: UI/Account/AccountDialog.cpp:38
 msgid "Currency:"
 msgstr "Валюта:"
 
@@ -212,7 +204,7 @@ msgstr "Custom"
 msgid "Daily"
 msgstr "Ежедневно"
 
-#: UI/Tabs/TabsPanel.cpp:224 UI/TreeMenu/TreeMenu.cpp:49
+#: UI/Tabs/TabsPanel.cpp:252 UI/TreeMenu/TreeMenu.cpp:49
 msgid "Dashboard"
 msgstr "Обзор"
 
@@ -243,7 +235,7 @@ msgstr "Долг"
 msgid "Debts"
 msgstr "Долги"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "December"
 msgstr "Декабрь"
 
@@ -320,7 +312,7 @@ msgstr "Расход"
 msgid "Expenses"
 msgstr "Расходы"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "February"
 msgstr "Февраль"
 
@@ -328,7 +320,7 @@ msgstr "Февраль"
 msgid "File"
 msgstr "Файл"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:110
+#: UI/Schedulers/SchedulerPatternPanel.cpp:104
 msgid "Friday"
 msgstr "Пятница"
 
@@ -358,7 +350,7 @@ msgstr "Основное"
 msgid "Goal"
 msgstr "Цель"
 
-#: UI/Dashboard/DashboardGoalsPanel.cpp:53 UI/Tabs/TabsPanel.cpp:236
+#: UI/Dashboard/DashboardGoalsPanel.cpp:53 UI/Tabs/TabsPanel.cpp:279
 #: UI/TreeMenu/TreeMenu.cpp:99
 msgid "Goals"
 msgstr "Цели"
@@ -372,7 +364,7 @@ msgstr "Помощь"
 msgid "High"
 msgstr "Высокая"
 
-#: UI/Account/AccountDialog.cpp:55
+#: UI/Account/AccountDialog.cpp:48
 msgid "Icon:"
 msgstr "Иконка:"
 
@@ -388,15 +380,19 @@ msgstr "Важность:"
 msgid "Income:"
 msgstr "Приход:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/TreeMenu/AccountContextMenu.cpp:60
+msgid "Interest Accrual..."
+msgstr "Начислить проценты"
+
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "January"
 msgstr "Январь"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "Jule"
 msgstr "Июль"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "June"
 msgstr "Июнь"
 
@@ -426,11 +422,11 @@ msgstr "Загружать курсы валют при старте"
 msgid "Low"
 msgstr "Низкая"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "March"
 msgstr "Март"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "May"
 msgstr "Май"
 
@@ -451,7 +447,7 @@ msgstr "Сообщение"
 msgid "Message:"
 msgstr "Сообщение:"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:98
+#: UI/Schedulers/SchedulerPatternPanel.cpp:92
 msgid "Monday"
 msgstr "Понедельник"
 
@@ -489,7 +485,7 @@ msgstr "Переместить вправо"
 msgid "Name"
 msgstr "Имя"
 
-#: UI/Account/AccountDialog.cpp:25 UI/Alerts/AlertDialog.cpp:20
+#: UI/Account/AccountDialog.cpp:18 UI/Alerts/AlertDialog.cpp:20
 #: UI/Budgets/BudgetDialog.cpp:19 UI/Goals/GoalDialog.cpp:20
 #: UI/Schedulers/SchedulerDialog.cpp:20
 msgid "Name:"
@@ -536,22 +532,22 @@ msgstr "Следующая дата"
 msgid "Note"
 msgstr "Примечание"
 
-#: UI/Account/AccountDialog.cpp:129 UI/Transactions/TransactionDialog.cpp:79
+#: UI/Account/AccountDialog.cpp:78 UI/Transactions/TransactionDialog.cpp:79
 msgid "Note:"
 msgstr "Примечание:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "November"
 msgstr "Ноябрь"
 
-#: UI/Account/AccountDialog.cpp:139 UI/Alerts/AlertDialog.cpp:102
+#: UI/Account/AccountDialog.cpp:88 UI/Alerts/AlertDialog.cpp:102
 #: UI/Budgets/BudgetDialog.cpp:71 UI/Goals/GoalDialog.cpp:62
 #: UI/PreferencesDialog.cpp:65 UI/Schedulers/SchedulerDialog.cpp:36
 #: UI/Transactions/TransactionDialog.cpp:89
 msgid "OK"
 msgstr "OK"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "October"
 msgstr "Октябрь"
 
@@ -641,12 +637,12 @@ msgstr "Осталось"
 msgid "Rename"
 msgstr "Переименовать"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:62
-#: UI/Schedulers/SchedulerPatternPanel.cpp:85
-#: UI/Schedulers/SchedulerPatternPanel.cpp:133
-#: UI/Schedulers/SchedulerPatternPanel.cpp:160
+#: UI/Schedulers/SchedulerPatternPanel.cpp:56
+#: UI/Schedulers/SchedulerPatternPanel.cpp:79
+#: UI/Schedulers/SchedulerPatternPanel.cpp:127
+#: UI/Schedulers/SchedulerPatternPanel.cpp:154
 msgid "Repeat every"
-msgstr ""
+msgstr "Повторять каждый"
 
 #: UI/TreeMenu/TreeMenu.cpp:89
 msgid "Reports"
@@ -664,7 +660,7 @@ msgstr "Восстановить из архива"
 msgid "Run"
 msgstr "Запустить"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:113
+#: UI/Schedulers/SchedulerPatternPanel.cpp:107
 msgid "Saturday"
 msgstr "Суббота"
 
@@ -677,7 +673,7 @@ msgstr "Запланированные транзакции"
 msgid "Scheduler"
 msgstr "Планировщик"
 
-#: UI/Dashboard/DashboardSchedulersPanel.cpp:55 UI/Tabs/TabsPanel.cpp:233
+#: UI/Dashboard/DashboardSchedulersPanel.cpp:55 UI/Tabs/TabsPanel.cpp:276
 #: UI/TreeMenu/TreeMenu.cpp:104
 msgid "Schedulers"
 msgstr "Планировщики"
@@ -686,7 +682,7 @@ msgstr "Планировщики"
 msgid "Search:"
 msgstr "Поиск:"
 
-#: UI/Account/AccountDialog.cpp:115 UI/Schedulers/SchedulerPatternPanel.cpp:169
+#: UI/Schedulers/SchedulerPatternPanel.cpp:163
 msgid "September"
 msgstr "Сентябрь"
 
@@ -719,11 +715,11 @@ msgstr "Разбить..."
 msgid "Status"
 msgstr "Статус"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:116
+#: UI/Schedulers/SchedulerPatternPanel.cpp:110
 msgid "Sunday"
 msgstr "Воскресенье"
 
-#: UI/Tabs/TabsPanel.cpp:239 UI/Transactions/TransactionsListPanel.cpp:173
+#: UI/Tabs/TabsPanel.cpp:282 UI/Transactions/TransactionsListPanel.cpp:173
 #: UI/TreeMenu/TreeMenu.cpp:114
 msgid "Tags"
 msgstr "Теги"
@@ -733,7 +729,7 @@ msgstr "Теги"
 msgid "Tags:"
 msgstr "Теги:"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:107
+#: UI/Schedulers/SchedulerPatternPanel.cpp:101
 msgid "Thursday"
 msgstr "Четверг"
 
@@ -759,7 +755,7 @@ msgstr "Куда:"
 msgid "Transaction"
 msgstr "Транзакция"
 
-#: UI/Tabs/TabsPanel.cpp:134 UI/Tabs/TabsPanel.cpp:227
+#: UI/Tabs/TabsPanel.cpp:255
 msgid "Transactions"
 msgstr "Транзакции"
 
@@ -767,11 +763,11 @@ msgstr "Транзакции"
 msgid "Transactions:"
 msgstr "Транзакции:"
 
-#: UI/Tabs/TabsPanel.cpp:245 UI/TreeMenu/TreeMenu.cpp:119
+#: UI/Tabs/TabsPanel.cpp:288 UI/TreeMenu/TreeMenu.cpp:119
 msgid "Trash"
 msgstr "Корзина"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:101
+#: UI/Schedulers/SchedulerPatternPanel.cpp:95
 msgid "Tuesday"
 msgstr "Вторник"
 
@@ -779,7 +775,7 @@ msgstr "Вторник"
 msgid "Type"
 msgstr "Тип"
 
-#: UI/Account/AccountDialog.cpp:35 UI/Alerts/AlertDialog.cpp:40
+#: UI/Account/AccountDialog.cpp:28 UI/Alerts/AlertDialog.cpp:40
 msgid "Type:"
 msgstr "Тип:"
 
@@ -792,15 +788,12 @@ msgstr "Обновление..."
 msgid "Version %s"
 msgstr "Версия %s"
 
-#: UI/Account/AccountViewModel.cpp:20 UI/TreeMenu/TreeMenu.cpp:69
+#: UI/Account/AccountViewModel.cpp:20 UI/Tabs/TabsPanel.cpp:270
+#: UI/TreeMenu/TreeMenu.cpp:69
 msgid "Virtual"
 msgstr "Виртуальный"
 
-#: UI/Tabs/TabsPanel.cpp:270
-msgid "Virtuals"
-msgstr "Виртуальные"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:104
+#: UI/Schedulers/SchedulerPatternPanel.cpp:98
 msgid "Wednesday"
 msgstr "Среда"
 
@@ -824,60 +817,66 @@ msgstr "Год"
 msgid "Yearly"
 msgstr "Ежегодно"
 
-#: UI/Account/AccountDialog.cpp:160
-msgid "daily"
-msgstr "ежедневно"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:68
-#: UI/Schedulers/SchedulerPatternPanel.cpp:145
-#: UI/Schedulers/SchedulerPatternPanel.cpp:271
-#: UI/Schedulers/SchedulerPatternPanel.cpp:275
+#: UI/Schedulers/SchedulerPatternPanel.cpp:62
+#: UI/Schedulers/SchedulerPatternPanel.cpp:139
+#: UI/Schedulers/SchedulerPatternPanel.cpp:263
+#: UI/Schedulers/SchedulerPatternPanel.cpp:267
 msgid "day"
 msgstr "день"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:271
-#: UI/Schedulers/SchedulerPatternPanel.cpp:275
+#: UI/Schedulers/SchedulerPatternPanel.cpp:263
+#: UI/Schedulers/SchedulerPatternPanel.cpp:267
 msgid "days"
 msgstr "дней"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:139
-#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+#: UI/Schedulers/SchedulerPatternPanel.cpp:133
+#: UI/Schedulers/SchedulerPatternPanel.cpp:268
 msgid "month on"
 msgstr "месяц"
 
-#: UI/Account/AccountDialog.cpp:161
-msgid "monthly"
-msgstr "ежемесячно"
-
-#: UI/Schedulers/SchedulerPatternPanel.cpp:276
+#: UI/Schedulers/SchedulerPatternPanel.cpp:268
 msgid "months on"
 msgstr "месяцев"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:291
+#: UI/Schedulers/SchedulerPatternPanel.cpp:283
 msgid "nd"
 msgstr "ой"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:294
+#: UI/Schedulers/SchedulerPatternPanel.cpp:286
 msgid "rd"
 msgstr "ий"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:166
-#: UI/Schedulers/SchedulerPatternPanel.cpp:289
+#: UI/Schedulers/SchedulerPatternPanel.cpp:160
+#: UI/Schedulers/SchedulerPatternPanel.cpp:281
 msgid "st"
 msgstr "ый"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:281
-#: UI/Schedulers/SchedulerPatternPanel.cpp:296
+#: UI/Schedulers/SchedulerPatternPanel.cpp:273
+#: UI/Schedulers/SchedulerPatternPanel.cpp:288
 msgid "th"
 msgstr "ый"
 
-#: UI/Schedulers/SchedulerPatternPanel.cpp:91
+#: UI/Schedulers/SchedulerPatternPanel.cpp:85
 msgid "weeks on:"
 msgstr "недели в:"
 
-#: UI/Account/AccountDialog.cpp:162
-msgid "yearly"
-msgstr "ежегодно"
+#~ msgid "Accrue"
+#~ msgstr "Начислять"
+
+#~ msgid "Accrue interest every"
+#~ msgstr "Начислять проценты каждый"
+
+#~ msgid "Virtuals"
+#~ msgstr "Виртуальные"
+
+#~ msgid "daily"
+#~ msgstr "ежедневно"
+
+#~ msgid "monthly"
+#~ msgstr "ежемесячно"
+
+#~ msgid "yearly"
+#~ msgstr "ежегодно"
 
 #~ msgid "Alerts:"
 #~ msgstr "Предупреждения:"

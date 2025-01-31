@@ -5,6 +5,7 @@
 #include "../PreferencesDialog.h"
 #include "../Transactions/TransactionDialog.h"
 #include "../Account/AccountDialog.h"
+#include "../Account/InterestAccrualDialog.h"
 #include "../Alerts/AlertDialog.h"
 #include "../Budgets/BudgetDialog.h"
 #include "../Goals/GoalDialog.h"
@@ -29,6 +30,7 @@ namespace Clerk {
 			void ShowEditTransactionDialog(int id);
 			void ShowNewAccountDialog(AccountType type);
 			void ShowEditAccountDialog(int id);
+			void ShowInterestAccrualDialog(int id);
 			void ShowNewAlertDialog();
 			void ShowEditAlertDialog(int id);
 			void ShowNewBudgetDialog();
@@ -51,6 +53,7 @@ namespace Clerk {
 			wxSize GetBudgetDialogSize();
 			wxSize GetGoalDialogSize();
 			wxSize GetSchedulerDialogSize();
+			wxSize GetInterestAccrualDialogSize();
 		};
 	}
 }

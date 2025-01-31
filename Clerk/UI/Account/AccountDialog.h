@@ -27,7 +27,7 @@ private:
 	wxComboBox* _typeList;
 	wxComboBox* _currencyList;
 	wxBitmapComboBox* _iconList;
-	AmountField* _amountField;
+	AmountField* _initialAmountField;
 	AmountField* _creditField;
 	wxTextCtrl* _noteField;
 

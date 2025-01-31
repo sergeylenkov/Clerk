@@ -101,4 +101,5 @@ void Icons::LoadSvgIcons() {
 	_icons[IconType::BellActive] = wxBitmapBundle::FromSVGResource("BELL_ACTIVE_SVG", wxSize(16, 16));
 	_icons[IconType::Merge] = wxBitmapBundle::FromSVGResource("MERGE_SVG", wxSize(16, 16));
 	_icons[IconType::Undo] = wxBitmapBundle::FromSVGResource("UNDO_SVG", wxSize(16, 16));
+	_icons[IconType::Percent] = wxBitmapBundle::FromSVGResource("PERCENT_SVG", wxSize(16, 16));
 }

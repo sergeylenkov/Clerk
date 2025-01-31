@@ -55,11 +55,11 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 
 	horizontalSizer = new wxBoxSizer(wxHORIZONTAL);
 
-	wxStaticText* amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Amount:"), wxDefaultPosition, labelSize);
+	wxStaticText* amountLabel = new wxStaticText(mainPanel, wxID_ANY, _("Initial Amount:"), wxDefaultPosition, labelSize);
 	horizontalSizer->Add(amountLabel, 0, wxALIGN_CENTER_VERTICAL);
 	
-	_amountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, fieldSize);
-	horizontalSizer->Add(_amountField);
+	_initialAmountField = new AmountField(mainPanel, wxID_ANY, "0.00", wxDefaultPosition, fieldSize);
+	horizontalSizer->Add(_initialAmountField);
 
 	panelSizer->Add(horizontalSizer, 0, wxEXPAND | wxBOTTOM, bottomIndent);
 
@@ -109,7 +109,7 @@ AccountDialog::AccountDialog(wxFrame* parent, const wxChar* title, int x, int y,
 	_typeList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnTypeSelect, this);
 	_iconList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnIconSelect, this);
 	_currencyList->Bind(wxEVT_COMBOBOX, &AccountDialog::OnCurrencySelect, this);
-	_amountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
+	_initialAmountField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnAmountKillFocus, this);
 	_creditField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnCreditKillFocus, this);
 	_nameField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnNameKillFocus, this);
 	_noteField->Bind(wxEVT_KILL_FOCUS, &AccountDialog::OnNoteKillFocus, this);
@@ -126,8 +126,8 @@ AccountDialog::~AccountDialog() {
 void AccountDialog::SetViewModel(AccountViewModel* viewModel) {
 	_viewModel = viewModel;
 	_viewModel->OnUpdate = [&](AccountViewModelField field) {
-		if (field == AccountViewModelField::Amount) {
-			_amountField->SetValue(Format::Amount(_viewModel->GetAmount()));
+		if (field == AccountViewModelField::InitialAmount) {
+			_initialAmountField->SetValue(Format::Amount(_viewModel->GetInitialAmount()));
 		}
 
 		if (field == AccountViewModelField::CreditLimit) {
@@ -172,19 +172,19 @@ void AccountDialog::Update() {
 
 	_iconList->SetSelection(_viewModel->GetIconIndex());
 
-	_amountField->SetValue(Format::Amount(_viewModel->GetAmount()));
+	_initialAmountField->SetValue(Format::Amount(_viewModel->GetInitialAmount()));
 	_creditField->SetValue(Format::Amount(_viewModel->GetCreditLimit()));
 	_nameField->SetValue(_viewModel->GetName());
 	_noteField->SetValue(_viewModel->GetNote());	
 
-	_amountField->SetEditable(_viewModel->IsNew());
+	_initialAmountField->SetEditable(_viewModel->IsNew() && (_viewModel->GetType() == AccountType::Deposit || _viewModel->GetType() == AccountType::Virtual || _viewModel->GetType() == AccountType::Debt));
 	_creditField->SetEditable(_viewModel->GetType() == AccountType::Deposit);
 }
 
 void AccountDialog::OnAmountKillFocus(wxFocusEvent &event) {
 	event.Skip();
 
-	_viewModel->SetAmount(_amountField->GetFloatValue());
+	_viewModel->SetInitialAmount(_initialAmountField->GetFloatValue());
 }
 
 void AccountDialog::OnCreditKillFocus(wxFocusEvent& event) {

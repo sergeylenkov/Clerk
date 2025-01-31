@@ -23,6 +23,7 @@ namespace Clerk {
 			virtual void EditTransaction(int id) = 0;
 			virtual void OpenNewAccountDialog(AccountType type) = 0;
 			virtual void OpenEditAccountDialog(int id) = 0;			
+			virtual void OpenInterestAccrualDialog(int id) = 0;
 			virtual void OpenNewAlertDialog() = 0;
 			virtual void OpenEditAlertDialog(int id) = 0;			
 			virtual void OpenNewBudgetDialog() = 0;

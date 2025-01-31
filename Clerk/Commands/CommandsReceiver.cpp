@@ -57,6 +57,10 @@ void CommandsReceiver::OpenEditAccountDialog(int id) {
 	_dialogsController.ShowEditAccountDialog(id);
 }
 
+void CommandsReceiver::OpenInterestAccrualDialog(int id) {
+	_dialogsController.ShowInterestAccrualDialog(id);
+}
+
 void CommandsReceiver::OpenNewAlertDialog() {
 	_dialogsController.ShowNewAlertDialog();
 }

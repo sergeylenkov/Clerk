@@ -26,6 +26,7 @@ namespace Clerk {
 			void EditTransaction(int id) override;
 			void OpenNewAccountDialog(AccountType type) override;
 			void OpenEditAccountDialog(int id) override;			
+			void OpenInterestAccrualDialog(int id) override;
 			void OpenNewAlertDialog() override;
 			void OpenEditAlertDialog(int id) override;			
 			void OpenNewBudgetDialog() override;

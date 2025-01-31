@@ -17,6 +17,7 @@
 #include "Account/EditAccountCommand.h"
 #include "Account/ArchiveAccountCommand.h"
 #include "Account/RestoreAccountCommand.h"
+#include "Account/InterestAccrualCommand.h"
 #include "Alert//NewAlertCommand.h"
 #include "Alert/EditAlertCommand.h"
 #include "Alert/DeleteAlertCommand.h"
@@ -59,6 +60,7 @@ namespace Clerk {
 				EditAccountCommand& editAccountCommand,
 				ArchiveAccountCommand& archiveAccountCommand,
 				RestoreAccountCommand& restoreAccountCommand,
+				InterestAccrualCommand& interestAccrualCommand,
 				NewAlertCommand& newAlertCommand,
 				EditAlertCommand& editAlertCommand,
 				DeleteAlertCommand& deleteAlertCommand,
@@ -95,6 +97,7 @@ namespace Clerk {
 			void EditAccount(int id);
 			void ArchiveAccount(int id);
 			void RestoreAccount(int id);
+			void InterestAccrual(int id);
 			void NewAlert();
 			void EditAlert(int id);
 			void DeleteAlert(int id);			
@@ -128,6 +131,7 @@ namespace Clerk {
 			EditAccountCommand& _editAccountCommand;
 			ArchiveAccountCommand& _archiveAccountCommand;
 			RestoreAccountCommand& _restoreAccountCommand;
+			InterestAccrualCommand& _interestAccrualCommand;
 			NewAlertCommand& _newAlertCommand;
 			EditAlertCommand& _editAlertCommand;
 			DeleteAlertCommand& _deleteAlertCommand;

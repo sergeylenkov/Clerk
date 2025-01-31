@@ -55,6 +55,7 @@
   <ItemGroup>
     <ClCompile Include="Commands\AboutCommand.cpp" />
     <ClCompile Include="Commands\Account\ArchiveAccountCommand.cpp" />
+    <ClCompile Include="Commands\Account\InterestAccrualCommand.cpp" />
     <ClCompile Include="Commands\Account\RestoreAccountCommand.cpp" />
     <ClCompile Include="Commands\Alert\DeleteAlertCommand.cpp" />
     <ClCompile Include="Commands\Alert\NewAlertCommand.cpp" />
@@ -110,6 +111,8 @@
     <ClCompile Include="Data\Services\SchedulersService.cpp" />
     <ClCompile Include="Data\Services\TagsService.cpp" />
     <ClCompile Include="Data\Services\TransactionsService.cpp" />
+    <ClCompile Include="UI\Account\InterestAccrualDialog.cpp" />
+    <ClCompile Include="UI\Account\InterestAccrualViewModel.cpp" />
     <ClCompile Include="UI\Alerts\AlertContextMenu.cpp" />
     <ClCompile Include="UI\Budgets\BudgetContextMenu.cpp" />
     <ClCompile Include="UI\Charts\GroupedBarChart.cpp" />
@@ -230,6 +233,7 @@
   <ItemGroup>
     <ClInclude Include="Commands\AboutCommand.h" />
     <ClInclude Include="Commands\Account\ArchiveAccountCommand.h" />
+    <ClInclude Include="Commands\Account\InterestAccrualCommand.h" />
     <ClInclude Include="Commands\Account\RestoreAccountCommand.h" />
     <ClInclude Include="Commands\Alert\DeleteAlertCommand.h" />
     <ClInclude Include="Commands\Alert\NewAlertCommand.h" />
@@ -290,6 +294,8 @@
     <ClInclude Include="Data\Services\SchedulersService.h" />
     <ClInclude Include="Data\Services\TagsService.h" />
     <ClInclude Include="Data\Services\TransactionsService.h" />
+    <ClInclude Include="UI\Account\InterestAccrualDialog.h" />
+    <ClInclude Include="UI\Account\InterestAccrualViewModel.h" />
     <ClInclude Include="UI\Charts\GroupedBarChart.h" />
     <ClInclude Include="UI\Controls\Enums.h" />
     <ClInclude Include="UI\Controls\PeriodFilterPanel.h" />

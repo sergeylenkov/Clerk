@@ -53,6 +53,13 @@ AccountContextMenu::AccountContextMenu(DataContext& context, Icons& icons, Accou
 			item = Append(static_cast<int>(TreeContextMenuType::NewTransaction), _("New Transaction..."));
 			item->SetBitmap(_icons.GetIconByType(IconType::Plus));
 		}
+
+		if (account.type == AccountType::Debt) {
+			AppendSeparator();
+
+			item = Append(static_cast<int>(TreeContextMenuType::InterestAccrual), _("Interest Accrual..."));
+			item->SetBitmap(_icons.GetIconByType(IconType::Percent));
+		}
 	}
 
 	Bind(wxEVT_COMMAND_MENU_SELECTED, &AccountContextMenu::OnMenuSelect, this);
@@ -80,6 +87,9 @@ void AccountContextMenu::OnMenuSelect(wxCommandEvent& event) {
 				break;
 			case TreeContextMenuType::RestoreAccount:
 				_context.GetCommandsInvoker().RestoreAccount(_account.id);
+				break;
+			case TreeContextMenuType::InterestAccrual:
+				_context.GetCommandsInvoker().InterestAccrual(_account.id);
 				break;
 			default:
 				break;

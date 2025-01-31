@@ -20,6 +20,7 @@ CommandsInvoker::CommandsInvoker(
 	EditAccountCommand& editAccountCommand,	
 	ArchiveAccountCommand& archiveAccountCommand,
 	RestoreAccountCommand& restoreAccountCommand,
+	InterestAccrualCommand& interestAccrualCommand,
 	NewAlertCommand& newAlertCommand,
 	EditAlertCommand& editAlertCommand,
 	DeleteAlertCommand& deleteAlertCommand,
@@ -52,6 +53,7 @@ CommandsInvoker::CommandsInvoker(
 	_editAccountCommand(editAccountCommand),
 	_archiveAccountCommand(archiveAccountCommand),
 	_restoreAccountCommand(restoreAccountCommand),
+	_interestAccrualCommand(interestAccrualCommand),
 	_newAlertCommand(newAlertCommand),
 	_editAlertCommand(editAlertCommand),
 	_deleteAlertCommand(deleteAlertCommand),
@@ -88,6 +90,7 @@ CommandsInvoker::~CommandsInvoker() {
 	delete& _editAccountCommand;	
 	delete& _archiveAccountCommand;
 	delete& _restoreAccountCommand;
+	delete& _interestAccrualCommand;
 	delete& _newAlertCommand;
 	delete& _editAlertCommand;
 	delete& _deleteAlertCommand;
@@ -193,6 +196,11 @@ void CommandsInvoker::ArchiveAccount(int id) {
 void CommandsInvoker::RestoreAccount(int id) {
 	_restoreAccountCommand.SetAccountId(id);
 	_restoreAccountCommand.Execute();
+}
+
+void CommandsInvoker::InterestAccrual(int id) {
+	_interestAccrualCommand.SetAccountId(id);
+	_interestAccrualCommand.Execute();
 }
 
 void CommandsInvoker::NewAlert() {

@@ -27,7 +27,8 @@ namespace Clerk {
 			Bell,
 			BellActive,
 			Merge,
-			Undo
+			Undo,
+			Percent
 		};
 
 		class Icons {

@@ -33,7 +33,8 @@ namespace Clerk {
 			RestoreAccount = 8,
 			EmptyTrash = 9,
 			NewGoal = 10,
-			NewAlert = 11
+			NewAlert = 11,
+			InterestAccrual = 12
 		};
 	}
 }

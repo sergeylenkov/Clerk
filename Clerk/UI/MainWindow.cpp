@@ -141,6 +141,7 @@ void MainWindow::SetupCommands() {
 	EditAccountCommand* editAccountCommand = new EditAccountCommand(*_commandsReceiver);
 	ArchiveAccountCommand* archiveAccountCommand = new ArchiveAccountCommand(_context.GetAccountsService());
 	RestoreAccountCommand* restoreAccountCommand = new RestoreAccountCommand(_context.GetAccountsService());
+	InterestAccrualCommand* interestAccrualCommand = new InterestAccrualCommand(*_commandsReceiver);
 	NewAlertCommand* newAlertCommand = new NewAlertCommand(*_commandsReceiver);
 	EditAlertCommand* editAlertCommand = new EditAlertCommand(*_commandsReceiver);
 	DeleteAlertCommand* deleteAlertCommand = new DeleteAlertCommand(_context.GetAlertsService());
@@ -174,6 +175,7 @@ void MainWindow::SetupCommands() {
 		*editAccountCommand,
 		*archiveAccountCommand,
 		*restoreAccountCommand,
+		*interestAccrualCommand,
 		*newAlertCommand,
 		*editAlertCommand,
 		*deleteAlertCommand,

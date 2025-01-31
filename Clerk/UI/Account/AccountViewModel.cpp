@@ -2,11 +2,12 @@
 
 using namespace Clerk::UI;
 
-AccountViewModel::AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService) :
+AccountViewModel::AccountViewModel(AccountsService& accountsService, CurrenciesService& currenciesService, TransactionsService& transactionsService) :
 	_accountsService(accountsService),
-	_currenciesService(currenciesService) {
+	_currenciesService(currenciesService),
+	_transactionsService(transactionsService) {
 	_id = -1;
-	_amount = 0;
+	_initialAmount = 0;
 	_type = AccountType::Deposit;
 	_currency = _currenciesService.GetBaseCurrency();
 	_currencies = _currenciesService.GetAll();
@@ -28,7 +29,7 @@ void AccountViewModel::SetAccountId(int id) {
 		_name = account->name;
 		_type = account->type;
 		_iconId = account->icon;
-		_amount = _accountsService.GetInitialAmount(*account);
+		_initialAmount = _accountsService.GetInitialAmount(*account);
 		_note = account->note;
 		_currency = account->currency;
 		_creditLimit = account->creditLimit;
@@ -75,16 +76,16 @@ AccountType AccountViewModel::GetType() {
 	return _type;
 }
 
-void AccountViewModel::SetAmount(float amount) {
-	_amount = amount;
+void AccountViewModel::SetInitialAmount(float amount) {
+	_initialAmount = amount;
 
 	if (OnUpdate) {
-		OnUpdate(AccountViewModelField::Amount);
+		OnUpdate(AccountViewModelField::InitialAmount);
 	}
 }
 
-float AccountViewModel::GetAmount() {
-	return _amount;
+float AccountViewModel::GetInitialAmount() {
+	return _initialAmount;
 }
 
 void AccountViewModel::SetCreditLimit(float amount) {
@@ -159,5 +160,24 @@ void AccountViewModel::Save() {
 	account->icon = _iconId;
 	account->note = _note;
 
-	_accountsService.Save(*account);
+	auto newAccount = _accountsService.Save(*account);
+
+	if (IsNew() && _initialAmount > 0) {
+		TransactionPresentationModel* transaction = new TransactionPresentationModel();
+
+		if (account->type == AccountType::Debt) {
+			transaction->fromAccount = newAccount;
+			transaction->fromAmount = _initialAmount;
+			transaction->toAmount = _initialAmount;
+		}
+		else {
+			transaction->toAccount = newAccount;
+			transaction->fromAmount = _initialAmount;
+			transaction->toAmount = _initialAmount;
+		}
+
+		_transactionsService.Save(*transaction);
+
+		delete transaction;
+	}
 }

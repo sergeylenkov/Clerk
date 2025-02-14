@@ -70,7 +70,7 @@ shared_vector<AccountPresentationModel> DashboardViewModel::GetExpensesForMonth(
 	auto expenses = _accountsService.GetExpenses(fromDate, toDate);
 
 	std::sort(expenses.begin(), expenses.end(), [](auto a, auto b) {
-		return a->expenses > b->expenses;
+		return a->currentExpenses > b->currentExpenses;
 	});
 
 	return expenses;
@@ -86,8 +86,8 @@ shared_vector<AccountPresentationModel> DashboardViewModel::GetReceiptsForMonth(
 	auto receipts = _accountsService.GetReceipts(fromDate, toDate);
 
 	std::sort(receipts.begin(), receipts.end(), [](auto a, auto b) {
-		return a->receipts > b->receipts;
-		});
+		return a->currentReceipts > b->currentReceipts;
+	});
 
 	return receipts;
 }

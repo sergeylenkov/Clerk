@@ -12,8 +12,10 @@ AccountPresentationModel::AccountPresentationModel() {
 	creditLimit = 0;
 	isCredit = false;
 	balance = 0;
-	expenses = 0;
-	receipts = 0;
+	totalExpenses = 0;
+	totalReceipts = 0;
+	currentExpenses = 0;
+	currentReceipts = 0;
 	isActive = true;
 	date = wxDateTime::Today();
 }
@@ -28,8 +30,10 @@ AccountPresentationModel::AccountPresentationModel(AccountModel& model) {
 	creditLimit = model.creditLimit;
 	isCredit = model.creditLimit > 0;
 	balance = 0;
-	expenses = 0;
-	receipts = 0;
+	totalExpenses = 0;
+	totalReceipts = 0;
+	currentExpenses = 0;
+	currentReceipts = 0;
 	isActive = model.isActive;
 
 	date = wxDateTime::Today();

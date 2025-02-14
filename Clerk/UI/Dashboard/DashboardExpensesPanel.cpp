@@ -30,8 +30,8 @@ void DashboardExpensesPanel::Update()
 	_maxValue = 0;
 
 	for (auto& account : _accounts) {
-		if (account->expenses > _maxValue) {
-			_maxValue = account->expenses;
+		if (account->currentExpenses > _maxValue) {
+			_maxValue = account->currentExpenses;
 		}
 	}
 
@@ -77,12 +77,12 @@ void DashboardExpensesPanel::Draw(wxPaintDC &dc) {
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = Format::Amount(account->expenses, account->currency->sign);
+		wxString value = Format::Amount(account->currentExpenses, account->currency->sign);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 
-		int percent = (account->expenses / _maxValue) * 100;
+		int percent = (account->currentExpenses / _maxValue) * 100;
 		int progressWidth = (width / 100.0) * percent;
 
 		if (progressWidth < 5) {

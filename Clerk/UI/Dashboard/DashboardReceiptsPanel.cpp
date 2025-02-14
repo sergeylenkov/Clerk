@@ -30,8 +30,8 @@ void DashboardReceiptsPanel::Update()
 	_maxValue = 0;
 
 	for (auto& account : _accounts) {
-		if (account->receipts > _maxValue) {
-			_maxValue = account->receipts;
+		if (account->currentReceipts > _maxValue) {
+			_maxValue = account->currentReceipts;
 		}
 	}
 
@@ -77,12 +77,12 @@ void DashboardReceiptsPanel::Draw(wxPaintDC& dc) {
 		dc.SetFont(amountFont);
 		dc.SetTextForeground(wxColor(60, 60, 60));
 
-		wxString value = Format::Amount(account->receipts, account->currency->sign);
+		wxString value = Format::Amount(account->currentReceipts, account->currency->sign);
 		wxSize size = dc.GetTextExtent(value);
 
 		dc.DrawText(value, wxPoint(width - size.GetWidth(), y));
 
-		int percent = (account->receipts / _maxValue) * 100;
+		int percent = (account->currentReceipts / _maxValue) * 100;
 		int progressWidth = (width / 100.0) * percent;
 
 		if (progressWidth < 5) {

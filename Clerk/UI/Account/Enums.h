@@ -17,7 +17,18 @@ namespace Clerk {
 namespace Clerk {
 	namespace UI {
 		enum class InterestAccrualViewModelField {
-			Amount = 0
+			Amount = 0,
+			Percent = 1,
+			Type = 2
+		};
+	}
+}
+
+namespace Clerk {
+	namespace UI {
+		enum class AccrualType {
+			Amount = 0,
+			Percent = 1
 		};
 	}
 }

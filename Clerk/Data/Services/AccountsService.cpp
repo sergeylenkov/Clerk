@@ -159,9 +159,9 @@ shared_vector<AccountPresentationModel> AccountsService::GetReceipts(const wxDat
 	shared_vector<AccountPresentationModel> result;
 
 	for (auto& account : accounts) {
-		account->receipts = _accountsRepository.GetReceipts(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
+		account->currentReceipts = _accountsRepository.GetReceipts(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
 
-		if (account->receipts > 0) {
+		if (account->currentReceipts > 0) {
 			result.push_back(account);
 		}
 	}
@@ -187,9 +187,9 @@ shared_vector<AccountPresentationModel> AccountsService::GetExpenses(const wxDat
 	shared_vector<AccountPresentationModel> result;
 
 	for (auto& account : accounts) {
-		account->expenses = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
+		account->currentExpenses = _accountsRepository.GetExpenses(account->id, std::string(fromDate.FormatISODate().ToUTF8()), std::string(toDate.FormatISODate().ToUTF8()));
 
-		if (account->expenses > 0) {
+		if (account->currentExpenses > 0) {
 			result.push_back(account);
 		}
 	}
@@ -206,13 +206,13 @@ shared_vector<AccountPresentationModel> AccountsService::GetDebts() {
 	shared_vector<AccountPresentationModel> result;
 
 	for (auto& account : accounts) {
-		account->expenses = abs(_accountsRepository.GetExpenses(account->id));
-		account->receipts = _accountsRepository.GetReceipts(account->id);
+		account->totalExpenses = abs(_accountsRepository.GetExpenses(account->id));
+		account->totalReceipts = _accountsRepository.GetReceipts(account->id);
 
 		if (account->type == AccountType::Debt) {
 			result.push_back(account);
 		}
-		else if (account->isCredit && account->expenses < 0) {
+		else if (account->isCredit && account->totalExpenses < 0) {
 			result.push_back(account);
 		}
 	}

@@ -27,7 +27,7 @@ float AccountingService::GetReceipts(const wxDateTime& fromDate, const wxDateTim
 	for (auto& account : _accountsService.GetReceipts(fromDate, toDate)) {
 		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 
-		result = result + (account->receipts * rate);
+		result = result + (account->currentReceipts * rate);
 	}
 
 	return result;
@@ -41,7 +41,7 @@ float AccountingService::GetExpenses(const wxDateTime& fromDate, const wxDateTim
 	for (auto& account : _accountsService.GetExpenses(fromDate, toDate)) {
 		float rate = _currenciesService.GetExchangeRate(*account->currency, baseCurrency);
 
-		result = result + (account->expenses * rate);
+		result = result + (account->currentExpenses * rate);
 	}
 
 	return result;

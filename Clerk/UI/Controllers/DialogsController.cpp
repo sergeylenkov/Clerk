@@ -114,7 +114,7 @@ void DialogsController::ShowEditAccountDialog(int id) {
 void DialogsController::ShowInterestAccrualDialog(int id) {
 	wxSize size = GetInterestAccrualDialogSize();
 
-	InterestAccrualDialog* interestAccrualDialog = new InterestAccrualDialog(_parent, _("Interest Accrua"), 0, 0, size.GetWidth(), size.GetHeight());
+	InterestAccrualDialog* interestAccrualDialog = new InterestAccrualDialog(_parent, _("Interest Accrual"), 0, 0, size.GetWidth(), size.GetHeight());
 
 	InterestAccrualViewModel* viewModel = new InterestAccrualViewModel(_context.GetAccountsService(), _context.GetTransactionsService());
 	viewModel->SetAccountId(id);
@@ -308,8 +308,8 @@ wxSize DialogsController::GetSchedulerDialogSize() {
 wxSize DialogsController::GetInterestAccrualDialogSize() {
 	wxSize size = wxSize();
 
-	size.SetWidth(_parent->FromDIP(380));
-	size.SetHeight(_parent->FromDIP(200));
+	size.SetWidth(_parent->FromDIP(320));
+	size.SetHeight(_parent->FromDIP(150));
 
 	return size;
 }

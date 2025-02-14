@@ -22,8 +22,10 @@ namespace Clerk {
 			bool isCredit = false;
 			std::shared_ptr<CurrencyPresentationModel> currency;
 			float balance;
-			float expenses;
-			float receipts;
+			float totalExpenses;
+			float totalReceipts;
+			float currentExpenses;
+			float currentReceipts;
 			boolean isActive = false;
 			wxDateTime date;
 

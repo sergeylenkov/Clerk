@@ -25,7 +25,7 @@ void DashboardDebtsPanel::Update()
 
 	for (auto& account : _debts) {
 		if (account->isCredit) {
-			float amount = account->expenses;
+			float amount = account->totalExpenses;
 			float currentAmount = account->creditLimit + amount;
 			float remainPercent = abs(currentAmount / account->creditLimit) * 100.0;
 
@@ -34,8 +34,8 @@ void DashboardDebtsPanel::Update()
 			_totalValue = _totalValue + abs(amount);
 		}
 		else {
-			float amount = account->expenses;
-			float currentAmount = account->receipts;
+			float amount = account->totalExpenses;
+			float currentAmount = account->totalReceipts;
 			float remainAmount = amount - currentAmount;
 			float remainPercent = (currentAmount / amount) * 100.0;
 

@@ -22,11 +22,19 @@ public:
 
 private:
 	InterestAccrualViewModel* _viewModel;
+	wxStaticText* _balanceLabel;
+	wxComboBox* _typeList;
 	AmountField* _amountField;
+	AmountField* _percentField;
+	wxStaticText* _currencyLabel;
 
 	void Update();
+	void UpdateType();
+	void UpdateBalance();
 	void OnOK(wxCommandEvent& event);
 	void OnCancel(wxCommandEvent& event);
-	void OnAmountKillFocus(wxFocusEvent& event);	
+	void OnAmountKillFocus(wxFocusEvent& event);
+	void OnPercentKillFocus(wxFocusEvent& event);
+	void OnTypeSelect(wxCommandEvent& event);
 	void OnKeyDown(wxKeyEvent& event);
 };
